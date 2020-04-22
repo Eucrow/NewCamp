@@ -1,0 +1,20 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title> {% block title %} NewCamp {% endblock %}</title>
+</head>
+<body>
+    <nav>
+        {% block nav_sp %}{% endblock %}
+    </nav>
+    <hr>
+    <section>
+        {% block section %}{% endblock %}
+    </section>
+    <hr>
+    <small>NewCamp</small>
+
+</body>
+</html>
