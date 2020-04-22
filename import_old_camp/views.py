@@ -402,7 +402,7 @@ class HaulsImport:
                 haul_id__station__survey=self.survey_object).exists() or HaulTrawl.objects.filter(
             haul_id__station__survey=self.survey_object).exists():
             self.message.append("<p>Hauls of this survey already saved in database. Remove all of them before try to "
-                                "import it again. None has been saved.</p>")
+                                "import it again. None of the hauls has been saved.</p>")
             return HttpResponse(self.message, status=HTTP_409_CONFLICT)
         else:
             # haul
@@ -496,115 +496,11 @@ class FaunasImport:
                                        sampler_id=self.sampler_object.id)
         return haul_object.id
 
-    # def save_fauna(self, row, survey_object, station_object, haul_object, specie_object):
-    #     """
-    #     Save fauna data to database.
-    #     :param row: Serie of data from .iterrows() function (see pandas)
-    #     :param survey_object: object with survey data
-    #     :param station_object: object with station data
-    #     :param haul_object: object with haul data
-    #     :param specie_object: object with specie data
-    #     :return:
-    #     """
-    #
-    #     tmp = {"weight": row["PESO_GR"], "number": row["NUMERO"]}
-    #
-    #     serializer = FaunaSerializer(data=tmp)
-    #
-    #     serializer.is_valid(raise_exception=True)
-    #
-    #     serializer.save(survey=survey_object, station=station_object, haul=haul_object, specie=specie_object)
-    #
-    #     # self.messages.append(
-    #     #     '<p>Se ha añadido la especie ' + specie_object.sp_name + ' al lance ' + str(haul_object.haul)
-    #     #     + ' de la campaña ' + survey_object.acronym + '.</p>')
-
-    # def import_faunas_csv(self):
-    #     """
-    #     Import csv file with faunas data
-    #     Before save data in database, make this validations:
-    #     - Does survey exists in the database?
-    #     - Does hauls exists in the database?
-    #     - Does stations exists in the database?
-    #     - Does the species exists in the database?
-    #     If all of this are correct, make this one too before save:
-    #     - Are there any haul-specie duplicated in the imported data?
-    #     :return: http response
-    #     """
-    #
-    #     # Does survey exists in the database?
-    #     if not survey_exists(self.survey_name):
-    #         self.errors.append('La campaña ' + self.survey_name + ' no está dada de alta.\n')
-    #
-    #     # Does station exists in the database?
-    #     for station in self.stations:
-    #         if not stationExists(station, self.survey_object.id):
-    #             self.errors.append('La estación ' + str(station) + ' no está dada de alta.\n')
-    #             continue
-    #
-    #     # Does hauls exists in the database?
-    #     for haul in self.hauls:
-    #         # When the data is imported from old CAMP files, the station is the same that the haul:
-    #         station_id = Station.objects.get(survey_id=self.survey_object.id, station=haul).id
-    #         if not haul_exists(haul, station_id, self.survey_object.id):
-    #             self.errors.append('El lance ' + str(haul) + ' no está dado de alta.\n')
-    #             continue
-    #
-    #     # Does the species exists in the database?
-    #     for index, row in self.faunas.iterrows():
-    #         if not specieExists(row['GRUPO'], row['ESP']):
-    #             self.errors.append(
-    #                 'La especie ' + str(row['ESP']) + ' del grupo ' + str(row['GRUPO']) + ' no está dada de alta.\n')
-    #             continue
-    #
-    #     # Are there any haul-specie duplicated in the imported data?
-    #     duplicated = self.get_duplicated()
-    #     if any(duplicated):
-    #         dup = self.faunas[duplicated]
-    #         for index, row in dup.iterrows():
-    #             self.errors.append(
-    #                 '<p>la especie ' + str(row['ESP']) + ' del grupo ' + str(row['GRUPO']) + ' del lance ' + str(
-    #                     row['LANCE']) + ' está duplicada en el archivo.</p>')
-    #
-    #     # Are there any catch of the specie and haul saved previously in database?
-    #     # This is only checked if there aren't any errors in the previous steps:
-    #     if not self.errors:
-    #         for index, row in self.faunas.iterrows():
-    #             # When the data is imported from old CAMP files, the station is the same that the haul:
-    #             station_object = Station.objects.get(station=row['LANCE'], survey__acronym=self.survey_name)
-    #             haul_object = Haul.objects.get(station=station_object, haul=row['LANCE'])
-    #             specie_object = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
-    #
-    #             if Fauna.objects.filter(survey=self.survey_object.id, haul=haul_object.id, specie=specie_object.id):
-    #                 self.errors.append('La especie ' + str(row["GRUPO"]) + " " + str(row["ESP"]) + ' del lance ' +
-    #                                    str(row['LANCE']) + ' ya está metida para la campaña ' +
-    #                                    self.survey_object.acronym + '.\n')
-    #
-    #     if self.errors:  # this mean: if errors is not empty
-    #         self.messages = self.errors + self.messages
-    #         self.messages.append(
-    #             '<p>Debido a los errores anteriores no se ha añadido ningún dato. Corrige el fichero e '
-    #             'inténtalo de nuevo.</p>')
-    #     else:  # at this point, all the previous checks are done, so the data are saved
-    #         # for index, row in self.faunas.iterrows():
-    #         #     # When the data is imported from old CAMP files, the station is the same that the haul:
-    #         #     station_object = Station.objects.get(station=row['LANCE'], survey__acronym=self.survey_name)
-    #         #     haul_object = Haul.objects.get(station=station_object, haul=row['LANCE'])
-    #         #     print(row['LANCE'])
-    #         #     specie_object = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
-    #         #     station_object = Station.objects.get(survey=self.survey_object.id, station=row['LANCE'])
-    #         #     self.save_fauna(row, self.survey_object, station_object, haul_object, specie_object)
-    #         #     print('<p>Se ha añadido la especie ' + specie_object.sp_name + ' al lance ' + str(haul_object.haul)
-    #         #           + ' de la campaña ' + self.survey_object.acronym + '.</p>')
-    #
-    #
-    #     return HttpResponse(self.messages, status=HTTP_201_CREATED)
-
     def species_exists(self, file):
         """
         Check if all the species of file are stored in database.
         :param file: File with columns 'GRUPO' and 'ESP' to check.
-        :return: True if all the species are stored. Raise error if not.
+        :return: True if all the species are stored, False if doesn't.
         """
 
         uniques_sp = file[['GRUPO', 'ESP']].drop_duplicates()
@@ -647,7 +543,7 @@ class FaunasImport:
         :param row: Row of the apply function
         :return: Species id.
         """
-        sp_id = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
+        sp_id = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP']).id
         return sp_id
 
     def get_category_id(self, row):
@@ -658,26 +554,21 @@ class FaunasImport:
         """
         sp_id = self.get_sp_id(row)
 
-        try:
-            cat_id = Category.objects.get(sp_id=sp_id, category_name="1")
-            return cat_id
-        except ObjectDoesNotExist:
-            raise Exception("<p>Category 1 (is the category by defaul) of species " + str(sp_id) + "does not exists in "
-                                                                                              "database. None of the "
-                                                                                              "catches has been "
-                                                                                              "saved. ")
+        cat_id = Category.objects.get(sp_id=sp_id, category_name="1").id
+        return cat_id
+
 
     def format_catch_table(self, file):
 
         catches_table = file
 
         if self.species_exists(file):
-            catches_table['species_id'] = catches_table.apply(self.get_sp_id, axis=1)
+            catches_table['specie_id'] = catches_table.apply(self.get_sp_id, axis=1)
             catches_table['category_id'] = catches_table.apply(self.get_category_id, axis=1)
             catches_table['haul_id'] = catches_table.apply(self.get_haul_id, axis=1)
             catches_table['weight'] = catches_table['PESO_GR']
 
-            catches_table = catches_table[['species_id', 'category_id', 'haul_id', 'weight']]
+            catches_table = catches_table[['specie_id', 'category_id', 'haul_id', 'weight']]
 
             return catches_table
         else:
@@ -758,7 +649,7 @@ class FaunasImport:
         if Catch.objects.filter(haul_id__station_id__survey_id__acronym=self.survey_name):
             self.messages.append(
                 "<p>Catches of this survey already saved in database. Remove all the catches of this "
-                "survey before try to import it again. None has been saved.</p>")
+                "survey before try to import it again. None of the catches has been saved.</p>")
             return HttpResponse(self.messages, status=HTTP_409_CONFLICT)
 
         else:
@@ -1136,7 +1027,31 @@ class SpeciesImport:
         # change variable names
         species_df.columns = self.fields_species.keys()
 
+        species_df['comment'] = ""
+
         return species_df
+
+    def get_sp_id(self, row):
+        """
+        Get the species id. Used in pandas apply function.
+        :param row: Row of the apply function
+        :return: Species id.
+        """
+        sp_id = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP']).id
+        return sp_id
+
+    def format_categories_table(self, file):
+        categories_df = file
+
+        # when import old camp file, when a species is imported is mandatory generate at least one
+        # category for this species in category table. By defaul, the category name is "1"
+
+        categories_df['sp_id'] = categories_df.apply(self.get_sp_id, axis=1)
+        categories_df['category_name'] = "1"
+
+        categories_df = categories_df[['category_name', 'sp_id']]
+
+        return categories_df
 
     def import_species_csv(self):
         """
@@ -1152,9 +1067,10 @@ class SpeciesImport:
 
         # species
         species_table = self.format_species_table(species_file)
-        species_table.to_sql("species_sp", con=engine,
-                             if_exists="replace",
-                             # if_exists="append",
-                             index_label="id")
+        species_table.to_sql("species_sp", con=engine, if_exists="replace", index_label="id")
+
+        # categories
+        categories_table = self.format_categories_table(species_file)
+        categories_table.to_sql("species_category", con=engine, if_exists="replace", index_label="id")
 
         return HttpResponse(self.message, status=HTTP_201_CREATED)
