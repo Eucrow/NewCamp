@@ -1,26 +1,23 @@
 import csv
 
 import io
-import os
 
 import pandas as pd
+from django.core.exceptions import ObjectDoesNotExist
 
 from sqlalchemy import create_engine
-
-from django.db import connections
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
 from datetime import datetime
 
-# Create your views here.
 from rest_framework.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 
 from catches.models import Catch
 from catches.serializers import CatchesSerializer
 from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
-from hauls.serializers import ImportHaulSerializer, ImportHaulsTrawlSerializer, ImportHydrographyesSerializer
+from hauls.serializers import ImportHydrographyesSerializer
 from newcamp.apps import convert_comma_to_dot, empty
 from newcamp.settings import BASE_DIR
 from samples.serializers import LengthsSerializer, SampledWeightsSerializer
@@ -47,20 +44,6 @@ def convert_str_float(s):
         return ""
 
 
-def get_file(request, file_key):
-    """
-    Get file from request in pandas dataframe format
-    :param request: request
-    :param file_key: Key of the request to get
-    :return: Pandas dataframe with the content of the file
-    """
-    new_file = request.FILES[file_key]
-    return pd.read_csv(new_file, sep=";", decimal=",", keep_default_na=False,
-                       converters={'DISTA_P': convert_str_float,
-                                   'ABERT_H': convert_str_float,
-                                   'ABERT_V': convert_str_float})
-
-
 def convert_position_camp_to_decimal(value_camp):
     """
     Convert the incorrect coordinates saved in old camp to decimal coordinates
@@ -75,37 +58,6 @@ def convert_position_camp_to_decimal(value_camp):
     decimal = degree + minute
     decimal = round(decimal, 4)
     return decimal
-
-def get_station_id(row):
-        """
-        Get the station id. Used in pandas apply function.
-        :param row: row of the apply function.
-        :return: Station id.
-        """
-
-        # add station data
-        # temporaly, in all demersales surveys, the station is the same than the haul
-        if not Station.objects.filter(station=row['LANCE'], survey__acronym=self.survey_name).exists():
-            station_new = Station()
-            station_new.station = row['LANCE']
-            station_new.sampler = self.sampler_object
-            station_new.survey = self.survey_object
-            station_new.save()
-
-        station_object = get_object_or_404(Station, station=row['LANCE'], survey__acronym=self.survey_name)
-        return station_object.id
-
-def get_haul_id(row):
-    """
-    Get the haul id. Used in pandas apply function.
-    :param row: row of the apply function.
-    :return: Station id.
-    """
-    haul_object = Haul.objects.get(haul=row['LANCE'],
-                                   station_id=get_station_id(row),
-                                   # stratum_id=self.get_stratum_id(row),
-                                   sampler_id=self.sampler_object.id)
-    return haul_object.id
 
 
 class SurveysImport:
@@ -248,6 +200,18 @@ class HaulsImport:
             "comment": "OBSERV",
         }
 
+    def get_file(self, file_key):
+        """
+        Get file from request in pandas dataframe format
+        :param file_key: Key of the request to get
+        :return: Pandas dataframe with the content of the file
+        """
+        new_file = self.request.FILES[file_key]
+        return pd.read_csv(new_file, sep=";", decimal=",", keep_default_na=False,
+                           converters={'DISTA_P': convert_str_float,
+                                       'ABERT_H': convert_str_float,
+                                       'ABERT_V': convert_str_float})
+
     def get_stratum_name(self, row_sector, row_stratum):
         sector_name = self.sectors_names[int(row_sector) - 1]
         depth_index = self.depth_col_names.index(row_stratum)
@@ -272,7 +236,36 @@ class HaulsImport:
         else:
             return None
 
+    def get_station_id(self, row):
+        """
+        Get the station id. Used in pandas apply function.
+        :param row: row of the apply function.
+        :return: Station id.
+        """
 
+        # add station data
+        # temporaly, in all demersales surveys, the station is the same than the haul
+        if not Station.objects.filter(station=row['LANCE'], survey__acronym=self.survey_name).exists():
+            station_new = Station()
+            station_new.station = row['LANCE']
+            station_new.sampler = self.sampler_object
+            station_new.survey = self.survey_object
+            station_new.save()
+
+        station_object = get_object_or_404(Station, station=row['LANCE'], survey__acronym=self.survey_name)
+        return station_object.id
+
+    def get_haul_id(self, row):
+        """
+        Get the haul id. Used in pandas apply function.
+        :param row: row of the apply function.
+        :return: Station id.
+        """
+        haul_object = Haul.objects.get(haul=row['LANCE'],
+                                       station_id=self.get_station_id(row),
+                                       # stratum_id=self.get_stratum_id(row),
+                                       sampler_id=self.sampler_object.id)
+        return haul_object.id
 
     def format_haul_table(self, file):
         """
@@ -284,7 +277,7 @@ class HaulsImport:
 
         hauls_table = file
 
-        hauls_table.loc[:, 'station_id'] = hauls_table.apply(get_station_id, axis=1)
+        hauls_table.loc[:, 'station_id'] = hauls_table.apply(self.get_station_id, axis=1)
 
         hauls_table.loc[:, 'stratum_id'] = hauls_table.apply(self.get_stratum_id, axis=1)
 
@@ -311,7 +304,7 @@ class HaulsImport:
         """
         meteo_table = file
 
-        meteo_table.loc[:, 'haul_id'] = meteo_table.apply(get_haul_id, axis=1)
+        meteo_table.loc[:, 'haul_id'] = meteo_table.apply(self.get_haul_id, axis=1)
 
         fields = list(self.fields_meteorology.values())
 
@@ -337,7 +330,7 @@ class HaulsImport:
         trawl_table = file
 
         # add haul_id variable
-        trawl_table.loc[:, 'haul_id'] = trawl_table.apply(get_haul_id, axis=1)
+        trawl_table.loc[:, 'haul_id'] = trawl_table.apply(self.get_haul_id, axis=1)
 
         # format some variables
         trawl_table["HORA_L"] = trawl_table["HORA_L"].astype(str)
@@ -399,7 +392,7 @@ class HaulsImport:
         :return:
         """
 
-        hauls_file = get_file(self.request, "lance")
+        hauls_file = self.get_file("lance")
 
         # Create your engine.
         engine = create_engine('sqlite:///db.sqlite3', echo=True)
@@ -407,12 +400,12 @@ class HaulsImport:
         # check there aren't already saved
         if Haul.objects.filter(station__survey=self.survey_object).exists() or Meteorology.objects.filter(
                 haul_id__station__survey=self.survey_object).exists() or HaulTrawl.objects.filter(
-                haul_id__station__survey=self.survey_object).exists():
+            haul_id__station__survey=self.survey_object).exists():
             self.message.append("<p>Hauls of this survey already saved in database. Remove all of them before try to "
                                 "import it again. None has been saved.</p>")
             return HttpResponse(self.message, status=HTTP_409_CONFLICT)
         else:
-            #haul
+            # haul
             hauls_table = self.format_haul_table(hauls_file)
             hauls_table.to_sql("hauls_haul", con=engine, if_exists="append", index_label="id")
 
@@ -433,12 +426,21 @@ class FaunasImport:
         self.request = request
         self.survey_name = get_survey_name(self.request.FILES['fauna'].name)
         self.survey_object = Survey.objects.get(acronym=self.survey_name)
-        self.faunas = get_file(request, "fauna")
+        self.sampler_object = get_sampler_object_and_create(sampler_name="ARRASTRE")
+        self.faunas = self.get_file("fauna")
         self.stations = self.get_stations()
         self.hauls = self.get_hauls()
         self.messages = []
         self.errors = []
 
+    def get_file(self, file_key):
+        """
+        Get file from request in pandas dataframe format
+        :param file_key: Key of the request to get
+        :return: Pandas dataframe with the content of the file
+        """
+        new_file = self.request.FILES[file_key]
+        return pd.read_csv(new_file, sep=";", decimal=",")
 
     def get_duplicated(self):
         """
@@ -463,28 +465,59 @@ class FaunasImport:
         """
         return set(self.faunas['LANCE'])
 
-    def save_fauna(self, row, survey_object, station_object, haul_object, specie_object):
+    def get_station_id(self, row):
         """
-        Save fauna data to database.
-        :param row: Serie of data from .iterrows() function (see pandas)
-        :param survey_object: object with survey data
-        :param station_object: object with station data
-        :param haul_object: object with haul data
-        :param specie_object: object with specie data
-        :return:
+        Get the station id. Used in pandas apply function.
+        :param row: row of the apply function.
+        :return: Station id.
         """
 
-        tmp = {"weight": row["PESO_GR"], "number": row["NUMERO"]}
+        # add station data
+        # temporaly, in all demersales surveys, the station is the same than the haul
+        if not Station.objects.filter(station=row['LANCE'], survey__acronym=self.survey_name).exists():
+            station_new = Station()
+            station_new.station = row['LANCE']
+            station_new.sampler = self.sampler_object
+            station_new.survey = self.survey_object
+            station_new.save()
 
-        serializer = FaunaSerializer(data=tmp)
+        station_object = get_object_or_404(Station, station=row['LANCE'], survey__acronym=self.survey_name)
+        return station_object.id
 
-        serializer.is_valid(raise_exception=True)
+    def get_haul_id(self, row):
+        """
+        Get the haul id. Used in pandas apply function.
+        :param row: row of the apply function.
+        :return: Station id.
+        """
+        haul_object = Haul.objects.get(haul=row['LANCE'],
+                                       station_id=self.get_station_id(row),
+                                       # stratum_id=self.get_stratum_id(row),
+                                       sampler_id=self.sampler_object.id)
+        return haul_object.id
 
-        serializer.save(survey=survey_object, station=station_object, haul=haul_object, specie=specie_object)
-
-        # self.messages.append(
-        #     '<p>Se ha añadido la especie ' + specie_object.sp_name + ' al lance ' + str(haul_object.haul)
-        #     + ' de la campaña ' + survey_object.acronym + '.</p>')
+    # def save_fauna(self, row, survey_object, station_object, haul_object, specie_object):
+    #     """
+    #     Save fauna data to database.
+    #     :param row: Serie of data from .iterrows() function (see pandas)
+    #     :param survey_object: object with survey data
+    #     :param station_object: object with station data
+    #     :param haul_object: object with haul data
+    #     :param specie_object: object with specie data
+    #     :return:
+    #     """
+    #
+    #     tmp = {"weight": row["PESO_GR"], "number": row["NUMERO"]}
+    #
+    #     serializer = FaunaSerializer(data=tmp)
+    #
+    #     serializer.is_valid(raise_exception=True)
+    #
+    #     serializer.save(survey=survey_object, station=station_object, haul=haul_object, specie=specie_object)
+    #
+    #     # self.messages.append(
+    #     #     '<p>Se ha añadido la especie ' + specie_object.sp_name + ' al lance ' + str(haul_object.haul)
+    #     #     + ' de la campaña ' + survey_object.acronym + '.</p>')
 
     # def import_faunas_csv(self):
     #     """
@@ -567,6 +600,91 @@ class FaunasImport:
     #
     #     return HttpResponse(self.messages, status=HTTP_201_CREATED)
 
+    def species_exists(self, file):
+        """
+        Check if all the species of file are stored in database.
+        :param file: File with columns 'GRUPO' and 'ESP' to check.
+        :return: True if all the species are stored. Raise error if not.
+        """
+
+        uniques_sp = file[['GRUPO', 'ESP']].drop_duplicates()
+
+        def sp_exists(row):
+            return Sp.objects.filter(group=row['GRUPO'], sp_code=row['ESP']).exists()
+
+        uniques_sp['exists'] = uniques_sp.apply(sp_exists, axis=1)
+
+        if uniques_sp['exists'].all():
+            return True
+        else:
+            return False
+
+    def species_not_exists_in_db(self, file):
+        """
+        Find species wich does not are saved in Species table.
+        :param file: File with columns 'GRUPO' and 'ESP' to check.
+        :return: Dataframe with species which are not saved in Specie table.
+        """
+        uniques_sp = file[['GRUPO', 'ESP']].drop_duplicates()
+
+        def sp_exists(row):
+            return Sp.objects.filter(group=row['GRUPO'], sp_code=row['ESP']).exists()
+
+        uniques_sp['exists'] = uniques_sp.apply(sp_exists, axis=1)
+
+        uniques_sp = uniques_sp[(uniques_sp.exists == False)]
+
+        mes=[]
+
+        for index, row in uniques_sp.iterrows():
+            mes.append('Gruop: ' + str(row['GRUPO']) + ' Species: ' + str(row['ESP']))
+
+        return mes
+
+    def get_sp_id(self, row):
+        """
+        Get the species id. Used in pandas apply function.
+        :param row: Row of the apply function
+        :return: Species id.
+        """
+        sp_id = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
+        return sp_id
+
+    def get_category_id(self, row):
+        """
+        Get the species id. Used in pandas apply function.
+        :param row: Row of the apply function
+        :return: Species id.
+        """
+        sp_id = self.get_sp_id(row)
+
+        try:
+            cat_id = Category.objects.get(sp_id=sp_id, category_name="1")
+            return cat_id
+        except ObjectDoesNotExist:
+            raise Exception("<p>Category 1 (is the category by defaul) of species " + str(sp_id) + "does not exists in "
+                                                                                              "database. None of the "
+                                                                                              "catches has been "
+                                                                                              "saved. ")
+
+    def format_catch_table(self, file):
+
+        catches_table = file
+
+        if self.species_exists(file):
+            catches_table['species_id'] = catches_table.apply(self.get_sp_id, axis=1)
+            catches_table['category_id'] = catches_table.apply(self.get_category_id, axis=1)
+            catches_table['haul_id'] = catches_table.apply(self.get_haul_id, axis=1)
+            catches_table['weight'] = catches_table['PESO_GR']
+
+            catches_table = catches_table[['species_id', 'category_id', 'haul_id', 'weight']]
+
+            return catches_table
+        else:
+            not_exists = self.species_not_exists_in_db(file)
+            raise TypeError(
+                ["The next species are not previously saved in species master. Add it before import file again:", not_exists])
+
     def import_faunas_csv(self):
         """
         Import csv file with faunas data
@@ -614,45 +732,40 @@ class FaunasImport:
         #             '<p>la especie ' + str(row['ESP']) + ' del grupo ' + str(row['GRUPO']) + ' del lance ' + str(
         #                 row['LANCE']) + ' está duplicada en el archivo.</p>')
 
-
-
-
         # if self.errors:  # this mean: if errors is not empty
         #     self.messages = self.errors + self.messages
         #     self.messages.append(
         #         '<p>Debido a los errores anteriores no se ha añadido ningún dato. Corrige el fichero e '
         #         'inténtalo de nuevo.</p>')
         # else:  # at this point, all the previous checks are done, so the data are saved
-            # for index, row in self.faunas.iterrows():
-            #     # When the data is imported from old CAMP files, the station is the same that the haul:
-            #     station_object = Station.objects.get(station=row['LANCE'], survey__acronym=self.survey_name)
-            #     haul_object = Haul.objects.get(station=station_object, haul=row['LANCE'])
-            #     print(row['LANCE'])
-            #     specie_object = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
-            #     station_object = Station.objects.get(survey=self.survey_object.id, station=row['LANCE'])
-            #     self.save_fauna(row, self.survey_object, station_object, haul_object, specie_object)
-            #     print('<p>Se ha añadido la especie ' + specie_object.sp_name + ' al lance ' + str(haul_object.haul)
-            #           + ' de la campaña ' + self.survey_object.acronym + '.</p>')
+        # for index, row in self.faunas.iterrows():
+        #     # When the data is imported from old CAMP files, the station is the same that the haul:
+        #     station_object = Station.objects.get(station=row['LANCE'], survey__acronym=self.survey_name)
+        #     haul_object = Haul.objects.get(station=station_object, haul=row['LANCE'])
+        #     print(row['LANCE'])
+        #     specie_object = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
+        #     station_object = Station.objects.get(survey=self.survey_object.id, station=row['LANCE'])
+        #     self.save_fauna(row, self.survey_object, station_object, haul_object, specie_object)
+        #     print('<p>Se ha añadido la especie ' + specie_object.sp_name + ' al lance ' + str(haul_object.haul)
+        #           + ' de la campaña ' + self.survey_object.acronym + '.</p>')
 
-
-        catches_file = get_file(self.request, "lance")
-
+        # catches_file = self.get_file("fauna")
+        catches_file = self.faunas
         # Create your engine.
         engine = create_engine('sqlite:///db.sqlite3', echo=True)
 
         # check there aren't already saved
-        if Catch.objects.filter(haul_id__station_id__station=self.survey_name):
-            self.message.append(
+        if Catch.objects.filter(haul_id__station_id__survey_id__acronym=self.survey_name):
+            self.messages.append(
                 "<p>Catches of this survey already saved in database. Remove all the catches of this "
                 "survey before try to import it again. None has been saved.</p>")
-            return HttpResponse(self.message, status=HTTP_409_CONFLICT)
+            return HttpResponse(self.messages, status=HTTP_409_CONFLICT)
 
         else:
             catches_table = self.format_catch_table(catches_file)
             catches_table.to_sql("catches_catch", con=engine, if_exists="append", index_label="id")
 
-            return HttpResponse(self.message, status=HTTP_201_CREATED)
-
+            return HttpResponse(self.messages, status=HTTP_201_CREATED)
 
 
 class NtallImport:
@@ -918,6 +1031,130 @@ class OldCampImport:
 
         # response = [survey_import.content, hauls_import.content, faunas_import.content, ntall_import.content,
         #             hydrography_import.content]
-        response = [survey_import.content, hauls_import.content]
+        response = [survey_import.content, hauls_import.content, faunas_import.content]
 
         return HttpResponse(response)
+
+    def importSpecies(self):
+        species = SpeciesImport(self.request)
+        species_import = species.import_species_csv()
+
+        response = [species_import.content]
+
+        return HttpResponse(response)
+
+
+class SpeciesImport:
+
+    # def import_species_csv(self):
+    #     """
+    #     Function to import the CSV file with species info.
+    #     To import again the file, first must truncate the table.
+    #     :param file: file to import
+    #     :return:
+    #     """
+    #
+    #     objfile = self.request.FILES['file']
+    #
+    #     objfile.seek(0)
+    #     '''seek(0) move the pointer to read the file to the first position. I do this to be
+    #     sure that the file is readed from the beginig'''
+    #     csv_file = csv.DictReader(io.StringIO(objfile.read().decode('utf-8')), delimiter=';')
+    #
+    #     message = []
+    #
+    #     for row in csv_file:
+    #         tmp = {}
+    #         tmp["group"] = row["GRUPO"]
+    #         tmp["sp_code"] = row["ESP"]
+    #         tmp["sp_name"] = row["ESPECIE"]
+    #         #tmp["family"] = row["FAMILIA"]
+    #         #tmp["author"] = row["AUTOR"]
+    #         tmp["spanish_name"] = row["NOMBREE"]
+    #         #tmp["english_name"] = row["NOMBREI"]
+    #         if not empty(row["A"]):
+    #             tmp["a_param"] = float(row["A"].replace(',', '.'))
+    #         if not empty(row["B"]):
+    #             tmp["b_param"] = float(row["B"].replace(',', '.'))
+    #         if not empty(row["LINF"]):
+    #             tmp["l_infinity"] = float(row["LINF"].replace(',','.'))
+    #         if not empty(row["K"]):
+    #             tmp["k"] = float(row["K"].replace(',','.'))
+    #         if not empty(row["T0"]):
+    #             tmp["t_zero"] = float(row["T0"].replace(',','.'))
+    #         tmp["unit"] = row["MED"]
+    #         tmp["increment"] = row["INCREM"]
+    #         #tmp["nodc"] = row["NODC"] or 0
+    #         tmp["trophic_group"] = row["GT"] or 0
+    #         tmp["APHIA"] = row["APHIA"] or 0
+    #
+    #         serializer = SpeciesSerializer(data=tmp)
+    #
+    #         serializer.is_valid(raise_exception=True)
+    #
+    #         serializer.save()
+    #
+    #         message.append('Se ha añadido la especie ' + row['ESPECIE'])
+    #
+    #     return HttpResponse(message, status=HTTP_201_CREATED)
+
+    def __init__(self, request):
+        self.request = request
+        self.message = []
+        self.fields_species = {
+            "group": "GRUPO",
+            "sp_code": "ESP",
+            "sp_name": "ESPECIE",
+            "spanish_name": "NOMBREE",
+            "a_param": "A",
+            "b_param": "B",
+            "l_infinity": "LINF",
+            "k": "K",
+            "t_zero": "T0",
+            "unit": "MED",
+            "increment": "INCREM",
+            "trophic_group": "GT",
+            "APHIA": "APHIA",
+        }
+
+
+    def get_file(self, file_key):
+        """
+        Get file from request in pandas dataframe format
+        :param file_key: Key of the request to get
+        :return: Pandas dataframe with the content of the file
+        """
+        new_file = self.request.FILES[file_key]
+        return pd.read_csv(new_file, sep=";", decimal=",")
+
+    def format_species_table(self, file):
+        species_df = file
+
+        # select variables
+        species_df = species_df[list(self.fields_species.values())]
+
+        # change variable names
+        species_df.columns = self.fields_species.keys()
+
+        return species_df
+
+    def import_species_csv(self):
+        """
+        Import csv file with species data.
+        If the species_sp table is already filled, overwrite it.
+        :return: HttpResponse
+        """
+
+        species_file = self.get_file("species")
+
+        # Create your engine.
+        engine = create_engine('sqlite:///db.sqlite3', echo=True)
+
+        # species
+        species_table = self.format_species_table(species_file)
+        species_table.to_sql("species_sp", con=engine,
+                             if_exists="replace",
+                             # if_exists="append",
+                             index_label="id")
+
+        return HttpResponse(self.message, status=HTTP_201_CREATED)

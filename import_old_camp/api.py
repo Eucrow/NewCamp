@@ -1,7 +1,7 @@
 from rest_framework.parsers import MultiPartParser
 from rest_framework.views import APIView
 
-from import_old_camp.views import OldCampImport
+from import_old_camp.views import OldCampImport, SpeciesImport
 
 
 class ImportOldCampAPI(APIView, OldCampImport):
@@ -19,3 +19,9 @@ class ImportOldCampAPIHydrography(APIView, OldCampImport):
     def put(self, request):
         return self.importHydrography()
 
+
+class SpeciesImportAPI(APIView, OldCampImport):
+    parser_classes = (MultiPartParser,)
+
+    def put(self, request):
+        return self.importSpecies()

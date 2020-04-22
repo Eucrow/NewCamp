@@ -18,7 +18,7 @@ from django.contrib import admin
 
 from djgeojson.views import GeoJSONLayerView
 
-from species.api import SpeciesListAPI, SpAPI, SpeciesImportAPI
+from species.api import SpeciesListAPI, SpAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
 from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI
@@ -28,7 +28,7 @@ from hauls.api import HaulRetrieveAPI, HaulListAPI, HaulGEOJsonAPI, HaulListCsvA
 # from faunas.api import FaunasImportAPI
 # from catches.api import CatchesImportAPI
 # from samples.api import LengthsImportAPI, SampledWeightsImportAPI
-from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography
+from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
 urlpatterns = [
     re_path(r'^admin/', admin.site.urls),
