@@ -13,5 +13,5 @@ class Length(models.Model):
 
 class SampledWeight(models.Model):
     catch = models.ForeignKey('catches.Catch', on_delete=models.CASCADE,)
-    category = models.ForeignKey('species.Category', on_delete=models.CASCADE,)
+    # category = models.ForeignKey('species.Category', on_delete=models.CASCADE,)
     sampled_weight = models.IntegerField()
