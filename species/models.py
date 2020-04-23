@@ -27,8 +27,9 @@ class Sp(models.Model):
 
 
 class Category(models.Model):
-    sp = models.ForeignKey(Sp, on_delete=models.CASCADE,)
-    category_name = models.CharField(max_length=50, default="1")
+
+    sp = models.ForeignKey('species.Sp', on_delete=models.CASCADE,)
+    category_name = models.CharField(max_length=50)
 
     class Meta:
         unique_together = ('sp', 'category_name')
