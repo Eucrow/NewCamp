@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'hauls',
     'rest_framework',
     'species',
-    'faunas',
     'import_export',
     'stratifications',
     'strata',

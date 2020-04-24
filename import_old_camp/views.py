@@ -3,7 +3,6 @@ import csv
 import io
 
 import pandas as pd
-from django.core.exceptions import ObjectDoesNotExist
 
 from sqlalchemy import create_engine
 
@@ -15,24 +14,16 @@ from datetime import datetime
 from rest_framework.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 
 from catches.models import Catch
-from catches.serializers import CatchesSerializer
 from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 from hauls.serializers import ImportHydrographyesSerializer
 from newcamp.apps import convert_comma_to_dot, empty
-from newcamp.settings import BASE_DIR
 from samples.serializers import LengthsSerializer, SampledWeightsSerializer
-from species.apps import categoryExists
-from species.apps import specieExists
 from species.models import Sp, Category
 from stations.models import Station
-from stations.apps import stationExists
 from strata.models import Stratum
 from stratifications.models import Stratification
-from surveys.utils import survey_exists
 from surveys.models import Survey
 from samplers.models import Sampler
-from faunas.models import Fauna
-from faunas.serializers import FaunaSerializer
 from samples.models import Length, SampledWeight
 from hauls.utils import haul_exists, get_survey_name, get_sampler_object_and_create
 

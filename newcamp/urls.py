@@ -25,7 +25,6 @@ from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, S
 from hauls.api import HaulRetrieveAPI, HaulListAPI, HaulGEOJsonAPI, HaulListCsvApi
 # from hauls.api import HaulsImportAPI,
 # from hauls.models import Haul
-# from faunas.api import FaunasImportAPI
 # from catches.api import CatchesImportAPI
 # from samples.api import LengthsImportAPI, SampledWeightsImportAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
@@ -61,7 +60,6 @@ urlpatterns = [
     re_path(r'^api/1.0/hauls/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListAPI.as_view(), name="get_hauls_api"),
     re_path(r'^api/1.0/hauls/csv/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListCsvApi.as_view(), name="get_hauls_api_csv"),
 
-    # FaunasAPI URLs
 
     # Catches API URLS
 
