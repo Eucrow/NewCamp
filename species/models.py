@@ -4,6 +4,7 @@ from species.validators import group_validator
 
 
 class Sp(models.Model):
+    id = models.IntegerField(primary_key=True)
     group = models.IntegerField(validators=[group_validator], null=True, blank=True)
     sp_code = models.IntegerField(null=True, blank=True)
     sp_name = models.CharField(max_length=50, null=True, blank=True)

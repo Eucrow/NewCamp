@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'hauls',
     'rest_framework',
     'species',
-    'import_export',
+    # 'import_export',
     'stratifications',
     'strata',
     'stations',
