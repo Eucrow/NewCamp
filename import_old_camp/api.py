@@ -9,7 +9,7 @@ class ImportOldCampAPI(APIView, OldCampImport):
     parser_classes = (MultiPartParser,)
 
     def put(self, request):
-        return self.importComplete()
+        return self.import_complete()
 
 
 class ImportOldCampAPIHydrography(APIView, OldCampImport):
@@ -28,5 +28,5 @@ class SpeciesImportAPI(APIView, OldCampImport):
         if 'species' not in request.data:
             raise ParseError("Empty Content")
 
-        return self.importSpecies()
+        return self.import_species()
 
