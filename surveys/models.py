@@ -12,6 +12,6 @@ class Survey(models.Model):
     hauls_duration = models.IntegerField(null=True, blank=True)
     # ew = models.CharField(max_length=2, null=True, blank=True)
     # ns = models.CharField(max_length=2, null=True, blank=True)
-    area_sampled = models.CharField(max_length=2, null=True, blank=True)
+    # area_sampled = models.CharField(max_length=2, null=True, blank=True)
     unit_sample = models.IntegerField(null=True, blank=True)
     comment = models.CharField(max_length=1000, null=True, blank=True)

@@ -379,9 +379,6 @@ class SurveysImport:
             tmp.origin_x = convert_comma_to_dot(row['OCUX'])
             tmp.origin_y = convert_comma_to_dot(row['OCUY'])
             tmp.ship = row['BARCO']
-            tmp.hauls_duration = row['DURLAN']
-            tmp.ew = row['ESTOES']
-            tmp.ns = row['NORSUR']
             tmp.area_sampled = row['AREBAR']
             tmp.unit_sample = row['UNISUP']
 
