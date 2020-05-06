@@ -4,12 +4,14 @@ import io
 
 import pandas as pd
 
+import re
+
 from sqlalchemy import create_engine
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
-from datetime import datetime
+from datetime import datetime, date
 
 from rest_framework.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 
@@ -49,6 +51,21 @@ def convert_position_camp_to_decimal(value_camp):
     decimal = degree + minute
     decimal = round(decimal, 4)
     return decimal
+
+
+def fix_year_date(d):
+    """
+    In case of a date have four digits in year, remove century digits to avoid
+    save data as 1900 years. For example, convert 1/1/1919 to 1/1/19.
+    :param d: date to fix as string
+    :return: date fixed as string
+    """
+
+    if re.search(r'\/.{4}$', d):
+        r = d[:len(d) - 4] + d[len(d) - 2:len(d)]
+        return r
+    else:
+        return d
 
 
 def species_exists(file):
@@ -381,6 +398,8 @@ class SurveysImport:
             tmp.ship = row['BARCO']
             tmp.area_sampled = row['AREBAR']
             tmp.unit_sample = row['UNISUP']
+            tmp.start_date = datetime.strptime(fix_year_date(row['COMI']), '%d/%m/%y').date()
+            tmp.end_date = datetime.strptime(fix_year_date(row['FINA']), '%d/%m/%y').date()
 
             tmp.save()
 
