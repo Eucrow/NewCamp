@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  re_path(r'^blog/', include('blog.urls'))
 """
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from django.contrib import admin
 
 from djgeojson.views import GeoJSONLayerView
@@ -69,5 +69,8 @@ urlpatterns = [
     # Import Data
     re_path(r'^api/1.0/import_hydrography$', ImportOldCampAPIHydrography.as_view(), name="old_camp_import_hydrography"),
     re_path(r'^api/1.0/import$', ImportOldCampAPI.as_view(), name="old_camp_import"),
+
+    # Frontend
+    path('', include('frontend.urls')),
 
 ]

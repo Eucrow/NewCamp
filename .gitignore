@@ -12,3 +12,9 @@
 /dist
 
 /frontend/node_modules
+
+npm-debug.log
+
+*/.vscode/*
+/.vscode/*
+
