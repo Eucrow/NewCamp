@@ -7,5 +7,8 @@
 *.csv
 *.sqlite3
 */migrations/*
+
 /built
 /dist
+
+/frontend/node_modules
