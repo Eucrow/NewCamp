@@ -21,7 +21,8 @@ from djgeojson.views import GeoJSONLayerView
 from species.api import SpeciesListAPI, SpAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
-from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI
+from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
+    SurveysList
 from hauls.api import HaulRetrieveAPI, HaulListAPI, HaulGEOJsonAPI, HaulListCsvApi
 # from hauls.api import HaulsImportAPI,
 # from hauls.models import Haul
@@ -53,6 +54,7 @@ urlpatterns = [
     re_path(r'^api/1.0/surveys/csv/(?P<acronym>[N,D]{1}[0-9]{2})$', SurveyDetailCsvAPI.as_view(),
             name="get_survey_api_csv"),
     re_path(r'^api/1.0/surveys/csv/all', SurveysListCsvAPI.as_view(), name="get_survey_api_csv"),
+    re_path(r'^api/1.0/surveys/$', SurveysList.as_view(), name="get_surveys_api"),
 
     # Hauls API URLs
     re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$', HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
