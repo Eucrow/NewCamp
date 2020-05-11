@@ -1,52 +1,22 @@
-import React, { Component } from "react";
-import { render } from "react-dom";
+import React from "react";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      loaded: false,
-      placeholder: "Loading"
-    };
-  }
+import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
-  componentDidMount() {
-    fetch("api/1.0/species")
-      .then(response => {
-        if (response.status > 400) {
-          return this.setState(() => {
-            return { placeholder: "Something went wrong!" };
-          });
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.setState(() => {
-          return {
-            data,
-            loaded: true
-          };
-        });
-      });
-  }
+import { Home, Survey } from './components';
 
-  render() {
-    return (
-      <ul>
-        {this.state.data.map(species => {
-          return (
-            <li key={species.id}>
-              {species.sp_name} - {species.spanish_name}
-            </li>
-          );
-        })}
-      </ul>
-    );
-  }
+function App() {
+  return (
+    <div className="App">
+      <Router>
+        <Navigation />
+        <Switch>
+          <Route path="/" exact component={() => <Home />} />
+          <Route path="/surveys" exact component={() => <Survey />} />
+        </Switch>
+        <Footer />
+      </Router>
+    </div>
+  );
 }
 
 export default App;
-
-const container = document.getElementById("app");
-render(<App />, container);
