@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { render } from "react-dom";
 
-class App extends Component {
+class Survey extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -46,7 +45,4 @@ class App extends Component {
   }
 }
 
-export default App;
-
-const container = document.getElementById("app");
-render(<App />, container);
+export default Survey;
