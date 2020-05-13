@@ -8,15 +8,14 @@
 *.sqlite3
 */migrations/*
 
-/built
-/dist
-
 /frontend/node_modules
 /frontend/dist
 /frontend/static
 
+# npm
 npm-debug.log
 
+# visual studio code
 */.vscode/*
 /.vscode
 
