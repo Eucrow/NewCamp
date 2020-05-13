@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  re_path(r'^blog/', include('blog.urls'))
 """
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from django.contrib import admin
 
 from djgeojson.views import GeoJSONLayerView
@@ -21,7 +21,8 @@ from djgeojson.views import GeoJSONLayerView
 from species.api import SpeciesListAPI, SpAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
-from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI
+from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
+    SurveysList
 from hauls.api import HaulRetrieveAPI, HaulListAPI, HaulGEOJsonAPI, HaulListCsvApi
 # from hauls.api import HaulsImportAPI,
 # from hauls.models import Haul
@@ -53,6 +54,7 @@ urlpatterns = [
     re_path(r'^api/1.0/surveys/csv/(?P<acronym>[N,D]{1}[0-9]{2})$', SurveyDetailCsvAPI.as_view(),
             name="get_survey_api_csv"),
     re_path(r'^api/1.0/surveys/csv/all', SurveysListCsvAPI.as_view(), name="get_survey_api_csv"),
+    re_path(r'^api/1.0/surveys/$', SurveysList.as_view(), name="get_surveys_api"),
 
     # Hauls API URLs
     re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$', HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
@@ -69,5 +71,8 @@ urlpatterns = [
     # Import Data
     re_path(r'^api/1.0/import_hydrography$', ImportOldCampAPIHydrography.as_view(), name="old_camp_import_hydrography"),
     re_path(r'^api/1.0/import$', ImportOldCampAPI.as_view(), name="old_camp_import"),
+
+    # Frontend
+    path('', include('frontend.urls')),
 
 ]

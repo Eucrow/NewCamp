@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'samples',
     'import_old_camp',
     'rest_framework_csv',
+    'frontend',
 ]
 
 MIDDLEWARE = [

@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from rest_framework.views import APIView
@@ -62,6 +63,13 @@ class SurveysListCsvAPI(APIView):
         response['Content-Disposition'] = 'attachment; filename="all_surveys.csv"'
 
         return response
+
+class SurveysList(ListAPIView):
+    """
+    Endpoint of list of surveys
+    """
+    queryset = Survey.objects.all()
+    serializer_class = SurveySerializer
 
 
 class SurveyRemoveAPI(APIView):
