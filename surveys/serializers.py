@@ -31,3 +31,10 @@ class SurveySerializer(serializers.ModelSerializer):
         model = Survey
         fields = '__all__'
         depth = 1
+
+class SurveyAcronymsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Survey
+        fields = ['description',]
+        # depth = 1

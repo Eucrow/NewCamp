@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework_csv import renderers as r
 
 from surveys.models import Survey
-from surveys.serializers import SurveySerializer
+from surveys.serializers import SurveySerializer, SurveyAcronymsSerializer
 from import_old_camp.views import SurveysImport
 
 
@@ -70,6 +70,13 @@ class SurveysList(ListAPIView):
     """
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
+
+class SurveysAcronymList(ListAPIView):
+    """
+    Endpoint of list of acronyms of all surveys.
+    """
+    queryset = Survey.objects.only("acronym")
+    serializer_class = SurveyAcronymsSerializer
 
 
 class SurveyRemoveAPI(APIView):
