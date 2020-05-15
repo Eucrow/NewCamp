@@ -3,6 +3,8 @@ import "./index.css";
 
 import {BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+import ComponentsSurveys from "./components/surveys/Surveys.js"
+
 export default function App() {
   return (
     <Router>
@@ -19,8 +21,9 @@ export default function App() {
           </ul>
         </nav>
 
+
       <Route path="/" exact component={Home} />
-      <Route path="/Surveys" component={Surveys} />
+      <Route path="/Surveys" component={ComponentsSurveys} />
       <Route path="/Stations" component={Stations} />
       <Route path="/Hauls" component={Hauls} />
       <Route path="/Weights" component={Weights} />
@@ -40,12 +43,12 @@ const Home = () => (
   </Fragment>
   );
 // Surveys Page
-const Surveys = () => (
-  <Fragment>
-    <h1>Surveys</h1>
-    <FakeText />
-  </Fragment>
-  );
+// const Surveys = () => (
+//   <Fragment>
+//     <h1>Surveys</h1>
+//     <FakeText />
+//   </Fragment>
+//   );
 // Stations Page
 const Stations = () => (
   <Fragment>
