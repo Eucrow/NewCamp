@@ -9,23 +9,37 @@ export default function App() {
       <main>
         <nav>
           <ul>
+            <li><Link to="/">Home</Link></li>
             <li><Link to="/Surveys">Surveys</Link></li>
             <li><Link to="/Stations">Stations</Link></li>
             <li><Link to="/Hauls">Hauls</Link></li>
+            <li><Link to="/Weights">Weights</Link></li>
+            <li><Link to="/Samples">Samples</Link></li>
             <li><Link to="/Species">Species</Link></li>
           </ul>
-          </nav>
+        </nav>
 
+      <Route path="/" exact component={Home} />
       <Route path="/Surveys" component={Surveys} />
       <Route path="/Stations" component={Stations} />
       <Route path="/Hauls" component={Hauls} />
+      <Route path="/Weights" component={Weights} />
+      <Route path="/Samples" component={Samples} />
       <Route path="/Species" component={Species} />
 
       </main>
     </Router>
   );
 }
+
 // Home Page
+const Home = () => (
+  <Fragment>
+    <h1>Home</h1>
+    <FakeText />
+  </Fragment>
+  );
+// Surveys Page
 const Surveys = () => (
   <Fragment>
     <h1>Surveys</h1>
@@ -43,6 +57,20 @@ const Stations = () => (
 const Hauls = () => (
   <Fragment>
     <h1>Hauls</h1>
+    <FakeText />
+  </Fragment>
+  );
+// Weights Page
+const Weights = () => (
+  <Fragment>
+    <h1>Weights</h1>
+    <FakeText />
+  </Fragment>
+  );
+// Samples Page
+const Samples = () => (
+  <Fragment>
+    <h1>Samples</h1>
     <FakeText />
   </Fragment>
   );
