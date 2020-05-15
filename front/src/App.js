@@ -4,6 +4,7 @@ import "./index.css";
 import {BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import ComponentsSurveys from "./components/surveys/Surveys.js"
+import ComponentsSurveyDetails from "./components/surveyDetails/SurveyDetails.js"
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
 
       <Route path="/" exact component={Home} />
       <Route path="/Surveys" component={ComponentsSurveys} />
+      <Route path="/Survey/:survey_id" component={ComponentsSurveyDetails} />
       <Route path="/Stations" component={Stations} />
       <Route path="/Hauls" component={Hauls} />
       <Route path="/Weights" component={Weights} />
