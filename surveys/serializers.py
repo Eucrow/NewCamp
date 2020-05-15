@@ -36,5 +36,5 @@ class SurveyAcronymsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Survey
-        fields = ['description',]
+        fields = ['id', 'description',]
         # depth = 1
