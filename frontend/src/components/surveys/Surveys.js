@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import SurveysOptions from "./options/Options.js"
 
-class Survey extends Component {
+class Surveys extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,7 +12,7 @@ class Survey extends Component {
   }
 
   componentDidMount() {
-    fetch("api/1.0/surveys")
+    fetch("http://127.0.0.1:8000/api/1.0/surveys")
       .then(response => {
         if (response.status > 400) {
           return this.setState(() => {
@@ -36,7 +37,7 @@ class Survey extends Component {
         {this.state.data.map(surveys => {
           return (
             <li key={surveys.id}>
-              {surveys.acronym} - {surveys.description} - {surveys.start_date}- {surveys.end_date}
+              {surveys.description} <SurveysOptions survey_id={surveys.id} />
             </li>
           );
         })}
@@ -45,4 +46,4 @@ class Survey extends Component {
   }
 }
 
-export default Survey;
+export default Surveys;
