@@ -4,6 +4,7 @@ class componentsSurveyDetails extends Component {
     /**
      * 
      * @param {numeric} props.survey_id
+     * @param {st}
      */
     constructor(props) {
         super(props);

@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Survey(models.Model):
+    stratification = models.ForeignKey('stratifications.Stratification', on_delete=models.PROTECT,)
     acronym = models.CharField(unique=True, max_length=3, null=True, blank=True)  # CLAV
     description = models.CharField(max_length=50, null=True, blank=True)  # IDENT
     start_date = models.DateField(null=True, blank=True) #COMI
