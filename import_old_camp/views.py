@@ -367,6 +367,7 @@ class SurveysImport:
         # depth 2"
         self.depth_col_names = ["A", "B", "C", "D", "E"]
         self.depths_names = ["70-120", "120-200", "200-500", "without depth 1", "without depth 2"]
+        self.stratification_id = Stratification.objects.get(stratification="sector-profundidad").id
 
     def import_surveys_csv(self):
         """
@@ -387,31 +388,23 @@ class SurveysImport:
                     '<p>The survey ' + str(row['CLAV']) + ' already exists in newCamp.</p>',
                     status=300)
 
-            tmp = Survey.objects.create()
 
-            tmp.acronym = row['CLAV']
-            tmp.description = row['IDENT']
-            tmp.width_x = row['CUX']
-            tmp.width_y = row['CUY']
-            tmp.origin_x = convert_comma_to_dot(row['OCUX'])
-            tmp.origin_y = convert_comma_to_dot(row['OCUY'])
-            tmp.ship = row['BARCO']
-            tmp.area_sampled = row['AREBAR']
-            tmp.unit_sample = row['UNISUP']
-            tmp.start_date = datetime.strptime(fix_year_date(row['COMI']), '%d/%m/%y').date()
-            tmp.end_date = datetime.strptime(fix_year_date(row['FINA']), '%d/%m/%y').date()
 
-            tmp.save()
-
-            survey_object = Survey.objects.get(acronym=row['CLAV'])
+            # survey_object = Survey.objects.get(acronym=row['CLAV'])
 
             # add stratification data
-            stratification = Stratification()
-            stratification.survey_id = survey_object.id
-            stratification.stratification = "sector-profundidad"
-            stratification.comment = "<p>In Demersales surveys, the stratification is a combination of sector and " \
+            # stratification = Stratification()
+            # # stratification.survey_id = survey_object.id
+            # stratification.stratification = "sector-profundidad"
+            # stratification.comment = "<p>In Demersales surveys, the stratification is a combination of sector and " \
+            #                          "depth.</p> "
+            # stratification.save()
+
+            stratification_object, created = Stratification.objects.get_or_create(
+                stratification="sector-profundidad",
+                comment="<p>In Demersales surveys, the stratification is a combination of sector and " \
                                      "depth.</p> "
-            stratification.save()
+            )
 
             # add stratum data
             for s in self.sectors_col_names:
@@ -428,21 +421,44 @@ class SurveysImport:
 
                     # some depth-sector doesn't have info (columns C1D, C1E...)
                     if not empty(area):
-                        strata = Stratum()
-                        strata.survey = survey_object
-                        strata.stratification = Stratification.objects.get(survey=survey_object,
-                                                                           stratification="sector-profundidad")
-                        strata.area = row[area_col]
-
-                        strata.stratum = name_stratification
-
-                        strata.comment = "<p>In Demersales surveys, the stratification is a combination of sector and" \
-                                         " depth.</p>"
-
-                        strata.save()
+                        # strata = Stratum()
+                        # # strata.survey = survey_object
+                        # strata.stratification = Stratification.objects.get(stratification="sector-profundidad")
+                        # strata.area = row[area_col]
+                        #
+                        # strata.stratum = name_stratification
+                        #
+                        # strata.comment = "<p>In Demersales surveys, the stratification is a combination of sector and" \
+                        #                  " depth.</p>"
+                        #
+                        # strata.save()
+                        stratum_object, created = Stratum.objects.get_or_create(
+                            stratum=name_stratification,
+                            area=row[area_col],
+                            comment="<p>In Demersales surveys, the stratification is a combination of sector and " \
+                                     "depth.</p> ",
+                            stratification_id=self.stratification_id
+                        )
 
                     else:
                         message.append("<p>There aren't areas of stratification " + area_col + ".</p>")
+
+            # tmp = Survey.objects.create()
+            tmp = Survey()
+            tmp.acronym = row['CLAV']
+            tmp.description = row['IDENT']
+            tmp.width_x = row['CUX']
+            tmp.width_y = row['CUY']
+            tmp.origin_x = convert_comma_to_dot(row['OCUX'])
+            tmp.origin_y = convert_comma_to_dot(row['OCUY'])
+            tmp.ship = row['BARCO']
+            tmp.area_sampled = row['AREBAR']
+            tmp.unit_sample = row['UNISUP']
+            tmp.start_date = datetime.strptime(fix_year_date(row['COMI']), '%d/%m/%y').date()
+            tmp.end_date = datetime.strptime(fix_year_date(row['FINA']), '%d/%m/%y').date()
+            tmp.stratification_id = self.stratification_id
+
+            tmp.save()
 
             surveys_added.append(row['CLAV'])
 
@@ -464,7 +480,7 @@ class HaulsImport:
         self.survey_name = get_survey_name(self.request.FILES['lance'].name)
         self.survey_object = Survey.objects.get(acronym=self.survey_name)
         self.sampler_object = get_sampler_object_and_create(sampler_name="ARRASTRE")
-        self.stratification_object = Stratification.objects.get(survey=self.survey_object)
+        self.stratification_object = Stratification.objects.get(stratification="sector-profundidad")
         self.fields_haul = {
             "haul": "LANCE",
             "gear": "ARTE",
@@ -526,7 +542,7 @@ class HaulsImport:
         # There are some stratum which does not have areas, so I don't save it stratum database
         if row["ESTRATO"] != "":
             stratum = self.get_stratum_name(row["SECTOR"], row["ESTRATO"])
-            stratum_object = Stratum.objects.get(survey=self.survey_object, stratum=stratum,
+            stratum_object = Stratum.objects.get(stratum=stratum,
                                                  stratification=self.stratification_object)
             return stratum_object.id
         else:
