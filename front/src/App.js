@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import ComponentsSurveys from "./components/surveys/Surveys.js"
 import ComponentsSurveyDetails from "./components/surveyDetails/SurveyDetails.js"
+import ComponentsSurveyEdit from "./components/surveyDetails/SurveyEdit.js"
 
 export default function App() {
   return (
@@ -24,8 +25,9 @@ export default function App() {
 
 
       <Route path="/" exact component={Home} />
-      <Route path="/Surveys" component={ComponentsSurveys} />
-      <Route path="/Survey/:survey_id" component={ComponentsSurveyDetails} />
+      <Route path="/Survey/Edit/:survey_id" exact component={ComponentsSurveyEdit} />
+      <Route path="/Survey/:survey_id" exact component={ComponentsSurveyDetails} />
+      <Route path="/Surveys" exact component={ComponentsSurveys} />
       <Route path="/Stations" component={Stations} />
       <Route path="/Hauls" component={Hauls} />
       <Route path="/Weights" component={Weights} />
