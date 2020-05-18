@@ -34,13 +34,7 @@ class HaulSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['survey', 'station', 'haul', 'gear', 'valid', 'shooting_latitude', 'shooting_longitude',
-                  'shooting_depth', 'shooting_date_time', 'hauling_latitude', 'hauling_longitude', 'hauling_depth',
-                  'hauling_date_time', 'bottom_date_time', 'bottom_latitude', 'bottom_longitude', 'bottom_depth',
-                  'velocity', 'stratum', 'cable', 'sweep', 'otter_boards_distance', 'horizontal_aperture',
-                  'vertical_aperture', 'track', 'date', 'grid', 'course', 'wind_direction', 'wind_velocity',
-                  'sea_state', 'ESTN', 'comment']
-        # in old camp, there is a field 'sector' which is not stored in newCamp
+        fields = ['survey', 'station', 'stratum', 'haul', 'gear', 'valid', ]
 
 
 class HaulGeoJSONSerializer(serializers.ModelSerializer):

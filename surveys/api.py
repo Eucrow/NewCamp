@@ -26,7 +26,8 @@ class SurveyDetailAPI(APIView):
     """
 
     def get(self, request, pk):
-        survey = get_object_or_404(Survey, pk=pk)
+        # survey = get_object_or_404(Survey, pk=pk)
+        survey = Survey.objects.get(pk=pk).stratification_set()
         serializer = SurveySerializer(survey)
 
         return Response(serializer.data)
