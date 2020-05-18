@@ -3,6 +3,10 @@ import React, { Component } from "react";
 import ComponentsSurveysOptions from "./options/Options.js";
 
 class ComponentsSurveys extends Component {
+	/**
+	 * List of surveys
+	 * @param {*} props 
+	 */
     constructor(props) {
         super(props);
         this.state = {
@@ -36,10 +40,10 @@ class ComponentsSurveys extends Component {
 	render() {
 		return (
 			<ul>
-				{this.state.data.map(surveys => {
+				{this.state.data.map(survey => {
 					return(
-						<li key={surveys.id}>
-							{surveys.description} <ComponentsSurveysOptions survey_id={surveys.id} />
+						<li key={survey.id}>
+							{survey.description} <ComponentsSurveysOptions survey_id={survey.id} />
 						</li>
 					)
 				})}
