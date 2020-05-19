@@ -405,8 +405,9 @@ class SurveysImport:
             tmp.ship = row['BARCO']
             tmp.area_sampled = row['AREBAR']
             tmp.unit_sample = row['UNISUP']
-            tmp.start_date = datetime.strptime(fix_year_date(row['COMI']), '%d/%m/%y').date()
-            tmp.end_date = datetime.strptime(fix_year_date(row['FINA']), '%d/%m/%y').date()
+            if tmp.start_date != None: tmp.start_date = datetime.strptime(fix_year_date(row['COMI']), '%d/%m/%y').date()
+            # tmp.start_date = datetime.strptime(fix_year_date(row['COMI']), '%d/%m/%y').date()
+            if tmp.start_date != None: tmp.end_date = datetime.strptime(fix_year_date(row['FINA']), '%d/%m/%y').date()
             tmp.stratification_id = Stratification.objects.get(stratification="sector-profundidad").id
 
             tmp.save()
