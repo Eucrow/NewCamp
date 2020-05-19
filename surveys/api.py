@@ -9,6 +9,8 @@ from rest_framework_csv import renderers as r
 from surveys.models import Survey
 from surveys.serializers import SurveySerializer, SurveyAcronymsSerializer
 from import_old_camp.views import SurveysImport
+from stratifications.models import Stratification
+from strata.models import Stratum
 
 
 class SurveysImportAPI(APIView, SurveysImport):
@@ -26,8 +28,9 @@ class SurveyDetailAPI(APIView):
     """
 
     def get(self, request, pk):
-        # survey = get_object_or_404(Survey, pk=pk)
-        survey = Survey.objects.get(pk=pk).stratification_set()
+
+        survey = get_object_or_404(Survey.objects.select_related('stratification'), pk=pk)
+
         serializer = SurveySerializer(survey)
 
         return Response(serializer.data)
