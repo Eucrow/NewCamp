@@ -430,17 +430,7 @@ class SurveysImport:
 
                     # some depth-sector doesn't have info (columns C1D, C1E...)
                     if not empty(area):
-                        # strata = Stratum()
-                        # # strata.survey = survey_object
-                        # strata.stratification = Stratification.objects.get(stratification="sector-profundidad")
-                        # strata.area = row[area_col]
-                        #
-                        # strata.stratum = name_stratification
-                        #
-                        # strata.comment = "<p>In Demersales surveys, the stratification is a combination of sector and" \
-                        #                  " depth.</p>"
-                        #
-                        # strata.save()
+
                         stratum_object, created = Stratum.objects.get_or_create(
                             stratum=name_stratification,
                             area=row[area_col],
