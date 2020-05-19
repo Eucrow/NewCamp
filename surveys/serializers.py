@@ -1,10 +1,7 @@
 from rest_framework import serializers
-from rest_framework.relations import PrimaryKeyRelatedField
 
 from surveys.models import Survey
-from stations.models import Station
 
-from strata.serializers import StrataSerializer
 from stratifications.serializers import StratificationSerializer
 # from stations.serializers import StationSerializer
 
@@ -33,23 +30,15 @@ from stratifications.serializers import StratificationSerializer
 
 
 class SurveySerializer(serializers.ModelSerializer):
-    strata = StrataSerializer(many=True, read_only=True)
     stratification = StratificationSerializer()
-    # station = StationSerializer(many=True, read_only=True)
 
     class Meta:
         model = Survey
-        fields = ['id', 'acronym', 'description', 'ship', 'stratification', 'strata']
-        depth = 3
-
-
-
-
-
+        fields = ['id', 'acronym', 'description', 'start_date', 'end_date', 'width_x', 'width_y', 'origin_x',
+                  'origin_y', 'ship', 'hauls_duration', 'unit_sample', 'stratification']
 
 class SurveyAcronymsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Survey
         fields = ['id', 'description',]
-        # depth = 1

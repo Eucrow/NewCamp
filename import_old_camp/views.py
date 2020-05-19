@@ -407,7 +407,7 @@ class SurveysImport:
             tmp.unit_sample = row['UNISUP']
             if tmp.start_date != None: tmp.start_date = datetime.strptime(fix_year_date(row['COMI']), '%d/%m/%y').date()
             # tmp.start_date = datetime.strptime(fix_year_date(row['COMI']), '%d/%m/%y').date()
-            if tmp.start_date != None: tmp.end_date = datetime.strptime(fix_year_date(row['FINA']), '%d/%m/%y').date()
+            if tmp.end_date != None: tmp.end_date = datetime.strptime(fix_year_date(row['FINA']), '%d/%m/%y').date()
             tmp.stratification_id = Stratification.objects.get(stratification="sector-profundidad").id
 
             tmp.save()
