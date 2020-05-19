@@ -11,7 +11,7 @@ class Survey(models.Model):
     width_y = models.IntegerField(null=True, blank=True)  # CUY
     origin_x = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)  # OCUX
     origin_y = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)  # OCUY
-    ship = models.CharField(max_length=3, null=True, blank=True)
+    ship = models.CharField(max_length=4, null=True, blank=True)
     hauls_duration = models.IntegerField(null=True, blank=True)
     # ew = models.CharField(max_length=2, null=True, blank=True)
     # ns = models.CharField(max_length=2, null=True, blank=True)
