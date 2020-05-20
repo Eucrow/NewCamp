@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {% block title %} NewCamp {% endblock %}</title>
+</head>
+<body>
+    <nav>
+        {% block nav_sp %}{% endblock %}
+    </nav>
+    <hr>
+    <section>
+        {% block section %}
+            {% if species_list %}
+                <ul>
+                {% for sp in species_list %}
+                    <li>{{sp.sp_name}}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No species are available.</p>
+            {% endif %}
+        {% endblock %}
+    </section>
+    <hr>
+    <small>NewCamp</small>
+</body>
+</html>

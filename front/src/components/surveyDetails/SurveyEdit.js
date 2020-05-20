@@ -41,7 +41,7 @@ class componentsSurveyEdit extends Component {
 
         this.setState({
             formControls: {
-                // ...this.state.formControls,
+                ...this.state.formControls,
                 [name]: {
                 ...this.state.formControls[name],
                 value
