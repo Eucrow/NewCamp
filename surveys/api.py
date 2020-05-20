@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from rest_framework_csv import renderers as r
 
@@ -26,14 +27,19 @@ class SurveyDetailAPI(APIView):
     """
     Endpoint of Survey Detail API
     """
-
     def get(self, request, pk):
-
         survey = get_object_or_404(Survey.objects.select_related('stratification'), pk=pk)
-
         serializer = SurveySerializer(survey)
-
         return Response(serializer.data)
+
+    def put(self, request, pk):
+        survey = get_object_or_404(Survey, pk=pk)
+        serializer = SurveySerializer(survey, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class SurveyDetailCsvAPI(APIView):

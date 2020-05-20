@@ -28,12 +28,15 @@ class componentsSurveyDetails extends Component {
                 return response.json();
             })
             .then(data => {
+                
                 this.setState(() => {
                     return {
                         data,
                         loaded: true
                     };
                 });
+
+                // console.log(this.state.data.stratification.comment)
             });
     }
 
@@ -50,7 +53,15 @@ class componentsSurveyDetails extends Component {
                 <li>ship: {this.state.data.ship}</li>
                 <li>hauls_duration: {this.state.data.hauls_duration}</li>
                 <li>unit_sample: {this.state.data.unit_sample}</li>
-                <li>comment: {this.state.data.comment}</li>
+                <li>survey comment: {this.state.data.comment}</li>
+                <li>stratification_id: {this.state.data.stratification_id}</li>
+                {/* <li>{toString(this.state.data.stratification.comment)}</li> */}
+                {/* {this.state.data.stratification.map(home => <div>{home.stratification}</div>)} */}
+                {/* {this.state.data.stratification.map(function(strat){
+                    return <Fragment><li>strat.stratification</li>
+                            <li>strat.comment</li></Fragment>
+                })} */}
+
 			</ul>
         )
 	}
