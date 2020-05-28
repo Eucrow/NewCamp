@@ -13,15 +13,15 @@ class ComponentsSurveysOptions extends Component {
         this.state = { 
             data: []
          }
-        this.api_detail = "/Survey/" + this.props.survey_id;
-        this.api_edit = "/Survey/Edit/" + this.props.survey_id;
+        this.api = "/Survey/survey/" + this.props.survey_id;
+        // this.api_edit = "/Survey/Edit/" + this.props.survey_id;
     }
 
     render() { 
         return ( 
             <ul>
-                <li><Link to={this.api_detail}> detail </Link></li>
-                <li><Link to={this.api_edit}> edit </Link></li>
+                <li><Link to={{pathname: this.api, state: {isEdit: false }}}> detail </Link></li>
+                <li><Link to={{pathname: this.api, state: {isEdit: true }}}> edit </Link></li>
                 <li>remove</li>
                 <li>select</li>
             </ul>

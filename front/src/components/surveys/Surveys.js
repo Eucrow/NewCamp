@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import ComponentsSurveysOptions from "./options/Options.js";
+import ComponentsUiNewSurveyButton from "../ui/NewSurveyButton.js"
 
 class ComponentsSurveys extends Component {
 	/**
@@ -39,7 +40,11 @@ class ComponentsSurveys extends Component {
 	
 	render() {
 		return (
-			<ul>
+			<Fragment>
+
+			<div><ComponentsUiNewSurveyButton /></div>
+
+			<ul>		
 				{this.state.data.map(survey => {
 					return(
 						<li key={survey.id}>
@@ -48,6 +53,9 @@ class ComponentsSurveys extends Component {
 					)
 				})}
 			</ul>
+
+			</Fragment>
+			
 		)
 	}
 }

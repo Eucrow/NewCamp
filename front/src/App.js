@@ -3,36 +3,38 @@ import "./index.css";
 
 import {BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import ComponentsSurveys from "./components/surveys/Surveys.js"
-import ComponentsSurveyDetails from "./components/surveyDetails/SurveyDetails.js"
-import ComponentsSurveyEdit from "./components/surveyDetails/SurveyEdit.js"
+import ComponentsSurveys from "./components/surveys/Surveys.js";
+import ComponentsSurvey from "./components/surveyDetails/Survey.js";
+import ComponentsSurveyNew from "./components/surveyNew/SurveyNew.js";
 
 export default function App() {
   return (
     <Router>
       <main>
         <nav>
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/Surveys">Surveys</Link></li>
-            <li><Link to="/Stations">Stations</Link></li>
-            <li><Link to="/Hauls">Hauls</Link></li>
-            <li><Link to="/Weights">Weights</Link></li>
-            <li><Link to="/Samples">Samples</Link></li>
-            <li><Link to="/Species">Species</Link></li>
-          </ul>
-        </nav>
+            <Link to="/">Home</Link> - 
+            <Link to="/Surveys">Surveys</Link> - 
+            <Link to="/Strata">Strata</Link> - 
+            <Link to="/Stations">Stations</Link> - 
+            <Link to="/Hauls">Hauls</Link> - 
+            <Link to="/Weights">Weights</Link> - 
+            <Link to="/Samples">Samples</Link> - 
+            <Link to="/Masters">Species</Link>
+         </nav>
 
 
       <Route path="/" exact component={Home} />
-      <Route path="/Survey/Edit/:survey_id" exact component={ComponentsSurveyEdit} />
-      <Route path="/Survey/:survey_id" exact component={ComponentsSurveyDetails} />
+
+      <Route path="/Survey/new" exact component={ComponentsSurveyNew} />
+      <Route path="/Survey/survey/:survey_id" exact component={ComponentsSurvey} />
+      
       <Route path="/Surveys" exact component={ComponentsSurveys} />
+      
       <Route path="/Stations" component={Stations} />
       <Route path="/Hauls" component={Hauls} />
       <Route path="/Weights" component={Weights} />
       <Route path="/Samples" component={Samples} />
-      <Route path="/Species" component={Species} />
+      {/* <Route path="/Species" component={Species} /> */}
 
       </main>
     </Router>
