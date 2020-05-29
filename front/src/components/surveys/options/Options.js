@@ -14,7 +14,6 @@ class ComponentsSurveysOptions extends Component {
             data: []
          }
         this.api = "/Survey/survey/" + this.props.survey_id;
-        // this.api_edit = "/Survey/Edit/" + this.props.survey_id;
     }
 
     render() { 
