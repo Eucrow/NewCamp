@@ -99,3 +99,15 @@ class SurveyRemoveAPI(APIView):
         survey = get_object_or_404(Survey, pk=pk)
         survey.delete()
         return Response(status=status.HTTP_200_OK)
+
+class SurveyNewAPI(APIView):
+    """
+    Endpoint to add new Survey.
+    """
+    def post(self, request):
+        serializer = SurveySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(stratification_id=request.data["stratification_id"])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

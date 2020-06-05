@@ -6,4 +6,4 @@ class StratificationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Stratification
-        fields = ['stratification', 'comment']
+        fields = ['id', 'stratification', 'comment']

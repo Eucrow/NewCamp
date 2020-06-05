@@ -13,7 +13,7 @@ class SurveySerializer(serializers.ModelSerializer):
         # fields = ['id', 'acronym', 'description', 'start_date', 'end_date', 'width_x', 'width_y', 'origin_x',
         #           'origin_y', 'ship', 'hauls_duration', 'unit_sample', 'stratification']
         fields = ['id', 'acronym', 'description', 'start_date', 'end_date', 'width_x', 'width_y', 'origin_x',
-                  'origin_y', 'ship', 'hauls_duration', 'unit_sample', 'stratification_id']
+                  'origin_y', 'ship', 'hauls_duration', 'unit_sample']
 
 class SurveyAcronymsSerializer(serializers.ModelSerializer):
 

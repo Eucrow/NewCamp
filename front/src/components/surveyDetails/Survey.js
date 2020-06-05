@@ -13,7 +13,8 @@ class ComponentsSurvey extends Component {
             data: [],
             loaded: false,
             placeholder: "Loading",
-            isEdit: this.props.location.state.isEdit,
+            // isEdit: this.props.location.state.isEdit,
+            isEdit: false
         }
 
         this.api = "http://127.0.0.1:8000/api/1.0/surveys/" + this.props.match.params.survey_id
@@ -54,10 +55,9 @@ class ComponentsSurvey extends Component {
         .catch(error => console.log('Error'))
         
         event.preventDefault();
-      }
+    }
 
     componentDidMount() {
-
         fetch(this.api)
             .then(response => {
                 if(response.status > 400){

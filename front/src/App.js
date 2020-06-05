@@ -84,12 +84,12 @@ const Samples = () => (
   </Fragment>
   );
 // Species Page
-const Species = () => (
-  <Fragment>
-    <h1>Species</h1>
-    <FakeText />
-  </Fragment>
-  );
+// const Species = () => (
+//   <Fragment>
+//     <h1>Species</h1>
+//     <FakeText />
+//   </Fragment>
+//   );
 
 const FakeText = () => (
   <p>
