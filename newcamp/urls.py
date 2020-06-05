@@ -22,13 +22,12 @@ from species.api import SpeciesListAPI, SpAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
 from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
-    SurveysList, SurveysAcronymList
+    SurveysAcronymList, SurveyNewAPI
+from stratifications.api import StratificationsAPI
+from strata.api import StrataAPI
 from hauls.api import HaulRetrieveAPI, HaulListAPI, HaulGEOJsonAPI, HaulListCsvApi
-# from hauls.api import HaulsImportAPI,
-# from hauls.models import Haul
-# from catches.api import CatchesImportAPI
-# from samples.api import LengthsImportAPI, SampledWeightsImportAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
+
 
 urlpatterns = [
     re_path(r'^admin/', admin.site.urls),
@@ -56,6 +55,13 @@ urlpatterns = [
     re_path(r'^api/1.0/surveys/csv/all', SurveysListCsvAPI.as_view(), name="get_survey_api_csv"),
     # re_path(r'^api/1.0/surveys/$', SurveysList.as_view(), name="get_surveys_api"),
     re_path(r'^api/1.0/surveys/$', SurveysAcronymList.as_view(), name="get_surveys_api"),
+    re_path(r'api/1.0/surveys/new/$', SurveyNewAPI.as_view(), name="add_survey_api"),
+
+    # Stratification API URLS
+    re_path(r'^api/1.0/stratifications/$',StratificationsAPI.as_view(), name="get_stratifications_api"),
+
+    # Stratum API URLS
+    re_path(r'^api/1.0/strata/(?P<stratification_id>[0-9]+)$', StrataAPI.as_view(), name="get_strata_api"),
 
     # Hauls API URLs
     re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$', HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),

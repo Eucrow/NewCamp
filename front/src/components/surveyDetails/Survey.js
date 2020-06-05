@@ -55,14 +55,9 @@ class ComponentsSurvey extends Component {
         .catch(error => console.log('Error'))
         
         event.preventDefault();
-      }
+    }
 
     componentDidMount() {
-
-        // if(this.props.location.state.isEdit){
-        //     this.state.isEdit = this.props.location.state.isEdit
-        // }
-
         fetch(this.api)
             .then(response => {
                 if(response.status > 400){

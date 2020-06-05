@@ -1,12 +1,90 @@
 import React, { Component } from 'react';
+import NewStratumInput from '../ui/NewStratumInput.js';
 
-class ComponentsSurveyNew extends Component{
+class ComponentsSurveyNew extends Component {
 
-    render(){
-        return(
-            <form method = "POST" action = "http://127.0.0.1:8000/api/1.0/surveys/new">
-                <label htmlFor="id">id: </label>
-                <input type="text" id="id" name="id" />
+    constructor(props) {
+        super(props);
+        this.state = {
+            stratification: [],
+            loaded: false,
+            placeholder: "Loading",
+            stratum: [],
+            inputStratum: []
+        }
+
+        this.onNewStratumClick = this.onNewStratumClick.bind(this)
+
+        this.apiForm = "http://127.0.0.1:8000/api/1.0/surveys/new/"
+        this.apiStratifications = "http://127.0.0.1:8000/api/1.0/stratifications/"
+        this.apiStrata = "http://127.0.0.1:8000/api/1.0/strata"
+    }
+
+    onNewStratumClick(event) {
+        const inputStratum = this.state.inputStratum;
+        console.log(inputStratum);
+
+        this.setState({
+            inputStratum: inputStratum.concat(<NewStratumInput key={inputStratum.length} />)
+        })
+
+        event.preventDefault();
+    }
+
+    handleStrata(event) {
+        /**
+         * When the Add Strata button is clicked, get the strata from the api and show the input form.
+         */
+
+        // fetch(this.apiStrata)
+        // .then(response => {
+        //     if(response.status > 400){
+        //         return this.setState(() => {
+        //             return { placeholder: "Something went wrong!"}
+        //         });
+        //     }
+        //     return response.json();
+        // })
+        // .then(stratum => {
+        //     console.log(stratum)
+        //     this.setState(() => {
+        //         return {
+        //             stratum:stratum,
+        //             loaded: true
+        //         };
+        //     });
+        // });
+        // event.preventDefault();
+    }
+
+    componentDidMount() {
+        /**
+         * When the component is mounted, retrieve the posible stratifications and save in state.stratification
+         */
+        fetch(this.apiStratifications)
+            .then(response => {
+                if (response.status > 400) {
+                    return this.setState(() => {
+                        return { placeholder: "Something went wrong!" }
+                    });
+                }
+                return response.json();
+            })
+            .then(stratification => {
+                console.log(stratification)
+                this.setState(() => {
+                    return {
+                        stratification: stratification,
+                        loaded: true
+                    };
+                });
+            });
+    }
+
+    render() {
+        return (
+            <form method="POST" action={this.apiForm}>
+                
                 <label htmlFor="start_date">acronym: </label>
                 <input type="text" id="acronym" name="acronym" />
                 <label htmlFor="start_date">description: </label>
@@ -32,8 +110,21 @@ class ComponentsSurveyNew extends Component{
                 <label htmlFor="comment">comment: </label>
                 <input type="text" id="comment" name="comment" />
                 <label htmlFor="stratification_id">stratification_id: </label>
-                <input type="text" id="stratification_id" name="stratification_id" />
-                <input type="submit" value="Save Survey"/>
+
+                <select id="stratification_id" name="stratification_id">
+                    {this.state.stratification.map((st, idx) => {
+                        return (
+                            <option value={st.id} key={idx}>{st.stratification}</option>
+                        )
+                    })}
+                </select>
+
+                <input type="button" value="Add Strata" onClick={this.onNewStratumClick}/>
+
+                {this.state.inputStratum}
+
+                <input type="submit" value="Save Survey" />
+
             </form>
         )
     }
