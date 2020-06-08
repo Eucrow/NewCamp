@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ComponentsSurveys from "./components/surveys/Surveys.js";
 import ComponentsSurvey from "./components/surveyDetails/Survey.js";
 import ComponentsSurveyNew from "./components/surveyNew/SurveyNew.js";
+import ComponentsStations from "./components/stations/Stations.js";
 
 export default function App() {
   return (
@@ -30,7 +31,8 @@ export default function App() {
       
       <Route path="/Surveys" exact component={ComponentsSurveys} />
       
-      <Route path="/Stations" component={Stations} />
+      <Route path="/Stations" exact component={ComponentsStations} />
+
       <Route path="/Hauls" component={Hauls} />
       <Route path="/Weights" component={Weights} />
       <Route path="/Samples" component={Samples} />
