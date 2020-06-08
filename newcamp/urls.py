@@ -25,7 +25,7 @@ from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, S
     SurveysAcronymList, SurveyNewAPI
 from stratifications.api import StratificationsAPI
 from strata.api import StrataAPI
-from stations.api import StationsAPI
+from stations.api import StationsAPI, StationAPI
 from hauls.api import HaulRetrieveAPI, HaulListAPI, HaulGEOJsonAPI, HaulListCsvApi
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
@@ -66,6 +66,7 @@ urlpatterns = [
 
     # Stations API urls
     re_path(r'^api/1.0/stations/$', StationsAPI.as_view(), name="get_stations_api"),
+    re_path(r'^api/1.0/stations/(?P<station_id>[0-9]+)$', StationAPI.as_view(), name="get_station_api"),
 
     # Hauls API URLs
     re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$', HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
