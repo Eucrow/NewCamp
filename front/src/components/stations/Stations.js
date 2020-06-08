@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
 
+import ComponentsStationOptions from "./options/Options.js";
+
 class ComponentsStations extends Component {
 	/**
 	 * List of stations
@@ -47,7 +49,7 @@ class ComponentsStations extends Component {
 					return(
 						<li key={station.id}>
 							{/* {station.comment} <ComponentsSurveysOptions survey_id={survey.id} /> */}
-                            {station.station - station.comment}
+                            {station.station} - {station.comment} {<ComponentsStationOptions station_id={station.id} />}
 						</li>
 					)
 				})}

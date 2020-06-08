@@ -32,6 +32,7 @@ export default function App() {
       <Route path="/Surveys" exact component={ComponentsSurveys} />
       
       <Route path="/Stations" exact component={ComponentsStations} />
+      {/* <Route path="/Stations/station/station_id" exact component={ComponentsStation} /> */}
 
       <Route path="/Hauls" component={Hauls} />
       <Route path="/Weights" component={Weights} />
