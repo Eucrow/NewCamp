@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 
 import ComponentsStationOptions from "./options/Options.js";
+import ComponentsUiNewStationButton from "../ui/NewStationButton.js";
 
 class ComponentsStations extends Component {
 	/**
@@ -42,13 +43,12 @@ class ComponentsStations extends Component {
 		return (
 			<Fragment>
 
-			{/* <div><ComponentsUiNewSurveyButton /></div> */}
+			<div><ComponentsUiNewStationButton /></div>
 
 			<ul>		
 				{this.state.data.map(station => {
 					return(
 						<li key={station.id}>
-							{/* {station.comment} <ComponentsSurveysOptions survey_id={survey.id} /> */}
                             {station.station} - {station.comment} {<ComponentsStationOptions station_id={station.id} />}
 						</li>
 					)
