@@ -11,12 +11,25 @@ class ComponentsStations extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            stations: [],
             loaded: false,
             placeholder: "Loading"
         };
-        this.apiStations = "http://127.0.0.1:8000/api/1.0/stations/"
-    }
+		this.apiStations = "http://127.0.0.1:8000/api/1.0/stations/";
+		this.onDelete = this.onDelete.bind(this);
+	}
+	
+	onDelete(station_id){
+
+		// state, before delete anything
+		const currentStations = this.state.stations;
+
+		// Remove deleted item from state.
+		this.setState({
+			stations: currentStations.filter(station => station.id !== station_id),
+			});
+
+	}
 
     componentDidMount() {
 			fetch(this.apiStations)
@@ -28,10 +41,10 @@ class ComponentsStations extends Component {
 					}
 					return response.json();
 				})
-				.then(data => {
+				.then(stations => {
 					this.setState(() => {
 						return {
-							data,
+							stations,
 							loaded: true
 						};
 					});
@@ -46,10 +59,10 @@ class ComponentsStations extends Component {
 			<div><ComponentsUiNewStationButton /></div>
 
 			<ul>		
-				{this.state.data.map(station => {
+				{this.state.stations.map(station => {
 					return(
 						<li key={station.id}>
-                            {station.station} - {station.comment} {<ComponentsStationOptions station_id={station.id} />}
+                            {station.station} - {station.comment} {<ComponentsStationOptions station_id={station.id} onDelete={ this.onDelete }/>}
 						</li>
 					)
 				})}

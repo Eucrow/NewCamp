@@ -8,7 +8,7 @@ import ComponentsSurvey from "./components/surveyDetails/Survey.js";
 import ComponentsSurveyNew from "./components/surveyNew/SurveyNew.js";
 import ComponentsStations from "./components/stations/Stations.js";
 import ComponentsStationNew from "./components/stationNew/StationNew.js";
-import ComponentsStation from "./components/stationDetail/stationDetail.js";
+import ComponentsStation from "./components/stationDetail/station.js";
 
 export default function App() {
   return (
