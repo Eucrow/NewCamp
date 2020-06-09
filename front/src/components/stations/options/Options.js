@@ -12,7 +12,7 @@ class ComponentsStationOptions extends Component {
         this.state = { 
             data: []
          }
-        this.apiStation = "Station/station/" + this.props.station_id;
+        this.apiStation = "Stations/station/" + this.props.station_id;
     }
 
     render() { 

@@ -8,6 +8,7 @@ import ComponentsSurvey from "./components/surveyDetails/Survey.js";
 import ComponentsSurveyNew from "./components/surveyNew/SurveyNew.js";
 import ComponentsStations from "./components/stations/Stations.js";
 import ComponentsStationNew from "./components/stationNew/StationNew.js";
+import ComponentsStation from "./components/stationDetail/stationDetail.js";
 
 export default function App() {
   return (
@@ -34,7 +35,7 @@ export default function App() {
       
       <Route path="/Stations" exact component={ComponentsStations} />
       <Route path="/Stations/new" exact component={ComponentsStationNew} />
-      {/* <Route path="/Stations/station/station_id" exact component={ComponentsStation} /> */}
+      <Route path="/Stations/station/:station_id" exact component={ComponentsStation} />
 
       <Route path="/Hauls" component={Hauls} />
       <Route path="/Weights" component={Weights} />
