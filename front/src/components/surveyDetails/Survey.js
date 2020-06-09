@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 class ComponentsSurvey extends Component {
     /**
-     * 
+     * Survey component.
+     * Show survey to view or edit it.
      * @param {numeric} props.survey_id
      */
     
@@ -13,13 +14,9 @@ class ComponentsSurvey extends Component {
             data: [],
             loaded: false,
             placeholder: "Loading",
-            // isEdit: this.props.location.state.isEdit,
-            isEdit: false
-        }
-
+            isEdit: this.props.location.state.isEdit
+        };
         this.api = "http://127.0.0.1:8000/api/1.0/surveys/" + this.props.match.params.survey_id
-        
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
@@ -129,9 +126,9 @@ class ComponentsSurvey extends Component {
                     <li>origin_x: {this.state.data.origin_x}</li>
                     <li>origin_y: {this.state.data.origin_y}</li>
                     <li>ship: {this.state.data.ship}</li>
-                    {/* <li>hauls_duration: {this.state.data.hauls_duration}</li>
+                    <li>hauls_duration: {this.state.data.hauls_duration}</li>
                     <li>unit_sample: {this.state.data.unit_sample}</li>
-                    <li>survey comment: {this.state.data.comment}</li> */}
+                    <li>survey comment: {this.state.data.comment}</li>
                     {/* <li>stratification_id: {this.state.data.stratification_id}</li> */}
                     {/* <li>{toString(this.state.data.stratification.comment)}</li> */}
                     {/* {this.state.data.stratification.map(home => <div>{home.stratification}</div>)} */}

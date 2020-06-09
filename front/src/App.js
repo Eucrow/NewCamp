@@ -6,6 +6,9 @@ import {BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ComponentsSurveys from "./components/surveys/Surveys.js";
 import ComponentsSurvey from "./components/surveyDetails/Survey.js";
 import ComponentsSurveyNew from "./components/surveyNew/SurveyNew.js";
+import ComponentsStations from "./components/stations/Stations.js";
+import ComponentsStationNew from "./components/stationNew/StationNew.js";
+import ComponentsStation from "./components/stationDetail/station.js";
 
 export default function App() {
   return (
@@ -30,7 +33,10 @@ export default function App() {
       
       <Route path="/Surveys" exact component={ComponentsSurveys} />
       
-      <Route path="/Stations" component={Stations} />
+      <Route path="/Stations" exact component={ComponentsStations} />
+      <Route path="/Stations/new" exact component={ComponentsStationNew} />
+      <Route path="/Stations/station/:station_id" exact component={ComponentsStation} />
+
       <Route path="/Hauls" component={Hauls} />
       <Route path="/Weights" component={Weights} />
       <Route path="/Samples" component={Samples} />
@@ -56,12 +62,12 @@ const Home = () => (
 //   </Fragment>
 //   );
 // Stations Page
-const Stations = () => (
-  <Fragment>
-    <h1>Stations</h1>
-    <FakeText />
-  </Fragment>
-  );
+// const Stations = () => (
+//   <Fragment>
+//     <h1>Stations</h1>
+//     <FakeText />
+//   </Fragment>
+//   );
 // Hauls Page
 const Hauls = () => (
   <Fragment>
