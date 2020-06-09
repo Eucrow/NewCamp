@@ -68,6 +68,7 @@ urlpatterns = [
     re_path(r'^api/1.0/stations/$', StationsAPI.as_view(), name="get_stations_api"),
     re_path(r'^api/1.0/stations/(?P<station_id>[0-9]+)$', StationAPI.as_view(), name="get_update_station_api"),
     re_path(r'^api/1.0/stations/new/$', StationAPI.as_view(), name="add_survey_api"),
+    re_path(r'^api/1.0/stations/remove/(?P<station_id>[0-9]+)$', StationAPI.as_view(), name="remove_station_api"),
 
     # Hauls API URLs
     re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$', HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
