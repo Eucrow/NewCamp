@@ -15,7 +15,10 @@ class ComponentsStations extends Component {
             loaded: false,
             placeholder: "Loading"
         };
-		this.apiStations = "http://127.0.0.1:8000/api/1.0/stations/";
+		// this.apiStations = "http://127.0.0.1:8000/api/1.0/stations/";
+		// TODO: SELECT SURVEY!!!!// TODO: SELECT SURVEY!!!!
+		this.apiStationsHauls = "http://127.0.0.1:8000/api/1.0/stations/hauls/1";
+		// TODO: SELECT SURVEY!!!!// TODO: SELECT SURVEY!!!!
 		this.onDelete = this.onDelete.bind(this);
 	}
 	
@@ -32,7 +35,7 @@ class ComponentsStations extends Component {
 	}
 
     componentDidMount() {
-			fetch(this.apiStations)
+			fetch(this.apiStationsHauls)
 				.then(response => {
 					if(response.status > 400){
 						return this.setState(() => {
@@ -62,7 +65,17 @@ class ComponentsStations extends Component {
 				{this.state.stations.map(station => {
 					return(
 						<li key={station.id}>
-                            {station.station} - {station.comment} {<ComponentsStationOptions station_id={station.id} onDelete={ this.onDelete }/>}
+                            Station: {station.station} - Comments: {station.comment} - 
+							{<ComponentsStationOptions station_id={station.id} onDelete={ this.onDelete }/>}
+							<ul>
+								{station.hauls.map(haul => {
+									return(
+										<li key={haul.id}>
+											<p>Haul: {haul.haul} - Is valid?: {haul.valid} - Sampler: {haul.sampler.sampler}</p>
+										</li>
+									)
+								})}
+							</ul>
 						</li>
 					)
 				})}

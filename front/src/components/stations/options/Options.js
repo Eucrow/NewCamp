@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -23,12 +23,19 @@ class ComponentsStationOptions extends Component {
 
     render() { 
         return ( 
-            <ul>
-                <li><Link to={{pathname: this.apiStation, state: {isEdit: true }}}> edit </Link></li>
-                {/* <li><Link to={{pathname: this.api, state: {isEdit: false }}}> hauls </Link></li> */}
-                <li>Hauls</li>
-                <li><ComponentsUiRemoveStationButton station_id={ this.props.station_id } onDelete={ this.onDelete } /></li>
-            </ul>
+            // <ul>
+            //     <li><Link to={{pathname: this.apiStation, state: {isEdit: true }}}> edit </Link></li>
+            //     {/* <li><Link to={{pathname: this.api, state: {isEdit: false }}}> hauls </Link></li> */}
+            //     <li>Hauls</li>
+            //     <li><ComponentsUiRemoveStationButton station_id={ this.props.station_id } onDelete={ this.onDelete } /></li>
+            // </ul>
+            <Fragment>
+            <Link style={{"display": "inline"}} to={{pathname: this.apiStation, state: {isEdit: true }}}> edit </Link>
+            {/* Hauls */}
+            -
+            
+            <ComponentsUiRemoveStationButton style={{"display": "inline"}} station_id={ this.props.station_id } onDelete={ this.onDelete } />
+            </Fragment>
 
          );
     }
