@@ -29,11 +29,11 @@ class ComponentsUiRemoveStationButton extends Component {
 
     render() {
 		return (
-           <div><button onClick={() => {
+           <button onClick={() => {
                 if(window.confirm('Delete the station?')){
                     this.removeStation(this.props.station_id)
                 };
-            }}> Remove </button></div>
+            }}> Remove </button>
 		)
 	}
 }
