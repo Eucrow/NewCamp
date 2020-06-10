@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
@@ -45,14 +46,24 @@ class HaulListCsvApi(ListAPIView):
         return response
 
 
-class HaulRetrieveAPI(RetrieveAPIView):
+# class HaulRetrieveAPI(RetrieveAPIView):
+#     """
+#     Endpoint to retrieve information of one haul of a survey
+#     """
+#
+#     def get(self, request, acronym_survey, haul):
+#         haul = Haul.objects.filter(station__survey__acronym=acronym_survey, haul=haul)
+#         serializer = HaulSerializer(haul, many=True)
+#         return Response(serializer.data)
+
+class HaulAPI(APIView):
     """
     Endpoint to retrieve information of one haul of a survey
     """
 
-    def get(self, request, acronym_survey, haul):
-        haul = Haul.objects.filter(station__survey__acronym=acronym_survey, haul=haul)
-        serializer = HaulSerializer(haul, many=True)
+    def get(self, request, haul_id):
+        haul = get_object_or_404(Haul, pk=haul_id)
+        serializer = HaulSerializer(haul)
         return Response(serializer.data)
 
 
