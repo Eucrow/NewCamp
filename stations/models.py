@@ -14,5 +14,5 @@ class Station(models.Model):
         # 'haul' is not consider inside the unique_together because a station can have multiple
         # trawl hauls, for example one valid and other one invalid.
 
-    def __str__(self):
-        return 'station: %s comment: %s' % (self.station, self.comment)
+    # def __str__(self):
+    #     return 'station: %s comment: %s' % (self.station, self.comment)

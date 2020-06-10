@@ -26,7 +26,7 @@ class ImportHydrographyesSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 1
 
-
+# OLD ONE: great as example:
 class HaulSerializer(serializers.ModelSerializer):
     station = serializers.IntegerField(read_only=True, source="station.station")
     survey = serializers.CharField(read_only=True, source="station.survey.acronym")
@@ -35,6 +35,24 @@ class HaulSerializer(serializers.ModelSerializer):
     class Meta:
         model = Haul
         fields = ['survey', 'station', 'stratum', 'haul', 'gear', 'valid', ]
+
+# class HaulSerializer(serializers.ModelSerializer):
+#
+#     class Meta:
+#         model = Haul
+#         fields = ['haul', 'gear', 'valid', ]
+
+
+class HaulStationSerializer(serializers.ModelSerializer):
+    """
+    Serializer of haul with information of station and sampler
+    """
+    station = serializers.IntegerField(read_only=True, source="station.station")
+    sampler = serializers.IntegerField(read_only=True, source="sampler.sampler")
+
+    class Meta:
+        model = Haul
+        fields = ['station', 'haul', 'sampler', ]
 
 
 class HaulGeoJSONSerializer(serializers.ModelSerializer):
