@@ -22,7 +22,7 @@ class Haul(models.Model):
 
 class Meteorology(models.Model):
 
-    haul = models.ForeignKey('hauls.Haul', null=True, blank=True, on_delete=models.CASCADE)
+    haul = models.ForeignKey('hauls.Haul', null=True, blank=True, on_delete=models.CASCADE, related_name='meteo')
     wind_direction = models.PositiveIntegerField(validators=[MaxValueValidator(360), MinValueValidator(0)], null=True,
                                                 blank=True)
     wind_velocity = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
@@ -31,7 +31,7 @@ class Meteorology(models.Model):
 
 class HaulTrawl(models.Model):
 
-    haul = models.ForeignKey('hauls.Haul', null=True, blank=True, on_delete=models.CASCADE)
+    haul = models.ForeignKey('hauls.Haul', null=True, blank=True, on_delete=models.CASCADE, related_name='trawl_characteristics')
     # date = models.DateField(null=True, blank=True)
     shooting_date_time = models.DateTimeField(null=True, blank=True)
     shooting_latitude = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)

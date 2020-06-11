@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_csv import renderers as r
 # from hauls.views import HaulsImport
-from hauls.models import Haul
-from hauls.serializers import HaulSerializer, HaulGeoJSONSerializer
+from hauls.models import Haul, HaulTrawl, HaulHydrography
+from hauls.serializers import HaulSerializer, HaulGeoJSONSerializer, HaulTrawlSerializer
 
 from surveys.models import Survey
 
@@ -66,6 +66,24 @@ class HaulAPI(APIView):
         serializer = HaulSerializer(haul)
         return Response(serializer.data)
 
+class HaulMeteorologyAPI(APIView):
+    """
+    Endpoint to retrieve the Haul Trawl of a survey.
+    """
+    def get(self, request, haul_id):
+        haul_meteo = get_object_or_404(HaulMeteorologyAPI, pk=haul_id)
+        serializer = HaulTrawlSerializer(haul_meteo)
+        return Response(serializer.data)
+
+class HaulTrawlAPI(APIView):
+    """
+    Endpoint to retrieve the Haul Trawl of a survey.
+    """
+
+    def get(self, request, haul_id):
+        haul = get_object_or_404(Haul, pk=haul_id)
+        serializer = HaulTrawlSerializer(haul)
+        return Response(serializer.data)
 
 class HaulGEOJsonAPI(ListAPIView):
     """

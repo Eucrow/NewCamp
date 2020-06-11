@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from hauls.models import Haul, HaulTrawl, HaulHydrography
+from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 
 from stations.serializers import StationSerializer
 
@@ -41,6 +41,35 @@ class HaulSerializer(serializers.ModelSerializer):
     class Meta:
         model = Haul
         fields = ['haul', 'gear', 'valid', ]
+
+
+class HaulMeteorologySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Meteorology
+        fields = ['wind_direction', 'wind_velocity', 'sea_state', ]
+
+
+class TrawlSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = HaulTrawl
+        fields = ['shooting_date_time', 'shooting_latitude', 'shooting_longitude', 'shooting_depth',
+                  'hauling_date_time', 'hauling_latitude', 'hauling_longitude', 'hauling_depth', 'bottom_date_time',
+                  'bottom_latitude', 'bottom_longitude', 'bottom_depth', 'course', 'velocity', 'cable', 'sweep',
+                  'otter_boards_distance', 'horizontal_aperture', 'vertical_aperture', 'grid', 'track', 'comment', ]
+
+
+class HaulTrawlSerializer(serializers.ModelSerializer):
+    """
+    Serializer of trawl haul. Include the general Haul model, HaulTrawl model and Meteorology model.
+    """
+    meteo = HaulMeteorologySerializer()
+    trawl_characteristics = TrawlSerializer()
+
+    class Meta:
+        model = Haul
+        fields = ['haul', 'gear', 'valid', 'meteo', 'trawl_characteristics', ]
 
 
 class HaulStationSerializer(serializers.ModelSerializer):

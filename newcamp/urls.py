@@ -26,7 +26,7 @@ from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, S
 from stratifications.api import StratificationsAPI
 from strata.api import StrataAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI
-from hauls.api import HaulListAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI
+from hauls.api import HaulListAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
 
@@ -78,6 +78,7 @@ urlpatterns = [
     re_path(r'^api/1.0/hauls/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListAPI.as_view(), name="get_hauls_api"),
     re_path(r'^api/1.0/hauls/csv/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListCsvApi.as_view(), name="get_hauls_api_csv"),
     re_path(r'^api/1.0/haul/(?P<haul_id>[0-9]+)$', HaulAPI.as_view(), name="get_haul_api"),
+    re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="get_haul_api"),
 
     # Catches API URLS
 
