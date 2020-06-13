@@ -9,6 +9,7 @@ import ComponentsSurveyNew from "./components/surveyNew/SurveyNew.js";
 import ComponentsStations from "./components/stations/Stations.js";
 import ComponentsStationNew from "./components/stationNew/StationNew.js";
 import ComponentsStation from "./components/stationDetail/station.js";
+import ComponentHaul from "./components/haulDetail/haul.js";
 
 export default function App() {
   return (
@@ -38,6 +39,9 @@ export default function App() {
       <Route path="/Stations/station/:station_id" exact component={ComponentsStation} />
 
       <Route path="/Hauls" component={Hauls} />
+      <Route path="/Hauls/haul/:haul_id" exact component={ComponentHaul} />
+
+      
       <Route path="/Weights" component={Weights} />
       <Route path="/Samples" component={Samples} />
       {/* <Route path="/Species" component={Species} /> */}

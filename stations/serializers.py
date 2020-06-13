@@ -24,7 +24,7 @@ class HaulSerializer(serializers.ModelSerializer):
     #  https://www.django-rest-framework.org/api-guide/serializers/#specifying-nested-serialization
     class Meta:
         model = Haul
-        fields = ['haul', 'gear', 'valid', 'sampler']
+        fields = ['id', 'haul', 'gear', 'valid', 'sampler']
         depth = 1
 
 
@@ -36,5 +36,5 @@ class StationsHaulsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Station
-        fields = ['station', 'comment', 'hauls', ]
+        fields = ['id', 'station', 'comment', 'hauls', ]
 

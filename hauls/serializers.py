@@ -47,8 +47,8 @@ class HaulMeteorologySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meteorology
-        fields = ['wind_direction', 'wind_velocity', 'sea_state', ]
-
+        # fields = ['wind_direction', 'wind_velocity', 'sea_state', ]
+        fields = '__all__'
 
 class TrawlSerializer(serializers.ModelSerializer):
 
@@ -69,8 +69,7 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['haul', 'gear', 'valid', 'meteo', 'trawl_characteristics', ]
-
+        fields = ['haul', 'gear', 'valid', 'meteo',  'trawl_characteristics', ]
 
 class HaulStationSerializer(serializers.ModelSerializer):
     """
