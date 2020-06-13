@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from rest_framework_csv import renderers as r
 # from hauls.views import HaulsImport
@@ -68,7 +69,7 @@ class HaulAPI(APIView):
 
 class HaulMeteorologyAPI(APIView):
     """
-    Endpoint to retrieve the Haul Trawl of a survey.
+    Endpoint to retrieve the Haul Meteorology of a survey.
     """
     def get(self, request, haul_id):
         haul_meteo = get_object_or_404(HaulMeteorologyAPI, pk=haul_id)
@@ -84,6 +85,16 @@ class HaulTrawlAPI(APIView):
         haul = get_object_or_404(Haul, pk=haul_id)
         serializer = HaulTrawlSerializer(haul)
         return Response(serializer.data)
+
+    def post(self, request):
+        serializer = HaulTrawlSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(station_id=request.data["station_id"],
+                            stratum_id=request.data['stratum_id'],
+                            sampler_id=request.data['sampler_id'])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class HaulGEOJsonAPI(ListAPIView):
     """

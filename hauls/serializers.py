@@ -47,8 +47,7 @@ class HaulMeteorologySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meteorology
-        # fields = ['wind_direction', 'wind_velocity', 'sea_state', ]
-        fields = '__all__'
+        fields = ['wind_direction', 'wind_velocity', 'sea_state', ]
 
 class TrawlSerializer(serializers.ModelSerializer):
 
@@ -69,7 +68,21 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['haul', 'gear', 'valid', 'meteo',  'trawl_characteristics', ]
+        fields = ['haul', 'gear', 'valid', 'meteo', 'trawl_characteristics', 'station_id', 'stratum_id', 'sampler_id', ]
+        depth = 1
+
+    # This is a nested serializer, so we have to overwrite the create function
+    def create(self, validated_data):
+        # Firstly, get the data from the nested parts
+        meteo_data = validated_data.pop('meteo')
+        trawl_characteristics_data = validated_data.pop('trawl_characteristics')
+        # Secondly, save the Haul
+        haul = Haul.objects.create(**validated_data)
+        # Then, save the nested parts in its own models
+        Meteorology.objects.create(haul=haul, **meteo_data)
+        HaulTrawl.objects.create(haul=haul, **trawl_characteristics_data)
+        # And finally, return the haul
+        return haul
 
 class HaulStationSerializer(serializers.ModelSerializer):
     """
