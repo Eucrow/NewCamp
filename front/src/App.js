@@ -10,6 +10,7 @@ import ComponentsStations from "./components/stations/Stations.js";
 import ComponentsStationNew from "./components/stationNew/StationNew.js";
 import ComponentsStation from "./components/stationDetail/station.js";
 import ComponentHaul from "./components/haulDetail/haul.js";
+import ComponentsHauls from "./components/hauls/hauls.js";
 
 export default function App() {
   return (
@@ -38,7 +39,8 @@ export default function App() {
       <Route path="/Stations/new" exact component={ComponentsStationNew} />
       <Route path="/Stations/station/:station_id" exact component={ComponentsStation} />
 
-      <Route path="/Hauls" component={Hauls} />
+      <Route path="/Hauls/:survey_id" component={ComponentsHauls} />
+      <Route path="/Hauls" component={ComponentsHauls} />
       <Route path="/Hauls/haul/:haul_id" exact component={ComponentHaul} />
 
       
@@ -73,12 +75,12 @@ const Home = () => (
 //   </Fragment>
 //   );
 // Hauls Page
-const Hauls = () => (
-  <Fragment>
-    <h1>Hauls</h1>
-    <FakeText />
-  </Fragment>
-  );
+// const Hauls = () => (
+//   <Fragment>
+//     <h1>Hauls</h1>
+//     <FakeText />
+//   </Fragment>
+//   );
 // Weights Page
 const Weights = () => (
   <Fragment>
