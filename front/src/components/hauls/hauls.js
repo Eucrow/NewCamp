@@ -44,9 +44,9 @@ class ComponentsHauls extends Component {
                     {this.state.hauls.map(haul => {
                         return(
                             <li key={ haul.id }>
-                                Trawl: { haul.sampler.sampler} -
-                                Station: { haul.station.station } -
+                                Sampler: { haul.sampler.sampler} -
                                 Haul: { haul.haul } -
+                                Station: { haul.station.station } -
                                 <ComponentsHaulsOptions haul_id={ haul.id } />
                             </li>
                         )
