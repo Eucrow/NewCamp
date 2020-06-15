@@ -16,7 +16,7 @@ class ComponentsStation extends Component {
             placeholder: "Loading",
             isEdit: this.props.location.state.isEdit
         };
-        this.apiStation = "http://127.0.0.1:8000/api/1.0/stations/" + this.props.match.params.station_id;
+        this.apiStation = "http://127.0.0.1:8000/api/1.0/station/" + this.props.match.params.station_id;
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -97,7 +97,7 @@ class ComponentsStation extends Component {
                 <ul>
                     <li>Survey id: { this.state.data.survey_id }</li>
                     <li>Station: { this.state.data.station }</li>
-                    <li>Comments: {this.state.data.comment }</li>
+                    <li>Comments: { this.state.data.comment }</li>
                 </ul>
                 );
         }

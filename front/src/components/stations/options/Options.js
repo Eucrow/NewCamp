@@ -30,11 +30,9 @@ class ComponentsStationOptions extends Component {
             //     <li><ComponentsUiRemoveStationButton station_id={ this.props.station_id } onDelete={ this.onDelete } /></li>
             // </ul>
             <Fragment>
-            <Link style={{"display": "inline"}} to={{pathname: this.apiStation, state: {isEdit: true }}}> edit </Link>
-            {/* Hauls */}
-            -
-            
-            <ComponentsUiRemoveStationButton style={{"display": "inline"}} station_id={ this.props.station_id } onDelete={ this.onDelete } />
+                <Link style={{"display": "inline"}} to={{pathname: this.apiStation, state: {isEdit: true }}}> edit </Link>
+                -
+                <ComponentsUiRemoveStationButton style={{"display": "inline"}} station_id={ this.props.station_id } onDelete={ this.onDelete } />
             </Fragment>
 
          );

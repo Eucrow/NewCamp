@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 
 import ComponentsStationOptions from "./options/Options.js";
 import ComponentsUiNewStationButton from "../ui/NewStationButton.js";
+import ComponentsHaulsOptions from "../hauls/options/Options.js";
 
 class ComponentsStations extends Component {
 	/**
@@ -71,7 +72,10 @@ class ComponentsStations extends Component {
 								{station.hauls.map(haul => {
 									return(
 										<li key={haul.id}>
-											<p>Haul: {haul.haul} - Is valid?: {haul.valid} - Sampler: {haul.sampler.sampler}</p>
+											<p>Haul: {haul.haul} - Is valid?: {haul.valid}
+											- Sampler: {haul.sampler.sampler}
+											- <ComponentsHaulsOptions haul_id={haul.id} />
+											</p>
 										</li>
 									)
 								})}
