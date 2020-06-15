@@ -42,7 +42,7 @@ class HaulSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Haul
-        fields = ['haul', 'gear', 'valid', 'sampler', 'station', ]
+        fields = ['id', 'haul', 'gear', 'valid', 'sampler', 'station', ]
         # TODO: select only sampler and id from sampler model
         # TODO: select only station and id from station model
         depth = 1
