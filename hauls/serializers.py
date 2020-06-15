@@ -40,7 +40,9 @@ class HaulSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['haul', 'gear', 'valid', ]
+        fields = ['haul', 'gear', 'valid', 'sampler']
+        # TODO: select only sampler and id from sampler model
+        depth = 1
 
 
 class HaulMeteorologySerializer(serializers.ModelSerializer):
@@ -48,6 +50,7 @@ class HaulMeteorologySerializer(serializers.ModelSerializer):
     class Meta:
         model = Meteorology
         fields = ['wind_direction', 'wind_velocity', 'sea_state', ]
+
 
 class TrawlSerializer(serializers.ModelSerializer):
 
