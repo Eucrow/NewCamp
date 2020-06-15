@@ -84,6 +84,37 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
         # And finally, return the haul
         return haul
 
+    def update(self, instance, validated_data):
+
+        if validated_data:
+            # First, get the data from validated_data (pop() remove the data from the original dict)
+            meteo_datas = validated_data.pop('meteo')
+            trawl_characteristics_datas = validated_data.pop('trawl_characteristics')
+
+            # Second, save the instance validated (this does not have the meteo and trawl_characteristics data
+            for attr, value in validated_data.items():
+                print(attr, value)
+                setattr(instance, attr, value)
+
+            instance.save()
+
+            # Then, create a meteo instance, fill with the validated meto data, and save it
+            meteo = instance.meteo
+            print(meteo_datas.items())
+            for attr, value in meteo_datas.items():
+                print(attr, value)
+                setattr(meteo, attr, value)
+            meteo.save()
+
+            # And do the same with trawl_characteristics data
+            trawl_characteristics = instance.trawl_characteristics
+            for attr, value in trawl_characteristics_datas.items():
+                print(attr, value)
+                setattr(trawl_characteristics, attr, value)
+            trawl_characteristics.save()
+
+        return instance
+
 class HaulStationSerializer(serializers.ModelSerializer):
     """
     Serializer of haul with information of station and sampler

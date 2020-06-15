@@ -96,6 +96,15 @@ class HaulTrawlAPI(APIView):
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
+    def put(self, request, haul_id):
+        haul = get_object_or_404(Haul, pk=haul_id)
+        serializer = HaulTrawlSerializer(haul, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(status=HTTP_400_BAD_REQUEST)
+
 class HaulGEOJsonAPI(ListAPIView):
     """
     Endpoint to return a GEOJSON with all the hauls
