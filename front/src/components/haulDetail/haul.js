@@ -23,6 +23,7 @@ class ComponentsHaul extends Component {
         this.handleChangeMeteo = this.handleChangeMeteo.bind(this);
         this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
 
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     
     handleChangeHaul (event) {
@@ -66,6 +67,24 @@ class ComponentsHaul extends Component {
         this.setState({
             haul: newHaulTrawl
         });
+    }
+
+    handleSubmit(event) {
+        fetch(this.apiHaul, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+              },
+            body: JSON.stringify(this.state.haul)
+        })
+        .then(() => {
+            this.setState(() => {
+                return{isEdit: false}
+            })
+        })
+        .catch(error => console.log('Error'))
+        
+        event.preventDefault();
     }
     
     componentDidMount() {
@@ -188,6 +207,9 @@ class ComponentsHaul extends Component {
                 <input type="text" name="track" id="track" value={haul.trawl_characteristics.track || ""} onChange={this.handleChangeTrawl} />
                 <label htmlFor="comment">comment:</label> 
                 <input type="text" name="comment" id="comment" value={haul.trawl_characteristics.comment || ""} onChange={this.handleChangeTrawl} />
+            
+                <input type="submit" value="Save Haul" onClick={this.handleSubmit} />
+
             </form>
             )
         }

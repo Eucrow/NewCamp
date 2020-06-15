@@ -97,7 +97,7 @@ class ComponentsStation extends Component {
                 <ul>
                     <li>Survey id: { this.state.data.survey_id }</li>
                     <li>Station: { this.state.data.station }</li>
-                    <li>Comments: {this.state.data.comment }</li>
+                    <li>Comments: { this.state.data.comment }</li>
                 </ul>
                 );
         }
