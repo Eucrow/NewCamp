@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
+import ComponentsHaulsOptions from './options/Options.js';
+
 class ComponentsHauls extends Component {
     constructor(props) {
         super(props);
@@ -42,7 +44,10 @@ class ComponentsHauls extends Component {
                     {this.state.hauls.map(haul => {
                         return(
                             <li key={ haul.id }>
-                                Trawl: { haul.sampler.sampler} - Station: { haul.station.station } - Haul: { haul.haul }
+                                Trawl: { haul.sampler.sampler} -
+                                Station: { haul.station.station } -
+                                Haul: { haul.haul } -
+                                <ComponentsHaulsOptions haul_id={ haul.id } />
                             </li>
                         )
                     })}

@@ -39,8 +39,8 @@ export default function App() {
       <Route path="/Stations/new" exact component={ComponentsStationNew} />
       <Route path="/Stations/station/:station_id" exact component={ComponentsStation} />
 
-      <Route path="/Hauls/:survey_id" component={ComponentsHauls} />
-      <Route path="/Hauls" component={ComponentsHauls} />
+      <Route path="/Hauls/:survey_id" exact component={ComponentsHauls} />
+      <Route path="/Hauls" exact component={ComponentsHauls} />
       <Route path="/Hauls/haul/:haul_id" exact component={ComponentHaul} />
 
       
