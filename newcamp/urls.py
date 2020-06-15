@@ -29,7 +29,6 @@ from stations.api import StationsAPI, StationAPI, StationsHaulsAPI
 from hauls.api import HaulListAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
-
 urlpatterns = [
     re_path(r'^admin/', admin.site.urls),
     re_path(r'^species/', SpeciesView.as_view(), name='species_list'),
@@ -65,21 +64,21 @@ urlpatterns = [
     re_path(r'^api/1.0/strata/(?P<stratification_id>[0-9]+)$', StrataAPI.as_view(), name="get_strata_api"),
 
     # Stations API urls
-    re_path(r'^api/1.0/stations/$', StationsAPI.as_view(), name="get_stations_api"),
     re_path(r'^api/1.0/station/(?P<station_id>[0-9]+)$', StationAPI.as_view(), name="get_update_station_api"),
-    re_path(r'^api/1.0/stations/new/$', StationAPI.as_view(), name="add_survey_api"),
+    re_path(r'^api/1.0/station/new/$', StationAPI.as_view(), name="add_survey_api"),
     re_path(r'^api/1.0/station/remove/(?P<station_id>[0-9]+)$', StationAPI.as_view(), name="remove_station_api"),
+    re_path(r'^api/1.0/stations/$', StationsAPI.as_view(), name="get_stations_api"),
     re_path(r'^api/1.0/stations/hauls/(?P<survey_id>[0-9]+)$', StationsHaulsAPI.as_view(), name="station_haul_api"),
 
     # Hauls API URLs
-    re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$', HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
-    re_path(r'^api/1.0/hauls/(?P<haul_id>[0-9])$', HaulListAPI.as_view(), name="get_hauls_api"),
-    # re_path(r'^api/1.0/hauls/(?P<acronym_survey>[A-Z][0-9][0-9])/(?P<haul>[0-9]+)$', HaulRetrieveAPI.as_view(), name="get_haul_api"),
-    re_path(r'^api/1.0/hauls/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListAPI.as_view(), name="get_hauls_api"),
-    re_path(r'^api/1.0/hauls/csv/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListCsvApi.as_view(), name="get_hauls_api_csv"),
     re_path(r'^api/1.0/haul/(?P<haul_id>[0-9]+)$', HaulAPI.as_view(), name="get_haul_api"),
     re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="get_haul_api"),
     re_path(r'^api/1.0/haul/trawl/new$', HaulTrawlAPI.as_view(), name="add_haul_api"),
+    # TODO: remove haul
+    # TODO: hidrology hauls
+    re_path(r'^api/1.0/hauls/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListAPI.as_view(), name="get_hauls_api"),
+    re_path(r'^api/1.0/hauls/csv/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListCsvApi.as_view(), name="get_hauls_api_csv"),
+    re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$', HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
 
     # Catches API URLS
 
@@ -94,3 +93,4 @@ urlpatterns = [
     path('', include('frontend.urls')),
 
 ]
+

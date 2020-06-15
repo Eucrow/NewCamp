@@ -4,7 +4,7 @@ class ComponentsStationNew extends Component {
 
     constructor(props) {
         super(props);
-        this.apiNewStation = "http://127.0.0.1:8000/api/1.0/stations/new/";
+        this.apiNewStation = "http://127.0.0.1:8000/api/1.0/station/new/";
         
     }
 
