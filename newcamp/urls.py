@@ -50,6 +50,7 @@ urlpatterns = [
     re_path(r'^api/1.0/surveys/import$', SurveysImportAPI.as_view(), name="surveys_import_api"),
     re_path(r'^api/1.0/surveys/(?P<pk>[0-9]+)$', SurveyDetailAPI.as_view(), name="get_survey_api"),
     re_path(r'^api/1.0/surveys/remove/(?P<pk>[0-9]+)$', SurveyRemoveAPI.as_view(), name="get_survey_api"),
+    # TODO: change acronym to survey id???
     re_path(r'^api/1.0/surveys/csv/(?P<acronym>[N,D]{1}[0-9]{2})$', SurveyDetailCsvAPI.as_view(),
             name="get_survey_api_csv"),
     re_path(r'^api/1.0/surveys/csv/all', SurveysListCsvAPI.as_view(), name="get_survey_api_csv"),
@@ -74,6 +75,7 @@ urlpatterns = [
     re_path(r'^api/1.0/haul/(?P<haul_id>[0-9]+)$', HaulAPI.as_view(), name="get_haul_api"),
     re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="get_haul_api"),
     re_path(r'^api/1.0/haul/trawl/new$', HaulTrawlAPI.as_view(), name="add_haul_api"),
+    re_path(r'^api/1.0/haul/trawl/remove/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="remove_station_api"),
     # TODO: remove haul
     # TODO: hidrology hauls
     re_path(r'^api/1.0/hauls/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListAPI.as_view(), name="get_hauls_api"),

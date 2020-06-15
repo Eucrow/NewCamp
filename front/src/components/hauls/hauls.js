@@ -11,8 +11,22 @@ class ComponentsHauls extends Component {
         
         // TODO: SELECT SURVEY
         // this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/" +  this.props.match.params.survey_id;
-        this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/N17"
+        this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/N17";
+
+        this.onDelete = this.onDelete.bind(this);
     }
+
+    onDelete(haul_id){
+
+		// state, before delete anything
+		const currentHauls = this.state.hauls;
+
+		// Remove deleted item from state.
+		this.setState({
+			hauls: currentHauls.filter(haul => haul.id !== haul_id),
+			});
+
+	}
 
     componentDidMount() {
         fetch(this.apiHauls)
@@ -47,7 +61,7 @@ class ComponentsHauls extends Component {
                                 Sampler: { haul.sampler.sampler} -
                                 Haul: { haul.haul } -
                                 Station: { haul.station.station } -
-                                <ComponentsHaulsOptions haul_id={ haul.id } />
+                                <ComponentsHaulsOptions haul_id={ haul.id } onDelete= { this.onDelete }/>
                             </li>
                         )
                     })}
