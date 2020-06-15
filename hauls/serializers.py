@@ -37,11 +37,14 @@ class ImportHydrographyesSerializer(serializers.ModelSerializer):
 #         fields = ['survey', 'station', 'stratum', 'haul', 'gear', 'valid', ]
 
 class HaulSerializer(serializers.ModelSerializer):
-
+    """
+    Serializer of hauls data with sampler.
+    """
     class Meta:
         model = Haul
-        fields = ['haul', 'gear', 'valid', 'sampler']
+        fields = ['haul', 'gear', 'valid', 'sampler', 'station', ]
         # TODO: select only sampler and id from sampler model
+        # TODO: select only station and id from station model
         depth = 1
 
 
