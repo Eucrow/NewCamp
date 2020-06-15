@@ -16,8 +16,9 @@ class ComponentsHaulsOptions extends Component {
     render() { 
         return ( 
             <Fragment>
-                 <Link style={{"display": "inline"}} to={{pathname: this.apiHaul, state: {isEdit: true}}}> edit </Link>
+                <Link style={{"display": "inline"}} to={{pathname: this.apiHaul, state: {isEdit: false}}}> detail</Link>
                 -
+                <Link style={{"display": "inline"}} to={{pathname: this.apiHaul, state: {isEdit: true}}}> edit </Link>
                 {/* <ComponentsUiRemoveStationButton style={{"display": "inline"}} station_id={ this.props.station_id } onDelete={ this.onDelete } /> */}
                 Remove
             </Fragment>

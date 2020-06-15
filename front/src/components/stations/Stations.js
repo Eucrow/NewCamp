@@ -36,23 +36,23 @@ class ComponentsStations extends Component {
 	}
 
     componentDidMount() {
-			fetch(this.apiStationsHauls)
-				.then(response => {
-					if(response.status > 400){
-						return this.setState(() => {
-							return { placeholder: "Something went wrong!"}
-						});
-					}
-					return response.json();
-				})
-				.then(stations => {
-					this.setState(() => {
-						return {
-							stations,
-							loaded: true
-						};
+		fetch(this.apiStationsHauls)
+			.then(response => {
+				if(response.status > 400){
+					return this.setState(() => {
+						return { placeholder: "Something went wrong!"}
 					});
+				}
+				return response.json();
+			})
+			.then(stations => {
+				this.setState(() => {
+					return {
+						stations,
+						loaded: true
+					};
 				});
+			});
         
 	}
 	
