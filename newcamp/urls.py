@@ -26,7 +26,7 @@ from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, S
 from stratifications.api import StratificationsAPI
 from strata.api import StrataAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI
-from hauls.api import HaulListAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI
+from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
 urlpatterns = [
@@ -78,7 +78,8 @@ urlpatterns = [
     re_path(r'^api/1.0/haul/trawl/remove/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="remove_station_api"),
     # TODO: remove haul
     # TODO: hidrology hauls
-    re_path(r'^api/1.0/hauls/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListAPI.as_view(), name="get_hauls_api"),
+    re_path(r'^api/1.0/hauls/', HaulListAllAPI.as_view(), name="get_hauls_api"),
+    re_path(r'^api/1.0/hauls/(?P<survey_id>[0-9])', HaulListAPI.as_view(), name="get_hauls_api"),
     re_path(r'^api/1.0/hauls/csv/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListCsvApi.as_view(), name="get_hauls_api_csv"),
     re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$', HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
 
