@@ -3,6 +3,8 @@ import React, { Component, Fragment } from "react";
 import ComponentsSurveysOptions from "./options/Options.js";
 import ComponentsUiNewSurveyButton from "../ui/NewSurveyButton.js"
 
+import SurveyContext from "../../contexts/SurveyContext.js";
+
 class ComponentsSurveys extends Component {
 	/**
 	 * List of surveys
@@ -11,50 +13,50 @@ class ComponentsSurveys extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            surveys: [],
             loaded: false,
             placeholder: "Loading"
         };
-    }
+	}
 
+	static contextType = SurveyContext;
+	
     componentDidMount() {
-			fetch("http://127.0.0.1:8000/api/1.0/surveys")
-				.then(response => {
-					if(response.status > 400){
-						return this.setState(() => {
-							return { placeholder: "Something went wrong!"}
-						});
-					}
-					return response.json();
-				})
-				.then(data => {
-					this.setState(() => {
-						return {
-							data,
-							loaded: true
-						};
+
+		fetch("http://127.0.0.1:8000/api/1.0/surveys")
+			.then(response => {
+				if(response.status > 400){
+					return this.setState(() => {
+						return { placeholder: "Something went wrong!" }
 					});
+				}
+				return response.json();
+			})
+			.then(surveys => {
+				this.setState(() => {
+					return {
+						surveys,
+						loaded: true
+					};
 				});
-        
+			});
 	}
 	
 	render() {
 		return (
 			<Fragment>
-
-			<div><ComponentsUiNewSurveyButton /></div>
-
-			<ul>		
-				{this.state.data.map(survey => {
-					return(
-						<li key={survey.id}>
-							{survey.description} <ComponentsSurveysOptions survey_id={survey.id} />
-						</li>
-					)
-				})}
-			</ul>
-
+				<div><ComponentsUiNewSurveyButton /></div>
+				<ul>		
+					{this.state.surveys.map(survey => {
+						return(
+							<li key={survey.id}>
+								survey: { this.context } : {survey.description} <ComponentsSurveysOptions survey_id={survey.id} />
+							</li>
+						)
+					})}
+				</ul>
 			</Fragment>
+
 			
 		)
 	}

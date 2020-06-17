@@ -2,19 +2,32 @@ import React, { Component, Fragment } from 'react';
 
 import ComponentsHaulsOptions from './options/Options.js';
 
+import SurveyContext from "../../contexts/SurveyContext.js";
+
 class ComponentsHauls extends Component {
+
+    // The contextType property on a class can be assigned a Context object created by React.createContext().
+	// This lets you consume the nearest current value of that Context type using this.context. You can reference
+	// this in any of the lifecycle methods including the render function.
+    static contextType = SurveyContext;
+    
     constructor(props) {
         super(props);
         this.state = { 
-            hauls: []
+            hauls: [],
+            loaded: false,
+            placeholder: "Loading"
          }
         
         // TODO: SELECT SURVEY
-        // this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/" +  this.props.match.params.survey_id;
-        this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/N17";
+        // this is the partial api. The survey_id must be add to the url
+        this.apiHaulsPartial = "http://127.0.0.1:8000/api/1.0/hauls/" 
 
         this.onDelete = this.onDelete.bind(this);
+
     }
+
+
 
     onDelete(haul_id){
 
@@ -26,13 +39,24 @@ class ComponentsHauls extends Component {
 			hauls: currentHauls.filter(haul => haul.id !== haul_id),
 			});
 
-	}
+    }
+    
+    getHaulsApi(){
+        /**
+         * Build url api from apiHaulsPartial and context
+         */
+        return (this.context? this.apiHaulsPartial + this.context : this.apiHaulsPartial);
+    }
 
     componentDidMount() {
-        fetch(this.apiHauls)
-            .then(response => {
-                console.log(response);
-                return response;})
+
+        
+        const APIHauls = this.getHaulsApi()
+        console.log(APIHauls)
+
+        // const completeAPIHauls = this.apiHaulsPartial + this.context;
+
+        fetch(APIHauls)
             .then(response => {
                 if(response.status > 400){
                     return this.setState(() => {

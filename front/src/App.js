@@ -12,9 +12,14 @@ import ComponentsStation from "./components/stationDetail/station.js";
 import ComponentHaul from "./components/haulDetail/haul.js";
 import ComponentsHauls from "./components/hauls/hauls.js";
 
+import  SurveyContext  from "./contexts/SurveyContext.js";
+
 export default function App() {
+  
   return (
+    <SurveyContext.Provider>
     <Router>
+      
       <main>
         <nav>
             <Link to="/">Home</Link> - 
@@ -26,8 +31,8 @@ export default function App() {
             <Link to="/Samples">Samples</Link> - 
             <Link to="/Masters">Species</Link>
          </nav>
-
-
+      </main>
+      
       <Route path="/" exact component={Home} />
 
       <Route path="/Survey/new" exact component={ComponentsSurveyNew} />
@@ -47,9 +52,9 @@ export default function App() {
       <Route path="/Weights" component={Weights} />
       <Route path="/Samples" component={Samples} />
       {/* <Route path="/Species" component={Species} /> */}
-
-      </main>
+      
     </Router>
+    </SurveyContext.Provider>
   );
 }
 
