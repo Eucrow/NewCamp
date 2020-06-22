@@ -114,36 +114,36 @@ class ComponentsHaul extends Component {
         if(isEdit === false){
             return ( 
             <Fragment>
-            <p>Haul: {haul.haul}</p>
-            <p>Gear: {haul.gear}</p>
-            <p>Valid: {haul.valid}</p>
+            <p>Haul: {haul.haul || ""}</p>
+            <p>Gear: {haul.gear || ""}</p>
+            <p>Valid: {haul.valid || ""}</p>
             <p>Meteorology:</p>
-            <p>Wind direction: {haul.meteo.wind_direction}</p>
-            <p>Wind velocity: {haul.meteo.wind_velocity}</p>
-            <p>Sea State: {haul.meteo.sea_state}</p>
+            <p>Wind direction: {haul.meteo.wind_direction || ""}</p>
+            <p>Wind velocity: {haul.meteo.wind_velocity || ""}</p>
+            <p>Sea State: {haul.meteo.sea_state || ""}</p>
             <p>Trawl characteristics:</p>
-            <p>Shooting_date_time: {haul.trawl_characteristics.shooting_date_time}</p>
-            <p>Shooting_latitude: {haul.trawl_characteristics.shooting_latitude}</p>
-            <p>Shooting_longitude: {haul.trawl_characteristics.shooting_longitude}</p>
-            <p>Shooting_depth: {haul.trawl_characteristics.shooting_depth}</p>
-            <p>Hauling_date_time: {haul.trawl_characteristics.hauling_date_time}</p>
-            <p>Hauling_latitude: {haul.trawl_characteristics.hauling_latitude}</p>
-            <p>Hauling_longitude: {haul.trawl_characteristics.hauling_longitude}</p>
-            <p>Hauling_depth: {haul.trawl_characteristics.hauling_depth}</p>
-            <p>Bottom_date_time: {haul.trawl_characteristics.bottom_date_time}</p>
-            <p>Bottom_latitude: {haul.trawl_characteristics.bottom_latitude}</p>
-            <p>Bottom_longitude: {haul.trawl_characteristics.bottom_longitude}</p>
-            <p>Bottom_depth: {haul.trawl_characteristics.bottom_depth}</p>
-            <p>Course: {haul.trawl_characteristics.course}</p>
-            <p>Velocity: {haul.trawl_characteristics.velocity}</p>
-            <p>Cable: {haul.trawl_characteristics.cable}</p>
-            <p>Sweep: {haul.trawl_characteristics.sweep}</p>
-            <p>Otter_boards_distance: {haul.trawl_characteristics.otter_boards_distance}</p>
-            <p>Horizontal_aperture: {haul.trawl_characteristics.horizontal_aperture}</p>
-            <p>Vertical_aperture: {haul.trawl_characteristics.vertical_aperture}</p>
-            <p>Grid: {haul.trawl_characteristics.grid}</p>
-            <p>Track: {haul.trawl_characteristics.track}</p>
-            <p>Comment: {haul.trawl_characteristics.comment}</p>
+            <p>Shooting_date_time: {haul.trawl_characteristics.shooting_date_time || ""}</p>
+            <p>Shooting_latitude: {haul.trawl_characteristics.shooting_latitude || ""}</p>
+            <p>Shooting_longitude: {haul.trawl_characteristics.shooting_longitude || ""}</p>
+            <p>Shooting_depth: {haul.trawl_characteristics.shooting_depth || ""}</p>
+            <p>Hauling_date_time: {haul.trawl_characteristics.hauling_date_time || ""}</p>
+            <p>Hauling_latitude: {haul.trawl_characteristics.hauling_latitude || ""}</p>
+            <p>Hauling_longitude: {haul.trawl_characteristics.hauling_longitude || ""}</p>
+            <p>Hauling_depth: {haul.trawl_characteristics.hauling_depth || ""}</p>
+            <p>Bottom_date_time: {haul.trawl_characteristics.bottom_date_time || ""}</p>
+            <p>Bottom_latitude: {haul.trawl_characteristics.bottom_latitude || ""}</p>
+            <p>Bottom_longitude: {haul.trawl_characteristics.bottom_longitude || ""}</p>
+            <p>Bottom_depth: {haul.trawl_characteristics.bottom_depth || ""}</p>
+            <p>Course: {haul.trawl_characteristics.course || ""}</p>
+            <p>Velocity: {haul.trawl_characteristics.velocity || ""}</p>
+            <p>Cable: {haul.trawl_characteristics.cable || ""}</p>
+            <p>Sweep: {haul.trawl_characteristics.sweep || ""}</p>
+            <p>Otter_boards_distance: {haul.trawl_characteristics.otter_boards_distance || ""}</p>
+            <p>Horizontal_aperture: {haul.trawl_characteristics.horizontal_aperture || ""}</p>
+            <p>Vertical_aperture: {haul.trawl_characteristics.vertical_aperture || ""}</p>
+            <p>Grid: {haul.trawl_characteristics.grid || ""}</p>
+            <p>Track: {haul.trawl_characteristics.track || ""}</p>
+            <p>Comment: {haul.trawl_characteristics.comment || ""}</p>
             </Fragment>
             );
         } else if (isEdit===true){

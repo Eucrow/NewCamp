@@ -10,9 +10,9 @@ class ComponentsSurveysOptions extends Component {
 	 */
     constructor(props) {
         super(props);
-        this.state = { 
-            data: []
-         }
+        // this.state = { 
+        //     data: []
+        //  }
         this.api = "/Survey/survey/" + this.props.survey_id;
     }
 

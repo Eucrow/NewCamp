@@ -2,18 +2,39 @@ import React, { Component, Fragment } from 'react';
 
 import ComponentsHaulsOptions from './options/Options.js';
 
+import SurveyContext from "../../contexts/SurveyContext.js";
+
 class ComponentsHauls extends Component {
+
+    // The contextType property on a class can be assigned a Context object created by React.createContext().
+	// This lets you consume the nearest current value of that Context type using this.context. You can reference
+	// this in any of the lifecycle methods including the render function.
+    static contextType = SurveyContext;
+    
     constructor(props) {
         super(props);
         this.state = { 
-            hauls: []
+            hauls: [],
+            loaded: false,
+            placeholder: "Loading"
          }
-        
-        // TODO: SELECT SURVEY
-        // this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/" +  this.props.match.params.survey_id;
-        this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/N17";
+
+        // The next api retrieve all the hauls. If a survey id is added at the end, retrieve only the
+        // hauls of this survey
+        this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/" 
 
         this.onDelete = this.onDelete.bind(this);
+
+    }
+
+    
+    getHaulsApi(){
+        /**
+         * Build url api of all the hauls of a survey, using apiHauls and context
+         */
+        return (this.context.surveySelector === null?
+            this.apiHauls :
+            this.apiHauls + this.context.surveySelector);
     }
 
     onDelete(haul_id){
@@ -26,13 +47,13 @@ class ComponentsHauls extends Component {
 			hauls: currentHauls.filter(haul => haul.id !== haul_id),
 			});
 
-	}
+    }
 
     componentDidMount() {
-        fetch(this.apiHauls)
-            .then(response => {
-                console.log(response);
-                return response;})
+        
+        const APIHauls = this.getHaulsApi()
+
+        fetch(APIHauls)
             .then(response => {
                 if(response.status > 400){
                     return this.setState(() => {
@@ -54,6 +75,7 @@ class ComponentsHauls extends Component {
     render() { 
         return ( 
             <Fragment>
+                {/* <div><SelectSurveyButton /></div> */}
                 <ul>
                     {this.state.hauls.map(haul => {
                         return(

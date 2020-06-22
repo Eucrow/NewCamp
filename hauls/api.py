@@ -24,11 +24,20 @@ class HaulListAPI(ListAPIView):
     Endpoint to get the hauls of a survey
     """
 
-    def get(self, request, acronym_survey):
-        hauls = Haul.objects.filter(station__survey__acronym=acronym_survey)
+    def get(self, request, survey_id):
+        hauls = Haul.objects.filter(station__survey__pk=survey_id)
         serializer = HaulSerializer(hauls, many=True)
         return Response(serializer.data)
 
+class HaulListAllAPI(ListAPIView):
+    """
+    Endpoint to get all the hauls of all surveys
+    """
+
+    def get(self, request):
+        hauls = Haul.objects.all()
+        serializer = HaulSerializer(hauls, many=True)
+        return Response(serializer.data)
 
 class HaulListCsvApi(ListAPIView):
     """

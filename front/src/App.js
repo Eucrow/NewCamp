@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import "./index.css";
 
 import {BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -11,13 +11,51 @@ import ComponentsStationNew from "./components/stationNew/StationNew.js";
 import ComponentsStation from "./components/stationDetail/station.js";
 import ComponentHaul from "./components/haulDetail/haul.js";
 import ComponentsHauls from "./components/hauls/hauls.js";
+import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
+
+import  SurveyContext  from "./contexts/SurveyContext.js";
+
+
 
 export default function App() {
+  const [surveySelector, setSurvey] = useState(null);
+  const value = { surveySelector, setSurvey };
+
+  const [surveyName, setSurveyName] = useState();
+
+  function getSurveyName(survey_id){
+    fetch("http://127.0.0.1:8000/api/1.0/surveys/" + survey_id)
+    .then(response => {
+        return response.json();
+    })
+    .then(survey => {
+      return survey.description
+    })
+    .then(surveyName =>{
+      setSurveyName(surveyName)
+    })
+  }
+
   return (
+    <SurveyContext.Provider value={value}>
     <Router>
+      {/* { console.log (surveyName)} */}
       <main>
         <nav>
+
+            {/* survey name */}
+            {/* if surveySelector is not null, get the name of the survey */}
+            {surveySelector === null?
+              "" :
+              getSurveyName(surveySelector)
+            }
+
+            {surveyName === undefined?
+              <div style={{display:"inline", fontWeight:"bold"}}>not survey selected</div> :
+              <div style={{display:"inline", fontWeight:"bold", fontSize:"1.5em"}}>{surveyName}</div>} -
+            
             <Link to="/">Home</Link> - 
+            <Link to="/SurveySelect">Select Survey</Link> -
             <Link to="/Surveys">Surveys</Link> - 
             <Link to="/Strata">Strata</Link> - 
             <Link to="/Stations">Stations</Link> - 
@@ -26,9 +64,11 @@ export default function App() {
             <Link to="/Samples">Samples</Link> - 
             <Link to="/Masters">Species</Link>
          </nav>
-
-
+      </main>
+      
       <Route path="/" exact component={Home} />
+
+      <Route path="/SurveySelect" exact component={ComponentsSurveySelect} />
 
       <Route path="/Survey/new" exact component={ComponentsSurveyNew} />
       <Route path="/Survey/survey/:survey_id" exact component={ComponentsSurvey} />
@@ -47,9 +87,9 @@ export default function App() {
       <Route path="/Weights" component={Weights} />
       <Route path="/Samples" component={Samples} />
       {/* <Route path="/Species" component={Species} /> */}
-
-      </main>
+      
     </Router>
+    </SurveyContext.Provider>
   );
 }
 

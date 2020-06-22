@@ -8,7 +8,10 @@ from stations.serializers import StationSerializer, StationsHaulsSerializer
 
 class StationsAPI(ListAPIView):
     queryset = Station.objects.all()
-    serializer_class = StationSerializer
+    # stations = get_list_or_404(Station)
+    # serializer_class = StationSerializer
+
+    serializer_class = StationsHaulsSerializer
 
 class StationAPI(APIView):
 
