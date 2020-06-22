@@ -3,8 +3,6 @@ import React, { Component, Fragment } from "react";
 import ComponentsSurveysOptions from "./options/Options.js";
 import ComponentsUiNewSurveyButton from "../ui/NewSurveyButton.js"
 
-import SurveyContext from "../../contexts/SurveyContext.js";
-
 class ComponentsSurveys extends Component {
 	/**
 	 * List of surveys
@@ -16,14 +14,13 @@ class ComponentsSurveys extends Component {
             surveys: [],
             loaded: false,
             placeholder: "Loading"
-        };
+        }
 	}
 
-	static contextType = SurveyContext;
 	
     componentDidMount() {
 
-		fetch("http://127.0.0.1:8000/api/1.0/surveys")
+		fetch("http://127.0.0.1:8000/api/1.0/surveys/")
 			.then(response => {
 				if(response.status > 400){
 					return this.setState(() => {
@@ -44,19 +41,21 @@ class ComponentsSurveys extends Component {
 	
 	render() {
 		return (
+
 			<Fragment>
 				<div><ComponentsUiNewSurveyButton /></div>
 				<ul>		
-					{this.state.surveys.map(survey => {
+					{/* <li>{this.state.surveys}</li> */}
+					{this.state.surveys.map(sur => {
 						return(
-							<li key={survey.id}>
-								survey: { this.context } : {survey.description} <ComponentsSurveysOptions survey_id={survey.id} />
+							<li key={sur.id}>
+								survey: {sur.description} -
+								<ComponentsSurveysOptions survey_id={sur.id} />
 							</li>
 						)
 					})}
 				</ul>
 			</Fragment>
-
 			
 		)
 	}

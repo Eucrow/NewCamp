@@ -24,7 +24,6 @@ class ComponentsHaulsOptions extends Component {
                 -
                 <Link style={{"display": "inline"}} to={{pathname: this.apiHaul, state: {isEdit: true}}}> edit </Link>
                 <ComponentsUiRemoveHaulButton style={{"display": "inline"}} haul_id={ this.props.haul_id } onDelete={ this.onDelete } />
-                Remove
             </Fragment>
         );
     }

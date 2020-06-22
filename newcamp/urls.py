@@ -78,8 +78,8 @@ urlpatterns = [
     re_path(r'^api/1.0/haul/trawl/remove/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="remove_station_api"),
     # TODO: remove haul
     # TODO: hidrology hauls
-    re_path(r'^api/1.0/hauls/', HaulListAllAPI.as_view(), name="get_hauls_api"),
-    re_path(r'^api/1.0/hauls/(?P<survey_id>[0-9])', HaulListAPI.as_view(), name="get_hauls_api"),
+    re_path(r'^api/1.0/hauls/$', HaulListAllAPI.as_view(), name="get_hauls_api"),
+    re_path(r'^api/1.0/hauls/(?P<survey_id>[0-9])$', HaulListAPI.as_view(), name="get_hauls_api"),
     re_path(r'^api/1.0/hauls/csv/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListCsvApi.as_view(), name="get_hauls_api_csv"),
     re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$', HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
 

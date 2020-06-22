@@ -18,16 +18,24 @@ class ComponentsHauls extends Component {
             loaded: false,
             placeholder: "Loading"
          }
-        
-        // TODO: SELECT SURVEY
-        // this is the partial api. The survey_id must be add to the url
-        this.apiHaulsPartial = "http://127.0.0.1:8000/api/1.0/hauls/" 
+
+        // The next api retrieve all the hauls. If a survey id is added at the end, retrieve only the
+        // hauls of this survey
+        this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/" 
 
         this.onDelete = this.onDelete.bind(this);
 
     }
 
-
+    
+    getHaulsApi(){
+        /**
+         * Build url api of all the hauls of a survey, using apiHauls and context
+         */
+        return (this.context.surveySelector === null?
+            this.apiHauls :
+            this.apiHauls + this.context.surveySelector);
+    }
 
     onDelete(haul_id){
 
@@ -40,21 +48,10 @@ class ComponentsHauls extends Component {
 			});
 
     }
-    
-    getHaulsApi(){
-        /**
-         * Build url api from apiHaulsPartial and context
-         */
-        return (this.context? this.apiHaulsPartial + this.context : this.apiHaulsPartial);
-    }
 
     componentDidMount() {
-
         
         const APIHauls = this.getHaulsApi()
-        console.log(APIHauls)
-
-        // const completeAPIHauls = this.apiHaulsPartial + this.context;
 
         fetch(APIHauls)
             .then(response => {
@@ -78,6 +75,7 @@ class ComponentsHauls extends Component {
     render() { 
         return ( 
             <Fragment>
+                {/* <div><SelectSurveyButton /></div> */}
                 <ul>
                     {this.state.hauls.map(haul => {
                         return(

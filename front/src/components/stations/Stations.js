@@ -11,6 +11,12 @@ class ComponentsStations extends Component {
 	 * List of stations
 	 * @param {*} props 
 	 */
+
+	// The contextType property on a class can be assigned a Context object created by React.createContext().
+	// This lets you consume the nearest current value of that Context type using this.context. You can reference
+	// this in any of the lifecycle methods including the render function.
+	static contextType = SurveyContext;
+	
     constructor(props) {
         super(props);
         this.state = {
@@ -19,15 +25,21 @@ class ComponentsStations extends Component {
             placeholder: "Loading"
         };
 
-		this.apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/hauls/";
-		// TODO: SELECT SURVEY!!!!// TODO: SELECT SURVEY!!!!
+		// The next api retrieve all the stations. If a 'hauls/survey_id' is added at the end, retrieve only the
+        // stations of this survey
+		this.apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
+		
 		this.onDelete = this.onDelete.bind(this);
 	}
 
-	// The contextType property on a class can be assigned a Context object created by React.createContext().
-	// This lets you consume the nearest current value of that Context type using this.context. You can reference
-	// this in any of the lifecycle methods including the render function.
-	static contextType = SurveyContext;
+	getStationsApi(){
+        /**
+         * Build url api of all the stations of a survey, using apiHauls and context
+         */
+		return (this.context.surveySelector === null?
+					this.apiStationsPartial :
+					this.apiStationsPartial + "hauls/"+  this.context.surveySelector);
+    }
 	
 	onDelete(station_id){
 
@@ -43,9 +55,9 @@ class ComponentsStations extends Component {
 
     componentDidMount() {
 		
-		const completeAPIStations = this.apiStationsPartial + this.context;
+		const APIStations = this.getStationsApi()
 
-		fetch(completeAPIStations)
+		fetch(APIStations)
 			.then(response => {
 				if(response.status > 400){
 					return this.setState(() => {
