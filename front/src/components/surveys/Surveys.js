@@ -14,9 +14,22 @@ class ComponentsSurveys extends Component {
             surveys: [],
             loaded: false,
             placeholder: "Loading"
-        }
+		}
+
+		this.onDelete = this.onDelete.bind(this);
 	}
 
+	onDelete(survey_id){
+
+		// state, before delete anything
+		const currentSurvey = this.state.surveys;
+
+		// Remove deleted item from state.
+		this.setState({
+			surveys: currentSurvey.filter(survey => survey.id !== survey_id),
+			});
+
+	}
 	
     componentDidMount() {
 
@@ -50,7 +63,7 @@ class ComponentsSurveys extends Component {
 						return(
 							<li key={sur.id}>
 								survey: {sur.description} -
-								<ComponentsSurveysOptions survey_id={sur.id} />
+								<ComponentsSurveysOptions survey_id={sur.id} onDelete= {this.onDelete} />
 							</li>
 						)
 					})}

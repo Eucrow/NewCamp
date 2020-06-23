@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-
-
 import { Link } from "react-router-dom";
+
+import ComponentsUiRemoveSurveyButton from "../../ui/RemoveSurveyButton.js";
 
 class ComponentsSurveysOptions extends Component {
     /**
@@ -13,6 +13,7 @@ class ComponentsSurveysOptions extends Component {
         // this.state = { 
         //     data: []
         //  }
+        this.onDelete = this.props.onDelete;
         this.api = "/Survey/survey/" + this.props.survey_id;
     }
 
@@ -21,7 +22,7 @@ class ComponentsSurveysOptions extends Component {
             <ul>
                 <li><Link to={{pathname: this.api, state: {isEdit: false }}}> detail </Link></li>
                 <li><Link to={{pathname: this.api, state: {isEdit: true }}}> edit </Link></li>
-                <li>remove</li>
+                <li><ComponentsUiRemoveSurveyButton style={{"display": "inline"}} survey_id={ this.props.survey_id } onDelete={ this.onDelete } /></li>
                 <li>select</li>
             </ul>
 

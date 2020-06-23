@@ -92,13 +92,13 @@ class SurveysAcronymList(ListAPIView):
 class SurveyRemoveAPI(APIView):
     """
     Endpoint to remove survey.
-    Remove the surveys and all data of tables related.
+    Remove the survey and all data of tables related.
     """
-
     def delete(self, request, pk):
         survey = get_object_or_404(Survey, pk=pk)
         survey.delete()
         return Response(status=status.HTTP_200_OK)
+
 
 class SurveyNewAPI(APIView):
     """
