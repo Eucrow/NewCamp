@@ -76,6 +76,11 @@ class HaulAPI(APIView):
         serializer = HaulSerializer(haul)
         return Response(serializer.data)
 
+    # def post(self, request):
+    #     serializer = HaulSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save
+
 class HaulMeteorologyAPI(APIView):
     """
     Endpoint to retrieve the Haul Meteorology of a survey.

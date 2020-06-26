@@ -15,7 +15,7 @@ class ComponentsUiNewSurveyButton extends Component {
 
     render() {
 		return (
-            <div><Link to={{pathname: this.api, state: {toShow: "new" }}}> Add New Survey </Link></div>
+            <div><Link to={{pathname: this.api, state: {toShow: "new" }}}> Add new survey </Link></div>
 		)
 	}
 }

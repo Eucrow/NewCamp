@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 
-import ComponentsHaulsOptions from './options/Options.js';
-
 import SurveyContext from "../../contexts/SurveyContext.js";
+
+import ComponentsHaulsOptions from './options/Options.js';
+import ComponentsUiNewHaulButton from '../ui/NewHaulButton.js';
 
 class ComponentsHauls extends Component {
 
@@ -75,7 +76,7 @@ class ComponentsHauls extends Component {
     render() { 
         return ( 
             <Fragment>
-                {/* <div><SelectSurveyButton /></div> */}
+                <div><ComponentsUiNewHaulButton /></div>
                 <ul>
                     {this.state.hauls.map(haul => {
                         return(

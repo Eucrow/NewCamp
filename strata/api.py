@@ -18,7 +18,7 @@ class StrataAPI(APIView):
         :param stratification_id: Stratification id which strata is response
         :return: Response with strata
         '''
-        # queryset = Stratum.objects.all(stratification_id=stratification_id)
+        # queryset = Stratum.objects.filter(stratification_id=stratification_id)
         queryset = get_list_or_404(Stratum, stratification_id=stratification_id)
-        serializer = StrataSerializer(queryset)
+        serializer = StrataSerializer(queryset, many=True)
         return Response(serializer.data)

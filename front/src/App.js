@@ -6,12 +6,15 @@ import {BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ComponentsSurveys from "./components/surveys/Surveys.js";
 import ComponentsSurvey from "./components/surveyDetails/Survey.js";
 import ComponentsSurveyNew from "./components/surveyNew/SurveyNew.js";
+import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
+
 import ComponentsStations from "./components/stations/Stations.js";
 import ComponentsStationNew from "./components/stationNew/StationNew.js";
 import ComponentsStation from "./components/stationDetail/station.js";
-import ComponentHaul from "./components/haulDetail/haul.js";
+
 import ComponentsHauls from "./components/hauls/hauls.js";
-import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
+import ComponentHaul from "./components/haulDetail/haul.js";
+import ComponentsHaulNew from "./components/haulNew/HaulNew.js";
 
 import  SurveyContext  from "./contexts/SurveyContext.js";
 
@@ -79,9 +82,11 @@ export default function App() {
       <Route path="/Stations/new" exact component={ComponentsStationNew} />
       <Route path="/Stations/station/:station_id" exact component={ComponentsStation} />
 
-      <Route path="/Hauls/:survey_id" exact component={ComponentsHauls} />
-      <Route path="/Hauls" exact component={ComponentsHauls} />
+      <Route path="/Hauls/new" exact component={ComponentsHaulNew} />
+      {/* TODO: CONSIDER IF THE NEXT PATH IS USEFULL */}
+      <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
       <Route path="/Hauls/haul/:haul_id" exact component={ComponentHaul} />
+      <Route path="/Hauls" exact component={ComponentsHauls} />
 
       
       <Route path="/Weights" component={Weights} />

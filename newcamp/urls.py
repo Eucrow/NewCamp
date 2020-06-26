@@ -25,7 +25,8 @@ from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, S
     SurveysAcronymList, SurveyNewAPI
 from stratifications.api import StratificationsAPI
 from strata.api import StrataAPI
-from stations.api import StationsAPI, StationAPI, StationsHaulsAPI
+from samplers.api import SamplersAPI
+from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
 from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
@@ -45,6 +46,9 @@ urlpatterns = [
     re_path(r'^api/1.0/species/(?P<pk>[0-9]+)$', SpAPI.as_view(), name="sp_api"),
     re_path(r'^api/1.0/species/new/$', SpAPI.as_view(), name="sp_api"),
     re_path(r'^api/1.0/species/import$', SpeciesImportAPI.as_view(), name="species_import_api"),
+
+    # Samplers API URLS
+    re_path(r'^api/1.0/samplers/$', SamplersAPI.as_view(), name="samplers_list_api"),
 
     # Surveys API URLS
     re_path(r'^api/1.0/surveys/import$', SurveysImportAPI.as_view(), name="surveys_import_api"),
@@ -69,10 +73,12 @@ urlpatterns = [
     re_path(r'^api/1.0/station/new/$', StationAPI.as_view(), name="add_survey_api"),
     re_path(r'^api/1.0/station/remove/(?P<station_id>[0-9]+)$', StationAPI.as_view(), name="remove_station_api"),
     re_path(r'^api/1.0/stations/$', StationsAPI.as_view(), name="get_stations_api"),
+    re_path(r'^api/1.0/stations/(?P<survey_id>[0-9]+)$', StationsBySurveyAPI.as_view(), name="get_stations_by_survey_api"),
     re_path(r'^api/1.0/stations/hauls/(?P<survey_id>[0-9]+)$', StationsHaulsAPI.as_view(), name="station_haul_api"),
 
     # Hauls API URLs
     re_path(r'^api/1.0/haul/(?P<haul_id>[0-9]+)$', HaulAPI.as_view(), name="get_haul_api"),
+    re_path(r'^api/1.0/haul/new$', HaulAPI.as_view(), name="add_haul_api"),
     re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="get_haul_api"),
     re_path(r'^api/1.0/haul/trawl/new$', HaulTrawlAPI.as_view(), name="add_haul_api"),
     re_path(r'^api/1.0/haul/trawl/remove/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="remove_station_api"),

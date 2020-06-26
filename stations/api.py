@@ -7,11 +7,23 @@ from stations.models import Station
 from stations.serializers import StationSerializer, StationsHaulsSerializer
 
 class StationsAPI(ListAPIView):
+    '''
+    Retrieve list of all stations
+    '''
     queryset = Station.objects.all()
-    # stations = get_list_or_404(Station)
-    # serializer_class = StationSerializer
+    serializer_class = StationSerializer
 
-    serializer_class = StationsHaulsSerializer
+class StationsBySurveyAPI(ListAPIView):
+    '''Retrieve list of all stations of a survey'''
+    serializer_class = StationSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases for
+        the user as determined by the username portion of the URL.
+        """
+        survey_id = self.kwargs['survey_id']
+        return Station.objects.filter(survey_id = survey_id)
 
 class StationAPI(APIView):
 
