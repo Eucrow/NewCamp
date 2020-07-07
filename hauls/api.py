@@ -33,7 +33,6 @@ class HaulListAllAPI(ListAPIView):
     """
     Endpoint to get all the hauls of all surveys
     """
-
     def get(self, request):
         hauls = Haul.objects.all()
         serializer = HaulSerializer(hauls, many=True)

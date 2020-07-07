@@ -13,7 +13,7 @@ class Haul(models.Model):
     sampler = models.ForeignKey('samplers.Sampler', on_delete=models.CASCADE)
     haul = models.PositiveIntegerField(null=True, blank=True)
     gear = models.PositiveIntegerField(null=True, blank=True)
-    valid = models.PositiveIntegerField(null=True, blank=True)
+    valid = models.BooleanField(null=True, blank=True)
     # ESTN = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
