@@ -118,9 +118,9 @@ class ComponentsHaul extends Component {
             <p>Gear: {haul.gear || ""}</p>
             <p>Valid: {haul.valid || ""}</p>
             <p>Meteorology:</p>
-            <p>Wind direction: {haul.meteo.wind_direction || ""}</p>
-            <p>Wind velocity: {haul.meteo.wind_velocity || ""}</p>
-            <p>Sea State: {haul.meteo.sea_state || ""}</p>
+            <p>Wind direction: {haul.meteo? haul.meteo.wind_direction : ""}</p>
+            <p>Wind velocity: {haul.meteo? haul.meteo.wind_velocity : ""}</p>
+            <p>Sea State: {haul.meteo? haul.meteo.sea_state : ""}</p>
             <p>Trawl characteristics:</p>
             <p>Shooting_date_time: {haul.trawl_characteristics.shooting_date_time || ""}</p>
             <p>Shooting_latitude: {haul.trawl_characteristics.shooting_latitude || ""}</p>

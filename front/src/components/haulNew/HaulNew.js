@@ -17,66 +17,67 @@ class ComponentsHaulNew extends Component {
                 station_id: '',
                 stratum_id: '',
                 sampler_id: null,
-                gear: '',
-                valid: '',
+                // gear: '',
+                // valid: '',
                 meteo: {
-                    wind_direction: '',
-                    wind_velocity: '',
-                    sea_state: ''
+                    // wind_direction: '',
+                    // wind_velocity: '',
+                    // sea_state: ''
                 }
             },
             trawl_characteristics: {
-                shooting_date_time: '',
-                shooting_latitude: '',
-                shooting_longitude: '',
-                shooting_depth: '',
-                hauling_date_time: '',
-                hauling_latitude: '',
-                hauling_longitude: '',
-                hauling_depth: '',
-                bottom_date_time: '',
-                bottom_latitude: '',
-                bottom_longitude: '',
-                bottom_depth: '',
-                course: '',
-                velocity: '',
-                cable: '',
-                sweep: '',
-                otter_boards_distance: '',
-                horizontal_aperture: '',
-                vertical_aperture: '',
-                grid: '',
-                track: '',
-                comment: ''
+                // shooting_date_time: '',
+                // shooting_latitude: '',
+                // shooting_longitude: '',
+                // shooting_depth: '',
+                // hauling_date_time: '',
+                // hauling_latitude: '',
+                // hauling_longitude: '',
+                // hauling_depth: '',
+                // bottom_date_time: '',
+                // bottom_latitude: '',
+                // bottom_longitude: '',
+                // bottom_depth: '',
+                // course: '',
+                // velocity: '',
+                // cable: '',
+                // sweep: '',
+                // otter_boards_distance: '',
+                // horizontal_aperture: '',
+                // vertical_aperture: '',
+                // grid: '',
+                // track: '',
+                // comment: ''
             },
             hydrography_characteristics: {
-                latitude: '',
-                longitude: '',
-                date_time: '',
-                depth_probe: '',
-                cable: '',  
-                depth: '',
-                temperature_0: '',
-                salinity_0: '',
-                sigma_0: '',
-                temperature_50: '',
-                salinity_50: '',
-                sigma_50: '',
-                temperature_100: '',
-                salinity_100: '',
-                sigma_100: '',
-                temperature: '',
-                salinity: '',
-                sigma: '',
-                comment: '',
-                haul_id: ''
+                // latitude: '',
+                // longitude: '',
+                // date_time: '',
+                // depth_probe: '',
+                // cable: '',  
+                // depth: '',
+                // temperature_0: '',
+                // salinity_0: '',
+                // sigma_0: '',
+                // temperature_50: '',
+                // salinity_50: '',
+                // sigma_50: '',
+                // temperature_100: '',
+                // salinity_100: '',
+                // sigma_100: '',
+                // temperature: '',
+                // salinity: '',
+                // sigma: '',
+                // comment: '',
+                // haul_id: ''
             },
             stations: [],
             strata: [],
             samplers:[]
         }
         
-        this.apiForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
+        this.apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
+        this.apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
         this.apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
         this.apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
         this.apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
@@ -84,8 +85,8 @@ class ComponentsHaulNew extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeMeteo = this.handleChangeMeteo.bind(this);
         this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
+        this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        
 
     }
 
@@ -139,27 +140,42 @@ class ComponentsHaulNew extends Component {
         });
 
     }
+
+    handleChangeHydrography (event) {
+        const name = event.target.name;
+        const value = event.target.value;
+        console.log("value in handleChangeHydrography: " + value);
+        
+
+        this.setState({
+            data: {
+              ...this.state.data,
+              hydrography_characteristics:{
+                ...this.state.data.hydrography_characteristics,
+                [name] : value
+              }
+            }
+        });
+
+    }
     
-
-
     handleSubmit(event) {
 
         event.preventDefault();
 
         var data = this.state.data
-        
-        console.log(data)
 
-        // data.prueba ="probando"
+        const apiForm = this.state.data.sampler_id=== "1"? this.apiTrawlForm
+                      : this.state.data.sampler_id=== "2" ? this.apiHydrographyForm
+                      : null;
 
         console.log(JSON.stringify(data))
 
-        fetch(this.apiForm, {
+        fetch(apiForm, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
               },
-            // body: JSON.stringify(this.state.data)
             body: JSON.stringify(data)
         })
         .catch(error => console.log('Error'))
@@ -259,7 +275,6 @@ class ComponentsHaulNew extends Component {
         }
     }
 
-
     render() { 
         return ( 
             <Fragment>
@@ -312,7 +327,9 @@ class ComponentsHaulNew extends Component {
                 </fieldset>
 
                 <FormMeteorology handleChangeMeteo={ this.handleChangeMeteo }/>
-                <FormSpecific handleChangeTrawl={ this.handleChangeTrawl } sampler_id={ this.state.data.sampler_id }/>
+                <FormSpecific handleChangeTrawl={ this.handleChangeTrawl }
+                              handleChangeHydrography={ this.handleChangeHydrography }
+                              sampler_id={ this.state.data.sampler_id }/>
 
                 <input type="submit" value="Save Haul" onClick={ this.handleSubmit } />
 

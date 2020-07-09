@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import FormHydrology from "./hidrology/FormHydrology.js";
+import FormHydrography from "./hidrography/FormHydrography.js";
 import FormTrawl from "./trawl/FormTrawl.js";
 
 class FormSpecific extends Component {
@@ -13,6 +13,7 @@ class FormSpecific extends Component {
         super(props);
         this.state = {  };
         this.handleChangeTrawl = this.props.handleChangeTrawl;
+        this.handleChangeHydrography = this.props.handleChangeHydrography;
     }
 
     componentDidMount() {
@@ -24,9 +25,10 @@ class FormSpecific extends Component {
         if(sampler_id === "1"){
             return( <FormTrawl handleChangeTrawl={ this.handleChangeTrawl }/> )
         } else if (sampler_id === "2") {
-            return( <FormHydrology handleChangeTrawl={ this.handleChangeTrawl }/> )
+            return( <FormHydrography handleChangeHydrography={ this.handleChangeHydrography }/> )
         } else {
-            return( <p>nada</p> )
+            //TODO: return error message instead of "nada"
+            return( null )
         }
     }
 }
