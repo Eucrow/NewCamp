@@ -4,15 +4,14 @@ from stations.models import Station
 
 from hauls.models import Haul
 
-from samplers.serializers import SamplerSerializer
 
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
         fields = ['id', 'station', 'comment', 'survey_id']
 
-    # def __str__(self):
-    #     return '%s' % (self.station)
+    def __str__(self):
+        return '%s' % (self.station)
 
 
 class HaulSerializer(serializers.ModelSerializer):

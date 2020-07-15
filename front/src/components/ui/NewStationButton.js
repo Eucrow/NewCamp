@@ -15,7 +15,7 @@ class ComponentsUiNewStationButton extends Component {
 
     render() {
 		return (
-            <div><Link to={{pathname: this.api, state: {toShow: "new" }}}> Add New Station </Link></div>
+            <div><Link to={{pathname: this.api, state: {toShow: "new" }}}> Add new station </Link></div>
 		)
 	}
 }

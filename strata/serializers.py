@@ -7,4 +7,4 @@ class StrataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Stratum
-        fields = ['stratum', 'area', 'comment', 'stratification_id']
+        fields = ['id', 'stratum', 'area', 'comment', 'stratification_id']

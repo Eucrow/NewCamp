@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework_csv import renderers as r
 # from hauls.views import HaulsImport
 from hauls.models import Haul, HaulTrawl, HaulHydrography
-from hauls.serializers import HaulSerializer, HaulGeoJSONSerializer, HaulTrawlSerializer
+from hauls.serializers import HaulSerializer, HaulGeoJSONSerializer, HaulTrawlSerializer, HaulHydrographySerializer
 
 from surveys.models import Survey
 
@@ -33,7 +33,6 @@ class HaulListAllAPI(ListAPIView):
     """
     Endpoint to get all the hauls of all surveys
     """
-
     def get(self, request):
         hauls = Haul.objects.all()
         serializer = HaulSerializer(hauls, many=True)
@@ -76,6 +75,11 @@ class HaulAPI(APIView):
         serializer = HaulSerializer(haul)
         return Response(serializer.data)
 
+    # def post(self, request):
+    #     serializer = HaulSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save
+
 class HaulMeteorologyAPI(APIView):
     """
     Endpoint to retrieve the Haul Meteorology of a survey.
@@ -117,6 +121,39 @@ class HaulTrawlAPI(APIView):
         haul = Haul.objects.get(pk=haul_id)
         haul.delete()
         return Response(status=HTTP_204_NO_CONTENT)
+
+class HaulHydrographyAPI(APIView):
+    """
+    Endpoint to manage the Hydrography Haul of a survey.
+    """
+    def get(self, request, haul_id):
+        haul = get_object_or_404(Haul, pk=haul_id)
+        serializer = HaulHydrographySerializer(haul)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = HaulHydrographySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(station_id=request.data["station_id"],
+                            stratum_id=request.data['stratum_id'],
+                            sampler_id=request.data['sampler_id'])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    def put(self, request, haul_id):
+        haul = get_object_or_404(Haul, pk=haul_id)
+        serializer = HaulHydrographySerializer(haul, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+    # def delete(self, request, haul_id, format=None):
+    #     haul = Haul.objects.get(pk=haul_id)
+    #     haul.delete()
+    #     return Response(status=HTTP_204_NO_CONTENT)
 
 class HaulGEOJsonAPI(ListAPIView):
     """
