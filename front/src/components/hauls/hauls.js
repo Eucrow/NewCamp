@@ -84,7 +84,7 @@ class ComponentsHauls extends Component {
                                 Sampler: { haul.sampler.sampler} -
                                 Haul: { haul.haul } -
                                 Station: { haul.station.station } -
-                                <ComponentsHaulsOptions haul_id={ haul.id } onDelete= { this.onDelete }/>
+                                <ComponentsHaulsOptions haul_id={ haul.id } sampler_id={ haul.sampler.id } onDelete= { this.onDelete }/>
                             </li>
                         )
                     })}

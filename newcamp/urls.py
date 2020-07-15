@@ -86,7 +86,7 @@ urlpatterns = [
         re_path(r'^api/1.0/haul/trawl/new/$', HaulTrawlAPI.as_view(), name="add_trawl_haul_api"),
         re_path(r'^api/1.0/haul/trawl/remove/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(),
                 name="remove_trawl_haul_api"),
-        # Hydrology hauls
+        # Hydrography hauls
         re_path(r'^api/1.0/haul/hydrography/(?P<haul_id>[0-9]+)$', HaulHydrographyAPI.as_view(),
                 name="get_hydrography_haul_api"),
         re_path(r'^api/1.0/haul/hydrography/new/$', HaulHydrographyAPI.as_view(), name="add_hydrography_haul_api"),

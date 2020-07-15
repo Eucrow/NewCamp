@@ -74,7 +74,7 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['haul', 'gear', 'valid', 'meteo', 'trawl_characteristics', 'station_id', 'stratum_id', 'sampler_id', ]
+        fields = ['id', 'haul', 'gear', 'valid', 'meteo', 'trawl_characteristics', 'station_id', 'stratum_id', 'sampler_id', ]
         depth = 1
 
     # This is a nested serializer, so we have to overwrite the create function
@@ -106,7 +106,6 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
 
             # Then, create a meteo instance, fill with the validated meto data, and save it
             meteo = instance.meteo
-            print(meteo_datas.items())
             for attr, value in meteo_datas.items():
                 print(attr, value)
                 setattr(meteo, attr, value)
@@ -131,25 +130,22 @@ class HydrographySerializer(serializers.ModelSerializer):
 
 class HaulHydrographySerializer(serializers.ModelSerializer):
     """
-    Serializer of trawl haul. Include the general Haul model, HaulTrawl model and Meteorology model.
+    Serializer of hydrography haul. Include the general Haul model and HaulHydrography.
     """
-    meteo = HaulMeteorologySerializer()
     hydrography_characteristics = HydrographySerializer()
 
     class Meta:
         model = Haul
-        fields = ['haul', 'gear', 'valid', 'meteo', 'hydrography_characteristics', 'station_id', 'stratum_id', 'sampler_id', ]
+        fields = ['id', 'haul', 'gear', 'valid', 'hydrography_characteristics', 'station_id', 'stratum_id', 'sampler_id', ]
         depth = 1
 
     # This is a nested serializer, so we have to overwrite the create function
     def create(self, validated_data):
         # Firstly, get the data from the nested parts
-        meteo_data = validated_data.pop('meteo')
         hydrography_characteristics_data = validated_data.pop('hydrography_characteristics')
         # Secondly, save the Haul
         haul = Haul.objects.create(**validated_data)
         # Then, save the nested parts in its own models
-        Meteorology.objects.create(haul=haul, **meteo_data)
         HaulHydrography.objects.create(haul=haul, **hydrography_characteristics_data)
         # And finally, return the haul
         return haul
@@ -158,7 +154,6 @@ class HaulHydrographySerializer(serializers.ModelSerializer):
 
         if validated_data:
             # First, get the data from validated_data (pop() remove the data from the original dict)
-            meteo_datas = validated_data.pop('meteo')
             hydrography_characteristics_datas = validated_data.pop('hydrography_characteristics')
 
             # Second, save the instance validated (this does not have the meteo and trawl_characteristics data
@@ -168,15 +163,7 @@ class HaulHydrographySerializer(serializers.ModelSerializer):
 
             instance.save()
 
-            # Then, create a meteo instance, fill with the validated meto data, and save it
-            meteo = instance.meteo
-            print(meteo_datas.items())
-            for attr, value in meteo_datas.items():
-                print(attr, value)
-                setattr(meteo, attr, value)
-            meteo.save()
-
-            # And do the same with trawl_characteristics data
+            # Then, create a trawl instance, fill with the validated trawl data, and save it
             hydrography_characteristics = instance.hydrography_characteristics
             for attr, value in hydrography_characteristics_datas.items():
                 print(attr, value)
