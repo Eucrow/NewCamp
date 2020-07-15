@@ -3,58 +3,15 @@ import update from 'immutability-helper';
 
 class ComponentsHaulTrawl extends Component {
     /**
-     * 
+     * Component of trawl form of haul.
      * @param {number} props.haul
      * @param {boolean} props.isEdit
+     * @param {function} props.handleChangeTrawl
      */
     
     constructor(props) {
         super(props);
-        // this.state = { 
-        //     haul : this.props.haul,
-        //     isEdit : this.props.isEdit,
-        //  };
-
-        // this.props.handleChangeTrawl = this.props.handleChangeTrawl.bind(this);
-
-        // this.handleSubmit = this.handleSubmit.bind(this);
-
-        // this.apiTrawlHaul = "http://127.0.0.1:8000/api/1.0/haul/trawl/" + this.state.haul.id;
     }
-
-
-    // handleChangeTrawl (event) {
-    //     const name = event.target.name;
-    //     const value = event.target.value;
-
-    //     const newHaulTrawl = update(this.state.haul, {
-    //         trawl_characteristics:{
-    //             [name]: {$set: value}
-    //         }
-    //     });
-
-    //     this.setState({
-    //         haul: newHaulTrawl
-    //     });
-    // }
-
-    // handleSubmit(event) {
-    //     fetch(this.apiTrawlHaul, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //           },
-    //         body: JSON.stringify(this.state.haul)
-    //     })
-    //     .then(() => {
-    //         this.setState(() => {
-    //             return{isEdit: false}
-    //         })
-    //     })
-    //     .catch(error => console.log('Error'))
-        
-    //     event.preventDefault();
-    // }
 
     render() {
         const haul = this.props.haul;

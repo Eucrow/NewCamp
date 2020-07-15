@@ -17,12 +17,7 @@ class ComponentsHaulNew extends Component {
                 station_id: '',
                 stratum_id: '',
                 sampler_id: null,
-                // gear: '',
-                // valid: '',
                 meteo: {
-                    // wind_direction: '',
-                    // wind_velocity: '',
-                    // sea_state: ''
                 }
             },
             trawl_characteristics: {
@@ -188,10 +183,6 @@ class ComponentsHaulNew extends Component {
          * First, check if a survey is selected. If doesn't, redirec to hauls page.
          */
         if (this.context.surveySelector === null){
-            
-            // alert("Survey is not selected" + this.context);
-            
-            // this.props.history.push('/Hauls');
 
             this.setState(() => {
                 this.context.surveySelector = 1
@@ -206,6 +197,7 @@ class ComponentsHaulNew extends Component {
             const apiStrata = this.apiStrataPartial + this.context.surveySelector;
             const apiSamplers = this.apiSamplers;
             
+            // TODO: Optimize fetchs
             // Fetch stations
             fetch(apiStations)
             .then(response => {
@@ -269,16 +261,16 @@ class ComponentsHaulNew extends Component {
                         samplers: samplers
                     };
 
-                    
                 });
             });
         }
     }
-
+    
     render() { 
         return ( 
             <Fragment>
             <form>
+            {/* TODO: factorize common part of the form. */}
                 <fieldset>
                 <legend>Common information:</legend>
                 <label htmlFor="station_id">Station: </label>
@@ -314,7 +306,6 @@ class ComponentsHaulNew extends Component {
                     )}
                     
                 </select>
-               
                 <label htmlFor="haul">Haul:</label>
                 <input type="text" id="haul" name="haul" onChange={this.handleChange} />
                

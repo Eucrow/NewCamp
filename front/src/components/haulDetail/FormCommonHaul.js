@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 
 class ComponentsHaulCommon extends Component {
     /**
-     * 
+     * Component of the common part of the haul form.
      * @param {number} props.haul
      * @param {boolean} props.isEdit
      * @param {function} props.handleChangeCommonHaul
+     * @param {function} props.handleChangeCommonValid
      */
     
     constructor(props) {

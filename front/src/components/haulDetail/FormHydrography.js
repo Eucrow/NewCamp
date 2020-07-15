@@ -3,9 +3,10 @@ import update from 'immutability-helper';
 
 class ComponentsHaulHydrography extends Component {
     /**
-     * 
+     * Component of hydrography form of haul.
      * @param {number} props.haul
      * @param {boolean} props.isEdit
+     * @param {function} props.handleChangeHydrography
      */
     
     constructor(props) {

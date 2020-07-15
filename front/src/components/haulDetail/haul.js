@@ -109,12 +109,9 @@ class ComponentsHaul extends Component {
     }
 
     handleSubmit(event) {
-        // console.log("sampler_id :" + this.state.sampler_id);
-        console.log("is valid: " + this.state.haul.valid);
-
         const apiHaul = this.state.sampler_id === 1 ? this.apiTrawlHaul
                         : this.state.sampler_id === 2 ? this.apiHydrographyHaul
-                        : console.error("Error in sampler type.");
+                        : null;
 
         fetch(apiHaul, {
             method: 'PUT',
@@ -137,9 +134,7 @@ class ComponentsHaul extends Component {
 
         const apiHaul = this.state.sampler_id === 1 ? this.apiTrawlHaul
                         : this.state.sampler_id === 2 ? this.apiHydrographyHaul
-                        : console.error("Error in sampler type.");
-
-                              
+                        : null;    
 
         fetch(apiHaul)
             .then(response => {
@@ -157,8 +152,6 @@ class ComponentsHaul extends Component {
                     };
                 });
             });
-
-            
 
     }
 
