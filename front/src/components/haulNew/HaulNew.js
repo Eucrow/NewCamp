@@ -260,7 +260,6 @@ class ComponentsHaulNew extends Component {
                     return {
                         samplers: samplers
                     };
-
                 });
             });
         }

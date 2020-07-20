@@ -29,6 +29,7 @@ from samplers.api import SamplersAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
 from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI,\
     HaulHydrographyAPI
+from catches.api import CatchHaulListAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
 urlpatterns = [
@@ -100,6 +101,7 @@ urlpatterns = [
     re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$', HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
 
     # Catches API URLS
+    re_path(r'^api/1.0/catches/(?P<haul_id>[0-9]+)$', CatchHaulListAPI.as_view(), name="get_catches_haul_api"),
 
     # Lengths API URLs
     # re_path(r'^api/1.0/sampled_weights/import$', SampledWeightsImportAPI.as_view(), name="lengths_import"),

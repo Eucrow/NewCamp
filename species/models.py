@@ -32,7 +32,7 @@ class Sp(models.Model):
 
 class Category(models.Model):
 
-    sp = models.ForeignKey('species.Sp', on_delete=models.CASCADE, )
+    sp = models.ForeignKey('species.Sp', on_delete=models.CASCADE, related_name='species_category')
     category_name = models.CharField(max_length=50)
 
     class Meta:

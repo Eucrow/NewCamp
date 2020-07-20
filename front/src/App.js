@@ -3,6 +3,8 @@ import "./index.css";
 
 import {BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+import SurveyContext  from "./contexts/SurveyContext.js";
+
 import ComponentsSurveys from "./components/surveys/Surveys.js";
 import ComponentsSurvey from "./components/surveyDetails/Survey.js";
 import ComponentsSurveyNew from "./components/surveyNew/SurveyNew.js";
@@ -16,7 +18,7 @@ import ComponentsHauls from "./components/hauls/hauls.js";
 import ComponentHaul from "./components/haulDetail/haul.js";
 import ComponentsHaulNew from "./components/haulNew/HaulNew.js";
 
-import  SurveyContext  from "./contexts/SurveyContext.js";
+import ComponentsTrawlCatches from "./components/trawlCatches/TrawlCatches.js";
 
 
 
@@ -88,9 +90,11 @@ export default function App() {
       <Route path="/Hauls/haul/:haul_id" exact component={ComponentHaul} />
       <Route path="/Hauls" exact component={ComponentsHauls} />
 
+      <Route path="/Catches/haul/:haul_id" exact component={ComponentsTrawlCatches} />
+
       
-      <Route path="/Weights" component={Weights} />
-      <Route path="/Samples" component={Samples} />
+      {/* <Route path="/Weights" component={Weights} /> */}
+      {/* <Route path="/Samples" component={Samples} /> */}
       {/* <Route path="/Species" component={Species} /> */}
       
     </Router>
