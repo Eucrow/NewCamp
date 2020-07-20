@@ -839,10 +839,6 @@ class NtallImport:
         lengths_df['catch_id'] = lengths_df.apply(get_catch_id, axis=1, args=[self.survey_name])
         lengths_df['sex_id'] = lengths_df.apply(get_sex_id, axis=1)
 
-        # get the catch grouped
-        # catches_df = lengths_table[['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO']].drop_duplicates()
-        # catches_df['catch_id'] = catches_df.apply(get_catch_id, axis=1, args=[self.survey_name])
-
         # merge
         lengths_df = pd.merge(left=lengths_table, right=lengths_df, how='left',
                                  on=['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO'])
@@ -916,33 +912,33 @@ class NtallImport:
 
         # catches
         # check there aren't already saved catches of the survey
-        # if Catch.objects.filter(haul_id__station_id__survey_id__acronym=self.survey_name):
-        #     self.messages.append(
-        #         "<p>Catches of this survey already saved in database. Remove all the catches of this "
-        #         "survey before try to import it again. None of the catches has been saved.</p>")
-        # else:
-        #     catches_table = self.format_catch_table(lengths_file)
-        #     catches_table.to_sql("catches_catch", con=engine, if_exists="append", index=False)
+        if Catch.objects.filter(haul_id__station_id__survey_id__acronym=self.survey_name):
+            self.messages.append(
+                "<p>Catches of this survey already saved in database. Remove all the catches of this "
+                "survey before try to import it again. None of the catches has been saved.</p>")
+        else:
+            catches_table = self.format_catch_table(lengths_file)
+            catches_table.to_sql("catches_catch", con=engine, if_exists="append", index=False)
 
         # sampled weight
         # check there aren't already saved lengths of the survey
-        # if SampledWeight.objects.filter(catch_id__haul_id__station_id__survey_id__acronym=self.survey_name):
-        #     self.messages.append(
-        #         "<p>Sampled Weights of this survey already saved in database. Remove all the sampled weights"
-        #         "of this survey before try to import it again. None of the sampled weights has been saved.</p>")
-        # else:
-        #     sampled_weight_table = self.format_sampled_weight_table(lengths_file)
-        #     sampled_weight_table.to_sql("samples_sampledweight", con=engine, if_exists="append", index=False)
+        if SampledWeight.objects.filter(catch_id__haul_id__station_id__survey_id__acronym=self.survey_name):
+            self.messages.append(
+                "<p>Sampled Weights of this survey already saved in database. Remove all the sampled weights"
+                "of this survey before try to import it again. None of the sampled weights has been saved.</p>")
+        else:
+            sampled_weight_table = self.format_sampled_weight_table(lengths_file)
+            sampled_weight_table.to_sql("samples_sampledweight", con=engine, if_exists="append", index=False)
 
         # sexes
         # check there aren't already saved sexes of the survey
-        # if Sex.objects.filter(catch_id__haul_id__station_id__survey_id__acronym=self.survey_name):
-        #     self.messages.append(
-        #         "<p>Sexes of this survey already saved in database. Remove all the sexes of this "
-        #         "survey before try to import it again. None of the sexes has been saved.</p>")
-        # else:
-        #     sexes_table = self.format_sexes_table(lengths_file)
-        #     sexes_table.to_sql("samples_sex", con=engine, if_exists="append", index=False)
+        if Sex.objects.filter(catch_id__haul_id__station_id__survey_id__acronym=self.survey_name):
+            self.messages.append(
+                "<p>Sexes of this survey already saved in database. Remove all the sexes of this "
+                "survey before try to import it again. None of the sexes has been saved.</p>")
+        else:
+            sexes_table = self.format_sexes_table(lengths_file)
+            sexes_table.to_sql("samples_sex", con=engine, if_exists="append", index=False)
 
         # lengths
         # check there aren't already saved lengths of the survey
@@ -1087,11 +1083,11 @@ class OldCampImport:
         self.request = self.request
 
     def import_complete(self):
-        # survey = SurveysImport(self.request)
-        # survey_import = survey.import_surveys_csv()
-        #
-        # hauls = HaulsImport(self.request)
-        # hauls_import = hauls.import_hauls_csv()
+        survey = SurveysImport(self.request)
+        survey_import = survey.import_surveys_csv()
+
+        hauls = HaulsImport(self.request)
+        hauls_import = hauls.import_hauls_csv()
 
         # Is mandatory that NTALL will be imported before FAUNA file
         ntall = NtallImport(self.request)
@@ -1100,15 +1096,14 @@ class OldCampImport:
         # The catches table is filled firstly in the import of NTALL file. In this importation only the
         # species measured has been saved. With the FAUNA file, only of species which hasn't been
         # measured must be stored because is used to_sql from pandas library.
-        # faunas = FaunasImport(self.request)
-        # faunas_import = faunas.import_faunas_csv()
-        #
-        # hydro = HydrographiesImport(self.request)
-        # hydrography_import = hydro.import_hydrographies_csv()
+        faunas = FaunasImport(self.request)
+        faunas_import = faunas.import_faunas_csv()
 
-        # response = [survey_import.content, hauls_import.content, faunas_import.content, ntall_import.content,
-        #             hydrography_import.content]
-        response = [ntall_import.content]
+        hydro = HydrographiesImport(self.request)
+        hydrography_import = hydro.import_hydrographies_csv()
+
+        response = [survey_import.content, hauls_import.content, faunas_import.content, ntall_import.content,
+                    hydrography_import.content]
 
         return HttpResponse(response)
 
