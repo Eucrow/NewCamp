@@ -1,36 +1,22 @@
 from rest_framework import serializers
 
 from catches.models import Catch
-
+from samples.serializers import SampleWeightSerializer, LengthsBySexSerializer
 from species.serializers import CategorySerializer
-from samples.models import SampledWeight
 
-class SampleWeightSerializer(serializers.ModelSerializer):
+class CatchesVerboseSerializer(serializers.ModelSerializer):
+
+    category = CategorySerializer()
+
+    # 'samples' must be the related_name of of a foreing key field on SampleWeight model.
+    samples = SampleWeightSerializer(many=True)
+
+    # 'sexes' must be the related_name of a foreing key field on the Sex model.
+    sexes = LengthsBySexSerializer(many=True)
 
     class Meta:
-        model = SampledWeight
-        fields = ['sampled_weight', 'catch_id', ]
-
-class CatchesSerializer(serializers.Serializer):
-
-    # category = CategorySerializer()
-    # sampled_weight = SampleWeightSerializer()
-
-    # sp = serializers.CharField(source="category.sp_id.sp_name")
-    weight = serializers.IntegerField()
-    haul = serializers.IntegerField(source="haul.haul")
-    category = serializers.IntegerField(source="category.category_name")
-    sp_name = serializers.CharField(source="category.sp.sp_name")
-    sp_group = serializers.IntegerField(source="category.sp.group")
-    sp_code = serializers.IntegerField(source="category.sp.sp_code")
-    samples = serializers.SlugRelatedField(many=True, read_only=True, slug_field='sampled_weight')
-    lengths = serializers.SlugRelatedField(many=True, read_only=True, slug_field='length')
-    # sampled_weight = serializers.IntegerField(source="sampled_weight")
-
-
-    # class Meta:
-    #     model = Catch
-    #     fields = ['id', 'weight', 'haul', 'category', 'sp', ]
+        model = Catch
+        fields = ['id', 'weight', 'haul', 'category', 'samples', 'sexes', ]
 
     # # Override the to_representation method, which format the output of the serializer
     # def to_representation(self, instance):
@@ -49,12 +35,16 @@ class CatchesSerializer(serializers.Serializer):
     #
     #     return representation
 
-# class categorySerializer(serializers.Serializer):
-#     category_name = serializers.CharField()
-#
-# class catchesSerializer(serializers.Serializer):
-#     weight = serializers.IntegerField()
-#
+
+# Create a serializer from scratch
 # class CatchesSerializer(serializers.Serializer):
-#     category = categorySerializer(source='*')
-#     weight = catchesSerializer(source='*')
+#
+#     weight = serializers.IntegerField()
+#     haul = serializers.IntegerField(source="haul.haul")
+#     category = serializers.IntegerField(source="category.category_name")
+#     sp_name = serializers.CharField(source="category.sp.sp_name")
+#     sp_group = serializers.IntegerField(source="category.sp.group")
+#     sp_code = serializers.IntegerField(source="category.sp.sp_code")
+#     samples = serializers.SlugRelatedField(many=True, read_only=True, slug_field='sampled_weight')
+#     sexes = serializers.SlugRelatedField(many=True, read_only=True, slug_field='sex')
+#     # lengths = serializers.SlugRelatedField(many=True, read_only=True, slug_field='sex.length')
