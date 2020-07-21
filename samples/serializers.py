@@ -1,17 +1,33 @@
 from rest_framework import serializers
 
-from samples.models import Length, SampledWeight
+from samples.models import Length, SampledWeight, Sex
 
-
-class LengthsSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Length
-        fields = '__all__'
-
-
-class SampledWeightsSerializer(serializers.ModelSerializer):
+class SampleWeightSerializer(serializers.ModelSerializer):
+    """
+    Sample Weights serializer
+    """
 
     class Meta:
         model = SampledWeight
-        fields = '__all__'
+        fields = ['sampled_weight', ]
+
+
+class LenghtSerializer(serializers.ModelSerializer):
+    """
+    Lengths serializer
+    """
+    class Meta:
+        model = Length
+        fields = ['length', 'number_individuals', 'totalNumberIndividuals']
+
+
+class LengthsBySexSerializer(serializers.ModelSerializer):
+    """
+    Lengths By Sex serializer.
+    """
+    lengths = LenghtSerializer(many=True)
+
+    class Meta:
+        model = Sex
+        fields = ['sex', 'lengths']
+

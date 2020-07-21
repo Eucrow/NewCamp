@@ -19,7 +19,6 @@ from catches.models import Catch
 from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 from hauls.serializers import ImportHydrographyesSerializer
 from newcamp.apps import convert_comma_to_dot, empty
-from samples.serializers import LengthsSerializer, SampledWeightsSerializer
 from species.models import Sp, Category
 from stations.models import Station
 from strata.models import Stratum
