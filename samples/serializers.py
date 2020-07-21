@@ -18,7 +18,7 @@ class LenghtSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Length
-        fields = ['length', 'number_individuals', 'totalNumberIndividuals']
+        fields = ['length', 'number_individuals']
 
 
 class LengthsBySexSerializer(serializers.ModelSerializer):
