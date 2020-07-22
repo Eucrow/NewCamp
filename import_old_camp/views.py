@@ -827,7 +827,6 @@ class NtallImport:
 
         return sexed_table
 
-
     def format_lengths_table(self, file):
 
         lengths_table = self.ntall
@@ -878,7 +877,8 @@ class NtallImport:
     def format_sampled_weight_table(self, file):
         sw_table = file
 
-        sw_table = sw_table[['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO', 'PESO_M']].drop_duplicates()
+        sw_table = sw_table[['LANCE', 'GRUPO', 'ESP', 'CATE', 'PESO_GR', 'PESO_M']].drop_duplicates()
+        sw_table = sw_table[sw_table['PESO_GR']!=sw_table['PESO_M']]
         if species_exists(file):
             sw_table['catch_id'] = sw_table.apply(get_catch_id, axis=1, args=[self.survey_name])
             sw_table['sampled_weight'] = sw_table['PESO_M']
@@ -906,7 +906,7 @@ class NtallImport:
         # create categories if doesn't exists in species_category
         check_or_create_categories(lengths_file)
 
-        # Create your engine.
+        # Create engine.
         engine = create_engine('sqlite:///db.sqlite3', echo=True)
 
         # catches
@@ -1072,6 +1072,10 @@ class HydrographiesImport:
 
 
 class OldCampImport:
+    """
+    Import all the tables from old CAMP in newCamp tables.
+    The files required are CAMPXXx.csv, LANCEXXX.csv, FAUNAXXX.csv, NTALLXXX.csv and HIDROXXX.csv
+    """
     def __init__(self):
         self.sectors_col_names = [1, 2, 3, 4, 5]
         self.sectors_names = ["MIÑO-FINISTERRE", "FINISTERRE-ESTA", "ESTACA-PEÑAS", "PEÑAS-AJO", "AJO-BIDASOA"]

@@ -8,8 +8,8 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
 
     category = CategorySerializer()
 
-    # 'samples' must be the related_name of of a foreing key field on SampleWeight model.
-    samples = SampleWeightSerializer(many=True)
+    # 'samples' must be the related_name of a one to one field on SampleWeight model.
+    samples = SampleWeightSerializer(required=True)
 
     # 'sexes' must be the related_name of a foreing key field on the Sex model.
     sexes = LengthsBySexSerializer(many=True)

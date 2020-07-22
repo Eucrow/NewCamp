@@ -27,6 +27,6 @@ class CatchHaulListAPI(APIView):
         catches = get_list_or_404(Catch, haul_id=haul_id)
         serializer = CatchesVerboseSerializer(catches, many=True)
 
-        number_individuals = Length.objects.filter(sex__catch__haul_id=haul_id)
+        # number_individuals = Length.objects.filter(sex__catch__haul_id=haul_id)
 
         return Response(serializer.data)

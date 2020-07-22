@@ -1,8 +1,9 @@
 from django.db import models
 
 class SampledWeight(models.Model):
-    catch = models.ForeignKey('catches.Catch', on_delete=models.CASCADE, related_name='samples')
+    # catch = models.ForeignKey('catches.Catch', on_delete=models.CASCADE, related_name='samples')
     # category = models.ForeignKey('species.Category', on_delete=models.CASCADE,)
+    catch = models.OneToOneField('catches.Catch', on_delete=models.CASCADE, related_name='samples')
     sampled_weight = models.IntegerField()
 
     def __str__(self):
