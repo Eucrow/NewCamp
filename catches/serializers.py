@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from catches.models import Catch
-from samples.serializers import SampleWeightSerializer, LengthsBySexSerializer
+from samples.serializers import SampleWeightSerializer, LengthsBySexSerializer, SexSerializer
 from species.serializers import CategorySerializer
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
@@ -12,29 +12,28 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
     samples = SampleWeightSerializer(required=True)
 
     # 'sexes' must be the related_name of a foreing key field on the Sex model.
-    sexes = LengthsBySexSerializer(many=True)
+    # sexes = LengthsBySexSerializer(many=True)
+
+    sexes = SexSerializer(many=True)
 
     class Meta:
         model = Catch
         fields = ['id', 'weight', 'haul', 'category', 'samples', 'sexes', ]
 
     # # Override the to_representation method, which format the output of the serializer
-    # def to_representation(self, instance):
-    #     # instance is the model object. Create the custom json format by accessing instance attributes normaly and
-    #     # return it
-    #     id = instance.id
-    #     haul = instance.haul.haul
-    #     sp_code = instance.category.sp.sp_code
-    #     sp_name = instance.category.sp.sp_name
-    #     category = instance.category.category_name
-    #     weight = instance.weight
-    #     sampled_weight = instance.sampled_weight
-    #
-    #     representation = dict(id=id, haul=haul, sp_code=sp_code, sp_name=sp_name, category=category, weight=weight,
-    #                           sampled_weight=sampled_weight)
-    #
-    #     return representation
+    def to_representation(self, instance):
+        # instance is the model object. Create the custom json format by accessing instance attributes normaly and
+        # return it
 
+        data = super(CatchesVerboseSerializer, self).to_representation(instance)
+
+        data['category'] = instance.category.category_name
+        data['sp_code'] = instance.category.sp.sp_code
+        data['sp_name'] = instance.category.sp.sp_name
+
+        data.update()
+
+        return data
 
 # Create a serializer from scratch
 # class CatchesSerializer(serializers.Serializer):

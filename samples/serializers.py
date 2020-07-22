@@ -18,16 +18,23 @@ class LenghtSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Length
-        fields = ['length', 'number_individuals']
+        fields = ['length', 'number_individuals', ]
+
+
+class SexSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sex
+        fields = ['sex', ]
 
 
 class LengthsBySexSerializer(serializers.ModelSerializer):
     """
     Lengths By Sex serializer.
     """
-    lengths = LenghtSerializer(many=True)
+    # lengths = LenghtSerializer(many=True)
 
+    lengths = serializers.StringRelatedField(many=True)
     class Meta:
         model = Sex
-        fields = ['sex', 'lengths']
+        fields = ['sex', 'lengths', ]
 
