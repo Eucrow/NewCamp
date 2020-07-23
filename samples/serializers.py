@@ -24,4 +24,4 @@ class LenghtSerializer(serializers.ModelSerializer):
 class SexSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sex
-        fields = ['sex', ]
+        fields = ['id', 'sex', ]

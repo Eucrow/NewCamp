@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom'
 import ComponentsUiRemoveHaulButton from '../../ui/RemoveHaulButton.js';
 
 class ComponentsHaulsOptions extends Component {
-     /**
-	 * Component with option of every haul
-	 * @param {number} props.haul_id
-     * @param {number} props.sampler_id
-     * @param {function} props.onDelete: pass onDelete function to remove the station from parent state.
-	 */
+    /**
+    * Component with option of every haul
+    * @param {number} props.haul_id
+    * @param {number} props.sampler_id
+    * @param {function} props.onDelete: pass onDelete function to remove the station from parent state.
+    */
     
     constructor(props) {
         super(props);

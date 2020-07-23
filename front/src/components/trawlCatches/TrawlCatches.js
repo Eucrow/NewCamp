@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import ComponentsLengths from './Lengths.js';
+
 class ComponentsTrawlCatches extends Component {
      /**
 	 * Component show all the catches and related data of a haul
@@ -57,9 +59,17 @@ class ComponentsTrawlCatches extends Component {
                             Category: { c.category } - 
                             Total Weight: { c.weight } -
                             Samples: { sampled_weight } -
-                            Sexes: { sexes.map(s=>{
-                                return ( s.sex + " " )
-                            }) }
+                            Sexes: <ul>
+                                { sexes.map(s=>{
+                                    return ( 
+                                        <li key={ s.id }> 
+                                            { s.sex }
+                                            Lengths: { s.id } <ComponentsLengths sex_id={ s.id }/>
+                                        </li>
+                                    )
+                                }) }
+                            </ul>
+                            
                         </li>
                     )
                 })}
