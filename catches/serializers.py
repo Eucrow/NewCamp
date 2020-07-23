@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from catches.models import Catch
-from samples.serializers import SampleWeightSerializer, LengthsBySexSerializer, SexSerializer
+from samples.serializers import SampleWeightSerializer, SexSerializer
 from species.serializers import CategorySerializer
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
@@ -12,7 +12,6 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
     samples = SampleWeightSerializer(required=True)
 
     # 'sexes' must be the related_name of a foreing key field on the Sex model.
-    # sexes = LengthsBySexSerializer(many=True)
     sexes = SexSerializer(many=True)
 
     class Meta:
