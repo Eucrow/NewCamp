@@ -13,7 +13,6 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
 
     # 'sexes' must be the related_name of a foreing key field on the Sex model.
     # sexes = LengthsBySexSerializer(many=True)
-
     sexes = SexSerializer(many=True)
 
     class Meta:
@@ -28,6 +27,7 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
         data = super(CatchesVerboseSerializer, self).to_representation(instance)
 
         data['category'] = instance.category.category_name
+        data['group'] = instance.category.sp.group
         data['sp_code'] = instance.category.sp.sp_code
         data['sp_name'] = instance.category.sp.sp_name
 

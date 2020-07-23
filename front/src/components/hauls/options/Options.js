@@ -21,7 +21,7 @@ class ComponentsHaulsOptions extends Component {
 
     render() { 
         return ( 
-            <Fragment>hhh{this.props.haul_id}
+            <Fragment>
                 <Link style={{"display": "inline"}} to={{pathname: this.routeHaul,
                                                          sampler_id: this.props.sampler_id,
                                                          haul_id: this.props.haul_id,

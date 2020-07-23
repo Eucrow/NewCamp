@@ -15,7 +15,7 @@ class SpNameSerializer(serializers.ModelSerializer):
     '''
     class Meta:
         model = Sp
-        fields = ['sp_name', ]
+        fields = ['sp_name', 'group', 'sp_code' ]
 
 
 class CategorySerializer(serializers.ModelSerializer):
