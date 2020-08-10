@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import ComponentsLengths from './Lengths.js';
+import ComponentsCatches from './Catches.js';
 
 class ComponentsTrawlCatches extends Component {
      /**
@@ -12,6 +13,7 @@ class ComponentsTrawlCatches extends Component {
         this.state = { 
             catches: [],
             samples: [],
+            viewLengths: false,
             loaded: false,
             placeholder: "Loading"
          }
@@ -45,36 +47,22 @@ class ComponentsTrawlCatches extends Component {
 
     
     render() { 
-        return(
-            <ul>
-                {this.state.catches.map(c => {
-
-                    const sampled_weight = c.samples && c.samples.sampled_weight? c.samples.sampled_weight : null;
-                    const sexes = c.sexes ? c.sexes : null
-
-                    return(
-                        <li key={ c.id }>
-                            Code: { c.group } { c.sp_code} - 
-                            Name: { c.sp_name } - 
-                            Category: { c.category } - 
-                            Total Weight: { c.weight } -
-                            Samples: { sampled_weight } -
-                            Sexes: <ul>
-                                { sexes.map(s=>{
-                                    return ( 
-                                        <li key={ s.id }> 
-                                            { s.sex }
-                                            Lengths: { s.id } <ComponentsLengths sex_id={ s.id }/>
-                                        </li>
-                                    )
-                                }) }
-                            </ul>
-                            
-                        </li>
-                    )
-                })}
-            </ul>
-        )
+        if (this.state.catches.length == 0) {
+            return ( <p>There aren't catches yet</p> )
+        } else {
+            return(
+                <ul>
+                {
+                    this.state.catches.map(c => {       
+                        return(
+                            <ComponentsCatches catches={ c }/>
+                        )
+                    })
+                    
+                }
+                </ul>
+            )
+        }
     }
 }
  
