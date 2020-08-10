@@ -23,4 +23,7 @@ class Length(models.Model):
     class Meta:
         unique_together = ('sex', 'length')
 
+    def __str__(self):
+        return '%d: %d' % (self.length, self.number_individuals)
+
 
