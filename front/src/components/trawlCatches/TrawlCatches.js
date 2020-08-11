@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import ComponentsLengths from './Lengths.js';
 import ComponentsCatches from './Catches.js';
 
 class ComponentsTrawlCatches extends Component {
