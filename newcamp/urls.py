@@ -106,6 +106,7 @@ urlpatterns = [
 
     # Lengths API URLs
     re_path(r'^api/1.0/lengths/(?P<sex_id>[0-9]+)$', LengthsAPI.as_view(), name="get_lenghts_api"),
+    # re_path(r'^api/1.0/lengths/update', LengthsAPI.as_view(), name="update_lenghts_api"),
     #The next line is not neccesary:
     # re_path(r'^api/1.0/lengths/remove/(?P<length_id>[0-9]+)$', LengthAPI.as_view(), name="remove_length_api"),
     # re_path(r'^api/1.0/sampled_weights/import$', SampledWeightsImportAPI.as_view(), name="lengths_import"),

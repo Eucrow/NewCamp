@@ -64,8 +64,11 @@ class ComponentsHaul extends Component {
     }
 
     handleChangeMeteorology (event) {
+        console.log(event)
         const name = event.target.name;
         const value = event.target.value;
+        console.log(name)
+        console.log(value)
         
         const newHaulMeteo = update(this.state.haul, {
             meteo:{
