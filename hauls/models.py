@@ -8,12 +8,12 @@ from stations.models import Station
 
 class Haul(models.Model):
 
-    station = models.ForeignKey('stations.Station', null=True, blank=True, on_delete=models.CASCADE)
+    station = models.ForeignKey('stations.Station', null=True, blank=True, on_delete=models.CASCADE, related_name='hauls')
     stratum = models.ForeignKey('strata.Stratum', null=True, blank=True, on_delete=models.CASCADE)
-    sampler = models.ForeignKey('samplers.Sampler', on_delete=models.CASCADE, )
+    sampler = models.ForeignKey('samplers.Sampler', on_delete=models.CASCADE)
     haul = models.PositiveIntegerField(null=True, blank=True)
     gear = models.PositiveIntegerField(null=True, blank=True)
-    valid = models.PositiveIntegerField(null=True, blank=True)
+    valid = models.BooleanField(null=True, blank=True)
     # ESTN = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
@@ -22,7 +22,8 @@ class Haul(models.Model):
 
 class Meteorology(models.Model):
 
-    haul = models.ForeignKey('hauls.Haul', null=True, blank=True, on_delete=models.CASCADE)
+    # haul = models.ForeignKey('hauls.Haul', null=True, blank=True, on_delete=models.CASCADE, related_name='meteo')
+    haul = models.OneToOneField('hauls.Haul', on_delete=models.CASCADE, related_name='meteo')
     wind_direction = models.PositiveIntegerField(validators=[MaxValueValidator(360), MinValueValidator(0)], null=True,
                                                 blank=True)
     wind_velocity = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
@@ -31,7 +32,8 @@ class Meteorology(models.Model):
 
 class HaulTrawl(models.Model):
 
-    haul = models.ForeignKey('hauls.Haul', null=True, blank=True, on_delete=models.CASCADE)
+    # haul = models.ForeignKey('hauls.Haul', null=True, blank=True, on_delete=models.CASCADE, related_name='trawl_characteristics')
+    haul = models.OneToOneField('hauls.Haul', on_delete=models.CASCADE, related_name='trawl_characteristics')
     # date = models.DateField(null=True, blank=True)
     shooting_date_time = models.DateTimeField(null=True, blank=True)
     shooting_latitude = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
@@ -64,7 +66,7 @@ class HaulTrawl(models.Model):
 
 class HaulHydrography(models.Model):
 
-    haul = models.ForeignKey('hauls.Haul', null=True, blank=True, on_delete=models.CASCADE)
+    haul = models.OneToOneField('hauls.Haul', on_delete=models.CASCADE, related_name='hydrography_characteristics')
 
     latitude = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
     longitude = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)

@@ -7,3 +7,19 @@
 *.csv
 *.sqlite3
 */migrations/*
+
+/frontend/node_modules
+/frontend/dist
+/frontend/static
+
+/front/node_modules
+/frontend/dist
+/frontend/static
+
+# npm
+npm-debug.log
+
+# visual studio code
+*/.vscode/*
+/.vscode
+

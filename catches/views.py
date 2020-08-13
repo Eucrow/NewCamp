@@ -11,8 +11,10 @@ from catches.models import Catch
 
 from species.apps import getSpeciesIdFromGroupEsp, categoryExists
 
-from catches.serializers import CatchesSerializer
+from catches.serializers import CatchesVerboseSerializer
 from surveys.models import Survey
+
+
 
 
 # class CatchesImport(object):

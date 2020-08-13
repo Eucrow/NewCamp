@@ -1,13 +1,17 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from rest_framework_csv import renderers as r
 
 from surveys.models import Survey
-from surveys.serializers import SurveySerializer
+from surveys.serializers import SurveySerializer, SurveyAcronymsSerializer
 from import_old_camp.views import SurveysImport
+from stratifications.models import Stratification
+from strata.models import Stratum
 
 
 class SurveysImportAPI(APIView, SurveysImport):
@@ -23,12 +27,19 @@ class SurveyDetailAPI(APIView):
     """
     Endpoint of Survey Detail API
     """
-
     def get(self, request, pk):
-        survey = get_object_or_404(Survey, pk=pk)
+        survey = get_object_or_404(Survey.objects.select_related('stratification'), pk=pk)
         serializer = SurveySerializer(survey)
-
         return Response(serializer.data)
+
+    def put(self, request, pk):
+        survey = get_object_or_404(Survey, pk=pk)
+        serializer = SurveySerializer(survey, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class SurveyDetailCsvAPI(APIView):
@@ -63,14 +74,40 @@ class SurveysListCsvAPI(APIView):
 
         return response
 
+class SurveysList(ListAPIView):
+    """
+    Endpoint of list of surveys
+    """
+    queryset = Survey.objects.all()
+    serializer_class = SurveySerializer
+
+class SurveysAcronymList(ListAPIView):
+    """
+    Endpoint of list of acronyms of all surveys.
+    """
+    queryset = Survey.objects.only("acronym")
+    serializer_class = SurveyAcronymsSerializer
+
 
 class SurveyRemoveAPI(APIView):
     """
     Endpoint to remove survey.
-    Remove the surveys and all data of tables related.
+    Remove the survey and all data of tables related.
     """
-
     def delete(self, request, pk):
         survey = get_object_or_404(Survey, pk=pk)
         survey.delete()
         return Response(status=status.HTTP_200_OK)
+
+
+class SurveyNewAPI(APIView):
+    """
+    Endpoint to add new Survey.
+    """
+    def post(self, request):
+        serializer = SurveySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(stratification_id=request.data["stratification_id"])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

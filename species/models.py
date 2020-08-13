@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.db.models import UniqueConstraint
+
 from species.validators import group_validator
 
 
@@ -20,14 +22,17 @@ class Sp(models.Model):
     comment = models.CharField(max_length=1000, null=True, blank=True)
 
     class Meta:
-        unique_together = ('group', 'sp_code',)
-
+        # unique_together = ('group', 'sp_code',)
+        constraints = [
+            UniqueConstraint(fields=['group', 'sp_code'], name='unique_field')
+        ]
     def __unicode__(self):
         return self.sp_name
 
 
 class Category(models.Model):
-    sp = models.ForeignKey(Sp, on_delete=models.CASCADE,)
+
+    sp = models.ForeignKey('species.Sp', on_delete=models.CASCADE, related_name='species_category')
     category_name = models.CharField(max_length=50)
 
     class Meta:

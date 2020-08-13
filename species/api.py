@@ -1,13 +1,11 @@
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser
 
 from django.shortcuts import get_object_or_404
 
 from species.models import Sp
 from species.serializers import SpeciesSerializer
-from species.views import SpeciesImport
 
 
 class SpeciesListAPI(APIView):
@@ -42,8 +40,3 @@ class SpAPI(APIView):
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
-class SpeciesImportAPI(APIView, SpeciesImport):
-    parser_classes = (MultiPartParser,)
-
-    def put(self, request):
-        return self.import_species_csv()

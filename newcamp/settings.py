@@ -41,13 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework_csv',
     'newcamp',
     'surveys',
     'hauls',
-    'rest_framework',
     'species',
-    'faunas',
-    'import_export',
     'stratifications',
     'strata',
     'stations',
@@ -55,12 +55,13 @@ INSTALLED_APPS = [
     'catches',
     'samples',
     'import_old_camp',
-    'rest_framework_csv',
+    'frontend',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -140,6 +141,9 @@ STATIC_URL = '/static/'
 
 # determines if the library will use database transactions on data import, just to be on the safe side.
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+# CORS: this must be changed in develop
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 

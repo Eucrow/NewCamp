@@ -1,18 +1,11 @@
-import csv
-
-import io
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, DeleteView, UpdateView
-from rest_framework.status import HTTP_201_CREATED
 
 from species.apps import importSpeciesCSV
 from species.models import Sp
 from species.forms import SpeciesForm
-from species.serializers import SpeciesSerializer
-from newcamp.apps import convert_comma_to_dot, empty
 
 
 class SpeciesQueryset(object):
@@ -123,56 +116,3 @@ class ImportSpeciesFileView(View):
         return render(request, 'species/species.html', context)
 
 
-class SpeciesImport():
-
-    def import_species_csv(self):
-        """
-        Function to import the CSV file with species info.
-        To import again the file, first must truncate the table.
-        :param file: file to import
-        :return:
-        """
-
-        objfile = self.request.FILES['file']
-
-        objfile.seek(0)
-        '''seek(0) move the pointer to read the file to the first position. I do this to be
-        sure that the file is readed from the beginig'''
-        csv_file = csv.DictReader(io.StringIO(objfile.read().decode('utf-8')), delimiter=';')
-
-        message = []
-
-        for row in csv_file:
-            tmp = {}
-            tmp["group"] = row["GRUPO"]
-            tmp["sp_code"] = row["ESP"]
-            tmp["sp_name"] = row["ESPECIE"]
-            #tmp["family"] = row["FAMILIA"]
-            #tmp["author"] = row["AUTOR"]
-            tmp["spanish_name"] = row["NOMBREE"]
-            #tmp["english_name"] = row["NOMBREI"]
-            if not empty(row["A"]):
-                tmp["a_param"] = float(row["A"].replace(',', '.'))
-            if not empty(row["B"]):
-                tmp["b_param"] = float(row["B"].replace(',', '.'))
-            if not empty(row["LINF"]):
-                tmp["l_infinity"] = float(row["LINF"].replace(',','.'))
-            if not empty(row["K"]):
-                tmp["k"] = float(row["K"].replace(',','.'))
-            if not empty(row["T0"]):
-                tmp["t_zero"] = float(row["T0"].replace(',','.'))
-            tmp["unit"] = row["MED"]
-            tmp["increment"] = row["INCREM"]
-            #tmp["nodc"] = row["NODC"] or 0
-            tmp["trophic_group"] = row["GT"] or 0
-            tmp["APHIA"] = row["APHIA"] or 0
-
-            serializer = SpeciesSerializer(data=tmp)
-
-            serializer.is_valid(raise_exception=True)
-
-            serializer.save()
-
-            message.append('Se ha añadido la especie ' + row['ESPECIE'])
-
-        return HttpResponse(message, status=HTTP_201_CREATED)
