@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import ComponentsLengths from './Lengths.js';
+import ComponentsLengths from '../lengths/Lengths.js';
 
 class ComponentsCatches extends Component {
     constructor(props) {

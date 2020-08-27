@@ -185,7 +185,10 @@ class ComponentsLengths extends Component {
                              saveLengths={ this.saveLengths }
                              editLengths={ this.editLengths }
                              cancelLengths={ this.cancelLengths }/>
-                <button onClick={ this.handleHideLengths }>Hide Lengths</button>
+                {this.state.isEdit===false?
+                    <button onClick={ this.handleHideLengths }>Hide Lengths</button>:
+                    null
+                }
                 </Fragment>:
                 null
             }
