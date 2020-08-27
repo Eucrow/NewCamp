@@ -50,7 +50,15 @@ class ComponentsTrawlCatches extends Component {
             return ( <p>There aren't catches yet</p> )
         } else {
             return(
-                <ul>
+                <table>
+                <tr style={{verticalAlign: "top"}}>
+                    <td>Code</td>
+                    <td>Name</td>
+                    <td>Category</td>
+                    <td>Total Weight</td>
+                    <td>Sampled Weight</td>
+                    <td>Sexes</td>
+                </tr>
                 {
                     this.state.catches.map(c => {       
                         return(
@@ -59,7 +67,18 @@ class ComponentsTrawlCatches extends Component {
                     })
                     
                 }
-                </ul>
+                </table>
+
+                // <ul>
+                // {
+                //     this.state.catches.map(c => {       
+                //         return(
+                //             <ComponentsCatches catches={ c }/>
+                //         )
+                //     })
+                    
+                // }
+                // </ul>
             )
         }
     }

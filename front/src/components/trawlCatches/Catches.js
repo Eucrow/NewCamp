@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import ComponentsLengths from './Lengths.js';
 
@@ -15,24 +15,43 @@ class ComponentsCatches extends Component {
         const sexes = catches.sexes ? catches.sexes : null
 
         return ( 
-            <li key={ catches.id }>
-                Code: { catches.group } { catches.sp_code} - 
-                Name: { catches.sp_name } - 
-                Category: { catches.category } - 
-                Total Weight: { catches.weight } -
-                Samples: { sampled_weight } -
-                Sexes: <ul>
-                    { sexes.map(s=>{
-                        return ( 
-                            <li key={ s.id }> 
-                                { s.sex }
-                                <ComponentsLengths sex_id={ s.id } isVisible={ false }/>
-                            </li>
-                        )
-                    }) }
-                </ul>
+            <Fragment>
+            <tr style={{verticalAlign: "top"}}>
+            <td>{ catches.group } { catches.sp_code}</td>
+            <td>{ catches.sp_name }</td>
+            <td>{ catches.category }</td>
+            <td>{ catches.weight }</td>
+            <td>{ sampled_weight }</td>
+            <td>
+                { sexes.map(s=>{
+                    return ( 
+                        <table><tr style={{verticalAlign: "top"}}><td>
+                            { s.sex }
+                            <ComponentsLengths sex_id={ s.id } isVisible={ false }/>
+                        </td></tr></table>
+                )
+            }) }
+            </td>
+            </tr>
+            </Fragment>
+            // <li key={ catches.id }>
+            //     Code: { catches.group } { catches.sp_code} - 
+            //     Name: { catches.sp_name } - 
+            //     Category: { catches.category } - 
+            //     Total Weight: { catches.weight } -
+            //     Sampled Weight: { sampled_weight } -
+            //     Sexes: <ul>
+            //         { sexes.map(s=>{
+            //             return ( 
+            //                 <li key={ s.id }> 
+            //                     { s.sex }
+            //                     <ComponentsLengths sex_id={ s.id } isVisible={ false }/>
+            //                 </li>
+            //             )
+            //         }) }
+            //     </ul>
                 
-            </li>
+            // </li>
         );
     }
 }
