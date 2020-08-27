@@ -16,7 +16,7 @@ class ComponentsCatches extends Component {
 
         return ( 
             <Fragment>
-            <tr style={{verticalAlign: "top"}}>
+            <tr style={{verticalAlign: "top"}} key={ catches.id }>
             <td>{ catches.group } { catches.sp_code}</td>
             <td>{ catches.sp_name }</td>
             <td>{ catches.category }</td>
@@ -25,10 +25,10 @@ class ComponentsCatches extends Component {
             <td>
                 { sexes.map(s=>{
                     return ( 
-                        <table><tr style={{verticalAlign: "top"}}><td>
+                        <table><tbody><tr style={{verticalAlign: "top"}}><td>
                             { s.sex }
                             <ComponentsLengths sex_id={ s.id } isVisible={ false }/>
-                        </td></tr></table>
+                        </td></tr></tbody></table>
                 )
             }) }
             </td>

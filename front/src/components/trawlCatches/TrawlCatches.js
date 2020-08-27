@@ -51,6 +51,7 @@ class ComponentsTrawlCatches extends Component {
         } else {
             return(
                 <table>
+                <thead>
                 <tr style={{verticalAlign: "top"}}>
                     <td>Code</td>
                     <td>Name</td>
@@ -59,6 +60,8 @@ class ComponentsTrawlCatches extends Component {
                     <td>Sampled Weight</td>
                     <td>Sexes</td>
                 </tr>
+                </thead>
+                <tbody>
                 {
                     this.state.catches.map(c => {       
                         return(
@@ -67,6 +70,7 @@ class ComponentsTrawlCatches extends Component {
                     })
                     
                 }
+                </tbody>
                 </table>
 
                 // <ul>

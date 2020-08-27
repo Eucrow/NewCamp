@@ -167,7 +167,10 @@ class ComponentsLengths extends Component {
             <Fragment>
 
             {this.state.isVisible===false?
-                <button onClick={ this.handleShowLengths }>Show Lengths</button>:
+                <Fragment>
+                    <button onClick={ this.handleShowLengths }>Show Lengths</button>
+                    <button onClick={ this.editLengths }>Edit Lengths</button>
+                </Fragment>:
                 null
             }
            
