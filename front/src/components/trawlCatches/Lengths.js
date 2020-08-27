@@ -26,6 +26,7 @@ class ComponentsLengths extends Component {
         this.handleChangeIndividuals = this.handleChangeIndividuals.bind(this)
         this.saveLengths = this.saveLengths.bind(this)    
         this.editLengths = this.editLengths.bind(this)
+        this.cancelLengths = this.cancelLengths.bind(this)
     }
 
     handleShowLengths(event){
@@ -128,6 +129,17 @@ class ComponentsLengths extends Component {
         });
     }
 
+    cancelLengths(){
+        /**
+         * Cancel the edition of the lengths. Set isEdit state to false.
+         */
+        this.setState(() => {
+            return {
+                isEdit: false
+            };
+        });
+    }
+
     saveLengths(event){
         /**
         * Save the lengths of state to database.
@@ -168,7 +180,8 @@ class ComponentsLengths extends Component {
                              handleChangeLengths={ this.handleChangeLengths }
                              handleChangeIndividuals={ this.handleChangeIndividuals }
                              saveLengths={ this.saveLengths }
-                             editLengths={ this.editLengths }/>
+                             editLengths={ this.editLengths }
+                             cancelLengths={ this.cancelLengths }/>
                 <button onClick={ this.handleHideLengths }>Hide Lengths</button>
                 </Fragment>:
                 null

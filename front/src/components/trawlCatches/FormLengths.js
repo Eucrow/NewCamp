@@ -10,6 +10,7 @@ class ComponentsFormLengths extends Component {
      * @param {method} props.handleChangeLengths
      * @param {method} props.saveLengths
      * @param {method} props.editLengths
+     * @param {method} props.cancelLengths
      */
     
     constructor(props) {
@@ -50,6 +51,7 @@ class ComponentsFormLengths extends Component {
                     })}
                 </ul>
                 <button onClick={ this.props.saveLengths }>Save</button>
+                <button onClick={ this.props.cancelLengths }>Cancel</button>
                 </Fragment>
             )
         }
