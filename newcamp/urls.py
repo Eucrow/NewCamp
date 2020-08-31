@@ -29,7 +29,7 @@ from samplers.api import SamplersAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
 from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI,\
     HaulHydrographyAPI
-from catches.api import CatchHaulListAPI
+from catches.api import CatchHaulListAPI, CatchHaulAPI
 from samples.api import LengthsAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
@@ -103,6 +103,7 @@ urlpatterns = [
 
     # Catches API URLS
     re_path(r'^api/1.0/catches/(?P<haul_id>[0-9]+)$', CatchHaulListAPI.as_view(), name="get_catches_haul_api"),
+    re_path(r'^api/1.0/catches/new$', CatchHaulAPI.as_view(), name="add_catch_api"),
 
     # Lengths API URLs
     re_path(r'^api/1.0/lengths/(?P<sex_id>[0-9]+)$', LengthsAPI.as_view(), name="get_lenghts_api"),

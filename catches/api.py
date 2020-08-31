@@ -1,10 +1,11 @@
 from django.shortcuts import get_list_or_404
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from catches.models import Catch
 
-from catches.serializers import CatchesVerboseSerializer
+from catches.serializers import CatchSerializer, CatchesVerboseSerializer
 
 
 class CatchHaulListAPI(APIView):
@@ -17,3 +18,16 @@ class CatchHaulListAPI(APIView):
         serializer = CatchesVerboseSerializer(catches, many=True)
 
         return Response(serializer.data)
+
+class CatchHaulAPI(APIView):
+    """
+    Endpoint to manage catch.
+    """
+    def post(self, request):
+        serializer = CatchSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(haul_id=request.data["haul_id"],
+                            category_id=request.data['category_id'])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

@@ -4,6 +4,12 @@ from catches.models import Catch
 from samples.serializers import SampleWeightSerializer, SexSerializer
 from species.serializers import CategorySerializer
 
+class CatchSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Catch
+        fields = ['weight', 'category_id', 'haul_id']
+
 class CatchesVerboseSerializer(serializers.ModelSerializer):
 
     category = CategorySerializer()
