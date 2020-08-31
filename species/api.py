@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 from species.models import Sp
-from species.serializers import SpeciesSerializer
+from species.serializers import SpeciesSerializer, SpNameSerializer
 
 
 class SpeciesListAPI(APIView):
@@ -38,5 +38,14 @@ class SpAPI(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+class SpeciesGroupAPI(APIView):
+    """
+    Manage species with group-species variables instead of pk.
+    """
+    def get(self, request, group):
+        sp = Sp.objects.filter(group=group)
+        serializer = SpNameSerializer(sp, many=True)
+        return Response(serializer.data)
 
 
