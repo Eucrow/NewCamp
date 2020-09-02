@@ -32,6 +32,7 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
         data = super(CatchesVerboseSerializer, self).to_representation(instance)
 
         data['category'] = instance.category.category_name
+        data['category_id'] = instance.category.id
         data['group'] = instance.category.sp.group
         data['sp_code'] = instance.category.sp.sp_code
         data['sp_name'] = instance.category.sp.sp_name
