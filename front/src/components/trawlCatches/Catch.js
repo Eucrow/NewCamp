@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 
 import ComponentsLengths from '../lengths/Lengths.js';
 
-class ComponentsCatches extends Component {
+class Catch extends Component {
     constructor(props) {
         super(props);
     }
@@ -34,26 +34,8 @@ class ComponentsCatches extends Component {
             </td>
             </tr>
             </Fragment>
-            // <li key={ catches.id }>
-            //     Code: { catches.group } { catches.sp_code} - 
-            //     Name: { catches.sp_name } - 
-            //     Category: { catches.category } - 
-            //     Total Weight: { catches.weight } -
-            //     Sampled Weight: { sampled_weight } -
-            //     Sexes: <ul>
-            //         { sexes.map(s=>{
-            //             return ( 
-            //                 <li key={ s.id }> 
-            //                     { s.sex }
-            //                     <ComponentsLengths sex_id={ s.id } isVisible={ false }/>
-            //                 </li>
-            //             )
-            //         }) }
-            //     </ul>
-                
-            // </li>
         );
     }
 }
  
-export default ComponentsCatches;
+export default Catch;

@@ -149,7 +149,7 @@ class ComponentsLengths extends Component {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-              },
+                },
             body: JSON.stringify(this.state.lengths)
         })
         .then(() => {

@@ -1,4 +1,4 @@
-from django.shortcuts import get_list_or_404
+from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,6 +23,12 @@ class CatchHaulAPI(APIView):
     """
     Endpoint to manage catch.
     """
+    def get(self, request, haul_id, category_id):
+        # catch = Catch.objects.get(category_id = category_id)
+        catch = get_object_or_404(Catch, haul_id=haul_id, category_id=category_id)
+        serializer= CatchSerializer(catch)
+        return Response(serializer.data)
+
     def post(self, request):
         serializer = CatchSerializer(data=request.data)
         if serializer.is_valid():
