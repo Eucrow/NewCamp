@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
+import TrawlSample from "./TrawlSampleForm";
+
 class NewTrawlCatch extends Component {
     /**
      * 
@@ -9,11 +11,12 @@ class NewTrawlCatch extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            catch: [],
             haul_id: this.props.match.params.haul_id,
+            catch: [],
+            sampled_weight: [],
+            sexes:[],
             species: [],
             categories: [],
-            existsCatch: false,
             loaded: false,
             placeholder: "Loading"
         }
@@ -221,12 +224,11 @@ class NewTrawlCatch extends Component {
                 </select>
                 <label for="weight">Total weight:</label>
                 <input type="number" id="weight" name="weight" value={ this.state.catch.weight } onChange={ this.handleChange } />
+                
+                <TrawlSample handleChange={ this.handleChange }/>
+                
                 <button onClick={ this.saveCatch }>Save</button>
             </form>
-            { this.state.existsCatch === true? 
-                <p>The catch already exists.</p> :
-                null
-            }
             </Fragment>
          );
     }
