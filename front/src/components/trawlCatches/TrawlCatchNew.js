@@ -13,6 +13,7 @@ class NewTrawlCatch extends Component {
         this.state = {
             haul_id: this.props.match.params.haul_id,
             catch: [],
+            catch_id: "",
             sampled_weight: [],
             sexes:[],
             species: [],
@@ -172,17 +173,26 @@ class NewTrawlCatch extends Component {
                         },
                     body: JSON.stringify(this.state.catch)
                 })
-                .then(
+                .then( response => response.json())
+                .then(c => {
                     this.setState(() => {
                         return{
-                            catch: {
-                                ... this.state.catch,
-                                ["category_id"] : '',
-                                ["weight"] : 0
-                            }
+                            ["catch_id"] : c.id
                         }
                     })
-                )
+                    
+                })
+                // .then(
+                //     this.setState(() => {
+                //         return{
+                //             catch: {
+                //                 ... this.state.catch,
+                //                 ["category_id"] : '',
+                //                 ["weight"] : 0
+                //             }
+                //         }
+                //     })
+                // )
                 .catch(error => console.log('Error'))
             }
         })
@@ -224,10 +234,11 @@ class NewTrawlCatch extends Component {
                 </select>
                 <label for="weight">Total weight:</label>
                 <input type="number" id="weight" name="weight" value={ this.state.catch.weight } onChange={ this.handleChange } />
-                
-                <TrawlSample handleChange={ this.handleChange }/>
-                
                 <button onClick={ this.saveCatch }>Save</button>
+                
+                <TrawlSample catch_id={ this.state.catch_id } handleChange={ this.handleChange }/>
+                
+                
             </form>
             </Fragment>
          );

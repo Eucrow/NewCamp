@@ -8,7 +8,7 @@ class CatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        fields = ['weight', 'category_id', 'haul_id']
+        fields = ['id', 'weight', 'category_id', 'haul_id']
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
 

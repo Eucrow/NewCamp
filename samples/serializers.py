@@ -9,7 +9,14 @@ class SampleWeightSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SampledWeight
-        fields = ['sampled_weight', ]
+        fields = ['id', 'sampled_weight', 'catch_id', ]
+
+
+class SexSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sex
+        fields = ['id', 'sex', 'catch_id', ]
+
 
 class LengthListSerializer(serializers.ListSerializer):
     """
@@ -63,11 +70,4 @@ class LenghtSerializer(serializers.ModelSerializer):
         model = Length
         fields = ['id', 'length', 'number_individuals', ]
         list_serializer_class = LengthListSerializer
-
-
-
-class SexSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Sex
-        fields = ['id', 'sex', ]
 

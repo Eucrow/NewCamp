@@ -7,8 +7,20 @@ from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED, HTTP_40
 
 from samples.models import Length
 
-from samples.serializers import LenghtSerializer
+from samples.serializers import LenghtSerializer, SampleWeightSerializer
 
+
+class SampleAPI(APIView):
+    """
+    Endpoint to manage sample weights.
+    """
+    def post(self, request):
+        serializer=SampleWeightSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(catch_id=request.data["catch_id"])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class LengthsAPI(APIView):
     """
@@ -21,18 +33,15 @@ class LengthsAPI(APIView):
 
         return Response(serializer.data)
 
-    # def put(self, request):
-    #     res =[]
-    #     for length in request.data:
-    #         le = Length.objects.get(id=length['id'])
-    #         serializer = LenghtSerializer(le, data=length, partial=True)
-    #         if serializer.is_valid():
-    #             serializer.save()
-    #             res.append(serializer.data)
-    #         else:
-    #             res.append(serializer.errors)
-    #     return Response(res)
-    #     #TODO: manage errors, what to do with them?
+    def post(self, request, sex_id):
+        # The LengthSerializer is prepared to allow update and create multiple objects, so many=True is explicit
+        serializer=LenghtSerializer(data=request.data, many=True)
+
+        if serializer.is_valid():
+            serializer.save(sex_id=sex_id)
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def put(self, request, sex_id):
         lengths = Length.objects.filter(sex_id=sex_id)
