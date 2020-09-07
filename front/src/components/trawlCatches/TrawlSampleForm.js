@@ -12,24 +12,41 @@ class TrawlSample extends Component {
         this.state = {
             sample: [],
             sampled: false,
+            sex: [],
+            sex_id: "",
             name_length : "",
             lengths : [
                 {
-                    name_length : "",
+                    length : "",
                     number_individuals : ""
                 }
             ]
         }
 
         this.apiAddSample = "http://127.0.0.1:8000/api/1.0/samples/new";
+        this.apiAddSex = "http://127.0.0.1:8000/api/1.0/sexes/new"
+        this.apiAddLengths = "http://127.0.0.1:8000/api/1.0/lengths/new"
 
         this.handleAddSample = this.handleAddSample.bind(this);
+        this.handleSex = this.handleSex.bind(this);
         this.handleChangeSampleWeigth = this.handleChangeSampleWeigth.bind(this);
         this.submitSampleWeight = this.submitSampleWeight.bind(this);
+        this.submitSex = this.submitSex.bind(this);
+        this.submitLengths = this.submitLengths.bind(this);
     }
 
     handleAddSample(event){
         this.setState({sampled: true});
+    }
+
+    handleSex(event){
+        const value = event.target.value; 
+        this.setState({
+            sex: {
+                ["catch_id"] : this.props.catch_id,
+                ["sex"]: value
+            }
+        });
     }
 
     handleChangeSampleWeigth (event) { 
@@ -49,18 +66,18 @@ class TrawlSample extends Component {
 
     // **** start handle of legnths form
     handleLenghtNameChange = idx => evt => {
-        const newLenght = this.state.lengths.map((length, lidx) => {
-            if (idx !== lidx) return length;
-            return { ...length, name_length: evt.target.value };
+        const newLenght = this.state.lengths.map((l, lidx) => {
+            if (idx !== lidx) return l;
+            return { ...l, length: evt.target.value };
         });
     
         this.setState({ lengths: newLenght });
     };
 
     handleNumberIndividualsChange = idx => evt => {
-        const newNumberIndividuals = this.state.lengths.map((length, lidx) => {
-            if (idx !== lidx) return length;
-            return { ...length, number_individuals: evt.target.value };
+        const newNumberIndividuals = this.state.lengths.map((l, lidx) => {
+            if (idx !== lidx) return l;
+            return { ...l, number_individuals: evt.target.value };
         });
     
         this.setState({ lengths: newNumberIndividuals });
@@ -68,7 +85,7 @@ class TrawlSample extends Component {
 
     handleAddLength = () => {
         this.setState({
-          lengths: this.state.lengths.concat([{ name_length: "", number_individuals: 0 }])
+          lengths: this.state.lengths.concat([{ length: "", number_individuals: 0 }])
         });
     };
 
@@ -100,6 +117,58 @@ class TrawlSample extends Component {
 
     }
 
+    submitSex(event){
+        event.preventDefault();
+    
+        fetch(this.apiAddSex, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                },
+            body: JSON.stringify(this.state.sex)
+        })
+        .then(response => {
+        // TODO: detect if sex already exists
+            if(response > 400){
+                return this.setState(() => {
+                    return { placeholder: "Something went wrong!" }
+                });
+            }
+            return response.json(); 
+        })
+        .then(r => {
+            this.setState(() => {
+                return{
+                    ["sex_id"] : r.id
+                }
+            })
+        })
+    }
+
+    submitLengths(event){
+
+        event.preventDefault();
+
+        const apiAddLengths = this.apiAddLengths + "/" + this.state.sex_id
+
+        fetch(apiAddLengths, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                },
+            body: JSON.stringify(this.state.lengths)
+        })
+        .then(response => {
+            // TODO: detect if length already exists
+                if(response > 400){
+                    return this.setState(() => {
+                        return { placeholder: "Something went wrong!" }
+                    });
+                }
+                return response.json(); 
+            }) 
+    }
+
     render() { 
         return(
             <Fragment>
@@ -111,16 +180,19 @@ class TrawlSample extends Component {
                     <input type="number" id="sampled_weight" name="sampled_weight" onChange={ this.handleChangeSampleWeigth }></input>
                     <button onClick={ this.submitSampleWeight }>Save sample weight</button>
                     <label htmlFor="sex">Sex: </label>
-                    <select id="sex" name="sex" onClick={ this.handleAddSample }>
+                    <select id="sex" name="sex" onClick={ this.handleSex }>
+                        <option>choose sex</option>
                         <option value="3">Undetermined</option>
                         <option value="1">Male</option>
                         <option value="2">Female</option>
                     </select>
+                    <button onClick={ this.submitSex }>Save sex</button>
                     <LengthsForm lengths={ this.state.lengths }
-                                    handleRemoveLength= { this.handleRemoveLength }
-                                    handleAddLength={ this.handleAddLength } 
-                                    handleNumberIndividualsChange={ this.handleNumberIndividualsChange} 
-                                    handleLenghtNameChange={ this.handleLenghtNameChange }/>
+                                 handleRemoveLength= { this.handleRemoveLength }
+                                 handleAddLength={ this.handleAddLength } 
+                                 handleNumberIndividualsChange={ this.handleNumberIndividualsChange} 
+                                 handleLenghtNameChange={ this.handleLenghtNameChange }/>
+                    <button onClick={ this.submitLengths }>Save lengths</button>
                 </fieldset>
                 }
             </Fragment>

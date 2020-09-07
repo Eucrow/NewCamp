@@ -6,13 +6,7 @@ class LengthsForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
         }
-
-        // this.handleLenghtNameChange = this.handleLenghtNameChange.bind(this);
-        // this.handleNumberIndividualsChange = this.handleNumberIndividualsChange.bind(this);
-        // this.handleAddLength = this.handleAddLength.bind(this)
-
     }
 
     render() { 

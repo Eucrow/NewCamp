@@ -71,3 +71,8 @@ class LenghtSerializer(serializers.ModelSerializer):
         fields = ['id', 'length', 'number_individuals', ]
         list_serializer_class = LengthListSerializer
 
+class LengthSerializer2(serializers.ModelSerializer):
+
+    class Meta:
+        model= Length
+        fields = ['sex_id', 'length', 'number_individuals',  ]

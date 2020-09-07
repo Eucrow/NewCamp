@@ -7,7 +7,8 @@ from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED, HTTP_40
 
 from samples.models import Length
 
-from samples.serializers import LenghtSerializer, SampleWeightSerializer
+from samples.serializers import LenghtSerializer, SampleWeightSerializer, LengthListSerializer, LengthSerializer2, \
+    SexSerializer
 
 
 class SampleAPI(APIView):
@@ -22,6 +23,19 @@ class SampleAPI(APIView):
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
+class SexAPI(APIView):
+    """
+    Endpoint to manage sexes of samples.
+    """
+    def post(self, request):
+        serializer=SexSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(catch_id=request.data["catch_id"])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
 class LengthsAPI(APIView):
     """
     Endpoint to get lenghts of species.
@@ -35,7 +49,7 @@ class LengthsAPI(APIView):
 
     def post(self, request, sex_id):
         # The LengthSerializer is prepared to allow update and create multiple objects, so many=True is explicit
-        serializer=LenghtSerializer(data=request.data, many=True)
+        serializer=LengthSerializer2(data=request.data, many=True)
 
         if serializer.is_valid():
             serializer.save(sex_id=sex_id)
