@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import TrawlSample from "./TrawlSampleForm";
+import TrawlCatchForm from "./TrawlCatchForm";
 
 class NewTrawlCatch extends Component {
     /**
@@ -29,7 +29,8 @@ class NewTrawlCatch extends Component {
 
         this.handleChangeGroup = this.handleChangeGroup.bind(this);
         this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChangeCategory = this.handleChangeCategory.bind(this)
+        this.handleChangeWeight = this.handleChangeWeight.bind(this);
         this.existsCatch = this.existsCatch.bind(this);
         this.saveCatch = this.saveCatch.bind(this);
 
@@ -58,8 +59,7 @@ class NewTrawlCatch extends Component {
 			.then(species => {
 				this.setState(() => {
 					return {
-                        species: species,
-                        loaded: true
+                        species: species
 					};
 				});
             })
@@ -82,8 +82,12 @@ class NewTrawlCatch extends Component {
          */
 
         const value=event.target.value;
+        const val=value.split("--")
+        const sp=val[0]
+        const sp_code=val[1]
+        const sp_name=val[2]
 
-        const apiCategoriesSpecies = this.apiCategoriesSpecies + value;
+        const apiCategoriesSpecies = this.apiCategoriesSpecies + sp;
         console.log (apiCategoriesSpecies)
 
         fetch(apiCategoriesSpecies)
@@ -98,8 +102,7 @@ class NewTrawlCatch extends Component {
 			.then(categories => {
 				this.setState(() => {
 					return {
-                        categories: categories,
-                        loaded: true
+                        categories: categories
 					};
 				});
             })
@@ -108,7 +111,9 @@ class NewTrawlCatch extends Component {
                     return {
                         catch: {
                             ...this.state.catch,
-                            ["sp"] : value
+                            ["sp"] : sp,
+                            ["sp_code"] : sp_code,
+                            ["sp_name"] : sp_name
                         }
                     }
                 })
@@ -116,7 +121,25 @@ class NewTrawlCatch extends Component {
 
     }
 
-    handleChange (event) { 
+    handleChangeCategory (event) { 
+        /**
+         * Handle change of new catch form.
+         */       
+        const value = event.target.value;
+        const val = value.split("--");
+        const category_id = val[0];
+        const category_name = val[1];
+
+        this.setState({
+            catch: {
+                ...this.state.catch,
+                ["category_id"] : category_id,
+                ["category_name"] : category_name
+            }
+        });
+    }
+
+    handleChangeWeight (event) { 
         /**
          * Handle change of new catch form.
          */       
@@ -177,22 +200,12 @@ class NewTrawlCatch extends Component {
                 .then(c => {
                     this.setState(() => {
                         return{
-                            ["catch_id"] : c.id
+                            ["catch_id"] : c.id,
+                            ["loaded"] : true
                         }
                     })
                     
                 })
-                // .then(
-                //     this.setState(() => {
-                //         return{
-                //             catch: {
-                //                 ... this.state.catch,
-                //                 ["category_id"] : '',
-                //                 ["weight"] : 0
-                //             }
-                //         }
-                //     })
-                // )
                 .catch(error => console.log('Error'))
             }
         })
@@ -215,31 +228,17 @@ class NewTrawlCatch extends Component {
         return ( 
             <Fragment>
                 <p>haul_id: {this.state.haul_id}</p>
-            <form>
-                <input type="hidden" id="haul_id" name="haul_id" value={ this.props.haul_id } />
-                <label for="group">Group:</label>
-                <input type="number" id="group" name="group" min="1" max="5" onChange={ this.handleChangeGroup }/>
-                <label for="sp_code">Specie code:</label>
-                <select id="sp_code" name="sp_code" onChange={this.handleChangeSpecies }>
-                    {this.state.species.map(s=>{
-                        return(<option value={s.id}>{s.sp_code}-{s.sp_name}</option>)
-                    })}
-                </select>
-                <label for="category_id">Category:</label>
-                <select id="category_id" name="category_id" value={ this.state.catch.category_id }onChange={ this.handleChange }>
-                    <option>select one...</option>
-                    {this.state.categories.map(c=>{
-                        return(<option value={c.id}>{c.category_name}</option>)
-                    })}
-                </select>
-                <label for="weight">Total weight:</label>
-                <input type="number" id="weight" name="weight" value={ this.state.catch.weight } onChange={ this.handleChange } />
-                <button onClick={ this.saveCatch }>Save</button>
-                
-                <TrawlSample catch_id={ this.state.catch_id } handleChange={ this.handleChange }/>
-                
-                
-            </form>
+
+                <TrawlCatchForm catch={ this.state.catch }
+                                species={ this.state.species }
+                                categories={ this.state.categories }
+                                loaded={ this.state.loaded }
+                                handleChangeGroup={ this.handleChangeGroup }
+                                handleChangeSpecies={ this.handleChangeSpecies }
+                                handleChangeCategory={ this.handleChangeCategory }
+                                handleChangeWeight={ this.handleChangeWeight }
+                                saveCatch={ this.saveCatch }/>
+
             </Fragment>
          );
     }

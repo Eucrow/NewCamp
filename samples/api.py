@@ -49,6 +49,7 @@ class LengthsAPI(APIView):
 
     def post(self, request, sex_id):
         # The LengthSerializer is prepared to allow update and create multiple objects, so many=True is explicit
+        # I'm using LengthSerializer2 because I can't use the LenghtSerializer
         serializer=LengthSerializer2(data=request.data, many=True)
 
         if serializer.is_valid():

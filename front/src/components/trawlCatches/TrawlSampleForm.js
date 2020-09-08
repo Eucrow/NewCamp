@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 
 import LengthsForm from "./LengthsForm"
 
-class TrawlSample extends Component {
+class TrawlSampleForm extends Component {
     /**
      * 
      * @param {number} props.catch_id: id of the catch.
@@ -117,56 +117,60 @@ class TrawlSample extends Component {
 
     }
 
-    submitSex(event){
-        event.preventDefault();
-    
-        fetch(this.apiAddSex, {
+
+    async submitSex(){  
+        /**
+         * Save sex to database
+         */
+        const response = await fetch(this.apiAddSex, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                },
+            },
             body: JSON.stringify(this.state.sex)
-        })
-        .then(response => {
+        });
         // TODO: detect if sex already exists
-            if(response > 400){
-                return this.setState(() => {
-                    return { placeholder: "Something went wrong!" }
-                });
-            }
-            return response.json(); 
-        })
-        .then(r => {
-            this.setState(() => {
-                return{
-                    ["sex_id"] : r.id
-                }
-            })
-        })
+        if (response > 400) {
+            return this.setState(() => {
+                return { placeholder: "Something went wrong!" };
+            });
+        }
+        const r = await response.json();
+        this.setState(() => {
+            return {
+                ["sex_id"]: r.id
+            };
+        });
     }
 
     submitLengths(event){
+        /**
+        Save lengths to database. Previously save sex and change state of it.
+        */        
 
         event.preventDefault();
-
-        const apiAddLengths = this.apiAddLengths + "/" + this.state.sex_id
-
-        fetch(apiAddLengths, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                },
-            body: JSON.stringify(this.state.lengths)
-        })
-        .then(response => {
-            // TODO: detect if length already exists
-                if(response > 400){
-                    return this.setState(() => {
-                        return { placeholder: "Something went wrong!" }
-                    });
-                }
-                return response.json(); 
-            }) 
+        this.submitSex()
+        .then( response => {
+            fetch(this.apiAddLengths + "/" + this.state.sex_id, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    },
+                body: JSON.stringify(this.state.lengths)
+            })
+            .then(response => {
+                // TODO: detect if length already exists
+                    if(response > 400){
+                        return this.setState(() => {
+                            return { placeholder: "Something went wrong!" }
+                        });
+                    }
+                    return response.json(); 
+                })
+        }
+            
+            
+        )
     }
 
     render() { 
@@ -186,7 +190,6 @@ class TrawlSample extends Component {
                         <option value="1">Male</option>
                         <option value="2">Female</option>
                     </select>
-                    <button onClick={ this.submitSex }>Save sex</button>
                     <LengthsForm lengths={ this.state.lengths }
                                  handleRemoveLength= { this.handleRemoveLength }
                                  handleAddLength={ this.handleAddLength } 
@@ -201,4 +204,4 @@ class TrawlSample extends Component {
     }
 }
  
-export default TrawlSample;
+export default TrawlSampleForm;

@@ -71,6 +71,7 @@ class LenghtSerializer(serializers.ModelSerializer):
         fields = ['id', 'length', 'number_individuals', ]
         list_serializer_class = LengthListSerializer
 
+# TODO: The next serializer should be included in LengthSerializer, but I can't make it works.
 class LengthSerializer2(serializers.ModelSerializer):
 
     class Meta:
