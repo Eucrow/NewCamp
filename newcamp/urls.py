@@ -106,8 +106,11 @@ urlpatterns = [
 
     # Catches API URLS
     re_path(r'^api/1.0/catches/(?P<haul_id>[0-9]+)$', CatchHaulListAPI.as_view(), name="get_catches_haul_api"),
+    # TODO: the next three routes must be standarized:
     re_path(r'^api/1.0/catches/new$', CatchHaulAPI.as_view(), name="add_catch_api"),
-    re_path(r'^api/1.0/catches/category/(?P<haul_id>[0-9]+)/(?P<category_id>[0-9]+)$', CatchHaulAPI.as_view(), name="get_catch_api"),
+    re_path(r'^api/1.0/catch/(?P<haul_id>[0-9]+)/(?P<category_id>[0-9]+)$', CatchHaulAPI.as_view(),
+            name="get_catch_api"),
+    re_path(r'^api/1.0/catch$', CatchHaulAPI.as_view(), name="edit_catch_api"),
 
     # Samples API URLs
     re_path(r'^api/1.0/samples/new$', SampleAPI.as_view(), name="add_sample_api"),

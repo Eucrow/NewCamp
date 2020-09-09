@@ -37,3 +37,13 @@ class CatchHaulAPI(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        catch = Catch.objects.get(id=request.data["id"])
+        serializer = CatchSerializer(catch, data=request.data)
+        if serializer.is_valid():
+            serializer.save(haul_id=request.data["haul_id"],
+                            category_id=request.data['category_id'])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

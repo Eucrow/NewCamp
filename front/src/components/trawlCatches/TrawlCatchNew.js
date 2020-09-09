@@ -19,20 +19,24 @@ class NewTrawlCatch extends Component {
             species: [],
             categories: [],
             loaded: false,
-            placeholder: "Loading"
+            placeholder: "Loading",
+            status_catch: "new"
         }
 
         this.apiSpeciesGroup = "http://127.0.0.1:8000/api/1.0/species/group/";
         this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
         this.apiSaveCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
-        this.apiGetCatch = "http://127.0.0.1:8000/api/1.0/catches/category/";
+        this.apiGetCatch = "http://127.0.0.1:8000/api/1.0/catch/";
+        this.apiUpdateCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path
 
         this.handleChangeGroup = this.handleChangeGroup.bind(this);
         this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
         this.handleChangeCategory = this.handleChangeCategory.bind(this)
         this.handleChangeWeight = this.handleChangeWeight.bind(this);
+        this.editCatchStatus = this.editCatchStatus.bind(this);
         this.existsCatch = this.existsCatch.bind(this);
         this.saveCatch = this.saveCatch.bind(this);
+        this.updateCatch = this.updateCatch.bind(this);
 
     }
     
@@ -154,6 +158,12 @@ class NewTrawlCatch extends Component {
         });
     }
 
+    editCatchStatus(status){
+        this.setState({
+            ["status_catch"] : status
+        })
+    }
+
     existsCatch(haul_id, category_id){
         /**
          * Method to check if a catch exists in database.
@@ -200,8 +210,52 @@ class NewTrawlCatch extends Component {
                 .then(c => {
                     this.setState(() => {
                         return{
-                            ["catch_id"] : c.id,
-                            ["loaded"] : true
+                            catch: {
+                                ...this.state.catch,
+                                ["catch_id"] : c.id,
+                            },
+                            loaded : true,
+                            status_catch : "view"
+                        }
+                    })
+                    
+                })
+                .catch(error => console.log('Error'))
+            }
+        })
+        
+    }
+
+    // TODO: saveCatch and saveCatch are mostly the same, only change apiUpdateCatch with apiSaveCatch.
+    updateCatch(event){
+        /**
+        * Save catch to database.
+        */
+
+        event.preventDefault();
+
+        this.existsCatch(this.state.catch.haul_id, this.state.catch.category_id)
+        .then(response => {
+            if(response === true){
+                alert("Catch already exists")
+            } else{
+                fetch(this.apiUpdateCatch, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        },
+                    body: JSON.stringify(this.state.catch)
+                })
+                .then( response => response.json())
+                .then(c => {
+                    this.setState(() => {
+                        return{
+                            catch: {
+                                ...this.state.catch,
+                                ["catch_id"] : c.id,
+                            },
+                            loaded : true,
+                            status_catch : "view"
                         }
                     })
                     
@@ -233,11 +287,14 @@ class NewTrawlCatch extends Component {
                                 species={ this.state.species }
                                 categories={ this.state.categories }
                                 loaded={ this.state.loaded }
+                                status_catch={ this.state.status_catch }
+                                editCatchStatus={ this.editCatchStatus }
                                 handleChangeGroup={ this.handleChangeGroup }
                                 handleChangeSpecies={ this.handleChangeSpecies }
                                 handleChangeCategory={ this.handleChangeCategory }
                                 handleChangeWeight={ this.handleChangeWeight }
-                                saveCatch={ this.saveCatch }/>
+                                saveCatch={ this.saveCatch }
+                                updateCatch={ this.updateCatch }/>
 
             </Fragment>
          );

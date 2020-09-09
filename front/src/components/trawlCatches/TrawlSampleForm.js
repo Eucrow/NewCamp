@@ -10,6 +10,7 @@ class TrawlSampleForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            catch_id: this.props.catch_id,
             sample: [],
             sampled: false,
             sex: [],
@@ -33,6 +34,7 @@ class TrawlSampleForm extends Component {
         this.submitSampleWeight = this.submitSampleWeight.bind(this);
         this.submitSex = this.submitSex.bind(this);
         this.submitLengths = this.submitLengths.bind(this);
+        this.submitSample = this.submitSample.bind(this);
     }
 
     handleAddSample(event){
@@ -53,13 +55,12 @@ class TrawlSampleForm extends Component {
         /**
          * Handle change of new catch form.
          */       
-        const name = event.target.name;
         const value = event.target.value;        
 
         this.setState({
             sample: {
                 ["catch_id"] : this.props.catch_id,
-                [name] : value
+                ["sampled_weight"] : value
             }
         });
     }
@@ -96,10 +97,10 @@ class TrawlSampleForm extends Component {
     };
     // **** end handle of legnths form
 
-    submitSampleWeight(event){
-        event.preventDefault();
 
-        fetch(this.apiAddSample, {
+    submitSampleWeight(){
+
+        return fetch(this.apiAddSample, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -116,7 +117,6 @@ class TrawlSampleForm extends Component {
         })
 
     }
-
 
     async submitSex(){  
         /**
@@ -143,13 +143,13 @@ class TrawlSampleForm extends Component {
         });
     }
 
-    submitLengths(event){
+    submitLengths(){
         /**
         Save lengths to database. Previously save sex and change state of it.
         */        
 
-        event.preventDefault();
-        this.submitSex()
+        // event.preventDefault();
+        return this.submitSex()
         .then( response => {
             fetch(this.apiAddLengths + "/" + this.state.sex_id, {
                 method: 'POST',
@@ -160,17 +160,29 @@ class TrawlSampleForm extends Component {
             })
             .then(response => {
                 // TODO: detect if length already exists
-                    if(response > 400){
-                        return this.setState(() => {
-                            return { placeholder: "Something went wrong!" }
-                        });
-                    }
-                    return response.json(); 
+                if(response > 400){
+                    return this.setState(() => {
+                        return { placeholder: "Something went wrong!" }
+                    });
+                }
+                return response.json(); 
                 })
+            .then(()=>{
+                console.log("Lengths saved.")
+            })
+        })
+    }
+
+    submitSample(event){
+        event.preventDefault();
+
+        if (Object.keys(this.state.sample).length != 0) {
+            this.submitSampleWeight();
         }
-            
-            
-        )
+    
+        this.submitLengths()
+        
+
     }
 
     render() { 
@@ -178,11 +190,13 @@ class TrawlSampleForm extends Component {
             <Fragment>
                 {this.state.sampled === false?
                 <button onClick={ this.handleAddSample }>Add sample</button>:
+                <Fragment>
                 <fieldset>
                     <legend>Sample</legend>
                     <label for="sampled_weight">Sampled weight:</label>
                     <input type="number" id="sampled_weight" name="sampled_weight" onChange={ this.handleChangeSampleWeigth }></input>
-                    <button onClick={ this.submitSampleWeight }>Save sample weight</button>
+                </fieldset>
+                <fieldset>
                     <label htmlFor="sex">Sex: </label>
                     <select id="sex" name="sex" onClick={ this.handleSex }>
                         <option>choose sex</option>
@@ -195,8 +209,9 @@ class TrawlSampleForm extends Component {
                                  handleAddLength={ this.handleAddLength } 
                                  handleNumberIndividualsChange={ this.handleNumberIndividualsChange} 
                                  handleLenghtNameChange={ this.handleLenghtNameChange }/>
-                    <button onClick={ this.submitLengths }>Save lengths</button>
                 </fieldset>
+                <button onClick={ this.submitSample }>Save</button>
+                </Fragment>
                 }
             </Fragment>
         )
