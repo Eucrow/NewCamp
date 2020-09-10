@@ -20,26 +20,34 @@ class Catch extends Component {
 
         this.apiSpeciesGroup = "http://127.0.0.1:8000/api/1.0/species/group/";
         this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
+        this.apiUpdateCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path
 
         this.editCatchStatus = this.editCatchStatus.bind(this);
-        this.loadCategories = this.loadCategories.bind(this);
         this.loadSpecies = this.loadSpecies.bind(this);
+        this.loadCategories = this.loadCategories.bind(this);
         this.handleChangeGroup = this.handleChangeGroup.bind(this);
-        this.handleChangeCategory = this.handleChangeCategory.bind(this);
         this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
+        this.handleChangeCategory = this.handleChangeCategory.bind(this);
         this.handleChangeWeight = this.handleChangeWeight.bind(this);
-        
+        this.updateCatch = this.updateCatch.bind(this);
+        this.existsCatch = this.existsCatch.bind(this);
+        this.existsCatchInState = this.existsCatchInState.bind(this);
 
     }
 
-    
+    editCatchStatus(status){
+        this.setState({
+            ["status_catch"] : status
+        })
+    }
+
     loadSpecies(group){
         /**
          * Fetch species by group from server and save in state.
          */
 
         const apiSpeciesGroup = this.apiSpeciesGroup + group;
-        fetch(apiSpeciesGroup)
+        return fetch(apiSpeciesGroup)
         .then(response => {
             if(response.status > 400){
                 return this.setState(() => {
@@ -79,12 +87,6 @@ class Catch extends Component {
                     categories: categories
                 };
             });
-        })
-    }
-
-    editCatchStatus(status){
-        this.setState({
-            ["status_catch"] : status
         })
     }
 
@@ -163,7 +165,7 @@ class Catch extends Component {
                     return {
                         catch: {
                             ...this.state.catch,
-                            ["sp"] : sp,
+                            ["sp_id"] : sp,
                             ["sp_code"] : sp_code,
                             ["sp_name"] : sp_name
                         }
@@ -206,19 +208,87 @@ class Catch extends Component {
         });
     }
 
-    componentDidMount() {
+    existsCatchInState(group, sp_id, category_id) {
+        return this.props.catches.some(item => {
+             return (group == item.group &&
+                     sp_id == item.sp_id &&
+                     category_id == item.category_id)
+        });
+    }
 
-        if (this.state.status_catch === "edit"){
-            this.loadSpecies(this.state.catch.group)
-            .then(() => {
-                console.log("Species loaded.")
+    existsCatch(haul_id, category_id){
+        /**
+         * Method to check if a catch exists in database.
+         * @param {number} haul_id: id of haul.
+         * @param {number} category_id: id of category.
+         */
+
+        const apiGetCatch = this.apiGetCatch + haul_id + "/" + category_id;
+
+        return fetch(apiGetCatch)
+            .then(response => {
+                if(response.status == 200){
+                    return true
+                } else {
+                    return false
+                }
             })
-    
+            .catch(function(error) {
+                console.log(error);
+            });
+
+    }
+
+    // TODO: saveCatch and updateCatch are mostly the same.
+    updateCatch(event){
+        /**
+        * Save catch to database.
+        */
+
+        event.preventDefault();
+
+        if(this.existsCatchInState(this.state.catch.group, this.state.catch.sp_id, this.state.catch.category_id)){
+            alert("There are already saved the category " + this.state.catch.category_name + "of " + this.state.catch.sp_name)
+        } else {
+            fetch(this.apiUpdateCatch, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    },
+                body: JSON.stringify(this.state.catch)
+            })
+            .then( response => response.json())
+            .then(c => {
+                this.setState(() => {
+                    return{
+                        catch: {
+                            ...this.state.catch,
+                            ["catch_id"] : c.id,
+                        },
+                        loaded : true,
+                        status_catch : "view"
+                    }
+                })
+                
+            })
+            .catch(error => console.log('Error'))
+        } 
+    }
+
+    componentDidMount(){
+
+        this.loadSpecies(this.state.catch.group)
+        .then(() => {
+            console.log("Species loaded.")
+        })
+        .then(()=>{
             this.loadCategories(this.state.catch.sp_id)
             .then(() => {
                 console.log("Categories loaded.")
-            })
-        }
+            })            
+        })
+
+
     }
 
     render() { 
@@ -253,51 +323,62 @@ class Catch extends Component {
 
             );
         } else if (this.state.status_catch === "edit"){
-                // return(
-                // <Fragment>
-                // <tr style={{verticalAlign: "top"}} key={ this.state.catch.id }>
-                //     <td>
-                //     <input type="hidden" id="haul_id" name="haul_id" value={ this.state.catch.haul_id } />
-                //     <input type="number" id="group" name="group" min="1" max="5"
-                //             value={ this.state.catch.group } onChange={ this.handleChangeGroup }/>
+            return ( 
+                <Fragment>
+                <tr style={{verticalAlign: "top"}} key={ this.state.catch.id }>
+                    <td>
+                    <input type="hidden" id="haul_id" name="haul_id" value={ this.state.catch.haul_id } />
+                    <input type="number" id="group" name="group" min="1" max="5"
+                            value={ this.state.catch.group } onChange={ this.handleChangeGroup }/>
     
-                //     <select id="sp_code" name="sp_code"
-                //             value = { this.state.catch.sp_id}
-                //             onChange={ this.handleChangeSpecies }>
-                //         {this.state.species.map(s=>{
-                //             return(<option value={s.id}>{s.sp_code}</option>)
-                //         })}
-                        
-                //     </select>
-                //     </td>
-                //     <td>
-                //         {this.state.catch.sp_name}
-                //     </td>
-                //     <td>
-                //     <select id="category_id" name="category_id"
-                //             value= { this.state.catch.category_id + "--" + this.state.catch.category }
-                //             onChange={ this.handleChangeCategory }>
-                //         <option>select one...</option>
-                //         {this.state.categories.map(c=>{
-                //             return(<option value={c.id + "--" + c.category_name}>{c.category_name}</option>)
-                //         })}
-                //     </select>
-                //     </td>
-                //     <td>
-                //     <input type="number" id="weight" name="weight" value={ this.state.catch.weight } onChange={ this.handleChangeWeight } />
-                //     </td>
-                //     <td>
-                //     <button onClick={ this.props.updateCatch }>Save</button>
-                //     </td>
-                // </tr>
-                // </Fragment> 
-                // )
+                    <select id="sp_code" name="sp_code"
+                            value = { this.state.catch.sp_id + "--" + this.state.catch.sp_code + "--" + this.state.catch.sp_name}
+                            onChange={ this.handleChangeSpecies }>
+                        {this.state.species.map(s=>{
+                            return(<option value={s.id + "--" + s.sp_code + "--" + s.sp_name}>{s.sp_code}-{s.sp_name}</option>)
+                        })}
+                    </select>
+                    </td>
+                    <td>
+                        {this.state.catch.sp_name}
+                    </td>
+                    <td>
+                    <select id="category_id" name="category_id"
+                            value= { this.state.catch.category_id + "--" + this.state.catch.category }
+                            onChange={ this.handleChangeCategory }>
+                        <option>select one...</option>
+                        {this.state.categories.map(c=>{
+                            return(<option value={c.id + "--" + c.category_name}>{c.category_name}</option>)
+                        })}
+                    </select>
+                    </td>
+                    <td>
+                    <input type="number" id="weight" name="weight" value={ this.state.catch.weight } onChange={ this.handleChangeWeight } />
+                    </td>
+                    <td>
+                    <button onClick={ this.updateCatch }>Save</button>
+                    </td>
+                </tr>
+            </Fragment>            
+             );
             
 
-            return(
-                <CatchEditForm
-                    this_catch = { this_catch }/>
-            )
+            // return(
+            //     <CatchEditForm
+            //         this_catch = { this_catch }
+            //         editCatchStatus = { this.editCatchStatus }
+            //         loadSpecies = { this.loadSpecies }
+            //         loadCategories = { this.loadCategories }
+            //         handleChangeGroup = { this.handleChangeGroup }
+            //         handleChangeSpecies = { this.handleChangeSpecies }
+            //         handleChangeCategory = { this.handleChangeCategory }
+            //         handleChangeWeight = { this.handleChangeWeight }
+            //         updateCatch = { this.updateCatch }
+            //         existsCatch = { this.existsCatch }
+            //         />
+            // )
+
+
         }
     }
 }

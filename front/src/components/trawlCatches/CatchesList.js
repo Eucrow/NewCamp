@@ -67,7 +67,7 @@ class CatchesList extends Component {
                 {
                     this.state.catches.map(c => {       
                         return(
-                            <Catch this_catch={ c } />
+                            <Catch this_catch={ c } catches={ this.state.catches }/>
                         )
                     })
                     
