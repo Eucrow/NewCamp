@@ -6,7 +6,8 @@ import CatchEditForm from './CatchEditForm.js';
 class Catch extends Component {
     /**
      * Catch form.
-     * @param {object} props.this_catch:
+     * @param {object} props.this_catch: catch object.
+     * @param {object} props.catches: object with all the catches of the haul.
      */
 
     constructor(props) {
@@ -216,6 +217,7 @@ class Catch extends Component {
         });
     }
 
+    // TODO: existsCatch maybe useless: remove??
     existsCatch(haul_id, category_id){
         /**
          * Method to check if a catch exists in database.
@@ -239,7 +241,6 @@ class Catch extends Component {
 
     }
 
-    // TODO: saveCatch and updateCatch are mostly the same.
     updateCatch(event){
         /**
         * Save catch to database.
@@ -301,12 +302,15 @@ class Catch extends Component {
         if (this.state.status_catch === "view") {
             return ( 
                 <Fragment>
-                <tr style={{verticalAlign: "top"}} key={ this_catch.id }>
+                <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
                 <td>{ this_catch.group } { this_catch.sp_code}</td>
                 <td>{ this_catch.sp_name }</td>
                 <td>{ this_catch.category }</td>
-                <td>{ this_catch.weight }</td>
-                <button onClick= { () => { this.editCatchStatus("edit")} }>Edit</button>
+                <td>
+                    { this_catch.weight }
+                    <button onClick= { () => { this.editCatchStatus("edit")} }>Edit catch</button>
+                </td>
+                
                 <td>{ sampled_weight }</td>
                 <td>
                     { sexes.map(s=>{
@@ -322,62 +326,19 @@ class Catch extends Component {
                 </Fragment>
 
             );
-        } else if (this.state.status_catch === "edit"){
-            return ( 
-                <Fragment>
-                <tr style={{verticalAlign: "top"}} key={ this.state.catch.id }>
-                    <td>
-                    <input type="hidden" id="haul_id" name="haul_id" value={ this.state.catch.haul_id } />
-                    <input type="number" id="group" name="group" min="1" max="5"
-                            value={ this.state.catch.group } onChange={ this.handleChangeGroup }/>
-    
-                    <select id="sp_code" name="sp_code"
-                            value = { this.state.catch.sp_id + "--" + this.state.catch.sp_code + "--" + this.state.catch.sp_name}
-                            onChange={ this.handleChangeSpecies }>
-                        {this.state.species.map(s=>{
-                            return(<option value={s.id + "--" + s.sp_code + "--" + s.sp_name}>{s.sp_code}-{s.sp_name}</option>)
-                        })}
-                    </select>
-                    </td>
-                    <td>
-                        {this.state.catch.sp_name}
-                    </td>
-                    <td>
-                    <select id="category_id" name="category_id"
-                            value= { this.state.catch.category_id + "--" + this.state.catch.category }
-                            onChange={ this.handleChangeCategory }>
-                        <option>select one...</option>
-                        {this.state.categories.map(c=>{
-                            return(<option value={c.id + "--" + c.category_name}>{c.category_name}</option>)
-                        })}
-                    </select>
-                    </td>
-                    <td>
-                    <input type="number" id="weight" name="weight" value={ this.state.catch.weight } onChange={ this.handleChangeWeight } />
-                    </td>
-                    <td>
-                    <button onClick={ this.updateCatch }>Save</button>
-                    </td>
-                </tr>
-            </Fragment>            
-             );
-            
+        } else if (this.state.status_catch === "edit"){            
 
-            // return(
-            //     <CatchEditForm
-            //         this_catch = { this_catch }
-            //         editCatchStatus = { this.editCatchStatus }
-            //         loadSpecies = { this.loadSpecies }
-            //         loadCategories = { this.loadCategories }
-            //         handleChangeGroup = { this.handleChangeGroup }
-            //         handleChangeSpecies = { this.handleChangeSpecies }
-            //         handleChangeCategory = { this.handleChangeCategory }
-            //         handleChangeWeight = { this.handleChangeWeight }
-            //         updateCatch = { this.updateCatch }
-            //         existsCatch = { this.existsCatch }
-            //         />
-            // )
-
+            return(
+                <CatchEditForm
+                    this_catch = { this.state.catch }
+                    species = {this.state.species }
+                    categories = { this.state.categories }
+                    handleChangeGroup = { this.handleChangeGroup }
+                    handleChangeSpecies = { this.handleChangeSpecies }
+                    handleChangeCategory = { this.handleChangeCategory }
+                    handleChangeWeight = { this.handleChangeWeight }
+                    updateCatch = { this.updateCatch }/>
+            )
 
         }
     }

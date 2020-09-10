@@ -52,7 +52,7 @@ class CatchesList extends Component {
                 )
         } else {
             return(
-            <table>
+            <table style={{verticalAlign: "top", borderWidth: 1, borderColor: "blue", borderStyle: "dotted"}}>
             <thead>
             <tr style={{verticalAlign: "top"}}>
                 <td>Code</td>
