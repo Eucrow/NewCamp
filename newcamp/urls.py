@@ -30,7 +30,7 @@ from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySu
 from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI,\
     HaulHydrographyAPI
 from catches.api import CatchHaulListAPI, CatchHaulAPI
-from samples.api import LengthsAPI
+from samples.api import LengthsAPI, SampleAPI, SexAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
 urlpatterns = [
@@ -106,11 +106,21 @@ urlpatterns = [
 
     # Catches API URLS
     re_path(r'^api/1.0/catches/(?P<haul_id>[0-9]+)$', CatchHaulListAPI.as_view(), name="get_catches_haul_api"),
+    # TODO: the next three routes must be standarized:
     re_path(r'^api/1.0/catches/new$', CatchHaulAPI.as_view(), name="add_catch_api"),
-    re_path(r'^api/1.0/catches/category/(?P<haul_id>[0-9]+)/(?P<category_id>[0-9]+)$', CatchHaulAPI.as_view(), name="get_catch_api"),
+    re_path(r'^api/1.0/catch/(?P<haul_id>[0-9]+)/(?P<category_id>[0-9]+)$', CatchHaulAPI.as_view(),
+            name="get_catch_api"),
+    re_path(r'^api/1.0/catch$', CatchHaulAPI.as_view(), name="edit_catch_api"),
+
+    # Samples API URLs
+    re_path(r'^api/1.0/samples/new$', SampleAPI.as_view(), name="add_sample_api"),
+
+    # Sexes API URLs
+    re_path(r'^api/1.0/sexes/new$', SexAPI.as_view(), name="add_sex_api"),
 
     # Lengths API URLs
     re_path(r'^api/1.0/lengths/(?P<sex_id>[0-9]+)$', LengthsAPI.as_view(), name="get_lenghts_api"),
+    re_path(r'^api/1.0/lengths/new/(?P<sex_id>[0-9]+)$', LengthsAPI.as_view(), name="add_lenghts_api"),
     # re_path(r'^api/1.0/lengths/update', LengthsAPI.as_view(), name="update_lenghts_api"),
     #The next line is not neccesary:
     # re_path(r'^api/1.0/lengths/remove/(?P<length_id>[0-9]+)$', LengthAPI.as_view(), name="remove_length_api"),

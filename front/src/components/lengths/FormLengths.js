@@ -43,8 +43,8 @@ class ComponentsFormLengths extends Component {
                     {lengths.map(l=>{
                         return(
                             <li key= { l.id }>
-                                <input type="text" name={ l.id } id={ l.id } value={l.length || ""} onChange={ this.props.handleChangeLengths } />:
-                                <input type="text" name={ l.length } value={l.number_individuals || ""} onChange={ this.props.handleChangeIndividuals } />-
+                                <input type="number" name={ l.id } id={ l.id } value={l.length || ""} onChange={ this.props.handleChangeLengths } />:
+                                <input type="number" name={ l.length } value={l.number_individuals || ""} onChange={ this.props.handleChangeIndividuals } />-
                                 <button onClick={() => this.props.removeLength(l.length) }>Remove</button>
                             </li> 
                         )

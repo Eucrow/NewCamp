@@ -144,6 +144,7 @@ class ComponentsLengths extends Component {
         /**
         * Save the lengths of state to database.
         */
+        console.log(this.apiLengths)
         console.log(JSON.stringify(this.state.lengths))
         fetch(this.apiLengths, {
             method: 'PUT',

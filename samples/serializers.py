@@ -9,7 +9,14 @@ class SampleWeightSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SampledWeight
-        fields = ['sampled_weight', ]
+        fields = ['id', 'sampled_weight', 'catch_id', ]
+
+
+class SexSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sex
+        fields = ['id', 'sex', 'catch_id', ]
+
 
 class LengthListSerializer(serializers.ListSerializer):
     """
@@ -64,10 +71,9 @@ class LenghtSerializer(serializers.ModelSerializer):
         fields = ['id', 'length', 'number_individuals', ]
         list_serializer_class = LengthListSerializer
 
+# TODO: The next serializer should be included in LengthSerializer, but I can't make it works.
+class LengthSerializer2(serializers.ModelSerializer):
 
-
-class SexSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Sex
-        fields = ['id', 'sex', ]
-
+        model= Length
+        fields = ['sex_id', 'length', 'number_individuals',  ]
