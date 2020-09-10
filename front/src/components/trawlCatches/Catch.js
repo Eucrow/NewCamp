@@ -315,10 +315,12 @@ class Catch extends Component {
                 <td>
                     { sexes.map(s=>{
                         return ( 
-                            <table><tbody><tr style={{verticalAlign: "top"}}><td>
-                                { s.sex }
-                                <ComponentsLengths sex_id={ s.id } isVisible={ false }/>
-                            </td></tr></tbody></table>
+                        sexes.lenght === 0?
+                        <button>Add Lengths</button>:
+                        <table><tbody><tr style={{verticalAlign: "top"}}><td>
+                            { s.sex }
+                            <ComponentsLengths sex_id={ s.id } isVisible={ false } status_lengths={ "visible"} />
+                        </td></tr></tbody></table>
                     )
                 }) }
                 </td>
