@@ -226,7 +226,7 @@ class NewTrawlCatch extends Component {
         
     }
 
-    // TODO: saveCatch and saveCatch are mostly the same, only change apiUpdateCatch with apiSaveCatch.
+    // TODO: saveCatch and updateCatch are mostly the same, only change apiUpdateCatch with apiSaveCatch.
     updateCatch(event){
         /**
         * Save catch to database.

@@ -22,7 +22,7 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        fields = ['id', 'weight', 'haul', 'category', 'samples', 'sexes', ]
+        fields = ['id', 'weight', 'haul', 'haul_id', 'category', 'samples', 'sexes', ]
 
     # # Override the to_representation method, which format the output of the serializer
     def to_representation(self, instance):
@@ -34,6 +34,7 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
         data['category'] = instance.category.category_name
         data['category_id'] = instance.category.id
         data['group'] = instance.category.sp.group
+        data['sp_id'] = instance.category.sp.id
         data['sp_code'] = instance.category.sp.sp_code
         data['sp_name'] = instance.category.sp.sp_name
 
