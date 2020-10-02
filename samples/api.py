@@ -1,11 +1,11 @@
 from django.shortcuts import get_list_or_404
-from rest_framework import status
+from rest_framework import status, generics
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
-from samples.models import Length
+from samples.models import Length, Sex
 
 from samples.serializers import LenghtSerializer, SampleWeightSerializer, LengthListSerializer, LengthSerializer2, \
     SexSerializer
@@ -23,9 +23,10 @@ class SampleAPI(APIView):
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
-class SexAPI(APIView):
+
+class SexCreate(APIView):
     """
-    Endpoint to manage sexes of samples.
+    Endpoint to create a sex of a catch.
     """
     def post(self, request):
         serializer=SexSerializer(data=request.data)
@@ -34,6 +35,14 @@ class SexAPI(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+class SexDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Endpoint to retrieve, update and destroy sex of a catch
+    """
+    queryset = Sex.objects.all()
+    serializer_class = SexSerializer
 
 
 class LengthsAPI(APIView):

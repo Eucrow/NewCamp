@@ -313,16 +313,18 @@ class Catch extends Component {
                 
                 <td>{ sampled_weight }</td>
                 <td>
-                    { sexes.map(s=>{
-                        return ( 
-                        sexes.lenght === 0?
-                        <button>Add Lengths</button>:
-                        <table><tbody><tr style={{verticalAlign: "top"}}><td>
+                    {
+                        sexes.length === 0?
+                        <ComponentsLengths status_lengths={ "add" }/>:
+                        (sexes.map(s=>{
+                            return(
+                            <table><tbody><tr style={{verticalAlign: "top"}}><td>
                             { s.sex }
-                            <ComponentsLengths sex_id={ s.id } isVisible={ false } status_lengths={ "visible"} />
-                        </td></tr></tbody></table>
-                    )
-                }) }
+                            <ComponentsLengths sex_id={ s.id } sex={ s.sex } />
+                            </td></tr></tbody></table>
+                            )
+                        }))
+                    }
                 </td>
                 </tr>
                 </Fragment>

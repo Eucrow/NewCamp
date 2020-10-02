@@ -4,8 +4,9 @@ class ComponentsFormLengths extends Component {
     /**
      * Component with the form of lengths.
      * @param {number} props.lengths
+     * @param {number} props.sex: sex of lengths.
      * @param {boolean} props.isEdit
-     * @param {string} props.status_lengths: must be "view", "edit" or "new"
+     * @param {string} props.status_lengths: must be "view", "edit", "hidden" or "add"
      * @param {method} props.removeLength
      * @param {method} props.handleChangeIndividuals
      * @param {method} props.handleChangeLengths
@@ -18,14 +19,22 @@ class ComponentsFormLengths extends Component {
         super(props);
     }
 
+
     render() {
         const lengths = this.props.lengths;
                 
         if(this.props.status_lengths === "view"){
+            if(lengths.length == 0){
+                return(
+                    <button onClick={ this.props.handleAddLengthsButton }>Add lengths</button>
+                )
+            }
             return (
                 <Fragment>
                 <ul>
                     {lengths.map(l=>{
+
+
                         return(
                             <li key= { l.length }>
                                     { l.length } : { l.number_individuals }
@@ -41,6 +50,15 @@ class ComponentsFormLengths extends Component {
             return(
                 <Fragment>
                 <ul>
+                    <tr>
+                        <label htmlFor="sex">Sex: </label>
+                        {/* <select id="sex" name="sex" value={ this.props.sex } onChange={ this.props.handleSex }>
+                            <option value="3">Undetermined</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select> */}
+                        <input type="number" id="sex" name="sex" value={ this.props.sex } onChange={ this.props.handleSex }/>
+                    </tr>
                     {lengths.map((l, idx) => {
                             return(
                                 <tr>
@@ -63,6 +81,10 @@ class ComponentsFormLengths extends Component {
                 <button onClick= { this.props.handleShowLengths }>Show lengths</button>
                 )
             
+        } else if (this.props.status_lengths === "add"){
+            return(
+                <button onClick= { this.props.handleAddLengthsButton }>Add lengths</button>
+            )
         }
 
     }

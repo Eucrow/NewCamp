@@ -7,7 +7,8 @@ class ComponentsLengths extends Component {
     /**
 	* Component of lengths. This component is for every species-category-sex of a haul.
     * @param {number} props.sex_id: sex id of lengths.
-    * @param {boolean} props.isVisible: If this component is visible or not.
+    * @param {number} props.sex: sex of lengths.
+    * @param {string} props.status_lengths: must be "view", "edit", "hidden" or "add"
     */
     
     constructor(props) {
@@ -19,11 +20,14 @@ class ComponentsLengths extends Component {
                     number_individuals : ""
                 }
             ],
-            isVisible: false,
+            // sex_id: this.props.sex_id,
+            sex: this.props.sex,
+            // sex: '',
             isEdit: false,
-            status_lengths : "hidden"
+            status_lengths : this.props.status_lengths? this.props.status_lengths : "hidden"
 
         }
+
         this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/" + this.props.sex_id
 
         this.handleShowLengths = this.handleShowLengths.bind(this)
@@ -34,6 +38,8 @@ class ComponentsLengths extends Component {
         this.saveLengths = this.saveLengths.bind(this)    
         this.editLengths = this.editLengths.bind(this)
         this.cancelLengths = this.cancelLengths.bind(this)
+        this.handleAddLengthsButton = this.handleAddLengthsButton.bind(this)
+        this.handleSex = this.handleSex.bind(this);
     }
 
     // **** start handle of legnths form
@@ -118,52 +124,6 @@ class ComponentsLengths extends Component {
 
     }
 
-    // handleChangeIndividuals(event){
-    //     const name = event.target.name;
-    //     const value = event.target.value;
-    //     // 1. Make a shallow copy of the lengths
-    //     let lengths = [...this.state.lengths];
-    //     // 2. Make a shallow copy of the length you want to update
-    //     let le = lengths.find(len => len.length == name);
-    //     // 3. Replace the property you're intested in
-    //     le.number_individuals = value;
-    //     // 4. Put it back into our array
-    //     const indexLength = lengths.findIndex(x => x.length===le)
-    //     lengths[indexLength] = le;
-    //     // 5. Set the state to our new copy
-    //     this.setState({lengths})
-    // }
-
-    // handleChangeLengths(event){
-    //     const name = event.target.name;
-    //     const value = event.target.value;
-    //     // 1. Make a shallow copy of the lengths
-    //     let lengths = [...this.state.lengths];
-    //     // 2. Make a shallow copy of the length you want to update
-    //     let le = lengths.find(len => len.id == name);
-    //     // 3. Get index of the original length
-    //     const indexLength = lengths.findIndex(x => x.length===le)
-    //     // 4. Replace the property you're intested in
-    //     le.length = value;
-    //     // 5. Put it back into our array
-    //     lengths[indexLength] = le;
-    //     // 6. Set the state to our new copy
-    //     this.setState({lengths})
-    // }
-
-    // removeLength(length){
-    //     /** Remove length.
-    //      * This method remove the length (and its number of individuals) from State.
-    //      */
-    //     // 1. Make a shallow copy of the lengths
-    //     let lengths = [...this.state.lengths];
-    //     // 2. Remove the length
-    //     let lengthIndex = lengths.findIndex(len => len.length == length);
-    //     lengths.splice(lengthIndex, 1);
-    //     // 3. Set the state to our new copy
-    //     this.setState({lengths});
-    // }
-
     editLengths(){
         /**
          * Change the state of isEdit to true.
@@ -186,6 +146,29 @@ class ComponentsLengths extends Component {
         });
     }
 
+    handleSex(event){
+        const value = event.target.value;
+
+        alert("value event: " + value + " - value state: " + this.state.sex)
+        this.setState(() => {
+            return {
+                sex : value
+            };
+        });
+        
+    }
+
+    handleAddLengthsButton(){
+        /**
+        * To show the form to create lengths.
+        */
+        this.setState(() => {
+            return {
+                status_lengths : "edit"
+            };
+        });
+    }
+
     saveLengths(event){
         /**
         * Save the lengths of state to database.
@@ -194,6 +177,7 @@ class ComponentsLengths extends Component {
         event.preventDefault();
 
         console.log(this.apiLengths)
+
         console.log(JSON.stringify(this.state.lengths))
         fetch(this.apiLengths, {
             method: 'PUT',
@@ -212,27 +196,22 @@ class ComponentsLengths extends Component {
     }
 
     // componentDidMount() {
-    //     // When the component is mounted the lengths are fetched.
-    //     // TODO: study how to manage this.
-    //     fetch(this.apiLengths)
-    //     .then(response => {
-    //         if(response.status > 400){
-    //             return this.setState(() => {
-    //                 return { placeholder: "Something went wrong!" }
-    //             });
-    //         }
-    //         return response.json();
-    //     })
-    //     .then(lengths => {
-    //         this.setState(() => {
+    //     /**If lengths array is empty, put the state to 'add' to show the "add lengths" button. */
+    //     if(this.state.lengths.length === 1 &&
+    //         this.state.lengths[0]["length"] === "" &&
+    //         this.state.lengths[0]["number_individuals"] === "" ){
+    //         this.setState(()=>{
     //             return {
-    //                 lengths: lengths,
-    //                 isVisible: true,
-    //                 status_lengths: "view"
+    //                 status_lengths : "add"
     //             };
-    //         });
-    //     });
-
+    //         })
+    //     } else {
+    //         this.setState(()=>{
+    //             return {
+    //                 status_lengths : "hidden"
+    //             };
+    //         })
+    //     }
     // }
         
     render() { 
@@ -242,55 +221,22 @@ class ComponentsLengths extends Component {
                 <FormLengths
                     lengths={ this.state.lengths }
                     status_lengths={ this.state.status_lengths }
+                    sex_id={ this.props.sex_id }
+                    sex= {this.props.sex }
                     handleShowLengths = { this.handleShowLengths }
                     handleHideLengths = { this.handleHideLengths }
                     handleRemoveLength= { this.handleRemoveLength }
                     handleAddLength={ this.handleAddLength } 
                     handleNumberIndividualsChange={ this.handleNumberIndividualsChange} 
                     handleLenghtNameChange={ this.handleLenghtNameChange }
+                    handleAddLengthsButton={ this.handleAddLengthsButton }
+                    handleSex={ this.handleSex }
                     saveLengths={ this.saveLengths }
                     editLengths={ this.editLengths }
                     cancelLengths={ this.cancelLengths }/>
 
             </Fragment>
         )
-        // return ( 
-        //     <Fragment>
-
-        //     {this.state.isVisible===false?
-        //         <Fragment>
-        //             <button onClick={ this.handleShowLengths }>Show Lengths</button>
-        //             <button onClick={ this.editLengths }>Edit Lengths</button>
-        //         </Fragment>:
-        //         null
-        //     }
-           
-
-        //     {this.state.isVisible===true?
-        //         <Fragment>
-        //         <FormLengths isEdit={ this.state.isEdit}
-        //                      lengths={ this.state.lengths }
-        //                      status_lengths={ this.status_lengths }
-        //                     //  removeLength={ this.removeLength }
-        //                     //  handleChangeLengths={ this.handleChangeLengths }
-        //                     //  handleChangeIndividuals={ this.handleChangeIndividuals }
-        //                      handleRemoveLength= { this.handleRemoveLength }
-        //                      handleAddLength={ this.handleAddLength } 
-        //                      handleNumberIndividualsChange={ this.handleNumberIndividualsChange} 
-        //                      handleLenghtNameChange={ this.handleLenghtNameChange }
-        //                      saveLengths={ this.saveLengths }
-        //                      editLengths={ this.editLengths }
-        //                      cancelLengths={ this.cancelLengths }/>
-        //         {this.state.isEdit===false?
-        //             <button onClick={ this.handleHideLengths }>Hide Lengths</button>:
-        //             null
-        //         }
-        //         </Fragment>:
-        //         null
-        //     }
-
-        //     </Fragment>
-        // );
     }
 }
  
