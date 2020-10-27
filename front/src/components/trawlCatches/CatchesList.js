@@ -5,7 +5,7 @@ import Catch from './Catch.js';
 class CatchesList extends Component {
     /**
      * Component to print all the caches of the haul.
-     * @param {dictionary} props.haul_id: id of haul.
+     * @param {number} props.haul_id: id of haul.
      */
     
     constructor(props) {
@@ -22,7 +22,6 @@ class CatchesList extends Component {
     componentDidMount() {
         
         const apiCatches = this.apiCatches + this.props.haul_id;
-        console.log (apiCatches)
 
         fetch(apiCatches)
             .then(response => {

@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
+from catches.serializers import SexCatchSerializer
 from samples.models import Length, Sex
 
 from samples.serializers import LenghtSerializer, SampleWeightSerializer, LengthListSerializer, LengthSerializer2, \
@@ -45,9 +46,38 @@ class SexDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SexSerializer
 
 
+class SexAPI(APIView):
+    """
+    Endpoint to create and update sex of a catch.
+    """
+
+    # def get(self, request, haul_id, category_id):
+    #     # catch = Catch.objects.get(category_id = category_id)
+    #     catch = get_object_or_404(Catch, haul_id=haul_id, category_id=category_id)
+    #     serializer = CatchSerializer(catch)
+    #     return Response(serializer.data)
+
+    def post(self, request):
+        serializer=SexSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(catch_id=request.data["catch_id"])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        sex = Sex.objects.get(id=request.data["id"])
+        serializer = SexSerializer(sex, data=request.data)
+        if serializer.is_valid():
+            serializer.save(catch_id=request.data["catch_id"])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
 class LengthsAPI(APIView):
     """
-    Endpoint to get lenghts of species.
+    Retrieve, create and update lengths.
+    sex_id is needed.
     """
     def get(self, request, sex_id):
         # lengths = get_list_or_404(Length, sex_id=sex_id)
@@ -90,3 +120,17 @@ class LengthsAPI(APIView):
 #         length = Length.objects.get(pk=length_id)
 #         length.delete()
 #         return Response(status=HTTP_204_NO_CONTENT)
+
+class SexLengthsAPI(APIView):
+    """
+    Create a new sex with its lengths.
+    """
+    def post(self, request):
+
+        serializer=SexCatchSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

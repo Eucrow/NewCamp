@@ -7,8 +7,8 @@ class ComponentsLengths extends Component {
     /**
 	* Component of lengths. This component is for every species-category-sex of a haul.
     * @param {number} props.sex_id: sex id of lengths.
-    * @param {number} props.sex: sex of lengths.
     * @param {string} props.status_lengths: must be "view", "edit", "hidden" or "add"
+    * @param {method} props.saveSexAndLengths
     */
     
     constructor(props) {
@@ -20,15 +20,13 @@ class ComponentsLengths extends Component {
                     number_individuals : ""
                 }
             ],
-            // sex_id: this.props.sex_id,
-            sex: this.props.sex,
-            // sex: '',
-            isEdit: false,
-            status_lengths : this.props.status_lengths? this.props.status_lengths : "hidden"
+            isEdit : false,
+            status_lengths : ''
+            // status_lengths : this.props.status_lengths? this.props.status_lengths : "hidden"
 
         }
 
-        this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/" + this.props.sex_id
+        this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/"
 
         this.handleShowLengths = this.handleShowLengths.bind(this)
         this.handleHideLengths = this.handleHideLengths.bind(this)
@@ -39,7 +37,7 @@ class ComponentsLengths extends Component {
         this.editLengths = this.editLengths.bind(this)
         this.cancelLengths = this.cancelLengths.bind(this)
         this.handleAddLengthsButton = this.handleAddLengthsButton.bind(this)
-        this.handleSex = this.handleSex.bind(this);
+
     }
 
     // **** start handle of legnths form
@@ -89,7 +87,7 @@ class ComponentsLengths extends Component {
         // In this case the legths has been hidden by css.
         const apiLengths = this.apiLengths + this.props.sex_id;
 
-        fetch(this.apiLengths)
+        fetch(apiLengths)
         .then(response => {
             if(response.status > 400){
                 return this.setState(() => {
@@ -146,18 +144,6 @@ class ComponentsLengths extends Component {
         });
     }
 
-    handleSex(event){
-        const value = event.target.value;
-
-        alert("value event: " + value + " - value state: " + this.state.sex)
-        this.setState(() => {
-            return {
-                sex : value
-            };
-        });
-        
-    }
-
     handleAddLengthsButton(){
         /**
         * To show the form to create lengths.
@@ -195,23 +181,16 @@ class ComponentsLengths extends Component {
 
     }
 
+
+
+
     // componentDidMount() {
-    //     /**If lengths array is empty, put the state to 'add' to show the "add lengths" button. */
-    //     if(this.state.lengths.length === 1 &&
-    //         this.state.lengths[0]["length"] === "" &&
-    //         this.state.lengths[0]["number_individuals"] === "" ){
-    //         this.setState(()=>{
-    //             return {
-    //                 status_lengths : "add"
-    //             };
-    //         })
-    //     } else {
-    //         this.setState(()=>{
-    //             return {
-    //                 status_lengths : "hidden"
-    //             };
-    //         })
+
+    //     if (this.props.status_lengths === "edit"){
+    //         //TODO: change the name of this.handleShowLengths function
+    //         this.handleShowLengths()
     //     }
+
     // }
         
     render() { 
@@ -220,9 +199,10 @@ class ComponentsLengths extends Component {
             <Fragment>
                 <FormLengths
                     lengths={ this.state.lengths }
-                    status_lengths={ this.state.status_lengths }
+                    status_lengths={ this.props.status_lengths }
                     sex_id={ this.props.sex_id }
                     sex= {this.props.sex }
+                    saveSexAndLengths={ this.props.saveSexAndLengths }
                     handleShowLengths = { this.handleShowLengths }
                     handleHideLengths = { this.handleHideLengths }
                     handleRemoveLength= { this.handleRemoveLength }

@@ -10,7 +10,7 @@ from catches.serializers import CatchSerializer, CatchesVerboseSerializer
 
 class CatchHaulListAPI(APIView):
     """
-    Endpoint to get all the catches of a trawl haul.
+    Endpoint to retrieve all the catches of a trawl haul.
     """
     def get(self, request, haul_id):
         # catches = get_list_or_404(Catch, haul_id=haul_id)
@@ -21,7 +21,7 @@ class CatchHaulListAPI(APIView):
 
 class CatchHaulAPI(APIView):
     """
-    Endpoint to manage catch.
+    Endpoint to retrieve, update and create catch.
     """
     def get(self, request, haul_id, category_id):
         # catch = Catch.objects.get(category_id = category_id)
