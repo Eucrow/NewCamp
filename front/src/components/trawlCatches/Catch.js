@@ -3,6 +3,7 @@ import React, { Component, Fragment } from 'react';
 import update from 'immutability-helper';
 
 import ComponentSexes from '../sexes/SexesList.js'
+import ComponentCategory from './Category.js';
 import CatchEditForm from './CatchEditForm.js';
 
 class Catch extends Component {
@@ -23,7 +24,7 @@ class Catch extends Component {
 
         this.apiSpeciesGroup = "http://127.0.0.1:8000/api/1.0/species/group/";
         this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
-        this.apiUpdateCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path
+        this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
         this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/"
 
         this.editCatchStatus = this.editCatchStatus.bind(this);
@@ -34,6 +35,7 @@ class Catch extends Component {
         this.handleChangeCategory = this.handleChangeCategory.bind(this);
         this.handleChangeWeight = this.handleChangeWeight.bind(this);
         this.updateCatch = this.updateCatch.bind(this);
+        this.removeCatch = this.removeCatch.bind(this);
         this.existsCatchInState = this.existsCatchInState.bind(this);
         this.handleSex = this.handleSex.bind(this);
         this.updateSex = this.updateSex.bind(this);
@@ -226,37 +228,65 @@ class Catch extends Component {
 
     updateCatch(event){
         /**
-        * Save catch to database.
+        * Update catch to database.
         */
 
         event.preventDefault();
 
-        if(this.existsCatchInState(this.state.catch.group, this.state.catch.sp_id, this.state.catch.category_id)){
-            alert("There are already saved the category " + this.state.catch.category_name + "of " + this.state.catch.sp_name)
-        } else {
-            fetch(this.apiUpdateCatch, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    },
-                body: JSON.stringify(this.state.catch)
+        // TODO: doesn't throw error when the species is changed and already exists.
+        const request = {"id" : this.state.catch.id,
+                        "weight" : this.state.catch.weight,
+                        "category_id" : this.state.catch.category_id,
+                        "haul_id" : this.state.catch.haul_id }
+
+        fetch(this.apiEditRemoveCatch, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                },
+            body: JSON.stringify(request)
+        })
+        .then( response => response.json())
+        .then(c => {
+            this.setState(() => {
+                return{
+                    status_catch : "view"
+                }
             })
-            .then( response => response.json())
-            .then(c => {
-                this.setState(() => {
-                    return{
-                        catch: {
-                            ...this.state.catch,
-                            ["catch_id"] : c.id,
-                        },
-                        loaded : true,
-                        status_catch : "view"
-                    }
-                })
-                
+            
+        })
+        .catch(error => alert(error))
+
+    }
+
+    removeCatch(event){
+        /**
+        * Remove catch to database.
+        */
+
+        event.preventDefault();
+
+        const request = { "id" : this.state.catch.id }
+
+        fetch(this.apiEditRemoveCatch, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+                },
+            body: JSON.stringify(request)
+        })
+        // .then( response => response.json())
+        .then(() => {
+            this.setState(() => {
+                return{
+                    catch : ""
+                }
             })
-            .catch(error => console.log('Error'))
-        } 
+            
+        })
+        .catch(error => alert(error))
+
     }
 
     handleSex(event){
@@ -366,48 +396,87 @@ class Catch extends Component {
         const sampled_weight = this_catch.samples && this_catch.samples.sampled_weight? this_catch.samples.sampled_weight : null;
         const sexes = this_catch.sexes ? this_catch.sexes : null
 
-        if (this.state.status_catch === "view") {
-            return ( 
-                <Fragment>
-                <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
-                <td>{ this_catch.group } { this_catch.sp_code }</td>
-                <td>{ this_catch.sp_name }</td>
-                <td>{ this_catch.category }</td>
-                <td>
-                    { this_catch.weight }
-                    <button onClick= { () => { this.editCatchStatus("edit")} }>Edit catch</button>
-                </td>
-                
-                <td>
-                    { sampled_weight }
-                </td>
+        return ( 
+            <Fragment>
+            <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
 
-                <td>
-                    <ComponentSexes sexes={ sexes }
-                                    status_sexes= { this.state.status_sexes }
-                                    handleSex= { this.handleSex }
-                                    updateSex={ this.updateSex }
-                                    saveSex={ this.saveSex }
-                                    editCatchStatus={ this.editCatchStatus }/>
-                </td>
+            <ComponentCategory status_catch = { this.state.status_catch }
+                               this_catch = { this.state.catch }
+                               species = {this.state.species }
+                               categories = { this.state.categories }
+                               editCatchStatus = { this.editCatchStatus }
+                               handleChangeGroup = { this.handleChangeGroup }
+                               handleChangeSpecies = { this.handleChangeSpecies }
+                               handleChangeCategory = { this.handleChangeCategory }
+                               handleChangeWeight = { this.handleChangeWeight }
+                               updateCatch = { this.updateCatch }
+                               removeCatch = { this.removeCatch }/>
+            {/* <td>
+                { sampled_weight }
+            </td> */}
+            {/* <td>
+                <ComponentSexes sexes={ sexes }
+                                status_sexes= { this.state.status_sexes }
+                                handleSex= { this.handleSex }
+                                updateSex={ this.updateSex }
+                                saveSex={ this.saveSex }
+                                editCatchStatus={ this.editCatchStatus }/>
+            </td> */}
+            </tr>
+            </Fragment>
 
-                </tr>
-                </Fragment>
+        );
 
-            );
-        } else if (this.state.status_catch === "edit"){            
-            return(
-                <CatchEditForm
-                    this_catch = { this.state.catch }
-                    species = {this.state.species }
-                    categories = { this.state.categories }
-                    handleChangeGroup = { this.handleChangeGroup }
-                    handleChangeSpecies = { this.handleChangeSpecies }
-                    handleChangeCategory = { this.handleChangeCategory }
-                    handleChangeWeight = { this.handleChangeWeight }
-                    updateCatch = { this.updateCatch }/>
-            )
-        }
+        // if (this.state.status_catch === "view") {
+            // return ( 
+            //     <Fragment>
+            //     <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
+
+            //         <ComponentCategory status_catch = { this.state.status_catch }
+            //                            this_catch = { this.state.catch }
+            //                            species = {this.state.species }
+            //                            categories = { this.state.categories }
+            //                            editCatchStatus = { this.editCatchStatus }
+            //                            handleChangeGroup = { this.handleChangeGroup }
+            //                            handleChangeSpecies = { this.handleChangeSpecies }
+            //                            handleChangeCategory = { this.handleChangeCategory }
+            //                            handleChangeWeight = { this.handleChangeWeight }
+            //                            updateCatch = { this.updateCatch }/>
+            //     <td>{ this_catch.group } { this_catch.sp_code }</td>
+            //     <td>{ this_catch.sp_name }</td>
+            //     <td>{ this_catch.category }</td>
+            //     <td>
+            //         { this_catch.weight }
+            //         <button onClick= { () => { this.editCatchStatus("edit")} }>Edit catch</button>
+            //     </td>
+            //     <td>
+            //         { sampled_weight }
+            //     </td>
+            //     <td>
+            //         <ComponentSexes sexes={ sexes }
+            //                         status_sexes= { this.state.status_sexes }
+            //                         handleSex= { this.handleSex }
+            //                         updateSex={ this.updateSex }
+            //                         saveSex={ this.saveSex }
+            //                         editCatchStatus={ this.editCatchStatus }/>
+            //     </td>
+            //     </tr>
+            //     </Fragment>
+
+            // );
+        // } else if (this.state.status_catch === "edit"){            
+        //     return(
+        //         <CatchEditForm
+        //             this_catch = { this.state.catch }
+        //             species = {this.state.species }
+        //             categories = { this.state.categories }
+        //             handleChangeGroup = { this.handleChangeGroup }
+        //             handleChangeSpecies = { this.handleChangeSpecies }
+        //             handleChangeCategory = { this.handleChangeCategory }
+        //             handleChangeWeight = { this.handleChangeWeight }
+        //             updateCatch = { this.updateCatch }/>
+        //     )
+        // }
         //  else if (this.state.status_catch === "addSex"){
         //     return(
         //         <ComponentSexes sexes={ sexes }
