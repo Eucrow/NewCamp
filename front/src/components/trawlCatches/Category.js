@@ -15,13 +15,13 @@ class ComponentCategory extends Component {
 
             return ( 
                 <Fragment>
-                <td>{ this.props.this_catch.group } { this.props.this_catch.sp_code }</td>
+                <td>catch_id: {this.props.this_catch.id} -- { this.props.this_catch.group } { this.props.this_catch.sp_code }</td>
                 <td>{ this.props.this_catch.sp_name }</td>
                 <td>{ this.props.this_catch.category }</td>
                 <td>
                     { this.props.this_catch.weight }
                     <button onClick= { () => { this.props.editCatchStatus("edit") } }>Edit catch</button>
-                    <button onClick= { this.props.removeCatch }>Remove catch</button>
+                    <button onClick= { this.props.removeCatch(this.props.this_catch.id) }>Remove catch</button>
                 </td>
                 <td>
                     { sampled_weight }
