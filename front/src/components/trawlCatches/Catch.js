@@ -149,20 +149,20 @@ class Catch extends Component {
 
     }
 
-    componentDidMount(){
-        // TODO: the species and categories shoul be fetched only one time, maybe
-        // in CatchesList component?
-        this.props.loadSpecies(this.props.this_catch.group)
-        .then(() => {
-            console.log("Species loaded.")
-        })
-        .then(()=>{
-            this.loadCategories(this.props.this_catch.sp_id)
-            .then(() => {
-                console.log("Categories loaded.")
-            })            
-        })
-    }
+    // componentDidMount(){
+    //     // TODO: the species and categories shoul be fetched only one time, maybe
+    //     // in CatchesList component?
+    //     this.props.loadSpecies(this.props.this_catch.group)
+    //     .then(() => {
+    //         console.log("Species loaded.")
+    //     })
+    //     .then(()=>{
+    //         this.loadCategories(this.props.this_catch.sp_id)
+    //         .then(() => {
+    //             console.log("Categories loaded.")
+    //         })            
+    //     })
+    // }
 
     render() { 
 

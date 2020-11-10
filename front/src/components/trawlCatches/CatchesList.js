@@ -19,50 +19,18 @@ class CatchesList extends Component {
         }
 
         this.apiCatches = "http://127.0.0.1:8000/api/1.0/catches/";
-        this.apiSpeciesGroup = "http://127.0.0.1:8000/api/1.0/species/group/";
+        // TODO: change the apiSpecies api to only return the id, sp_name, group and sp_code variables.
+        this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
         this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
         this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
 
         
-        this.loadSpecies = this.loadSpecies.bind(this);
         this.handleChangeGroup = this.handleChangeGroup.bind(this);
         this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
         this.handleChangeCategory = this.handleChangeCategory.bind(this);
         this.handleChangeWeight = this.handleChangeWeight.bind(this);
         this.updateCatch = this.updateCatch.bind(this);
         this.removeCatch = this.removeCatch.bind(this);
-    }
-
-
-    // removeCatch = idx => () => {
-    //     this.setState({
-    //         lengths: this.state.lengths.filter((s, sidx) => idx !== sidx)
-    //     });
-    // };
-
-    loadSpecies(group){
-        /**
-         * Fetch species by group from server and save in state.
-         */
-
-        const apiSpeciesGroup = this.apiSpeciesGroup + group;
-        return fetch(apiSpeciesGroup)
-        .then(response => {
-            if(response.status > 400){
-                return this.setState(() => {
-                    return { placeholder: "Something went wrong!" }
-                });
-            }
-            return response.json();
-        })
-        .then(species => {
-            this.setState(() => {
-                return {
-                    species: species
-                };
-            });
-        })
-
     }
 
     removeCatch = idx => () => {
@@ -112,29 +80,12 @@ class CatchesList extends Component {
             return { ...c, group: value };
         });
 
-        fetch(apiSpeciesGroup)
-            .then(response => {
-                if(response.status > 400){
-                    return this.setState(() => {
-                        return { placeholder: "Something went wrong!" }
-                    });
-                }
-                return response.json();
-            })
-			.then(species => {
-				this.setState(() => {
-					return {
-                        species: species
-					};
-				});
-            })
-            .then(() =>{
-                this.setState(() => {
-                    return {
-                        catches: newCatches
-                    }
-                })
-            });
+        this.setState(() => {
+            return {
+                catches: newCatches
+            }
+        })
+
     }
     
     // handleChangeSpecies(event){
@@ -275,17 +226,23 @@ class CatchesList extends Component {
 					};
 				});
             })
-
-            //     this.loadSpecies(this.state.catch.group)
-    //     .then(() => {
-    //         console.log("Species loaded.")
-    //     })
-    //     .then(()=>{
-    //         this.loadCategories(this.state.catch.sp_id)
-    //         .then(() => {
-    //             console.log("Categories loaded.")
-    //         })            
-    //     })
+        
+        fetch(this.apiSpecies)
+            .then(response => {
+                if(response.status > 400){
+                    return this.setState(() => {
+                        return{ placeholder: "Something went wrong!" }
+                    })
+                }
+                return response.json();
+            })
+            .then(species => {
+                this.setState(() => {
+                    return{
+                        species: species
+                    }
+                })
+            })
     }
 
     render() { 
@@ -316,7 +273,6 @@ class CatchesList extends Component {
                             this_catch={ c }
                             species={ this.state.species }
                             categories={ this.state.categories }
-                            loadSpecies={ this.loadSpecies }
                             handleChangeGroup = { this.handleChangeGroup }
                             handleChangeSpecies = { this.handleChangeSpecies }
                             handleChangeCategory = { this.handleChangeCategory }

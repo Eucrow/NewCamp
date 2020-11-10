@@ -49,12 +49,18 @@ class ComponentCategory extends Component {
                 <select id="sp_code" name="sp_code"
                         value = { this.props.this_catch.sp_id + "--" + this.props.this_catch.sp_code + "--" + this.props.this_catch.sp_name}
                         onChange={ this.props.handleChangeSpecies(this.props.this_catch.id) }>
-                    {this.props.species.map(s=>{
-                        return(<option value={s.id + "--" + s.sp_code + "--" + s.sp_name}>{s.sp_code}-{s.sp_name}</option>)
-                    })}
+                        
+                        <option>Select species...</option>
+                    {
+                        this.props.species.map(s=>{
+                            if(s.group === parseInt(this.props.this_catch.group)){
+                                return(<option value={s.id + "--" + s.sp_code + "--" + s.sp_name}>{s.sp_code}-{s.sp_name}</option>)
+                            }
+                        })
+                    }
                 </select>
                 </td>
-                <td>{this.props.this_catch.sp_name}</td>
+                <td></td>
                 <td>
                 <select id="category_id" name="category_id"
                         value= { this.props.this_catch.category_id + "--" + this.props.this_catch.category }
