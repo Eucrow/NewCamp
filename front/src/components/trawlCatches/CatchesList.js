@@ -139,21 +139,26 @@ class CatchesList extends Component {
     }
 
 
-    handleChangeCategory (event) { 
+    // handleChangeCategory (event) { 
+    handleChangeCategory = idx => evt =>{
         /**
          * Handle change of new catch form.
          */       
-        const value = event.target.value;
-        const val = value.split("--");
-        const category_id = val[0];
-        const category_name = val[1];
+        const value = evt.target.value;
+        // const val = value.split("--");
+        // const category_id = val[0];
+        // const category_name = val[1];
+
+        const newCatches = this.state.catches.map(c => {
+            if( c.id !== idx ) return c;
+            return{
+                ... c,
+                category: value}
+
+        })
 
         this.setState({
-            catch: {
-                ...this.state.catch,
-                ["category_id"] : category_id,
-                ["category_name"] : category_name
-            }
+            catches: newCatches
         });
     }
 
