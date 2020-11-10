@@ -42,17 +42,19 @@ class ComponentCategory extends Component {
                 <Fragment>
                 <td>
                 <input type="hidden" id="haul_id" name="haul_id" value={ this.props.this_catch.haul_id } />
+                catch_id: {this.props.this_catch.id} -- 
                 <input type="number" id="group" name="group" min="1" max="5"
-                        value={ this.props.this_catch.group } onChange={ this.props.handleChangeGroup }/>
+                        value={ this.props.this_catch.group } onChange={ this.props.handleChangeGroup(this.props.this_catch.id) }/>
 
                 <select id="sp_code" name="sp_code"
                         value = { this.props.this_catch.sp_id + "--" + this.props.this_catch.sp_code + "--" + this.props.this_catch.sp_name}
-                        onChange={ this.props.handleChangeSpecies }>
+                        onChange={ this.props.handleChangeSpecies(this.props.this_catch.id) }>
                     {this.props.species.map(s=>{
                         return(<option value={s.id + "--" + s.sp_code + "--" + s.sp_name}>{s.sp_code}-{s.sp_name}</option>)
                     })}
                 </select>
                 </td>
+                <td>{this.props.this_catch.sp_name}</td>
                 <td>
                 <select id="category_id" name="category_id"
                         value= { this.props.this_catch.category_id + "--" + this.props.this_catch.category }

@@ -12,15 +12,19 @@ class CatchesList extends Component {
         super(props);
         this.state = { 
             catches: [],
+            species: [],
+            categories: [],
             loaded: false,
             placeholder: "Loading"
         }
 
-        this.apiCatches = "http://127.0.0.1:8000/api/1.0/catches/"
+        this.apiCatches = "http://127.0.0.1:8000/api/1.0/catches/";
         this.apiSpeciesGroup = "http://127.0.0.1:8000/api/1.0/species/group/";
         this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
         this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
 
+        
+        this.loadSpecies = this.loadSpecies.bind(this);
         this.handleChangeGroup = this.handleChangeGroup.bind(this);
         this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
         this.handleChangeCategory = this.handleChangeCategory.bind(this);
@@ -36,6 +40,30 @@ class CatchesList extends Component {
     //     });
     // };
 
+    loadSpecies(group){
+        /**
+         * Fetch species by group from server and save in state.
+         */
+
+        const apiSpeciesGroup = this.apiSpeciesGroup + group;
+        return fetch(apiSpeciesGroup)
+        .then(response => {
+            if(response.status > 400){
+                return this.setState(() => {
+                    return { placeholder: "Something went wrong!" }
+                });
+            }
+            return response.json();
+        })
+        .then(species => {
+            this.setState(() => {
+                return {
+                    species: species
+                };
+            });
+        })
+
+    }
 
     removeCatch = idx => () => {
         /**
@@ -59,36 +87,30 @@ class CatchesList extends Component {
             this.setState({
                 catches: this.state.catches.filter(
                     function(c) {
-                        // console.log ("idx: ", idx)
-                        // console.log ("c.id: ", c.id )
-                        // console.log ( idx !== c.id )
                         return (idx !== c.id)
                     }
                 )
             })
-            
-
-            // this.setState(() => {
-            //     return{
-            //         catch : ""
-            //     }
-            // })
             
         }).then(()=>console.log("despues: ", this.state.catches))
         .catch(error => alert(error))
 
     }
 
-    handleChangeGroup(event){
+    handleChangeGroup = idx => evt =>{
         /**
          * Method to mange the group field. When it is changed, get the species of the group.
          * Then, update de state.
-         */
+         */        
+        const value = evt.target.value
 
-        const value = event.target.value;
-        
         const apiSpeciesGroup = this.apiSpeciesGroup + value;
         console.log (apiSpeciesGroup)
+
+        const newCatches = this.state.catches.map(c => {
+            if (idx !== c.id) return c;
+            return { ...c, group: value };
+        });
 
         fetch(apiSpeciesGroup)
             .then(response => {
@@ -109,22 +131,20 @@ class CatchesList extends Component {
             .then(() =>{
                 this.setState(() => {
                     return {
-                        catch: {
-                            ...this.state.catch,
-                            ["group"] : value
-                        }
+                        catches: newCatches
                     }
                 })
             });
     }
-
-    handleChangeSpecies(event){
+    
+    // handleChangeSpecies(event){
+    handleChangeSpecies = idx => evt =>{
         /**
          * Method to get categories of the species, when the 'species' field is modified.
          * Then, update de state.
          */
 
-        const value=event.target.value;
+        const value=evt.target.value;
         const val=value.split("--")
         const sp=val[0]
         const sp_code=val[1]
@@ -132,6 +152,15 @@ class CatchesList extends Component {
 
         const apiCategoriesSpecies = this.apiCategoriesSpecies + sp;
         console.log (apiCategoriesSpecies)
+
+        const newCatches = this.state.catches.map(c => {
+            if (idx !== c.id) return c;
+            return {
+                ...c,
+                sp_id: sp,
+                sp_code: sp_code,
+                sp_name: sp_name };
+        });
 
         fetch(apiCategoriesSpecies)
             .then(response => {
@@ -152,17 +181,12 @@ class CatchesList extends Component {
             .then(() =>{
                 this.setState(() => {
                     return {
-                        catch: {
-                            ...this.state.catch,
-                            ["sp_id"] : sp,
-                            ["sp_code"] : sp_code,
-                            ["sp_name"] : sp_name
-                        }
+                        catches: newCatches
                     }
                 })
             });
-
     }
+
 
     handleChangeCategory (event) { 
         /**
@@ -290,6 +314,9 @@ class CatchesList extends Component {
                         return(
                             <Catch key={ c.id }
                             this_catch={ c }
+                            species={ this.state.species }
+                            categories={ this.state.categories }
+                            loadSpecies={ this.loadSpecies }
                             handleChangeGroup = { this.handleChangeGroup }
                             handleChangeSpecies = { this.handleChangeSpecies }
                             handleChangeCategory = { this.handleChangeCategory }
