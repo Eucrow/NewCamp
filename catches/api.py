@@ -1,5 +1,5 @@
 from django.shortcuts import get_list_or_404, get_object_or_404
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -47,3 +47,8 @@ class CatchHaulAPI(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        catch = Catch.objects.get(id=request.data["id"])
+        catch.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
