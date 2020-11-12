@@ -120,6 +120,7 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
 
         return instance
 
+
 class HydrographySerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -127,6 +128,7 @@ class HydrographySerializer(serializers.ModelSerializer):
         fields = ['latitude', 'longitude', 'date_time', 'depth_probe', 'cable', 'depth', 'temperature_0', 'salinity_0',
                  'sigma_0', 'temperature_50', 'salinity_50', 'sigma_50', 'temperature_100', 'salinity_100',
                  'sigma_100', 'temperature', 'salinity', 'sigma', 'comment', ]
+
 
 class HaulHydrographySerializer(serializers.ModelSerializer):
     """

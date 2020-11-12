@@ -4,8 +4,8 @@ from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
 
-from species.models import Sp
-from species.serializers import SpeciesSerializer
+from species.models import Sp, Category
+from species.serializers import SpeciesSerializer, SpNameSerializer, CategorySerializer
 
 
 class SpeciesListAPI(APIView):
@@ -15,7 +15,6 @@ class SpeciesListAPI(APIView):
         return Response(serializer.data)
 
 
-# working with class-based views
 class SpAPI(APIView):
     def get(self, request, pk):
         sp = Sp.objects.filter(pk=pk)
@@ -38,5 +37,25 @@ class SpAPI(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+class SpeciesGroupAPI(APIView):
+    """
+    Manage species with group-species variables instead of pk.
+    """
+    def get(self, request, group):
+        sp = Sp.objects.filter(group=group)
+        serializer = SpNameSerializer(sp, many=True)
+        return Response(serializer.data)
+
+
+class CategorySpeciesAPI(APIView):
+    """
+    Manage caterories of one species.
+    """
+    def get(self, request, sp_id):
+        categories = Category.objects.filter(sp_id=sp_id)
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
 
 

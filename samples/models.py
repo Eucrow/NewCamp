@@ -14,6 +14,9 @@ class Sex(models.Model):
     catch = models.ForeignKey('catches.Catch', on_delete=models.CASCADE, related_name='sexes')
     sex = models.IntegerField()
 
+    class Meta:
+        unique_together = ('sex', 'catch')
+
 
 class Length(models.Model):
     sex = models.ForeignKey('samples.Sex', on_delete=models.CASCADE, related_name='lengths')

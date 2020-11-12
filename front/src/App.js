@@ -18,8 +18,8 @@ import ComponentsHauls from "./components/hauls/hauls.js";
 import ComponentHaul from "./components/haulDetail/haul.js";
 import ComponentsHaulNew from "./components/haulNew/HaulNew.js";
 
-import ComponentsTrawlCatches from "./components/trawlCatches/TrawlCatches.js";
-
+import ComponentsTrawlCatches from "./components/trawlCatches/TrawlHaulCatches.js";
+import ComponentsTrawlCatchNew from "./components/trawlCatches/TrawlCatchNew.js";
 
 
 export default function App() {
@@ -91,6 +91,7 @@ export default function App() {
       <Route path="/Hauls" exact component={ComponentsHauls} />
 
       <Route path="/Catches/haul/:haul_id" exact component={ComponentsTrawlCatches} />
+      <Route path="/Catches/new/:haul_id" exact component={ComponentsTrawlCatchNew} />
 
       
       {/* <Route path="/Weights" component={Weights} /> */}

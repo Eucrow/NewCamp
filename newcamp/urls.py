@@ -18,7 +18,7 @@ from django.contrib import admin
 
 from djgeojson.views import GeoJSONLayerView
 
-from species.api import SpeciesListAPI, SpAPI
+from species.api import SpeciesListAPI, SpAPI, SpeciesGroupAPI, CategorySpeciesAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
 from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
@@ -29,8 +29,8 @@ from samplers.api import SamplersAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
 from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI,\
     HaulHydrographyAPI
-from catches.api import CatchHaulListAPI
-from samples.api import LengthsAPI
+from catches.api import CatchHaulListAPI, CatchHaulAPI
+from samples.api import LengthsAPI, SampleAPI, SexDetail, SexCreate, SexAPI, SexLengthsAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
 urlpatterns = [
@@ -48,6 +48,9 @@ urlpatterns = [
     re_path(r'^api/1.0/species/$', SpeciesListAPI.as_view(), name="species_list_api"),
     re_path(r'^api/1.0/species/(?P<pk>[0-9]+)$', SpAPI.as_view(), name="sp_api"),
     re_path(r'^api/1.0/species/new/$', SpAPI.as_view(), name="sp_api"),
+    re_path(r'^api/1.0/species/group/(?P<group>[0-9]+)$', SpeciesGroupAPI.as_view(), name="species_group_api"),
+    re_path(r'^api/1.0/species/category/(?P<sp_id>[0-9]+)$', CategorySpeciesAPI.as_view(), name="get_categories_api"),
+
     re_path(r'^api/1.0/species/import$', SpeciesImportAPI.as_view(), name="species_import_api"),
 
     # Samplers API URLS
@@ -103,14 +106,31 @@ urlpatterns = [
 
     # Catches API URLS
     re_path(r'^api/1.0/catches/(?P<haul_id>[0-9]+)$', CatchHaulListAPI.as_view(), name="get_catches_haul_api"),
+    # TODO: the next three routes must be standarized:
+    re_path(r'^api/1.0/catches/new$', CatchHaulAPI.as_view(), name="add_catch_api"),
+    re_path(r'^api/1.0/catch/(?P<haul_id>[0-9]+)/(?P<category_id>[0-9]+)$', CatchHaulAPI.as_view(),
+            name="get_catch_api"),
+    re_path(r'^api/1.0/catch$', CatchHaulAPI.as_view(), name="edit_catch_api"),
+    re_path(r'^api/1.0/catch/remove$', CatchHaulAPI.as_view(), name="remove_catch_api"),
+
+    # Samples API URLs
+    re_path(r'^api/1.0/samples/new$', SampleAPI.as_view(), name="add_sample_api"),
+
+    # Sexes API URLs
+    # path('api/1.0/sexes/', SexCreate.as_view(), name="add_sex_api"),
+    path('api/1.0/sexes/<int:pk>', SexDetail.as_view(), name="retrieve_update_delete_sex_api"),
+    re_path(r'^api/1.0/sexes/$', SexAPI.as_view(), name="create_update_sex_api"),
 
     # Lengths API URLs
     re_path(r'^api/1.0/lengths/(?P<sex_id>[0-9]+)$', LengthsAPI.as_view(), name="get_lenghts_api"),
+    re_path(r'^api/1.0/lengths/new/(?P<sex_id>[0-9]+)$', LengthsAPI.as_view(), name="add_lenghts_api"),
     # re_path(r'^api/1.0/lengths/update', LengthsAPI.as_view(), name="update_lenghts_api"),
     #The next line is not neccesary:
     # re_path(r'^api/1.0/lengths/remove/(?P<length_id>[0-9]+)$', LengthAPI.as_view(), name="remove_length_api"),
     # re_path(r'^api/1.0/sampled_weights/import$', SampledWeightsImportAPI.as_view(), name="lengths_import"),
 
+    # Sex and Lengths API URLs
+    re_path(r'^api/1.0/sex/lengths/$', SexLengthsAPI.as_view(), name="create_sex_lenghts_api"),
     # Import Data
     re_path(r'^api/1.0/import_hydrography$', ImportOldCampAPIHydrography.as_view(), name="old_camp_import_hydrography"),
     re_path(r'^api/1.0/import$', ImportOldCampAPI.as_view(), name="old_camp_import"),

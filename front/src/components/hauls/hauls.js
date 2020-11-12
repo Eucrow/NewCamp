@@ -76,7 +76,7 @@ class ComponentsHauls extends Component {
     render() { 
         return ( 
             <Fragment>
-                <div><ComponentsUiNewHaulButton /></div>
+                <div><ComponentsUiNewHaulButton/></div>
                 <ul>
                     {this.state.hauls.map(haul => {
                         return(
