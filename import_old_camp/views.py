@@ -19,7 +19,7 @@ from catches.models import Catch
 from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 from hauls.serializers import ImportHydrographyesSerializer
 from newcamp.apps import convert_comma_to_dot, empty
-from species.models import Sp, Category
+from species.models import Sp
 from stations.models import Station
 from strata.models import Stratum
 from stratifications.models import Stratification
@@ -107,7 +107,7 @@ def species_not_exists_in_db(file):
     """
     Find species wich does not are saved in Species table.
     :param file: File with columns 'GRUPO' and 'ESP' to check.
-    :return: Dataframe with species which are not saved in Specie table.
+    :return: Dataframe with species which are not saved in Species table.
     """
     uniques_sp = file[['GRUPO', 'ESP']].drop_duplicates()
 
@@ -136,15 +136,15 @@ def get_sp_id(row):
     return sp_id
 
 
-def get_category_id(row):
-    """
-    Get the species id. Used in pandas apply function.
-    :param row: Row of the apply function
-    :return: Species id.
-    """
-    sp_id = get_sp_id(row)
-    cat_id = Category.objects.get(sp_id=sp_id, category_name=row['CATE']).id
-    return cat_id
+# def get_category_id(row):
+#     """
+#     Get the species id. Used in pandas apply function.
+#     :param row: Row of the apply function
+#     :return: Species id.
+#     """
+#     sp_id = get_sp_id(row)
+#     cat_id = Category.objects.get(sp_id=sp_id, category_name=row['CATE']).id
+#     return cat_id
 
 
 def get_station_id(row, survey_name):
@@ -184,9 +184,12 @@ def get_catch_id(row, survey_name):
     :param survey_name: name of survey.
     :return: Catch id.
     """
-    category_id = get_category_id(row)
+
     haul_id = get_haul_id(row, survey_name)
-    catch_id = Catch.objects.get(category_id=category_id, haul_id=haul_id).id
+    specie = get_sp_id(row)
+    category = row['CATE']
+
+    catch_id = Catch.objects.get(haul_id=haul_id, specie_id=specie, category=category).id
 
     return catch_id
 
@@ -199,41 +202,41 @@ def get_sex_id(row):
 
     return sex_id
 
-def get_or_create_categories(sp, category_name):
-    """
-    Get the category object if exists. If not, create it and return it.
-    :param sp: sp of category.
-    :param category_name: name of category.
-    :return: Category object.
-    """
-
-    obj, created = Category.objects.get_or_create(
-        sp=sp,
-        category_name=category_name
-    )
-
-    return obj
-
-
-def create_category(row):
-    sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
-    category_name = row['CATE']
-    # try:
-    #     obj = Category.objects.get(specie_id=sp_id, category_name=row['CATE'])
-    # except Category.DoesNotExist:
-    #     obj = Category(specie_id=sp_id, category_name=row['CATE'])
-    #     obj.save()
-    obj, created = Category.objects.get_or_create(
-        sp=sp,
-        category_name=category_name
-    )
-
-    return obj
+# def get_or_create_categories(sp, category_name):
+#     """
+#     Get the category object if exists. If not, create it and return it.
+#     :param sp: sp of category.
+#     :param category_name: name of category.
+#     :return: Category object.
+#     """
+#
+#     obj, created = Category.objects.get_or_create(
+#         sp=sp,
+#         category_name=category_name
+#     )
+#
+#     return obj
 
 
-def check_or_create_categories(df):
-    df = df[['GRUPO', 'ESP', 'CATE']].drop_duplicates()
-    df.apply(create_category, axis=1)
+# def create_category(row):
+#     sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
+#     category_name = row['CATE']
+#     # try:
+#     #     obj = Category.objects.get(specie_id=sp_id, category_name=row['CATE'])
+#     # except Category.DoesNotExist:
+#     #     obj = Category(specie_id=sp_id, category_name=row['CATE'])
+#     #     obj.save()
+#     obj, created = Category.objects.get_or_create(
+#         sp=sp,
+#         category_name=category_name
+#     )
+#
+#     return obj
+
+
+# def check_or_create_categories(df):
+#     df = df[['GRUPO', 'ESP', 'CATE']].drop_duplicates()
+#     df.apply(create_category, axis=1)
 
 
 class FaunasImport:
@@ -260,7 +263,7 @@ class FaunasImport:
         catches_table = file
 
         # The catches table is filled firstly in the import of NTALL file. In this importation only the
-        # species measured has been saved. With the FAUNA file, only of species which hasn't been
+        # species measured has been saved. With the FAUNA file, only species which hasn't been
         # measured must be stored because is used to_sql from pandas library.
 
         def anti_join(x, y, on):
@@ -272,24 +275,27 @@ class FaunasImport:
         # previously saved in catches table:
         in_catches = Catch.objects.filter(haul__station__survey=self.survey_object).values()
         in_catches = pd.DataFrame(list(in_catches))
-        in_catches = in_catches[['category_id', 'haul_id']].drop_duplicates()
+        in_catches = in_catches[['specie_id', 'category', 'haul_id']].drop_duplicates()
 
-        def get_cat_1_id(row):
-            sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
-            cat_id = get_or_create_categories(sp=sp, category_name='1').id
-            return cat_id
+        # def get_cat_1_id(row):
+        #     sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
+        #     cat_id = get_or_create_categories(sp=sp, category_name='1').id
+        #     return cat_id
 
-        catches_table['category_id'] = catches_table.apply(get_cat_1_id, axis=1)
-
+        # catches_table['category_id'] = catches_table.apply(get_cat_1_id, axis=1)
+        # The category must be always 1 because only the measured species can have more than
+        # one category, an those one are stored previously, when FAUNA file is imported.
+        catches_table['category'] = 1
+        catches_table['specie_id'] = catches_table.apply(get_sp_id, axis=1)
         catches_table['haul_id'] = catches_table.apply(get_haul_id, axis=1, args=[self.survey_name])
         catches_table['weight'] = catches_table['PESO_GR']
 
-        catches_table = catches_table[['category_id', 'haul_id', 'weight']]
+        catches_table = catches_table[['haul_id', 'specie_id', 'category', 'weight']]
 
         # catches to save = all catches in faunas file - previously saved in catches table
-        catches_to_save_table = anti_join(catches_table, in_catches, ['category_id', 'haul_id'])
+        catches_to_save_table = anti_join(catches_table, in_catches, ['specie_id', 'category', 'haul_id'])
 
-        catches_to_save_table = catches_to_save_table[['category_id', 'haul_id', 'weight']]
+        catches_to_save_table = catches_to_save_table[['specie_id', 'category', 'haul_id', 'weight']]
 
         return catches_to_save_table
 
@@ -860,11 +866,12 @@ class NtallImport:
         catches_table = catches_table[['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO', 'PESO_GR']].drop_duplicates()
 
         if species_exists(file):
-            catches_table['category_id'] = catches_table.apply(get_category_id, axis=1)
+            catches_table['specie_id'] = catches_table.apply(get_sp_id, axis=1)
+            catches_table['category'] = catches_table['CATE']
             catches_table['haul_id'] = catches_table.apply(get_haul_id, axis=1, args=[self.survey_name])
             catches_table['weight'] = catches_table['PESO_GR']
 
-            catches_table = catches_table[['category_id', 'haul_id', 'weight']]
+            catches_table = catches_table[['specie_id', 'category', 'haul_id', 'weight']]
             catches_table = catches_table.drop_duplicates()
 
             return catches_table
@@ -904,7 +911,7 @@ class NtallImport:
                     not_exists])
 
         # create categories if doesn't exists in species_category
-        check_or_create_categories(lengths_file)
+        # check_or_create_categories(lengths_file)
 
         # Create engine.
         engine = create_engine('sqlite:///db.sqlite3', echo=True)

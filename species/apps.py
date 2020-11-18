@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 from django.shortcuts import get_object_or_404
 
-from species.models import Sp, Category
+from species.models import Sp
 
 import csv
 
@@ -29,16 +29,6 @@ def getSpeciesIdFromGroupEsp(group, sp):
     """
     specie = get_object_or_404(Sp, group=group, sp_code=sp)
     return specie.pk
-
-
-def categoryExists(category_name, sp_code):
-    """
-    Check if a category of a species exists
-    :param category_name: Name of the category
-    :param sp_code: Code species of the category
-    :return: True if exists, False if doesn't
-    """
-    return Category.objects.filter(category_name=category_name, sp_id=sp_code).exists()
 
 
 def importSpeciesCSV(file):

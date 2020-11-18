@@ -18,7 +18,7 @@ from django.contrib import admin
 
 from djgeojson.views import GeoJSONLayerView
 
-from species.api import SpeciesListAPI, SpAPI, SpeciesGroupAPI, CategorySpeciesAPI
+from species.api import SpeciesListAPI, SpAPI, SpeciesGroupAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
 from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
@@ -49,7 +49,6 @@ urlpatterns = [
     re_path(r'^api/1.0/species/(?P<pk>[0-9]+)$', SpAPI.as_view(), name="sp_api"),
     re_path(r'^api/1.0/species/new/$', SpAPI.as_view(), name="sp_api"),
     re_path(r'^api/1.0/species/group/(?P<group>[0-9]+)$', SpeciesGroupAPI.as_view(), name="species_group_api"),
-    re_path(r'^api/1.0/species/category/(?P<sp_id>[0-9]+)$', CategorySpeciesAPI.as_view(), name="get_categories_api"),
 
     re_path(r'^api/1.0/species/import$', SpeciesImportAPI.as_view(), name="species_import_api"),
 

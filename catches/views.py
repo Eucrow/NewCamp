@@ -3,7 +3,7 @@ import pandas as pd
 from django.http import HttpResponse
 from rest_framework.status import HTTP_201_CREATED
 
-from species.models import Sp, Category
+from species.models import Sp
 from hauls.models import Haul
 from stations.models import Station
 from samplers.models import Sampler
