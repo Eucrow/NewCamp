@@ -11,12 +11,12 @@ class CatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        fields = ['id', 'weight', 'category', 'haul_id']
+        fields = ['id', 'weight', 'sp_id', 'category', 'haul_id']
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
 
     # category = CategorySerializer()
-    specie = SpBasicSerializer()
+    sp = SpBasicSerializer()
     # species_name = serializers.RelatedField(source='species.Sp.name', read_only=True)
     # specie_sp_name = serializers.CharField(source='species.Sp.name')
 
@@ -30,7 +30,7 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        fields = ['id', 'weight', 'category', 'haul', 'specie', 'samples', 'sexes', ]
+        fields = ['id', 'weight', 'category', 'haul', 'sp', 'samples', 'sexes', ]
 
     # Override the to_representation method, which format the output of the serializer
     # Example of use to_representation. In this case, the category model is related by a foreing key with the species model.
@@ -41,12 +41,12 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
 
         data = super(CatchesVerboseSerializer, self).to_representation(instance)
 
-        data['sp_id'] = instance.specie.id
-        data['group'] = instance.specie.group
-        data['sp_code'] = instance.specie.sp_code
-        data['sp_name'] = instance.specie.sp_name
+        data['sp_id'] = instance.sp.id
+        data['group'] = instance.sp.group
+        data['sp_code'] = instance.sp.sp_code
+        data['sp_name'] = instance.sp.sp_name
 
-        data.pop('specie')
+        data.pop('sp')
 
         data.update()
 

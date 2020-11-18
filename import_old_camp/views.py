@@ -189,7 +189,7 @@ def get_catch_id(row, survey_name):
     specie = get_sp_id(row)
     category = row['CATE']
 
-    catch_id = Catch.objects.get(haul_id=haul_id, specie_id=specie, category=category).id
+    catch_id = Catch.objects.get(haul_id=haul_id, sp_id=specie, category=category).id
 
     return catch_id
 
@@ -222,9 +222,9 @@ def get_sex_id(row):
 #     sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
 #     category_name = row['CATE']
 #     # try:
-#     #     obj = Category.objects.get(specie_id=sp_id, category_name=row['CATE'])
+#     #     obj = Category.objects.get(sp_id=sp_id, category_name=row['CATE'])
 #     # except Category.DoesNotExist:
-#     #     obj = Category(specie_id=sp_id, category_name=row['CATE'])
+#     #     obj = Category(sp_id=sp_id, category_name=row['CATE'])
 #     #     obj.save()
 #     obj, created = Category.objects.get_or_create(
 #         sp=sp,
@@ -275,7 +275,7 @@ class FaunasImport:
         # previously saved in catches table:
         in_catches = Catch.objects.filter(haul__station__survey=self.survey_object).values()
         in_catches = pd.DataFrame(list(in_catches))
-        in_catches = in_catches[['specie_id', 'category', 'haul_id']].drop_duplicates()
+        in_catches = in_catches[['sp_id', 'category', 'haul_id']].drop_duplicates()
 
         # def get_cat_1_id(row):
         #     sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
@@ -286,16 +286,16 @@ class FaunasImport:
         # The category must be always 1 because only the measured species can have more than
         # one category, an those one are stored previously, when FAUNA file is imported.
         catches_table['category'] = 1
-        catches_table['specie_id'] = catches_table.apply(get_sp_id, axis=1)
+        catches_table['sp_id'] = catches_table.apply(get_sp_id, axis=1)
         catches_table['haul_id'] = catches_table.apply(get_haul_id, axis=1, args=[self.survey_name])
         catches_table['weight'] = catches_table['PESO_GR']
 
-        catches_table = catches_table[['haul_id', 'specie_id', 'category', 'weight']]
+        catches_table = catches_table[['haul_id', 'sp_id', 'category', 'weight']]
 
         # catches to save = all catches in faunas file - previously saved in catches table
-        catches_to_save_table = anti_join(catches_table, in_catches, ['specie_id', 'category', 'haul_id'])
+        catches_to_save_table = anti_join(catches_table, in_catches, ['sp_id', 'category', 'haul_id'])
 
-        catches_to_save_table = catches_to_save_table[['specie_id', 'category', 'haul_id', 'weight']]
+        catches_to_save_table = catches_to_save_table[['sp_id', 'category', 'haul_id', 'weight']]
 
         return catches_to_save_table
 
@@ -866,12 +866,12 @@ class NtallImport:
         catches_table = catches_table[['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO', 'PESO_GR']].drop_duplicates()
 
         if species_exists(file):
-            catches_table['specie_id'] = catches_table.apply(get_sp_id, axis=1)
+            catches_table['sp_id'] = catches_table.apply(get_sp_id, axis=1)
             catches_table['category'] = catches_table['CATE']
             catches_table['haul_id'] = catches_table.apply(get_haul_id, axis=1, args=[self.survey_name])
             catches_table['weight'] = catches_table['PESO_GR']
 
-            catches_table = catches_table[['specie_id', 'category', 'haul_id', 'weight']]
+            catches_table = catches_table[['sp_id', 'category', 'haul_id', 'weight']]
             catches_table = catches_table.drop_duplicates()
 
             return catches_table
