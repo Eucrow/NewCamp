@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from species.models import Sp, Category
+from species.models import Sp
 
 
 class SpeciesSerializer(serializers.ModelSerializer):
@@ -9,7 +9,7 @@ class SpeciesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SpNameSerializer(serializers.ModelSerializer):
+class SpBasicSerializer(serializers.ModelSerializer):
     '''
     Serializer of species name.
     '''
@@ -18,14 +18,14 @@ class SpNameSerializer(serializers.ModelSerializer):
         fields = ['id', 'sp_name', 'group', 'sp_code' ]
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    '''
-    Serializer of category with species name.
-    '''
-    sp = SpNameSerializer()
-
-    class Meta:
-        model = Category
-        fields = ['id', 'category_name', 'sp', ]
+# class CategorySerializer(serializers.ModelSerializer):
+#     '''
+#     Serializer of category with species name.
+#     '''
+#     sp = SpNameSerializer()
+#
+#     class Meta:
+#         model = Category
+#         fields = ['id', 'category_name', 'sp', ]
 
 

@@ -23,9 +23,9 @@ class CatchHaulAPI(APIView):
     """
     Endpoint to retrieve, update and create catch.
     """
-    def get(self, request, haul_id, category_id):
+    def get(self, request, haul_id, sp_id, category):
         # catch = Catch.objects.get(category_id = category_id)
-        catch = get_object_or_404(Catch, haul_id=haul_id, category_id=category_id)
+        catch = get_object_or_404(Catch, haul_id=haul_id, sp_id=sp_id, category=category)
         serializer= CatchSerializer(catch)
         return Response(serializer.data)
 
@@ -33,7 +33,8 @@ class CatchHaulAPI(APIView):
         serializer = CatchSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(haul_id=request.data["haul_id"],
-                            category_id=request.data['category_id'])
+                            sp_id=request.data["sp_id"],
+                            category=request.data['category'])
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
@@ -43,7 +44,8 @@ class CatchHaulAPI(APIView):
         serializer = CatchSerializer(catch, data=request.data)
         if serializer.is_valid():
             serializer.save(haul_id=request.data["haul_id"],
-                            category_id=request.data['category_id'])
+                            sp_id=request.data["sp_id"],
+                            category=request.data['category'])
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
