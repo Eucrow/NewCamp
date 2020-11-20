@@ -19,6 +19,7 @@ class CatchesList extends Component {
         }
 
         this.apiCatches = "http://127.0.0.1:8000/api/1.0/catches/";
+        this.apiCatch = "http://127.0.0.1:8000/api/1.0/catch/"
         // TODO: change the apiSpecies api to only return the id, sp_name, group and sp_code variables.
         this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
         this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
@@ -87,8 +88,7 @@ class CatchesList extends Component {
         })
 
     }
-    
-    // handleChangeSpecies(event){
+
     handleChangeSpecies = idx => evt =>{
         /**
          * Method to get categories of the species, when the 'species' field is modified.
@@ -138,28 +138,45 @@ class CatchesList extends Component {
             });
     }
 
-
-    // handleChangeCategory (event) { 
     handleChangeCategory = idx => evt =>{
         /**
          * Handle change of new catch form.
-         */       
+         */
+
         const value = evt.target.value;
-        // const val = value.split("--");
-        // const category_id = val[0];
-        // const category_name = val[1];
 
-        const newCatches = this.state.catches.map(c => {
-            if( c.id !== idx ) return c;
-            return{
-                ... c,
-                category: value}
-
+        // Firstly, get the data of catch to modify
+        const thisCatch = this.state.catches.find(c => {
+            if( c.id === idx ) return c;
         })
 
-        this.setState({
-            catches: newCatches
-        });
+        // Secondly, check if exists another catch whith the same species and category
+        const repeatedCatch = this.state.catches.some(c =>
+            //the comparison between c.category and value must be with == instead of === 
+            (c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category == value)
+        )
+
+        // And finally save the state or thrown an alert.
+        if (repeatedCatch === true) {
+
+            alert("This category of the species already exists");
+            
+        } else if (repeatedCatch === false) {
+
+            const newCatches = this.state.catches.map(c => {
+                if( c.id !== idx ) return c;
+                return{
+                    ... c,
+                    category: value}
+    
+            })
+    
+            this.setState({
+                catches: newCatches
+            });
+
+        }
+
     }
 
     handleChangeWeight (event) { 
@@ -177,18 +194,24 @@ class CatchesList extends Component {
         });
     }
 
-    updateCatch(event){
+    updateCatch = idx => evt =>{
         /**
-        * Update catch to database.
+        * Update catch in database.
         */
 
-        event.preventDefault();
+        evt.preventDefault();
 
-        // TODO: doesn't throw error when the species is changed and already exists.
-        const request = {"id" : this.state.catch.id,
-                        "weight" : this.state.catch.weight,
-                        "category_id" : this.state.catch.category_id,
-                        "haul_id" : this.state.catch.haul_id }
+        const updatedCatch = this.state.catches.find(
+            function(c) {
+                return (idx === c.id)
+            }
+            )
+
+        const request = {"id" : updatedCatch.id,
+                         "haul_id" : updatedCatch.haul,
+                         "sp_id" : updatedCatch.sp_id,
+                         "category" : updatedCatch.category,
+                         "weight" : updatedCatch.weight}
 
         fetch(this.apiEditRemoveCatch, {
             method: 'PUT',
@@ -207,6 +230,7 @@ class CatchesList extends Component {
             
         })
         .catch(error => alert(error))
+
 
     }
 

@@ -78,7 +78,7 @@ class ComponentCategory extends Component {
                 </td>
                 <td>
                 <input type="number" id="weight" name="weight" value={ this.props.this_catch.weight } onChange={ this.props.handleChangeWeight } />
-                <button onClick={ this.props.updateCatch }>Save</button>
+                <button onClick={ this.props.updateCatch(this.props.this_catch.id) }>Save</button>
                 </td>
             </Fragment>
             );
