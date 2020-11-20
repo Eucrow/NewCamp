@@ -167,7 +167,8 @@ class CatchesList extends Component {
                 if( c.id !== idx ) return c;
                 return{
                     ... c,
-                    category: value}
+                    category: value
+                }
     
             })
     
@@ -179,19 +180,24 @@ class CatchesList extends Component {
 
     }
 
-    handleChangeWeight (event) { 
+    handleChangeWeight = idx => evt =>{
+    // handleChangeWeight (event) { 
         /**
          * Handle change of new catch form.
          */       
-        const name = event.target.name;
-        const value = event.target.value;        
+        const value = evt.target.value;
+        
+        const newCatches = this.state.catches.map(c => {
+            if ( c.id !== idx ) return c;
+            return{
+                ... c,
+                weight: value
+            }
+        })
 
         this.setState({
-            catch: {
-                ...this.state.catch,
-                [name] : value
-            }
-        });
+            catches: newCatches
+        })
     }
 
     updateCatch = idx => evt =>{
@@ -204,8 +210,7 @@ class CatchesList extends Component {
         const updatedCatch = this.state.catches.find(
             function(c) {
                 return (idx === c.id)
-            }
-            )
+            })
 
         const request = {"id" : updatedCatch.id,
                          "haul_id" : updatedCatch.haul,

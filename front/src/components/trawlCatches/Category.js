@@ -62,14 +62,6 @@ class ComponentCategory extends Component {
                 </td>
                 <td></td>
                 <td>
-                {/* <select id="category_id" name="category_id"
-                        value= { this.props.this_catch.category_id + "--" + this.props.this_catch.category }
-                        onChange={ this.props.handleChangeCategory }>
-                    <option>select one...</option>
-                    {this.props.categories.map(c=>{
-                        return(<option value={c.id + "--" + c.category_name}>{c.category_name}</option>)
-                    })}
-                </select> */}
                 <input type="number"
                        id="category_id"
                        name="category_id"
@@ -77,7 +69,12 @@ class ComponentCategory extends Component {
                        onChange={ this.props.handleChangeCategory(this.props.this_catch.id) } />
                 </td>
                 <td>
-                <input type="number" id="weight" name="weight" value={ this.props.this_catch.weight } onChange={ this.props.handleChangeWeight } />
+                <input type="number"
+                       id="weight"
+                       name="weight"
+                       value={ this.props.this_catch.weight }
+                       onChange={ this.props.handleChangeWeight(this.props.this_catch.id) } />
+
                 <button onClick={ this.props.updateCatch(this.props.this_catch.id) }>Save</button>
                 </td>
             </Fragment>
