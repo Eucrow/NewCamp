@@ -16,9 +16,8 @@ class Catch extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // species: [],
             categories: [],
-            status_catch : "view",
+            status_catch : "",
         }
 
         this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
@@ -30,9 +29,6 @@ class Catch extends Component {
         this.saveSex = this.saveSex.bind(this);
 
     }
-
-
-
 
     editCatchStatus(status){
         this.setState({
@@ -64,7 +60,6 @@ class Catch extends Component {
             });
         })
     }
-
 
     handleSex(event){
 
@@ -169,100 +164,95 @@ class Catch extends Component {
         const this_catch = this.props.this_catch
                                 
         const sampled_weight = this_catch.samples && this_catch.samples.sampled_weight? this_catch.samples.sampled_weight : null;
-        const sexes = this_catch.sexes ? this_catch.sexes : null
+        // const sexes = this_catch.sexes ? this_catch.sexes : null
+        
 
-        return ( 
-            <Fragment>
-            <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
+        if (this.state.status_catch === "view" || this.state.status_catch === "" ){
 
-            <ComponentCategory status_catch = { this.state.status_catch }
-                               this_catch = { this.props.this_catch }
-                               species = {this.props.species }
-                               categories = { this.state.categories }
-                               editCatchStatus = { this.editCatchStatus }
-                               handleChangeGroup = { this.props.handleChangeGroup }
-                               handleChangeSpecies = { this.props.handleChangeSpecies }
-                               handleChangeCategory = { this.props.handleChangeCategory }
-                               handleChangeWeight = { this.props.handleChangeWeight }
-                               updateCatch = { this.props.updateCatch }
-                               removeCatch = { this.props.removeCatch }
-                               />
-            {/* <td>
-                { sampled_weight }
-            </td> */}
-            {/* <td>
-                <ComponentSexes sexes={ sexes }
-                                status_sexes= { this.state.status_sexes }
-                                handleSex= { this.handleSex }
-                                updateSex={ this.updateSex }
-                                saveSex={ this.saveSex }
-                                editCatchStatus={ this.editCatchStatus }/>
-            </td> */}
-            </tr>
+            return ( 
+                <Fragment>
+                <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
+                    <ComponentCategory
+                        status_catch = { this.state.status_catch }
+                        this_catch = { this.props.this_catch } />
+                <td>
+                    { this_catch.weight }
+                    <button onClick= { () => { this.editCatchStatus("edit") } }>Edit catch</button>
+                    <button onClick= { this.props.removeCatch(this_catch.id) }>Remove catch</button>
+                </td>
+
+
+                {/* <td>
+                    <ComponentSexes sexes={ sexes }
+                    status_sexes= { this.state.status_sexes }
+                    handleSex= { this.handleSex }
+                    updateSex={ this.updateSex }
+                    saveSex={ this.saveSex }
+                    editCatchStatus={ this.editCatchStatus }/>
+                </td> */}
+                </tr>
+                </Fragment>
+            );
+
+        } else if (this.state.status_catch === "edit"){
+            return ( 
+                <Fragment>
+                <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
+                <ComponentCategory
+                            status_catch = { this.state.status_catch }
+                            this_catch = { this.props.this_catch }
+                            species = {this.props.species }
+                            categories = { this.state.categories }
+                            handleChangeGroup = { this.props.handleChangeGroup }
+                            handleChangeSpecies = { this.props.handleChangeSpecies }
+                            handleChangeCategory = { this.props.handleChangeCategory }
+                            handleChangeWeight = { this.props.handleChangeWeight } />
+                <td>
+                <button onClick={ () =>  {
+                        this.props.updateCatch(this_catch.id);
+                        this.editCatchStatus("view");
+                        }
+                    }>Save</button>
+                </td>
+                </tr>
             </Fragment>
+            );
+        }
 
-        );
 
-        // if (this.state.status_catch === "view") {
-            // return ( 
-            //     <Fragment>
-            //     <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
+        // return ( 
+        //     <Fragment>
+        //     <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
 
-            //         <ComponentCategory status_catch = { this.state.status_catch }
-            //                            this_catch = { this.props.this_catch }
-            //                            species = {this.state.species }
-            //                            categories = { this.state.categories }
-            //                            editCatchStatus = { this.editCatchStatus }
-            //                            handleChangeGroup = { this.handleChangeGroup }
-            //                            handleChangeSpecies = { this.handleChangeSpecies }
-            //                            handleChangeCategory = { this.handleChangeCategory }
-            //                            handleChangeWeight = { this.handleChangeWeight }
-            //                            updateCatch = { this.updateCatch }/>
-            //     <td>{ this_catch.group } { this_catch.sp_code }</td>
-            //     <td>{ this_catch.sp_name }</td>
-            //     <td>{ this_catch.category }</td>
-            //     <td>
-            //         { this_catch.weight }
-            //         <button onClick= { () => { this.editCatchStatus("edit")} }>Edit catch</button>
-            //     </td>
-            //     <td>
-            //         { sampled_weight }
-            //     </td>
-            //     <td>
-            //         <ComponentSexes sexes={ sexes }
-            //                         status_sexes= { this.state.status_sexes }
-            //                         handleSex= { this.handleSex }
-            //                         updateSex={ this.updateSex }
-            //                         saveSex={ this.saveSex }
-            //                         editCatchStatus={ this.editCatchStatus }/>
-            //     </td>
-            //     </tr>
-            //     </Fragment>
-
-            // );
-        // } else if (this.state.status_catch === "edit"){            
-        //     return(
-        //         <CatchEditForm
-        //             this_catch = { this.props.this_catch }
-        //             species = {this.state.species }
-        //             categories = { this.state.categories }
-        //             handleChangeGroup = { this.handleChangeGroup }
-        //             handleChangeSpecies = { this.handleChangeSpecies }
-        //             handleChangeCategory = { this.handleChangeCategory }
-        //             handleChangeWeight = { this.handleChangeWeight }
-        //             updateCatch = { this.updateCatch }/>
-        //     )
-        // }
-        //  else if (this.state.status_catch === "addSex"){
-        //     return(
+        //     <ComponentCategory status_catch = { this.state.status_catch }
+        //                        this_catch = { this.props.this_catch }
+        //                        species = {this.props.species }
+        //                        categories = { this.state.categories }
+        //                        editCatchStatus = { this.editCatchStatus }
+        //                        handleChangeGroup = { this.props.handleChangeGroup }
+        //                        handleChangeSpecies = { this.props.handleChangeSpecies }
+        //                        handleChangeCategory = { this.props.handleChangeCategory }
+        //                        handleChangeWeight = { this.props.handleChangeWeight }
+        //                        updateCatch = { this.props.updateCatch }
+        //                        removeCatch = { this.props.removeCatch }
+        //                        />
+        //     {/* <td>
+        //         { sampled_weight }
+        //     </td> */}
+        //     {/* <td>
         //         <ComponentSexes sexes={ sexes }
-        //                         status_sexes= { "add" }
+        //                         status_sexes= { this.state.status_sexes }
         //                         handleSex= { this.handleSex }
+        //                         updateSex={ this.updateSex }
         //                         saveSex={ this.saveSex }
-        //                         editCatchStatus={ this.editCatchStatus } />   
-        //     )
+        //                         editCatchStatus={ this.editCatchStatus }/>
+        //     </td> */}
+        //     </tr>
+        //     </Fragment>
+        // );
 
-        // }
+        
+
     }
 }
  
