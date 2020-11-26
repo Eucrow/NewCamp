@@ -3,7 +3,6 @@ import React, { Component, Fragment } from 'react';
 class ComponentCategory extends Component {
     constructor(props) {
         super(props);
-        this.state = { }
     }
 
 
@@ -11,7 +10,7 @@ class ComponentCategory extends Component {
 
         const sampled_weight = this.props.this_catch.samples && this.props.this_catch.samples.sampled_weight? this.props.this_catch.samples.sampled_weight : null;
 
-        if (this.props.status_catch === "view"){
+        if (this.props.status_catch === "view" || this.props.status_catch === "" ){
 
             return ( 
                 <Fragment>
@@ -35,8 +34,9 @@ class ComponentCategory extends Component {
                     saveSex={ this.saveSex }
                     editCatchStatus={ this.editCatchStatus }/>
                 </td> */}
-            </Fragment>
+                </Fragment>
             );
+
         } else if (this.props.status_catch === "edit"){
             return ( 
                 <Fragment>

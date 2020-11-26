@@ -26,6 +26,9 @@ class CatchesList extends Component {
         this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
 
         
+
+        this.catchElement = React.createRef();
+        
         this.handleChangeGroup = this.handleChangeGroup.bind(this);
         this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
         this.handleChangeCategory = this.handleChangeCategory.bind(this);
@@ -166,7 +169,7 @@ class CatchesList extends Component {
             const newCatches = this.state.catches.map(c => {
                 if( c.id !== idx ) return c;
                 return{
-                    ... c,
+                    ...c,
                     category: value
                 }
     
@@ -190,7 +193,7 @@ class CatchesList extends Component {
         const newCatches = this.state.catches.map(c => {
             if ( c.id !== idx ) return c;
             return{
-                ... c,
+                ...c,
                 weight: value
             }
         })
@@ -226,14 +229,15 @@ class CatchesList extends Component {
             body: JSON.stringify(request)
         })
         .then( response => response.json())
-        .then(c => {
-            this.setState(() => {
-                return{
-                    status_catch : "view"
-                }
-            })
+        // .then(c => {
+        //     this.setState(() => {
+        //         return{
+        //             status_catch : "view"
+        //         }
+        //     })
             
-        })
+        // })
+        .then( () => this.catchElement.current.editCatchStatus("view"))
         .catch(error => alert(error))
 
 
@@ -303,16 +307,17 @@ class CatchesList extends Component {
                 {
                     this.state.catches.map(c => {       
                         return(
-                            <Catch key={ c.id }
-                            this_catch={ c }
-                            species={ this.state.species }
-                            categories={ this.state.categories }
-                            handleChangeGroup = { this.handleChangeGroup }
-                            handleChangeSpecies = { this.handleChangeSpecies }
-                            handleChangeCategory = { this.handleChangeCategory }
-                            handleChangeWeight = { this.handleChangeWeight }
-                            updateCatch = { this.updateCatch }
-                            removeCatch = { this.removeCatch }/>
+                            <Catch ref = { this.catchElement }
+                                   key={ c.id }
+                                   this_catch={ c }
+                                   species={ this.state.species }
+                                   categories={ this.state.categories }
+                                   handleChangeGroup = { this.handleChangeGroup }
+                                   handleChangeSpecies = { this.handleChangeSpecies }
+                                   handleChangeCategory = { this.handleChangeCategory }
+                                   handleChangeWeight = { this.handleChangeWeight }
+                                   updateCatch = { this.updateCatch }
+                                   removeCatch = { this.removeCatch }/>
                         )
                     })
                     

@@ -16,9 +16,8 @@ class Catch extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // species: [],
             categories: [],
-            status_catch : "view",
+            status_catch : "",
         }
 
         this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
@@ -30,9 +29,6 @@ class Catch extends Component {
         this.saveSex = this.saveSex.bind(this);
 
     }
-
-
-
 
     editCatchStatus(status){
         this.setState({
@@ -64,7 +60,6 @@ class Catch extends Component {
             });
         })
     }
-
 
     handleSex(event){
 
