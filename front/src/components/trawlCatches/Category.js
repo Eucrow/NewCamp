@@ -19,8 +19,8 @@ class ComponentCategory extends Component {
                 <td>{ this.props.this_catch.category }</td>
                 <td>
                     { this.props.this_catch.weight }
-                    <button onClick= { () => { this.props.editCatchStatus("edit") } }>Edit catch</button>
-                    <button onClick= { this.props.removeCatch(this.props.this_catch.id) }>Remove catch</button>
+                    {/* <button onClick= { () => { this.props.editCatchStatus("edit") } }>Edit catch</button>
+                    <button onClick= { this.props.removeCatch(this.props.this_catch.id) }>Remove catch</button> */}
                 </td>
                 <td>
                     { sampled_weight }
@@ -75,7 +75,7 @@ class ComponentCategory extends Component {
                        value={ this.props.this_catch.weight }
                        onChange={ this.props.handleChangeWeight(this.props.this_catch.id) } />
 
-                <button onClick={ this.props.updateCatch(this.props.this_catch.id) }>Save</button>
+                {/* <button onClick={ this.props.updateCatch(this.props.this_catch.id) }>Save</button> */}
                 </td>
             </Fragment>
             );

@@ -27,7 +27,7 @@ class CatchesList extends Component {
 
         
 
-        this.catchElement = React.createRef();
+        // this.catchElement = React.createRef();
         
         this.handleChangeGroup = this.handleChangeGroup.bind(this);
         this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
@@ -237,7 +237,7 @@ class CatchesList extends Component {
         //     })
             
         // })
-        .then( () => this.catchElement.current.editCatchStatus("view"))
+        // .then( () => this.catchElement.current.editCatchStatus("view"))
         .catch(error => alert(error))
 
 
@@ -307,7 +307,8 @@ class CatchesList extends Component {
                 {
                     this.state.catches.map(c => {       
                         return(
-                            <Catch ref = { this.catchElement }
+                            <Catch
+                            //  ref = { this.catchElement }
                                    key={ c.id }
                                    this_catch={ c }
                                    species={ this.state.species }
