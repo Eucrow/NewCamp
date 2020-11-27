@@ -27,9 +27,9 @@ class ComponentSexes extends Component {
 
         if (sexes.length === 0){
             return (
-                // <button onClick={ this.editSexes }>Add sex</button>
-                <ComponentSex status_sex={"add_button"}
-                              saveSex={ this.props.saveSex }/>
+                <button onClick={ this.editSexes }>Add sex</button>
+                // <ComponentSex status_sex={"add_button"}
+                //               saveSex={ this.props.saveSex }/>
             )
 
         } else {
@@ -38,6 +38,7 @@ class ComponentSexes extends Component {
                     return(
                         <ComponentSex sex_id={ s.id }
                                       sex={ s.sex }
+                                      catch_id={ this.props.catch_id }
                                       handleSex={ this.props.handleSex }
                                       updateSex={ this.props.updateSex }
                                       saveSex={ this.props.saveSex }/>

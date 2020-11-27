@@ -26,10 +26,10 @@ class ComponentSex extends Component {
             ],
             status_lengths : '',
             // Only use props.status_sex when the value is "add"
-            status_sex: this.props.status_sex? this.props.status_sex: "collapsed",
+            status_sex: this.props.status_sex? this.props.status_sex: "view",
         }
 
-        
+        this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/"
         this.apiSexAndLengths = "http://127.0.0.1:8000/api/1.0/sex/lengths/"
 
         this.editSexStatus = this.editSexStatus.bind(this);
@@ -67,7 +67,7 @@ class ComponentSex extends Component {
          * Show lengths.
          */
         // TODO: Detect if the legths are already in state and doesn't fetcth if it is the case.
-        // In this case the legths has been hidden by css.
+        // In this case the lengths has been hidden by css.
         const apiLengths = this.apiLengths + this.props.sex_id;
 
         fetch(apiLengths)
@@ -114,25 +114,63 @@ class ComponentSex extends Component {
     }
    
     render() { 
-        // if (this.state.status_sex === "collapsed"){
-            return ( 
+        if (this.state.status_sex === "view" || this.state.status_sex === "" ) {
+            return(
                 <table><tbody><tr style={{verticalAlign: "top"}}><td>
-                { this.props.sex }
-                <button onClick={() => { this.editSexStatus("edit") } }>Edit sex</button>
+                    { this.props.sex }
+                    <button onClick={() => { this.editSexStatus("edit") } }>Edit sex</button>
+                    <ShowLengthsButton handleShowLengths = { this.handleShowLengths } />
+                </td></tr></tbody></table>
+            )
+
+        } else if (this.state.status_sex === "edit") {
+            return (
+                <Fragment>
+                <select id={ this.props.sex_id }
+                        name={ this.props.sex_id } 
+                        value={ this.props.sex }
+                        onChange={ this.props.handleSex(this.props.sex_id, this.props.catch_id) }>
+                    <option value="3">Undetermined</option>
+                    <option value="1">Male</option>
+                    <option value="2">Female</option>
+                </select>
+                <button type="button" onClick={(e) => {
+                        this.props.updateSex(e, this.props.sex_id)
+                        this.editSexStatus("view")
+                        }
+                    }> Save sex </button> 
+                {/* <ComponentsLengths status_lengths={ "hidden" }
+                                   sex_id={ this.props.sex_id }
+                                   sex={ this.props.sex } /> */}
+                </Fragment>
+            );
+
+        } else if (this.state.status_sex === "delete") {
+
+        } else if (this.state.status_sex === "add") {
+
+        }
+
+        // if (this.state.status_sex === "collapsed"){
+        //     return ( 
+                // <table><tbody><tr style={{verticalAlign: "top"}}><td>
+                // { this.props.sex }
+                {/* <button onClick={() => { this.editSexStatus("edit") } }>Edit sex</button> */}
                 {/* <ShowLengthsButton handleShowLengths = { this.handleShowLengths } /> */}
 
                 {/* {this.state.status_lengths && <ComponentsLengths status_lengths={ "view" } sex_id={ this.props.sex_id } sex={ this.props.sex } />} */}
 
                 {/* <ComponentsLengths status_lengths={ "hidden" } sex_id={ this.props.sex_id } sex={ this.props.sex } /> */}
-                </td></tr></tbody></table>
-            );
-        // } 
-        // else if (this.state.status_sex === "expanded"){
-        //     <table><tbody><tr style={{verticalAlign: "top"}}><td>
-        //     { this.props.sex }
-        //     <button onClick={() => { this.editSexStatus("edit") } }>Edit sex</button>
-        //     <ComponentsLengths status_lengths={ "hidden" } sex_id={ this.props.sex_id } sex={ this.props.sex } />
-        //     </td></tr></tbody></table>
+                {/* </td></tr></tbody></table> */}
+        //     );
+        // } else if (this.state.status_sex === "view"){
+        //     return (
+                // <table><tbody><tr style={{verticalAlign: "top"}}><td>
+                // { this.props.sex }
+                // <button onClick={() => { this.editSexStatus("edit") } }>Edit sex</button>
+                // <ComponentsLengths status_lengths={ "hidden" } sex_id={ this.props.sex_id } sex={ this.props.sex } />
+                // </td></tr></tbody></table>
+        //     )
         // }
 
     //     if(this.state.status_sex === "edit") {

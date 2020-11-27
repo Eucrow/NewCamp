@@ -35,6 +35,7 @@ class CatchesList extends Component {
         this.handleChangeWeight = this.handleChangeWeight.bind(this);
         this.updateCatch = this.updateCatch.bind(this);
         this.removeCatch = this.removeCatch.bind(this);
+        this.handleSex = this.handleSex.bind(this);
     }
 
     removeCatch = idx => () => {
@@ -243,6 +244,30 @@ class CatchesList extends Component {
 
     }
 
+    handleSex = (ids, idc) => evt => {
+
+        const value = evt.target.value;
+
+        const newCatches = this.state.catches.map(c => {
+            if (idc !== c.id) {
+                return c;
+            } else {
+                const newSexes = c.sexes.map(s =>{
+                    if (ids !== s.id) return s;
+                    return {...s, sex: value };
+                })
+                return {...c, sexes: newSexes };
+            }
+        })
+
+        this.setState(() => {
+            return {
+                catches: newCatches
+            }
+        })  
+
+    }
+
     componentDidMount() {
         
         const apiCatches = this.apiCatches + this.props.haul_id;
@@ -318,7 +343,8 @@ class CatchesList extends Component {
                                    handleChangeCategory = { this.handleChangeCategory }
                                    handleChangeWeight = { this.handleChangeWeight }
                                    updateCatch = { this.updateCatch }
-                                   removeCatch = { this.removeCatch }/>
+                                   removeCatch = { this.removeCatch }
+                                   handleSex = { this.handleSex }/>
                         )
                     })
                     

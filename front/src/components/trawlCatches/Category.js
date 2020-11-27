@@ -19,21 +19,10 @@ class ComponentCategory extends Component {
                 <td>{ this.props.this_catch.category }</td>
                 <td>
                     { this.props.this_catch.weight }
-                    {/* <button onClick= { () => { this.props.editCatchStatus("edit") } }>Edit catch</button>
-                    <button onClick= { this.props.removeCatch(this.props.this_catch.id) }>Remove catch</button> */}
                 </td>
                 <td>
                     { sampled_weight }
                 </td>
-
-                {/* <td>
-                    <ComponentSexes sexes={ sexes }
-                    status_sexes= { this.state.status_sexes }
-                    handleSex= { this.handleSex }
-                    updateSex={ this.updateSex }
-                    saveSex={ this.saveSex }
-                    editCatchStatus={ this.editCatchStatus }/>
-                </td> */}
                 </Fragment>
             );
 
@@ -74,9 +63,8 @@ class ComponentCategory extends Component {
                        name="weight"
                        value={ this.props.this_catch.weight }
                        onChange={ this.props.handleChangeWeight(this.props.this_catch.id) } />
-
-                {/* <button onClick={ this.props.updateCatch(this.props.this_catch.id) }>Save</button> */}
                 </td>
+
             </Fragment>
             );
         }

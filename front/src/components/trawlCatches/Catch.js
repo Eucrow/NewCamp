@@ -24,7 +24,7 @@ class Catch extends Component {
 
         this.editCatchStatus = this.editCatchStatus.bind(this);
         this.loadCategories = this.loadCategories.bind(this);
-        this.handleSex = this.handleSex.bind(this);
+        // this.handleSex = this.handleSex.bind(this);
         this.updateSex = this.updateSex.bind(this);
         this.saveSex = this.saveSex.bind(this);
 
@@ -61,25 +61,25 @@ class Catch extends Component {
         })
     }
 
-    handleSex(event){
+    // handleSex(event){
 
-        const name = event.target.name;
-        const value = event.target.value;
+    //     const name = event.target.name;
+    //     const value = event.target.value;
 
-        const updatedSex = this.props.this_catch.sexes
-        const indexUpdatedSex = updatedSex.findIndex((s) => { return s.id == name })
+    //     const updatedSex = this.props.this_catch.sexes
+    //     const indexUpdatedSex = updatedSex.findIndex((s) => { return s.id == name })
 
-        const newSexState = update(this.props.this_catch, {
-            "sexes": {
-                [indexUpdatedSex]: { "sex": {$set: value}}
-            }
-        })
+    //     const newSexState = update(this.props.this_catch, {
+    //         "sexes": {
+    //             [indexUpdatedSex]: { "sex": {$set: value}}
+    //         }
+    //     })
 
-        this.setState({
-            catch: newSexState
-        });
+    //     this.setState({
+    //         catch: newSexState
+    //     });
        
-    }
+    // }
 
     updateSex(event, sex_id){
         /**
@@ -144,27 +144,12 @@ class Catch extends Component {
 
     }
 
-    // componentDidMount(){
-    //     // TODO: the species and categories shoul be fetched only one time, maybe
-    //     // in CatchesList component?
-    //     this.props.loadSpecies(this.props.this_catch.group)
-    //     .then(() => {
-    //         console.log("Species loaded.")
-    //     })
-    //     .then(()=>{
-    //         this.loadCategories(this.props.this_catch.sp_id)
-    //         .then(() => {
-    //             console.log("Categories loaded.")
-    //         })            
-    //     })
-    // }
-
     render() { 
 
         const this_catch = this.props.this_catch
                                 
         const sampled_weight = this_catch.samples && this_catch.samples.sampled_weight? this_catch.samples.sampled_weight : null;
-        // const sexes = this_catch.sexes ? this_catch.sexes : null
+        const sexes = this_catch.sexes ? this_catch.sexes : null
         
 
         if (this.state.status_catch === "view" || this.state.status_catch === "" ){
@@ -182,14 +167,15 @@ class Catch extends Component {
                 </td>
 
 
-                {/* <td>
-                    <ComponentSexes sexes={ sexes }
-                    status_sexes= { this.state.status_sexes }
-                    handleSex= { this.handleSex }
-                    updateSex={ this.updateSex }
-                    saveSex={ this.saveSex }
-                    editCatchStatus={ this.editCatchStatus }/>
-                </td> */}
+                <td>
+                    <ComponentSexes
+                        sexes={ sexes }
+                        catch_id = { this.props.this_catch.id }
+                        handleSex= { this.props.handleSex }
+                        updateSex={ this.updateSex }
+                        saveSex={ this.saveSex }
+                        editCatchStatus={ this.editCatchStatus }/>
+                </td>
                 </tr>
                 </Fragment>
             );
