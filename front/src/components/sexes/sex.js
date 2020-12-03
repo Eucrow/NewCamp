@@ -9,16 +9,14 @@ class ComponentSex extends Component {
      * 
      * @param {number} sex_id
      * @param {number} sex
-     * @param {method} handleSex
      * @param {method} updateSex
-     * @param {method} saveSex
-     * @param {string} status_sex
+     * @param {string} status_sex: contains the state of the component: "view", "edit", "delete" or "add".
      */
 
     constructor(props) {
         super(props);
         this.state = {
-            new_sex : "",
+            new_sex : "", //contains the value of the new sex which will be saved in database.
             lengths : [
                 {
                     length : "",
@@ -29,7 +27,6 @@ class ComponentSex extends Component {
             status_sex: this.props.status_sex? this.props.status_sex: "view",
         }
 
-        // this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/"
         this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/"
         this.apiSexAndLengths = "http://127.0.0.1:8000/api/1.0/sex/lengths/"
 
@@ -37,12 +34,12 @@ class ComponentSex extends Component {
         this.saveSexAndLengths = this.saveSexAndLengths.bind(this);
         this.handleShowLengths = this.handleShowLengths.bind(this);
         this.handleNewSex = this.handleNewSex.bind(this);
-        // this.handleNewSexSubmit = this.handleNewSexSubmit.bind(this);
     }
 
     editSexStatus(status){
         /**
-        * Change the state of status_sex.
+        * Change the state of status_sex variable.
+        * This variable contains the state of the component: "view", "edit", "delete" or "add".
         */
         this.setState(()=>{
             return(
@@ -108,34 +105,13 @@ class ComponentSex extends Component {
 
     handleNewSex(evt){
         /**
-         * Change the state of new_sex.
+         * Change the state of new_sex variable.
+         * This variable contains the value of the new sex which will be saved in database.
          */
 
         this.setState({"new_sex" : evt.target.value})
 
     }
-
-    // handleNewSexSubmit(evt) {
-
-    //     evt.preventDefault();
-
-    //     var data = {
-    //         "catch_id" : this.props.catch_id,
-    //         "sex" : this.state.new_sex
-    //     }
-
-    //     console.log(JSON.stringify(data))
-
-    //     fetch(this.apiSex, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //           },
-    //         body: JSON.stringify(data)
-    //     })
-    //     .then(() => { this.editSexStatus("view")})
-    //     .catch(error => console.log('Error'))
-    // }
    
     render() { 
         if (this.state.status_sex === "view" || this.state.status_sex === "" ) {
@@ -150,7 +126,7 @@ class ComponentSex extends Component {
         } else if (this.state.status_sex === "edit") {
             return (
                 <Fragment>
-                <select onChange={ this.props.handleSex(this.props.sex_id, this.props.catch_id) }
+                <select onChange={ this.props.updateSex(this.props.sex_id, this.props.catch_id) }
                         id={ this.props.sex_id }
                         name={ this.props.sex_id } 
                         value={ this.props.sex } >
@@ -171,7 +147,7 @@ class ComponentSex extends Component {
 
         } else if (this.state.status_sex === "delete") {
 
-        } else if (this.state.status_sex === "new") {
+        } else if (this.state.status_sex === "add") {
             return (
                 <Fragment>
                     <form onSubmit={ (e) => {
@@ -185,100 +161,14 @@ class ComponentSex extends Component {
                             <option value="2">Female</option>
                         </select>
 
-                        <input type="submit" value="Save new sex" />
+                        <input type="submit" disabled={!this.state.new_sex} value="Save new sex" />
                         {/* <ComponentsLengths status_lengths={ "hidden" }
                                         sex_id={ this.props.sex_id }
                                         sex={ this.props.sex } /> */}
                     </form>
-
                 </Fragment>
             );
         }
-
-        // if (this.state.status_sex === "collapsed"){
-        //     return ( 
-                // <table><tbody><tr style={{verticalAlign: "top"}}><td>
-                // { this.props.sex }
-                {/* <button onClick={() => { this.editSexStatus("edit") } }>Edit sex</button> */}
-                {/* <ShowLengthsButton handleShowLengths = { this.handleShowLengths } /> */}
-
-                {/* {this.state.status_lengths && <ComponentsLengths status_lengths={ "view" } sex_id={ this.props.sex_id } sex={ this.props.sex } />} */}
-
-                {/* <ComponentsLengths status_lengths={ "hidden" } sex_id={ this.props.sex_id } sex={ this.props.sex } /> */}
-                {/* </td></tr></tbody></table> */}
-        //     );
-        // } else if (this.state.status_sex === "view"){
-        //     return (
-                // <table><tbody><tr style={{verticalAlign: "top"}}><td>
-                // { this.props.sex }
-                // <button onClick={() => { this.editSexStatus("edit") } }>Edit sex</button>
-                // <ComponentsLengths status_lengths={ "hidden" } sex_id={ this.props.sex_id } sex={ this.props.sex } />
-                // </td></tr></tbody></table>
-        //     )
-        // }
-
-    //     if(this.state.status_sex === "edit") {
-
-    //         return (
-    //             <Fragment>
-    //             <select id={ this.props.sex_id }
-    //                     name={ this.props.sex_id } 
-    //                     value={ this.props.sex }
-    //                     onChange={ this.props.handleSex }>
-    //                 <option value="3">Undetermined</option>
-    //                 <option value="1">Male</option>
-    //                 <option value="2">Female</option>
-    //             </select>
-    //             <button type="button" onClick={(e) => {
-    //                     this.props.updateSex(e, this.props.sex_id)
-    //                     this.editSexStatus("view")
-    //                     }
-    //                 }> Save sex </button> 
-    //             <ComponentsLengths status_lengths={ "hidden" }
-    //                                sex_id={ this.props.sex_id }
-    //                                sex={ this.props.sex } />
-    //             </Fragment>
-    //         );
-
-    //     } else if (this.state.status_sex === "view") {
-
-    //         return ( 
-    //             <table><tbody><tr style={{verticalAlign: "top"}}><td>
-    //             { this.props.sex } hhh
-    //             <button onClick={() => { this.editSexStatus("edit") } }>Edit sex</button>
-    //             <ComponentsLengths status_lengths={ "hidden" } sex_id={ this.props.sex_id } sex={ this.props.sex } />
-    //             </td></tr></tbody></table>
-    //         );
-
-    //     } else if (this.state.status_sex === "add_button") {
-
-    //         return(
-    //             <button onClick={() => { this.editSexStatus("add") } }>Add sex</button>
-    //             )
-
-    //     } 
-    //     else if (this.state.status_sex === "add") {
-
-    //         return ( 
-    //             <Fragment>
-    //             <select id="sex" name="sex" onChange={ this.handleNewSex }>
-    //                 <option value="3">Undetermined</option>
-    //                 <option value="1">Male</option>
-    //                 <option value="2">Female</option>
-    //             </select>
-    //             <button type="button" onClick={(e) => {
-    //                 this.props.saveSex(e, this.state.new_sex)
-    //                 this.editSexStatus("view")
-    //                 } }> Save sex </button> 
-    //             <ComponentsLengths status_lengths={ "edit" }
-    //                                sex_id={ this.props.sex_id }
-    //                                sex={ this.props.sex }
-    //                                saveSexAndLengths= { this.saveSexAndLengths }/>
-    //             </Fragment>
-    //         ); 
-
-    //     }
-
     }
 }
  

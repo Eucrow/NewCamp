@@ -13,7 +13,6 @@ class CatchesList extends Component {
         this.state = { 
             catches: [],
             species: [],
-            categories: [],
             loaded: false,
             placeholder: "Loading"
         }
@@ -26,16 +25,13 @@ class CatchesList extends Component {
         this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
         this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/"
         
-
-        // this.catchElement = React.createRef();
-        
         this.handleChangeGroup = this.handleChangeGroup.bind(this);
         this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
         this.handleChangeCategory = this.handleChangeCategory.bind(this);
         this.handleChangeWeight = this.handleChangeWeight.bind(this);
         this.updateCatch = this.updateCatch.bind(this);
         this.removeCatch = this.removeCatch.bind(this);
-        this.handleSex = this.handleSex.bind(this);
+        this.updateSex = this.updateSex.bind(this);
         this.handleNewSexSubmit = this.handleNewSexSubmit.bind(this);
     }
 
@@ -236,7 +232,7 @@ class CatchesList extends Component {
 
     }
 
-    handleSex = (ids, idc) => evt => {
+    updateSex = (ids, idc) => evt => {
 
         const value = evt.target.value;
 
@@ -372,19 +368,17 @@ class CatchesList extends Component {
                     this.state.catches.map(c => {       
                         return(
                             <Catch
-                            //  ref = { this.catchElement }
-                                   key={ c.id }
-                                   this_catch={ c }
-                                   species={ this.state.species }
-                                   categories={ this.state.categories }
-                                   handleChangeGroup = { this.handleChangeGroup }
-                                   handleChangeSpecies = { this.handleChangeSpecies }
-                                   handleChangeCategory = { this.handleChangeCategory }
-                                   handleChangeWeight = { this.handleChangeWeight }
-                                   updateCatch = { this.updateCatch }
-                                   removeCatch = { this.removeCatch }
-                                   handleSex = { this.handleSex }
-                                   handleNewSexSubmit = { this.handleNewSexSubmit } />
+                                key ={ c.id }
+                                this_catch ={ c }
+                                species ={ this.state.species }
+                                handleChangeGroup = { this.handleChangeGroup }
+                                handleChangeSpecies = { this.handleChangeSpecies }
+                                handleChangeCategory = { this.handleChangeCategory }
+                                handleChangeWeight = { this.handleChangeWeight }
+                                updateCatch = { this.updateCatch }
+                                removeCatch = { this.removeCatch }
+                                updateSex = { this.updateSex }
+                                handleNewSexSubmit = { this.handleNewSexSubmit } />
                         )
                     })
                     
