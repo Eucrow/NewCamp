@@ -24,7 +24,7 @@ class CatchesList extends Component {
         this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
         this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
         this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
-
+        this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/"
         
 
         // this.catchElement = React.createRef();
@@ -36,6 +36,7 @@ class CatchesList extends Component {
         this.updateCatch = this.updateCatch.bind(this);
         this.removeCatch = this.removeCatch.bind(this);
         this.handleSex = this.handleSex.bind(this);
+        this.handleNewSexSubmit = this.handleNewSexSubmit.bind(this);
     }
 
     removeCatch = idx => () => {
@@ -230,15 +231,6 @@ class CatchesList extends Component {
             body: JSON.stringify(request)
         })
         .then( response => response.json())
-        // .then(c => {
-        //     this.setState(() => {
-        //         return{
-        //             status_catch : "view"
-        //         }
-        //     })
-            
-        // })
-        // .then( () => this.catchElement.current.editCatchStatus("view"))
         .catch(error => alert(error))
 
 
@@ -266,6 +258,53 @@ class CatchesList extends Component {
             }
         })  
 
+    }
+
+    handleNewSexSubmit = (evt, sex, idc) => {
+        /**
+         * Handle new sex submit.
+         * Fetch the new sex and update the catches state.
+         */
+
+        evt.preventDefault();
+
+        var data = {
+            "catch_id" : idc,
+            "sex" : sex
+        }
+
+        console.log(JSON.stringify(data))
+
+        fetch(this.apiSex, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+              },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if(response.status > 400){
+                // return this.setState(() => {
+                //     return { placeholder: "Something went wrong!" }
+                // });
+                alert("Error: maybe the sex already exists.")
+            }
+            return response.json();
+        })
+        .then(newSex => {
+            const newCatches = this.state.catches.map(c => {
+                if (c.id !== idc) return c;
+                c.sexes.push(newSex)
+                return c;
+            })
+
+            this.setState(() => {
+                return {
+                    catches: newCatches
+                }
+            }) 
+        } )
+        .catch(error => console.log('Error'))
     }
 
     componentDidMount() {
@@ -344,7 +383,8 @@ class CatchesList extends Component {
                                    handleChangeWeight = { this.handleChangeWeight }
                                    updateCatch = { this.updateCatch }
                                    removeCatch = { this.removeCatch }
-                                   handleSex = { this.handleSex }/>
+                                   handleSex = { this.handleSex }
+                                   handleNewSexSubmit = { this.handleNewSexSubmit } />
                         )
                     })
                     

@@ -61,26 +61,6 @@ class Catch extends Component {
         })
     }
 
-    // handleSex(event){
-
-    //     const name = event.target.name;
-    //     const value = event.target.value;
-
-    //     const updatedSex = this.props.this_catch.sexes
-    //     const indexUpdatedSex = updatedSex.findIndex((s) => { return s.id == name })
-
-    //     const newSexState = update(this.props.this_catch, {
-    //         "sexes": {
-    //             [indexUpdatedSex]: { "sex": {$set: value}}
-    //         }
-    //     })
-
-    //     this.setState({
-    //         catch: newSexState
-    //     });
-       
-    // }
-
     updateSex(event, sex_id){
         /**
         * Save the sex of state to database.
@@ -105,7 +85,7 @@ class Catch extends Component {
 
     }
 
-    saveSex(event, new_sex){
+    saveSex(event, catch_id){
         /**
         * Save the sex of state to database.
         */
@@ -113,10 +93,14 @@ class Catch extends Component {
         event.preventDefault();
 
         // get the sex of the catch which has been changed
-        const newSex = {
-            "catch_id": this.props.this_catch.id,
-            "sex": new_sex
-        }
+        const newSex = this.props.this_catch.find( c => {
+            return c.id == catch_id
+        })
+
+        // const newSex = {
+        //     "catch_id": this.props.this_catch.id,
+        //     "sex": new_sex
+        // }
 
         fetch(this.apiSex, {
             method: 'POST',
@@ -125,21 +109,21 @@ class Catch extends Component {
                 },
             body: JSON.stringify(newSex)
         })
-        .then(response => response.json())
-        .then(sex => {
-            const newSexState = update(this.props.this_catch, {
-                "sexes": {"id": {$set: sex.id},
-                          "sex": {$set: sex.sex},
-                          "catch_id": {$set: sex.catch_id}
-                }
-            })
+        // .then(response => response.json())
+        // .then(sex => {
+        //     const newSexState = update(this.props.this_catch, {
+        //         "sexes": {"id": {$set: sex.id},
+        //                   "sex": {$set: sex.sex},
+        //                   "catch_id": {$set: sex.catch_id}
+        //         }
+        //     })
 
-            this.setState(() => {
-                return{ catch: newSexState }
+        //     this.setState(() => {
+        //         return{ catch: newSexState }
 
-            })
+        //     })
             
-        })
+        // })
         .catch(error => console.log('Error'))
 
     }
@@ -169,12 +153,14 @@ class Catch extends Component {
 
                 <td>
                     <ComponentSexes
-                        sexes={ sexes }
+                        sexes = { sexes }
                         catch_id = { this.props.this_catch.id }
                         handleSex= { this.props.handleSex }
-                        updateSex={ this.updateSex }
-                        saveSex={ this.saveSex }
-                        editCatchStatus={ this.editCatchStatus }/>
+                        updateSex= { this.updateSex }
+                        saveSex= { this.saveSex }
+                        editCatchStatus= { this.editCatchStatus }
+                        handleNewSexSubmit = { this.props.handleNewSexSubmit } 
+                        />
                 </td>
                 </tr>
                 </Fragment>

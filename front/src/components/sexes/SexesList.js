@@ -17,7 +17,18 @@ class ComponentSexes extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            showAddSexForm: false
+        }
+
+        this.handleAddSexButton = this.handleAddSexButton.bind(this)
         
+    }
+
+    handleAddSexButton(status) {
+        this.setState({
+            showAddSexForm: status
+        })
     }
 
 
@@ -25,28 +36,46 @@ class ComponentSexes extends Component {
 
         const sexes = this.props.sexes ? this.props.sexes : null
 
-        if (sexes.length === 0){
-            return (
-                <button onClick={ this.editSexes }>Add sex</button>
-                // <ComponentSex status_sex={"add_button"}
-                //               saveSex={ this.props.saveSex }/>
-            )
+        // if (sexes.length === 0){
+        //     return (
+        //         <button onClick={ this.editSexes }>Add sex</button>
+        //         // <ComponentSex status_sex={"add_button"}
+        //         //               saveSex={ this.props.saveSex }/>
+        //     )
 
-        } else {
+        // } else {
             return ( 
-                sexes.map(s=>{
+                <Fragment>
+                { sexes.map(s=>{
                     return(
-                        <ComponentSex sex_id={ s.id }
-                                      sex={ s.sex }
-                                      catch_id={ this.props.catch_id }
-                                      handleSex={ this.props.handleSex }
-                                      updateSex={ this.props.updateSex }
-                                      saveSex={ this.props.saveSex }/>
+                        <ComponentSex
+                            key = { s.id }
+                            sex_id={ s.id }
+                            sex={ s.sex }
+                            catch_id={ this.props.catch_id }
+                            handleSex={ this.props.handleSex }
+                            updateSex={ this.props.updateSex }
+                            saveSex={ this.props.saveSex } />
                     )
-                })
+                })}
+                
+
+                { this.state.showAddSexForm === true?
+                    <ComponentSex
+                        catch_id={ this.props.catch_id }
+                        status_sex = { "new" }
+                        handleSex = { this.props.handleSex }
+                        saveSex = { this.props.saveSex }
+                        handleNewSexSubmit = { this.props.handleNewSexSubmit }
+                        handleAddSexButton = { this.handleAddSexButton }
+                    /> :
+                    <button onClick={() => { this.handleAddSexButton(true) } }>Add sex</button> }
+                    
+                </Fragment>
+
 
             );            
-        } 
+        // } 
 
     }
 

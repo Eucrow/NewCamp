@@ -18,6 +18,7 @@ class ComponentSex extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            new_sex : "",
             lengths : [
                 {
                     length : "",
@@ -25,17 +26,18 @@ class ComponentSex extends Component {
                 }
             ],
             status_lengths : '',
-            // Only use props.status_sex when the value is "add"
             status_sex: this.props.status_sex? this.props.status_sex: "view",
         }
 
+        // this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/"
         this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/"
         this.apiSexAndLengths = "http://127.0.0.1:8000/api/1.0/sex/lengths/"
 
         this.editSexStatus = this.editSexStatus.bind(this);
-        this.handleNewSex = this.handleNewSex.bind(this);
         this.saveSexAndLengths = this.saveSexAndLengths.bind(this);
         this.handleShowLengths = this.handleShowLengths.bind(this);
+        this.handleNewSex = this.handleNewSex.bind(this);
+        // this.handleNewSexSubmit = this.handleNewSexSubmit.bind(this);
     }
 
     editSexStatus(status){
@@ -45,22 +47,13 @@ class ComponentSex extends Component {
         this.setState(()=>{
             return(
                 {
-                    "status_sex" : status,
-                    "new_sex" : ""
+                    "catch_id" : "",
+                    "sex" : "",
+                    "status_sex" : status
                 }
             )
         })
     }
-
-    handleNewSex(event){
-
-        const value = event.target.value;
-
-        this.setState({
-            new_sex: value
-        });
-
-    }     
 
     handleShowLengths(event){
         /**
@@ -112,6 +105,37 @@ class ComponentSex extends Component {
         })
         .catch(error => console.log('Error'))        
     }
+
+    handleNewSex(evt){
+        /**
+         * Change the state of new_sex.
+         */
+
+        this.setState({"new_sex" : evt.target.value})
+
+    }
+
+    // handleNewSexSubmit(evt) {
+
+    //     evt.preventDefault();
+
+    //     var data = {
+    //         "catch_id" : this.props.catch_id,
+    //         "sex" : this.state.new_sex
+    //     }
+
+    //     console.log(JSON.stringify(data))
+
+    //     fetch(this.apiSex, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //           },
+    //         body: JSON.stringify(data)
+    //     })
+    //     .then(() => { this.editSexStatus("view")})
+    //     .catch(error => console.log('Error'))
+    // }
    
     render() { 
         if (this.state.status_sex === "view" || this.state.status_sex === "" ) {
@@ -126,10 +150,10 @@ class ComponentSex extends Component {
         } else if (this.state.status_sex === "edit") {
             return (
                 <Fragment>
-                <select id={ this.props.sex_id }
+                <select onChange={ this.props.handleSex(this.props.sex_id, this.props.catch_id) }
+                        id={ this.props.sex_id }
                         name={ this.props.sex_id } 
-                        value={ this.props.sex }
-                        onChange={ this.props.handleSex(this.props.sex_id, this.props.catch_id) }>
+                        value={ this.props.sex } >
                     <option value="3">Undetermined</option>
                     <option value="1">Male</option>
                     <option value="2">Female</option>
@@ -147,8 +171,28 @@ class ComponentSex extends Component {
 
         } else if (this.state.status_sex === "delete") {
 
-        } else if (this.state.status_sex === "add") {
+        } else if (this.state.status_sex === "new") {
+            return (
+                <Fragment>
+                    <form onSubmit={ (e) => {
+                        this.props.handleNewSexSubmit(e, this.state.new_sex, this.props.catch_id);
+                        this.props.handleAddSexButton(false);
+                        }}>
+                        <select onChange={ this.handleNewSex }>
+                            <option disabled selected value> -- select a sex -- </option>
+                            <option value="3">Undetermined</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
 
+                        <input type="submit" value="Save new sex" />
+                        {/* <ComponentsLengths status_lengths={ "hidden" }
+                                        sex_id={ this.props.sex_id }
+                                        sex={ this.props.sex } /> */}
+                    </form>
+
+                </Fragment>
+            );
         }
 
         // if (this.state.status_sex === "collapsed"){
