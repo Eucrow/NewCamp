@@ -77,6 +77,10 @@ class Catch extends Component {
             return ( 
                 <Fragment>
                 <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
+                {/* <form onSubmit={ (e) => {
+                    this.props.updateCatch(this_catch.id);
+                    this.editCatchStatus("view");
+                }}> */}
                 <ComponentCategory
                             status_catch = { this.state.status_catch }
                             this_catch = { this.props.this_catch }
@@ -91,7 +95,9 @@ class Catch extends Component {
                         this.editCatchStatus("view");
                         }
                     }>Save</button>
+                <input type="submit" value="Save catch"/>
                 </td>
+                {/* </form> */}
                 </tr>
             </Fragment>
             );

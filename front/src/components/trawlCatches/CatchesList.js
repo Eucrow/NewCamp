@@ -201,12 +201,10 @@ class CatchesList extends Component {
         })
     }
 
-    updateCatch = idx => evt =>{
+    updateCatch = idx =>{
         /**
         * Update catch in database.
         */
-
-        evt.preventDefault();
 
         const updatedCatch = this.state.catches.find(
             function(c) {
