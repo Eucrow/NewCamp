@@ -256,7 +256,7 @@ class CatchesList extends Component {
 
     handleNewSexSubmit = (evt, sex, idc) => {
         /**
-         * Handle new sex submit.
+         * Handle new sex form.
          * Fetch the new sex and update the catches state.
          */
 

@@ -9,22 +9,22 @@ import CatchEditForm from './CatchEditForm.js';
 class Catch extends Component {
     /**
      * Catch form.
-     * @param {object} props.this_catch: object with this catch.
-     * @param {object} props.species: obejct with species list.
-     * @param {object} props.handleChangeGroup: 
-     * @param {object} props.handleChangeSpecies: 
-     * @param {object} props.handleChangeCategory: 
-     * @param {object} props.handleChangeWeight: 
-     * @param {object} props.updateCatch: 
-     * @param {object} props.removeCatch: 
-     * @param {object} props.updateSex: 
-     * @param {object} props.handleNewSexSubmit: 
+     * @param {object} props.this_catch: catch managed by this component.
+     * @param {object} props.species: species list.
+     * @param {method} props.handleChangeGroup: managing of group state and field.
+     * @param {method} props.handleChangeSpecies: managing of species state and field.
+     * @param {method} props.handleChangeCategory: managing of category state and field.
+     * @param {method} props.handleChangeWeight: managing of weight state and field.
+     * @param {method} props.updateCatch: update catch in database.
+     * @param {method} props.removeCatch: remove catch in database.
+     * @param {method} props.updateSex: update sex in database.
+     * @param {method} props.handleNewSexSubmit: handle the new sex form.
      */
 
     constructor(props) {
         super(props);
         this.state = {
-            status_catch : ""
+            status_catch : "" // State of Catch component: "", "vier" or "edit". 
         }
 
         this.editCatchStatus = this.editCatchStatus.bind(this);
@@ -77,10 +77,6 @@ class Catch extends Component {
             return ( 
                 <Fragment>
                 <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
-                {/* <form onSubmit={ (e) => {
-                    this.props.updateCatch(this_catch.id);
-                    this.editCatchStatus("view");
-                }}> */}
                 <ComponentCategory
                             status_catch = { this.state.status_catch }
                             this_catch = { this.props.this_catch }
@@ -97,7 +93,6 @@ class Catch extends Component {
                     }>Save</button>
                 <input type="submit" value="Save catch"/>
                 </td>
-                {/* </form> */}
                 </tr>
             </Fragment>
             );

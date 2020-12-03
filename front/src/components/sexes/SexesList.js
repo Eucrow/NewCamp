@@ -6,18 +6,17 @@ import ComponentSex from './sex.js';
 
 class ComponentSexes extends Component {
     /**
-     * 
-     * @param {object} props.sexes
-     * @param {character} props.status_sexes
-     * @param {method} props.editSexes
-     * @param {method} props.updateSex
-     * @param {method} props.editSexStatus
+     * por aquí
+     * @param {object} props.sexes: sexes of the catch.
+     * @param {number} props.catch_id: id of the catch.
+     * @param {method} props.updateSex: 
+     * @param {method} props.handleNewSexSubmit
      */
 
     constructor(props) {
         super(props);
         this.state = {
-            showAddSexForm: false //Manage is the button 'Add sex' is showed.
+            showAddSexForm: false //Manage if the button 'Add sex' is showed.
         }
 
         this.handleAddSexButton = this.handleAddSexButton.bind(this)

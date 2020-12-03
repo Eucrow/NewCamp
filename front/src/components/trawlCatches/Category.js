@@ -1,6 +1,16 @@
 import React, { Component, Fragment } from 'react';
 
 class ComponentCategory extends Component {
+    /**
+     * Category Component
+     * @param {string} props.status_catch: state of Catch component: "", "vier" or "edit". 
+     * @param {object} props.this_catch: catch managed by this component
+     * @param {object} props.species: species list.
+     * @param {method} props.handleChangeGroup: managing of group field.
+     * @param {method} props.handleChangeSpecies: managing of species field.
+     * @param {method} props.handleChangeCategory: managing of category field.
+     * @param {method} props.handleChangeWeight: managing of weight field.
+     */
     constructor(props) {
         super(props);
     }
