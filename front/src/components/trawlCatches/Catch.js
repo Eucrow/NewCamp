@@ -9,24 +9,25 @@ import CatchEditForm from './CatchEditForm.js';
 class Catch extends Component {
     /**
      * Catch form.
-     * @param {object} props.this_catch: catch object.
-     * @param {object} props.catches: object with all the catches of the haul.
+     * @param {object} props.this_catch: object with this catch.
+     * @param {object} props.species: obejct with species list.
+     * @param {object} props.handleChangeGroup: 
+     * @param {object} props.handleChangeSpecies: 
+     * @param {object} props.handleChangeCategory: 
+     * @param {object} props.handleChangeWeight: 
+     * @param {object} props.updateCatch: 
+     * @param {object} props.removeCatch: 
+     * @param {object} props.updateSex: 
+     * @param {object} props.handleNewSexSubmit: 
      */
 
     constructor(props) {
         super(props);
         this.state = {
-            categories: [],
-            status_catch : "",
+            status_catch : ""
         }
 
-        this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
-
         this.editCatchStatus = this.editCatchStatus.bind(this);
-        this.loadCategories = this.loadCategories.bind(this);
-        // this.handleSex = this.handleSex.bind(this);
-        this.updateSex = this.updateSex.bind(this);
-        this.saveSex = this.saveSex.bind(this);
 
     }
 
@@ -34,114 +35,6 @@ class Catch extends Component {
         this.setState({
             ["status_catch"] : status
         })
-    }
-
-
-    loadCategories(sp){
-        /**
-        * Fetch categories by species from server and save in state.
-        */
-
-        const apiCategoriesSpecies = this.apiCategoriesSpecies + sp;
-        return fetch(apiCategoriesSpecies)
-        .then(response => {
-            if(response.status > 400){
-                return this.setState(() => {
-                    return { placeholder: "Something went wrong!" }
-                });
-            }
-            return response.json();
-        })
-        .then(categories => {
-            this.setState(() => {
-                return {
-                    categories: categories
-                };
-            });
-        })
-    }
-
-    // handleSex(event){
-
-    //     const name = event.target.name;
-    //     const value = event.target.value;
-
-    //     const updatedSex = this.props.this_catch.sexes
-    //     const indexUpdatedSex = updatedSex.findIndex((s) => { return s.id == name })
-
-    //     const newSexState = update(this.props.this_catch, {
-    //         "sexes": {
-    //             [indexUpdatedSex]: { "sex": {$set: value}}
-    //         }
-    //     })
-
-    //     this.setState({
-    //         catch: newSexState
-    //     });
-       
-    // }
-
-    updateSex(event, sex_id){
-        /**
-        * Save the sex of state to database.
-        */
-        
-        event.preventDefault();
-
-        // get the sex of the catch which has been changed
-        const updatedSex = this.props.this_catch.sexes.find(s => {
-            return s.id == sex_id
-        })
-
-        console.log(JSON.stringify(updatedSex))
-        fetch(this.apiSex, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                },
-            body: JSON.stringify(updatedSex)
-        })
-        .catch(error => console.log('Error'))
-
-    }
-
-    saveSex(event, new_sex){
-        /**
-        * Save the sex of state to database.
-        */
-        
-        event.preventDefault();
-
-        // get the sex of the catch which has been changed
-        const newSex = {
-            "catch_id": this.props.this_catch.id,
-            "sex": new_sex
-        }
-
-        fetch(this.apiSex, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                },
-            body: JSON.stringify(newSex)
-        })
-        .then(response => response.json())
-        .then(sex => {
-            const newSexState = update(this.props.this_catch, {
-                "sexes": {"id": {$set: sex.id},
-                          "sex": {$set: sex.sex},
-                          "catch_id": {$set: sex.catch_id}
-                }
-            })
-
-            this.setState(() => {
-                return{ catch: newSexState }
-
-            })
-            
-        })
-        .catch(error => console.log('Error'))
-
     }
 
     render() { 
@@ -169,12 +62,12 @@ class Catch extends Component {
 
                 <td>
                     <ComponentSexes
-                        sexes={ sexes }
+                        sexes = { sexes }
                         catch_id = { this.props.this_catch.id }
-                        handleSex= { this.props.handleSex }
-                        updateSex={ this.updateSex }
-                        saveSex={ this.saveSex }
-                        editCatchStatus={ this.editCatchStatus }/>
+                        updateSex= { this.updateSex }
+                        editCatchStatus= { this.editCatchStatus }
+                        handleNewSexSubmit = { this.props.handleNewSexSubmit } 
+                        />
                 </td>
                 </tr>
                 </Fragment>
@@ -188,7 +81,6 @@ class Catch extends Component {
                             status_catch = { this.state.status_catch }
                             this_catch = { this.props.this_catch }
                             species = {this.props.species }
-                            categories = { this.state.categories }
                             handleChangeGroup = { this.props.handleChangeGroup }
                             handleChangeSpecies = { this.props.handleChangeSpecies }
                             handleChangeCategory = { this.props.handleChangeCategory }
@@ -204,41 +96,6 @@ class Catch extends Component {
             </Fragment>
             );
         }
-
-
-        // return ( 
-        //     <Fragment>
-        //     <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
-
-        //     <ComponentCategory status_catch = { this.state.status_catch }
-        //                        this_catch = { this.props.this_catch }
-        //                        species = {this.props.species }
-        //                        categories = { this.state.categories }
-        //                        editCatchStatus = { this.editCatchStatus }
-        //                        handleChangeGroup = { this.props.handleChangeGroup }
-        //                        handleChangeSpecies = { this.props.handleChangeSpecies }
-        //                        handleChangeCategory = { this.props.handleChangeCategory }
-        //                        handleChangeWeight = { this.props.handleChangeWeight }
-        //                        updateCatch = { this.props.updateCatch }
-        //                        removeCatch = { this.props.removeCatch }
-        //                        />
-        //     {/* <td>
-        //         { sampled_weight }
-        //     </td> */}
-        //     {/* <td>
-        //         <ComponentSexes sexes={ sexes }
-        //                         status_sexes= { this.state.status_sexes }
-        //                         handleSex= { this.handleSex }
-        //                         updateSex={ this.updateSex }
-        //                         saveSex={ this.saveSex }
-        //                         editCatchStatus={ this.editCatchStatus }/>
-        //     </td> */}
-        //     </tr>
-        //     </Fragment>
-        // );
-
-        
-
     }
 }
  
