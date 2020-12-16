@@ -8,7 +8,8 @@ from stations.models import Station
 
 class Haul(models.Model):
 
-    station = models.ForeignKey('stations.Station', null=True, blank=True, on_delete=models.CASCADE, related_name='hauls')
+    station = models.ForeignKey('stations.Station', null=True, blank=True, on_delete=models.CASCADE,
+                                related_name='hauls')
     stratum = models.ForeignKey('strata.Stratum', null=True, blank=True, on_delete=models.CASCADE)
     sampler = models.ForeignKey('samplers.Sampler', on_delete=models.CASCADE)
     haul = models.PositiveIntegerField(null=True, blank=True)

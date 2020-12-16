@@ -13,17 +13,17 @@ class CatchesList extends Component {
         this.state = { 
             catches: [],
             species: [],
-            categories: [],
             loaded: false,
             placeholder: "Loading"
         }
 
         this.apiCatches = "http://127.0.0.1:8000/api/1.0/catches/";
+        this.apiCatch = "http://127.0.0.1:8000/api/1.0/catch/"
         // TODO: change the apiSpecies api to only return the id, sp_name, group and sp_code variables.
         this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
         this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
         this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
-
+        this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/"
         
         this.handleChangeGroup = this.handleChangeGroup.bind(this);
         this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
@@ -31,6 +31,8 @@ class CatchesList extends Component {
         this.handleChangeWeight = this.handleChangeWeight.bind(this);
         this.updateCatch = this.updateCatch.bind(this);
         this.removeCatch = this.removeCatch.bind(this);
+        this.handleChangeSex = this.handleChangeSex.bind(this);
+        this.handleNewSexSubmit = this.handleNewSexSubmit.bind(this);
     }
 
     removeCatch = idx => () => {
@@ -87,8 +89,7 @@ class CatchesList extends Component {
         })
 
     }
-    
-    // handleChangeSpecies(event){
+
     handleChangeSpecies = idx => evt =>{
         /**
          * Method to get categories of the species, when the 'species' field is modified.
@@ -138,57 +139,83 @@ class CatchesList extends Component {
             });
     }
 
-
-    // handleChangeCategory (event) { 
     handleChangeCategory = idx => evt =>{
+        /**
+         * Handle change of new catch form.
+         */
+
+        const value = evt.target.value;
+
+        // Firstly, get the data of catch to modify
+        const thisCatch = this.state.catches.find(c => {
+            if( c.id === idx ) return c;
+        })
+
+        // Secondly, check if exists another catch whith the same species and category
+        const repeatedCatch = this.state.catches.some(c =>
+            //the comparison between c.category and value must be with == instead of === 
+            (c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category == value)
+        )
+
+        // And finally save the state or thrown an alert.
+        if (repeatedCatch === true) {
+
+            alert("This category of the species already exists");
+            
+        } else if (repeatedCatch === false) {
+
+            const newCatches = this.state.catches.map(c => {
+                if( c.id !== idx ) return c;
+                return{
+                    ...c,
+                    category: value
+                }
+    
+            })
+    
+            this.setState({
+                catches: newCatches
+            });
+
+        }
+
+    }
+
+    handleChangeWeight = idx => evt =>{
+    // handleChangeWeight (event) { 
         /**
          * Handle change of new catch form.
          */       
         const value = evt.target.value;
-        // const val = value.split("--");
-        // const category_id = val[0];
-        // const category_name = val[1];
-
+        
         const newCatches = this.state.catches.map(c => {
-            if( c.id !== idx ) return c;
+            if ( c.id !== idx ) return c;
             return{
-                ... c,
-                category: value}
-
+                ...c,
+                weight: value
+            }
         })
 
         this.setState({
             catches: newCatches
-        });
+        })
     }
 
-    handleChangeWeight (event) { 
+    updateCatch = idx =>{
         /**
-         * Handle change of new catch form.
-         */       
-        const name = event.target.name;
-        const value = event.target.value;        
-
-        this.setState({
-            catch: {
-                ...this.state.catch,
-                [name] : value
-            }
-        });
-    }
-
-    updateCatch(event){
-        /**
-        * Update catch to database.
+        * Update catch in database.
         */
 
-        event.preventDefault();
+        const updatedCatch = this.state.catches.find(
+            function(c) {
+                return (idx === c.id)
+            })
 
-        // TODO: doesn't throw error when the species is changed and already exists.
-        const request = {"id" : this.state.catch.id,
-                        "weight" : this.state.catch.weight,
-                        "category_id" : this.state.catch.category_id,
-                        "haul_id" : this.state.catch.haul_id }
+        const request = {"id" : updatedCatch.id,
+                         "haul_id" : updatedCatch.haul,
+                         "sp_id" : updatedCatch.sp_id,
+                         "category" : updatedCatch.category,
+                         "weight" : updatedCatch.weight}
 
         fetch(this.apiEditRemoveCatch, {
             method: 'PUT',
@@ -198,16 +225,83 @@ class CatchesList extends Component {
             body: JSON.stringify(request)
         })
         .then( response => response.json())
-        .then(c => {
-            this.setState(() => {
-                return{
-                    status_catch : "view"
-                }
-            })
-            
-        })
         .catch(error => alert(error))
 
+
+    }
+
+    handleChangeSex = (evt, ids, idc) => {
+        /**
+         * Manage sex state.
+         */
+
+        const value = evt.target.value;
+
+        const newCatches = this.state.catches.map(c => {
+            if (idc !== c.id) {
+                return c;
+            } else {
+                const newSexes = c.sexes.map(s =>{
+                    if (ids !== s.id) return s;
+                    return {...s, sex: value };
+                })
+                return {...c, sexes: newSexes };
+            }
+        })
+
+        this.setState(() => {
+            return {
+                catches: newCatches
+            }
+        })  
+
+    }
+
+    handleNewSexSubmit = (evt, sex, idc) => {
+        /**
+         * Handle new sex form.
+         * Fetch the new sex and update the catches state.
+         */
+
+        evt.preventDefault();
+
+        var data = {
+            "catch_id" : idc,
+            "sex" : sex
+        }
+
+        console.log(JSON.stringify(data))
+
+        fetch(this.apiSex, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+              },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if(response.status > 400){
+                // return this.setState(() => {
+                //     return { placeholder: "Something went wrong!" }
+                // });
+                alert("Error: maybe the sex already exists.")
+            }
+            return response.json();
+        })
+        .then(newSex => {
+            const newCatches = this.state.catches.map(c => {
+                if (c.id !== idc) return c;
+                c.sexes.push(newSex)
+                return c;
+            })
+
+            this.setState(() => {
+                return {
+                    catches: newCatches
+                }
+            }) 
+        } )
+        .catch(error => console.log('Error'))
     }
 
     componentDidMount() {
@@ -274,16 +368,18 @@ class CatchesList extends Component {
                 {
                     this.state.catches.map(c => {       
                         return(
-                            <Catch key={ c.id }
-                            this_catch={ c }
-                            species={ this.state.species }
-                            categories={ this.state.categories }
-                            handleChangeGroup = { this.handleChangeGroup }
-                            handleChangeSpecies = { this.handleChangeSpecies }
-                            handleChangeCategory = { this.handleChangeCategory }
-                            handleChangeWeight = { this.handleChangeWeight }
-                            updateCatch = { this.updateCatch }
-                            removeCatch = { this.removeCatch }/>
+                            <Catch
+                                key ={ c.id }
+                                this_catch ={ c }
+                                species ={ this.state.species }
+                                handleChangeGroup = { this.handleChangeGroup }
+                                handleChangeSpecies = { this.handleChangeSpecies }
+                                handleChangeCategory = { this.handleChangeCategory }
+                                handleChangeWeight = { this.handleChangeWeight }
+                                updateCatch = { this.updateCatch }
+                                removeCatch = { this.removeCatch }
+                                handleChangeSex = { this.handleChangeSex }
+                                handleNewSexSubmit = { this.handleNewSexSubmit } />
                         )
                     })
                     

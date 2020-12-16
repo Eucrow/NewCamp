@@ -24,13 +24,17 @@ class ComponentsFormLengths extends Component {
         
         const lengths = this.props.lengths;
 
-        if(lengths.length == 0){
+        // if(lengths.length == 0){
 
-            return(
-                <button onClick={ this.props.handleAddLengthsButton }>Add lengths</button>
-            )
+        //     return(
+        //         <button onClick={ this.props.handleAddLengthsButton }>Add lengths</button>
+        //     )
 
-        } else if(this.props.status_lengths === "view"){
+        // } else
+        if(this.props.status_lengths === ""){
+            return null
+        }
+        if(this.props.status_lengths === "view"){
 
             return (
                 <Fragment>
@@ -44,7 +48,7 @@ class ComponentsFormLengths extends Component {
                     })}
                 </ul>
                 <button onClick={ this.props.editLengths }>Edit lengths</button>
-                <button onClick={ this.props.handleHideLengths}>Hide</button>
+                <button onClick={ this.props.handleHideLengths}>Hide lengths</button>
                 </Fragment>
             );
 
@@ -70,16 +74,16 @@ class ComponentsFormLengths extends Component {
                 <button onClick={ this.props.cancelLengths }>Cancel</button>
                 </Fragment>
             )
-        } else if (this.props.status_lengths === "hidden"){
-            return(
-                <button onClick= { this.props.handleShowLengths }>Show lengths</button>
-                )
-            
-        } else if (this.props.status_lengths === "add"){
-            return(
-                <button onClick= { this.props.handleAddLengthsButton }>Add lengths</button>
-            )
         }
+        // else if (this.props.status_lengths === "hidden"){
+        //     return(
+        //         <button onClick= { this.props.handleShowLengths }>Show lengths</button>
+        //         )
+        // } else if (this.props.status_lengths === "add"){
+        //     return(
+        //         <button onClick= { this.props.handleAddLengthsButton }>Add lengths</button>
+        //     )
+        // }
 
     }
 }

@@ -69,7 +69,7 @@ class SexAPI(APIView):
         sex = Sex.objects.get(id=request.data["id"])
         serializer = SexSerializer(sex, data=request.data)
         if serializer.is_valid():
-            serializer.save(catch_id=request.data["catch_id"])
+            serializer.save(id=request.data["id"])
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

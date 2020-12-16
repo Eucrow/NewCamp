@@ -1,9 +1,18 @@
 import React, { Component, Fragment } from 'react';
 
 class ComponentCategory extends Component {
+    /**
+     * Category Component
+     * @param {string} props.status_catch: state of Catch component: "", "vier" or "edit". 
+     * @param {object} props.this_catch: catch managed by this component
+     * @param {object} props.species: species list.
+     * @param {method} props.handleChangeGroup: managing of group field.
+     * @param {method} props.handleChangeSpecies: managing of species field.
+     * @param {method} props.handleChangeCategory: managing of category field.
+     * @param {method} props.handleChangeWeight: managing of weight field.
+     */
     constructor(props) {
         super(props);
-        this.state = { }
     }
 
 
@@ -11,7 +20,7 @@ class ComponentCategory extends Component {
 
         const sampled_weight = this.props.this_catch.samples && this.props.this_catch.samples.sampled_weight? this.props.this_catch.samples.sampled_weight : null;
 
-        if (this.props.status_catch === "view"){
+        if (this.props.status_catch === "view" || this.props.status_catch === "" ){
 
             return ( 
                 <Fragment>
@@ -20,23 +29,13 @@ class ComponentCategory extends Component {
                 <td>{ this.props.this_catch.category }</td>
                 <td>
                     { this.props.this_catch.weight }
-                    <button onClick= { () => { this.props.editCatchStatus("edit") } }>Edit catch</button>
-                    <button onClick= { this.props.removeCatch(this.props.this_catch.id) }>Remove catch</button>
                 </td>
                 <td>
                     { sampled_weight }
                 </td>
-
-                {/* <td>
-                    <ComponentSexes sexes={ sexes }
-                    status_sexes= { this.state.status_sexes }
-                    handleSex= { this.handleSex }
-                    updateSex={ this.updateSex }
-                    saveSex={ this.saveSex }
-                    editCatchStatus={ this.editCatchStatus }/>
-                </td> */}
-            </Fragment>
+                </Fragment>
             );
+
         } else if (this.props.status_catch === "edit"){
             return ( 
                 <Fragment>
@@ -62,14 +61,6 @@ class ComponentCategory extends Component {
                 </td>
                 <td></td>
                 <td>
-                {/* <select id="category_id" name="category_id"
-                        value= { this.props.this_catch.category_id + "--" + this.props.this_catch.category }
-                        onChange={ this.props.handleChangeCategory }>
-                    <option>select one...</option>
-                    {this.props.categories.map(c=>{
-                        return(<option value={c.id + "--" + c.category_name}>{c.category_name}</option>)
-                    })}
-                </select> */}
                 <input type="number"
                        id="category_id"
                        name="category_id"
@@ -77,9 +68,13 @@ class ComponentCategory extends Component {
                        onChange={ this.props.handleChangeCategory(this.props.this_catch.id) } />
                 </td>
                 <td>
-                <input type="number" id="weight" name="weight" value={ this.props.this_catch.weight } onChange={ this.props.handleChangeWeight } />
-                <button onClick={ this.props.updateCatch }>Save</button>
+                <input type="number"
+                       id="weight"
+                       name="weight"
+                       value={ this.props.this_catch.weight }
+                       onChange={ this.props.handleChangeWeight(this.props.this_catch.id) } />
                 </td>
+
             </Fragment>
             );
         }
