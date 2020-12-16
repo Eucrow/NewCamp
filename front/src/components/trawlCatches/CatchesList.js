@@ -230,7 +230,10 @@ class CatchesList extends Component {
 
     }
 
-    handleChangeSex = (ids, idc) => evt => {
+    handleChangeSex = (evt, ids, idc) => {
+        /**
+         * Manage sex state.
+         */
 
         const value = evt.target.value;
 

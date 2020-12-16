@@ -7,32 +7,36 @@ import ComponentsLengths from '../lengths/Lengths.js';
 class ComponentSex extends Component {
     /**
      * 
-     * @param {number} sex_id
-     * @param {number} sex
-     * @param {method} handleChangeSex
-     * @param {string} status_sex: contains the state of the component: "view", "edit", "delete" or "add".
+     * @param {number} props.sex_id
+     * @param {number} props.sex
+     * @param {number} props.catch_id
+     * @param {string} props.status_sex: contains the state of the component: "view", "edit", "delete" or "add".
+     * @param {method} props.handleChangeSex
+     * @param {method} props.handleNewSexSubmit
+     * @param {method} props.handleAddSexButton
      */
 
     constructor(props) {
         super(props);
         this.state = {
-            new_sex : "", //contains the value of the new sex which will be saved in database.
+            new_sex : "", //contains the value of the new/updated sex which will be saved in database.
             lengths : [
                 {
                     length : "",
                     number_individuals : ""
                 }
             ],
-            // status_lengths : "hide",
             status_sex: this.props.status_sex? this.props.status_sex: "view",
         }
 
         this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/"
         this.apiSexAndLengths = "http://127.0.0.1:8000/api/1.0/sex/lengths/"
+        this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/"
 
         this.editSexStatus = this.editSexStatus.bind(this);
-        this.saveSexAndLengths = this.saveSexAndLengths.bind(this);
+        // this.saveSexAndLengths = this.saveSexAndLengths.bind(this);
         this.handleNewSex = this.handleNewSex.bind(this);
+        this.updateSex = this.updateSex.bind(this);
     }
 
     editSexStatus(status){
@@ -51,28 +55,28 @@ class ComponentSex extends Component {
         })
     }
     
-    saveSexAndLengths(event){
-        /**
-        * Save the sex and lengths of state to database.
-        */
+    // saveSexAndLengths(event){
+    //     /**
+    //     * Save the sex and lengths of state to database.
+    //     */
         
-        event.preventDefault();
+    //     event.preventDefault();
 
-        console.log(JSON.stringify(this.state.sex))
-        fetch(this.apiSexAndLengths, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                },
-            body: JSON.stringify(this.state.sex)
-        })
-        .then(() => {
-            this.setState(() => {
-                return{status_lengths : "view"}
-            })
-        })
-        .catch(error => console.log('Error'))        
-    }
+    //     console.log(JSON.stringify(this.state.sex))
+    //     fetch(this.apiSexAndLengths, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             },
+    //         body: JSON.stringify(this.state.sex)
+    //     })
+    //     .then(() => {
+    //         this.setState(() => {
+    //             return{status_lengths : "view"}
+    //         })
+    //     })
+    //     .catch(error => console.log('Error'))        
+    // }
 
     handleNewSex(evt){
         /**
@@ -81,6 +85,31 @@ class ComponentSex extends Component {
          */
 
         this.setState({"new_sex" : evt.target.value})
+
+    }
+
+    updateSex(event){
+        /**
+        * Save the sex of state to database.
+        */
+        
+        event.preventDefault();
+
+        // get the sex of the catch which has been changed
+        const newSex = {
+            "id": this.props.sex_id,
+            "sex": this.state.new_sex
+        }
+
+        fetch(this.apiSex, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                },
+            body: JSON.stringify(newSex)
+        })
+        .then(response => response.json())
+        .catch(error => console.log('Error'))
 
     }
    
@@ -99,7 +128,10 @@ class ComponentSex extends Component {
         } else if (this.state.status_sex === "edit") {
             return (
                 <Fragment>
-                <select onChange={ this.props.handleChangeSex(this.props.sex_id, this.props.catch_id) }
+                <select onChange={ (e) => {
+                    this.props.handleChangeSex(e, this.props.sex_id, this.props.catch_id)
+                    this.handleNewSex(e)
+                    }}
                         id={ this.props.sex_id }
                         name={ this.props.sex_id } 
                         value={ this.props.sex } >
@@ -108,7 +140,7 @@ class ComponentSex extends Component {
                     <option value="2">Female</option>
                 </select>
                 <button type="button" onClick={(e) => {
-                        this.props.handleChangeSex(e, this.props.sex_id)
+                        this.updateSex(e)
                         this.editSexStatus("view")
                         }
                     }> Save sex </button> 

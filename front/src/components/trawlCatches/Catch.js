@@ -17,7 +17,7 @@ class Catch extends Component {
      * @param {method} props.handleChangeWeight: managing of weight state and field.
      * @param {method} props.updateCatch: update catch in database.
      * @param {method} props.removeCatch: remove catch in database.
-     * @param {method} props.handleChangeSex: update sex in database.
+     * @param {method} props.handleChangeSex: manage sex state.
      * @param {method} props.handleNewSexSubmit: handle the new sex form.
      */
 
