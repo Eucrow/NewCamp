@@ -7,7 +7,7 @@ class ComponentsLengths extends Component {
     /**
 	* Component of lengths. This component is for every species-category-sex of a haul.
     * @param {number} props.sex_id: sex id of lengths.
-    * @param {string} props.status_lengths: must be "view", "edit", "hidden" or "add"
+    * @param {string} props.status_lengths: must be "view", "edit", "hide" or "add"
     * @param {method} props.saveSexAndLengths
     */
     
@@ -21,8 +21,8 @@ class ComponentsLengths extends Component {
                 }
             ],
             isEdit : false,
-            status_lengths : ''
-            // status_lengths : this.props.status_lengths? this.props.status_lengths : "hidden"
+            // status_lengths : ''
+            status_lengths :"hide"
 
         }
 
@@ -84,7 +84,7 @@ class ComponentsLengths extends Component {
          * Show lengths.
          */
         // TODO: Detect if the legths are already in state and doesn't fetcth if it is the case.
-        // In this case the legths has been hidden by css.
+        // In this case the legths has been hide by css.
         const apiLengths = this.apiLengths + this.props.sex_id;
 
         fetch(apiLengths)
@@ -116,7 +116,7 @@ class ComponentsLengths extends Component {
         this.setState(() => {
             return {
                 lengths: [],
-                status_lengths: "hidden"
+                status_lengths: "hide"
             };
         });
 
@@ -162,15 +162,24 @@ class ComponentsLengths extends Component {
         
         event.preventDefault();
 
-        console.log(this.apiLengths)
+        const apiLengths = this.apiLengths + this.props.sex_id;
 
         console.log(JSON.stringify(this.state.lengths))
-        fetch(this.apiLengths, {
+        fetch(apiLengths, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 },
             body: JSON.stringify(this.state.lengths)
+        })
+        .then(response => {
+            if(response.status > 400){
+                // return this.setState(() => {
+                //     return { placeholder: "Something went wrong!" }
+                // });
+                alert("Error: maybe the length already exists.")
+            }
+            return response.json();
         })
         .then(() => {
             this.setState(() => {
@@ -181,25 +190,29 @@ class ComponentsLengths extends Component {
 
     }
 
-
-
-
-    // componentDidMount() {
-
-    //     if (this.props.status_lengths === "edit"){
-    //         //TODO: change the name of this.handleShowLengths function
-    //         this.handleShowLengths()
-    //     }
-
-    // }
         
-    render() { 
+    render() {
 
-        return(
-            <Fragment>
+        if (this.state.status_lengths === "hide") {
+
+            return(
+                <button onClick={ this.handleShowLengths }>Show lengths</button>
+            )
+
+        } else if (this.state.status_lengths === "view"){
+            return(
                 <FormLengths
                     lengths={ this.state.lengths }
-                    status_lengths={ this.props.status_lengths }
+                    status_lengths={ this.state.status_lengths }
+                    handleHideLengths = { this.handleHideLengths }
+                    editLengths={ this.editLengths }
+                />
+            )
+        } else if (this.state.status_lengths === "edit"){
+            return(
+                <FormLengths
+                    lengths={ this.state.lengths }
+                    status_lengths={ this.state.status_lengths }
                     sex_id={ this.props.sex_id }
                     sex= {this.props.sex }
                     saveSexAndLengths={ this.props.saveSexAndLengths }
@@ -207,16 +220,41 @@ class ComponentsLengths extends Component {
                     handleHideLengths = { this.handleHideLengths }
                     handleRemoveLength= { this.handleRemoveLength }
                     handleAddLength={ this.handleAddLength } 
-                    handleNumberIndividualsChange={ this.handleNumberIndividualsChange} 
+                    handleNumberIndividualsChange={ this.handleNumberIndividualsChange } 
                     handleLenghtNameChange={ this.handleLenghtNameChange }
                     handleAddLengthsButton={ this.handleAddLengthsButton }
                     handleSex={ this.handleSex }
                     saveLengths={ this.saveLengths }
                     editLengths={ this.editLengths }
-                    cancelLengths={ this.cancelLengths }/>
+                    cancelLengths={ this.cancelLengths }
+                />
+            )
+        } else if (this.state.status_lengths === "remove"){
 
-            </Fragment>
-        )
+        }
+
+        // return(
+        //     <Fragment>
+        //         <FormLengths
+        //             lengths={ this.state.lengths }
+        //             status_lengths={ this.props.status_lengths }
+        //             sex_id={ this.props.sex_id }
+        //             sex= {this.props.sex }
+        //             saveSexAndLengths={ this.props.saveSexAndLengths }
+        //             handleShowLengths = { this.handleShowLengths }
+        //             handleHideLengths = { this.handleHideLengths }
+        //             handleRemoveLength= { this.handleRemoveLength }
+        //             handleAddLength={ this.handleAddLength } 
+        //             handleNumberIndividualsChange={ this.handleNumberIndividualsChange} 
+        //             handleLenghtNameChange={ this.handleLenghtNameChange }
+        //             handleAddLengthsButton={ this.handleAddLengthsButton }
+        //             handleSex={ this.handleSex }
+        //             saveLengths={ this.saveLengths }
+        //             editLengths={ this.editLengths }
+        //             cancelLengths={ this.cancelLengths }/>
+
+        //     </Fragment>
+        // )
     }
 }
  

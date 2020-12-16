@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
 import ComponentsLengths from '../lengths/Lengths.js';
-import ShowLengthsButton from '../lengths/ButtonShowLengths.js';
+// import ShowLengthsButton from '../lengths/ButtonShowLengths.js';
 
 
 class ComponentSex extends Component {
@@ -23,7 +23,7 @@ class ComponentSex extends Component {
                     number_individuals : ""
                 }
             ],
-            status_lengths : '',
+            // status_lengths : "hide",
             status_sex: this.props.status_sex? this.props.status_sex: "view",
         }
 
@@ -32,7 +32,6 @@ class ComponentSex extends Component {
 
         this.editSexStatus = this.editSexStatus.bind(this);
         this.saveSexAndLengths = this.saveSexAndLengths.bind(this);
-        this.handleShowLengths = this.handleShowLengths.bind(this);
         this.handleNewSex = this.handleNewSex.bind(this);
     }
 
@@ -50,34 +49,6 @@ class ComponentSex extends Component {
                 }
             )
         })
-    }
-
-    handleShowLengths(event){
-        /**
-         * Show lengths.
-         */
-        // TODO: Detect if the legths are already in state and doesn't fetcth if it is the case.
-        // In this case the lengths has been hidden by css.
-        const apiLengths = this.apiLengths + this.props.sex_id;
-
-        fetch(apiLengths)
-        .then(response => {
-            if(response.status > 400){
-                return this.setState(() => {
-                    return { placeholder: "Something went wrong!" }
-                });
-            }
-            return response.json();
-        })
-        .then(lengths => {
-            this.setState(() => {
-                return {
-                    lengths: lengths,
-                    status_lengths: "view"
-                };
-            });
-        });
-
     }
     
     saveSexAndLengths(event){
@@ -119,7 +90,9 @@ class ComponentSex extends Component {
                 <table><tbody><tr style={{verticalAlign: "top"}}><td>
                     { this.props.sex }
                     <button onClick={() => { this.editSexStatus("edit") } }>Edit sex</button>
-                    <ShowLengthsButton handleShowLengths = { this.handleShowLengths } />
+                    <ComponentsLengths
+                        sex_id = { this.props.sex_id }
+                        sex = { this.props.sex }/>
                 </td></tr></tbody></table>
             )
 
