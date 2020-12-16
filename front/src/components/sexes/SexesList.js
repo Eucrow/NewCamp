@@ -9,7 +9,7 @@ class ComponentSexes extends Component {
      * por aquí
      * @param {object} props.sexes: sexes of the catch.
      * @param {number} props.catch_id: id of the catch.
-     * @param {method} props.updateSex: 
+     * @param {method} props.handleChangeSex: 
      * @param {method} props.handleNewSexSubmit
      */
 
@@ -47,7 +47,7 @@ class ComponentSexes extends Component {
                         sex_id={ s.id }
                         sex={ s.sex }
                         catch_id={ this.props.catch_id }
-                        updateSex={ this.props.updateSex } />
+                        handleChangeSex={ this.props.handleChangeSex } />
                 )
             })}
             
@@ -56,7 +56,7 @@ class ComponentSexes extends Component {
                 <ComponentSex
                     catch_id={ this.props.catch_id }
                     status_sex = { "add" }
-                    updateSex={ this.props.updateSex }
+                    handleChangeSex={ this.props.handleChangeSex }
                     handleNewSexSubmit = { this.props.handleNewSexSubmit }
                     handleAddSexButton = { this.handleAddSexButton }
                 /> :

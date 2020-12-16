@@ -9,7 +9,7 @@ class ComponentSex extends Component {
      * 
      * @param {number} sex_id
      * @param {number} sex
-     * @param {method} updateSex
+     * @param {method} handleChangeSex
      * @param {string} status_sex: contains the state of the component: "view", "edit", "delete" or "add".
      */
 
@@ -99,7 +99,7 @@ class ComponentSex extends Component {
         } else if (this.state.status_sex === "edit") {
             return (
                 <Fragment>
-                <select onChange={ this.props.updateSex(this.props.sex_id, this.props.catch_id) }
+                <select onChange={ this.props.handleChangeSex(this.props.sex_id, this.props.catch_id) }
                         id={ this.props.sex_id }
                         name={ this.props.sex_id } 
                         value={ this.props.sex } >
@@ -108,7 +108,7 @@ class ComponentSex extends Component {
                     <option value="2">Female</option>
                 </select>
                 <button type="button" onClick={(e) => {
-                        this.props.updateSex(e, this.props.sex_id)
+                        this.props.handleChangeSex(e, this.props.sex_id)
                         this.editSexStatus("view")
                         }
                     }> Save sex </button> 

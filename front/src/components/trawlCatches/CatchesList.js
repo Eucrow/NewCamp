@@ -31,7 +31,7 @@ class CatchesList extends Component {
         this.handleChangeWeight = this.handleChangeWeight.bind(this);
         this.updateCatch = this.updateCatch.bind(this);
         this.removeCatch = this.removeCatch.bind(this);
-        this.updateSex = this.updateSex.bind(this);
+        this.handleChangeSex = this.handleChangeSex.bind(this);
         this.handleNewSexSubmit = this.handleNewSexSubmit.bind(this);
     }
 
@@ -230,7 +230,7 @@ class CatchesList extends Component {
 
     }
 
-    updateSex = (ids, idc) => evt => {
+    handleChangeSex = (ids, idc) => evt => {
 
         const value = evt.target.value;
 
@@ -375,7 +375,7 @@ class CatchesList extends Component {
                                 handleChangeWeight = { this.handleChangeWeight }
                                 updateCatch = { this.updateCatch }
                                 removeCatch = { this.removeCatch }
-                                updateSex = { this.updateSex }
+                                handleChangeSex = { this.handleChangeSex }
                                 handleNewSexSubmit = { this.handleNewSexSubmit } />
                         )
                     })
