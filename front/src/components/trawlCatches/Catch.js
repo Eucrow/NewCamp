@@ -54,7 +54,6 @@ class Catch extends Component {
                         status_catch = { this.state.status_catch }
                         this_catch = { this.props.this_catch } />
                 <td>
-                    { this_catch.weight }
                     <button onClick= { () => { this.editCatchStatus("edit") } }>Edit catch</button>
                     <button onClick= { this.props.removeCatch(this_catch.id) }>Remove catch</button>
                 </td>
