@@ -30,7 +30,6 @@ class ComponentsLengths extends Component {
         this.handleHideLengths = this.handleHideLengths.bind(this)
         this.handleEditLengths = this.handleEditLengths.bind(this)
         this.handleCancelLengths = this.handleCancelLengths.bind(this)
-        this.handleAddLengthsButton = this.handleAddLengthsButton.bind(this)
         this.getLengths = this.getLengths.bind(this);
         this.deleteLengths = this.deleteLengths.bind(this);
         this.saveLengths = this.saveLengths.bind(this)    
@@ -70,13 +69,6 @@ class ComponentsLengths extends Component {
         });
     };
     // **** end handle of legnths form
-
-    handleStatusLengths(status){
-        this.setState(() => {
-            return{ status_lengths : status }
-
-        })
-    }
 
     handleShowLengths(event){
         /**
@@ -129,17 +121,6 @@ class ComponentsLengths extends Component {
         this.setState(() => {
             return {
                 status_lengths : "view"
-            };
-        });
-    }
-
-    handleAddLengthsButton(){
-        /**
-        * To show the form to create lengths.
-        */
-        this.setState(() => {
-            return {
-                status_lengths : "edit"
             };
         });
     }
@@ -271,7 +252,6 @@ class ComponentsLengths extends Component {
 
         }
     }
-
         
     render() {
 
