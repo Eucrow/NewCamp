@@ -25,6 +25,8 @@ class CatchesList extends Component {
         this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
         this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/"
         
+        this.removeSexFromState = this.removeSexFromState.bind(this);
+        this.removeSex = this.removeSex.bind(this);
         this.handleChangeGroup = this.handleChangeGroup.bind(this);
         this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
         this.handleChangeCategory = this.handleChangeCategory.bind(this);
@@ -33,6 +35,44 @@ class CatchesList extends Component {
         this.removeCatch = this.removeCatch.bind(this);
         this.handleChangeSex = this.handleChangeSex.bind(this);
         this.handleNewSexSubmit = this.handleNewSexSubmit.bind(this);
+    }
+
+    removeSexFromState = (ids) => {
+        /**
+         * Method to manage the remove of sex.
+         */
+
+        const newCatches = this.state.catches.map(c => {
+            const newSexes = c.sexes.filter(s => {
+                if(ids !== s.id) return s;
+            })
+            c.sexes = newSexes
+            return c;
+        })
+
+        this.setState(() => {
+            return {
+                catches: newCatches
+            }
+        })
+
+    }
+
+    removeSex = ids => {
+
+        const apiSex = this.apiSex + ids
+
+        fetch(apiSex, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then(() => this.removeSexFromState(ids))
+        .catch(error => alert(error))
+
+        
     }
 
     removeCatch = idx => () => {
@@ -52,24 +92,21 @@ class CatchesList extends Component {
         })
         // .then( response => response.json())
         .then(() => {
-            console.log("antes: ", this.state.catches)
-
             this.setState({
-                catches: this.state.catches.filter(
-                    function(c) {
+                catches: this.state.catches.filter( c => {
                         return (idx !== c.id)
                     }
                 )
             })
             
-        }).then(()=>console.log("despues: ", this.state.catches))
+        })
         .catch(error => alert(error))
 
     }
 
     handleChangeGroup = idx => evt =>{
         /**
-         * Method to mange the group field. When it is changed, get the species of the group.
+         * Method to manage the group field. When it is changed, get the species of the group.
          * Then, update de state.
          */        
         const value = evt.target.value
@@ -372,6 +409,7 @@ class CatchesList extends Component {
                                 key ={ c.id }
                                 this_catch ={ c }
                                 species ={ this.state.species }
+                                removeSex = { this.removeSex }
                                 handleChangeGroup = { this.handleChangeGroup }
                                 handleChangeSpecies = { this.handleChangeSpecies }
                                 handleChangeCategory = { this.handleChangeCategory }
