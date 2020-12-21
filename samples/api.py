@@ -107,6 +107,14 @@ class LengthsAPI(APIView):
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, sex_id):
+        """
+        remove all the lengths of the sex_id
+        """
+        lengths = Length.objects.filter(sex_id=sex_id)
+        lengths.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
+
     #TODO: manage errors, what to do with them?
 
 
