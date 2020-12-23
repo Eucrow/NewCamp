@@ -30,7 +30,7 @@ from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySu
 from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI,\
     HaulHydrographyAPI
 from catches.api import CatchHaulListAPI, CatchHaulAPI
-from samples.api import LengthsAPI, SampleAPI, SexDetail, SexCreate, SexAPI, SexLengthsAPI
+from samples.api import LengthsAPI, SexDetail, SexCreate, SexAPI, SexLengthsAPI, SampledWeightDetail
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
 urlpatterns = [
@@ -113,7 +113,8 @@ urlpatterns = [
     re_path(r'^api/1.0/catch/remove$', CatchHaulAPI.as_view(), name="remove_catch_api"),
 
     # Samples API URLs
-    re_path(r'^api/1.0/samples/new$', SampleAPI.as_view(), name="add_sample_api"),
+    # re_path(r'^api/1.0/samples/new$', SampleAPI.as_view(), name="add_sample_api"),
+    path('api/1.0/sampled_weight/<int:pk>', SampledWeightDetail.as_view(), name="retrieve_update_delete_sampled_weight_api"),
 
     # Sexes API URLs
     # path('api/1.0/sexes/', SexCreate.as_view(), name="add_sex_api"),

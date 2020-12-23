@@ -6,24 +6,30 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
 from catches.serializers import SexCatchSerializer
-from samples.models import Length, Sex
+from samples.models import Length, Sex, SampledWeight
 
 from samples.serializers import LenghtSerializer, SampleWeightSerializer, LengthListSerializer, LengthSerializer2, \
     SexSerializer
 
 
-class SampleAPI(APIView):
-    """
-    Endpoint to manage sample weights.
-    """
-    def post(self, request):
-        serializer=SampleWeightSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(catch_id=request.data["catch_id"])
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+# class SampleAPI(APIView):
+#     """
+#     Endpoint to manage sample weights.
+#     """
+#     def post(self, request):
+#         serializer=SampleWeightSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save(catch_id=request.data["catch_id"])
+#             return Response(serializer.data, status=HTTP_201_CREATED)
+#         else:
+#             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
+class SampledWeightDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Endpoint to retrieve, update and destroy sampled weight of a catch.
+    """
+    queryset = SampledWeight.objects.all()
+    serializer_class = SampleWeightSerializer
 
 class SexCreate(APIView):
     """
@@ -40,7 +46,7 @@ class SexCreate(APIView):
 
 class SexDetail(generics.RetrieveUpdateDestroyAPIView):
     """
-    Endpoint to retrieve, update and destroy sex of a catch
+    Endpoint to retrieve, update and destroy sex of a catch.
     """
     queryset = Sex.objects.all()
     serializer_class = SexSerializer

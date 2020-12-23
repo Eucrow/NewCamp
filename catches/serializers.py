@@ -41,12 +41,20 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
 
         data = super(CatchesVerboseSerializer, self).to_representation(instance)
 
+        # change representation of sp
         data['sp_id'] = instance.sp.id
         data['group'] = instance.sp.group
         data['sp_code'] = instance.sp.sp_code
         data['sp_name'] = instance.sp.sp_name
 
         data.pop('sp')
+
+        # change representation of sampled weight
+        if (hasattr(instance, 'samples')):
+            data['sampled_weight'] = instance.samples.sampled_weight
+            data['sampled_weight_id'] = instance.samples.id
+
+        data.pop('samples')
 
         data.update()
 

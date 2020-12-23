@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
+import ButtonSampledWeight from '../sampledWeight/sampledWeight.js'
+
 class ComponentCategory extends Component {
     /**
      * Category Component
@@ -18,7 +20,14 @@ class ComponentCategory extends Component {
 
     render() { 
 
-        const sampled_weight = this.props.this_catch.samples && this.props.this_catch.samples.sampled_weight? this.props.this_catch.samples.sampled_weight : null;
+        const sampled_weight = this.props.this_catch.sampled_weight? this.props.this_catch.sampled_weight : null;
+
+        let props_s = {
+            sampled_weight_id: this.props.this_catch.sampled_weight_id,
+            sampled_weight: sampled_weight,
+            handleChangeSampledWeight: this.props.handleChangeSampledWeight,
+            updateSampledWeight: this.props.updateSampledWeight
+        }
 
         if (this.props.status_catch === "view" || this.props.status_catch === "" ){
 
@@ -31,7 +40,8 @@ class ComponentCategory extends Component {
                     { this.props.this_catch.weight }
                 </td>
                 <td>
-                    { sampled_weight }
+                    {/* { sampled_weight } */}
+                    { <ButtonSampledWeight {...props_s }/> }
                 </td>
                 </Fragment>
             );

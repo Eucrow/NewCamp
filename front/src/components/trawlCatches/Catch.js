@@ -53,7 +53,9 @@ class Catch extends Component {
                 <tr style={{verticalAlign: "top"}} key={ this_catch.id } >
                     <ComponentCategory
                         status_catch = { this.state.status_catch }
-                        this_catch = { this.props.this_catch } />
+                        this_catch = { this.props.this_catch }
+                        handleChangeSampledWeight = { this.props.handleChangeSampledWeight }
+                        updateSampledWeight = { this.props.updateSampledWeight }/>
                 <td>
                     <button onClick= { () => { this.editCatchStatus("edit") } }>Edit catch</button>
                     <button onClick= { this.props.removeCatch(this_catch.id) }>Remove catch</button>

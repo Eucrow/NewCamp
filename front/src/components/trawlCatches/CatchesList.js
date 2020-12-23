@@ -23,8 +23,11 @@ class CatchesList extends Component {
         this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
         this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
         this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
-        this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/"
+        this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
+        this.apiSampledWeitght = "http://127.0.0.1:8000/api/1.0/sampled_weight/";
         
+        this.handleChangeSampledWeight = this.handleChangeSampledWeight.bind(this);
+        this.updateSampledWeight = this.updateSampledWeight.bind(this);
         this.removeSexFromState = this.removeSexFromState.bind(this);
         this.removeSex = this.removeSex.bind(this);
         this.handleChangeGroup = this.handleChangeGroup.bind(this);
@@ -37,7 +40,57 @@ class CatchesList extends Component {
         this.handleNewSexSubmit = this.handleNewSexSubmit.bind(this);
     }
 
-    removeSexFromState = (ids) => {
+    handleChangeSampledWeight = ids => evt => {
+        /**
+         * Method to manage sampled weight field change.
+         */
+
+        const value = evt.target.value
+
+        const newCatches = this.state.catches.map(c => {
+            if(ids === c.sampled_weight_id){
+                c.sampled_weight = value;
+            }
+            return c
+        })
+
+        this.setState(() => {
+            return {
+                catches : newCatches 
+            }
+        })
+
+    }
+
+    updateSampledWeight = ids => {
+        /**
+         * Update sampled weight in database.
+         */
+
+        const api = this.apiSampledWeitght + ids;
+
+        // get Sampled Weigth from state
+        const sampledWeight = this.state.catches.find(c => {
+            return(c.sampled_weight_id === ids)
+        }).sampled_weight
+
+        const request = {"sampled_weight": sampledWeight}
+
+        // fetch to database
+        fetch(api, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'},
+            body: JSON.stringify(request)
+        })
+        .then(response => response.json() )
+        .catch(error => console.log(error))
+
+        
+    }
+
+    removeSexFromState = ids => {
         /**
          * Method to manage the remove of sex.
          */
@@ -109,10 +162,10 @@ class CatchesList extends Component {
          * Method to manage the group field. When it is changed, get the species of the group.
          * Then, update de state.
          */        
+        
         const value = evt.target.value
 
         const apiSpeciesGroup = this.apiSpeciesGroup + value;
-        console.log (apiSpeciesGroup)
 
         const newCatches = this.state.catches.map(c => {
             if (idx !== c.id) return c;
@@ -409,6 +462,8 @@ class CatchesList extends Component {
                                 key ={ c.id }
                                 this_catch ={ c }
                                 species ={ this.state.species }
+                                handleChangeSampledWeight = { this.handleChangeSampledWeight }
+                                updateSampledWeight = { this.updateSampledWeight }
                                 removeSex = { this.removeSex }
                                 handleChangeGroup = { this.handleChangeGroup }
                                 handleChangeSpecies = { this.handleChangeSpecies }
