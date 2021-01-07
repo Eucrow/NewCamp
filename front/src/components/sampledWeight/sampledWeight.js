@@ -1,43 +1,74 @@
-import React, { Fragment, useState } from 'react';
+import React from "react";
+import NewSampledWeight from "./newSampledWeight";
+import EditSampledWeight from "./editSampledWeight";
 
-const ButtonSampledWeight = (props) => {
-    
-    // const [ handleChangeSampledWeight, sampled_weight ] = props;
+class SampledWeight extends React.Component {
+	state = { status_sampled_weight: "view", new_sampled_weight: "" };
 
-    const [s_w_state, setS_w_state] = React.useState("view");
+	handleStatusSampledWeight = (status) => {
+		/**
+		 *
+		 */
+		this.setState({
+			status_sampled_weight: status,
+		});
+	};
 
-    if (s_w_state === "view"){
-        return(
-            <Fragment>
-                { props.sampled_weight }
-                <button onClick={() => setS_w_state("edit")}>Edit sampled weight</button>
-            </Fragment>
-        )
-            
-    } else if (s_w_state === "edit"){
-        return(
-            
-            <form>
-                <input
-                    type= "number"
-                    id="sampled_weight"
-                    name="sampled_weight"
-                    value={ props.sampled_weight }
-                    onChange={
-                        props.handleChangeSampledWeight(props.sampled_weight_id)
-                        }/>
-                <input
-                    type="submit"
-                    value="Save sampled weight"
-                    onClick= { () => {
-                        props.updateSampledWeight(props.sampled_weight_id)
-                        setS_w_state("view") }
-                        }/>
-            </form>
+	renderContent = () => {
+		if (this.state.status_sampled_weight === "add") {
+			return (
+				<NewSampledWeight
+					catch_id={this.props.catch_id}
+					createSampledWeight={this.props.createSampledWeight}
+					handleStatusSampledWeight={this.handleStatusSampledWeight}
+				/>
+			);
+		}
 
-        )
-    }
+		if (this.state.status_sampled_weight === "edit") {
+			return (
+				<EditSampledWeight
+					sampled_weight_id={this.props.sampled_weight_id}
+					sampled_weight={this.props.sampled_weight}
+					catch_id={this.props.catch_id}
+					handleChangeSampledWeight={this.props.handleChangeSampledWeight}
+					updateSampledWeight={this.props.updateSampledWeight}
+					handleStatusSampledWeight={this.handleStatusSampledWeight}
+				/>
+			);
+		}
 
+		if (this.state.status_sampled_weight === "view") {
+			if (this.props.sampled_weight === null) {
+				return (
+					<button
+						onClick={() => {
+							this.handleStatusSampledWeight("add");
+						}}
+					>
+						Add sampled weight
+					</button>
+				);
+			} else {
+				return (
+					<div>
+						{this.props.sampled_weight}
+						<button
+							onClick={() => {
+								this.handleStatusSampledWeight("edit");
+							}}
+						>
+							Edit sampled weight
+						</button>
+					</div>
+				);
+			}
+		}
+	};
+
+	render() {
+		return this.renderContent();
+	}
 }
 
-export default ButtonSampledWeight;
+export default SampledWeight;

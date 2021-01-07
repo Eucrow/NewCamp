@@ -12,17 +12,17 @@ from samples.serializers import LenghtSerializer, SampleWeightSerializer, Length
     SexSerializer
 
 
-# class SampleAPI(APIView):
-#     """
-#     Endpoint to manage sample weights.
-#     """
-#     def post(self, request):
-#         serializer=SampleWeightSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save(catch_id=request.data["catch_id"])
-#             return Response(serializer.data, status=HTTP_201_CREATED)
-#         else:
-#             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+class SampledWeightCreate(APIView):
+    """
+    Endpoint to create a new sampled weight of a catch.
+    """
+    def post(self, request):
+        serializer=SampleWeightSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(catch_id=request.data["catch_id"])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class SampledWeightDetail(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -31,19 +31,7 @@ class SampledWeightDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = SampledWeight.objects.all()
     serializer_class = SampleWeightSerializer
 
-class SexCreate(APIView):
-    """
-    Endpoint to create a sex of a catch.
-    """
-    def post(self, request):
-        serializer=SexSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(catch_id=request.data["catch_id"])
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-
+# TODO: SexDetail and SexAPI have a method to update sex. Find what I'm use in react and delete the other one.
 class SexDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     Endpoint to retrieve, update and destroy sex of a catch.
