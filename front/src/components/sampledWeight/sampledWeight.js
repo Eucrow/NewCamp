@@ -1,49 +1,44 @@
-import React from "react";
-import NewSampledWeight from "./newSampledWeight";
-import EditSampledWeight from "./editSampledWeight";
+import React, { useState } from "react";
+import NewSampledWeight from "./NewSampledWeight";
+import EditSampledWeight from "./EditSampledWeight";
 
-class SampledWeight extends React.Component {
-	state = { status_sampled_weight: "view", new_sampled_weight: "" };
+const SampledWeight = (props) => {
+	const [status_sampled_weight, set_status_sampled_weight] = useState("view");
 
-	handleStatusSampledWeight = (status) => {
-		/**
-		 *
-		 */
-		this.setState({
-			status_sampled_weight: status,
-		});
+	const handleStatusSampledWeight = (status) => {
+		set_status_sampled_weight(status);
 	};
 
-	renderContent = () => {
-		if (this.state.status_sampled_weight === "add") {
+	const renderContent = () => {
+		if (status_sampled_weight === "add") {
 			return (
 				<NewSampledWeight
-					catch_id={this.props.catch_id}
-					createSampledWeight={this.props.createSampledWeight}
-					handleStatusSampledWeight={this.handleStatusSampledWeight}
+					catch_id={props.catch_id}
+					createSampledWeight={props.createSampledWeight}
+					handleStatusSampledWeight={handleStatusSampledWeight}
 				/>
 			);
 		}
 
-		if (this.state.status_sampled_weight === "edit") {
+		if (status_sampled_weight === "edit") {
 			return (
 				<EditSampledWeight
-					sampled_weight_id={this.props.sampled_weight_id}
-					sampled_weight={this.props.sampled_weight}
-					catch_id={this.props.catch_id}
-					handleChangeSampledWeight={this.props.handleChangeSampledWeight}
-					updateSampledWeight={this.props.updateSampledWeight}
-					handleStatusSampledWeight={this.handleStatusSampledWeight}
+					sampled_weight_id={props.sampled_weight_id}
+					sampled_weight={props.sampled_weight}
+					catch_id={props.catch_id}
+					handleChangeSampledWeight={props.handleChangeSampledWeight}
+					updateSampledWeight={props.updateSampledWeight}
+					handleStatusSampledWeight={handleStatusSampledWeight}
 				/>
 			);
 		}
 
-		if (this.state.status_sampled_weight === "view") {
-			if (this.props.sampled_weight === null) {
+		if (status_sampled_weight === "view") {
+			if (props.sampled_weight === null) {
 				return (
 					<button
 						onClick={() => {
-							this.handleStatusSampledWeight("add");
+							handleStatusSampledWeight("add");
 						}}
 					>
 						Add sampled weight
@@ -52,10 +47,10 @@ class SampledWeight extends React.Component {
 			} else {
 				return (
 					<div>
-						{this.props.sampled_weight}
+						{props.sampled_weight}
 						<button
 							onClick={() => {
-								this.handleStatusSampledWeight("edit");
+								handleStatusSampledWeight("edit");
 							}}
 						>
 							Edit sampled weight
@@ -66,9 +61,7 @@ class SampledWeight extends React.Component {
 		}
 	};
 
-	render() {
-		return this.renderContent();
-	}
-}
+	return renderContent();
+};
 
 export default SampledWeight;
