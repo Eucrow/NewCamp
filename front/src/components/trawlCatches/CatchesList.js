@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
 
+import update from "immutability-helper";
+
 import Catch from "./Catch.js";
 
 class CatchesList extends Component {
@@ -19,6 +21,7 @@ class CatchesList extends Component {
 
 		this.apiCatches = "http://127.0.0.1:8000/api/1.0/catches/";
 		this.apiCatch = "http://127.0.0.1:8000/api/1.0/catch/";
+		this.apiCreateCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
 		// TODO: change the apiSpecies api to only return the id, sp_name, group and sp_code variables.
 		this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
 		this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
@@ -37,9 +40,9 @@ class CatchesList extends Component {
 		this.handleChangeWeight = this.handleChangeWeight.bind(this);
 		this.updateCatch = this.updateCatch.bind(this);
 		this.removeCatch = this.removeCatch.bind(this);
+		this.createCatch = this.createCatch.bind(this);
 		this.handleChangeSex = this.handleChangeSex.bind(this);
 		this.handleNewSexSubmit = this.handleNewSexSubmit.bind(this);
-		// this.handleNewSampledWeight = this.handleNewSampledWeight.bind(this);
 	}
 
 	handleChangeSampledWeight = (ids) => (evt) => {
@@ -356,6 +359,64 @@ class CatchesList extends Component {
 			.catch((error) => alert(error));
 	};
 
+	existsCatch = (haul_id, sp_id, category) => {
+		/**
+		 * Method to check if a catch exists in database.
+		 * @param {number} haul_id: id of haul.
+		 * @param {number} category_id: id of category.
+		 */
+
+		const apiCatch = this.apiCatch + haul_id + "/" + sp_id + "/" + category;
+
+		return fetch(apiCatch)
+			.then((response) => {
+				if (response.status == 200) {
+					return true;
+				} else {
+					return false;
+				}
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	};
+
+	createCatch = (e, new_catch) => {
+		/**
+		 * Save catch to database.
+		 */
+
+		e.preventDefault();
+
+		// add haul id to data request:
+		new_catch["haul_id"] = this.props.haul_id;
+
+		this.existsCatch(new_catch.haul_id, new_catch.sp_id, new_catch.category).then((response) => {
+			if (response === true) {
+				alert("Catch already exists");
+			} else {
+				fetch(this.apiCreateCatch, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(new_catch),
+				})
+					.then((response) => response.json())
+					.then((c) => {
+						const new_catches = [...this.state.catches, c];
+						this.setState(() => {
+							return {
+								catches: new_catches,
+								status_catch: "add",
+							};
+						}).then(() => console.log(this.state));
+					})
+					.catch((error) => console.log(error));
+			}
+		});
+	};
+
 	handleChangeSex = (evt, ids, idc) => {
 		/**
 		 * Manage sex state.
@@ -406,9 +467,6 @@ class CatchesList extends Component {
 		})
 			.then((response) => {
 				if (response.status > 400) {
-					// return this.setState(() => {
-					//     return { placeholder: "Something went wrong!" }
-					// });
 					alert("Error: maybe the sex already exists.");
 				}
 				return response.json();
@@ -473,6 +531,12 @@ class CatchesList extends Component {
 			return (
 				<Fragment>
 					<p>There aren't catches yet</p>
+					<Catch
+						status_catch="add"
+						species={this.state.species}
+						createCatch={this.createCatch}
+						existsCatch={this.existsCatch}
+					/>
 				</Fragment>
 			);
 		} else {
@@ -489,6 +553,13 @@ class CatchesList extends Component {
 						</tr>
 					</thead>
 					<tbody>
+						<Catch
+							status_catch="add"
+							species={this.state.species}
+							createCatch={this.createCatch}
+							existsCatch={this.existsCatch}
+						/>
+
 						{this.state.catches.map((c) => {
 							return (
 								<Catch
@@ -507,7 +578,6 @@ class CatchesList extends Component {
 									handleChangeSex={this.handleChangeSex}
 									handleNewSexSubmit={this.handleNewSexSubmit}
 									createSampledWeight={this.createSampledWeight}
-									// handleNewSampledWeight={this.handleNewSampledWeight}
 								/>
 							);
 						})}
