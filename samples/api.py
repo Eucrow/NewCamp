@@ -6,15 +6,15 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
 from catches.serializers import SexCatchSerializer
-from samples.models import Length, Sex
+from samples.models import Length, Sex, SampledWeight
 
 from samples.serializers import LenghtSerializer, SampleWeightSerializer, LengthListSerializer, LengthSerializer2, \
     SexSerializer
 
 
-class SampleAPI(APIView):
+class SampledWeightCreate(APIView):
     """
-    Endpoint to manage sample weights.
+    Endpoint to create a new sampled weight of a catch.
     """
     def post(self, request):
         serializer=SampleWeightSerializer(data=request.data)
@@ -24,23 +24,17 @@ class SampleAPI(APIView):
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
-
-class SexCreate(APIView):
+class SampledWeightDetail(generics.RetrieveUpdateDestroyAPIView):
     """
-    Endpoint to create a sex of a catch.
+    Endpoint to retrieve, update and destroy sampled weight of a catch.
     """
-    def post(self, request):
-        serializer=SexSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(catch_id=request.data["catch_id"])
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+    queryset = SampledWeight.objects.all()
+    serializer_class = SampleWeightSerializer
 
-
+# TODO: SexDetail and SexAPI have a method to update sex. Find what I'm use in react and delete the other one.
 class SexDetail(generics.RetrieveUpdateDestroyAPIView):
     """
-    Endpoint to retrieve, update and destroy sex of a catch
+    Endpoint to retrieve, update and destroy sex of a catch.
     """
     queryset = Sex.objects.all()
     serializer_class = SexSerializer
@@ -106,6 +100,14 @@ class LengthsAPI(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, sex_id):
+        """
+        remove all the lengths of the sex_id
+        """
+        lengths = Length.objects.filter(sex_id=sex_id)
+        lengths.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
 
     #TODO: manage errors, what to do with them?
 

@@ -29,8 +29,8 @@ from samplers.api import SamplersAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
 from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI,\
     HaulHydrographyAPI
-from catches.api import CatchHaulListAPI, CatchHaulAPI
-from samples.api import LengthsAPI, SampleAPI, SexDetail, SexCreate, SexAPI, SexLengthsAPI
+from catches.api import CatchHaulListAPI, CatchHaulAPI, CatchVerboseAPI
+from samples.api import LengthsAPI, SexDetail, SexAPI, SexLengthsAPI, SampledWeightDetail, SampledWeightCreate
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 
 urlpatterns = [
@@ -109,14 +109,16 @@ urlpatterns = [
     re_path(r'^api/1.0/catches/new$', CatchHaulAPI.as_view(), name="add_catch_api"),
     re_path(r'^api/1.0/catch/(?P<haul_id>[0-9]+)/(?P<sp_id>[0-9]+)/(?P<category>[0-9]+)$', CatchHaulAPI.as_view(),
             name="get_catch_api"),
+    re_path(r'^api/1.0/catch/verbose/(?P<catch_id>[0-9]+)$', CatchVerboseAPI.as_view(), name="retrieve_verbosed_catch_api"),
     re_path(r'^api/1.0/catch$', CatchHaulAPI.as_view(), name="edit_catch_api"),
     re_path(r'^api/1.0/catch/remove$', CatchHaulAPI.as_view(), name="remove_catch_api"),
 
     # Samples API URLs
-    re_path(r'^api/1.0/samples/new$', SampleAPI.as_view(), name="add_sample_api"),
+    # re_path(r'^api/1.0/samples/new$', SampleAPI.as_view(), name="add_sample_api"),
+    path('api/1.0/sampled_weight/new', SampledWeightCreate.as_view(), name="create_sampled_weight_api"),
+    path('api/1.0/sampled_weight/<int:pk>', SampledWeightDetail.as_view(), name="retrieve_update_delete_sampled_weight_api"),
 
     # Sexes API URLs
-    # path('api/1.0/sexes/', SexCreate.as_view(), name="add_sex_api"),
     path('api/1.0/sexes/<int:pk>', SexDetail.as_view(), name="retrieve_update_delete_sex_api"),
     re_path(r'^api/1.0/sexes/$', SexAPI.as_view(), name="create_update_sex_api"),
 

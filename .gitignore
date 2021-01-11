@@ -24,5 +24,6 @@ npm-debug.log
 /.vscode
 
 # others
+front/debug.log
 /front/debug.log
 

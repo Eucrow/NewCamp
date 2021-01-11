@@ -14,6 +14,7 @@ class ComponentSex extends Component {
      * @param {method} props.handleChangeSex
      * @param {method} props.handleNewSexSubmit
      * @param {method} props.handleAddSexButton
+     * @param {method} props.removeSex: remove sex of database.
      */
 
     constructor(props) {
@@ -117,8 +118,12 @@ class ComponentSex extends Component {
         if (this.state.status_sex === "view" || this.state.status_sex === "" ) {
             return(
                 <table><tbody><tr style={{verticalAlign: "top"}}><td>
-                    { this.props.sex }
+                    { this.props.sex_id } : { this.props.sex }
                     <button onClick={() => { this.editSexStatus("edit") } }>Edit sex</button>
+                    <button type="button" onClick={() => {
+                        this.props.removeSex(this.props.sex_id)
+                        }
+                    }> Remove sex </button>
                     <ComponentsLengths
                         sex_id = { this.props.sex_id }
                         sex = { this.props.sex }/>
@@ -143,7 +148,7 @@ class ComponentSex extends Component {
                         this.updateSex(e)
                         this.editSexStatus("view")
                         }
-                    }> Save sex </button> 
+                    }> Save sex </button>
                 {/* <ComponentsLengths status_lengths={ "hidden" }
                                    sex_id={ this.props.sex_id }
                                    sex={ this.props.sex } /> */}

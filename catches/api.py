@@ -17,7 +17,37 @@ class CatchHaulListAPI(APIView):
         catches = Catch.objects.filter(haul_id=haul_id)
         serializer = CatchesVerboseSerializer(catches, many=True)
 
+
         return Response(serializer.data)
+
+class CatchVerboseAPI(APIView):
+    """
+    Endpoint to retrieve verbose catch.
+    """
+    def get(self, request, catch_id):
+        catch = get_object_or_404(Catch, id=catch_id)
+        serializer= CatchesVerboseSerializer(catch)
+        return Response(serializer.data)
+
+    # def post(self, request):
+    #     serializer = CatchesVerboseSerializer(data=request.data, partial=True)
+    #     if serializer.is_valid():
+    #         serializer.save(haul_id=request.data["haul_id"],
+    #                         sp_id=request.data["sp_id"],
+    #                         category=request.data['category'])
+    #         return Response(serializer.data, status=HTTP_201_CREATED)
+    #     else:
+    #         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+    # def put(self, request):
+    #     catch = Catch.objects.get(id=request.data["id"])
+    #     serializer = CatchesVerboseSerializer(catch, data=request.data, partial=True)
+    #     if serializer.is_valid():
+    #         serializer.save(haul_id=request.data["haul_id"],
+    #                         sp_id=request.data["sp_id"],
+    #                         category=request.data['category'])
+    #         return Response(serializer.data, status=HTTP_201_CREATED)
+    #     else:
+    #         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class CatchHaulAPI(APIView):
     """
@@ -30,7 +60,7 @@ class CatchHaulAPI(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = CatchSerializer(data=request.data)
+        serializer = CatchSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save(haul_id=request.data["haul_id"],
                             sp_id=request.data["sp_id"],
