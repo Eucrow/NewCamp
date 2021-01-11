@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 
-import SampledWeight from "../SampledWeight/SampledWeight";
+import SampledWeight from "../sampledWeight/SampledWeight";
 
 class ComponentCategory extends Component {
 	/**
