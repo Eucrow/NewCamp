@@ -61,6 +61,7 @@ class Catch extends Component {
 							handleChangeSampledWeight={this.props.handleChangeSampledWeight}
 							updateSampledWeight={this.props.updateSampledWeight}
 							createSampledWeight={this.props.createSampledWeight}
+							deleteSampledWeight={this.props.deleteSampledWeight}
 						/>
 						<td>
 							<button
@@ -100,6 +101,7 @@ class Catch extends Component {
 							handleChangeSpecies={this.props.handleChangeSpecies}
 							handleChangeCategory={this.props.handleChangeCategory}
 							handleChangeWeight={this.props.handleChangeWeight}
+							deleteSampledWeight={this.props.deleteSampledWeight}
 						/>
 						<td>
 							<button
