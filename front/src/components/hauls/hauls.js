@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
 
+import { Link } from "react-router-dom";
+
 import SurveyContext from "../../contexts/SurveyContext.js";
 import ComponentsUiNewHaulButton from "../ui/NewHaulButton.js";
 import Haul from "../haul/Haul";
@@ -26,6 +28,8 @@ class ComponentsHauls extends Component {
 		// hauls of this survey
 		this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/";
 		this.apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
+
+		this.routeTrawlCatches = "Catches/haul/";
 
 		this.deleteHaul = this.deleteHaul.bind(this);
 		this.deleteHaulFromState = this.deleteHaulFromState.bind(this);
@@ -107,6 +111,17 @@ class ComponentsHauls extends Component {
 								>
 									Delete haul
 								</button>
+								<Link
+									style={{ display: "inline" }}
+									to={{
+										pathname: this.routeTrawlCatches + haul.id,
+										sampler_id: this.props.sampler_id,
+										haul_id: this.props.haul_id,
+									}}
+								>
+									{" "}
+									view catches{" "}
+								</Link>
 							</div>
 						);
 					})}
