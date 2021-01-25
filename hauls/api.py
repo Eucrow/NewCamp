@@ -67,13 +67,18 @@ class HaulListCsvApi(ListAPIView):
 
 class HaulAPI(APIView):
     """
-    Endpoint to retrieve information of one haul of a survey
+    Endpoint to retrieve and delete information of one haul of a survey
     """
 
     def get(self, request, haul_id):
         haul = get_object_or_404(Haul, pk=haul_id)
         serializer = HaulSerializer(haul)
         return Response(serializer.data)
+
+    def delete(self, request, haul_id, format=None):
+        haul = Haul.objects.get(pk=haul_id)
+        haul.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
 
     # def post(self, request):
     #     serializer = HaulSerializer(data=request.data)
@@ -121,11 +126,6 @@ class HaulTrawlAPI(APIView):
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, haul_id, format=None):
-        haul = Haul.objects.get(pk=haul_id)
-        haul.delete()
-        return Response(status=HTTP_204_NO_CONTENT)
-
 class HaulHydrographyAPI(APIView):
     """
     Endpoint to manage the Hydrography Haul of a survey.
@@ -153,11 +153,6 @@ class HaulHydrographyAPI(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
-
-    # def delete(self, request, haul_id, format=None):
-    #     haul = Haul.objects.get(pk=haul_id)
-    #     haul.delete()
-    #     return Response(status=HTTP_204_NO_CONTENT)
 
 class HaulGEOJsonAPI(ListAPIView):
     """

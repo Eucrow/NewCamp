@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from "react";
 
 import SurveyContext from "../../contexts/SurveyContext.js";
-
-import ComponentsHaulsOptions from "./options/Options.js";
 import ComponentsUiNewHaulButton from "../ui/NewHaulButton.js";
 import Haul from "../haul/Haul";
 
 class ComponentsHauls extends Component {
+	/**
+	 * List of hauls
+	 */
+
 	// The contextType property on a class can be assigned a Context object created by React.createContext().
 	// This lets you consume the nearest current value of that Context type using this.context. You can reference
 	// this in any of the lifecycle methods including the render function.
@@ -23,8 +25,10 @@ class ComponentsHauls extends Component {
 		// The next api retrieve all the hauls. If a survey id is added at the end, retrieve only the
 		// hauls of this survey
 		this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/";
+		this.apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
 
-		this.onDelete = this.onDelete.bind(this);
+		this.deleteHaul = this.deleteHaul.bind(this);
+		this.deleteHaulFromState = this.deleteHaulFromState.bind(this);
 	}
 
 	getHaulsApi() {
@@ -34,7 +38,7 @@ class ComponentsHauls extends Component {
 		return this.context.surveySelector === null ? this.apiHauls : this.apiHauls + this.context.surveySelector;
 	}
 
-	onDelete(haul_id) {
+	deleteHaulFromState(haul_id) {
 		// state, before delete anything
 		const currentHauls = this.state.hauls;
 
@@ -42,6 +46,24 @@ class ComponentsHauls extends Component {
 		this.setState({
 			hauls: currentHauls.filter((haul) => haul.id !== haul_id),
 		});
+	}
+
+	deleteHaul(e, ids) {
+		/**
+		 * Method to delete haul.
+		 */
+
+		const api = this.apiDeleteHaul + ids;
+
+		fetch(api, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+			},
+		})
+			.then(() => this.deleteHaulFromState(ids))
+			.catch((error) => alert(error));
 	}
 
 	componentDidMount() {
@@ -74,7 +96,19 @@ class ComponentsHauls extends Component {
 				</div>
 				<ul>
 					{this.state.hauls.map((haul) => {
-						return <Haul haul={haul} status={"view"} key={haul.id} />;
+						return (
+							<div>
+								<Haul key={haul.id} haul={haul} style={{ display: "inline" }} />
+								<button
+									style={{ display: "inline" }}
+									onClick={(e) => {
+										this.deleteHaul(e, haul.id);
+									}}
+								>
+									Delete haul
+								</button>
+							</div>
+						);
 					})}
 				</ul>
 			</Fragment>

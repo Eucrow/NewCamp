@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 const SurveyContext = React.createContext({
-    surveySelector: null,
-    setSurvey: () => {}
-  });
-  
-  export default SurveyContext;
+	surveySelector: null,
+	setSurvey: () => {},
+});
+
+export default SurveyContext;

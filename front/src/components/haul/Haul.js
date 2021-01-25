@@ -1,8 +1,12 @@
 import React, { Component, Fragment } from "react";
 
-import ViewHaulDetails from "./ViewHaulDetails";
+import ViewHaulDetails from "./HaulDetails";
 
 class Haul extends Component {
+	/**
+	 * Haul component
+	 * @param {array} props.haul: haul.
+	 */
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -24,7 +28,7 @@ class Haul extends Component {
 	renderContent() {
 		if (this.state.detail === false) {
 			return (
-				<div>
+				<div style={{ display: "inline" }}>
 					<div key={this.props.haul.id} style={{ display: "inline" }}>
 						Haul: {this.props.haul.haul} - Station: {this.props.haul.station.station} - Sampler:
 						{this.props.haul.sampler.sampler} - Valid?:{this.props.haul.valid} -
@@ -43,8 +47,8 @@ class Haul extends Component {
 
 		if (this.state.detail === true) {
 			return (
-				<div>
-					<ViewHaulDetails haul={this.props.haul} />{" "}
+				<Fragment style={{ display: "inline" }}>
+					<ViewHaulDetails haul={this.props.haul} />
 					<button
 						style={{ display: "inline" }}
 						onClick={() => {
@@ -53,7 +57,7 @@ class Haul extends Component {
 					>
 						Hide detail
 					</button>
-				</div>
+				</Fragment>
 			);
 		}
 	}

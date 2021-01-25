@@ -12,9 +12,9 @@ import EditMeteorology from "./EditMeteorology";
 import EditTrawl from "./EditTrawl";
 // import EditHydrography from "./EditHydrography";
 
-class ViewCommonHaul extends Component {
+class HaulDetails extends Component {
 	/**
-	 * Component of the common part of the haul form.
+	 * View haul detail component.
 	 */
 
 	constructor(props) {
@@ -225,4 +225,4 @@ class ViewCommonHaul extends Component {
 	}
 }
 
-export default ViewCommonHaul;
+export default HaulDetails;
