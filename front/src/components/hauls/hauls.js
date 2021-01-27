@@ -3,8 +3,8 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 
 import SurveyContext from "../../contexts/SurveyContext.js";
-import ComponentsUiNewHaulButton from "../ui/NewHaulButton.js";
 import Haul from "../haul/Haul";
+import NewHaul from "../haul/NewHaul";
 
 class ComponentsHauls extends Component {
 	/**
@@ -22,6 +22,10 @@ class ComponentsHauls extends Component {
 			hauls: [],
 			loaded: false,
 			placeholder: "Loading",
+
+			stations: [],
+
+			add: false,
 		};
 
 		// The next api retrieve all the hauls. If a survey id is added at the end, retrieve only the
@@ -29,10 +33,16 @@ class ComponentsHauls extends Component {
 		this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/";
 		this.apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
 
+		this.apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
+		this.apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
+
 		this.routeTrawlCatches = "Catches/haul/";
 
+		this.changeAdd = this.changeAdd.bind(this);
+
+		this.createHaul = this.createHaul.bind(this);
+
 		this.deleteHaul = this.deleteHaul.bind(this);
-		this.deleteHaulFromState = this.deleteHaulFromState.bind(this);
 	}
 
 	getHaulsApi() {
@@ -42,14 +52,43 @@ class ComponentsHauls extends Component {
 		return this.context.surveySelector === null ? this.apiHauls : this.apiHauls + this.context.surveySelector;
 	}
 
-	deleteHaulFromState(haul_id) {
-		// state, before delete anything
-		const currentHauls = this.state.hauls;
-
-		// Remove deleted item from state.
-		this.setState({
-			hauls: currentHauls.filter((haul) => haul.id !== haul_id),
+	changeAdd(add) {
+		this.setState(() => {
+			return {
+				add: add,
+			};
 		});
+	}
+
+	createHaul(event, haul) {
+		/**
+		 * Method to create haul
+		 * */
+		event.preventDefault();
+
+		const apiForm =
+			haul.sampler.id === "1" ? this.apiTrawlForm : haul.sampler.id === "2" ? this.apiHydrographyForm : null;
+
+		console.log(JSON.stringify(haul));
+
+		fetch(apiForm, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(haul),
+		})
+			.then((response) => response.json())
+			.then((c) => {
+				const new_hauls = [...this.state.hauls, c];
+				this.setState(() => {
+					return {
+						hauls: new_hauls,
+					};
+				});
+			})
+			.then(() => this.changeAdd(false))
+			.catch((error) => console.log(error));
 	}
 
 	deleteHaul(e, ids) {
@@ -66,7 +105,11 @@ class ComponentsHauls extends Component {
 				Accept: "application/json",
 			},
 		})
-			.then(() => this.deleteHaulFromState(ids))
+			.then(() =>
+				this.setState({
+					hauls: this.state.hauls.filter((haul) => haul.id !== ids),
+				})
+			)
 			.catch((error) => alert(error));
 	}
 
@@ -92,42 +135,71 @@ class ComponentsHauls extends Component {
 			});
 	}
 
-	render() {
+	renderHauls() {
+		/**
+		 * Method to render list of hauls
+		 */
 		return (
-			<Fragment>
-				<div>
-					<ComponentsUiNewHaulButton />
-				</div>
-				<ul>
-					{this.state.hauls.map((haul) => {
-						return (
-							<div>
-								<Haul key={haul.id} haul={haul} style={{ display: "inline" }} />
-								<button
-									style={{ display: "inline" }}
-									onClick={(e) => {
-										this.deleteHaul(e, haul.id);
-									}}
-								>
-									Delete haul
-								</button>
-								<Link
-									style={{ display: "inline" }}
-									to={{
-										pathname: this.routeTrawlCatches + haul.id,
-										sampler_id: this.props.sampler_id,
-										haul_id: this.props.haul_id,
-									}}
-								>
-									{" "}
-									view catches{" "}
-								</Link>
-							</div>
-						);
-					})}
-				</ul>
-			</Fragment>
+			<ul>
+				{this.state.hauls.map((haul) => {
+					return (
+						<div key={haul.id}>
+							<Haul haul={haul} style={{ display: "inline" }} />
+							<button
+								style={{ display: "inline" }}
+								onClick={(e) => {
+									this.deleteHaul(e, haul.id);
+								}}
+							>
+								Delete haul
+							</button>
+							<Link
+								style={{ display: "inline" }}
+								to={{
+									pathname: this.routeTrawlCatches + haul.id,
+									sampler_id: this.props.sampler_id,
+									haul_id: this.props.haul_id,
+								}}
+							>
+								{" "}
+								view catches{" "}
+							</Link>
+						</div>
+					);
+				})}
+			</ul>
 		);
+	}
+
+	renderContent() {
+		if (this.state.add === false) {
+			return (
+				<Fragment>
+					<div>
+						<button
+							style={{ display: "inline" }}
+							onClick={() => {
+								this.changeAdd(true);
+							}}
+						>
+							Add haul
+						</button>
+					</div>
+					{this.renderHauls()}
+				</Fragment>
+			);
+		} else if (this.state.add === true) {
+			return (
+				<Fragment>
+					<NewHaul changeAdd={this.changeAdd} createHaul={this.createHaul} />
+					{this.renderHauls()}
+				</Fragment>
+			);
+		}
+	}
+
+	render() {
+		return this.renderContent();
 	}
 }
 

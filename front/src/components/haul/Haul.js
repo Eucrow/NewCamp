@@ -47,7 +47,7 @@ class Haul extends Component {
 
 		if (this.state.detail === true) {
 			return (
-				<Fragment style={{ display: "inline" }}>
+				<Fragment>
 					<ViewHaulDetails haul={this.props.haul} />
 					<button
 						style={{ display: "inline" }}

@@ -119,19 +119,19 @@ const Home = () => (
 //   </Fragment>
 //   );
 // Weights Page
-const Weights = () => (
-	<Fragment>
-		<h1>Weights</h1>
-		<FakeText />
-	</Fragment>
-);
-// Samples Page
-const Samples = () => (
-	<Fragment>
-		<h1>Samples</h1>
-		<FakeText />
-	</Fragment>
-);
+// const Weights = () => (
+// 	<Fragment>
+// 		<h1>Weights</h1>
+// 		<FakeText />
+// 	</Fragment>
+// );
+// // Samples Page
+// const Samples = () => (
+// 	<Fragment>
+// 		<h1>Samples</h1>
+// 		<FakeText />
+// 	</Fragment>
+// );
 // Species Page
 // const Species = () => (
 //   <Fragment>

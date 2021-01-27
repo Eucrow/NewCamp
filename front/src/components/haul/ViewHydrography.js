@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from "react";
-import update from "immutability-helper";
+import React, { Component } from "react";
 
 class ViewHydrography extends Component {
 	/**

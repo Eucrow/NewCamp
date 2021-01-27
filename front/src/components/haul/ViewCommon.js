@@ -7,7 +7,6 @@ class ViewCommon extends Component {
 	 */
 
 	render() {
-		const haul = this.props.haul;
 		return (
 			<div key={this.props.haul.id} style={{ display: "inline" }}>
 				Haul: {this.props.haul.haul} - Station: {this.props.haul.station.station} - Sampler:
