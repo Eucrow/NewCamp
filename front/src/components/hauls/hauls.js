@@ -192,6 +192,13 @@ class ComponentsHauls extends Component {
 			return (
 				<Fragment>
 					<NewHaul changeAdd={this.changeAdd} createHaul={this.createHaul} />
+					<button
+						onClick={() => {
+							this.changeAdd(false);
+						}}
+					>
+						Cancel
+					</button>
 					{this.renderHauls()}
 				</Fragment>
 			);
