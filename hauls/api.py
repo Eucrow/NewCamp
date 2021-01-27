@@ -67,13 +67,18 @@ class HaulListCsvApi(ListAPIView):
 
 class HaulAPI(APIView):
     """
-    Endpoint to retrieve information of one haul of a survey
+    Endpoint to retrieve and delete information of one haul of a survey
     """
 
     def get(self, request, haul_id):
         haul = get_object_or_404(Haul, pk=haul_id)
         serializer = HaulSerializer(haul)
         return Response(serializer.data)
+
+    def delete(self, request, haul_id, format=None):
+        haul = Haul.objects.get(pk=haul_id)
+        haul.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
 
     # def post(self, request):
     #     serializer = HaulSerializer(data=request.data)
@@ -101,9 +106,13 @@ class HaulTrawlAPI(APIView):
     def post(self, request):
         serializer = HaulTrawlSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(station_id=request.data["station_id"],
-                            stratum_id=request.data['stratum_id'],
-                            sampler_id=request.data['sampler_id'])
+            # serializer.save(station_id=request.data["station_id"],
+            #                 stratum_id=request.data['stratum_id'],
+            #                 sampler_id=request.data['sampler_id'])
+            print(serializer)
+            serializer.save(station=request.data['station'],
+                            stratum=request.data['stratum'],
+                            sampler=request.data['sampler'])
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
@@ -116,11 +125,6 @@ class HaulTrawlAPI(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, haul_id, format=None):
-        haul = Haul.objects.get(pk=haul_id)
-        haul.delete()
-        return Response(status=HTTP_204_NO_CONTENT)
 
 class HaulHydrographyAPI(APIView):
     """
@@ -149,11 +153,6 @@ class HaulHydrographyAPI(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
-
-    # def delete(self, request, haul_id, format=None):
-    #     haul = Haul.objects.get(pk=haul_id)
-    #     haul.delete()
-    #     return Response(status=HTTP_204_NO_CONTENT)
 
 class HaulGEOJsonAPI(ListAPIView):
     """

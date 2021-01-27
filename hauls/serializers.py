@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
-
+from samplers.serializers import SamplerSerializer
+from strata.serializers import StrataSerializer
 from stations.serializers import StationSerializer
 
 
@@ -71,19 +72,36 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
     """
     meteo = HaulMeteorologySerializer()
     trawl_characteristics = TrawlSerializer()
+    # station and sampler can't be changed...
+    station = StationSerializer(read_only=True)
+    stratum = StrataSerializer(read_only=True)
+    sampler = SamplerSerializer(read_only=True)
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'gear', 'valid', 'meteo', 'trawl_characteristics', 'station_id', 'stratum_id', 'sampler_id', ]
-        depth = 1
+        fields = ['id', 'haul', 'gear', 'valid', 'meteo', 'trawl_characteristics', 'station', 'stratum', 'sampler', ]
+        # fields = ['id', 'haul', 'gear', 'valid', 'meteo', 'trawl_characteristics', 'station_id', 'stratum_id', 'sampler_id', ]
+        # depth = 1
 
     # This is a nested serializer, so we have to overwrite the create function
     def create(self, validated_data):
         # Firstly, get the data from the nested parts
         meteo_data = validated_data.pop('meteo')
         trawl_characteristics_data = validated_data.pop('trawl_characteristics')
-        # Secondly, save the Haul
-        haul = Haul.objects.create(**validated_data)
+        station_data = validated_data.pop('station')
+        stratum_data = validated_data.pop('stratum')
+        sampler_data = validated_data.pop('sampler')
+
+        # Secondly, create the station_id and sampler_id from its nested data
+        haul_data = validated_data.copy()
+        haul_data['station_id'] = station_data['id']
+        haul_data['stratum_id'] = stratum_data['id']
+        haul_data['sampler_id'] = sampler_data['id']
+
+        # Then, save the Haul
+        # haul = Haul.objects.create(**validated_data)
+        haul = Haul.objects.create(**haul_data)
+
         # Then, save the nested parts in its own models
         Meteorology.objects.create(haul=haul, **meteo_data)
         HaulTrawl.objects.create(haul=haul, **trawl_characteristics_data)

@@ -83,19 +83,15 @@ urlpatterns = [
     re_path(r'^api/1.0/stations/hauls/(?P<survey_id>[0-9]+)$', StationsHaulsAPI.as_view(), name="station_haul_api"),
 
     # Hauls API URLs
-    re_path(r'^api/1.0/haul/(?P<haul_id>[0-9]+)$', HaulAPI.as_view(), name="get_haul_api"),
+    re_path(r'^api/1.0/haul/(?P<haul_id>[0-9]+)$', HaulAPI.as_view(), name="haul_api"),
     # re_path(r'^api/1.0/haul/new$', HaulAPI.as_view(), name="add_haul_api"),
         # Trawl hauls
         re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="get_trawl_haul_api"),
         re_path(r'^api/1.0/haul/trawl/new/$', HaulTrawlAPI.as_view(), name="add_trawl_haul_api"),
-        re_path(r'^api/1.0/haul/trawl/remove/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(),
-                name="remove_trawl_haul_api"),
         # Hydrography hauls
         re_path(r'^api/1.0/haul/hydrography/(?P<haul_id>[0-9]+)$', HaulHydrographyAPI.as_view(),
                 name="get_hydrography_haul_api"),
         re_path(r'^api/1.0/haul/hydrography/new/$', HaulHydrographyAPI.as_view(), name="add_hydrography_haul_api"),
-        re_path(r'^api/1.0/haul/hydrography/remove/(?P<haul_id>[0-9]+)$', HaulHydrographyAPI.as_view(),
-                name="remove_hydrography_haul_api"),
 
     re_path(r'^api/1.0/hauls/$', HaulListAllAPI.as_view(), name="get_hauls_api"),
     re_path(r'^api/1.0/hauls/(?P<survey_id>[0-9])$', HaulListAPI.as_view(), name="get_hauls_api"),
