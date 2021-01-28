@@ -2,10 +2,8 @@ import React, { Component, Fragment } from "react";
 
 import ComponentsStationOptions from "./options/Options.js";
 import ComponentsUiNewStationButton from "../ui/NewStationButton.js";
-import ComponentsHaulsOptions from "../hauls/options/Options.js";
 
-import Haul from "../haul/Haul";
-import Hauls from "../hauls/hauls";
+import Hauls from "../hauls/Hauls";
 
 import SurveyContext from "../../contexts/SurveyContext.js";
 
@@ -24,16 +22,18 @@ class ComponentsStations extends Component {
 		super(props);
 		this.state = {
 			stations: [],
-			loaded: false,
-			placeholder: "Loading",
 		};
 
 		// The next api retrieve all the stations. If a 'hauls/survey_id' is added at the end, retrieve only the
 		// stations of this survey
 		this.apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
 
+		this.apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
+		this.apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
+
 		this.apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
 
+		this.createHaul = this.createHaul.bind(this);
 		this.deleteHaul = this.deleteHaul.bind(this);
 
 		this.onDelete = this.onDelete.bind(this);
@@ -56,6 +56,45 @@ class ComponentsStations extends Component {
 		this.setState({
 			stations: currentStations.filter((station) => station.id !== station_id),
 		});
+	}
+
+	createHaul(event, haul) {
+		/**
+		 * Method to create haul
+		 * */
+		event.preventDefault();
+
+		const apiForm =
+			haul.sampler.id === "1" ? this.apiTrawlForm : haul.sampler.id === "2" ? this.apiHydrographyForm : null;
+
+		console.log(JSON.stringify(haul));
+
+		fetch(apiForm, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(haul),
+		})
+			.then((response) => response.json())
+			.then((h) => {
+				const new_stations = this.state.stations.map((station) => {
+					if (station.id === parseInt(haul.station.id)) {
+						const new_hauls = [...station.hauls, h];
+						station.hauls = new_hauls;
+						return station;
+					} else {
+						return station;
+					}
+				});
+
+				this.setState(() => {
+					return {
+						stations: new_stations,
+					};
+				});
+			})
+			.catch((error) => console.log(error));
 	}
 
 	deleteHaul(e, id_station, id_haul) {
@@ -124,21 +163,11 @@ class ComponentsStations extends Component {
 							<li key={station.id}>
 								Station: {station.station} - Comments: {station.comment} -
 								{<ComponentsStationOptions station_id={station.id} onDelete={this.onDelete} />}
-								{/* <ul> */}
-								<Hauls hauls={station.hauls} deleteHaul={this.deleteHaul} />
-								{/* {station.hauls.map((haul) => {
-										return (
-											<li key={haul.id}>
-												<Haul haul={haul} />
-													<p>Haul: {haul.haul}
-											 	- Is valid?: {haul.valid}
-											 	- Sampler: {haul.sampler.sampler}
-											 	- <ComponentsHaulsOptions haul_id={haul.id} />
-											 	</p>
-											</li>
-										);
-									})} */}
-								{/* </ul> */}
+								<Hauls
+									hauls={station.hauls}
+									deleteHaul={this.deleteHaul}
+									createHaul={this.createHaul}
+								/>
 							</li>
 						);
 					})}

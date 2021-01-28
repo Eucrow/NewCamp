@@ -19,30 +19,16 @@ class ComponentsHauls extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			hauls: [],
-			loaded: false,
-			placeholder: "Loading",
-
-			stations: [],
-
 			add: false,
 		};
 
 		// The next api retrieve all the hauls. If a survey id is added at the end, retrieve only the
 		// hauls of this survey
 		this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/";
-		// this.apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
-
-		this.apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
-		this.apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
 
 		this.routeTrawlCatches = "Catches/haul/";
 
 		this.changeAdd = this.changeAdd.bind(this);
-
-		this.createHaul = this.createHaul.bind(this);
-
-		// this.deleteHaul = this.deleteHaul.bind(this);
 	}
 
 	getHaulsApi() {
@@ -59,81 +45,6 @@ class ComponentsHauls extends Component {
 			};
 		});
 	}
-
-	createHaul(event, haul) {
-		/**
-		 * Method to create haul
-		 * */
-		event.preventDefault();
-
-		const apiForm =
-			haul.sampler.id === "1" ? this.apiTrawlForm : haul.sampler.id === "2" ? this.apiHydrographyForm : null;
-
-		console.log(JSON.stringify(haul));
-
-		fetch(apiForm, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(haul),
-		})
-			.then((response) => response.json())
-			.then((c) => {
-				const new_hauls = [...this.state.hauls, c];
-				this.setState(() => {
-					return {
-						hauls: new_hauls,
-					};
-				});
-			})
-			.then(() => this.changeAdd(false))
-			.catch((error) => console.log(error));
-	}
-
-	// deleteHaul(e, ids) {
-	// 	/**
-	// 	 * Method to delete haul.
-	// 	 */
-
-	// 	const api = this.apiDeleteHaul + ids;
-
-	// 	fetch(api, {
-	// 		method: "DELETE",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 			Accept: "application/json",
-	// 		},
-	// 	})
-	// 		.then(() =>
-	// 			this.setState({
-	// 				hauls: this.state.hauls.filter((haul) => haul.id !== ids),
-	// 			})
-	// 		)
-	// 		.catch((error) => alert(error));
-	// }
-
-	// componentDidMount() {
-	// 	const APIHauls = this.getHaulsApi();
-
-	// 	fetch(APIHauls)
-	// 		.then((response) => {
-	// 			if (response.status > 400) {
-	// 				return this.setState(() => {
-	// 					return { placeholder: "Something went wrong!" };
-	// 				});
-	// 			}
-	// 			return response.json();
-	// 		})
-	// 		.then((hauls) => {
-	// 			this.setState(() => {
-	// 				return {
-	// 					hauls,
-	// 					loaded: true,
-	// 				};
-	// 			});
-	// 		});
-	// }
 
 	renderHauls() {
 		/**
@@ -190,7 +101,7 @@ class ComponentsHauls extends Component {
 		} else if (this.state.add === true) {
 			return (
 				<Fragment>
-					<NewHaul changeAdd={this.changeAdd} createHaul={this.createHaul} />
+					<NewHaul changeAdd={this.changeAdd} createHaul={this.props.createHaul} />
 					<button
 						onClick={() => {
 							this.changeAdd(false);

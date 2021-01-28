@@ -213,7 +213,14 @@ class NewHaul extends Component {
 						sampler_id={this.state.haul.sampler.id}
 					/>
 
-					<input type="submit" value="Save Haul" onClick={(e) => this.props.createHaul(e, this.state.haul)} />
+					<input
+						type="submit"
+						value="Save Haul"
+						onClick={(e) => {
+							this.props.createHaul(e, this.state.haul);
+							this.props.changeAdd(false);
+						}}
+					/>
 				</form>
 			</Fragment>
 		);
