@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 
-import ComponentsStationOptions from "./options/Options.js";
+// import ComponentsStationOptions from "./options/Options.js";
 import ComponentsUiNewStationButton from "../ui/NewStationButton.js";
 
-import Hauls from "../hauls/Hauls";
+import Station from "../station/Station";
 
 import SurveyContext from "../../contexts/SurveyContext.js";
 
@@ -37,6 +37,8 @@ class ComponentsStations extends Component {
 		this.deleteStation = this.deleteStation.bind(this);
 		this.createHaul = this.createHaul.bind(this);
 		this.deleteHaul = this.deleteHaul.bind(this);
+
+		this.handleChangeStationFields = this.handleChangeStationFields.bind(this);
 	}
 
 	getStationsApi() {
@@ -46,6 +48,27 @@ class ComponentsStations extends Component {
 		return this.context.surveySelector === null
 			? this.apiStationsPartial
 			: this.apiStationsPartial + "hauls/" + this.context.surveySelector;
+	}
+
+	handleChangeStationFields(event, ids) {
+		const name = event.target.name;
+		const value = event.target.value;
+
+		const new_stations = this.state.stations.map((station) => {
+			if (station.id === ids) {
+				const updated_station = {
+					...station,
+					[name]: value,
+				};
+				return updated_station;
+			}
+
+			return station;
+		});
+
+		this.setState({
+			stations: new_stations,
+		});
 	}
 
 	createHaul(event, haul) {
@@ -176,24 +199,13 @@ class ComponentsStations extends Component {
 				<ul>
 					{this.state.stations.map((station) => {
 						return (
-							<li key={station.id}>
-								Station: {station.station} - Comments: {station.comment} -
-								{/* {<ComponentsStationOptions station_id={station.id} onDelete={this.deleteStation} />} */}
-								<button
-									onClick={(e) => {
-										if (window.confirm("Delete the station?")) {
-											this.deleteStation(e, station.id);
-										}
-									}}
-								>
-									Remove
-								</button>
-								<Hauls
-									hauls={station.hauls}
-									deleteHaul={this.deleteHaul}
-									createHaul={this.createHaul}
-								/>
-							</li>
+							<Station
+								station={station}
+								deleteStation={this.deleteStation}
+								deleteHaul={this.deleteHaul}
+								createHaul={this.createHaul}
+								handleChangeStationFields={this.handleChangeStationFields}
+							/>
 						);
 					})}
 				</ul>
