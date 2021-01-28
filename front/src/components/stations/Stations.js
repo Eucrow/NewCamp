@@ -31,8 +31,10 @@ class ComponentsStations extends Component {
 		this.apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
 		this.apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
 
-		this.apiDeleteStation = "http://127.0.0.1:8000/api/1.0/station/";
+		this.apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get or update station
 		this.apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
+
+		this.handleSubmitEditStation = this.handleSubmitEditStation.bind(this);
 
 		this.deleteStation = this.deleteStation.bind(this);
 		this.createHaul = this.createHaul.bind(this);
@@ -48,6 +50,22 @@ class ComponentsStations extends Component {
 		return this.context.surveySelector === null
 			? this.apiStationsPartial
 			: this.apiStationsPartial + "hauls/" + this.context.surveySelector;
+	}
+
+	handleSubmitEditStation(event, station_id) {
+		event.preventDefault();
+
+		const api = this.apiStation + station_id;
+
+		const updated_station = this.state.stations.filter((station) => station.id === station_id);
+
+		fetch(api, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(updated_station[0]), //look the [0]!!!
+		}).catch((error) => console.log(error));
 	}
 
 	handleChangeStationFields(event, ids) {
@@ -148,7 +166,7 @@ class ComponentsStations extends Component {
 
 		e.preventDefault();
 
-		const api = this.apiDeleteStation + ids;
+		const api = this.apiStation + ids;
 
 		fetch(api, {
 			method: "DELETE",
@@ -205,6 +223,7 @@ class ComponentsStations extends Component {
 								deleteHaul={this.deleteHaul}
 								createHaul={this.createHaul}
 								handleChangeStationFields={this.handleChangeStationFields}
+								handleSubmitEditStation={this.handleSubmitEditStation}
 							/>
 						);
 					})}

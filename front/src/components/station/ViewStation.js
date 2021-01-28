@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 
-import Hauls from "../hauls/Hauls.js";
+import Hauls from "../hauls/Hauls";
 
 class ViewStation extends Component {
 	/**

@@ -13,28 +13,6 @@ class EditStation extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
-
-		this.apiStation = "http://127.0.0.1:8000/api/1.0/station/";
-
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
-
-	handleSubmit(event) {
-		event.preventDefault();
-
-		const api = this.apiStation + this.props.station.id;
-
-		fetch(api, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(this.state.data),
-		})
-			.then(() => {
-				this.props.changeEdit(false);
-			})
-			.catch((error) => console.log(error));
 	}
 
 	render() {
@@ -65,7 +43,14 @@ class EditStation extends Component {
 					onChange={(e) => this.props.handleChangeStationFields(e, this.props.station.id)}
 				/>
 
-				<input type="submit" value="Save Station" onClick={this.handleSubmit} />
+				<input
+					type="submit"
+					value="Save Station"
+					onClick={(e) => {
+						this.props.handleSubmitEditStation(e, this.props.station.id);
+						this.props.changeEdit(false);
+					}}
+				/>
 			</form>
 		);
 	}
