@@ -31,12 +31,12 @@ class ComponentsStations extends Component {
 		this.apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
 		this.apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
 
+		this.apiDeleteStation = "http://127.0.0.1:8000/api/1.0/station/";
 		this.apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
 
+		this.deleteStation = this.deleteStation.bind(this);
 		this.createHaul = this.createHaul.bind(this);
 		this.deleteHaul = this.deleteHaul.bind(this);
-
-		this.onDelete = this.onDelete.bind(this);
 	}
 
 	getStationsApi() {
@@ -46,16 +46,6 @@ class ComponentsStations extends Component {
 		return this.context.surveySelector === null
 			? this.apiStationsPartial
 			: this.apiStationsPartial + "hauls/" + this.context.surveySelector;
-	}
-
-	onDelete(station_id) {
-		// state, before delete anything
-		const currentStations = this.state.stations;
-
-		// Remove deleted item from state.
-		this.setState({
-			stations: currentStations.filter((station) => station.id !== station_id),
-		});
 	}
 
 	createHaul(event, haul) {
@@ -128,6 +118,32 @@ class ComponentsStations extends Component {
 			.catch((error) => alert(error));
 	}
 
+	deleteStation(e, ids) {
+		/**
+		 * Method to delete haul.
+		 */
+
+		e.preventDefault();
+
+		const api = this.apiDeleteStation + ids;
+
+		fetch(api, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+			},
+		})
+			.then(() => {
+				const new_stations = this.state.stations.filter((station) => station.id !== ids);
+
+				this.setState({
+					stations: new_stations,
+				});
+			})
+			.catch((error) => alert(error));
+	}
+
 	componentDidMount() {
 		const APIStations = this.getStationsApi();
 
@@ -162,7 +178,16 @@ class ComponentsStations extends Component {
 						return (
 							<li key={station.id}>
 								Station: {station.station} - Comments: {station.comment} -
-								{<ComponentsStationOptions station_id={station.id} onDelete={this.onDelete} />}
+								{/* {<ComponentsStationOptions station_id={station.id} onDelete={this.deleteStation} />} */}
+								<button
+									onClick={(e) => {
+										if (window.confirm("Delete the station?")) {
+											this.deleteStation(e, station.id);
+										}
+									}}
+								>
+									Remove
+								</button>
 								<Hauls
 									hauls={station.hauls}
 									deleteHaul={this.deleteHaul}

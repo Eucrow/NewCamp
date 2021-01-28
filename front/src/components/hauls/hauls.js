@@ -6,7 +6,7 @@ import SurveyContext from "../../contexts/SurveyContext.js";
 import Haul from "../haul/Haul";
 import NewHaul from "../haul/NewHaul";
 
-class ComponentsHauls extends Component {
+class Hauls extends Component {
 	/**
 	 * List of hauls
 	 */
@@ -120,4 +120,4 @@ class ComponentsHauls extends Component {
 	}
 }
 
-export default ComponentsHauls;
+export default Hauls;
