@@ -14,7 +14,7 @@ import ComponentsStations from "./components/stations/Stations.js";
 import ComponentsStationNew from "./components/stationNew/StationNew.js";
 import ComponentsStation from "./components/stationDetail/station.js";
 
-import ComponentsHauls from "./components/hauls/Hauls.js";
+import ComponentsHauls from "./components/hauls/Ppp.js";
 import ComponentHaul from "./components/haulDetail/haul.js";
 import ComponentsHaulNew from "./components/haulNew/HaulNew.js";
 
