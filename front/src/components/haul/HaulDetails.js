@@ -78,11 +78,8 @@ class HaulDetails extends Component {
 	}
 
 	handleChangeMeteorology(event) {
-		console.log(event);
 		const name = event.target.name;
 		const value = event.target.value;
-		console.log(name);
-		console.log(value);
 
 		const newHaulMeteo = update(this.state.haul, {
 			meteo: {
@@ -111,6 +108,8 @@ class HaulDetails extends Component {
 	}
 
 	handleSubmit(event) {
+		event.preventDefault();
+
 		const apiHaul =
 			this.state.haul.sampler.id === 1
 				? this.apiTrawlHaul
@@ -130,9 +129,7 @@ class HaulDetails extends Component {
 					return { edit: false };
 				});
 			})
-			.catch((error) => console.log("Error"));
-
-		event.preventDefault();
+			.catch((error) => console.log(error));
 	}
 
 	renderContent() {
