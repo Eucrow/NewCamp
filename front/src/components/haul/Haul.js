@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 
-import ViewHaulDetails from "./HaulDetails";
+import HaulDetails from "./HaulDetails";
 
 class Haul extends Component {
 	/**
@@ -48,7 +48,7 @@ class Haul extends Component {
 		if (this.state.detail === true) {
 			return (
 				<Fragment>
-					<ViewHaulDetails haul={this.props.haul} />
+					<HaulDetails haul={this.props.haul} />
 					<button
 						style={{ display: "inline" }}
 						onClick={() => {

@@ -159,7 +159,6 @@ class HaulDetails extends Component {
 					<div>
 						<EditCommon
 							haul={this.state.haul}
-							changeIsEdit={this.changeIsEdit}
 							handleChangeCommonValid={this.handleChangeCommonValid}
 							handleChangeCommon={this.handleChangeCommon}
 						/>

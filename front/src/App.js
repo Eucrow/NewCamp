@@ -14,7 +14,7 @@ import ComponentsStations from "./components/stations/Stations.js";
 import ComponentsStationNew from "./components/stationNew/StationNew.js";
 import ComponentsStation from "./components/stationDetail/station.js";
 
-import ComponentsHauls from "./components/hauls/hauls.js";
+import ComponentsHauls from "./components/hauls/Hauls.js";
 import ComponentHaul from "./components/haulDetail/haul.js";
 import ComponentsHaulNew from "./components/haulNew/HaulNew.js";
 
@@ -55,7 +55,7 @@ export default function App() {
 						)}{" "}
 						-<Link to="/">Home</Link> -<Link to="/SurveySelect">Select Survey</Link> -
 						<Link to="/Surveys">Surveys</Link> -<Link to="/Strata">Strata</Link> -
-						<Link to="/Stations">Stations</Link> -<Link to="/Hauls">Hauls</Link> -
+						<Link to="/Stations">Stations</Link> -{/* <Link to="/Hauls">Hauls</Link> - */}
 						<Link to="/Weights">Weights</Link> -<Link to="/Samples">Samples</Link> -
 						<Link to="/Masters">Species</Link>
 					</nav>

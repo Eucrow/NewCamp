@@ -98,8 +98,6 @@ class ComponentsStations extends Component {
 		const apiForm =
 			haul.sampler.id === "1" ? this.apiTrawlForm : haul.sampler.id === "2" ? this.apiHydrographyForm : null;
 
-		console.log(JSON.stringify(haul));
-
 		fetch(apiForm, {
 			method: "POST",
 			headers: {

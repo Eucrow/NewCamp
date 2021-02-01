@@ -3,8 +3,7 @@ import React, { Component, Fragment } from "react";
 class NewCommon extends Component {
 	/**
 	 * Component of the common part of the haul form.
-	//  * @param {number} props.haul
-	 * @param {array} props.stations
+	 * @param {number} props.haul
 	 * @param {function} props.handleChangeCommon
 	 * @param {function} props.handleChangeCommonValid
 	 */
@@ -13,24 +12,6 @@ class NewCommon extends Component {
 		return (
 			<fieldset>
 				<legend>Common information:</legend>
-				<label htmlFor="station_id">Station: </label>
-				<select
-					id="station_id"
-					name="station"
-					value={this.props.haul.station.id || "choose"}
-					onChange={this.props.handleChangeNestedIds}
-				>
-					<option disabled value="choose">
-						--chose a station--
-					</option>
-					{this.props.stations.map((station) => {
-						return (
-							<option key={station.id} value={station.id}>
-								{station.station}
-							</option>
-						);
-					})}
-				</select>
 
 				<label htmlFor="haul">Haul:</label>
 				<input type="text" id="haul" name="haul" onChange={this.props.handleChange} />

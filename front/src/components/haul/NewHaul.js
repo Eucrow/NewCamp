@@ -9,6 +9,7 @@ import NewSpecific from "./NewSpecific.js";
 class NewHaul extends Component {
 	/**
 	 * New haul component
+	 * @param {number} props.station_id
 	 * @param {function} props.changeAdd
 	 * @param {function} props.createHaul
 	 */
@@ -17,19 +18,15 @@ class NewHaul extends Component {
 		this.state = {
 			haul: {
 				meteo: {},
-				station: {},
+				station: { id: this.props.station_id },
 				sampler: {},
 				stratum: {},
 				trawl_characteristics: {},
 				hydrography_characteristics: {},
 			},
-
-			stations: [],
 			strata: [],
 			samplers: [],
 		};
-
-		this.apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
 		this.apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
 		this.apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
 
@@ -132,29 +129,10 @@ class NewHaul extends Component {
 			/**
 			 * When the component is mounted, retrieve the posible stratum and sampler and save in state
 			 */
-			const apiStations = this.apiStationsPartial + this.context.surveySelector;
 			const apiStrata = this.apiStrataPartial + this.context.surveySelector;
 			const apiSamplers = this.apiSamplers;
 
 			// TODO: Optimize fetchs
-			// Fetch stations
-			fetch(apiStations)
-				.then((response) => {
-					if (response.status > 400) {
-						return this.setState(() => {
-							return { placeholder: "Something went wrong!" };
-						});
-					}
-					return response.json();
-				})
-				.then((stations) => {
-					this.setState(() => {
-						return {
-							stations: stations,
-						};
-					});
-				});
-
 			// Fetch strata
 			fetch(apiStrata)
 				.then((response) => {
@@ -202,7 +180,6 @@ class NewHaul extends Component {
 						haul={this.state.haul}
 						handleChange={this.handleChange}
 						handleChangeNestedIds={this.handleChangeNestedIds}
-						stations={this.state.stations}
 						samplers={this.state.samplers}
 						strata={this.state.strata}
 					/>

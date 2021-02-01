@@ -106,7 +106,11 @@ class Hauls extends Component {
 		} else if (this.state.add === true) {
 			return (
 				<Fragment>
-					<NewHaul changeAdd={this.changeAdd} createHaul={this.props.createHaul} />
+					<NewHaul
+						station_id={this.props.station_id}
+						changeAdd={this.changeAdd}
+						createHaul={this.props.createHaul}
+					/>
 					<button
 						onClick={() => {
 							this.changeAdd(false);
