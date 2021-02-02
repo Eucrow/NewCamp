@@ -12,11 +12,11 @@ import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
 
 import ComponentsStations from "./components/stations/Stations.js";
 import ComponentsStationNew from "./components/stationNew/StationNew.js";
-import ComponentsStation from "./components/stationDetail/station.js";
+// import ComponentsStation from "./components/stationDetail/station.js";
 
-import ComponentsHauls from "./components/hauls/Hauls.js";
+// import ComponentsHauls from "./components/hauls/Hauls.js";
 
-import ComponentsTrawlCatches from "./components/trawlCatches/TrawlHaulCatches.js";
+// import ComponentsTrawlCatches from "./components/trawlCatches/TrawlHaulCatches.js";
 
 export default function App() {
 	const [surveySelector, setSurvey] = useState(null);
@@ -51,10 +51,9 @@ export default function App() {
 						) : (
 							<div style={{ display: "inline", fontWeight: "bold", fontSize: "1.5em" }}>{surveyName}</div>
 						)}{" "}
-						-<Link to="/">Home</Link> -<Link to="/SurveySelect">Select Survey</Link> -
-						<Link to="/Surveys">Surveys</Link> -<Link to="/Strata">Strata</Link> -
-						<Link to="/Stations">Stations</Link> -<Link to="/Weights">Weights</Link> -
-						<Link to="/Samples">Samples</Link> -<Link to="/Masters">Species</Link>
+						<Link to="/">Home</Link>-<Link to="/SurveySelect">Select Survey</Link>-
+						<Link to="/Surveys">Surveys</Link>-<Link to="/Strata">Strata</Link>-
+						<Link to="/Stations">Stations</Link>-<Link to="/Masters">Species</Link>
 					</nav>
 				</main>
 
@@ -69,13 +68,13 @@ export default function App() {
 
 				<Route path="/Stations" exact component={ComponentsStations} />
 				<Route path="/Stations/new" exact component={ComponentsStationNew} />
-				<Route path="/Stations/station/:station_id" exact component={ComponentsStation} />
+				{/* <Route path="/Stations/station/:station_id" exact component={ComponentsStation} /> */}
 
 				{/* TODO: CONSIDER IF THE NEXT PATH IS USEFULL */}
-				<Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
-				<Route path="/Hauls" exact component={ComponentsHauls} />
+				{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
+				<Route path="/Hauls" exact component={ComponentsHauls} /> */}
 
-				<Route path="/Catches/haul/:haul_id" exact component={ComponentsTrawlCatches} />
+				{/* <Route path="/Catches/haul/:haul_id" exact component={ComponentsTrawlCatches} /> */}
 
 				{/* <Route path="/Weights" component={Weights} /> */}
 				{/* <Route path="/Samples" component={Samples} /> */}
