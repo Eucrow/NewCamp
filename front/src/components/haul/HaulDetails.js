@@ -2,15 +2,15 @@ import React, { Component } from "react";
 
 import update from "immutability-helper";
 
-import ViewCommon from "./ViewCommon";
-import ViewMeteorology from "./ViewMeteorology";
-import ViewTrawl from "./ViewTrawl";
-import ViewHydrography from "./ViewHydrography";
+import ViewCommon from "./view/ViewCommon";
+import ViewMeteorology from "./view/ViewMeteorology";
+import ViewTrawl from "./view/ViewTrawl";
+import ViewHydrography from "./view/ViewHydrography";
 
-import EditCommon from "./EditCommon";
-import EditMeteorology from "./EditMeteorology";
-import EditTrawl from "./EditTrawl";
-import EditHydrography from "./EditHydrography";
+import EditCommon from "./edit/EditCommon";
+import EditMeteorology from "./edit/EditMeteorology";
+import EditTrawl from "./edit/EditTrawl";
+import EditHydrography from "./edit/EditHydrography";
 
 class HaulDetails extends Component {
 	/**

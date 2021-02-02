@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 
-import SurveyContext from "../../contexts/SurveyContext.js";
+import SurveyContext from "../../../contexts/SurveyContext.js";
 
 import NewCommon from "./NewCommon";
 import NewSpecific from "./NewSpecific.js";

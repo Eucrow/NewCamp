@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import SurveyContext from "../../contexts/SurveyContext.js";
 import Haul from "../haul/Haul";
-import NewHaul from "../haul/NewHaul";
+import NewHaul from "../haul/new/NewHaul";
 
 class Hauls extends Component {
 	/**
