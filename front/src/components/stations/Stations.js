@@ -215,6 +215,7 @@ class ComponentsStations extends Component {
 					{this.state.stations.map((station) => {
 						return (
 							<Station
+								key={station.id}
 								station={station}
 								deleteStation={this.deleteStation}
 								deleteHaul={this.deleteHaul}

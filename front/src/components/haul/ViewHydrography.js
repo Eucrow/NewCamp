@@ -13,25 +13,25 @@ class ViewHydrography extends Component {
 		return (
 			<fieldset>
 				<legend>Hydrography characteristics</legend>
-				<p>Latitude: {haul.hydrography_characteristics.latitude || ""}</p>
-				<p>Longitude: {haul.hydrography_characteristics.longitude || ""}</p>
-				<p>Date time: {haul.hydrography_characteristics.date_time || ""}</p>
-				<p>Depth probe: {haul.hydrography_characteristics.depth_probe || ""}</p>
-				<p>Cable: {haul.hydrography_characteristics.cable || ""}</p>
-				<p>Depth: {haul.hydrography_characteristics.depth || ""}</p>
-				<p>Temperature 0: {haul.hydrography_characteristics.temperature_0 || ""}</p>
-				<p>Salinity 0: {haul.hydrography_characteristics.salinity_0 || ""}</p>
-				<p>Sigma 0: {haul.hydrography_characteristics.sigma_0 || ""}</p>
-				<p>Temperature 50: {haul.hydrography_characteristics.temperature_50 || ""}</p>
-				<p>Salinity 50: {haul.hydrography_characteristics.salinity_50 || ""}</p>
-				<p>Sigma 50: {haul.hydrography_characteristics.sigma_50 || ""}</p>
-				<p>Temperature 100: {haul.hydrography_characteristics.temperature_100 || ""}</p>
-				<p>Salinity 100: {haul.hydrography_characteristics.salinity_100 || ""}</p>
-				<p>Sigma 100: {haul.hydrography_characteristics.sigma_100 || ""}</p>
-				<p>Temperature: {haul.hydrography_characteristics.temperature || ""}</p>
-				<p>Salinity: {haul.hydrography_characteristics.salinity || ""}</p>
-				<p>Sigma: {haul.hydrography_characteristics.sigma || ""}</p>
-				<p>Comment: {haul.hydrography_characteristics.comment || ""}</p>
+				Latitude: {haul.hydrography_characteristics.latitude || ""}
+				Longitude: {haul.hydrography_characteristics.longitude || ""}
+				Date time: {haul.hydrography_characteristics.date_time || ""}
+				Depth probe: {haul.hydrography_characteristics.depth_probe || ""}
+				Cable: {haul.hydrography_characteristics.cable || ""}
+				Depth: {haul.hydrography_characteristics.depth || ""}
+				Temperature 0: {haul.hydrography_characteristics.temperature_0 || ""}
+				Salinity 0: {haul.hydrography_characteristics.salinity_0 || ""}
+				Sigma 0: {haul.hydrography_characteristics.sigma_0 || ""}
+				Temperature 50: {haul.hydrography_characteristics.temperature_50 || ""}
+				Salinity 50: {haul.hydrography_characteristics.salinity_50 || ""}
+				Sigma 50: {haul.hydrography_characteristics.sigma_50 || ""}
+				Temperature 100: {haul.hydrography_characteristics.temperature_100 || ""}
+				Salinity 100: {haul.hydrography_characteristics.salinity_100 || ""}
+				Sigma 100: {haul.hydrography_characteristics.sigma_100 || ""}
+				Temperature: {haul.hydrography_characteristics.temperature || ""}
+				Salinity: {haul.hydrography_characteristics.salinity || ""}
+				Sigma: {haul.hydrography_characteristics.sigma || ""}
+				Comment: {haul.hydrography_characteristics.comment || ""}
 			</fieldset>
 		);
 

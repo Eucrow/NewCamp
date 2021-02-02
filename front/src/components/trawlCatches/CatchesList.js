@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from "react";
 
-import update from "immutability-helper";
-
 import Catch from "./Catch.js";
 
 class CatchesList extends Component {
@@ -244,8 +242,6 @@ class CatchesList extends Component {
 		 */
 
 		const value = evt.target.value;
-
-		const apiSpeciesGroup = this.apiSpeciesGroup + value;
 
 		const newCatches = this.state.catches.map((c) => {
 			if (idx !== c.id) return c;

@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-
 class EditMeteorology extends Component {
 	/**
 	 * Component of meteorology form of haul.
 	 * @param {number} props.haul
-	 * @param {function} handleChangeMeteorology
 	 */
 
 	render() {
 		const haul = this.props.haul;
+
 		return (
 			<fieldset>
 				<legend>Meteorology:</legend>

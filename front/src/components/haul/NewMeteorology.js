@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 
 class NewMeteorology extends Component {
+	/**
+	 * @param props.handleChangeMeteo
+	 */
 	render() {
 		return (
 			<fieldset>

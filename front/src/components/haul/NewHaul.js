@@ -3,7 +3,6 @@ import React, { Component, Fragment } from "react";
 import SurveyContext from "../../contexts/SurveyContext.js";
 
 import NewCommon from "./NewCommon";
-import NewMeteorology from "./NewMeteorology.js";
 import NewSpecific from "./NewSpecific.js";
 
 class NewHaul extends Component {
@@ -42,7 +41,6 @@ class NewHaul extends Component {
 	handleChange(event) {
 		const name = event.target.name;
 		const value = event.target.value;
-		console.log(value);
 
 		this.setState({
 			haul: {
@@ -55,7 +53,6 @@ class NewHaul extends Component {
 	handleChangeNestedIds(event) {
 		const name = event.target.name;
 		const value = event.target.value;
-		console.log(value);
 
 		this.setState({
 			haul: {
@@ -70,7 +67,6 @@ class NewHaul extends Component {
 	handleChangeMeteo(event) {
 		const name = event.target.name;
 		const value = event.target.value;
-		console.log("value in handleChangeMeteo: " + value);
 
 		this.setState({
 			haul: {
@@ -145,7 +141,6 @@ class NewHaul extends Component {
 				})
 				.then((strata) => {
 					this.setState(() => {
-						console.log(strata);
 						return {
 							strata: strata,
 						};
@@ -183,8 +178,8 @@ class NewHaul extends Component {
 						samplers={this.state.samplers}
 						strata={this.state.strata}
 					/>
-					<NewMeteorology handleChangeMeteo={this.handleChangeMeteo} />
 					<NewSpecific
+						handleChangeMeteo={this.handleChangeMeteo}
 						handleChangeTrawl={this.handleChangeTrawl}
 						handleChangeHydrography={this.handleChangeHydrography}
 						sampler_id={this.state.haul.sampler.id}

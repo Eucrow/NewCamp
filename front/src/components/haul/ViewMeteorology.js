@@ -6,12 +6,11 @@ class ViewMeteorology extends Component {
 	 * @param {number} props.haul
 	 */
 
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		const haul = this.props.haul;
+
+		if (haul.meteo === null) return null;
+
 		return (
 			<fieldset>
 				<legend>Meteorology:</legend>

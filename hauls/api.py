@@ -138,9 +138,9 @@ class HaulHydrographyAPI(APIView):
     def post(self, request):
         serializer = HaulHydrographySerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(station_id=request.data["station_id"],
-                            stratum_id=request.data['stratum_id'],
-                            sampler_id=request.data['sampler_id'])
+            serializer.save(station=request.data["station"],
+                            stratum=request.data['stratum'],
+                            sampler=request.data['sampler'])
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
