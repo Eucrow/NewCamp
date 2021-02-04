@@ -21,9 +21,10 @@ class HaulSerializer(serializers.ModelSerializer):
     '''
     # TODO: The sampler field return all the fields of the Sampler model. Try to minimize it:
     #  https://www.django-rest-framework.org/api-guide/serializers/#specifying-nested-serialization
+
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'gear', 'valid', 'sampler']
+        fields = ['id', 'haul', 'gear', 'valid', 'sampler', 'station']
         depth = 1
 
 

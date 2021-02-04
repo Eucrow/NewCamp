@@ -24,12 +24,14 @@ class SampledWeightCreate(APIView):
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
+
 class SampledWeightDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     Endpoint to retrieve, update and destroy sampled weight of a catch.
     """
     queryset = SampledWeight.objects.all()
     serializer_class = SampleWeightSerializer
+
 
 # TODO: SexDetail and SexAPI have a method to update sex. Find what I'm use in react and delete the other one.
 class SexDetail(generics.RetrieveUpdateDestroyAPIView):

@@ -9,7 +9,7 @@ class SpeciesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SpBasicSerializer(serializers.ModelSerializer):
+class SpSimpleSerializer(serializers.ModelSerializer):
     '''
     Serializer of species name.
     '''

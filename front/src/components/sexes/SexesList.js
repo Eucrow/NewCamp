@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 
-import ComponentsLengths from "../lengths/Lengths";
 import ComponentSex from "./sex";
 
 class ComponentSexes extends Component {

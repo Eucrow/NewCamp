@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 
-import SampledWeight from "../SampledWeight/SampledWeight";
+import SampledWeight from "../sampledWeight/SampledWeight";
 
 class ComponentCategory extends Component {
 	/**
@@ -82,6 +82,9 @@ class ComponentCategory extends Component {
 			);
 		} else if (this.props.status_catch === "view" || this.props.status_catch === "") {
 			const sampled_weight = this.props.this_catch.sampled_weight ? this.props.this_catch.sampled_weight : null;
+			const sampled_weight_id = this.props.this_catch.sampled_weight_id
+				? this.props.this_catch.sampled_weight_id
+				: null;
 
 			return (
 				<Fragment>
@@ -94,12 +97,13 @@ class ComponentCategory extends Component {
 					<td>{this.props.this_catch.weight}</td>
 					<td>
 						<SampledWeight
-							sampled_weight_id={this.props.this_catch.sampled_weight_id}
+							sampled_weight_id={sampled_weight_id}
 							sampled_weight={sampled_weight}
 							catch_id={this.props.this_catch.id}
 							handleChangeSampledWeight={this.props.handleChangeSampledWeight}
 							updateSampledWeight={this.props.updateSampledWeight}
 							createSampledWeight={this.props.createSampledWeight}
+							deleteSampledWeight={this.props.deleteSampledWeight}
 						/>
 					</td>
 				</Fragment>
