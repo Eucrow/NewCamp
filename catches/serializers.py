@@ -5,7 +5,7 @@ from samples.models import Sex, Length, SampledWeight
 from samples.serializers import SampleWeightSerializer, SexSerializer, LengthSerializer2
 # from species.serializers import CategorySerializer
 from species.models import Sp
-from species.serializers import SpBasicSerializer
+from species.serializers import SpSimpleSerializer
 
 
 class CatchSerializer(serializers.ModelSerializer):
@@ -21,7 +21,7 @@ class CatchSerializer(serializers.ModelSerializer):
 class CatchesVerboseSerializer(serializers.ModelSerializer):
 
     # category = CategorySerializer()
-    sp = SpBasicSerializer()
+    sp = SpSimpleSerializer()
     # species_name = serializers.RelatedField(source='species.Sp.name', read_only=True)
     # specie_sp_name = serializers.CharField(source='species.Sp.name')
 

@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 from species.models import Sp
-from species.serializers import SpeciesSerializer, SpBasicSerializer
+from species.serializers import SpeciesSerializer, SpSimpleSerializer
 
 
 class SpeciesListAPI(APIView):
@@ -45,6 +45,6 @@ class SpeciesGroupAPI(APIView):
     """
     def get(self, request, group):
         sp = Sp.objects.filter(group=group)
-        serializer = SpBasicSerializer(sp, many=True)
+        serializer = SpSimpleSerializer(sp, many=True)
         return Response(serializer.data)
 
