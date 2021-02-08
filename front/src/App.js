@@ -16,7 +16,7 @@ import ComponentsStationNew from "./components/stationNew/StationNew.js";
 
 // import ComponentsHauls from "./components/hauls/Hauls.js";
 
-// import ComponentsTrawlCatches from "./components/trawlCatches/TrawlHaulCatches.js";
+import ComponentsTrawlCatches from "./components/trawlCatches/TrawlHaulCatches.js";
 
 import Species from "./components/species/Species";
 
@@ -76,7 +76,7 @@ export default function App() {
 				{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
 				<Route path="/Hauls" exact component={ComponentsHauls} /> */}
 
-				{/* <Route path="/Catches/haul/:haul_id" exact component={ComponentsTrawlCatches} /> */}
+				<Route path="/Catches/haul/:haul_id" exact component={ComponentsTrawlCatches} />
 
 				{/* <Route path="/Weights" component={Weights} /> */}
 				{/* <Route path="/Samples" component={Samples} /> */}
