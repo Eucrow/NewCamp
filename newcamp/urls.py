@@ -75,7 +75,7 @@ urlpatterns = [
 
     # Stations API urls
     re_path(r'^api/1.0/station/(?P<station_id>[0-9]+)$', StationAPI.as_view(), name="get_update_delete_station_api"),
-    re_path(r'^api/1.0/station/new/$', StationAPI.as_view(), name="add_survey_api"),
+    re_path(r'^api/1.0/station/$', StationAPI.as_view(), name="add_survey_api"),
     re_path(r'^api/1.0/stations/$', StationsAPI.as_view(), name="get_stations_api"),
     re_path(r'^api/1.0/stations/(?P<survey_id>[0-9]+)$', StationsBySurveyAPI.as_view(),
             name="get_stations_by_survey_api"),

@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from "react";
 
-import ComponentsUiNewStationButton from "../ui/NewStationButton.js";
-
 import Station from "../station/Station";
+import NewStation from "../station/NewStation";
 
 import SurveyContext from "../../contexts/SurveyContext.js";
 
@@ -21,6 +20,7 @@ class ComponentsStations extends Component {
 		super(props);
 		this.state = {
 			stations: [],
+			add: false,
 		};
 
 		// The next api retrieve all the stations. If a 'hauls/survey_id' is added at the end, retrieve only the
@@ -30,14 +30,20 @@ class ComponentsStations extends Component {
 		this.apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
 		this.apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
 
-		this.apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get or update station
+		this.apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get, update or add station
 		this.apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
 
+		this.handleAdd = this.handleAdd.bind(this);
+		this.UiAddButton = this.UiAddButton.bind(this);
+
 		this.handleSubmitEditStation = this.handleSubmitEditStation.bind(this);
+		this.createStation = this.createStation.bind(this);
 
 		this.deleteStation = this.deleteStation.bind(this);
 		this.createHaul = this.createHaul.bind(this);
 		this.deleteHaul = this.deleteHaul.bind(this);
+
+		this.renderContent = this.renderContent.bind(this);
 
 		this.handleChangeStationFields = this.handleChangeStationFields.bind(this);
 	}
@@ -49,6 +55,26 @@ class ComponentsStations extends Component {
 		return this.context.surveySelector === null
 			? this.apiStationsPartial
 			: this.apiStationsPartial + "hauls/" + this.context.surveySelector;
+	}
+
+	handleAdd(status) {
+		this.setState(() => {
+			return {
+				add: status,
+			};
+		});
+	}
+
+	UiAddButton(status) {
+		return (
+			<button
+				onClick={(e) => {
+					this.handleAdd(status);
+				}}
+			>
+				New Station
+			</button>
+		);
 	}
 
 	handleSubmitEditStation(event, station_id) {
@@ -65,6 +91,28 @@ class ComponentsStations extends Component {
 			},
 			body: JSON.stringify(updated_station[0]), //look the [0]!!!
 		}).catch((error) => console.log(error));
+	}
+
+	createStation(event, station) {
+		event.preventDefault();
+
+		fetch(this.apiStation, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(station),
+		})
+			.then((response) => response.json())
+			.then((s) => {
+				const new_stations = [...this.state.stations, s];
+				this.setState(() => {
+					return {
+						stations: new_stations,
+					};
+				});
+			})
+			.catch((error) => console.log(error));
 	}
 
 	handleChangeStationFields(event, ids) {
@@ -204,30 +252,58 @@ class ComponentsStations extends Component {
 			});
 	}
 
-	render() {
-		return (
-			<Fragment>
-				<div>
-					<ComponentsUiNewStationButton />
-				</div>
+	renderContent() {
+		var content = "";
 
-				<ul>
-					{this.state.stations.map((station) => {
-						return (
-							<Station
-								key={station.id}
-								station={station}
-								deleteStation={this.deleteStation}
-								deleteHaul={this.deleteHaul}
-								createHaul={this.createHaul}
-								handleChangeStationFields={this.handleChangeStationFields}
-								handleSubmitEditStation={this.handleSubmitEditStation}
-							/>
-						);
-					})}
-				</ul>
-			</Fragment>
-		);
+		if (this.state.add === false) {
+			content = (
+				<div>
+					{this.UiAddButton(true)}
+					<ul>
+						{this.state.stations.map((station) => {
+							return (
+								<Station
+									key={station.id}
+									station={station}
+									deleteStation={this.deleteStation}
+									deleteHaul={this.deleteHaul}
+									createHaul={this.createHaul}
+									handleChangeStationFields={this.handleChangeStationFields}
+									handleSubmitEditStation={this.handleSubmitEditStation}
+								/>
+							);
+						})}
+					</ul>
+				</div>
+			);
+		} else if (this.state.add === true) {
+			content = (
+				<div>
+					<NewStation handleAdd={this.handleAdd} createStation={this.createStation} />
+					<ul>
+						{this.state.stations.map((station) => {
+							return (
+								<Station
+									key={station.id}
+									station={station}
+									deleteStation={this.deleteStation}
+									deleteHaul={this.deleteHaul}
+									createHaul={this.createHaul}
+									handleChangeStationFields={this.handleChangeStationFields}
+									handleSubmitEditStation={this.handleSubmitEditStation}
+								/>
+							);
+						})}
+					</ul>
+				</div>
+			);
+		}
+
+		return <Fragment>{content}</Fragment>;
+	}
+
+	render() {
+		return this.renderContent();
 	}
 }
 
