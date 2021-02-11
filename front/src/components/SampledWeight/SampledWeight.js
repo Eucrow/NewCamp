@@ -60,7 +60,7 @@ const SampledWeight = (props) => {
 								props.deleteSampledWeight(e, props.sampled_weight_id);
 							}}
 						>
-							Remove sampled weight
+							Delete sampled weight
 						</button>
 					</div>
 				);

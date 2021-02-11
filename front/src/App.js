@@ -11,8 +11,6 @@ import ComponentsSurveyNew from "./components/surveyNew/SurveyNew.js";
 import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
 
 import ComponentsStations from "./components/stations/Stations.js";
-import ComponentsStationNew from "./components/stationNew/StationNew.js";
-// import ComponentsStation from "./components/stationDetail/station.js";
 
 // import ComponentsHauls from "./components/hauls/Hauls.js";
 
@@ -69,8 +67,6 @@ export default function App() {
 				<Route path="/Surveys" exact component={ComponentsSurveys} />
 
 				<Route path="/Stations" exact component={ComponentsStations} />
-				<Route path="/Stations/new" exact component={ComponentsStationNew} />
-				{/* <Route path="/Stations/station/:station_id" exact component={ComponentsStation} /> */}
 
 				{/* TODO: CONSIDER IF THE NEXT PATH IS USEFULL */}
 				{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />

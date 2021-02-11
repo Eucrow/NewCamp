@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 
-import Station from "../station/Station";
-import NewStation from "../station/NewStation";
+import Station from "./Station";
+import NewStation from "./NewStation";
 
 import SurveyContext from "../../contexts/SurveyContext.js";
 

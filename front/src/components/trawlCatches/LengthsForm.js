@@ -1,6 +1,14 @@
 import React, { Component, Fragment } from "react";
 
 class LengthsForm extends Component {
+	/**
+	 *
+	 * @param {method} props.handleDeleteLength()
+	 * @param {method} props.handleAddLength()
+	 * @param {method} props.handleNumberIndividualsChange()
+	 * @param {method} props.handleLenghtNameChange()
+	 *
+	 */
 	constructor(props) {
 		super(props);
 		this.state = {};
@@ -47,7 +55,7 @@ class LengthsForm extends Component {
 											</button>
 										</td>
 										<td>
-											<button type="button" onClick={this.props.handleRemoveLength(idx)}>
+											<button type="button" onClick={this.props.handleDeleteLength(idx)}>
 												{" "}
 												Remove length{" "}
 											</button>

@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 
-// import ComponentsUiRemoveLengthButton from "./ui/RemoveLengthButton.js";
 import FormLengths from "./FormLengths.js";
 
 class ComponentsLengths extends Component {
@@ -61,7 +60,7 @@ class ComponentsLengths extends Component {
 		});
 	};
 
-	handleRemoveLength = (idx) => () => {
+	handleDeleteLength = (idx) => () => {
 		this.setState({
 			lengths: this.state.lengths.filter((s, sidx) => idx !== sidx),
 		});
@@ -139,7 +138,7 @@ class ComponentsLengths extends Component {
 
 	deleteLengths() {
 		/**
-		 * Remove all lengths of a sex_id in database.
+		 * Delete all lengths of a sex_id in database.
 		 */
 
 		const apiLengths = this.apiLengths + this.props.sex_id;
@@ -253,7 +252,7 @@ class ComponentsLengths extends Component {
 						lengths={this.state.lengths}
 						status_lengths={this.state.status_lengths}
 						handleHideLengths={this.handleHideLengths}
-						handleRemoveLength={this.handleRemoveLength}
+						handleDeleteLength={this.handleDeleteLength}
 						handleNumberIndividualsChange={this.handleNumberIndividualsChange}
 						handleLenghtNameChange={this.handleLenghtNameChange}
 						handleEditLengths={this.handleEditLengths}

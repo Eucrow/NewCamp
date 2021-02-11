@@ -3,8 +3,8 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 
 import SurveyContext from "../../contexts/SurveyContext.js";
-import Haul from "../haul/Haul";
-import NewHaul from "../haul/new/NewHaul";
+import Haul from "./Haul";
+import NewHaul from "./new/NewHaul";
 
 class Hauls extends Component {
 	/**
