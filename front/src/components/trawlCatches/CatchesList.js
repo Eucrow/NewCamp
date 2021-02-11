@@ -31,8 +31,8 @@ class CatchesList extends Component {
 		this.handleChangeSampledWeight = this.handleChangeSampledWeight.bind(this);
 		this.updateSampledWeight = this.updateSampledWeight.bind(this);
 		this.deleteSampledWeight = this.deleteSampledWeight.bind(this);
-		this.removeSexFromState = this.removeSexFromState.bind(this);
-		this.removeSex = this.removeSex.bind(this);
+		this.deleteSexFromState = this.deleteSexFromState.bind(this);
+		this.deleteSex = this.deleteSex.bind(this);
 		this.handleChangeGroup = this.handleChangeGroup.bind(this);
 		this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
 		this.handleChangeCategory = this.handleChangeCategory.bind(this);
@@ -175,7 +175,7 @@ class CatchesList extends Component {
 			.catch((error) => alert(error));
 	};
 
-	removeSexFromState = (ids) => {
+	deleteSexFromState = (ids) => {
 		/**
 		 * Method to manage the remove of sex.
 		 */
@@ -195,7 +195,7 @@ class CatchesList extends Component {
 		});
 	};
 
-	removeSex = (ids) => {
+	deleteSex = (ids) => {
 		const apiSex = this.apiSex + ids;
 
 		fetch(apiSex, {
@@ -205,7 +205,7 @@ class CatchesList extends Component {
 				Accept: "application/json",
 			},
 		})
-			.then(() => this.removeSexFromState(ids))
+			.then(() => this.deleteSexFromState(ids))
 			.catch((error) => alert(error));
 	};
 
@@ -599,7 +599,7 @@ class CatchesList extends Component {
 									species={this.state.species}
 									handleChangeSampledWeight={this.handleChangeSampledWeight}
 									updateSampledWeight={this.updateSampledWeight}
-									removeSex={this.removeSex}
+									deleteSex={this.deleteSex}
 									handleChangeGroup={this.handleChangeGroup}
 									handleChangeSpecies={this.handleChangeSpecies}
 									handleChangeCategory={this.handleChangeCategory}

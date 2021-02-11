@@ -8,13 +8,13 @@ class Catch extends Component {
 	 * Catch form.
 	 * @param {object} props.this_catch: catch managed by this component.
 	 * @param {object} props.species: species list.
-	 * @param {method} props.removeSex: remove sex of database.
+	 * @param {method} props.deleteSex: delete sex of database.
 	 * @param {method} props.handleChangeGroup: managing of group state and field.
 	 * @param {method} props.handleChangeSpecies: managing of species state and field.
 	 * @param {method} props.handleChangeCategory: managing of category state and field.
 	 * @param {method} props.handleChangeWeight: managing of weight state and field.
 	 * @param {method} props.updateCatch: update catch in database.
-	 * @param {method} props.removeCatch: remove catch of database.
+	 * @param {method} props.removeCatch: delete catch of database.
 	 * @param {method} props.handleChangeSex: manage sex state.
 	 * @param {method} props.handleNewSexSubmit: handle the new sex form.
 	 */
@@ -81,7 +81,7 @@ class Catch extends Component {
 								handleChangeSex={this.props.handleChangeSex}
 								editCatchStatus={this.editCatchStatus}
 								handleNewSexSubmit={this.props.handleNewSexSubmit}
-								removeSex={this.props.removeSex}
+								deleteSex={this.props.deleteSex}
 							/>
 						</td>
 					</tr>
@@ -153,7 +153,7 @@ class Catch extends Component {
 		// 						handleChangeSex={this.props.handleChangeSex}
 		// 						editCatchStatus={this.editCatchStatus}
 		// 						handleNewSexSubmit={this.props.handleNewSexSubmit}
-		// 						removeSex={this.props.removeSex}
+		// 						deleteSex={this.props.deleteSex}
 		// 					/>
 		// 				</td>
 		// 			</tr>

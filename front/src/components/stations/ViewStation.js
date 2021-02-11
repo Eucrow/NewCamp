@@ -29,7 +29,7 @@ class ViewStation extends Component {
 						}
 					}}
 				>
-					Remove
+					Delete
 				</button>
 				<Hauls
 					hauls={this.props.station.hauls}

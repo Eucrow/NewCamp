@@ -7,7 +7,7 @@ class ComponentSexes extends Component {
 	 * por aquí
 	 * @param {object} props.sexes: sexes of the catch.
 	 * @param {number} props.catch_id: id of the catch.
-	 * @param {method} props.removeSex: remove sex of database.
+	 * @param {method} props.deleteSex: delete sex of database.
 	 * @param {method} props.handleChangeSex:
 	 * @param {method} props.handleNewSexSubmit
 	 */
@@ -43,7 +43,7 @@ class ComponentSexes extends Component {
 							sex={s.sex}
 							catch_id={this.props.catch_id}
 							handleChangeSex={this.props.handleChangeSex}
-							removeSex={this.props.removeSex}
+							deleteSex={this.props.deleteSex}
 						/>
 					);
 				})}

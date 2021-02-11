@@ -6,10 +6,9 @@ class ComponentsFormLengths extends Component {
 	 * @param {number} props.lengths
 	 * @param {string} props.status_lengths: must be "view", "edit".
 	 * @param {string} props.handleHideLengths
-	 * @param {string} props.handleRemoveLength
+	 * @param {string} props.handleDeleteLength
 	 * @param {string} props.handleNumberIndividualsChange
 	 * @param {string} props.handleLenghtNameChange
-	 * @param {method} props.removeLength
 	 * @param {method} props.handleEditLengths
 	 */
 
@@ -63,9 +62,8 @@ class ComponentsFormLengths extends Component {
 												></input>
 											</td>
 											<td>
-												<button type="button" onClick={this.props.handleRemoveLength(idx)}>
-													{" "}
-													Remove length{" "}
+												<button type="button" onClick={this.props.handleDeleteLength(idx)}>
+													Delete length{" "}
 												</button>
 											</td>
 										</tr>
