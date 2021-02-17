@@ -17,6 +17,7 @@ import ComponentsStations from "./components/stations/Stations.js";
 import ComponentsTrawlCatches from "./components/trawlCatches/TrawlHaulCatches.js";
 
 import Species from "./components/species/Species";
+import Ships from "./components/ships/Ships";
 
 export default function App() {
 	const [surveySelector, setSurvey] = useState(null);
@@ -53,7 +54,8 @@ export default function App() {
 						)}{" "}
 						<Link to="/">Home</Link>-<Link to="/SurveySelect">Select Survey</Link>-
 						<Link to="/Surveys">Surveys</Link>-<Link to="/Strata">Strata</Link>-
-						<Link to="/Stations">Stations</Link>-<Link to="/Species">Species</Link>
+						<Link to="/Stations">Stations</Link>-<Link to="/Species">Species</Link>--
+						<Link to="/Ships">Ships</Link>
 					</nav>
 				</main>
 
@@ -77,6 +79,8 @@ export default function App() {
 				{/* <Route path="/Weights" component={Weights} /> */}
 				{/* <Route path="/Samples" component={Samples} /> */}
 				<Route path="/Species" component={Species} />
+
+				<Route path="/Ships" component={Ships} />
 			</Router>
 		</SurveyContext.Provider>
 	);

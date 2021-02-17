@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'catches',
     'samples',
     'import_old_camp',
+    'ships',
     'frontend',
 ]
 
