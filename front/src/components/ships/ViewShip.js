@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 
+import UiButtonUpdateShip from "./UiButtonUpdateShip";
+import UiButtonDeleteShip from "./UiButtonDeleteShip";
+
 class ViewShip extends Component {
 	/**
 	 * Ship component
@@ -16,22 +19,8 @@ class ViewShip extends Component {
 				Ship: {this.props.ship.name}-- DATRAS code:
 				{this.props.ship.datras_id}-- Length: {this.props.ship.length}-- Main power:
 				{this.props.ship.main_power}-- Year built: {this.props.ship.year_built}
-				<button
-					onClick={() => {
-						this.props.handleEdit(true);
-					}}
-				>
-					Edit
-				</button>
-				<button
-					onClick={(e) => {
-						if (window.confirm("Delete the ship?")) {
-							this.props.deleteShip(e, this.props.ship.id);
-						}
-					}}
-				>
-					Delete
-				</button>
+				<UiButtonUpdateShip handleEdit={this.props.handleEdit} ship_id={this.props.ship.id} />
+				<UiButtonDeleteShip deleteShip={this.props.deleteShip} ship_id={this.props.ship.id} />
 			</div>
 		);
 

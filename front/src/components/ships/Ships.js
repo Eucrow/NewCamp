@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import UiButtonAddShip from "./UiButtonAddShip";
 import NewShip from "./NewShip";
 import Ship from "./Ship";
 
@@ -12,31 +13,20 @@ class Ships extends Component {
 		super(props);
 		this.state = {
 			ships: [],
-			add: false,
+			add: false, // true to add new ship; false to not to.
+			edit: null, // null to not edit any ship; ship_id to edit that ship_id.
 		};
+
 		this.apiShips = "http://127.0.0.1:8000/api/1.0/ships/";
 		this.apiShip = "http://127.0.0.1:8000/api/1.0/ship/";
 
-		this.UiAddButton = this.UiAddButton.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+		this.handleEdit = this.handleEdit.bind(this);
+		this.handleAdd = this.handleAdd.bind(this);
 		this.createShip = this.createShip.bind(this);
 		this.updateShip = this.updateShip.bind(this);
 		this.deleteShip = this.deleteShip.bind(this);
 		this.renderContent = this.renderContent.bind(this);
-	}
-
-	UiAddButton(status_var, status) {
-		return (
-			<button
-				onClick={(e) => {
-					this.setState({
-						[status_var]: status,
-					});
-				}}
-			>
-				New Station
-			</button>
-		);
 	}
 
 	handleChange(e, ship_id) {
@@ -58,6 +48,12 @@ class Ships extends Component {
 			return {
 				ships: newShips,
 			};
+		});
+	}
+
+	handleEdit(edit) {
+		this.setState({
+			edit: edit,
 		});
 	}
 
@@ -95,7 +91,6 @@ class Ships extends Component {
 
 	updateShip(e, ship_id) {
 		e.preventDefault();
-
 		const api = this.apiShip + ship_id;
 
 		const updatedShip = this.state.ships.filter((ship) => {
@@ -106,7 +101,15 @@ class Ships extends Component {
 			method: "PUT",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(updatedShip[0]),
-		}).catch((error) => console.log(error));
+		})
+			.then((response) => {
+				if (response.status == 200) {
+					this.handleEdit(null);
+				} else {
+					alert("Something is wrong.");
+				}
+			})
+			.catch((error) => console.log(error));
 	}
 
 	deleteShip(e, ship_id) {
@@ -137,12 +140,14 @@ class Ships extends Component {
 		if (this.state.add === false) {
 			content = (
 				<div>
-					{this.UiAddButton("add", true)}
+					<UiButtonAddShip handleAdd={this.handleAdd} />
 					{this.state.ships.map((ship) => {
 						return (
 							<Ship
 								key={ship.id}
 								ship={ship}
+								edit={this.state.edit}
+								handleEdit={this.handleEdit}
 								handleChange={this.handleChange}
 								updateShip={this.updateShip}
 								deleteShip={this.deleteShip}
@@ -159,6 +164,7 @@ class Ships extends Component {
 						return (
 							<Ship
 								key={ship.id}
+								ref={this.shipElement}
 								ship={ship}
 								handleChange={this.handleChange}
 								updateShip={this.updateShip}
