@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-
+/**
+ * Component of button to add a new ship
+ * @param {method} props.handleEdit: method to manage the 'edit' state.
+ */
 class UiButtonCancelEditShip extends Component {
-	/**
-	 * Component of button to add a new ship
-	 * @param {method} props.handleEdit: method to manage the 'edit' state.
-	 */
-
 	render() {
 		return (
 			<button

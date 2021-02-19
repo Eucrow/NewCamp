@@ -3,12 +3,11 @@ import React, { Component } from "react";
 import UiButtonAddShip from "./UiButtonAddShip";
 import NewShip from "./NewShip";
 import Ship from "./Ship";
-
+/**
+ * Component list of ships.
+ * List of all the ships stored in database.
+ */
 class Ships extends Component {
-	/**
-	 * List of Ships
-	 */
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -28,7 +27,11 @@ class Ships extends Component {
 		this.deleteShip = this.deleteShip.bind(this);
 		this.renderContent = this.renderContent.bind(this);
 	}
-
+	/**
+	 * Manage change in fields
+	 * @param {event} e - Event.
+	 * @param {numeric} ship_id - Identification number of the ship which fields are managed.
+	 */
 	handleChange(e, ship_id) {
 		const name = e.target.name;
 		const value = e.target.value;
@@ -51,12 +54,21 @@ class Ships extends Component {
 		});
 	}
 
-	handleEdit(edit) {
+	/**
+	 * Manage change of 'edit' state.
+	 * @param {Event} e - Event.
+	 * @param {(numeric|null)} status - Identification number of the ship which fields are managed. If 'null', none is edited.
+	 */
+	handleEdit(status) {
 		this.setState({
-			edit: edit,
+			edit: status,
 		});
 	}
 
+	/**
+	 * Manage change of 'add' state.
+	 * @param {boolean} status - Identification number of the ship which fields are managed.
+	 */
 	handleAdd(status) {
 		this.setState(() => {
 			return {
@@ -65,6 +77,11 @@ class Ships extends Component {
 		});
 	}
 
+	/**
+	 * Create ship in database and update the state.
+	 * @param {event} e - Event
+	 * @param {object} ship - Ship object to create.
+	 */
 	createShip(e, ship) {
 		e.preventDefault();
 
@@ -89,6 +106,11 @@ class Ships extends Component {
 			.catch((error) => alert(error));
 	}
 
+	/**
+	 * Update ship from database and state.
+	 * @param {event} e - Event.
+	 * @param {numeric} ship_id - Ship identificator of ship to update.
+	 */
 	updateShip(e, ship_id) {
 		e.preventDefault();
 		const api = this.apiShip + ship_id;
@@ -112,6 +134,11 @@ class Ships extends Component {
 			.catch((error) => console.log(error));
 	}
 
+	/**
+	 * Delete ship from database and state.
+	 * @param {event} e Event.
+	 * @param {numeric} ship_id Ship identificator of ship to delete.
+	 */
 	deleteShip(e, ship_id) {
 		e.preventDefault();
 
@@ -134,6 +161,10 @@ class Ships extends Component {
 			.catch((error) => alert(error));
 	}
 
+	/**
+	 * Create content to render.
+	 * @private
+	 */
 	renderContent() {
 		let content = "";
 

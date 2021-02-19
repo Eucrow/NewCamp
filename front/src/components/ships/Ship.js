@@ -3,16 +3,15 @@ import React, { Component } from "react";
 import ViewShip from "./ViewShip";
 import EditShip from "./EditShip";
 
+/**
+ * Ship component. Manage component logic.
+ * @param {object} props - Ship object
+ * @param {method} props.handleChange
+ * @param {method} props.handleEdit
+ * @param {method} props.updateShip
+ * @param {method} props.deleteShip
+ */
 class Ship extends Component {
-	/**
-	 * Ship component. Manage component logic.
-	 * @param {object} props: ship object
-	 * @param {method} props.handleChange:
-	 * @param {method} props.handleEdit:
-	 * @param {method} props.updateShip:
-	 * @param {method} props.deleteShip:
-	 */
-
 	renderContent() {
 		let content = "";
 

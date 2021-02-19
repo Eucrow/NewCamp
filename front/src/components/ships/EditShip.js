@@ -2,15 +2,14 @@ import React, { Component } from "react";
 
 import UiButtonCancelEditShip from "./UiButtonCancelEditShip";
 
+/**
+ * Ship component
+ * @param {object} props.ship - ship object
+ * @param {method} props.handleChange
+ * @param {method} props.handleEdit
+ * @param {method} props.updateShip
+ */
 class EditShip extends Component {
-	/**
-	 * Ship component
-	 * @param {object} props.ship: ship object
-	 * @param {method} props.handleChange:
-	 * @param {method} props.handleEdit:
-	 * @param {method} props.updateShip:
-	 */
-
 	renderContent() {
 		var content = "";
 
