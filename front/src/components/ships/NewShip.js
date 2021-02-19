@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-
+/**
+ * Ship component
+ * @param {object} props.ship: ship object
+ * @param {method} props.handleAdd:
+ * @param {method} props.handleChange:
+ * @param {method} props.createShip:
+ */
 class NewShip extends Component {
-	/**
-	 * Ship component
-	 * @param {object} props.ship: ship object
-	 * @param {method} props.handleAdd:
-	 * @param {method} props.handleChange:
-	 * @param {method} props.createShip:
-	 */
-
 	constructor(props) {
 		super(props);
 
@@ -16,7 +14,10 @@ class NewShip extends Component {
 			ship: [],
 		};
 	}
-
+	/**
+	 * Manage fields change in 'ship' state.
+	 * @param {event} e - Event.
+	 */
 	handleChange(e) {
 		const name = e.target.name;
 		const value = e.target.value;

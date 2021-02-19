@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 
-class EditShip extends Component {
-	/**
-	 * Ship component
-	 * @param {object} props.ship: ship object
-	 * @param {method} props.handleEdit:
-	 * @param {method} props.handleChange:
-	 * @param {method} props.updateShip:
-	 */
+import UiButtonCancelEditShip from "./UiButtonCancelEditShip";
 
+/**
+ * Ship component
+ * @param {object} props.ship - ship object
+ * @param {method} props.handleChange
+ * @param {method} props.handleEdit
+ * @param {method} props.updateShip
+ */
+class EditShip extends Component {
 	renderContent() {
 		var content = "";
 
@@ -16,7 +17,6 @@ class EditShip extends Component {
 			<form
 				onSubmit={(e) => {
 					this.props.updateShip(e, this.props.ship.id);
-					this.props.handleEdit(false);
 				}}
 			>
 				<div>
@@ -25,7 +25,7 @@ class EditShip extends Component {
 						type="text"
 						id="name"
 						name="name"
-						value={this.props.ship.name}
+						value={this.props.ship.name || ""}
 						onChange={(e) => this.props.handleChange(e, this.props.ship.id)}
 					/>
 					<label htmlFor="datras_id">DATRAS code:</label>
@@ -33,7 +33,7 @@ class EditShip extends Component {
 						type="text"
 						id="datras_id"
 						name="datras_id"
-						value={this.props.ship.datras_id}
+						value={this.props.ship.datras_id || ""}
 						onChange={(e) => this.props.handleChange(e, this.props.ship.id)}
 					/>
 					<label htmlFor="length">Length:</label>
@@ -41,7 +41,7 @@ class EditShip extends Component {
 						type="text"
 						id="length"
 						name="length"
-						value={this.props.ship.length}
+						value={this.props.ship.length || ""}
 						onChange={(e) => this.props.handleChange(e, this.props.ship.id)}
 					/>
 					<label htmlFor="main_power">Main Power:</label>
@@ -49,7 +49,7 @@ class EditShip extends Component {
 						type="text"
 						id="main_power"
 						name="main_power"
-						value={this.props.ship.main_power}
+						value={this.props.ship.main_power || ""}
 						onChange={(e) => this.props.handleChange(e, this.props.ship.id)}
 					/>
 					<label htmlFor="year_built">Year built:</label>
@@ -57,10 +57,11 @@ class EditShip extends Component {
 						type="text"
 						id="year_built"
 						name="year_built"
-						value={this.props.ship.year_built}
+						value={this.props.ship.year_built || ""}
 						onChange={(e) => this.props.handleChange(e, this.props.ship.id)}
 					/>
 					<input type="submit" value="Save" />
+					<UiButtonCancelEditShip handleEdit={this.props.handleEdit} />
 				</div>
 			</form>
 		);
