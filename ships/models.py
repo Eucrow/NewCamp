@@ -9,7 +9,7 @@ class Ship(models.Model):
     length = models.IntegerField(null=True) # in meters
     beam = models.DecimalField(max_digits=4, decimal_places=2, null=True) # in meters
     main_power = models.IntegerField(null=True) #in kW
-    year_built =  models.IntegerField(null=True)
+    year_built = models.IntegerField(null=True)
     comment = models.CharField(max_length=500, null=True)
 
     class Meta:
