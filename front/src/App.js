@@ -18,6 +18,7 @@ import ComponentsTrawlCatches from "./components/trawlCatches/TrawlHaulCatches.j
 
 import Species from "./components/species/Species";
 import Ships from "./components/ships/Ships";
+import Gears from "./components/gears/Gears";
 
 export default function App() {
 	const [surveySelector, setSurvey] = useState(null);
@@ -55,7 +56,8 @@ export default function App() {
 						<Link to="/">Home</Link>-<Link to="/SurveySelect">Select Survey</Link>-
 						<Link to="/Surveys">Surveys</Link>-<Link to="/Strata">Strata</Link>-
 						<Link to="/Stations">Stations</Link>-<Link to="/Species">Species</Link>--
-						<Link to="/Ships">Ships</Link>
+						<Link to="/Ships">Ships</Link>--
+						<Link to="/Gears">Gears</Link>
 					</nav>
 				</main>
 
@@ -81,6 +83,8 @@ export default function App() {
 				<Route path="/Species" component={Species} />
 
 				<Route path="/Ships" component={Ships} />
+
+				<Route path="/Gears" component={Gears} />
 			</Router>
 		</SurveyContext.Provider>
 	);
