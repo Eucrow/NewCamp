@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 /**
- * Component of button to add a new gear
+ * Component of button to add a new trawl
  * @param {method} props.handleAdd: method to manage the 'add' state.
  */
-class UiButtonAddGear extends Component {
+class UiButtonAddTrawl extends Component {
 	render() {
 		return (
 			<button
@@ -11,10 +11,10 @@ class UiButtonAddGear extends Component {
 					this.props.handleAdd(true);
 				}}
 			>
-				Add Gear
+				Add Trawl
 			</button>
 		);
 	}
 }
 
-export default UiButtonAddGear;
+export default UiButtonAddTrawl;

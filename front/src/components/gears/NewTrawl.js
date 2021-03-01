@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 /**
- * Gear component
- * @param {object} props.gear: gear object
+ * Trawl component
+ * @param {object} props.trawl: trawl object
  * @param {method} props.handleAdd:
  * @param {method} props.handleChange:
- * @param {method} props.createGear:
+ * @param {method} props.createTrawl:
  */
-class NewGear extends Component {
+class NewTrawl extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			gear: [],
+			trawl: [],
 		};
 	}
 	/**
-	 * Manage fields change in 'gear' state.
+	 * Manage fields change in 'trawl' state.
 	 * @param {event} e - Event.
 	 */
 	handleChange(e) {
@@ -23,8 +23,8 @@ class NewGear extends Component {
 		const value = e.target.value;
 
 		this.setState({
-			gear: {
-				...this.state.gear,
+			trawl: {
+				...this.state.trawl,
 				[name]: value,
 			},
 		});
@@ -38,7 +38,7 @@ class NewGear extends Component {
 		content = (
 			<form
 				onSubmit={(e) => {
-					this.props.createGear(e, this.state.gear);
+					this.props.createTrawl(e, this.state.trawl);
 					this.props.handleAdd(false);
 				}}
 			>
@@ -46,8 +46,8 @@ class NewGear extends Component {
 					<label htmlFor="name">Name:</label>
 					<input type="number" id="name" name="name" onChange={(e) => this.handleChange(e)} />
 					--
-					<label htmlFor="gear_type">Gear type:</label>
-					<input type="text" id="gear_type" name="gear_type" onChange={(e) => this.handleChange(e)} /> --
+					<label htmlFor="trawl_type">Trawl type:</label>
+					<input type="text" id="trawl_type" name="trawl_type" onChange={(e) => this.handleChange(e)} /> --
 					<label htmlFor="otter_boards_type">Otter boards type:</label>
 					<input
 						type="text"
@@ -72,19 +72,19 @@ class NewGear extends Component {
 						onChange={(e) => this.handleChange(e)}
 					/>
 					--
-					<label htmlFor="groundgear_length">Groundgear length:</label>
+					<label htmlFor="groundtrawl_length">Groundtrawl length:</label>
 					<input
 						type="number"
-						id="groundgear_length"
-						name="groundgear_length"
+						id="groundtrawl_length"
+						name="groundtrawl_length"
 						onChange={(e) => this.handleChange(e)}
 					/>
 					--
-					<label htmlFor="groundgear_weight">Groundgear weight:</label>
+					<label htmlFor="groundtrawl_weight">Groundtrawl weight:</label>
 					<input
 						type="number"
-						id="groundgear_weight"
-						name="groundgear_weight"
+						id="groundtrawl_weight"
+						name="groundtrawl_weight"
 						onChange={(e) => this.handleChange(e)}
 					/>
 					--
@@ -196,4 +196,4 @@ class NewGear extends Component {
 	}
 }
 
-export default NewGear;
+export default NewTrawl;

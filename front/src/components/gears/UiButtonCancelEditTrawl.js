@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 /**
- * Component of button to add a new gear
+ * Component of button to add a new trawl
  * @param {method} props.handleEdit: method to manage the 'edit' state.
  */
-class UiButtonCancelEditGear extends Component {
+class UiButtonCancelEditTrawl extends Component {
 	render() {
 		return (
 			<button
@@ -17,4 +17,4 @@ class UiButtonCancelEditGear extends Component {
 	}
 }
 
-export default UiButtonCancelEditGear;
+export default UiButtonCancelEditTrawl;

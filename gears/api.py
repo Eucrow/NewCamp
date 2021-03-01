@@ -1,19 +1,20 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
-from gears.models import Gear
-from gears.serializers import GearSerializer
-
-class GearsAPI(ListCreateAPIView):
-    '''
-    Api to list and create gear
-    '''
-    queryset = Gear.objects.all()
-    serializer_class = GearSerializer
+from gears.models import Trawl
+from gears.serializers import TrawlSerializer
 
 
-class GearAPI(RetrieveUpdateDestroyAPIView):
+class TrawlsAPI(ListCreateAPIView):
     '''
-    Api to retrieve, update or destroy gear
+    Api to list and create trawl
     '''
-    queryset = Gear.objects.all()
-    serializer_class = GearSerializer
+    queryset = Trawl.objects.all()
+    serializer_class = TrawlSerializer
+
+
+class TrawlAPI(RetrieveUpdateDestroyAPIView):
+    '''
+    Api to retrieve, update or destroy trawl
+    '''
+    queryset = Trawl.objects.all()
+    serializer_class = TrawlSerializer

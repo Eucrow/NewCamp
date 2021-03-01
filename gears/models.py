@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class Gear(models.Model):
+class Trawl(models.Model):
     # ARTE: use the old camp ARTE field as name of the gear
     name = models.PositiveSmallIntegerField(null=False, unique=True)
     # TIPO gear type
