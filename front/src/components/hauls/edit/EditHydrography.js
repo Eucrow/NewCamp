@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class EditHydrography extends Component {
 	/**
 	 * Component of hydrography form of haul.
-	 * @param {number} props.haul
+	 * @param {object} props.haul
 	 * @param {function} props.handleChangeHydrography
 	 */
 

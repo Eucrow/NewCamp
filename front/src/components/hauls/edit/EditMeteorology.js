@@ -2,7 +2,8 @@ import React, { Component } from "react";
 class EditMeteorology extends Component {
 	/**
 	 * Component of meteorology form of haul.
-	 * @param {number} props.haul
+	 * @param {object} props.haul
+	 * @param {method} props.handleChangeMeteorology
 	 */
 
 	render() {

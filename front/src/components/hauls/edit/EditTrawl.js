@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class EditTrawl extends Component {
 	/**
 	 * Component of trawl form of haul.
-	 * @param {number} props.haul
+	 * @param {object} props.haul
 	 * @param {function} props.handleChangeTrawl
 	 */
 
@@ -141,15 +141,21 @@ class EditTrawl extends Component {
 					value={haul.trawl_characteristics.sweep || ""}
 					onChange={this.props.handleChangeTrawl}
 				/>
-				<label htmlFor="otter_boards_distance">otter_boards_distance:</label>
+				<label htmlFor="otter_boards_distance">
+					otter_boards_distance:
+				</label>
 				<input
 					type="text"
 					name="otter_boards_distance"
 					id="otter_boards_distance"
-					value={haul.trawl_characteristics.otter_boards_distance || ""}
+					value={
+						haul.trawl_characteristics.otter_boards_distance || ""
+					}
 					onChange={this.props.handleChangeTrawl}
 				/>
-				<label htmlFor="horizontal_aperture">horizontal_aperture:</label>
+				<label htmlFor="horizontal_aperture">
+					horizontal_aperture:
+				</label>
 				<input
 					type="text"
 					name="horizontal_aperture"

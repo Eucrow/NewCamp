@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class ViewMeteorology extends Component {
 	/**
 	 * Component of meteorology form of haul.
-	 * @param {number} props.haul
+	 * @param {object} props.haul
 	 */
 
 	render() {

@@ -9,8 +9,8 @@ class NewHaul extends Component {
 	/**
 	 * New haul component
 	 * @param {number} props.station_id
-	 * @param {function} props.changeAdd
-	 * @param {function} props.createHaul
+	 * @param {method} props.changeAdd
+	 * @param {method} props.createHaul
 	 */
 	constructor(props) {
 		super(props);

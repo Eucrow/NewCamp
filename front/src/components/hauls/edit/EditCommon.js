@@ -3,7 +3,8 @@ import React, { Component } from "react";
 class EditCommon extends Component {
 	/**
 	 * Component of the common part of the haul form.
-	 * @param {number} props.haul
+	 * @param {object} props.haul
+	 * @param {object} props.gears
 	 * @param {function} props.handleChangeCommon
 	 * @param {function} props.handleChangeCommonValid
 	 */

@@ -15,6 +15,7 @@ import EditHydrography from "./edit/EditHydrography";
 class HaulDetails extends Component {
 	/**
 	 * View haul detail component.
+	 * @param {object} props.haul
 	 */
 
 	constructor(props) {
@@ -27,7 +28,6 @@ class HaulDetails extends Component {
 				hydrography_characteristics: {},
 				station: {},
 				sampler: {},
-				// gear: {},
 			},
 			gears: [],
 
@@ -44,7 +44,6 @@ class HaulDetails extends Component {
 		this.changeIsEdit = this.changeIsEdit.bind(this);
 		this.handleChangeCommon = this.handleChangeCommon.bind(this);
 		this.handleChangeCommonValid = this.handleChangeCommonValid.bind(this);
-		// this.handleChangeGear = this.handleChangeGear.bind(this);
 		this.handleChangeMeteorology = this.handleChangeMeteorology.bind(this);
 		this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
 		this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
@@ -83,24 +82,6 @@ class HaulDetails extends Component {
 			haul: newHaulState,
 		});
 	}
-
-	// handleChangeGear(event) {
-	// 	// const name = event.target.name;
-	// 	const value = event.target.value;
-
-	// 	// Is necessary get the id of the gear from gears state
-	// 	const gear = this.state.gears.find((g) => g.name === parseInt(value));
-
-	// 	this.setState({
-	// 		haul: {
-	// 			...this.state.haul,
-	// 			gear: {
-	// 				id: gear.id,
-	// 				name: gear.name,
-	// 			},
-	// 		},
-	// 	});
-	// }
 
 	handleChangeMeteorology(event) {
 		const name = event.target.name;
@@ -200,7 +181,6 @@ class HaulDetails extends Component {
 								this.handleChangeCommonValid
 							}
 							handleChangeCommon={this.handleChangeCommon}
-							// handleChangeGear={this.handleChangeGear}
 							gears={this.state.gears}
 						/>
 						<EditMeteorology

@@ -9,6 +9,10 @@ import NewHaul from "./new/NewHaul";
 class Hauls extends Component {
 	/**
 	 * List of hauls
+	 * @param {object} hauls
+	 * @param {object} this.props.haul_id
+	 * @param {object} this.props.sampler_id
+	 * @param {method} props.deleteHaul
 	 */
 
 	// The contextType property on a class can be assigned a Context object created by React.createContext().
@@ -35,7 +39,9 @@ class Hauls extends Component {
 		/**
 		 * Build url api of all the hauls of a survey, using apiHauls and context
 		 */
-		return this.context.surveySelector === null ? this.apiHauls : this.apiHauls + this.context.surveySelector;
+		return this.context.surveySelector === null
+			? this.apiHauls
+			: this.apiHauls + this.context.surveySelector;
 	}
 
 	changeAdd(add) {
@@ -57,11 +63,18 @@ class Hauls extends Component {
 					{this.props.hauls.map((haul) => {
 						return (
 							<div key={haul.id}>
-								<Haul haul={haul} style={{ display: "inline" }} />
+								<Haul
+									haul={haul}
+									style={{ display: "inline" }}
+								/>
 								<button
 									style={{ display: "inline" }}
 									onClick={(e) => {
-										this.props.deleteHaul(e, haul.station.id, haul.id);
+										this.props.deleteHaul(
+											e,
+											haul.station.id,
+											haul.id
+										);
 									}}
 								>
 									Delete haul
@@ -69,7 +82,8 @@ class Hauls extends Component {
 								<Link
 									style={{ display: "inline" }}
 									to={{
-										pathname: this.routeTrawlCatches + haul.id,
+										pathname:
+											this.routeTrawlCatches + haul.id,
 										sampler_id: this.props.sampler_id,
 										haul_id: this.props.haul_id,
 									}}

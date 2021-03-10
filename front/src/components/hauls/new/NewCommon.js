@@ -3,11 +3,12 @@ import React, { Component } from "react";
 class NewCommon extends Component {
 	/**
 	 * Component of the common part of the haul form.
-	 * @param {number} props.haul
+	 * @param {object} props.haul
 	 * @param {object} props.strata
 	 * @param {object} props.samplers
 	 * @param {object} props.gears
-	 * @param {function} props.handleChange
+	 * @param {method} props.handleChange
+	 * @param {method} props.handleChangeNestedIds
 	 */
 
 	render() {

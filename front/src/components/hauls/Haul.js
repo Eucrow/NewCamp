@@ -14,7 +14,6 @@ class Haul extends Component {
 		};
 
 		this.changeDetail = this.changeDetail.bind(this);
-		this.renderContent = this.renderContent.bind(this);
 	}
 
 	changeDetail(detail) {
@@ -30,8 +29,10 @@ class Haul extends Component {
 			return (
 				<div style={{ display: "inline" }}>
 					<div key={this.props.haul.id} style={{ display: "inline" }}>
-						Haul: {this.props.haul.haul} - Station: {this.props.haul.station.station} - Sampler:
-						{this.props.haul.sampler.sampler} - Valid?:{this.props.haul.valid} -
+						Haul: {this.props.haul.haul} - Station:{" "}
+						{this.props.haul.station.station} - Sampler:
+						{this.props.haul.sampler.sampler} - Valid?:
+						{this.props.haul.valid} -
 					</div>
 					<button
 						style={{ display: "inline" }}
