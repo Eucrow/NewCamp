@@ -1,8 +1,8 @@
 [
 	{
-	"model": "gears.gear",
-    "pk": 1,
-    "fields": {
+	"model": "gears.trawl",
+	"pk": 1,
+	"fields": {
 		"name": 1,
 		"gear_type": "BACA",
 		"otter_boards_type": "Rectangu",
@@ -16,7 +16,7 @@
 		"square_meshes": 70,
 		"top_panel_meshes": 70,
 		"bottom_panel_meshes": 70,
-		"codend_nets_meshes": 40,
+		"codend_meshes": 40,
 		"inner_linner_meshes": 15,
 		"otter_boards_distance": 120,
 		"horizontal_aperture": 21.5,
@@ -25,10 +25,10 @@
 		}
 	},
 	{
-	"model": "gears.gear",
+	"model": "gears.trawl",
 	"pk": 2,
 	"fields": {
-	"name": 2,
+		"name": 2,
 		"gear_type": "BACA",
 		"otter_boards_type": "Rectangu",
 		"otter_boards_area": 3.6,
@@ -41,7 +41,7 @@
 		"square_meshes": 80,
 		"top_panel_meshes": 80,
 		"bottom_panel_meshes": 80,
-		"codend_nets_meshes": 60,
+		"codend_meshes": 60,
 		"inner_linner_meshes": 15,
 		"otter_boards_distance": 118,
 		"horizontal_aperture": 20.1,
@@ -50,10 +50,10 @@
 		}
 	},
 	{
-	"model": "gears.gear",
+	"model": "gears.trawl",
 	"pk": 3,
 	"fields": {
-	"name": 3,
+		"name": 3,
 		"gear_type": "BACA",
 		"otter_boards_type": "Ovales",
 		"otter_boards_area": 3.5,
@@ -66,7 +66,7 @@
 		"square_meshes": 80,
 		"top_panel_meshes": 80,
 		"bottom_panel_meshes": 80,
-		"codend_nets_meshes": 60,
+		"codend_meshes": 60,
 		"inner_linner_meshes": 15,
 		"otter_boards_distance": 120,
 		"horizontal_aperture": 21.0,
@@ -75,8 +75,8 @@
 		}
 	},
 	{
-	"model": "gears.gear",
-	"pk": 4,
+	"model": "gears.trawl",
+	"pk":4 ,
 	"fields": {
 		"name": 4,
 		"gear_type": "BACA",
@@ -91,7 +91,7 @@
 		"square_meshes": 80,
 		"top_panel_meshes": 80,
 		"bottom_panel_meshes": 80,
-		"codend_nets_meshes": 70,
+		"codend_meshes": 70,
 		"inner_linner_meshes": 15,
 		"otter_boards_distance": 120,
 		"horizontal_aperture": 21.0,
@@ -100,8 +100,8 @@
 		}
 	},
 	{
-	"model": "gears.gear",
-	"pk": 5,
+	"model": "gears.trawl",
+	"pk":5 ,
 	"fields": {
 		"name": 5,
 		"gear_type": "BACA",
@@ -116,7 +116,7 @@
 		"square_meshes": 90,
 		"top_panel_meshes": 90,
 		"bottom_panel_meshes": 80,
-		"codend_nets_meshes": 60,
+		"codend_meshes": 60,
 		"inner_linner_meshes": 20,
 		"otter_boards_distance": 120,
 		"horizontal_aperture": 21.0,
@@ -125,7 +125,7 @@
 		}
 	},
 	{
-	"model": "gears.gear",
+	"model": "gears.trawl",
 	"pk": 6,
 	"fields": {
 		"name": 6,
@@ -141,16 +141,16 @@
 		"square_meshes": 100,
 		"top_panel_meshes": 80,
 		"bottom_panel_meshes": 80,
-		"codend_nets_meshes": 25,
+		"codend_meshes": 25,
 		"inner_linner_meshes": 20,
 		"otter_boards_distance": 100,
 		"horizontal_aperture": 22.1,
 		"vertical_aperture": 3.2,
-		"comment": "GOV. Arte estándar en las campañas del IBTS del ICES.Usado por el Thalassa"
+		"comment": "GOV. name estándar en las campañas del IBTS del ICES.Usado por el Thalassa"
 		}
 	},
 	{
-	"model": "gears.gear",
+	"model": "gears.trawl",
 	"pk": 7,
 	"fields": {
 		"name": 35,
@@ -166,7 +166,7 @@
 		"square_meshes": 80,
 		"top_panel_meshes": 80,
 		"bottom_panel_meshes": 80,
-		"codend_nets_meshes": 35,
+		"codend_meshes": 35,
 		"inner_linner_meshes": 15,
 		"otter_boards_distance": 120,
 		"horizontal_aperture": 21.5,
@@ -175,7 +175,7 @@
 		}
 	},
 	{
-	"model": "gears.gear",
+	"model": "gears.trawl",
 	"pk": 8,
 	"fields": {
 		"name": 45,
@@ -191,7 +191,7 @@
 		"square_meshes": 80,
 		"top_panel_meshes": 80,
 		"bottom_panel_meshes": 80,
-		"codend_nets_meshes": 45,
+		"codend_meshes": 45,
 		"inner_linner_meshes": 15,
 		"otter_boards_distance": 120,
 		"horizontal_aperture": 21.5,
@@ -200,7 +200,7 @@
 		}
 	},
 	{
-	"model": "gears.gear",
+	"model": "gears.trawl",
 	"pk": 9,
 	"fields": {
 		"name": 98,
@@ -216,16 +216,16 @@
 		"square_meshes": 80,
 		"top_panel_meshes": 80,
 		"bottom_panel_meshes": 80,
-		"codend_nets_meshes": 60,
+		"codend_meshes": 60,
 		"inner_linner_meshes": 15,
 		"otter_boards_distance": 120,
 		"horizontal_aperture": 20.0,
 		"vertical_aperture": 2.2,
-		"comment": "Arte de 10 % de comisión"
+		"comment": "name de 10 % de comisión"
 		}
 	},
 	{
-	"model": "gears.gear",
+	"model": "gears.trawl",
 	"pk": 10,
 	"fields": {
 		"name": 33,
@@ -241,7 +241,7 @@
 		"square_meshes": 50,
 		"top_panel_meshes": 50,
 		"bottom_panel_meshes": 50,
-		"codend_nets_meshes": 50,
+		"codend_meshes": 50,
 		"inner_linner_meshes": 1,
 		"otter_boards_distance": 4,
 		"horizontal_aperture": 3.5,
@@ -250,7 +250,7 @@
 		}
 	},
 	{
-	"model": "gears.gear",
+	"model": "gears.trawl",
 	"pk": 11,
 	"fields": {
 		"name": 7,
@@ -265,7 +265,7 @@
 		"square_meshes": 80,
 		"top_panel_meshes": 80,
 		"bottom_panel_meshes": 80,
-		"codend_nets_meshes": 80,
+		"codend_meshes": 80,
 		"inner_linner_meshes": 20,
 		"otter_boards_distance": 120,
 		"horizontal_aperture": 22.0,
@@ -274,7 +274,7 @@
 		}
 	},
 	{
-	"model": "gears.gear",
+	"model": "gears.trawl",
 	"pk": 12,
 	"fields": {
 		"name": 8,
@@ -291,7 +291,7 @@
 		}
 	},
 	{
-	"model": "gears.gear",
+	"model": "gears.trawl",
 	"pk": 13,
 	"fields": {
 		"name": 73,
@@ -306,11 +306,120 @@
 		"square_meshes": 75,
 		"top_panel_meshes": 60,
 		"bottom_panel_meshes": 60,
-		"codend_nets_meshes": 20,
+		"codend_meshes": 20,
 		"inner_linner_meshes": 20,
 		"otter_boards_distance": 124,
 		"horizontal_aperture": 18.1,
 		"vertical_aperture": 2.4
+		}
+	},
+	{
+	"model": "gears.trawl",
+	"pk": 14,
+	"fields": {
+		"name": 40,
+		"gear_type": "Droc",
+		"comment": "Draga de roca de   Banco de Galicia 2011"
+		}
+	},
+	{
+	"model": "gears.trawl",
+	"pk": 15,
+	"fields": {
+		"name": 95,
+		"gear_type": "Baca",
+		"otter_boards_type": "Thyboron",
+		"otter_boards_area": 1.8,
+		"otter_boards_weight": 328,
+		"comment": "burlón grueso. Utilizado en Demersales 2013"
+		}
+	},
+	{
+	"model": "gears.trawl",
+	"pk": 16,
+	"fields": {
+		"name": 96,
+		"gear_type": "baca",
+		"otter_boards_type": "Thyboron",
+		"otter_boards_area": 1.8,
+		"otter_boards_weight": 328,
+		"comment": "Usado en Cormol II, 12C. Además de flotadores"
+		}
+	},
+	{
+	"model": "gears.trawl",
+	"pk": 17,
+	"fields": {
+		"name": 99,
+		"gear_type": "Baca",
+		"otter_boards_type": "Thyboron",
+		"otter_boards_area": 1.8,
+		"otter_boards_weight": 328,
+		"comment": "Utilizado en Demer 2014. MOL. con peque. modif en flotadores y burlon fino"
+		}
+	},
+	{
+	"model": "gears.trawl",
+	"pk": 18,
+	"fields": {
+		"name": 14,
+		"gear_type": "BACA",
+		"otter_boards_type": "Thyboron",
+		"otter_boards_area": 0.0,
+		"otter_boards_weight": 350,
+		"groundgear_length": 60.1,
+		"headline_length": 43.6,
+		"wing_length": 18.6,
+		"square_meshes": 80,
+		"top_panel_meshes": 80,
+		"bottom_panel_meshes": 80,
+		"codend_meshes": 60,
+		"inner_linner_meshes": 15,
+		"horizontal_aperture": 20.0,
+		"vertical_aperture": 2.0,
+		"comment": "name utilizado a partir de 2a pname demersales 2014"
+		}
+	},
+	{
+	"model": "gears.trawl",
+	"pk": 19,
+	"fields": {
+		"name": 13,
+		"gear_type": "BACA",
+		"otter_boards_type": "Thyboron",
+		"otter_boards_weight": 350,
+		"groundgear_length": 60.1,
+		"headline_length": 43.6,
+		"wing_length": 18.6,
+		"square_meshes": 80,
+		"top_panel_meshes": 80,
+		"bottom_panel_meshes": 80,
+		"codend_meshes": 60,
+		"inner_linner_meshes": 15,
+		"horizontal_aperture": 18.8,
+		"vertical_aperture": 2.1,
+		"comment": "name utilizado en la campaña Demersales 2013 (name deCormol) malletas 65mm"
+		}
+	},
+	{
+	"model": "gears.trawl",
+	"pk": 20,
+	"fields": {
+		"name": 41,
+		"gear_type": "BACA",
+		"otter_boards_type": "Thyboron",
+		"otter_boards_weight": 350,
+		"groundgear_length": 60.1,
+		"headline_length": 43.6,
+		"wing_length": 18.6,
+		"square_meshes": 80,
+		"top_panel_meshes": 80,
+		"bottom_panel_meshes": 80,
+		"codend_meshes": 60,
+		"inner_linner_meshes": 15,
+		"horizontal_aperture": 18.2,
+		"vertical_aperture": 2.1,
+		"comment": "Utilizado en sectorMF y FE de Demer2014 con barco M.Oliver, cambios flotabili"
 		}
 	}
 ]

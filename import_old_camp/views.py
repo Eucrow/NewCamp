@@ -23,6 +23,7 @@ from species.models import Sp
 from stations.models import Station
 from strata.models import Stratum
 from stratifications.models import Stratification
+from gears.models import Trawl
 from surveys.models import Survey
 from samplers.models import Sampler
 from samples.models import Length, SampledWeight, Sex
@@ -494,7 +495,7 @@ class HaulsImport:
         self.stratification_object = Stratification.objects.get(stratification=self.stratification_name)
         self.fields_haul = {
             "haul": "LANCE",
-            "gear": "ARTE",
+            # "gear": "ARTE",
             "valid": "VALIDEZ",
         }
         self.fields_meteorology = {
@@ -542,6 +543,15 @@ class HaulsImport:
 
         stratum_name = sector_name + "-" + depth_name
         return stratum_name
+
+    def get_trawl_gear_id(self, row):
+        """
+        Get the gear id. Used in pandas apply function.
+        :param row: row of the apply function
+        :return: gear id
+        """
+        trawl_gear = Trawl.objects.get(name=row["ARTE"])
+        return trawl_gear.id
 
     def get_stratum_id(self, row):
         """
@@ -594,13 +604,15 @@ class HaulsImport:
 
         hauls_table.loc[:, 'sampler_id'] = self.sampler_object.id
 
+        hauls_table.loc[:, 'gear_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
+
         fields = list(self.fields_haul.values())
-        fields.extend(['station_id', 'stratum_id', 'sampler_id'])
+        fields.extend(['station_id', 'stratum_id', 'sampler_id', 'gear_id'])
 
         hauls_table = file[fields]
 
         new_fields = list(self.fields_haul.keys())
-        new_fields.extend(['station_id', 'stratum_id', 'sampler_id'])
+        new_fields.extend(['station_id', 'stratum_id', 'sampler_id', 'gear_id'])
 
         hauls_table.columns = new_fields
 
@@ -1035,7 +1047,7 @@ class HydrographiesImport:
         haul_object, created = Haul.objects.get_or_create(
             haul=row['ESTN'],
             sampler=sampler_object,
-            station=station_object,
+            station=station_object
         )
 
         if HaulHydrography.objects.filter(haul=haul_object).exists():
@@ -1114,6 +1126,8 @@ class OldCampImport:
 
         response = [survey_import.content, hauls_import.content, faunas_import.content, ntall_import.content,
                     hydrography_import.content]
+        # response = [survey_import.content, hauls_import.content, hydrography_import.content]
+
 
         return HttpResponse(response)
 

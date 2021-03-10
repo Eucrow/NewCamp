@@ -23,8 +23,8 @@ class ViewTrawl extends Component {
 				meshes:
 				{this.props.trawl.square_meshes} -- Top panel meshes:{this.props.trawl.top_panel_meshes} -- Bottom panel
 				meshes:{this.props.trawl.bottom_panel_meshes} -- Codend nets meshes:
-				{this.props.trawl.codend_nets_meshes} -- Inner linner meshes:{this.props.trawl.inner_linner_meshes} --
-				Otter boards distance:
+				{this.props.trawl.codend_meshes} -- Inner linner meshes:{this.props.trawl.inner_linner_meshes} -- Otter
+				boards distance:
 				{this.props.trawl.otter_boards_distance} -- Horizontal aperture:{this.props.trawl.horizontal_aperture}{" "}
 				-- Vertical aperture:{this.props.trawl.vertical_aperture} -- Comment:{this.props.trawl.comment}
 				<UiButtonUpdateTrawl handleEdit={this.props.handleEdit} trawl_id={this.props.trawl.id} />

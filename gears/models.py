@@ -1,3 +1,5 @@
+from django.core.validators import MinValueValidator
+from decimal import Decimal
 from django.db import models
 
 # Create your models here.
@@ -9,7 +11,8 @@ class Trawl(models.Model):
     # PUERTAS otter boards type
     otter_boards_type = models.CharField(max_length=50, null=False)
     # SU_PUERTA otter boards area in square meters
-    otter_boards_area = models.DecimalField(max_digits=2, decimal_places=1, null=True)
+    otter_boards_area = models.DecimalField(max_digits=2, decimal_places=1, null=True,
+                                            validators=[MinValueValidator(Decimal('0.01'))])
     # KG_PUERTA otter boards weight in kg
     otter_boards_weight = models.PositiveSmallIntegerField(null=True)
     # MT_BURLON groundgear length in meters
@@ -29,7 +32,7 @@ class Trawl(models.Model):
     # MA_VIENTRE bottom panel in number of meshes??
     bottom_panel_meshes = models.PositiveSmallIntegerField(null=True)
     # MA_COPO codend in number of meshes
-    codend_nets_meshes = models.PositiveSmallIntegerField(null=True)
+    codend_meshes = models.PositiveSmallIntegerField(null=True)
     # MA_SOBREC inner liner (sobrecopo) in number of meshes
     inner_linner_meshes = models.PositiveSmallIntegerField(null=True)
     # DISTA_P door distance in meters

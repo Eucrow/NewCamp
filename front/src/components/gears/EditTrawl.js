@@ -137,12 +137,12 @@ class EditTrawl extends Component {
 						onChange={(e) => this.props.handleChange(e, this.props.trawl.id)}
 					/>
 					--
-					<label htmlFor="codend_nets_meshes">Codend nets meshes:</label>
+					<label htmlFor="codend_meshes">Codend nets meshes:</label>
 					<input
 						type="number"
-						id="codend_nets_meshes"
-						name="codend_nets_meshes"
-						value={this.props.trawl.codend_nets_meshes || ""}
+						id="codend_meshes"
+						name="codend_meshes"
+						value={this.props.trawl.codend_meshes || ""}
 						onChange={(e) => this.props.handleChange(e, this.props.trawl.id)}
 					/>{" "}
 					--

@@ -3,7 +3,7 @@
     "model": "ships.ship",
     "pk": 1,
     "fields": {
-        "ship":  "Cornide de Saavedra (old)",
+        "name":  "Cornide de Saavedra (old)",
         "datras_id":  "29CS",
         "length": 56,
         "beam":  11.25,
@@ -16,7 +16,7 @@
     "model": "ships.ship",
     "pk": 2,
     "fields": {
-        "ship":  "Cornide de Saavedra",
+        "name":  "Cornide de Saavedra",
         "datras_id":  "29CS",
         "length": 67,
         "beam":  11.25,
@@ -29,7 +29,7 @@
     "model": "ships.ship",
     "pk": 3,
     "fields": {
-        "ship":  "Vizconde de Eza",
+        "name":  "Vizconde de Eza",
         "datras_id":  "29VE",
         "length": 53,
         "beam":  13,
@@ -42,7 +42,7 @@
     "model": "ships.ship",
     "pk": 4,
     "fields": {
-        "ship":  "Miguel Oliver",
+        "name":  "Miguel Oliver",
         "datras_id":  "29MO",
         "length": 70,
         "beam":  14.40,
@@ -55,7 +55,7 @@
     "model": "ships.ship",
     "pk": 5,
     "fields": {
-        "ship":  "Francisco de Paula Navarro",
+        "name":  "Francisco de Paula Navarro",
         "datras_id":  "29FN",
         "length": 30.46,
         "beam":  7.40,

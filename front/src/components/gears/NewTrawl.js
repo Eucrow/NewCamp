@@ -59,6 +59,7 @@ class NewTrawl extends Component {
 					<label htmlFor="otter_boards_area">Otter boards area:</label>
 					<input
 						type="number"
+						step="0.1"
 						id="otter_boards_area"
 						name="otter_boards_area"
 						onChange={(e) => this.handleChange(e)}
@@ -131,11 +132,11 @@ class NewTrawl extends Component {
 						onChange={(e) => this.handleChange(e)}
 					/>
 					--
-					<label htmlFor="codend_nets_meshes">Codend nets meshes:</label>
+					<label htmlFor="codend_meshes">Codend nets meshes:</label>
 					<input
 						type="number"
-						id="codend_nets_meshes"
-						name="codend_nets_meshes"
+						id="codend_meshes"
+						name="codend_meshes"
 						onChange={(e) => this.handleChange(e)}
 					/>
 					--
