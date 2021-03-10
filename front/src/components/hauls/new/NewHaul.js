@@ -20,14 +20,17 @@ class NewHaul extends Component {
 				station: { id: this.props.station_id },
 				sampler: {},
 				stratum: {},
+				gear: null,
 				trawl_characteristics: {},
 				hydrography_characteristics: {},
 			},
 			strata: [],
 			samplers: [],
+			gears: [],
 		};
 		this.apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
 		this.apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
+		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawls/basic/";
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleChangeNestedIds = this.handleChangeNestedIds.bind(this);
@@ -125,8 +128,10 @@ class NewHaul extends Component {
 			/**
 			 * When the component is mounted, retrieve the posible stratum and sampler and save in state
 			 */
-			const apiStrata = this.apiStrataPartial + this.context.surveySelector;
+			const apiStrata =
+				this.apiStrataPartial + this.context.surveySelector;
 			const apiSamplers = this.apiSamplers;
+			const apiGears = this.apiGears;
 
 			// TODO: Optimize fetchs
 			// Fetch strata
@@ -164,6 +169,24 @@ class NewHaul extends Component {
 						};
 					});
 				});
+
+			// Fetch gears
+			fetch(apiGears)
+				.then((response) => {
+					if (response.status > 400) {
+						return this.setState(() => {
+							return { placeholder: "Something went wrong!" };
+						});
+					}
+					return response.json();
+				})
+				.then((gears) => {
+					this.setState(() => {
+						return {
+							gears: gears,
+						};
+					});
+				});
 		}
 	}
 
@@ -177,6 +200,7 @@ class NewHaul extends Component {
 						handleChangeNestedIds={this.handleChangeNestedIds}
 						samplers={this.state.samplers}
 						strata={this.state.strata}
+						gears={this.state.gears}
 					/>
 					<NewSpecific
 						handleChangeMeteo={this.handleChangeMeteo}

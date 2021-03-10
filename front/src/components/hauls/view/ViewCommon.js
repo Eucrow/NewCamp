@@ -9,8 +9,10 @@ class ViewCommon extends Component {
 	render() {
 		return (
 			<div key={this.props.haul.id} style={{ display: "inline" }}>
-				Haul: {this.props.haul.haul} - Station: {this.props.haul.station.station} - Sampler:
-				{this.props.haul.sampler.id} - Gear: {this.props.haul.gear} - Valid?: {this.props.haul.valid} -
+				Haul: {this.props.haul.haul} - Station:{" "}
+				{this.props.haul.station.station} - Sampler:
+				{this.props.haul.sampler.id} - Gear: {this.props.haul.gear} -
+				Valid?: {this.props.haul.valid} -
 			</div>
 		);
 	}

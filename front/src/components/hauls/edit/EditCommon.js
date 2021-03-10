@@ -25,30 +25,24 @@ class EditCommon extends Component {
 				{/* TODO: station and sampler can't be changed here becasue they are foreing keys*/}
 				<label htmlFor="station">Station:</label>
 				{haul.station.station}
-				{/* <input
-					type="text"
-					name="station"
-					id="station"
-					value={haul.station.station || ""}
-					onChange={this.props.handleChangeCommon}
-				/> */}
 				<label htmlFor="sampler">sampler:</label>
 				{haul.sampler.sampler}
-				{/* <input
-					type="text"
-					name="sampler"
-					id="sampler"
-					value={haul.sampler.sampler || ""}
-					onChange={this.props.handleChangeCommon}
-				/> */}
 				<label htmlFor="gear">Gear:</label>
-				<input
-					type="text"
-					name="gear"
+				<select
 					id="gear"
-					value={haul.gear || ""}
+					name="gear"
+					value={haul.gear || "choose"}
 					onChange={this.props.handleChangeCommon}
-				/>
+				>
+					{this.props.gears.map((gear) => {
+						return (
+							<option key={gear} value={gear.name}>
+								{gear.name}
+							</option>
+						);
+					})}
+				</select>
+
 				<label htmlFor="valid">Valid:</label>
 				<input
 					type="checkbox"

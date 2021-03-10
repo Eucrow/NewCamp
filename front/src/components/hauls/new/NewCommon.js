@@ -4,8 +4,10 @@ class NewCommon extends Component {
 	/**
 	 * Component of the common part of the haul form.
 	 * @param {number} props.haul
-	 * @param {function} props.handleChangeCommon
-	 * @param {function} props.handleChangeCommonValid
+	 * @param {object} props.strata
+	 * @param {object} props.samplers
+	 * @param {object} props.gears
+	 * @param {function} props.handleChange
 	 */
 
 	render() {
@@ -14,7 +16,12 @@ class NewCommon extends Component {
 				<legend>Common information:</legend>
 
 				<label htmlFor="haul">Haul:</label>
-				<input type="text" id="haul" name="haul" onChange={this.props.handleChange} />
+				<input
+					type="text"
+					id="haul"
+					name="haul"
+					onChange={this.props.handleChange}
+				/>
 
 				<label htmlFor="stratum_id">Stratum: </label>
 				<select
@@ -55,10 +62,31 @@ class NewCommon extends Component {
 				</select>
 
 				<label htmlFor="gear">Gear:</label>
-				<input type="text" id="gear" name="gear" onChange={this.props.handleChange} />
+				<select
+					id="gear_id"
+					name="gear"
+					value={this.props.haul.gear || "choose"}
+					onChange={this.props.handleChange}
+				>
+					<option disabled value="choose">
+						--choose a gear--
+					</option>
+					{this.props.gears.map((gear) => {
+						return (
+							<option key={gear.name} value={gear.name}>
+								{gear.name}
+							</option>
+						);
+					})}
+				</select>
 
 				<label htmlFor="valid">Valid:</label>
-				<input type="checkbox" id="valid" name="valid" onChange={this.props.handleChange} />
+				<input
+					type="checkbox"
+					id="valid"
+					name="valid"
+					onChange={this.props.handleChange}
+				/>
 			</fieldset>
 		);
 	}

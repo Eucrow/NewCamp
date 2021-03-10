@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'samples',
     'import_old_camp',
     'ships',
+    'gears',
     'frontend',
 ]
 
@@ -146,5 +147,7 @@ IMPORT_EXPORT_USE_TRANSACTIONS = True
 # CORS: this must be changed in develop
 CORS_ORIGIN_ALLOW_ALL = True
 
-
-
+# REST FRAMEWORK: avoid the coerce of decimal in returned json.
+REST_FRAMEWORK = {
+    'COERCE_DECIMAL_TO_STRING': False
+}

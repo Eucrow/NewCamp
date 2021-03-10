@@ -27,17 +27,24 @@ class HaulDetails extends Component {
 				hydrography_characteristics: {},
 				station: {},
 				sampler: {},
+				// gear: {},
 			},
+			gears: [],
 
 			edit: false,
 		};
 
-		this.apiTrawlHaul = "http://127.0.0.1:8000/api/1.0/haul/trawl/" + this.props.haul.id;
-		this.apiHydrographyHaul = "http://127.0.0.1:8000/api/1.0/haul/hydrography/" + this.props.haul.id;
+		this.apiTrawlHaul =
+			"http://127.0.0.1:8000/api/1.0/haul/trawl/" + this.props.haul.id;
+		this.apiHydrographyHaul =
+			"http://127.0.0.1:8000/api/1.0/haul/hydrography/" +
+			this.props.haul.id;
+		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawls/basic/";
 
 		this.changeIsEdit = this.changeIsEdit.bind(this);
 		this.handleChangeCommon = this.handleChangeCommon.bind(this);
 		this.handleChangeCommonValid = this.handleChangeCommonValid.bind(this);
+		// this.handleChangeGear = this.handleChangeGear.bind(this);
 		this.handleChangeMeteorology = this.handleChangeMeteorology.bind(this);
 		this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
 		this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
@@ -76,6 +83,24 @@ class HaulDetails extends Component {
 			haul: newHaulState,
 		});
 	}
+
+	// handleChangeGear(event) {
+	// 	// const name = event.target.name;
+	// 	const value = event.target.value;
+
+	// 	// Is necessary get the id of the gear from gears state
+	// 	const gear = this.state.gears.find((g) => g.name === parseInt(value));
+
+	// 	this.setState({
+	// 		haul: {
+	// 			...this.state.haul,
+	// 			gear: {
+	// 				id: gear.id,
+	// 				name: gear.name,
+	// 			},
+	// 		},
+	// 	});
+	// }
 
 	handleChangeMeteorology(event) {
 		const name = event.target.name;
@@ -171,15 +196,28 @@ class HaulDetails extends Component {
 					<div>
 						<EditCommon
 							haul={this.state.haul}
-							handleChangeCommonValid={this.handleChangeCommonValid}
+							handleChangeCommonValid={
+								this.handleChangeCommonValid
+							}
 							handleChangeCommon={this.handleChangeCommon}
+							// handleChangeGear={this.handleChangeGear}
+							gears={this.state.gears}
 						/>
 						<EditMeteorology
 							haul={this.state.haul}
-							handleChangeMeteorology={this.handleChangeMeteorology}
+							handleChangeMeteorology={
+								this.handleChangeMeteorology
+							}
 						/>
-						<EditTrawl haul={this.state.haul} handleChangeTrawl={this.handleChangeTrawl} />
-						<input type="submit" value="Save Haul" onClick={this.handleSubmit} />
+						<EditTrawl
+							haul={this.state.haul}
+							handleChangeTrawl={this.handleChangeTrawl}
+						/>
+						<input
+							type="submit"
+							value="Save Haul"
+							onClick={this.handleSubmit}
+						/>
 						<button
 							onClick={() => {
 								this.changeIsEdit(false);
@@ -214,14 +252,22 @@ class HaulDetails extends Component {
 					<div>
 						<EditCommon
 							haul={this.state.haul}
-							handleChangeCommonValid={this.handleChangeCommonValid}
+							handleChangeCommonValid={
+								this.handleChangeCommonValid
+							}
 							handleChangeCommon={this.handleChangeCommon}
 						/>
 						<EditHydrography
 							haul={this.state.haul}
-							handleChangeHydrography={this.handleChangeHydrography}
+							handleChangeHydrography={
+								this.handleChangeHydrography
+							}
 						/>
-						<input type="submit" value="Save Haul" onClick={this.handleSubmit} />
+						<input
+							type="submit"
+							value="Save Haul"
+							onClick={this.handleSubmit}
+						/>
 						<button
 							onClick={() => {
 								this.changeIsEdit(false);
@@ -244,6 +290,7 @@ class HaulDetails extends Component {
 				? this.apiHydrographyHaul
 				: null;
 
+		// Fetch haul.
 		fetch(apiHaul)
 			.then((response) => {
 				if (response.status > 400) {
@@ -257,6 +304,24 @@ class HaulDetails extends Component {
 				this.setState(() => {
 					return {
 						haul,
+					};
+				});
+			});
+
+		// Fetch gears to use in imput fields.
+		fetch(this.apiGears)
+			.then((response) => {
+				if (response.status > 400) {
+					return this.setState(() => {
+						return { placeholder: "Something went wrong!" };
+					});
+				}
+				return response.json();
+			})
+			.then((gears) => {
+				this.setState(() => {
+					return {
+						gears: gears,
 					};
 				});
 			});
