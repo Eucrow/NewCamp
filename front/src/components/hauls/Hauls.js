@@ -9,9 +9,9 @@ import NewHaul from "./new/NewHaul";
 class Hauls extends Component {
 	/**
 	 * List of hauls
-	 * @param {object} hauls
-	 * @param {object} this.props.haul_id
-	 * @param {object} this.props.sampler_id
+	 * @param {object} props.hauls
+	 * @param {object} props.haul_id
+	 * @param {object} props.sampler_id
 	 * @param {method} props.deleteHaul
 	 */
 
