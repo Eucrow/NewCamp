@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
@@ -14,13 +14,19 @@ from stratifications.models import Stratification
 from strata.models import Stratum
 
 
-class SurveysImportAPI(APIView, SurveysImport):
-    parser_classes = (MultiPartParser,)
+class SurveysAPI(ListCreateAPIView):
+    """
+    Endpoint to list and create surveys.
+    """
+    queryset = Survey.objects.all()
+    serializer_class = SurveySerializer
 
-    def put(self, request):
-        my_file = request.FILES['file']
-
-        return self.import_surveys_csv(my_file)
+class SurveyAPI(RetrieveUpdateDestroyAPIView):
+    """
+    Endpoint to retrieve, update and destroy survey.
+    """
+    queryset = Survey.objects.all()
+    serializer_class = SurveySerializer
 
 
 class SurveyDetailAPI(APIView):
@@ -111,3 +117,11 @@ class SurveyNewAPI(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+class SurveysImportAPI(APIView, SurveysImport):
+    parser_classes = (MultiPartParser,)
+
+    def put(self, request):
+        my_file = request.FILES['file']
+
+        return self.import_surveys_csv(my_file)
