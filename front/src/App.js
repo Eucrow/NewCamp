@@ -6,8 +6,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import SurveyContext from "./contexts/SurveyContext.js";
 
 import ComponentsSurveys from "./components/surveys/Surveys.js";
-import ComponentsSurvey from "./components/surveyDetails/Survey.js";
-import ComponentsSurveyNew from "./components/surveyNew/SurveyNew.js";
+
 import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
 
 import ComponentsStations from "./components/stations/Stations.js";
@@ -87,17 +86,6 @@ export default function App() {
 					path="/SurveySelect"
 					exact
 					component={ComponentsSurveySelect}
-				/>
-
-				<Route
-					path="/Survey/new"
-					exact
-					component={ComponentsSurveyNew}
-				/>
-				<Route
-					path="/Survey/survey/:survey_id"
-					exact
-					component={ComponentsSurvey}
 				/>
 
 				<Route path="/Surveys" exact component={ComponentsSurveys} />
