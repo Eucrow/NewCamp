@@ -14,7 +14,6 @@ class ViewSurvey extends Component {
 
 		content = (
 			<div>
-				<li>id: {this.props.survey.id}</li>
 				<li>acronym: {this.props.survey.acronym}</li>
 				<li>description: {this.props.survey.description}</li>
 				<li>start_date: {this.props.survey.start_date}</li>

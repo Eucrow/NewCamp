@@ -19,16 +19,6 @@ class EditSurvey extends Component {
 					this.props.updateSurvey(e, this.props.survey.id);
 				}}
 			>
-				<label htmlFor="id">id: </label>
-				<input
-					type="text"
-					id="id"
-					name="id"
-					value={this.props.survey.id || ""}
-					onChange={(e) =>
-						this.props.handleChange(e, this.props.survey.id)
-					}
-				/>
 				<label htmlFor="start_date">acronym: </label>
 				<input
 					type="text"
