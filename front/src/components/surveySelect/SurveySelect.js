@@ -13,7 +13,7 @@ class ComponentsSurveySelect extends Component {
 			placeholder: "Loading",
 		};
 
-		this.apiSurveys = "http://127.0.0.1:8000/api/1.0/surveys/";
+		this.apiSurveys = "http://127.0.0.1:8000/api/1.0/survey/";
 
 		this.ShowUnselectButton = this.ShowUnselectButton.bind(this);
 	}
@@ -60,7 +60,8 @@ class ComponentsSurveySelect extends Component {
 					{this.state.surveys.map((sur) => {
 						return (
 							<li key={sur.id}>
-								{sur.description} <SelectSurveyButton survey_id={sur.id} />
+								{sur.description}{" "}
+								<SelectSurveyButton survey_id={sur.id} />
 							</li>
 						);
 					})}

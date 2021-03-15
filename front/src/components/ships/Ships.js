@@ -152,7 +152,9 @@ class Ships extends Component {
 			},
 		})
 			.then(() => {
-				const newShips = this.state.ships.filter((ship) => ship.id !== ship_id);
+				const newShips = this.state.ships.filter(
+					(ship) => ship.id !== ship_id
+				);
 
 				this.setState({
 					ships: newShips,
@@ -190,7 +192,11 @@ class Ships extends Component {
 		} else if (this.state.add === true) {
 			content = (
 				<div>
-					<NewShip handleChange={this.handleChange} handleAdd={this.handleAdd} createShip={this.createShip} />
+					<NewShip
+						handleChange={this.handleChange}
+						handleAdd={this.handleAdd}
+						createShip={this.createShip}
+					/>
 					{this.state.ships.map((ship) => {
 						return (
 							<Ship
@@ -211,6 +217,7 @@ class Ships extends Component {
 	}
 
 	componentDidMount() {
+		// Fetch ships
 		fetch(this.apiShips)
 			.then((response) => {
 				if (response.status > 400) {
@@ -227,6 +234,7 @@ class Ships extends Component {
 			})
 			.catch((error) => console.log(error));
 	}
+
 	render() {
 		return this.renderContent();
 	}

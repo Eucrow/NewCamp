@@ -6,8 +6,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import SurveyContext from "./contexts/SurveyContext.js";
 
 import ComponentsSurveys from "./components/surveys/Surveys.js";
-import ComponentsSurvey from "./components/surveyDetails/Survey.js";
-import ComponentsSurveyNew from "./components/surveyNew/SurveyNew.js";
+
 import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
 
 import ComponentsStations from "./components/stations/Stations.js";
@@ -27,7 +26,7 @@ export default function App() {
 	const [surveyName, setSurveyName] = useState();
 
 	function getSurveyName(survey_id) {
-		fetch("http://127.0.0.1:8000/api/1.0/surveys/" + survey_id)
+		fetch("http://127.0.0.1:8000/api/1.0/survey/" + survey_id)
 			.then((response) => {
 				return response.json();
 			})
@@ -47,15 +46,35 @@ export default function App() {
 					<nav>
 						{/* survey name */}
 						{/* if surveySelector is not null, get the name of the survey */}
-						{surveySelector === null ? "" : getSurveyName(surveySelector)}
+						{surveySelector === null
+							? ""
+							: getSurveyName(surveySelector)}
 						{surveyName === undefined ? (
-							<div style={{ display: "inline", fontWeight: "bold" }}>not survey selected</div>
+							<div
+								style={{
+									display: "inline",
+									fontWeight: "bold",
+								}}
+							>
+								not survey selected
+							</div>
 						) : (
-							<div style={{ display: "inline", fontWeight: "bold", fontSize: "1.5em" }}>{surveyName}</div>
+							<div
+								style={{
+									display: "inline",
+									fontWeight: "bold",
+									fontSize: "1.5em",
+								}}
+							>
+								{surveyName}
+							</div>
 						)}{" "}
-						<Link to="/">Home</Link>-<Link to="/SurveySelect">Select Survey</Link>-
-						<Link to="/Surveys">Surveys</Link>-<Link to="/Strata">Strata</Link>-
-						<Link to="/Stations">Stations</Link>-<Link to="/Species">Species</Link>--
+						<Link to="/">Home</Link>-
+						<Link to="/SurveySelect">Select Survey</Link>-
+						<Link to="/Surveys">Surveys</Link>-
+						<Link to="/Strata">Strata</Link>-
+						<Link to="/Stations">Stations</Link>-
+						<Link to="/Species">Species</Link>--
 						<Link to="/Ships">Ships</Link>--
 						<Link to="/Trawls">Trawls</Link>
 					</nav>
@@ -63,10 +82,11 @@ export default function App() {
 
 				<Route path="/" exact component={Home} />
 
-				<Route path="/SurveySelect" exact component={ComponentsSurveySelect} />
-
-				<Route path="/Survey/new" exact component={ComponentsSurveyNew} />
-				<Route path="/Survey/survey/:survey_id" exact component={ComponentsSurvey} />
+				<Route
+					path="/SurveySelect"
+					exact
+					component={ComponentsSurveySelect}
+				/>
 
 				<Route path="/Surveys" exact component={ComponentsSurveys} />
 
@@ -76,7 +96,11 @@ export default function App() {
 				{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
 				<Route path="/Hauls" exact component={ComponentsHauls} /> */}
 
-				<Route path="/Catches/haul/:haul_id" exact component={ComponentsTrawlCatches} />
+				<Route
+					path="/Catches/haul/:haul_id"
+					exact
+					component={ComponentsTrawlCatches}
+				/>
 
 				{/* <Route path="/Weights" component={Weights} /> */}
 				{/* <Route path="/Samples" component={Samples} /> */}
@@ -142,10 +166,12 @@ const Home = () => (
 
 const FakeText = () => (
 	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-		laborum.
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+		veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+		commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+		velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+		occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+		mollit anim id est laborum.
 	</p>
 );

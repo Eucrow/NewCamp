@@ -24,7 +24,7 @@ from species.api import SpeciesListAPI, SpAPI, SpeciesGroupAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
 from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
-    SurveysAcronymList, SurveyNewAPI
+    SurveysAcronymList, SurveyNewAPI, SurveyAPI, SurveysAPI
 from stratifications.api import StratificationsAPI
 from strata.api import StrataAPI
 from samplers.api import SamplersAPI
@@ -48,13 +48,7 @@ urlpatterns = [
 
     # Ships API URLS
     re_path(r'^api/1.0/ships/$', ShipsAPI.as_view(), name="ship_list_create_api"),
-    re_path(r'^api/1.0/ship/(?P<pk>[0-9]+)$', ShipAPI.as_view(), name="ships_get_update_delete_api"),
-
-    # Trawls API URLS
-    re_path(r'^api/1.0/trawls/$', GearTrawlsAPI.as_view(), name="gear"),
-    # re_path(r'^api/1.0/trawls/basic/$', GearTrawlsBasicAPI.as_view(), name="gear"),
-    re_path(r'^api/1.0/trawls/basic/$', GearTrawlsNamesAPI.as_view(), name="gear"),
-    re_path(r'^api/1.0/trawl/(?P<pk>[0-9]+)$', GearTrawlAPI.as_view(), name="gears_get_update_delete_api"),
+    re_path(r'^api/1.0/ship/(?P<pk>[0-9]+)$', ShipAPI.as_view(), name="ship_get_update_delete_api"),
 
     # Species API URLS
     re_path(r'^api/1.0/species/$', SpeciesListAPI.as_view(), name="species_list_api"),
@@ -64,20 +58,30 @@ urlpatterns = [
 
     re_path(r'^api/1.0/species/import$', SpeciesImportAPI.as_view(), name="species_import_api"),
 
+    # Trawls API URLS
+    re_path(r'^api/1.0/trawls/$', GearTrawlsAPI.as_view(), name="gear_list_create_api"),
+    # re_path(r'^api/1.0/trawls/basic/$', GearTrawlsBasicAPI.as_view(), name="gear"),
+    re_path(r'^api/1.0/trawls/basic/$', GearTrawlsNamesAPI.as_view(), name="gear_names"),
+    re_path(r'^api/1.0/trawl/(?P<pk>[0-9]+)$', GearTrawlAPI.as_view(), name="gear_get_update_delete_api"),
+
     # Samplers API URLS
     re_path(r'^api/1.0/samplers/$', SamplersAPI.as_view(), name="samplers_list_api"),
 
     # Surveys API URLS
-    re_path(r'^api/1.0/surveys/import$', SurveysImportAPI.as_view(), name="surveys_import_api"),
-    re_path(r'^api/1.0/surveys/(?P<pk>[0-9]+)$', SurveyDetailAPI.as_view(), name="get_survey_api"),
-    re_path(r'^api/1.0/surveys/remove/(?P<pk>[0-9]+)$', SurveyRemoveAPI.as_view(), name="get_survey_api"),
+    re_path(r'^api/1.0/survey/(?P<pk>[0-9]+)$', SurveyAPI.as_view(), name="survey_list_create_api"),
+    re_path(r'^api/1.0/survey/$', SurveysAPI.as_view(), name="survey_get_update_delete_api"),
+    # re_path(r'^api/1.0/surveys/(?P<pk>[0-9]+)$', SurveyDetailAPI.as_view(), name="get_survey_api"),
+    # re_path(r'^api/1.0/surveys/remove/(?P<pk>[0-9]+)$', SurveyRemoveAPI.as_view(), name="get_survey_api"),
     # TODO: change acronym to survey id???
+    #  re_path(r'^api/1.0/surveys/$', SurveysAcronymList.as_view(), name="get_surveys_api"),
+    # re_path(r'api/1.0/surveys/new/$', SurveyNewAPI.as_view(), name="add_survey_api"),
+
+    ## Surveys import
+    re_path(r'^api/1.0/surveys/import$', SurveysImportAPI.as_view(), name="surveys_import_api"),
+    ## Surveys csv
     re_path(r'^api/1.0/surveys/csv/(?P<acronym>[N,D][0-9]{2})$', SurveyDetailCsvAPI.as_view(),
             name="get_survey_api_csv"),
     re_path(r'^api/1.0/surveys/csv/all', SurveysListCsvAPI.as_view(), name="get_survey_api_csv"),
-    # re_path(r'^api/1.0/surveys/$', SurveysList.as_view(), name="get_surveys_api"),
-    re_path(r'^api/1.0/surveys/$', SurveysAcronymList.as_view(), name="get_surveys_api"),
-    re_path(r'api/1.0/surveys/new/$', SurveyNewAPI.as_view(), name="add_survey_api"),
 
     # Stratification API URLS
     re_path(r'^api/1.0/stratifications/$', StratificationsAPI.as_view(), name="get_stratifications_api"),
