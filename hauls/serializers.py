@@ -60,6 +60,7 @@ class TrawlSerializer(serializers.ModelSerializer):
                   'otter_boards_distance', 'horizontal_aperture', 'vertical_aperture', 'grid', 'track', 'comment', ]
 
 
+
 class HaulTrawlSerializer(serializers.ModelSerializer):
     """
     Serializer of trawl haul. Include the general Haul model, HaulTrawl model and Meteorology model.
