@@ -421,7 +421,7 @@ class SurveysImport:
 
             stratification_object, created = Stratification.objects.get_or_create(
                 stratification=self.stratification_name,
-                comment="<p>In Demersales surveys, the stratification is a combination of sector and " \
+                comment="<p>In Demersales surveys, the stratification is a combination of geographic sector and " \
                                      "depth.</p> "
             )
 
@@ -461,7 +461,7 @@ class SurveysImport:
                         stratum_object, created = Stratum.objects.get_or_create(
                             stratum=name_stratification,
                             area=row[area_col],
-                            comment="<p>In Demersales surveys, the stratification is a combination of sector and " \
+                            comment="<p>In Demersales surveys, the stratification is a combination of geographic sector and " \
                                      "depth.</p> ",
                             stratification_id=stratification_object.id
                         )
@@ -616,6 +616,9 @@ class HaulsImport:
 
         hauls_table.columns = new_fields
 
+        # the empty values must be saved as Na, so:
+        hauls_table = hauls_table.replace('', pd.NA)
+
         return hauls_table
 
     def format_haul_meteorology_table(self, file):
@@ -640,6 +643,9 @@ class HaulsImport:
         new_fields.extend(['haul_id'])
 
         meteo_table.columns = new_fields
+
+        # the empty values must be saved as Na, so:
+        meteo_table = meteo_table.replace('', pd.NA)
 
         return meteo_table
 
@@ -703,6 +709,9 @@ class HaulsImport:
              'hauling_latitude', 'hauling_longitude'])
 
         trawl_table.columns = new_fields
+
+        # the empty values must be saved as Na, so:
+        trawl_table = trawl_table.replace('', pd.NA)
 
         # return table formatted
         return trawl_table
@@ -1126,7 +1135,7 @@ class OldCampImport:
 
         response = [survey_import.content, hauls_import.content, faunas_import.content, ntall_import.content,
                     hydrography_import.content]
-        # response = [survey_import.content, hauls_import.content, hydrography_import.content]
+        # response = [survey_import.content, hauls_import.content, ]
 
 
         return HttpResponse(response)

@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'ships',
     'gears',
     'frontend',
+    'conn_r',
 ]
 
 MIDDLEWARE = [

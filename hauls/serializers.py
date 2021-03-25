@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 from gears.models import Trawl
+from gears.serializers import GearTrawlBasicSerializer
+from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 from samplers.serializers import SamplerSerializer
-from strata.serializers import StrataSerializer
 from stations.serializers import StationSerializer
-from gears.serializers import GearTrawlBasicSerializer, GearTrawlSerializer
+from strata.serializers import StrataSerializer
 
 
 class ImportHaulSerializer(serializers.ModelSerializer):
@@ -29,11 +29,13 @@ class ImportHydrographyesSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 1
 
+
 class HaulSerializer(serializers.ModelSerializer):
     """
     Serializer of hauls data with sampler.
     """
     gear = GearTrawlBasicSerializer()
+
     class Meta:
         model = Haul
         fields = ['id', 'haul', 'gear', 'valid', 'sampler', 'stratum', 'station', ]
@@ -44,14 +46,12 @@ class HaulSerializer(serializers.ModelSerializer):
 
 
 class HaulMeteorologySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Meteorology
         fields = ['wind_direction', 'wind_velocity', 'sea_state', ]
 
 
 class TrawlSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = HaulTrawl
         fields = ['shooting_date_time', 'shooting_latitude', 'shooting_longitude', 'shooting_depth',
@@ -108,7 +108,8 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
 
         if validated_data:
-            # First, get the data from validated_data (pop() remove the data from the original dict and return its value)
+            # First, get the data from validated_data (pop() remove the data from the original dict and return its
+            # value)
             meteo_datas = validated_data.pop('meteo')
             trawl_characteristics_datas = validated_data.pop('trawl_characteristics')
 
@@ -140,12 +141,11 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
 
 
 class HydrographySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = HaulHydrography
         fields = ['latitude', 'longitude', 'date_time', 'depth_probe', 'cable', 'depth', 'temperature_0', 'salinity_0',
-                 'sigma_0', 'temperature_50', 'salinity_50', 'sigma_50', 'temperature_100', 'salinity_100',
-                 'sigma_100', 'temperature', 'salinity', 'sigma', 'comment', ]
+                  'sigma_0', 'temperature_50', 'salinity_50', 'sigma_50', 'temperature_100', 'salinity_100',
+                  'sigma_100', 'temperature', 'salinity', 'sigma', 'comment', ]
 
 
 class HaulHydrographySerializer(serializers.ModelSerializer):
@@ -211,7 +211,6 @@ class HaulHydrographySerializer(serializers.ModelSerializer):
         return instance
 
 
-
 class HaulStationSerializer(serializers.ModelSerializer):
     """
     Serializer of haul with information of station and sampler
@@ -231,7 +230,8 @@ class HaulGeoJSONSerializer(serializers.ModelSerializer):
 
     # Override the to_representation method, which format the output of the serializer
     def to_representation(self, instance):
-        # instance is the model object. create the custom json format by accessing instance attributes normaly and return it
+        # instance is the model object. create the custom json format by accessing instance attributes normaly and
+        # return it
 
         geom = {'coordinates': [instance.hauling_longitude, instance.hauling_latitude],
                 'type': 'Point'}
