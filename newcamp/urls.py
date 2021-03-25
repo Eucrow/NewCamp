@@ -34,7 +34,7 @@ from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvAp
 from catches.api import CatchHaulListAPI, CatchHaulAPI, CatchVerboseAPI
 from samples.api import LengthsAPI, SexDetail, SexAPI, SexLengthsAPI, SampledWeightDetail, SampledWeightCreate
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
-from conn_r.api import GetDataHaulsAPIConnR
+from conn_r.api import GetTrawlHaulsAPIConnR, GetDataStationsAPIConnR
 
 
 urlpatterns = [
@@ -151,7 +151,9 @@ urlpatterns = [
     re_path(r'^api/1.0/import$', ImportOldCampAPI.as_view(), name="old_camp_import"),
 
     # conn_r
-    re_path(r'^api/1.0/conn_r/get_data_hauls/(?P<acronym>[A-Z][0-9][0-9])$', GetDataHaulsAPIConnR.as_view(), name="get_data_hauls_api_conn_r"),
+    re_path(r'^api/1.0/conn_r/get_trawl_hauls/(?P<acronym>[A-Z][0-9][0-9])$', GetTrawlHaulsAPIConnR.as_view(), name="get_trawls_hauls_api_conn_r"),
+    re_path(r'^api/1.0/conn_r/get_data_stations/(?P<acronym>[A-Z][0-9][0-9])$', GetDataStationsAPIConnR.as_view(), name="get_data_stations_api_conn_r"),
+
 
     # Frontend
     path('', include('frontend.urls')),
