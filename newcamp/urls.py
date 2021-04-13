@@ -16,6 +16,10 @@ Including another URLconf
 from django.urls import path, re_path, include
 from django.contrib import admin
 
+#this is for compile the static files:
+# from django.conf import settings
+# from django.conf.urls.static import static
+
 from djgeojson.views import GeoJSONLayerView
 
 from ships.api import ShipsAPI, ShipAPI
@@ -154,8 +158,9 @@ urlpatterns = [
     re_path(r'^api/1.0/conn_r/get_trawl_hauls/(?P<acronym>[A-Z][0-9][0-9])$', GetTrawlHaulsAPIConnR.as_view(), name="get_trawls_hauls_api_conn_r"),
     re_path(r'^api/1.0/conn_r/get_data_stations/(?P<acronym>[A-Z][0-9][0-9])$', GetDataStationsAPIConnR.as_view(), name="get_data_stations_api_conn_r"),
 
-
     # Frontend
-    path('', include('frontend.urls')),
+    # path('', include('frontend.urls')),
 
-]
+]\
+    #this is for compile the static files:
+    # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
