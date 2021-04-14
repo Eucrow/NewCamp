@@ -141,7 +141,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 
 # determines if the library will use database transactions on data import, just to be on the safe side.
 IMPORT_EXPORT_USE_TRANSACTIONS = True
