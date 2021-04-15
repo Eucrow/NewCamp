@@ -53,7 +53,7 @@ urlpatterns = [
     re_path(r'^surveys/(?P<pk>[0-9]+)$', SurveyDetailView.as_view(), name='survey_detail'),
 
     # Ships API URLS
-    re_path(r'^api/1.0/ships/$', ShipsAPI.as_view(), name="ship_list_create_api"),
+    re_path(r'^api/1.0/ship/$', ShipsAPI.as_view(), name="ship_list_create_api"),
     re_path(r'^api/1.0/ship/(?P<pk>[0-9]+)$', ShipAPI.as_view(), name="ship_get_update_delete_api"),
 
     # Species API URLS

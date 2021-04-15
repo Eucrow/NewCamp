@@ -16,7 +16,6 @@ class Ships extends Component {
 			edit: null, // null to not edit any ship; ship_id to edit that ship_id.
 		};
 
-		this.apiShips = "http://127.0.0.1:8000/api/1.0/ships/";
 		this.apiShip = "http://127.0.0.1:8000/api/1.0/ship/";
 
 		this.handleChange = this.handleChange.bind(this);
@@ -85,7 +84,7 @@ class Ships extends Component {
 	createShip(e, ship) {
 		e.preventDefault();
 
-		fetch(this.apiShips, {
+		fetch(this.apiShip, {
 			method: "POST",
 			headers: {
 				"Content-type": "Application/json",
@@ -218,7 +217,7 @@ class Ships extends Component {
 
 	componentDidMount() {
 		// Fetch ships
-		fetch(this.apiShips)
+		fetch(this.apiShip)
 			.then((response) => {
 				if (response.status > 400) {
 					return this.setState(() => {
