@@ -15,8 +15,8 @@ class Species extends Component {
 			add: false,
 		};
 
-		this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
-		this.apiCreateSp = "http://127.0.0.1:8000/api/1.0/species/new/";
+		this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species/";
+		// this.apiCreateSp = "http://127.0.0.1:8000/api/1.0/species/new/";
 
 		this.renderContent = this.renderContent.bind(this);
 		this.handleChange = this.handleChange.bind(this);
@@ -88,7 +88,7 @@ class Species extends Component {
 		// 	if (response === true) {
 		// 		alert("Catch already exists");
 		// 	} else {
-		fetch(this.apiCreateSp, {
+		fetch(this.apiSpecies, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -138,7 +138,11 @@ class Species extends Component {
 		} else if (this.state.add === true) {
 			content = (
 				<div>
-					<NewSp species={this.state.species} handleAdd={this.handleAdd} createSp={this.createSp} />
+					<NewSp
+						species={this.state.species}
+						handleAdd={this.handleAdd}
+						createSp={this.createSp}
+					/>
 					<ViewSpeciesList
 						species={this.state.species}
 						handleChange={this.handleChange}

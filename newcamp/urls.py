@@ -24,7 +24,7 @@ from djgeojson.views import GeoJSONLayerView
 
 from ships.api import ShipsAPI, ShipAPI
 from gears.api import GearTrawlsAPI, GearTrawlsBasicAPI, GearTrawlAPI, GearTrawlsNamesAPI
-from species.api import SpeciesListAPI, SpAPI, SpeciesGroupAPI
+from species.api import SpAPI, SpeciesGroupAPI, SpeciesAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
 from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
@@ -57,11 +57,9 @@ urlpatterns = [
     re_path(r'^api/1.0/ship/(?P<pk>[0-9]+)$', ShipAPI.as_view(), name="ship_get_update_delete_api"),
 
     # Species API URLS
-    re_path(r'^api/1.0/species/$', SpeciesListAPI.as_view(), name="species_list_api"),
-    re_path(r'^api/1.0/species/(?P<pk>[0-9]+)$', SpAPI.as_view(), name="sp_api"),
-    re_path(r'^api/1.0/species/new/$', SpAPI.as_view(), name="sp_api"),
+    re_path(r'^api/1.0/species/$', SpeciesAPI.as_view(), name="species_list_create_api"),
+    re_path(r'^api/1.0/species/(?P<pk>[0-9]+)$', SpAPI.as_view(), name="sp_retrieve_update_destroy_api"),
     re_path(r'^api/1.0/species/group/(?P<group>[0-9]+)$', SpeciesGroupAPI.as_view(), name="species_group_api"),
-
     re_path(r'^api/1.0/species/import$', SpeciesImportAPI.as_view(), name="species_import_api"),
 
     # Trawls API URLS
