@@ -30,7 +30,7 @@ class NewHaul extends Component {
 		};
 		this.apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
 		this.apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
-		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawls/basic/";
+		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawl/basic/";
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleChangeNestedIds = this.handleChangeNestedIds.bind(this);

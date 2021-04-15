@@ -39,7 +39,7 @@ class HaulDetails extends Component {
 		this.apiHydrographyHaul =
 			"http://127.0.0.1:8000/api/1.0/haul/hydrography/" +
 			this.props.haul.id;
-		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawls/basic/";
+		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawl/basic/";
 
 		this.changeIsEdit = this.changeIsEdit.bind(this);
 		this.handleChangeCommon = this.handleChangeCommon.bind(this);

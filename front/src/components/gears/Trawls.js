@@ -16,7 +16,6 @@ class Trawls extends Component {
 			edit: null, // null to not edit any trawl; trawl_id to edit that trawl_id.
 		};
 
-		this.apiTrawls = "http://127.0.0.1:8000/api/1.0/trawls/";
 		this.apiTrawl = "http://127.0.0.1:8000/api/1.0/trawl/";
 
 		this.handleChange = this.handleChange.bind(this);
@@ -85,7 +84,7 @@ class Trawls extends Component {
 	createTrawl(e, trawl) {
 		e.preventDefault();
 
-		fetch(this.apiTrawls, {
+		fetch(this.apiTrawl, {
 			method: "POST",
 			headers: {
 				"Content-type": "Application/json",
@@ -152,7 +151,9 @@ class Trawls extends Component {
 			},
 		})
 			.then(() => {
-				const newTrawls = this.state.trawls.filter((trawl) => trawl.id !== trawl_id);
+				const newTrawls = this.state.trawls.filter(
+					(trawl) => trawl.id !== trawl_id
+				);
 
 				this.setState({
 					trawls: newTrawls,
@@ -215,7 +216,7 @@ class Trawls extends Component {
 	}
 
 	componentDidMount() {
-		fetch(this.apiTrawls)
+		fetch(this.apiTrawl)
 			.then((response) => {
 				if (response.status > 400) {
 					return this.setState(() => {

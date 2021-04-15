@@ -65,9 +65,9 @@ urlpatterns = [
     re_path(r'^api/1.0/species/import$', SpeciesImportAPI.as_view(), name="species_import_api"),
 
     # Trawls API URLS
-    re_path(r'^api/1.0/trawls/$', GearTrawlsAPI.as_view(), name="gear_list_create_api"),
+    re_path(r'^api/1.0/trawl/$', GearTrawlsAPI.as_view(), name="gear_list_create_api"),
     # re_path(r'^api/1.0/trawls/basic/$', GearTrawlsBasicAPI.as_view(), name="gear"),
-    re_path(r'^api/1.0/trawls/basic/$', GearTrawlsNamesAPI.as_view(), name="gear_names"),
+    re_path(r'^api/1.0/trawl/basic/$', GearTrawlsNamesAPI.as_view(), name="gear_names"),
     re_path(r'^api/1.0/trawl/(?P<pk>[0-9]+)$', GearTrawlAPI.as_view(), name="gear_get_update_delete_api"),
 
     # Samplers API URLS
@@ -107,9 +107,11 @@ urlpatterns = [
     # Hauls API URLs
     re_path(r'^api/1.0/haul/(?P<haul_id>[0-9]+)$', HaulAPI.as_view(), name="haul_api"),
     # re_path(r'^api/1.0/haul/new$', HaulAPI.as_view(), name="add_haul_api"),
+
         # Trawl hauls
         re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="get_trawl_haul_api"),
         re_path(r'^api/1.0/haul/trawl/new/$', HaulTrawlAPI.as_view(), name="add_trawl_haul_api"),
+
         # Hydrography hauls
         re_path(r'^api/1.0/haul/hydrography/(?P<haul_id>[0-9]+)$', HaulHydrographyAPI.as_view(),
                 name="get_hydrography_haul_api"),
@@ -119,6 +121,7 @@ urlpatterns = [
     re_path(r'^api/1.0/hauls/(?P<survey_id>[0-9])$', HaulListAPI.as_view(), name="get_hauls_api"),
     re_path(r'^api/1.0/hauls/csv/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListCsvApi.as_view(),
             name="get_hauls_api_csv"),
+
     re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$', HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
 
     # Catches API URLS
