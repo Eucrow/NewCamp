@@ -23,6 +23,7 @@ npm-debug.log
 */.vscode/*
 /.vscode
 */*.code-workspace
+/front/src/workspace.code-workspace
 
 # others
 front/debug.log
