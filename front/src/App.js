@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import "./index.css";
+import "./index.scss";
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
