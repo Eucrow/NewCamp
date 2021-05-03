@@ -1,25 +1,23 @@
 // css reset
-@use 'reset';
+@use './scss/reset';
 
-// fonts
-@font-face {
-	font-family: "Roboto";
-	src: local("Roboto-Regular-webfont"),
-		url(./fonts/Roboto-Regular-webfont.woff) format("woff");
-}
-
-@font-face {
-	font-family: "Signika";
-	src: local("Signika-Regular"),
-		url(./fonts/Signika-Regular.otf) format("woff");
-}
+// css fonts
+@use './scss/fonts';
 
 // css custom properties
 :root {
-	--background-global-color: hsl(80, 1%, 95%);
-	--text-color: hsl(203, 73%, 28%);
+	//blue gradient
+	--blue-gradient-1: hsl(203, 73%, 28%);
+	--blue-gradient-2: hsl(205, 59%, 56%);
+	--blue-gradient-3: hsl(205, 41%, 77%);
+	--blue-gradient-4: hsl(205, 32%, 94%);
 
-	--background-nav: hsl(205, 41%, 77%);
+	//global
+	--background-global-color: hsl(80, 1%, 95%);
+	--text-color: black;
+
+	//nav
+	--background-nav: var(--blue-gradient-3);
 }
 
 html {
@@ -37,6 +35,38 @@ h6 {
 	font-family: "Signika", "Serif";
 }
 
-nav {
+.nav {
+	font-family: "Signika", "Serif";
+	color: var(--text-color);
+
 	background-color: var(--background-nav);
+
+	.nav__item {
+		display: inline-block;
+	}
+
+	.nav__item a {
+		font-size: 1.17rem;
+		text-decoration-line: none;
+		display: inline-block;
+		padding: 15px 10px;
+		&:link {
+			color: var(--text-color);
+		}
+
+		&:visited {
+			color: var(--text-color);
+		}
+
+		&:hover,
+		&:active {
+			color: var(--background-global-color);
+			background-color: var(--blue-gradient-1);
+		}
+
+		&:focus-visible {
+			color: var(--background-global-color);
+			background-color: var(--blue-gradient-1);
+		}
+	}
 }

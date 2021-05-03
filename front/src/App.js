@@ -41,42 +41,44 @@ export default function App() {
 	return (
 		<SurveyContext.Provider value={value}>
 			<Router>
-				{/* { console.log (surveyName)} */}
 				<main>
-					<nav>
-						{/* survey name */}
-						{/* if surveySelector is not null, get the name of the survey */}
-						{surveySelector === null
-							? ""
-							: getSurveyName(surveySelector)}
-						{surveyName === undefined ? (
-							<div
-								style={{
-									display: "inline",
-									fontWeight: "bold",
-								}}
-							>
-								not survey selected
-							</div>
-						) : (
-							<div
-								style={{
-									display: "inline",
-									fontWeight: "bold",
-									fontSize: "1.5em",
-								}}
-							>
-								{surveyName}
-							</div>
-						)}{" "}
-						<Link to="/">Home</Link>-
-						<Link to="/SurveySelect">Select Survey</Link>-
-						<Link to="/Surveys">Surveys</Link>-
-						<Link to="/Strata">Strata</Link>-
-						<Link to="/Stations">Stations</Link>-
-						<Link to="/Species">Species</Link>--
-						<Link to="/Ships">Ships</Link>--
-						<Link to="/Trawls">Trawls</Link>
+					<nav aria-label="nCamp">
+						<ul class="nav" role="menubar" aria-label="nCamp">
+							<li class="nav__item" role="none">
+								{/* survey name */}
+								{/* if surveySelector is not null, get the name of the survey */}
+								{surveySelector === null
+									? ""
+									: getSurveyName(surveySelector)}
+
+								{surveyName === undefined ? (
+									<Link to="/SurveySelect" role="menuitem">
+										Select Survey
+									</Link>
+								) : (
+									<h2>{surveyName}</h2>
+								)}
+							</li>
+							<li class="nav__item" role="none">
+								<Link to="/Surveys" role="menuitem">
+									Surveys
+								</Link>
+							</li>
+							<li class="nav__item" role="none">
+								<Link to="/Species" role="menuitem">
+									Species
+								</Link>
+							</li>
+							<li class="nav__item" role="none">
+								<Link to="/Ships" role="menuitem">
+									Ships
+								</Link>
+							</li>
+						</ul>
+						{/* <Link to="/">Home</Link>- -*/}
+						{/* <Link to="/Strata">Strata</Link>-
+						<Link to="/Stations">Stations</Link>- -- --
+						<Link to="/Trawls">Trawls</Link> */}
 					</nav>
 				</main>
 
