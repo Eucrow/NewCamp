@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 
-import SelectSurveyButton from "../../components/ui/SelectSurveyButton.js";
-import UnselectSurveyButton from "../../components/ui/UnselectSurveyButton.js";
+import SelectSurveyButton from "./UiSelectSurveyButton";
+import UnselectSurveyButton from "./UiUnselectSurveyButton";
 
 class ComponentsSurveySelect extends Component {
 	constructor(props) {
