@@ -2,7 +2,6 @@ import React, { Component, Fragment } from "react";
 
 import SelectSurveyButton from "../../components/ui/SelectSurveyButton.js";
 import UnselectSurveyButton from "../../components/ui/UnselectSurveyButton.js";
-import SurveyContext from "../../contexts/SurveyContext.js";
 
 class ComponentsSurveySelect extends Component {
 	constructor(props) {
@@ -18,15 +17,15 @@ class ComponentsSurveySelect extends Component {
 		this.ShowUnselectButton = this.ShowUnselectButton.bind(this);
 	}
 
-	static contextType = SurveyContext;
-
 	ShowUnselectButton() {
 		if (this.context.surveySelector === null) {
 			return null;
 		} else {
 			return (
 				<li key={"unselect"}>
-					<UnselectSurveyButton />
+					<UnselectSurveyButton
+						setSelectedSurvey={this.props.setSelectedSurvey}
+					/>
 				</li>
 			);
 		}
@@ -57,11 +56,17 @@ class ComponentsSurveySelect extends Component {
 			<Fragment>
 				<ul>
 					<this.ShowUnselectButton />
-					{this.state.surveys.map((sur) => {
+					{this.state.surveys.map((s) => {
 						return (
-							<li key={sur.id}>
-								{sur.description}{" "}
-								<SelectSurveyButton survey_id={sur.id} />
+							<li key={s.id}>
+								{s.description}
+								<SelectSurveyButton
+									survey_id={s.id}
+									survey_description={s.description}
+									setSelectedSurvey={
+										this.props.setSelectedSurvey
+									}
+								/>
 							</li>
 						);
 					})}

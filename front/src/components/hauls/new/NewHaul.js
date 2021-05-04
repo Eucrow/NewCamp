@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from "react";
 
-import SurveyContext from "../../../contexts/SurveyContext.js";
-
 import NewCommon from "./NewCommon";
 import NewSpecific from "./NewSpecific.js";
 
@@ -38,8 +36,6 @@ class NewHaul extends Component {
 		this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
 		this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
 	}
-
-	static contextType = SurveyContext;
 
 	handleChange(event) {
 		const name = event.target.name;

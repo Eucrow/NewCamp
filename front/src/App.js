@@ -1,9 +1,7 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./index.scss";
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
-import SurveyContext from "./contexts/SurveyContext.js";
 
 import ComponentsSurveys from "./components/surveys/Surveys.js";
 
@@ -20,99 +18,95 @@ import Ships from "./components/ships/Ships";
 import Gears from "./components/gears/Trawls";
 
 export default function App() {
-	const [surveySelector, setSurvey] = useState(null);
-	const value = { surveySelector, setSurvey };
+	const [surveySelected, setSelectedSurvey] = useState(() => {
+		const survey_description = window.localStorage.getItem(
+			"survey_description"
+		);
 
-	const [surveyName, setSurveyName] = useState();
-
-	function getSurveyName(survey_id) {
-		fetch("http://127.0.0.1:8000/api/1.0/survey/" + survey_id)
-			.then((response) => {
-				return response.json();
-			})
-			.then((survey) => {
-				return survey.description;
-			})
-			.then((surveyName) => {
-				setSurveyName(surveyName);
-			});
-	}
+		return survey_description !== null ? survey_description : "";
+	});
 
 	return (
-		<SurveyContext.Provider value={value}>
-			<Router>
-				<main>
-					<nav aria-label="nCamp">
-						<ul class="nav" role="menubar" aria-label="nCamp">
-							<li class="nav__item" role="none">
-								{/* survey name */}
-								{/* if surveySelector is not null, get the name of the survey */}
-								{surveySelector === null
-									? ""
-									: getSurveyName(surveySelector)}
+		<Router>
+			<main>
+				<nav aria-label="nCamp">
+					<ul class="nav" role="menubar" aria-label="nCamp">
+						<li class="nav__item" role="none">
+							{/* survey name */}
+							{/* if surveySelected is not null, get the name of the survey */}
+							{surveySelected !== ""
+								? surveySelected
+								: // : getSurveyName(surveySelected)}
+								  "none selected"}
 
-								{surveyName === undefined ? (
-									<Link to="/SurveySelect" role="menuitem">
-										Select Survey
-									</Link>
-								) : (
-									<h2>{surveyName}</h2>
-								)}
-							</li>
-							<li class="nav__item" role="none">
-								<Link to="/Surveys" role="menuitem">
-									Surveys
-								</Link>
-							</li>
-							<li class="nav__item" role="none">
-								<Link to="/Species" role="menuitem">
-									Species
-								</Link>
-							</li>
-							<li class="nav__item" role="none">
-								<Link to="/Ships" role="menuitem">
-									Ships
-								</Link>
-							</li>
-						</ul>
-						{/* <Link to="/">Home</Link>- -*/}
-						{/* <Link to="/Strata">Strata</Link>-
+							{/* {surveyName === undefined ? ( */}
+							<Link to="/SurveySelect" role="menuitem">
+								Select Survey
+							</Link>
+							{/* ) : (
+								<h2>{surveyName}</h2>
+							)} */}
+						</li>
+						<li class="nav__item" role="none">
+							<Link to="/Surveys" role="menuitem">
+								Surveys
+							</Link>
+						</li>
+						<li class="nav__item" role="none">
+							<Link to="/Species" role="menuitem">
+								Species
+							</Link>
+						</li>
+						<li class="nav__item" role="none">
+							<Link to="/Ships" role="menuitem">
+								Ships
+							</Link>
+						</li>
+					</ul>
+					{/* <Link to="/">Home</Link>- -*/}
+					{/* <Link to="/Strata">Strata</Link>-
 						<Link to="/Stations">Stations</Link>- -- --
 						<Link to="/Trawls">Trawls</Link> */}
-					</nav>
-				</main>
+				</nav>
+			</main>
 
-				<Route path="/" exact component={Home} />
+			<Route path="/" exact component={Home} />
 
-				<Route
-					path="/SurveySelect"
-					exact
-					component={ComponentsSurveySelect}
-				/>
+			<Route
+				path="/SurveySelect"
+				exact
+				// component={ComponentsSurveySelect}
+				render={(props) => (
+					<ComponentsSurveySelect
+						{...props}
+						surveySelected={surveySelected}
+						setSelectedSurvey={setSelectedSurvey}
+					/>
+				)}
+			/>
 
-				<Route path="/Surveys" exact component={ComponentsSurveys} />
+			<Route path="/Surveys" exact component={ComponentsSurveys} />
 
-				<Route path="/Stations" exact component={ComponentsStations} />
+			<Route path="/Stations" exact component={ComponentsStations} />
 
-				{/* TODO: CONSIDER IF THE NEXT PATH IS USEFULL */}
-				{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
+			{/* TODO: CONSIDER IF THE NEXT PATH IS USEFULL */}
+			{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
 				<Route path="/Hauls" exact component={ComponentsHauls} /> */}
 
-				<Route
-					path="/Catches/haul/:haul_id"
-					exact
-					component={ComponentsTrawlCatches}
-				/>
+			<Route
+				path="/Catches/haul/:haul_id"
+				exact
+				component={ComponentsTrawlCatches}
+			/>
 
-				{/* <Route path="/Weights" component={Weights} /> */}
-				{/* <Route path="/Samples" component={Samples} /> */}
-				<Route path="/Species" component={Species} />
+			{/* <Route path="/Weights" component={Weights} /> */}
+			{/* <Route path="/Samples" component={Samples} /> */}
+			<Route path="/Species" component={Species} />
 
-				<Route path="/Ships" component={Ships} />
+			<Route path="/Ships" component={Ships} />
 
-				<Route path="/Trawls" component={Gears} />
-			</Router>
-		</SurveyContext.Provider>
+			<Route path="/Trawls" component={Gears} />
+		</Router>
 	);
 }
 
