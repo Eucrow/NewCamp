@@ -33,13 +33,13 @@
 
 		&:hover,
 		&:active {
-			color: var(--background-global-color);
-			background-color: var(--blue-gradient-1);
+			color: var(--higlight-front-color);
+			background-color: var(--higlight-background-color);
 		}
 
 		&:focus-visible {
-			color: var(--background-global-color);
-			background-color: var(--blue-gradient-1);
+			color: var(--higlight-front-color);
+			background-color: var(--higlight-background-color);
 		}
 	}
 }

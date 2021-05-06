@@ -7,17 +7,37 @@
 // css nav bar
 @use './scss/nav';
 
+// css button
+@use './scss/button';
+
 // css custom properties
 :root {
+	//FONT VARIABLES
+	--normal-font: "Roboto", "Sans Serif";
+	--special-font: "Signika", "Serif";
+	//COLOR VARIABLES
 	//blue gradient
 	--blue-gradient-1: hsl(203, 73%, 28%);
 	--blue-gradient-2: hsl(205, 59%, 56%);
 	--blue-gradient-3: hsl(205, 41%, 77%);
 	--blue-gradient-4: hsl(205, 32%, 94%);
 
+	//grey gradient
+	--grey-gradiente-1: hsl(206, 6%, 31%);
+	--grey-gradiente-2: hsl(0, 0%, 50%);
+	--grey-gradiente-3: hsl(214, 4%, 75%);
+	--grey-gradiente-4: hsl(260, 3%, 90%);
+
 	//global
 	--background-global-color: hsl(80, 1%, 95%);
 	--text-color: black;
+
+	//links and buttons higlights
+	--higlight-background-color: var(--blue-gradient-1);
+	--higlight-front-color: var(--background-global-color);
+
+	//button colors
+	--button-background-color: var(--grey-gradiente-3);
 
 	//nav
 	--background-nav: var(--blue-gradient-3);
@@ -26,7 +46,7 @@
 html {
 	background-color: var(--background-global-color);
 	color: var(--text-color);
-	font-family: "Roboto", "Sans Serif";
+	font-family: var(--normal-font);
 }
 
 h1,
@@ -35,5 +55,5 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: "Signika", "Serif";
+	font-family: var(--special-font);
 }

@@ -1,0 +1,17 @@
+button {
+	min-height: 2rem;
+	background-color: var(--button-background-color);
+
+	border-radius: 11px;
+	padding: 0 1rem;
+	border-style: none;
+
+	font-family: var(--normal-font);
+	font-weight: bold;
+
+	&:hover,
+	&:active {
+		color: var(--higlight-front-color);
+		background-color: var(--higlight-background-color);
+	}
+}
