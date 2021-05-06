@@ -4,6 +4,9 @@
 // css fonts
 @use './scss/fonts';
 
+// css nav bar
+@use './scss/nav';
+
 // css custom properties
 :root {
 	//blue gradient
@@ -33,40 +36,4 @@ h4,
 h5,
 h6 {
 	font-family: "Signika", "Serif";
-}
-
-.nav {
-	font-family: "Signika", "Serif";
-	color: var(--text-color);
-
-	background-color: var(--background-nav);
-
-	.nav__item {
-		display: inline-block;
-	}
-
-	.nav__item a {
-		font-size: 1.17rem;
-		text-decoration-line: none;
-		display: inline-block;
-		padding: 15px 10px;
-		&:link {
-			color: var(--text-color);
-		}
-
-		&:visited {
-			color: var(--text-color);
-		}
-
-		&:hover,
-		&:active {
-			color: var(--background-global-color);
-			background-color: var(--blue-gradient-1);
-		}
-
-		&:focus-visible {
-			color: var(--background-global-color);
-			background-color: var(--blue-gradient-1);
-		}
-	}
 }

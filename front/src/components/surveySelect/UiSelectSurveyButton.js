@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 
-const SelectSurveyButton = ({
-	survey_id,
-	survey_description,
-	setSelectedSurvey,
-}) => {
+import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
+
+const SelectSurveyButton = ({ survey_id, survey_description }) => {
+	const surveyContext = useContext(SelectedSurveyContext);
+	const { setSelectedSurvey, setSelectedSurveyId } = surveyContext;
+
 	return (
 		<button
 			onClick={() => {
 				setSelectedSurvey(survey_description);
+				setSelectedSurveyId(survey_id);
 				window.localStorage.setItem("survey_id", survey_id);
 				window.localStorage.setItem(
 					"survey_description",

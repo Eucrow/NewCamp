@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 
-const UnselectSurveyButton = ({ setSelectedSurvey }) => {
+import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
+
+const UnselectSurveyButton = () => {
+	const surveyContext = useContext(SelectedSurveyContext);
+	const { setSelectedSurvey, setSelectedSurveyId } = surveyContext;
 	if (window.localStorage.survey_id) {
 		return (
 			<button
 				onClick={() => {
 					localStorage.clear();
 					setSelectedSurvey("");
+					setSelectedSurveyId("");
 				}}
 			>
 				Unselect Survey

@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
 
+import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
+
 import Station from "./Station";
 import NewStation from "./NewStation";
 
@@ -8,6 +10,11 @@ class ComponentsStations extends Component {
 	 * List of stations
 	 * @param {*} props
 	 */
+
+	// The contextType property on a class can be assigned a Context object created by React.createContext().
+	// This lets you consume the nearest current value of that Context type using this.context. You can reference
+	// this in any of the lifecycle methods including the render function.
+	static contextType = SelectedSurveyContext;
 
 	constructor(props) {
 		super(props);
@@ -48,9 +55,11 @@ class ComponentsStations extends Component {
 		/**
 		 * Build url api of all the stations of a survey, using apiHauls and context
 		 */
-		return this.context.surveySelector === null
+		return this.context.selectedSurveyId === null
 			? this.apiStationsPartial
-			: this.apiStationsPartial + "hauls/" + this.context.surveySelector;
+			: this.apiStationsPartial +
+					"hauls/" +
+					this.context.selectedSurveyId;
 	}
 
 	handleAdd(status) {
@@ -237,31 +246,35 @@ class ComponentsStations extends Component {
 	}
 
 	componentDidMount() {
-		const APIStations = this.getStationsApi();
+		if (this.context.selectedSurveyId !== "") {
+			const APIStations = this.getStationsApi();
 
-		fetch(APIStations)
-			.then((response) => {
-				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
+			fetch(APIStations)
+				.then((response) => {
+					if (response.status > 400) {
+						return this.setState(() => {
+							return { placeholder: "Something went wrong!" };
+						});
+					}
+					return response.json();
+				})
+				.then((stations) => {
+					this.setState(() => {
+						return {
+							stations,
+							loaded: true,
+						};
 					});
-				}
-				return response.json();
-			})
-			.then((stations) => {
-				this.setState(() => {
-					return {
-						stations,
-						loaded: true,
-					};
 				});
-			});
+		}
 	}
 
 	renderContent() {
 		var content = "";
 
-		if (this.state.add === false) {
+		if (this.context.selectedSurveyId === "") {
+			content = <div>There is not survey selected</div>;
+		} else if (this.state.add === false) {
 			content = (
 				<div>
 					{this.UiAddButton(true)}

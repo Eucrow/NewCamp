@@ -1,0 +1,45 @@
+.headNav {
+	font-family: "Signika", "Serif";
+	color: var(--text-color);
+	// TODO: use rem to set the height of the nav. I've problems trying it
+
+	background-color: var(--background-nav);
+
+	.headNav__selectedSurvey {
+		display: inline-block;
+		padding: 0px 10px 0px 20px;
+	}
+
+	.headNav__wrapper {
+		display: inline-block;
+	}
+
+	.headNav__item {
+		display: inline-block;
+	}
+
+	.headNav__item a {
+		font-size: 1.17rem;
+		text-decoration-line: none;
+		display: inline-block;
+		padding: 15px 10px;
+		&:link {
+			color: var(--text-color);
+		}
+
+		&:visited {
+			color: var(--text-color);
+		}
+
+		&:hover,
+		&:active {
+			color: var(--background-global-color);
+			background-color: var(--blue-gradient-1);
+		}
+
+		&:focus-visible {
+			color: var(--background-global-color);
+			background-color: var(--blue-gradient-1);
+		}
+	}
+}

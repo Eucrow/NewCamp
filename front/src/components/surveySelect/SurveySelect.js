@@ -63,9 +63,6 @@ class ComponentsSurveySelect extends Component {
 								<SelectSurveyButton
 									survey_id={s.id}
 									survey_description={s.description}
-									setSelectedSurvey={
-										this.props.setSelectedSurvey
-									}
 								/>
 							</li>
 						);
