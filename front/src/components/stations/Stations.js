@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 
+import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
+
 import Station from "./Station";
 import NewStation from "./NewStation";
-
-import SurveyContext from "../../contexts/SurveyContext.js";
 
 class ComponentsStations extends Component {
 	/**
@@ -14,7 +14,7 @@ class ComponentsStations extends Component {
 	// The contextType property on a class can be assigned a Context object created by React.createContext().
 	// This lets you consume the nearest current value of that Context type using this.context. You can reference
 	// this in any of the lifecycle methods including the render function.
-	static contextType = SurveyContext;
+	static contextType = SelectedSurveyContext;
 
 	constructor(props) {
 		super(props);
@@ -28,7 +28,8 @@ class ComponentsStations extends Component {
 		this.apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
 
 		this.apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
-		this.apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
+		this.apiHydrographyForm =
+			"http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
 
 		this.apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get, update or add station
 		this.apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
@@ -45,16 +46,20 @@ class ComponentsStations extends Component {
 
 		this.renderContent = this.renderContent.bind(this);
 
-		this.handleChangeStationFields = this.handleChangeStationFields.bind(this);
+		this.handleChangeStationFields = this.handleChangeStationFields.bind(
+			this
+		);
 	}
 
 	getStationsApi() {
 		/**
 		 * Build url api of all the stations of a survey, using apiHauls and context
 		 */
-		return this.context.surveySelector === null
+		return this.context.selectedSurveyId === null
 			? this.apiStationsPartial
-			: this.apiStationsPartial + "hauls/" + this.context.surveySelector;
+			: this.apiStationsPartial +
+					"hauls/" +
+					this.context.selectedSurveyId;
 	}
 
 	handleAdd(status) {
@@ -82,7 +87,9 @@ class ComponentsStations extends Component {
 
 		const api = this.apiStation + station_id;
 
-		const updated_station = this.state.stations.filter((station) => station.id === station_id);
+		const updated_station = this.state.stations.filter(
+			(station) => station.id === station_id
+		);
 
 		fetch(api, {
 			method: "PUT",
@@ -143,7 +150,11 @@ class ComponentsStations extends Component {
 		event.preventDefault();
 
 		const apiForm =
-			haul.sampler.id === "1" ? this.apiTrawlForm : haul.sampler.id === "2" ? this.apiHydrographyForm : null;
+			haul.sampler.id === "1"
+				? this.apiTrawlForm
+				: haul.sampler.id === "2"
+				? this.apiHydrographyForm
+				: null;
 
 		fetch(apiForm, {
 			method: "POST",
@@ -190,7 +201,9 @@ class ComponentsStations extends Component {
 			.then(() => {
 				var new_stations = this.state.stations.map((station) => {
 					if (station.id === id_station) {
-						var new_hauls = station.hauls.filter((haul) => haul.id !== id_haul);
+						var new_hauls = station.hauls.filter(
+							(haul) => haul.id !== id_haul
+						);
 						station.hauls = new_hauls;
 						return station;
 					} else {
@@ -221,7 +234,9 @@ class ComponentsStations extends Component {
 			},
 		})
 			.then(() => {
-				const new_stations = this.state.stations.filter((station) => station.id !== ids);
+				const new_stations = this.state.stations.filter(
+					(station) => station.id !== ids
+				);
 
 				this.setState({
 					stations: new_stations,
@@ -231,31 +246,35 @@ class ComponentsStations extends Component {
 	}
 
 	componentDidMount() {
-		const APIStations = this.getStationsApi();
+		if (this.context.selectedSurveyId !== "") {
+			const APIStations = this.getStationsApi();
 
-		fetch(APIStations)
-			.then((response) => {
-				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
+			fetch(APIStations)
+				.then((response) => {
+					if (response.status > 400) {
+						return this.setState(() => {
+							return { placeholder: "Something went wrong!" };
+						});
+					}
+					return response.json();
+				})
+				.then((stations) => {
+					this.setState(() => {
+						return {
+							stations,
+							loaded: true,
+						};
 					});
-				}
-				return response.json();
-			})
-			.then((stations) => {
-				this.setState(() => {
-					return {
-						stations,
-						loaded: true,
-					};
 				});
-			});
+		}
 	}
 
 	renderContent() {
 		var content = "";
 
-		if (this.state.add === false) {
+		if (this.context.selectedSurveyId === "") {
+			content = <div>There is not survey selected</div>;
+		} else if (this.state.add === false) {
 			content = (
 				<div>
 					{this.UiAddButton(true)}
@@ -268,8 +287,12 @@ class ComponentsStations extends Component {
 									deleteStation={this.deleteStation}
 									deleteHaul={this.deleteHaul}
 									createHaul={this.createHaul}
-									handleChangeStationFields={this.handleChangeStationFields}
-									handleSubmitEditStation={this.handleSubmitEditStation}
+									handleChangeStationFields={
+										this.handleChangeStationFields
+									}
+									handleSubmitEditStation={
+										this.handleSubmitEditStation
+									}
 								/>
 							);
 						})}
@@ -279,7 +302,10 @@ class ComponentsStations extends Component {
 		} else if (this.state.add === true) {
 			content = (
 				<div>
-					<NewStation handleAdd={this.handleAdd} createStation={this.createStation} />
+					<NewStation
+						handleAdd={this.handleAdd}
+						createStation={this.createStation}
+					/>
 					<ul>
 						{this.state.stations.map((station) => {
 							return (
@@ -289,8 +315,12 @@ class ComponentsStations extends Component {
 									deleteStation={this.deleteStation}
 									deleteHaul={this.deleteHaul}
 									createHaul={this.createHaul}
-									handleChangeStationFields={this.handleChangeStationFields}
-									handleSubmitEditStation={this.handleSubmitEditStation}
+									handleChangeStationFields={
+										this.handleChangeStationFields
+									}
+									handleSubmitEditStation={
+										this.handleSubmitEditStation
+									}
 								/>
 							);
 						})}

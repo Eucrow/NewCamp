@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from "react";
 
 import { Link } from "react-router-dom";
-
-import SurveyContext from "../../contexts/SurveyContext.js";
 import Haul from "./Haul";
 import NewHaul from "./new/NewHaul";
 
@@ -14,11 +12,6 @@ class Hauls extends Component {
 	 * @param {object} props.sampler_id
 	 * @param {method} props.deleteHaul
 	 */
-
-	// The contextType property on a class can be assigned a Context object created by React.createContext().
-	// This lets you consume the nearest current value of that Context type using this.context. You can reference
-	// this in any of the lifecycle methods including the render function.
-	static contextType = SurveyContext;
 
 	constructor(props) {
 		super(props);

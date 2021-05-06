@@ -1,9 +1,10 @@
 import React, { Fragment, useState } from "react";
+
 import "./index.scss";
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import SelectedSurveyContext from "./contexts/SelectedSuveryContext";
 
-import SurveyContext from "./contexts/SurveyContext.js";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import ComponentsSurveys from "./components/surveys/Surveys.js";
 
@@ -20,64 +21,74 @@ import Ships from "./components/ships/Ships";
 import Gears from "./components/gears/Trawls";
 
 export default function App() {
-	const [surveySelector, setSurvey] = useState(null);
-	const value = { surveySelector, setSurvey };
+	// const [surveySelector, setSurvey] = useState(null);
+	// const value = { surveySelector, setSurvey };
 
-	const [surveyName, setSurveyName] = useState();
+	const [selectedSurvey, setSelectedSurvey] = useState(() => {
+		const survey_description = window.localStorage.getItem(
+			"survey_description"
+		);
 
-	function getSurveyName(survey_id) {
-		fetch("http://127.0.0.1:8000/api/1.0/survey/" + survey_id)
-			.then((response) => {
-				return response.json();
-			})
-			.then((survey) => {
-				return survey.description;
-			})
-			.then((surveyName) => {
-				setSurveyName(surveyName);
-			});
-	}
+		return survey_description !== null ? survey_description : "";
+	});
+
+	const [selectedSurveyId, setSelectedSurveyId] = useState(() => {
+		const survey_id = window.localStorage.getItem("survey_id");
+
+		return survey_id !== null ? survey_id : "";
+	});
 
 	return (
-		<SurveyContext.Provider value={value}>
+		<SelectedSurveyContext.Provider
+			value={{
+				selectedSurvey,
+				setSelectedSurvey,
+				selectedSurveyId,
+				setSelectedSurveyId,
+			}}
+		>
 			<Router>
 				<main>
-					<nav aria-label="nCamp">
-						<ul class="nav" role="menubar" aria-label="nCamp">
-							<li class="nav__item" role="none">
-								{/* survey name */}
-								{/* if surveySelector is not null, get the name of the survey */}
-								{surveySelector === null
-									? ""
-									: getSurveyName(surveySelector)}
-
-								{surveyName === undefined ? (
-									<Link to="/SurveySelect" role="menuitem">
-										Select Survey
-									</Link>
-								) : (
-									<h2>{surveyName}</h2>
-								)}
-							</li>
-							<li class="nav__item" role="none">
-								<Link to="/Surveys" role="menuitem">
-									Surveys
+					<nav className="headNav" aria-label="nCamp">
+						<h1 className="headNav__selectedSurvey">
+							{selectedSurvey !== ""
+								? selectedSurvey
+								: "not survey selected"}
+						</h1>
+						<ul
+							className="headNav__wrapper"
+							role="menubar"
+							aria-label="nCamp"
+						>
+							<li className="headNav__item" role="none">
+								<Link to="/SurveySelect" role="menuitem">
+									Select Survey
 								</Link>
 							</li>
-							<li class="nav__item" role="none">
+							<li className="headNav__item" role="none">
+								<Link to="/Stations" role="menuitem">
+									Stations
+								</Link>
+							</li>
+							<li className="headNav__item" role="none">
 								<Link to="/Species" role="menuitem">
 									Species
 								</Link>
 							</li>
-							<li class="nav__item" role="none">
+							<li className="headNav__item" role="none">
 								<Link to="/Ships" role="menuitem">
 									Ships
+								</Link>
+							</li>
+							<li className="headNav__item" role="none">
+								<Link to="/Surveys" role="menuitem">
+									Surveys
 								</Link>
 							</li>
 						</ul>
 						{/* <Link to="/">Home</Link>- -*/}
 						{/* <Link to="/Strata">Strata</Link>-
-						<Link to="/Stations">Stations</Link>- -- --
+						- -- --
 						<Link to="/Trawls">Trawls</Link> */}
 					</nav>
 				</main>
@@ -87,7 +98,14 @@ export default function App() {
 				<Route
 					path="/SurveySelect"
 					exact
-					component={ComponentsSurveySelect}
+					// component={ComponentsSurveySelect}
+					render={(props) => (
+						<ComponentsSurveySelect
+							{...props}
+							selectedSurvey={selectedSurvey}
+							setSelectedSurvey={setSelectedSurvey}
+						/>
+					)}
 				/>
 
 				<Route path="/Surveys" exact component={ComponentsSurveys} />
@@ -112,7 +130,7 @@ export default function App() {
 
 				<Route path="/Trawls" component={Gears} />
 			</Router>
-		</SurveyContext.Provider>
+		</SelectedSurveyContext.Provider>
 	);
 }
 

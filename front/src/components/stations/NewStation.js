@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import SurveyContext from "../../contexts/SurveyContext.js";
-
 class NewStation extends Component {
 	/**
 	 *
@@ -17,8 +15,6 @@ class NewStation extends Component {
 
 		this.handleChange = this.handleChange.bind(this);
 	}
-
-	static contextType = SurveyContext;
 
 	handleChange(e) {
 		const name = e.target.name;
@@ -49,9 +45,19 @@ class NewStation extends Component {
 				}}
 			>
 				<label htmlFor="station">Station:</label>
-				<input type="text" id="station" name="station" onChange={(e) => this.handleChange(e)} />
+				<input
+					type="text"
+					id="station"
+					name="station"
+					onChange={(e) => this.handleChange(e)}
+				/>
 				<label htmlFor="comment">Comment:</label>
-				<input type="text" id="comment" name="comment" onChange={(e) => this.handleChange(e)} />
+				<input
+					type="text"
+					id="comment"
+					name="comment"
+					onChange={(e) => this.handleChange(e)}
+				/>
 
 				<input type="submit" value="Save Station" />
 			</form>
