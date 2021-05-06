@@ -27,7 +27,7 @@ class Haul extends Component {
 	renderContent() {
 		if (this.state.detail === false) {
 			return (
-				<div style={{ display: "inline" }}>
+				<Fragment>
 					<div key={this.props.haul.id} style={{ display: "inline" }}>
 						Haul: {this.props.haul.haul} - Station:{" "}
 						{this.props.haul.station.station} - Sampler:
@@ -35,14 +35,13 @@ class Haul extends Component {
 						{this.props.haul.valid} -
 					</div>
 					<button
-						style={{ display: "inline" }}
 						onClick={() => {
 							this.changeDetail(true);
 						}}
 					>
 						Show detail
 					</button>
-				</div>
+				</Fragment>
 			);
 		}
 
@@ -51,7 +50,6 @@ class Haul extends Component {
 				<Fragment>
 					<HaulDetails haul={this.props.haul} />
 					<button
-						style={{ display: "inline" }}
 						onClick={() => {
 							this.changeDetail(false);
 						}}

@@ -55,11 +55,8 @@ class Hauls extends Component {
 				<ul>
 					{this.props.hauls.map((haul) => {
 						return (
-							<div key={haul.id}>
-								<Haul
-									haul={haul}
-									style={{ display: "inline" }}
-								/>
+							<li key={haul.id}>
+								<Haul haul={haul} />
 								<button
 									style={{ display: "inline" }}
 									onClick={(e) => {
@@ -83,7 +80,7 @@ class Hauls extends Component {
 								>
 									view catches
 								</Link>
-							</div>
+							</li>
 						);
 					})}
 				</ul>
@@ -97,17 +94,14 @@ class Hauls extends Component {
 		if (this.state.add === false) {
 			return (
 				<Fragment>
-					<div>
-						<button
-							style={{ display: "inline" }}
-							onClick={() => {
-								this.changeAdd(true);
-							}}
-						>
-							Add haul
-						</button>
-					</div>
 					{this.renderHauls()}
+					<button
+						onClick={() => {
+							this.changeAdd(true);
+						}}
+					>
+						Add haul
+					</button>
 				</Fragment>
 			);
 		} else if (this.state.add === true) {
