@@ -22,11 +22,10 @@ class ComponentsSurveySelect extends Component {
 			return null;
 		} else {
 			return (
-				<li key={"unselect"}>
-					<UnselectSurveyButton
-						setSelectedSurvey={this.props.setSelectedSurvey}
-					/>
-				</li>
+				<UnselectSurveyButton
+					className="myWrapper__row"
+					setSelectedSurvey={this.props.setSelectedSurvey}
+				/>
 			);
 		}
 	}
@@ -53,22 +52,32 @@ class ComponentsSurveySelect extends Component {
 
 	render() {
 		return (
-			<Fragment>
-				<ul>
-					<this.ShowUnselectButton />
+			<main>
+				<header>
+					<h1 className="title">Survey selection</h1>
+				</header>
+				<form className="myWrapper">
 					{this.state.surveys.map((s) => {
 						return (
-							<li key={s.id}>
-								{s.description}
+							<div className="myWrapper__row">
+								<label
+									className="myWrapper__element"
+									for={s.description}
+								>
+									{s.description}
+								</label>
 								<SelectSurveyButton
 									survey_id={s.id}
 									survey_description={s.description}
 								/>
-							</li>
+							</div>
 						);
 					})}
-				</ul>
-			</Fragment>
+					<div className="myWrapper__row">
+						<this.ShowUnselectButton />
+					</div>
+				</form>
+			</main>
 		);
 	}
 }

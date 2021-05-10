@@ -23,10 +23,10 @@
 	--blue-gradient-4: hsl(205, 32%, 94%);
 
 	//grey gradient
-	--grey-gradiente-1: hsl(206, 6%, 31%);
-	--grey-gradiente-2: hsl(0, 0%, 50%);
-	--grey-gradiente-3: hsl(214, 4%, 75%);
-	--grey-gradiente-4: hsl(260, 3%, 90%);
+	--grey-gradient-1: hsl(206, 6%, 31%);
+	--grey-gradient-2: hsl(0, 0%, 50%);
+	--grey-gradient-3: hsl(214, 4%, 75%);
+	--grey-gradient-4: hsl(260, 3%, 90%);
 
 	//global
 	--background-global-color: hsl(80, 1%, 95%);
@@ -37,7 +37,10 @@
 	--higlight-front-color: var(--background-global-color);
 
 	//button colors
-	--button-background-color: var(--grey-gradiente-3);
+	--button-background-color: var(--grey-gradient-3);
+
+	//wrapper border
+	--wrapper-border-color: var(--grey-gradient-2);
 
 	//nav
 	--background-nav: var(--blue-gradient-3);
@@ -56,4 +59,33 @@ h4,
 h5,
 h6 {
 	font-family: var(--special-font);
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.title {
+		padding: 1rem 0px 0.5rem 0px;
+	}
+}
+
+.myWrapper {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 20px;
+	border-style: solid;
+	border-color: var(--wrapper-border-color);
+	border-width: 1px;
+
+	.myWrapper__row {
+		// display: block;
+		padding: 0.5rem 1rem;
+	}
+
+	.myWrapper__element {
+		margin: 0 1rem;
+	}
 }

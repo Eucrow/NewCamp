@@ -48,57 +48,57 @@ export default function App() {
 			}}
 		>
 			<Router>
-				<main>
-					<nav className="headNav" aria-label="nCamp">
-						<h1 className="headNav__selectedSurvey">
-							{selectedSurvey !== ""
-								? selectedSurvey
-								: "not survey selected"}
-						</h1>
-						<ul
-							className="headNav__wrapper"
-							role="menubar"
-							aria-label="nCamp"
-						>
-							<li className="headNav__item" role="none">
-								<Link to="/SurveySelect" role="menuitem">
-									Select Survey
-								</Link>
-							</li>
-							<li className="headNav__item" role="none">
-								<Link to="/Stations" role="menuitem">
-									Stations
-								</Link>
-							</li>
-							<li className="headNav__item" role="none">
-								<Link to="/Species" role="menuitem">
-									Species
-								</Link>
-							</li>
-							<li className="headNav__item" role="none">
-								<Link to="/Ships" role="menuitem">
-									Ships
-								</Link>
-							</li>
-							<li className="headNav__item" role="none">
-								<Link to="/Surveys" role="menuitem">
-									Surveys
-								</Link>
-							</li>
-						</ul>
-						{/* <Link to="/">Home</Link>- -*/}
-						{/* <Link to="/Strata">Strata</Link>-
+				<nav className="headNav" aria-label="nCamp">
+					<h1 className="headNav__selectedSurvey">
+						{selectedSurvey !== ""
+							? selectedSurvey
+							: "not survey selected"}
+					</h1>
+					<ul
+						className="headNav__wrapper"
+						role="menubar"
+						aria-label="nCamp"
+					>
+						<li className="headNav__item" role="none">
+							<Link to="/SurveySelect" role="menuitem">
+								Select Survey
+							</Link>
+						</li>
+						<li className="headNav__item" role="none">
+							<Link to="/Stations" role="menuitem">
+								Stations
+							</Link>
+						</li>
+						<li className="headNav__item" role="none">
+							<Link to="/Species" role="menuitem">
+								Species
+							</Link>
+						</li>
+						<li className="headNav__item" role="none">
+							<Link to="/Ships" role="menuitem">
+								Ships
+							</Link>
+						</li>
+						<li className="headNav__item" role="none">
+							<Link to="/Surveys" role="menuitem">
+								Surveys
+							</Link>
+						</li>
+					</ul>
+					{/* <Link to="/">Home</Link>- -*/}
+					{/* <Link to="/Strata">Strata</Link>-
 						- -- --
 						<Link to="/Trawls">Trawls</Link> */}
-					</nav>
-				</main>
+				</nav>
+				{/* <main>
+					
+				</main> */}
 
 				<Route path="/" exact component={Home} />
 
 				<Route
 					path="/SurveySelect"
 					exact
-					// component={ComponentsSurveySelect}
 					render={(props) => (
 						<ComponentsSurveySelect
 							{...props}
@@ -116,11 +116,11 @@ export default function App() {
 				{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
 				<Route path="/Hauls" exact component={ComponentsHauls} /> */}
 
-				<Route
+				{/* <Route
 					path="/Catches/haul/:haul_id"
 					exact
 					component={ComponentsTrawlCatches}
-				/>
+				/> */}
 
 				{/* <Route path="/Weights" component={Weights} /> */}
 				{/* <Route path="/Samples" component={Samples} /> */}
@@ -150,11 +150,11 @@ const Home = () => (
 //   );
 // Stations Page
 // const Stations = () => (
-//   <Fragment>
-//     <h1>Stations</h1>
-//     <FakeText />
-//   </Fragment>
-//   );
+// 	<Fragment>
+// 		<h1>Stations</h1>
+// 		<FakeText />
+// 	</Fragment>
+// );
 // Hauls Page
 // const Hauls = () => (
 //   <Fragment>
