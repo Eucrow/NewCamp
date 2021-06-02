@@ -116,11 +116,11 @@ export default function App() {
 				{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
 				<Route path="/Hauls" exact component={ComponentsHauls} /> */}
 
-				{/* <Route
+				<Route
 					path="/Catches/haul/:haul_id"
 					exact
 					component={ComponentsTrawlCatches}
-				/> */}
+				/>
 
 				{/* <Route path="/Weights" component={Weights} /> */}
 				{/* <Route path="/Samples" component={Samples} /> */}

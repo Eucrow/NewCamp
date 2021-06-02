@@ -1,9 +1,8 @@
 .headNav {
 	font-family: "Signika", "Serif";
-	color: var(--text-color);
-	// TODO: use rem to set the height of the nav. I've problems trying it
 
 	background-color: var(--background-nav);
+	min-height: 50px;
 
 	.headNav__selectedSurvey {
 		display: inline-block;

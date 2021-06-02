@@ -4,11 +4,23 @@
 // css fonts
 @use './scss/fonts';
 
+// css button
+@use './scss/button';
+
+// css buttons wrapper
+@use './scss/buttonsWrapper';
+
 // css nav bar
 @use './scss/nav';
 
-// css button
-@use './scss/button';
+//css generic wrapper
+@use './scss/wrapper';
+
+// css select survey
+@use './scss/selectSurvey';
+
+// css stations
+@use './scss/stations';
 
 // css custom properties
 :root {
@@ -17,20 +29,21 @@
 	--special-font: "Signika", "Serif";
 	//COLOR VARIABLES
 	//blue gradient
-	--blue-gradient-1: hsl(203, 73%, 28%);
-	--blue-gradient-2: hsl(205, 59%, 56%);
-	--blue-gradient-3: hsl(205, 41%, 77%);
-	--blue-gradient-4: hsl(205, 32%, 94%);
+	--blue-gradient-1: #133347;
+	--blue-gradient-2: #3b6c90;
+	--blue-gradient-3: #74a3c4;
+	--blue-gradient-4: #a3d0f0;
 
 	//grey gradient
-	--grey-gradient-1: hsl(206, 6%, 31%);
-	--grey-gradient-2: hsl(0, 0%, 50%);
-	--grey-gradient-3: hsl(214, 4%, 75%);
-	--grey-gradient-4: hsl(260, 3%, 90%);
+	--grey-gradient-1: #494c4e;
+	--grey-gradient-2: #808080;
+	--grey-gradient-3: #b8bbbf;
+	--grey-gradient-4: #e2e0e6;
 
 	//global
-	--background-global-color: hsl(80, 1%, 95%);
+	--background-global-color: #f2f3f0;
 	--text-color: black;
+	--highlight-text-color: var(--blue-gradient-1);
 
 	//links and buttons higlights
 	--higlight-background-color: var(--blue-gradient-1);
@@ -40,7 +53,7 @@
 	--button-background-color: var(--grey-gradient-3);
 
 	//wrapper border
-	--wrapper-border-color: var(--grey-gradient-2);
+	--wrapper-border-color: var(--blue-gradient-3);
 
 	//nav
 	--background-nav: var(--blue-gradient-3);
@@ -68,30 +81,51 @@ main {
 
 	.title {
 		padding: 20px;
+		color: var(--highlight-text-color);
 	}
 }
 
-.myWrapper {
-	display: inline-flex;
+// fieldset
+fieldset.wrapper {
+	width: 100%;
+	padding-left: 5px;
+}
+
+// hauls
+.haulsWrapper {
+	display: flex;
 	flex-direction: column;
+	align-items: stretch;
+	padding: 0px 0px 0px 20px;
+}
+
+.haul__row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
 	align-items: center;
-	// margin: 10px;
-	padding: 10px 20px;
-	border-style: solid;
-	border-color: var(--wrapper-border-color);
-	border-width: 1px;
+	// width: 100%;
+	min-height: 2rem;
+	padding: 5px 0px;
+}
 
-	.myWrapper__row {
-		margin: 10px 0px;
-	}
-	.myWrapper__row:first-child {
-		margin: 0px;
-	}
-	.myWrapper__row:last-child {
-		margin: 0px;
-	}
+.haul__cell {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	min-height: 2rem;
+	padding-right: 10px;
+}
 
-	.myWrapper__element {
-		margin: 0px 10px;
-	}
+.haul__cell:last-child {
+	padding-right: 0px;
+}
+
+// cell aligned to the right
+.haul__cell--right {
+	margin-left: auto;
+}
+
+.haul__label {
+	margin-right: 5px;
 }

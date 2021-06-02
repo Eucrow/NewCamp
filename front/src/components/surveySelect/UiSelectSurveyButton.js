@@ -8,7 +8,7 @@ const SelectSurveyButton = ({ survey_id, survey_description }) => {
 
 	return (
 		<button
-			className="myWrapper__element"
+			className="selectSurvey__element"
 			name={survey_description}
 			onClick={() => {
 				setSelectedSurvey(survey_description);

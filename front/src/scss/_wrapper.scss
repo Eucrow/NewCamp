@@ -1,0 +1,10 @@
+// generic wrapper
+.wrapper {
+	padding: 10px 20px;
+	margin: 5px 0;
+	border-style: solid;
+	border-color: var(--wrapper-border-color);
+	border-width: 1px;
+	border-radius: 5px;
+	background-color: white;
+}

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 class EditCommon extends Component {
 	/**
@@ -13,46 +13,57 @@ class EditCommon extends Component {
 		const haul = this.props.haul;
 
 		return (
-			<div key={haul.id}>
-				<label htmlFor="haul">Haul:</label>
-				<input
-					type="text"
-					name="haul"
-					id="haul"
-					value={haul.haul || ""}
-					onChange={this.props.handleChangeCommon}
-				/>
+			<Fragment>
+				<div className="haul__cell">
+					<label htmlFor="haul">Haul:</label>
+					<input
+						type="text"
+						name="haul"
+						id="haul"
+						value={haul.haul || ""}
+						onChange={this.props.handleChangeCommon}
+					/>
+				</div>
 
 				{/* TODO: station and sampler can't be changed here becasue they are foreing keys*/}
-				<label htmlFor="station">Station:</label>
-				{haul.station.station}
-				<label htmlFor="sampler">sampler:</label>
-				{haul.sampler.sampler}
-				<label htmlFor="gear">Gear:</label>
-				<select
-					id="gear"
-					name="gear"
-					value={haul.gear || "choose"}
-					onChange={this.props.handleChangeCommon}
-				>
-					{this.props.gears.map((gear) => {
-						return (
-							<option key={gear} value={gear.name}>
-								{gear.name}
-							</option>
-						);
-					})}
-				</select>
 
-				<label htmlFor="valid">Valid:</label>
-				<input
-					type="checkbox"
-					name="valid"
-					id="valid"
-					defaultChecked={haul.valid}
-					onChange={this.props.handleChangeCommonValid}
-				/>
-			</div>
+				<div className="haul__cell">
+					<label htmlFor="station">Station:</label>
+					{haul.station.station}
+				</div>
+				<div className="haul__cell">
+					<label htmlFor="sampler">Sampler:</label>
+					{haul.sampler.sampler}
+				</div>
+				{/* <div className="haul__cell">
+					<label htmlFor="gear">Gear:</label>
+					<select
+						id="gear"
+						name="gear"
+						value={haul.gear || "choose"}
+						onChange={this.props.handleChangeCommon}
+					>
+						{this.props.gears.map((gear) => {
+							return (
+								<option key={gear} value={gear.name}>
+									{gear.name}
+								</option>
+							);
+						})}
+					</select>
+				</div> */}
+
+				<div className="haul__cell">
+					<label htmlFor="valid">Valid:</label>
+					<input
+						type="checkbox"
+						name="valid"
+						id="valid"
+						defaultChecked={haul.valid}
+						onChange={this.props.handleChangeCommonValid}
+					/>
+				</div>
+			</Fragment>
 		);
 	}
 }

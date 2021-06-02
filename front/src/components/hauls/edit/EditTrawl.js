@@ -10,15 +10,33 @@ class EditTrawl extends Component {
 	render() {
 		const haul = this.props.haul;
 
+		const shooting_date_time =
+			haul.trawl_characteristics.shooting_date_time === null
+				? ""
+				: haul.trawl_characteristics.shooting_date_time.replace(
+						"Z",
+						""
+				  );
+
+		const hauling_date_time =
+			haul.trawl_characteristics.hauling_date_time === null
+				? ""
+				: haul.trawl_characteristics.hauling_date_time.replace("Z", "");
+
+		const bottom_date_time =
+			haul.trawl_characteristics.bottom_date_time === null
+				? ""
+				: haul.trawl_characteristics.bottom_date_time.replace("Z", "");
+
 		return (
-			<fieldset>
+			<fieldset class="wrapper haul__row">
 				<legend>Trawl characteristics:</legend>
 				<label htmlFor="shooting_date_time">shooting_date_time:</label>
 				<input
-					type="text"
+					type="datetime-local"
 					name="shooting_date_time"
 					id="shooting_date_time"
-					value={haul.trawl_characteristics.shooting_date_time || ""}
+					value={shooting_date_time}
 					onChange={this.props.handleChangeTrawl}
 				/>
 				<label htmlFor="shooting_latitude">shooting_latitude:</label>
@@ -28,6 +46,7 @@ class EditTrawl extends Component {
 					id="shooting_latitude"
 					value={haul.trawl_characteristics.shooting_latitude || ""}
 					onChange={this.props.handleChangeTrawl}
+					disabled
 				/>
 				<label htmlFor="shooting_longitude">shooting_longitude:</label>
 				<input
@@ -50,7 +69,7 @@ class EditTrawl extends Component {
 					type="text"
 					name="hauling_date_time"
 					id="hauling_date_time"
-					value={haul.trawl_characteristics.hauling_date_time || ""}
+					value={hauling_date_time}
 					onChange={this.props.handleChangeTrawl}
 				/>
 				<label htmlFor="hauling_latitude">hauling_latitude:</label>
@@ -82,7 +101,7 @@ class EditTrawl extends Component {
 					type="text"
 					name="bottom_date_time"
 					id="bottom_date_time"
-					value={haul.trawl_characteristics.bottom_date_time || ""}
+					value={bottom_date_time}
 					onChange={this.props.handleChangeTrawl}
 				/>
 				<label htmlFor="bottom_latitude">bottom_latitude:</label>

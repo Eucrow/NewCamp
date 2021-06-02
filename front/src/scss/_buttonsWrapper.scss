@@ -1,0 +1,20 @@
+// buttons wrapper
+.buttonsWrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+	width: 100%;
+}
+.buttonsWrapper__button {
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+.buttonsWrapper__button:first-child {
+	margin-left: 0px;
+}
+
+.buttonsWrapper__button:last-child {
+	margin-right: 0px;
+}

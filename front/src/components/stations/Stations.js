@@ -46,9 +46,8 @@ class ComponentsStations extends Component {
 
 		this.renderContent = this.renderContent.bind(this);
 
-		this.handleChangeStationFields = this.handleChangeStationFields.bind(
-			this
-		);
+		this.handleChangeStationFields =
+			this.handleChangeStationFields.bind(this);
 	}
 
 	getStationsApi() {
@@ -276,9 +275,13 @@ class ComponentsStations extends Component {
 			content = <div>There is not survey selected</div>;
 		} else if (this.state.add === false) {
 			content = (
-				<div>
-					{this.UiAddButton(true)}
-					<ul>
+				<main>
+					<header>
+						<h1 className="title">Stations</h1>
+					</header>
+					<div className="wrapper stationsWrapper">
+						<div>{this.UiAddButton(true)}</div>
+
 						{this.state.stations.map((station) => {
 							return (
 								<Station
@@ -296,36 +299,41 @@ class ComponentsStations extends Component {
 								/>
 							);
 						})}
-					</ul>
-				</div>
+					</div>
+				</main>
 			);
 		} else if (this.state.add === true) {
 			content = (
-				<div>
-					<NewStation
-						handleAdd={this.handleAdd}
-						createStation={this.createStation}
-					/>
-					<ul>
-						{this.state.stations.map((station) => {
-							return (
-								<Station
-									key={station.id}
-									station={station}
-									deleteStation={this.deleteStation}
-									deleteHaul={this.deleteHaul}
-									createHaul={this.createHaul}
-									handleChangeStationFields={
-										this.handleChangeStationFields
-									}
-									handleSubmitEditStation={
-										this.handleSubmitEditStation
-									}
-								/>
-							);
-						})}
-					</ul>
-				</div>
+				<main>
+					<header>
+						<h1 className="title">Stations</h1>
+					</header>
+					<div className="wrapper stationsWrapper">
+						<NewStation
+							handleAdd={this.handleAdd}
+							createStation={this.createStation}
+						/>
+						<ul>
+							{this.state.stations.map((station) => {
+								return (
+									<Station
+										key={station.id}
+										station={station}
+										deleteStation={this.deleteStation}
+										deleteHaul={this.deleteHaul}
+										createHaul={this.createHaul}
+										handleChangeStationFields={
+											this.handleChangeStationFields
+										}
+										handleSubmitEditStation={
+											this.handleSubmitEditStation
+										}
+									/>
+								);
+							})}
+						</ul>
+					</div>
+				</main>
 			);
 		}
 

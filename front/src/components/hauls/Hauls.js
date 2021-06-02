@@ -52,38 +52,13 @@ class Hauls extends Component {
 
 		if (this.props.hauls) {
 			return (
-				<ul>
+				<div className="haulsWrapper">
 					{this.props.hauls.map((haul) => {
 						return (
-							<li key={haul.id}>
-								<Haul haul={haul} />
-								<button
-									style={{ display: "inline" }}
-									onClick={(e) => {
-										this.props.deleteHaul(
-											e,
-											haul.station.id,
-											haul.id
-										);
-									}}
-								>
-									Delete haul
-								</button>
-								<Link
-									style={{ display: "inline" }}
-									to={{
-										pathname:
-											this.routeTrawlCatches + haul.id,
-										sampler_id: this.props.sampler_id,
-										haul_id: this.props.haul_id,
-									}}
-								>
-									view catches
-								</Link>
-							</li>
+							<Haul haul={haul} deleteHaul={this.deleteHaul} />
 						);
 					})}
-				</ul>
+				</div>
 			);
 		} else {
 			return "there are not hauls";

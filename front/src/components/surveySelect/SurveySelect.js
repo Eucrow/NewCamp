@@ -23,7 +23,7 @@ class ComponentsSurveySelect extends Component {
 		} else {
 			return (
 				<UnselectSurveyButton
-					className="myWrapper__row"
+					className="selectSurvey__row"
 					setSelectedSurvey={this.props.setSelectedSurvey}
 				/>
 			);
@@ -56,12 +56,12 @@ class ComponentsSurveySelect extends Component {
 				<header>
 					<h1 className="title">Survey selection</h1>
 				</header>
-				<form className="myWrapper">
+				<form className="wrapper selectSurvey">
 					{this.state.surveys.map((s) => {
 						return (
-							<div className="myWrapper__row">
+							<div className="selectSurvey__row">
 								<label
-									className="myWrapper__element"
+									className="selectSurvey__element"
 									for={s.description}
 								>
 									{s.description}
@@ -73,7 +73,7 @@ class ComponentsSurveySelect extends Component {
 							</div>
 						);
 					})}
-					<div className="myWrapper__row">
+					<div className="selectSurvey__row">
 						<this.ShowUnselectButton />
 					</div>
 				</form>

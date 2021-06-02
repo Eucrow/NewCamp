@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import update from "immutability-helper";
 
@@ -157,55 +157,91 @@ class HaulDetails extends Component {
 		if (this.state.haul.sampler.id === 1) {
 			if (this.state.edit === false) {
 				return (
-					<div>
-						<ViewCommon haul={this.state.haul} />
-						<ViewMeteorology haul={this.state.haul} />
-						<ViewTrawl haul={this.state.haul} />
-						<button
-							onClick={() => {
-								this.changeIsEdit(true);
-							}}
-						>
-							Edit
-						</button>
-					</div>
+					<Fragment>
+						<div className="haul__row">
+							<ViewCommon haul={this.state.haul} />
+							<div className="haul__cell haul__cell--right">
+								<div className="buttonsWrapper">
+									<button
+										class="buttonsWrapper__button"
+										onClick={() => {
+											this.props.changeDetail(false);
+										}}
+									>
+										Hide detail
+									</button>
+									<button
+										class="buttonsWrapper__button"
+										onClick={() => {
+											this.changeIsEdit(true);
+										}}
+									>
+										Edit
+									</button>
+								</div>
+							</div>
+						</div>
+						<div className="haul__row">
+							<ViewMeteorology haul={this.state.haul} />
+						</div>
+						<div className="haul__row">
+							<ViewTrawl haul={this.state.haul} />
+						</div>
+					</Fragment>
 				);
 			}
 
 			if (this.state.edit === true) {
 				return (
-					<div>
-						<EditCommon
-							haul={this.state.haul}
-							handleChangeCommonValid={
-								this.handleChangeCommonValid
-							}
-							handleChangeCommon={this.handleChangeCommon}
-							gears={this.state.gears}
-						/>
-						<EditMeteorology
-							haul={this.state.haul}
-							handleChangeMeteorology={
-								this.handleChangeMeteorology
-							}
-						/>
-						<EditTrawl
-							haul={this.state.haul}
-							handleChangeTrawl={this.handleChangeTrawl}
-						/>
-						<input
-							type="submit"
-							value="Save Haul"
-							onClick={this.handleSubmit}
-						/>
-						<button
-							onClick={() => {
-								this.changeIsEdit(false);
-							}}
-						>
-							Cancel Edition
-						</button>
-					</div>
+					<form>
+						<div className="haul__row">
+							<EditCommon
+								haul={this.state.haul}
+								handleChangeCommonValid={
+									this.handleChangeCommonValid
+								}
+								handleChangeCommon={this.handleChangeCommon}
+								gears={this.state.gears}
+							/>
+						</div>
+						<div className="haul__row">
+							<EditMeteorology
+								haul={this.state.haul}
+								handleChangeMeteorology={
+									this.handleChangeMeteorology
+								}
+							/>
+						</div>
+
+						<div className="haul__row">
+							<EditTrawl
+								haul={this.state.haul}
+								handleChangeTrawl={this.handleChangeTrawl}
+							/>
+						</div>
+						<div className="haul__row">
+							<div className="haul__cell haul__cell--right">
+								<div className="buttonsWrapper">
+									<button
+										className="buttonsWrapper__button"
+										onClick={() => {
+											this.handleSubmit();
+										}}
+									>
+										Save Haul
+									</button>
+									<button
+										className="buttonsWrapper__button"
+										onClick={() => {
+											this.changeIsEdit(false);
+										}}
+									>
+										Cancel Edition
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
 				);
 			}
 		}
@@ -222,6 +258,13 @@ class HaulDetails extends Component {
 							}}
 						>
 							Edit
+						</button>
+						<button
+							onClick={() => {
+								this.props.changeDetail(false);
+							}}
+						>
+							Hide detail
 						</button>
 					</div>
 				);

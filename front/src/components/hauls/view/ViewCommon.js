@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 class ViewCommon extends Component {
 	/**
@@ -8,12 +8,32 @@ class ViewCommon extends Component {
 
 	render() {
 		return (
-			<div key={this.props.haul.id} style={{ display: "inline" }}>
-				Haul: {this.props.haul.haul} - Station:{" "}
-				{this.props.haul.station.station} - Sampler:
-				{this.props.haul.sampler.id} - Gear: {this.props.haul.gear} -
-				Valid?: {this.props.haul.valid} -
-			</div>
+			<Fragment>
+				<div className="haul__cell">
+					<div className="haul__label">Haul:</div>
+					<div>{this.props.haul.haul}</div>
+				</div>
+
+				<div className="haul__cell">
+					<div className="haul__label">Station:</div>
+					<div>{this.props.haul.station.station}</div>
+				</div>
+
+				<div className="haul__cell">
+					<div className="haul__label">Sampler:</div>
+					<div>{this.props.haul.sampler.sampler}</div>
+				</div>
+
+				{/* <div className="haul__cell">
+					<div className="haul__label">Gear:</div>
+					<div>{this.props.haul.gear.gear}</div>
+				</div> */}
+
+				<div className="haul__cell">
+					<div className="haul__label">Valid?</div>
+					<div>: {this.props.haul.valid}</div>
+				</div>
+			</Fragment>
 		);
 	}
 }

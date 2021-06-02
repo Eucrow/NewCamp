@@ -1,0 +1,41 @@
+// stations
+.stationsWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 80%;
+	padding: 10px 20px;
+
+	@media (max-width: 768px) {
+		max-width: 95%;
+	}
+}
+
+.station__row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	min-height: 32px;
+}
+
+.station__cell {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	// width: 100%;
+	padding-right: 10px;
+}
+
+// cell aligned to the right
+.station__cell--right {
+	margin-left: auto;
+}
+
+.station__cell:last-child {
+	padding-right: 0px;
+}
+
+.station__label {
+	margin-right: 5px;
+}

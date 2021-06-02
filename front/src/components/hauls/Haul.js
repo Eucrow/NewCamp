@@ -1,5 +1,8 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
+import { Link } from "react-router-dom";
+
+import ViewCommon from "./view/ViewCommon";
 import HaulDetails from "./HaulDetails";
 
 class Haul extends Component {
@@ -14,6 +17,7 @@ class Haul extends Component {
 		};
 
 		this.changeDetail = this.changeDetail.bind(this);
+		this.UiShowDetailButton = this.UiShowDetailButton.bind(this);
 	}
 
 	changeDetail(detail) {
@@ -24,39 +28,62 @@ class Haul extends Component {
 		});
 	}
 
+	UiShowDetailButton() {
+		return (
+			<button
+				className="buttonsWrapper__button"
+				onClick={() => {
+					this.changeDetail(true);
+				}}
+			>
+				Show detail
+			</button>
+		);
+	}
+
 	renderContent() {
 		if (this.state.detail === false) {
 			return (
-				<Fragment>
-					<div key={this.props.haul.id} style={{ display: "inline" }}>
-						Haul: {this.props.haul.haul} - Station:{" "}
-						{this.props.haul.station.station} - Sampler:
-						{this.props.haul.sampler.sampler} - Valid?:
-						{this.props.haul.valid} -
+				<div className="haul__row">
+					<ViewCommon haul={this.props.haul} />
+					<div className="haul__cell haul__cell--right">
+						<div className="buttonsWrapper">
+							<this.UiShowDetailButton />
+							<button
+								className="buttonsWrapper__button"
+								onClick={(e) => {
+									this.props.deleteHaul(
+										e,
+										this.props.haul.station.id,
+										this.props.haul.id
+									);
+								}}
+							>
+								Delete haul
+							</button>
+							<Link
+								to={{
+									pathname:
+										this.routeTrawlCatches +
+										this.props.haul.id,
+									sampler_id: this.props.sampler_id,
+									haul_id: this.props.haul_id,
+								}}
+							>
+								view catches
+							</Link>
+						</div>
 					</div>
-					<button
-						onClick={() => {
-							this.changeDetail(true);
-						}}
-					>
-						Show detail
-					</button>
-				</Fragment>
+				</div>
 			);
 		}
 
 		if (this.state.detail === true) {
 			return (
-				<Fragment>
-					<HaulDetails haul={this.props.haul} />
-					<button
-						onClick={() => {
-							this.changeDetail(false);
-						}}
-					>
-						Hide detail
-					</button>
-				</Fragment>
+				<HaulDetails
+					haul={this.props.haul}
+					changeDetail={this.changeDetail}
+				/>
 			);
 		}
 	}

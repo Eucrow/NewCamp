@@ -10,7 +10,7 @@ class EditMeteorology extends Component {
 		const haul = this.props.haul;
 
 		return (
-			<fieldset>
+			<fieldset class="wrapper">
 				<legend>Meteorology:</legend>
 				<label htmlFor="wind_direction">Wind direction:</label>
 				<input

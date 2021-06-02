@@ -55,7 +55,7 @@ class Station extends Component {
 	renderContent() {
 		if (this.state.edit === false) {
 			return (
-				<li key={this.props.station.id}>
+				<div className="wrapper">
 					<ViewStation
 						station={this.props.station}
 						changeEdit={this.changeEdit}
@@ -63,18 +63,22 @@ class Station extends Component {
 						deleteHaul={this.props.deleteHaul}
 						createHaul={this.props.createHaul}
 					/>
-				</li>
+				</div>
 			);
 		} else if (this.state.edit === true) {
 			return (
-				<li key={this.props.station.id}>
+				<div className="wrapper">
 					<EditStation
 						station={this.props.station}
 						changeEdit={this.changeEdit}
-						handleChangeStationFields={this.props.handleChangeStationFields}
-						handleSubmitEditStation={this.props.handleSubmitEditStation}
+						handleChangeStationFields={
+							this.props.handleChangeStationFields
+						}
+						handleSubmitEditStation={
+							this.props.handleSubmitEditStation
+						}
 					/>
-				</li>
+				</div>
 			);
 		}
 	}

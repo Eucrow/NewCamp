@@ -1,4 +1,5 @@
 button {
+	white-space: nowrap;
 	min-height: 2rem;
 	background-color: var(--button-background-color);
 
@@ -8,6 +9,7 @@ button {
 
 	font-family: var(--normal-font);
 	font-weight: bold;
+	line-height: 100%;
 
 	&:hover,
 	&:active {

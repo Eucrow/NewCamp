@@ -1,0 +1,21 @@
+.selectSurvey {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+
+	.selectSurvey__row {
+		margin: 10px 0px;
+	}
+
+	.selectSurvey__row:first-child {
+		margin: 0px;
+	}
+
+	.selectSurvey__row:last-child {
+		margin: 0px;
+	}
+
+	.selectSurvey__element {
+		margin: 0px 10px;
+	}
+}
