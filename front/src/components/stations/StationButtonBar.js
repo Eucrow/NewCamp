@@ -9,12 +9,21 @@ const StationButtonBar = ({ props, edit }) => {
 				<div className="buttonsWrapper">
 					<button
 						type="submit"
+						className="buttonsWrapper__button"
 						onClick={(e) => {
 							props.handleSubmitEditStation(e, props.station.id);
 							props.changeEdit(false);
 						}}
 					>
 						Save Station
+					</button>
+					<button
+						className="buttonsWrapper__button"
+						onClick={(e) => {
+							props.changeEdit(false);
+						}}
+					>
+						Cancel
 					</button>
 				</div>
 			</div>
