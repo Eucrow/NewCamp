@@ -54,6 +54,8 @@
 
 	//wrapper border
 	--wrapper-border-color: var(--blue-gradient-3);
+	//wrapper background color
+	--wrapper-background-color: white;
 
 	//nav
 	--background-nav: var(--blue-gradient-3);
@@ -128,4 +130,27 @@ fieldset.wrapper {
 
 .haul__label {
 	margin-right: 5px;
+}
+
+input:disabled {
+	//border size and padding must be the same as the input enabled style:
+	border: 1px solid var(--wrapper-background-color);
+	background: none;
+	padding: 2px 5px;
+	font-size: 1rem;
+	font-family: var(--normal-font);
+	color: var(--text-color);
+}
+
+input:enabled {
+	font-size: 1rem;
+	border-radius: 5px;
+	border: 1px solid var(--background-global-color);
+	padding: 2px 5px;
+	background-color: var(--background-global-color);
+}
+
+input:focus,
+input:active {
+	border-color: var(--blue-gradient-1);
 }

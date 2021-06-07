@@ -12,6 +12,7 @@ const StationForm = ({ props, edit }) => {
 				<input
 					type="text"
 					disabled={is_disabled}
+					className="station_number"
 					id="station"
 					name="station"
 					value={props.station.station || ""}

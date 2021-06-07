@@ -34,24 +34,6 @@ class Station extends Component {
 		});
 	}
 
-	// handleSubmit(event) {
-	// 	event.preventDefault();
-
-	// 	const api = this.apiStation + this.props.station.id;
-
-	// 	fetch(api, {
-	// 		method: "PUT",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 		body: JSON.stringify(this.state.data),
-	// 	})
-	// 		.then(() => {
-	// 			this.props.changeEdit(false);
-	// 		})
-	// 		.catch((error) => console.log(error));
-	// }
-
 	renderContent() {
 		if (this.state.edit === false) {
 			return (
