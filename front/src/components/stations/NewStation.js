@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 
+import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
+
 class NewStation extends Component {
 	/**
 	 *
 	 * @param {method} props.handleAdd
 	 * @param {method} props.createStation
 	 */
+
+	static contextType = SelectedSurveyContext;
 
 	constructor(props) {
 		super(props);
@@ -31,7 +35,7 @@ class NewStation extends Component {
 	componentDidMount() {
 		this.setState({
 			station: {
-				survey_id: this.context.surveySelector,
+				survey_id: this.context.selectedSurveyId,
 			},
 		});
 	}

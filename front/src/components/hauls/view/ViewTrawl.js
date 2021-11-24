@@ -16,7 +16,7 @@ class ComponentsHaulTrawl extends Component {
 					<div className="haul__label">Shooting_date_time:</div>
 					{/* <div> */}
 					<time
-						datetime={
+						dateTime={
 							haul.trawl_characteristics.shooting_date_time || ""
 						}
 					>

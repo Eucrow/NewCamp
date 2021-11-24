@@ -55,7 +55,11 @@ class Hauls extends Component {
 				<div className="haulsWrapper">
 					{this.props.hauls.map((haul) => {
 						return (
-							<Haul haul={haul} deleteHaul={this.deleteHaul} />
+							<Haul
+								key={haul.id}
+								haul={haul}
+								deleteHaul={this.deleteHaul}
+							/>
 						);
 					})}
 				</div>

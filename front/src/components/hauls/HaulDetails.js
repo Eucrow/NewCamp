@@ -163,7 +163,7 @@ class HaulDetails extends Component {
 							<div className="haul__cell haul__cell--right">
 								<div className="buttonsWrapper">
 									<button
-										class="buttonsWrapper__button"
+										className="buttonsWrapper__button"
 										onClick={() => {
 											this.props.changeDetail(false);
 										}}
@@ -171,7 +171,7 @@ class HaulDetails extends Component {
 										Hide detail
 									</button>
 									<button
-										class="buttonsWrapper__button"
+										className="buttonsWrapper__button"
 										onClick={() => {
 											this.changeIsEdit(true);
 										}}

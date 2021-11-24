@@ -10,7 +10,10 @@ const StationForm = ({ props, edit }) => {
 			<div className="station__cell">
 				<label htmlFor="station">Station:</label>
 				<input
-					type="text"
+					type="number"
+					min="0"
+					max="20"
+					maxLength="2"
 					disabled={is_disabled}
 					className="station_number"
 					id="station"

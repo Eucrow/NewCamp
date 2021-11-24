@@ -59,10 +59,10 @@ class ComponentsSurveySelect extends Component {
 				<form className="wrapper selectSurvey">
 					{this.state.surveys.map((s) => {
 						return (
-							<div className="selectSurvey__row">
+							<div key={s.id} className="selectSurvey__row">
 								<label
 									className="selectSurvey__element"
-									for={s.description}
+									htmlFor={s.description}
 								>
 									{s.description}
 								</label>
