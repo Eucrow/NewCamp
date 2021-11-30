@@ -1,26 +1,29 @@
 // css reset
-@use './scss/reset';
+@use "./scss/reset";
 
 // css fonts
-@use './scss/fonts';
+@use "./scss/fonts";
 
 // css button
-@use './scss/button';
+@use "./scss/button";
 
 // css buttons wrapper
-@use './scss/buttonsWrapper';
+@use "./scss/buttonsWrapper";
 
 // css nav bar
-@use './scss/nav';
+@use "./scss/nav";
 
 //css generic wrapper
-@use './scss/wrapper';
+@use "./scss/wrapper";
 
 // css select survey
-@use './scss/selectSurvey';
+@use "./scss/selectSurvey";
+
+// css surveys
+@use "./scss/surveys";
 
 // css stations
-@use './scss/stations';
+@use "./scss/stations";
 
 // css custom properties
 :root {

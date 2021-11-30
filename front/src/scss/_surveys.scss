@@ -1,5 +1,5 @@
-// stations
-.stationsWrapper {
+// surveys
+.surveysWrapper {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -11,7 +11,7 @@
 	}
 }
 
-.station__row {
+.survey__row {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -19,7 +19,7 @@
 	min-height: 32px;
 }
 
-.station__cell {
+.survey__cell {
 	display: inline-flex;
 	flex-direction: row;
 	align-items: baseline;
@@ -27,15 +27,15 @@
 }
 
 // cell aligned to the right
-.station__cell--right {
+.survey__cell--right {
 	margin-left: auto;
 }
 
-.station__cell:last-child {
+.survey__cell:last-child {
 	padding-right: 0px;
 }
 
-.station_number {
+.survey_description {
 	font-family: var(--special-font) !important;
 	font-size: 2rem !important;
 	font-weight: 300;

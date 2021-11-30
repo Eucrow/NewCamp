@@ -8,6 +8,7 @@ class UiButtonDeleteSurvey extends Component {
 	render() {
 		return (
 			<button
+				className="buttonsWrapper__button"
 				onClick={(e) => {
 					if (window.confirm("Delete the survey?")) {
 						this.props.deleteSurvey(e, this.props.survey_id);

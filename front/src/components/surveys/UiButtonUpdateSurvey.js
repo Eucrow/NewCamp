@@ -8,6 +8,7 @@ class UiButtonUpdateSurvey extends Component {
 	render() {
 		return (
 			<button
+				className="buttonsWrapper__button"
 				onClick={() => {
 					this.props.handleEdit(this.props.survey_id);
 				}}

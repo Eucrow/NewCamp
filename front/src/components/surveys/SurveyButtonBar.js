@@ -1,23 +1,24 @@
 import React from "react";
 
-const StationButtonBar = ({ props, edit }) => {
+const SurveyButtonBar = ({ props, edit }) => {
 	var ButtonBar = "";
 
 	if (edit === true) {
 		ButtonBar = (
-			<div className="station__cell station__cell--right">
+			<div className="survey__cell survey__cell--right">
 				<div className="buttonsWrapper">
 					<button
 						type="submit"
 						className="buttonsWrapper__button"
 						onClick={(e) => {
-							props.handleSubmitEditStation(e, props.station.id);
+							props.updateSurvey(e, props.survey.id);
 							props.changeEdit(false);
 						}}
 					>
-						Save Station
+						Save Survey
 					</button>
 					<button
+						type="button"
 						className="buttonsWrapper__button"
 						onClick={(e) => {
 							props.changeEdit(false);
@@ -32,31 +33,34 @@ const StationButtonBar = ({ props, edit }) => {
 
 	if (edit === false) {
 		ButtonBar = (
-			<div className="station__cell station__cell--right">
+			<div className="survey__cell survey__cell--right">
 				<div className="buttonsWrapper">
 					<button
+						type="button"
 						className="buttonsWrapper__button"
 						onClick={(e) => {
 							props.changeEdit(true);
 						}}
 					>
-						Edit Station
+						Edit Survey
 					</button>
 					<button
+						type="button"
 						className="buttonsWrapper__button"
 						onClick={(e) => {
-							if (window.confirm("Delete the station?")) {
-								props.deleteStation(e, props.station.id);
+							if (window.confirm("Delete the survey?")) {
+								props.deleteSurvey(e, props.survey.id);
 							}
 						}}
 					>
-						Delete Station
+						Delete Survey
 					</button>
 				</div>
 			</div>
 		);
 	}
+
 	return ButtonBar;
 };
 
-export default StationButtonBar;
+export default SurveyButtonBar;

@@ -13,13 +13,13 @@ class Surveys extends Component {
 		this.state = {
 			surveys: [],
 			add: false, // true to add new survey; false to not to.
-			edit: null, // null to not edit any survey; survey_id to edit that survey_id.
+			// edit: null, // null to not edit any survey; survey_id to edit that survey_id.
 		};
 
 		this.apiSurvey = "http://127.0.0.1:8000/api/1.0/survey/";
 
 		this.handleChange = this.handleChange.bind(this);
-		this.handleEdit = this.handleEdit.bind(this);
+		// this.handleEdit = this.handleEdit.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
 		this.createSurvey = this.createSurvey.bind(this);
 		this.updateSurvey = this.updateSurvey.bind(this);
@@ -58,11 +58,11 @@ class Surveys extends Component {
 	 * @param {Event} e - Event.
 	 * @param {(numeric|null)} status - Identification number of the survey which fields are managed. If 'null', none is edited.
 	 */
-	handleEdit(status) {
-		this.setState({
-			edit: status,
-		});
-	}
+	// handleEdit(status) {
+	// 	this.setState({
+	// 		edit: status,
+	// 	});
+	// }
 
 	/**
 	 * Manage change of 'add' state.
@@ -125,7 +125,7 @@ class Surveys extends Component {
 		})
 			.then((response) => {
 				if (response.status == 200) {
-					this.handleEdit(null);
+					// this.handleEdit(null);
 				} else {
 					alert("Something is wrong.");
 				}
@@ -171,44 +171,56 @@ class Surveys extends Component {
 
 		if (this.state.add === false) {
 			content = (
-				<div>
-					<UiButtonAddSurvey handleAdd={this.handleAdd} />
-					{this.state.surveys.map((survey) => {
-						return (
-							<Survey
-								key={survey.id}
-								survey={survey}
-								edit={this.state.edit}
-								handleEdit={this.handleEdit}
-								handleChange={this.handleChange}
-								updateSurvey={this.updateSurvey}
-								deleteSurvey={this.deleteSurvey}
-							/>
-						);
-					})}
-				</div>
+				<main>
+					<header>
+						<h1 className="title">Surveys</h1>
+					</header>
+					<div className="wrapper surveysWrapper">
+						<div>
+							<UiButtonAddSurvey handleAdd={this.handleAdd} />
+						</div>
+						{this.state.surveys.map((survey) => {
+							return (
+								<Survey
+									key={survey.id}
+									survey={survey}
+									edit={this.state.edit}
+									// handleEdit={this.handleEdit}
+									handleChange={this.handleChange}
+									updateSurvey={this.updateSurvey}
+									deleteSurvey={this.deleteSurvey}
+								/>
+							);
+						})}
+					</div>
+				</main>
 			);
 		} else if (this.state.add === true) {
 			content = (
-				<div>
-					<NewSurvey
-						handleChange={this.handleChange}
-						handleAdd={this.handleAdd}
-						createSurvey={this.createSurvey}
-					/>
-					{this.state.surveys.map((survey) => {
-						return (
-							<Survey
-								key={survey.id}
-								ref={this.surveyElement}
-								survey={survey}
-								handleChange={this.handleChange}
-								updateSurvey={this.updateSurvey}
-								deleteSurvey={this.deleteSurvey}
-							/>
-						);
-					})}
-				</div>
+				<main>
+					<header>
+						<h1 className="title">Surveys</h1>
+					</header>
+					<div className="wrapper surveysWrapper">
+						<NewSurvey
+							handleChange={this.handleChange}
+							handleAdd={this.handleAdd}
+							createSurvey={this.createSurvey}
+						/>
+						{this.state.surveys.map((survey) => {
+							return (
+								<Survey
+									key={survey.id}
+									ref={this.surveyElement}
+									survey={survey}
+									handleChange={this.handleChange}
+									updateSurvey={this.updateSurvey}
+									deleteSurvey={this.deleteSurvey}
+								/>
+							);
+						})}
+					</div>
+				</main>
 			);
 		}
 
