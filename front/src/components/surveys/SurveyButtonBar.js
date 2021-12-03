@@ -33,29 +33,27 @@ const SurveyButtonBar = ({ props, edit }) => {
 
 	if (edit === false) {
 		ButtonBar = (
-			<div className="survey__cell survey__cell--right">
-				<div className="buttonsWrapper">
-					<button
-						type="button"
-						className="buttonsWrapper__button"
-						onClick={(e) => {
-							props.changeEdit(true);
-						}}
-					>
-						Edit Survey
-					</button>
-					<button
-						type="button"
-						className="buttonsWrapper__button"
-						onClick={(e) => {
-							if (window.confirm("Delete the survey?")) {
-								props.deleteSurvey(e, props.survey.id);
-							}
-						}}
-					>
-						Delete Survey
-					</button>
-				</div>
+			<div className="survey__cell survey__cell--right buttonsWrapper">
+				<button
+					type="button"
+					className="buttonsWrapper__button"
+					onClick={(e) => {
+						props.changeEdit(true);
+					}}
+				>
+					Edit Survey
+				</button>
+				<button
+					type="button"
+					className="buttonsWrapper__button"
+					onClick={(e) => {
+						if (window.confirm("Delete the survey?")) {
+							props.deleteSurvey(e, props.survey.id);
+						}
+					}}
+				>
+					Delete Survey
+				</button>
 			</div>
 		);
 	}

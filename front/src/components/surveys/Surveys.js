@@ -90,7 +90,6 @@ class Surveys extends Component {
 	 */
 	createSurvey(e, survey) {
 		e.preventDefault();
-		console.log(JSON.stringify(survey));
 
 		fetch(this.apiSurvey, {
 			method: "POST",
@@ -215,7 +214,6 @@ class Surveys extends Component {
 									key={survey.id}
 									survey={survey}
 									edit={this.state.edit}
-									// handleEdit={this.handleEdit}
 									handleChange={this.handleChange}
 									updateSurvey={this.updateSurvey}
 									deleteSurvey={this.deleteSurvey}
