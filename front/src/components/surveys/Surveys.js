@@ -12,11 +12,14 @@ class Surveys extends Component {
 		super(props);
 		this.state = {
 			surveys: [],
+			stratifications: [],
 			add: false, // true to add new survey; false to not to.
 			// edit: null, // null to not edit any survey; survey_id to edit that survey_id.
 		};
 
 		this.apiSurvey = "http://127.0.0.1:8000/api/1.0/survey/";
+		this.apiStratification =
+			"http://127.0.0.1:8000/api/1.0/stratifications/";
 
 		this.handleChange = this.handleChange.bind(this);
 		// this.handleEdit = this.handleEdit.bind(this);
@@ -24,8 +27,12 @@ class Surveys extends Component {
 		this.createSurvey = this.createSurvey.bind(this);
 		this.updateSurvey = this.updateSurvey.bind(this);
 		this.deleteSurvey = this.deleteSurvey.bind(this);
+
+		this.getStratifications = this.getStratifications.bind(this);
+
 		this.renderContent = this.renderContent.bind(this);
 	}
+
 	/**
 	 * Manage change in fields
 	 * @param {event} e - Event.
@@ -83,6 +90,7 @@ class Surveys extends Component {
 	 */
 	createSurvey(e, survey) {
 		e.preventDefault();
+		console.log(JSON.stringify(survey));
 
 		fetch(this.apiSurvey, {
 			method: "POST",
@@ -161,6 +169,28 @@ class Surveys extends Component {
 			})
 			.catch((error) => alert(error));
 	}
+	/**
+	 * Get all stratifications.
+	 */
+	getStratifications() {
+		return fetch(this.apiStratification)
+			.then((response) => {
+				if (response.status > 400) {
+					return this.setState(() => {
+						return { placeholder: "Something went wrong!" };
+					});
+				}
+				return response.json();
+			})
+			.then((stratifications) => {
+				this.setState(() => {
+					return {
+						stratifications: stratifications,
+					};
+				});
+			})
+			.catch((error) => console.log(error));
+	}
 
 	/**
 	 * Create content to render.
@@ -203,6 +233,7 @@ class Surveys extends Component {
 					</header>
 					<div className="wrapper surveysWrapper">
 						<NewSurvey
+							stratifications={this.state.stratifications}
 							handleChange={this.handleChange}
 							handleAdd={this.handleAdd}
 							createSurvey={this.createSurvey}
@@ -228,6 +259,8 @@ class Surveys extends Component {
 	}
 
 	componentDidMount() {
+		this.getStratifications();
+
 		fetch(this.apiSurvey)
 			.then((response) => {
 				if (response.status > 400) {
