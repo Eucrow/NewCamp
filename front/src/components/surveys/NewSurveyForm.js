@@ -11,7 +11,7 @@ import UiButtonSaveNewSurvey from "./UiButtonSaveNewSurvey";
  * @param {method} props.handleChange:
  * @param {method} props.createSurvey:
  */
-class NewSurvey extends Component {
+class NewSurveyForm extends Component {
 	constructor(props) {
 		super(props);
 
@@ -202,4 +202,4 @@ class NewSurvey extends Component {
 	}
 }
 
-export default NewSurvey;
+export default NewSurveyForm;
