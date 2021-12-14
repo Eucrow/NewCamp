@@ -34,22 +34,26 @@ class Survey extends Component {
 
 		if (this.state.edit === true) {
 			content = (
-				<EditSurvey
-					survey={this.props.survey}
-					changeEdit={this.changeEdit}
-					handleEdit={this.props.handleEdit}
-					handleChange={this.props.handleChange}
-					updateSurvey={this.props.updateSurvey}
-				/>
+				<div className="wrapper">
+					<EditSurvey
+						survey={this.props.survey}
+						changeEdit={this.changeEdit}
+						handleEdit={this.props.handleEdit}
+						handleChange={this.props.handleChange}
+						updateSurvey={this.props.updateSurvey}
+					/>
+				</div>
 			);
 		} else {
 			content = (
-				<ViewSurvey
-					survey={this.props.survey}
-					changeEdit={this.changeEdit}
-					handleEdit={this.props.handleEdit}
-					deleteSurvey={this.props.deleteSurvey}
-				/>
+				<div className="wrapper">
+					<ViewSurvey
+						survey={this.props.survey}
+						changeEdit={this.changeEdit}
+						handleEdit={this.props.handleEdit}
+						deleteSurvey={this.props.deleteSurvey}
+					/>
+				</div>
 			);
 		}
 
