@@ -144,15 +144,15 @@ const SurveyForm = ({ props, edit }) => {
 				</span>
 				<span className="field">
 					<label htmlFor="stratification_id">
-						stratification_id: PENDIENTE
+						stratification_id:
 					</label>
-					{/* <input
-					type="text"
-					id="stratification_id"
-					name="stratification_id"
-					disabled={is_disabled}
-					value={props.survey.stratification_id || ""}
-				/> */}
+					<input
+						type="text"
+						id="stratification_id"
+						name="stratification_id"
+						disabled={is_disabled}
+						value={props.survey.stratification || ""}
+					/>
 				</span>
 			</div>
 			<div className="survey__row">

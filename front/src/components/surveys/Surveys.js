@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import UiButtonAddSurvey from "./UiButtonAddSurvey";
-import NewSurvey from "./NewSurvey";
+import NewSurveyForm from "./NewSurveyForm";
 import Survey from "./Survey";
 /**
  * Component list of surveys.
@@ -196,62 +196,44 @@ class Surveys extends Component {
 	 * @private
 	 */
 	renderContent() {
-		let content = "";
+		let content;
 
-		if (this.state.add === false) {
-			content = (
-				<main>
-					<header>
-						<h1 className="title">Surveys</h1>
-					</header>
-					<div className="wrapper surveysWrapper">
-						<div>
-							<UiButtonAddSurvey handleAdd={this.handleAdd} />
-						</div>
-						{this.state.surveys.map((survey) => {
-							return (
-								<Survey
-									key={survey.id}
-									survey={survey}
-									edit={this.state.edit}
-									handleChange={this.handleChange}
-									updateSurvey={this.updateSurvey}
-									deleteSurvey={this.deleteSurvey}
-								/>
-							);
-						})}
-					</div>
-				</main>
-			);
-		} else if (this.state.add === true) {
-			content = (
-				<main>
-					<header>
-						<h1 className="title">Surveys</h1>
-					</header>
-					<div className="wrapper surveysWrapper">
-						<NewSurvey
-							stratifications={this.state.stratifications}
-							handleChange={this.handleChange}
-							handleAdd={this.handleAdd}
-							createSurvey={this.createSurvey}
-						/>
-						{this.state.surveys.map((survey) => {
-							return (
-								<Survey
-									key={survey.id}
-									ref={this.surveyElement}
-									survey={survey}
-									handleChange={this.handleChange}
-									updateSurvey={this.updateSurvey}
-									deleteSurvey={this.deleteSurvey}
-								/>
-							);
-						})}
-					</div>
-				</main>
-			);
-		}
+		let contentNewSurvey = this.state.add ? (
+			<NewSurveyForm
+				stratifications={this.state.stratifications}
+				handleChange={this.handleChange}
+				handleAdd={this.handleAdd}
+				createSurvey={this.createSurvey}
+			/>
+		) : (
+			<div>
+				<UiButtonAddSurvey handleAdd={this.handleAdd} />
+			</div>
+		);
+
+		content = (
+			<main>
+				<header>
+					<h1 className="title">Surveys</h1>
+				</header>
+
+				<div className="wrapper surveysWrapper">
+					{contentNewSurvey}
+					{this.state.surveys.map((survey) => {
+						return (
+							<Survey
+								key={survey.id}
+								ref={this.surveyElement}
+								survey={survey}
+								handleChange={this.handleChange}
+								updateSurvey={this.updateSurvey}
+								deleteSurvey={this.deleteSurvey}
+							/>
+						);
+					})}
+				</div>
+			</main>
+		);
 
 		return content;
 	}
