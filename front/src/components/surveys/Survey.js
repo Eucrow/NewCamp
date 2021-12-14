@@ -12,25 +12,48 @@ import EditSurvey from "./EditSurvey";
  * @param {method} props.deleteSurvey
  */
 class Survey extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			edit: false,
+		};
+
+		this.changeEdit = this.changeEdit.bind(this);
+	}
+
+	changeEdit(edit) {
+		this.setState(() => {
+			return {
+				edit: edit,
+			};
+		});
+	}
+
 	renderContent() {
 		let content = "";
 
-		if (this.props.edit == this.props.survey.id) {
+		if (this.state.edit === true) {
 			content = (
-				<EditSurvey
-					survey={this.props.survey}
-					handleEdit={this.props.handleEdit}
-					handleChange={this.props.handleChange}
-					updateSurvey={this.props.updateSurvey}
-				/>
+				<div className="wrapper">
+					<EditSurvey
+						survey={this.props.survey}
+						changeEdit={this.changeEdit}
+						handleEdit={this.props.handleEdit}
+						handleChange={this.props.handleChange}
+						updateSurvey={this.props.updateSurvey}
+					/>
+				</div>
 			);
 		} else {
 			content = (
-				<ViewSurvey
-					survey={this.props.survey}
-					handleEdit={this.props.handleEdit}
-					deleteSurvey={this.props.deleteSurvey}
-				/>
+				<div className="wrapper">
+					<ViewSurvey
+						survey={this.props.survey}
+						changeEdit={this.changeEdit}
+						handleEdit={this.props.handleEdit}
+						deleteSurvey={this.props.deleteSurvey}
+					/>
+				</div>
 			);
 		}
 

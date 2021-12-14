@@ -56,7 +56,6 @@ const StationButtonBar = ({ props, edit }) => {
 			</div>
 		);
 	}
-
 	return ButtonBar;
 };
 
