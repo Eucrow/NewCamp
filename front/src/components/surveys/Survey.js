@@ -6,10 +6,7 @@ import EditSurvey from "./EditSurvey";
 /**
  * Survey component. Manage component logic.
  * @param {object} props - Survey object
- * @param {method} props.handleChange
  * @param {method} props.handleEdit
- * @param {method} props.updateSurvey
- * @param {method} props.deleteSurvey
  */
 class Survey extends Component {
 	constructor(props) {
@@ -39,8 +36,6 @@ class Survey extends Component {
 						survey={this.props.survey}
 						changeEdit={this.changeEdit}
 						handleEdit={this.props.handleEdit}
-						handleChange={this.props.handleChange}
-						updateSurvey={this.props.updateSurvey}
 					/>
 				</div>
 			);
@@ -51,7 +46,6 @@ class Survey extends Component {
 						survey={this.props.survey}
 						changeEdit={this.changeEdit}
 						handleEdit={this.props.handleEdit}
-						deleteSurvey={this.props.deleteSurvey}
 					/>
 				</div>
 			);

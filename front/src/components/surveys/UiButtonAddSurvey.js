@@ -1,14 +1,17 @@
 import React, { Component } from "react";
+
+import SurveysContext from "../../contexts/SuverysContext";
 /**
- * Component of button to add a new survey
- * @param {method} props.handleAdd: method to manage the 'add' state.
+ * Component of button to add a new survey.
  */
 class UiButtonAddSurvey extends Component {
+	static contextType = SurveysContext;
+
 	render() {
 		return (
 			<button
 				onClick={() => {
-					this.props.handleAdd(true);
+					this.context.handleAdd(true);
 				}}
 			>
 				Add Survey

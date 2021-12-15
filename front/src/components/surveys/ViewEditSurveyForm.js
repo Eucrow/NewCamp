@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import SurveysContext from "../../contexts/SuverysContext";
 
 import SurveyButtonBar from "./SurveyButtonBar";
 
@@ -6,11 +8,9 @@ import SurveyButtonBar from "./SurveyButtonBar";
  * ViewEditSurveyForm component
  * @param {object} props.survey: survey object
  * @param {method} changeEdit: nake fields editable/non editable
- * @param {method} props.handleChange: manage change in fields
- * @param {method} props.updateSurvey: update survey from database and state.
- * @param {method} props.deleteSurvey: delete survey from database and state.
  */
 const ViewEditSurveyForm = ({ props, edit }) => {
+	const surveysContext = useContext(SurveysContext);
 	const is_disabled = edit === true ? false : true;
 
 	const renderedSurvey = (
@@ -25,7 +25,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						disabled={is_disabled}
 						className="station_number"
 						value={props.survey.description || ""}
-						onChange={(e) => props.handleChange(e, props.survey.id)}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
 					/>
 				</span>
 				<span className="field">
@@ -36,7 +38,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="acronym"
 						disabled={is_disabled}
 						value={props.survey.acronym || ""}
-						onChange={(e) => props.handleChange(e, props.survey.id)}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
 					/>
 				</span>
 			</div>
@@ -49,7 +53,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="start_date"
 						disabled={is_disabled}
 						value={props.survey.start_date || ""}
-						onChange={(e) => props.handleChange(e, props.survey.id)}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
 					/>
 				</span>
 				<span className="field">
@@ -60,7 +66,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="end_date"
 						disabled={is_disabled}
 						value={props.survey.end_date || ""}
-						onChange={(e) => props.handleChange(e, props.survey.id)}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
 					/>
 				</span>
 			</div>
@@ -73,7 +81,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="width_x"
 						disabled={is_disabled}
 						value={props.survey.width_x || ""}
-						onChange={(e) => props.handleChange(e, props.survey.id)}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
 					/>
 				</span>
 				<span className="field">
@@ -84,7 +94,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="width_y"
 						disabled={is_disabled}
 						value={props.survey.width_y || ""}
-						onChange={(e) => props.handleChange(e, props.survey.id)}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
 					/>
 				</span>
 				<span className="field">
@@ -95,7 +107,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="origin_x"
 						disabled={is_disabled}
 						value={props.survey.origin_x || ""}
-						onChange={(e) => props.handleChange(e, props.survey.id)}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
 					/>
 				</span>
 				<span className="field">
@@ -106,7 +120,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="origin_y"
 						disabled={is_disabled}
 						value={props.survey.origin_y || ""}
-						onChange={(e) => props.handleChange(e, props.survey.id)}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
 					/>
 				</span>
 			</div>
@@ -119,7 +135,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="ship"
 						disabled={is_disabled}
 						value={props.survey.ship || ""}
-						onChange={(e) => props.handleChange(e, props.survey.id)}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
 					/>
 				</span>
 				<span className="field">
@@ -130,7 +148,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="hauls_duration"
 						disabled={is_disabled}
 						value={props.survey.hauls_duration || ""}
-						onChange={(e) => props.handleChange(e, props.survey.id)}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
 					/>
 				</span>
 				<span className="field">
@@ -141,7 +161,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="unit_sample"
 						disabled={is_disabled}
 						value={props.survey.unit_sample || ""}
-						onChange={(e) => props.handleChange(e, props.survey.id)}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
 					/>
 				</span>
 				<span className="field">
@@ -165,7 +187,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					name="comment"
 					disabled={is_disabled}
 					value={props.survey.comment || ""}
-					onChange={(e) => props.handleChange(e, props.survey.id)}
+					onChange={(e) =>
+						surveysContext.handleChange(e, props.survey.id)
+					}
 				/>
 			</div>
 			<div className="survey__row">

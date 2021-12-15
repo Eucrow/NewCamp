@@ -5,11 +5,7 @@ import UiButtonSaveNewSurvey from "./UiButtonSaveNewSurvey";
 
 /**
  * Survey component
- * @param {object} props.survey: survey object
  * @param {object} props.stratifications: stratifications object
- * @param {method} props.handleAdd:
- * @param {method} props.handleChange:
- * @param {method} props.createSurvey:
  */
 class NewSurveyForm extends Component {
 	constructor(props) {
@@ -181,14 +177,8 @@ class NewSurveyForm extends Component {
 				</div>
 				<div className="survey__row">
 					<div className="survey__cell survey__cell--right buttonsWrapper">
-						<UiButtonSaveNewSurvey
-							survey={this.state.survey}
-							createSurvey={this.props.createSurvey}
-							handleAdd={this.props.handleAdd}
-						/>
-						<UiButtonCancelEditSurvey
-							handleAdd={this.props.handleAdd}
-						/>
+						<UiButtonSaveNewSurvey survey={this.state.survey} />
+						<UiButtonCancelEditSurvey />
 					</div>
 				</div>
 			</form>

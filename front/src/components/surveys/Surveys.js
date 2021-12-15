@@ -1,4 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
+
+import SurveysContext from "../../contexts/SuverysContext";
 
 import UiButtonAddSurvey from "./UiButtonAddSurvey";
 import NewSurveyForm from "./NewSurveyForm";
@@ -32,7 +34,7 @@ class Surveys extends Component {
 	}
 
 	/**
-	 * Manage change in fields
+	 * Manage change in fields of a previous created survey.
 	 * @param {event} e - Event.
 	 * @param {numeric} survey_id - Identification number of the survey which fields are managed.
 	 */
@@ -186,40 +188,42 @@ class Surveys extends Component {
 		let content;
 
 		let contentNewSurvey = this.state.add ? (
-			<NewSurveyForm
-				stratifications={this.state.stratifications}
-				handleChange={this.handleChange}
-				handleAdd={this.handleAdd}
-				createSurvey={this.createSurvey}
-			/>
+			<NewSurveyForm stratifications={this.state.stratifications} />
 		) : (
 			<div>
-				<UiButtonAddSurvey handleAdd={this.handleAdd} />
+				<UiButtonAddSurvey />
 			</div>
 		);
 
 		content = (
-			<main>
-				<header>
-					<h1 className="title">Surveys</h1>
-				</header>
+			<SurveysContext.Provider
+				value={{
+					deleteSurvey: this.deleteSurvey,
+					handleAdd: this.handleAdd,
+					createSurvey: this.createSurvey,
+					updateSurvey: this.updateSurvey,
+					handleChange: this.handleChange,
+				}}
+			>
+				<main>
+					<header>
+						<h1 className="title">Surveys</h1>
+					</header>
 
-				<div className="wrapper surveysWrapper">
-					{contentNewSurvey}
-					{this.state.surveys.map((survey) => {
-						return (
-							<Survey
-								key={survey.id}
-								ref={this.surveyElement}
-								survey={survey}
-								handleChange={this.handleChange}
-								updateSurvey={this.updateSurvey}
-								deleteSurvey={this.deleteSurvey}
-							/>
-						);
-					})}
-				</div>
-			</main>
+					<div className="wrapper surveysWrapper">
+						{contentNewSurvey}
+						{this.state.surveys.map((survey) => {
+							return (
+								<Survey
+									key={survey.id}
+									ref={this.surveyElement}
+									survey={survey}
+								/>
+							);
+						})}
+					</div>
+				</main>
+			</SurveysContext.Provider>
 		);
 
 		return content;

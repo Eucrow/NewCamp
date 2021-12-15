@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import SurveysContext from "../../contexts/SuverysContext";
 
 const SurveyButtonBar = ({ props, edit }) => {
+	const surveysContext = useContext(SurveysContext);
+
 	var ButtonBar = "";
 
 	if (edit === true) {
@@ -11,7 +15,7 @@ const SurveyButtonBar = ({ props, edit }) => {
 						type="submit"
 						className="buttonsWrapper__button"
 						onClick={(e) => {
-							props.updateSurvey(e, props.survey.id);
+							surveysContext.updateSurvey(e, props.survey.id);
 							props.changeEdit(false);
 						}}
 					>
@@ -48,7 +52,7 @@ const SurveyButtonBar = ({ props, edit }) => {
 					className="buttonsWrapper__button"
 					onClick={(e) => {
 						if (window.confirm("Delete the survey?")) {
-							props.deleteSurvey(e, props.survey.id);
+							surveysContext.deleteSurvey(e, props.survey.id);
 						}
 					}}
 				>
