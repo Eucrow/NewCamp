@@ -5,7 +5,6 @@ import ViewEditSurveyForm from "./ViewEditSurveyForm";
  * Survey component
  * @param {objetc} props.survey: survey object
  * @param {method} changeEdit: to view the fields editable
- * @param {method} props.handleEdit:
  */
 class ViewSurvey extends Component {
 	render() {

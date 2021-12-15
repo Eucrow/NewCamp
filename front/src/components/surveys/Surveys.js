@@ -121,7 +121,7 @@ class Surveys extends Component {
 		})
 			.then((response) => {
 				if (response.status == 200) {
-					// this.handleEdit(null);
+					//TODO: something should be here!!
 				} else {
 					alert("Something is wrong.");
 				}
@@ -213,13 +213,7 @@ class Surveys extends Component {
 					<div className="wrapper surveysWrapper">
 						{contentNewSurvey}
 						{this.state.surveys.map((survey) => {
-							return (
-								<Survey
-									key={survey.id}
-									ref={this.surveyElement}
-									survey={survey}
-								/>
-							);
+							return <Survey key={survey.id} survey={survey} />;
 						})}
 					</div>
 				</main>
