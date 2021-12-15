@@ -15,13 +15,14 @@ class NewSurveyForm extends Component {
 			survey: [],
 		};
 
-		this.handleChange = this.handleChange.bind(this);
+		this.handleChangeNew = this.handleChangeNew.bind(this);
 	}
 	/**
 	 * Manage fields change in 'survey' state.
+	 * This method is diferent to handleChange os Surveys component.
 	 * @param {event} e - Event.
 	 */
-	handleChange(e) {
+	handleChangeNew(e) {
 		const name = e.target.name;
 		const value = e.target.value;
 
@@ -46,7 +47,7 @@ class NewSurveyForm extends Component {
 							id="description"
 							name="description"
 							className="station_number"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						/>
 					</span>
 					<span className="field">
@@ -55,7 +56,7 @@ class NewSurveyForm extends Component {
 							type="text"
 							id="acronym"
 							name="acronym"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						/>
 					</span>
 				</div>
@@ -66,7 +67,7 @@ class NewSurveyForm extends Component {
 							type="text"
 							id="start_date"
 							name="start_date"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						/>
 					</span>
 					<span className="field">
@@ -75,7 +76,7 @@ class NewSurveyForm extends Component {
 							type="text"
 							id="end_date"
 							name="end_date"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						/>
 					</span>
 				</div>
@@ -86,7 +87,7 @@ class NewSurveyForm extends Component {
 							type="text"
 							id="width_x"
 							name="width_x"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						/>
 					</span>
 					<span className="field">
@@ -95,7 +96,7 @@ class NewSurveyForm extends Component {
 							type="text"
 							id="width_y"
 							name="width_y"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						/>
 					</span>
 					<span className="field">
@@ -104,7 +105,7 @@ class NewSurveyForm extends Component {
 							type="text"
 							id="origin_x"
 							name="origin_x"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						/>
 					</span>
 					<span className="field">
@@ -113,7 +114,7 @@ class NewSurveyForm extends Component {
 							type="text"
 							id="origin_y"
 							name="origin_y"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						/>
 					</span>
 				</div>
@@ -124,7 +125,7 @@ class NewSurveyForm extends Component {
 							type="text"
 							id="ship"
 							name="ship"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						/>
 					</span>
 					<span className="field">
@@ -133,7 +134,7 @@ class NewSurveyForm extends Component {
 							type="text"
 							id="hauls_duration"
 							name="hauls_duration"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						/>
 					</span>
 					<span className="field">
@@ -142,7 +143,7 @@ class NewSurveyForm extends Component {
 							type="text"
 							id="unit_sample"
 							name="unit_sample"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						/>
 					</span>
 					<span className="field">
@@ -152,7 +153,7 @@ class NewSurveyForm extends Component {
 						<select
 							id="stratification"
 							name="stratification"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => this.handleChangeNew(e)}
 						>
 							<option />
 
@@ -172,7 +173,7 @@ class NewSurveyForm extends Component {
 						type="text"
 						id="comment"
 						name="comment"
-						onChange={(e) => this.handleChange(e)}
+						onChange={(e) => this.handleChangeNew(e)}
 					/>
 				</div>
 				<div className="survey__row">
