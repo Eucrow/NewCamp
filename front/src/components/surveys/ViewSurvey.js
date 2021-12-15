@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import ViewEditSurveyForm from "./ViewEditSurveyForm";
 /**
  * Survey component
- * @param {objetc} props.survey: survey object
+ * @param {object} props.survey: survey object
  * @param {method} changeEdit: to view the fields editable
  */
 class ViewSurvey extends Component {
