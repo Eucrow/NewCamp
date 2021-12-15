@@ -198,11 +198,11 @@ class Surveys extends Component {
 		content = (
 			<SurveysContext.Provider
 				value={{
-					deleteSurvey: this.deleteSurvey,
+					handleChange: this.handleChange,
 					handleAdd: this.handleAdd,
 					createSurvey: this.createSurvey,
 					updateSurvey: this.updateSurvey,
-					handleChange: this.handleChange,
+					deleteSurvey: this.deleteSurvey,
 				}}
 			>
 				<main>

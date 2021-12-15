@@ -7,7 +7,7 @@ import SurveyButtonBar from "./SurveyButtonBar";
 /**
  * ViewEditSurveyForm component
  * @param {object} props.survey: survey object
- * @param {method} changeEdit: nake fields editable/non editable
+ * @param {method} changeEdit: make fields editable/non editable
  */
 const ViewEditSurveyForm = ({ props, edit }) => {
 	const surveysContext = useContext(SurveysContext);
