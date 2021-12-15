@@ -1,18 +1,20 @@
 import React from "react";
 
 import SurveyButtonBar from "./SurveyButtonBar";
-// import UiButtonUpdateSurvey from "./UiButtonUpdateSurvey";
-// import UiButtonDeleteSurvey from "./UiButtonDeleteSurvey";
 
-const SurveyForm = ({ props, edit }) => {
+/**
+ * ViewEditSurveyForm component
+ * @param {object} props.survey: survey object
+ * @param {method} changeEdit: nake fields editable/non editable
+ * @param {method} props.handleChange: manage change in fields
+ * @param {method} props.updateSurvey: update survey from database and state.
+ * @param {method} props.deleteSurvey: delete survey from database and state.
+ */
+const ViewEditSurveyForm = ({ props, edit }) => {
 	const is_disabled = edit === true ? false : true;
 
-	const renderedStation = (
-		<form
-		// onSubmit={(e) => {
-		// 	props.updateSurvey(e, props.survey.id);
-		// }}
-		>
+	const renderedSurvey = (
+		<form>
 			<div className="survey__row">
 				<span className="field">
 					<label htmlFor="description">description: </label>
@@ -171,12 +173,10 @@ const SurveyForm = ({ props, edit }) => {
 					<SurveyButtonBar props={props} edit={edit} />
 				</div>
 			</div>
-			{/* <input type="submit" value="Save" /> */}
-			{/* <UiButtonCancelEditSurvey handleEdit={props.handleEdit} /> */}
 		</form>
 	);
 
-	return renderedStation;
+	return renderedSurvey;
 };
 
-export default SurveyForm;
+export default ViewEditSurveyForm;

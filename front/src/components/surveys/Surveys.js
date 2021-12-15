@@ -14,7 +14,6 @@ class Surveys extends Component {
 			surveys: [],
 			stratifications: [],
 			add: false, // true to add new survey; false to not to.
-			// edit: null, // null to not edit any survey; survey_id to edit that survey_id.
 		};
 
 		this.apiSurvey = "http://127.0.0.1:8000/api/1.0/survey/";
@@ -22,7 +21,6 @@ class Surveys extends Component {
 			"http://127.0.0.1:8000/api/1.0/stratifications/";
 
 		this.handleChange = this.handleChange.bind(this);
-		// this.handleEdit = this.handleEdit.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
 		this.createSurvey = this.createSurvey.bind(this);
 		this.updateSurvey = this.updateSurvey.bind(this);
@@ -59,17 +57,6 @@ class Surveys extends Component {
 			};
 		});
 	}
-
-	/**
-	 * Manage change of 'edit' state.
-	 * @param {Event} e - Event.
-	 * @param {(numeric|null)} status - Identification number of the survey which fields are managed. If 'null', none is edited.
-	 */
-	// handleEdit(status) {
-	// 	this.setState({
-	// 		edit: status,
-	// 	});
-	// }
 
 	/**
 	 * Manage change of 'add' state.
