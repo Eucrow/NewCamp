@@ -2,9 +2,10 @@ import React, { Component } from "react";
 
 import SurveysContext from "../../contexts/SuverysContext";
 
-import UiButtonAddSurvey from "./UiButtonAddSurvey";
-import NewSurveyForm from "./NewSurveyForm";
+import SurveysButtonBar from "./SurveysButtonBar";
 import Survey from "./Survey";
+import NewSurvey from "./NewSurvey";
+
 /**
  * Component list of surveys.
  * List of all the surveys stored in database.
@@ -62,7 +63,7 @@ class Surveys extends Component {
 
 	/**
 	 * Manage change of 'add' state.
-	 * @param {boolean} status - Identification number of the survey which fields are managed.
+	 * @param {boolean} status true to show the "Add Survey" button.
 	 */
 	handleAdd(status) {
 		this.setState(() => {
@@ -120,7 +121,7 @@ class Surveys extends Component {
 			body: JSON.stringify(updatedSurvey[0]),
 		})
 			.then((response) => {
-				if (response.status == 200) {
+				if (response.status === 200) {
 					//TODO: something should be here!!
 				} else {
 					alert("Something is wrong.");
@@ -187,14 +188,6 @@ class Surveys extends Component {
 	renderContent() {
 		let content;
 
-		let contentNewSurvey = this.state.add ? (
-			<NewSurveyForm stratifications={this.state.stratifications} />
-		) : (
-			<div>
-				<UiButtonAddSurvey />
-			</div>
-		);
-
 		content = (
 			<SurveysContext.Provider
 				value={{
@@ -203,6 +196,7 @@ class Surveys extends Component {
 					createSurvey: this.createSurvey,
 					updateSurvey: this.updateSurvey,
 					deleteSurvey: this.deleteSurvey,
+					stratifications: this.state.stratifications,
 				}}
 			>
 				<main>
@@ -211,7 +205,8 @@ class Surveys extends Component {
 					</header>
 
 					<div className="wrapper surveysWrapper">
-						{contentNewSurvey}
+						<NewSurvey add={this.state.add} />
+						<SurveysButtonBar add={this.state.add} />
 						{this.state.surveys.map((survey) => {
 							return <Survey key={survey.id} survey={survey} />;
 						})}

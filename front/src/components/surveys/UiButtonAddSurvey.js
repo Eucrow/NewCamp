@@ -10,6 +10,7 @@ class UiButtonAddSurvey extends Component {
 	render() {
 		return (
 			<button
+				className="buttonsWrapper__button"
 				onClick={() => {
 					this.context.handleAdd(true);
 				}}

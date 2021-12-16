@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 
+import SurveysContext from "../../contexts/SuverysContext";
+
 import UiButtonCancelEditSurvey from "./UiButtonCancelEditSurvey";
 import UiButtonSaveNewSurvey from "./UiButtonSaveNewSurvey";
 
 /**
  * Survey component
- * @param {object} props.stratifications: stratifications object
  */
 class NewSurveyForm extends Component {
+	static contextType = SurveysContext;
+
 	constructor(props) {
 		super(props);
 
@@ -157,7 +160,7 @@ class NewSurveyForm extends Component {
 						>
 							<option />
 
-							{this.props.stratifications.map((st, idx) => {
+							{this.context.stratifications.map((st, idx) => {
 								return (
 									<option value={st.id} key={idx}>
 										{st.id} - {st.stratification}

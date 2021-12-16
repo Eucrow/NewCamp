@@ -30,21 +30,17 @@ class Survey extends Component {
 
 		if (this.state.edit === true) {
 			content = (
-				<div className="wrapper">
-					<EditSurvey
-						survey={this.props.survey}
-						changeEdit={this.changeEdit}
-					/>
-				</div>
+				<EditSurvey
+					survey={this.props.survey}
+					changeEdit={this.changeEdit}
+				/>
 			);
 		} else {
 			content = (
-				<div className="wrapper">
-					<ViewSurvey
-						survey={this.props.survey}
-						changeEdit={this.changeEdit}
-					/>
-				</div>
+				<ViewSurvey
+					survey={this.props.survey}
+					changeEdit={this.changeEdit}
+				/>
 			);
 		}
 

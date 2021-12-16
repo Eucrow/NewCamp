@@ -14,7 +14,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 	const is_disabled = edit === true ? false : true;
 
 	const renderedSurvey = (
-		<form>
+		<form className="wrapper">
 			<div className="survey__row">
 				<span className="field">
 					<label htmlFor="description">description: </label>
@@ -193,9 +193,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 				/>
 			</div>
 			<div className="survey__row">
-				<div className="survey__cell survey__cell--right">
-					<SurveyButtonBar props={props} edit={edit} />
-				</div>
+				<SurveyButtonBar props={props} edit={edit} />
 			</div>
 		</form>
 	);
