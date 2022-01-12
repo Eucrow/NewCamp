@@ -9,17 +9,22 @@ class UiButtonSaveNewSurvey extends Component {
 	static contextType = SurveysContext;
 
 	render() {
-		return (
+		let content = null;
+		content = (
 			<button
 				className="buttonsWrapper__button"
 				onClick={(e) => {
-					this.context.createSurvey(e, this.props.survey);
-					this.context.handleAdd(false);
+					if (this.props.validate()) {
+						this.context.createSurvey(e, this.props.survey);
+						this.context.handleAdd(false);
+					}
 				}}
 			>
 				Save Survey
 			</button>
 		);
+
+		return content;
 	}
 }
 

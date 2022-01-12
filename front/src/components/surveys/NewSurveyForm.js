@@ -14,12 +14,24 @@ class NewSurveyForm extends Component {
 	constructor(props) {
 		super(props);
 
+		this.form = React.createRef();
+
 		this.state = {
 			survey: [],
 		};
 
 		this.handleChangeNew = this.handleChangeNew.bind(this);
+		this.validate = this.validate.bind(this);
 	}
+
+	/**
+	 * Validate field forms by the HTML Constrait API
+	 * @returns true when all fields are valid.
+	 */
+	validate() {
+		return this.form.current.reportValidity();
+	}
+
 	/**
 	 * Manage fields change in 'survey' state.
 	 * This method is diferent to handleChange os Surveys component.
@@ -41,7 +53,11 @@ class NewSurveyForm extends Component {
 		var content = "";
 
 		content = (
-			<form>
+			<form
+				className="wrapper"
+				ref={this.form}
+				onSubmit={(e) => e.preventDefault()}
+			>
 				<div className="survey__row">
 					<span className="field">
 						<label htmlFor="description">description: </label>
@@ -51,6 +67,8 @@ class NewSurveyForm extends Component {
 							name="description"
 							className="station_number"
 							onChange={(e) => this.handleChangeNew(e)}
+							required
+							pattern="^[a-zA-Z0-9\s]{1,30}$"
 						/>
 					</span>
 					<span className="field">
@@ -60,6 +78,8 @@ class NewSurveyForm extends Component {
 							id="acronym"
 							name="acronym"
 							onChange={(e) => this.handleChangeNew(e)}
+							required
+							pattern="[\w|\d]{3}"
 						/>
 					</span>
 				</div>
@@ -87,37 +107,45 @@ class NewSurveyForm extends Component {
 					<span className="field">
 						<label htmlFor="width_x">width_x: </label>
 						<input
-							type="text"
+							type="number"
 							id="width_x"
 							name="width_x"
 							onChange={(e) => this.handleChangeNew(e)}
+							min="0"
+							max="180"
 						/>
 					</span>
 					<span className="field">
 						<label htmlFor="width_y">width_y: </label>
 						<input
-							type="text"
+							type="number"
 							id="width_y"
 							name="width_y"
 							onChange={(e) => this.handleChangeNew(e)}
+							min="0"
+							max="90"
 						/>
 					</span>
 					<span className="field">
 						<label htmlFor="origin_x">origin_x: </label>
 						<input
-							type="text"
+							type="number"
 							id="origin_x"
 							name="origin_x"
 							onChange={(e) => this.handleChangeNew(e)}
+							min="-180"
+							max="180"
 						/>
 					</span>
 					<span className="field">
 						<label htmlFor="origin_y">origin_y: </label>
 						<input
-							type="text"
+							type="number"
 							id="origin_y"
 							name="origin_y"
 							onChange={(e) => this.handleChangeNew(e)}
+							min="-90"
+							max="90"
 						/>
 					</span>
 				</div>
@@ -181,7 +209,10 @@ class NewSurveyForm extends Component {
 				</div>
 				<div className="survey__row">
 					<div className="survey__cell survey__cell--right buttonsWrapper">
-						<UiButtonSaveNewSurvey survey={this.state.survey} />
+						<UiButtonSaveNewSurvey
+							survey={this.state.survey}
+							validate={this.validate}
+						/>
 						<UiButtonCancelEditSurvey />
 					</div>
 				</div>

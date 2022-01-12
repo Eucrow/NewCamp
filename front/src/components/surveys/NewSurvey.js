@@ -11,11 +11,7 @@ class NewSurvey extends Component {
 		let content = null;
 
 		if (this.props.add === true) {
-			content = (
-				<div className="wrapper">
-					<NewSurveyForm />
-				</div>
-			);
+			content = <NewSurveyForm />;
 		}
 
 		return content;
