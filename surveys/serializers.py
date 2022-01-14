@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
 from surveys.models import Survey
+
+
 # from stratifications.serializers import StratificationSerializer
 
 
@@ -15,4 +17,4 @@ class SurveySerializer(serializers.ModelSerializer):
 class SurveyAcronymsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
-        fields = ['id', 'description',]
+        fields = ['id', 'description', ]

@@ -29,6 +29,15 @@ class NewSurveyForm extends Component {
 	 * @returns true when all fields are valid.
 	 */
 	validate() {
+		// Validate end date/start date
+		if (this.state.survey.start_date > this.state.survey.end_date) {
+			this.form.current.end_date.setCustomValidity(
+				"End date must be later than start date"
+			);
+		} else {
+			this.form.current.end_date.setCustomValidity("");
+		}
+
 		return this.form.current.reportValidity();
 	}
 
@@ -79,7 +88,7 @@ class NewSurveyForm extends Component {
 							name="acronym"
 							onChange={(e) => this.handleChangeNew(e)}
 							required
-							pattern="[\w|\d]{3}"
+							pattern="^[\w|\d]{3}$"
 						/>
 					</span>
 				</div>
@@ -87,7 +96,7 @@ class NewSurveyForm extends Component {
 					<span className="field">
 						<label htmlFor="start_date">start_date: </label>
 						<input
-							type="text"
+							type="date"
 							id="start_date"
 							name="start_date"
 							onChange={(e) => this.handleChangeNew(e)}
@@ -96,7 +105,7 @@ class NewSurveyForm extends Component {
 					<span className="field">
 						<label htmlFor="end_date">end_date: </label>
 						<input
-							type="text"
+							type="date"
 							id="end_date"
 							name="end_date"
 							onChange={(e) => this.handleChangeNew(e)}
