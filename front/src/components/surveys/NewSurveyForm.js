@@ -58,6 +58,48 @@ class NewSurveyForm extends Component {
 		});
 	}
 
+	/**
+	 * Allow only type the number of digits of maxLength property
+	 * @param {object} object
+	 */
+	maxLengthCheck = (object) => {
+		if (object.target.value.length > object.target.maxLength) {
+			object.target.value = object.target.value.slice(
+				0,
+				object.target.maxLength
+			);
+		}
+	};
+
+	/**
+	 * Allow only type the number of digits of maxLength property with sign
+	 * @param {object} object
+	 */
+	maxLengthSignCheck = (object) => {
+		if (
+			object.target.value.length > object.target.maxLength &&
+			object.target.value.charAt(0) === "-"
+		) {
+			object.target.value = object.target.value.slice(
+				0,
+				object.target.maxLength
+			);
+		} else {
+			object.target.value = object.target.value.slice(
+				0,
+				object.target.maxLength - 1
+			);
+		}
+	};
+
+	/**
+	 * Prevent 'e' and '-' in numeric input
+	 * @param {e} onKeyDown event
+	 */
+	preventNegativeE = (e) => {
+		(e.key === "e" || e.key === "-") && e.preventDefault();
+	};
+
 	renderContent() {
 		var content = "";
 
@@ -94,7 +136,7 @@ class NewSurveyForm extends Component {
 				</div>
 				<div className="survey__row">
 					<span className="field">
-						<label htmlFor="start_date">start_date: </label>
+						<label htmlFor="start_date">Start date: </label>
 						<input
 							type="date"
 							id="start_date"
@@ -103,7 +145,7 @@ class NewSurveyForm extends Component {
 						/>
 					</span>
 					<span className="field">
-						<label htmlFor="end_date">end_date: </label>
+						<label htmlFor="end_date">End date: </label>
 						<input
 							type="date"
 							id="end_date"
@@ -114,7 +156,7 @@ class NewSurveyForm extends Component {
 				</div>
 				<div className="survey__row">
 					<span className="field">
-						<label htmlFor="width_x">width_x: </label>
+						<label htmlFor="width_x">Grid width (miles): </label>
 						<input
 							type="number"
 							id="width_x"
@@ -122,10 +164,13 @@ class NewSurveyForm extends Component {
 							onChange={(e) => this.handleChangeNew(e)}
 							min="0"
 							max="180"
+							maxLength={3}
+							onInput={this.maxLengthCheck}
+							onKeyDown={this.preventNegativeE}
 						/>
 					</span>
 					<span className="field">
-						<label htmlFor="width_y">width_y: </label>
+						<label htmlFor="width_y">Grid height (miles): </label>
 						<input
 							type="number"
 							id="width_y"
@@ -133,10 +178,15 @@ class NewSurveyForm extends Component {
 							onChange={(e) => this.handleChangeNew(e)}
 							min="0"
 							max="90"
+							maxLength={2}
+							onInput={this.maxLengthCheck}
+							onKeyDown={this.preventNegativeE}
 						/>
 					</span>
 					<span className="field">
-						<label htmlFor="origin_x">origin_x: </label>
+						<label htmlFor="origin_x">
+							Grid origin longitude (degrees):
+						</label>
 						<input
 							type="number"
 							id="origin_x"
@@ -144,10 +194,14 @@ class NewSurveyForm extends Component {
 							onChange={(e) => this.handleChangeNew(e)}
 							min="-180"
 							max="180"
+							maxLength={4}
+							onInput={this.maxLengthSignCheck}
 						/>
 					</span>
 					<span className="field">
-						<label htmlFor="origin_y">origin_y: </label>
+						<label htmlFor="origin_y">
+							Grid origin latitude (degrees):{" "}
+						</label>
 						<input
 							type="number"
 							id="origin_y"
@@ -155,6 +209,8 @@ class NewSurveyForm extends Component {
 							onChange={(e) => this.handleChangeNew(e)}
 							min="-90"
 							max="90"
+							maxLength={3}
+							onInput={this.maxLengthSignCheck}
 						/>
 					</span>
 				</div>
