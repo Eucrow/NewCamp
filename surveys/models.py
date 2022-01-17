@@ -41,7 +41,7 @@ class Survey(models.Model):
     # Override the clean method to add a validation involved with two fields:
     def clean(self):
         if self.start_date and self.end_date:
-            if self.start_date >= self.end_date:
+            if self.start_date > self.end_date:
                 raise ValidationError({'dates': 'End date hast to be later than or equal to start date.'})
 
     # To call the clean method we must override the save method too:
