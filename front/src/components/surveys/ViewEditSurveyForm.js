@@ -17,13 +17,14 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 		<form className="wrapper">
 			<div className="survey__row">
 				<span className="field">
-					<label htmlFor="description">description: </label>
+					<label htmlFor="description">Description:</label>
 					<input
 						type="text"
 						id="description"
 						name="description"
 						disabled={is_disabled}
-						className="station_number"
+						className="survey_description"
+						required
 						value={props.survey.description || ""}
 						onChange={(e) =>
 							surveysContext.handleChange(e, props.survey.id)
@@ -31,11 +32,12 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="acronym">acronym: </label>
+					<label htmlFor="acronym">Acronym:</label>
 					<input
 						type="text"
 						id="acronym"
 						name="acronym"
+						required
 						disabled={is_disabled}
 						value={props.survey.acronym || ""}
 						onChange={(e) =>
@@ -46,9 +48,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 			</div>
 			<div className="survey__row">
 				<span className="field">
-					<label htmlFor="start_date">start_date: </label>
+					<label htmlFor="start_date">Start date:</label>
 					<input
-						type="text"
+						type="date"
 						id="start_date"
 						name="start_date"
 						disabled={is_disabled}
@@ -59,9 +61,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="end_date">end_date: </label>
+					<label htmlFor="end_date">End date:</label>
 					<input
-						type="text"
+						type="date"
 						id="end_date"
 						name="end_date"
 						disabled={is_disabled}
@@ -72,13 +74,17 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 			</div>
-			<div className="survey__row">
+			<fieldset className="wrapper survey__row">
+				<legend>Grid</legend>
 				<span className="field">
-					<label htmlFor="width_x">width_x: </label>
+					<label htmlFor="width_x">Width (miles):</label>
 					<input
-						type="text"
+						type="number"
 						id="width_x"
 						name="width_x"
+						min="0"
+						max="999"
+						maxLength={3}
 						disabled={is_disabled}
 						value={props.survey.width_x || ""}
 						onChange={(e) =>
@@ -87,11 +93,14 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="width_y">width_y: </label>
+					<label htmlFor="width_y">Height (miles):</label>
 					<input
-						type="text"
+						type="number"
 						id="width_y"
 						name="width_y"
+						min="0"
+						max="999"
+						maxLength={3}
 						disabled={is_disabled}
 						value={props.survey.width_y || ""}
 						onChange={(e) =>
@@ -100,11 +109,16 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="origin_x">origin_x: </label>
+					<label htmlFor="origin_x">
+						Origin longitude (degrees):
+					</label>
 					<input
-						type="text"
+						type="number"
 						id="origin_x"
 						name="origin_x"
+						min="-180"
+						max="180"
+						maxLength={7}
 						disabled={is_disabled}
 						value={props.survey.origin_x || ""}
 						onChange={(e) =>
@@ -113,11 +127,14 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="origin_y">origin_y: </label>
+					<label htmlFor="origin_y">Origin latitude (degrees):</label>
 					<input
-						type="text"
+						type="number"
 						id="origin_y"
 						name="origin_y"
+						min="-90"
+						max="90"
+						maxLength={6}
 						disabled={is_disabled}
 						value={props.survey.origin_y || ""}
 						onChange={(e) =>
@@ -125,10 +142,26 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						}
 					/>
 				</span>
-			</div>
+				<span className="field">
+					<label htmlFor="unit_sample">
+						Area sampled (square milles):
+					</label>
+					<input
+						type="number"
+						id="unit_sample"
+						name="unit_sample"
+						min="0"
+						disabled={is_disabled}
+						value={props.survey.unit_sample || ""}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
+					/>
+				</span>
+			</fieldset>
 			<div className="survey__row">
 				<span className="field">
-					<label htmlFor="ship">ship: </label>
+					<label htmlFor="ship">Ship:</label>
 					<input
 						type="text"
 						id="ship"
@@ -141,11 +174,14 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="hauls_duration">hauls_duration: </label>
+					<label htmlFor="hauls_duration">
+						Hauls duration (minutes):
+					</label>
 					<input
-						type="text"
+						type="number"
 						id="hauls_duration"
 						name="hauls_duration"
+						min="0"
 						disabled={is_disabled}
 						value={props.survey.hauls_duration || ""}
 						onChange={(e) =>
@@ -154,22 +190,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="unit_sample">unit_sample: </label>
-					<input
-						type="text"
-						id="unit_sample"
-						name="unit_sample"
-						disabled={is_disabled}
-						value={props.survey.unit_sample || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
-					/>
-				</span>
-				<span className="field">
-					<label htmlFor="stratification_id">
-						stratification_id:
-					</label>
+					<label htmlFor="stratification_id">Stratification:</label>
 					<input
 						type="text"
 						id="stratification_id"
@@ -180,11 +201,12 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 				</span>
 			</div>
 			<div className="survey__row">
-				<label htmlFor="comment">comment: </label>
+				<label htmlFor="comment">Comment:</label>
 				<input
 					type="text"
 					id="comment"
 					name="comment"
+					className="comment"
 					disabled={is_disabled}
 					value={props.survey.comment || ""}
 					onChange={(e) =>

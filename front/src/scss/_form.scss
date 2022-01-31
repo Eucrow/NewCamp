@@ -1,4 +1,18 @@
 // a div thia a class field to maintain together a label with an input
 .field {
 	white-space: nowrap;
+	padding-right: 10px;
+	padding-bottom: 10px;
+
+	&:last-child {
+		margin-right: auto;
+	}
+}
+
+input.comment {
+	width: 100%;
+}
+
+input {
+	font-weight: 600;
 }

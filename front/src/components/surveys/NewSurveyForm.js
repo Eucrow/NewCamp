@@ -133,19 +133,19 @@ const NewSurveyForm = () => {
 			>
 				<div className="survey__row">
 					<span className="field">
-						<label htmlFor="description">description: </label>
+						<label htmlFor="description">Description:</label>
 						<input
 							type="text"
 							id="description"
 							name="description"
-							className="station_number"
+							className="survey_description"
 							required
 							pattern="^[a-zA-Z0-9\s]{1,30}$"
 							onChange={handleChangeNew}
 						/>
 					</span>
 					<span className="field">
-						<label htmlFor="acronym">acronym: </label>
+						<label htmlFor="acronym">Acronym:</label>
 						<input
 							type="text"
 							id="acronym"
@@ -158,7 +158,7 @@ const NewSurveyForm = () => {
 				</div>
 				<div className="survey__row">
 					<span className="field">
-						<label htmlFor="start_date">Start date: </label>
+						<label htmlFor="start_date">Start date:</label>
 						<input
 							type="date"
 							id="start_date"
@@ -170,7 +170,7 @@ const NewSurveyForm = () => {
 						/>
 					</span>
 					<span className="field">
-						<label htmlFor="end_date">End date: </label>
+						<label htmlFor="end_date">End date:</label>
 						<input
 							type="date"
 							id="end_date"
@@ -184,64 +184,7 @@ const NewSurveyForm = () => {
 				</div>
 				<div className="survey__row">
 					<span className="field">
-						<label htmlFor="width_x">Grid width (miles): </label>
-						<input
-							type="number"
-							id="width_x"
-							name="width_x"
-							min="0"
-							max="999"
-							maxLength={3}
-							onChange={handleChangeNew}
-							onKeyDown={preventNegativeE}
-						/>
-					</span>
-					<span className="field">
-						<label htmlFor="width_y">Grid height (miles): </label>
-						<input
-							type="number"
-							id="width_y"
-							name="width_y"
-							min="0"
-							max="999"
-							maxLength={3}
-							onChange={handleChangeNew}
-							onKeyDown={preventNegativeE}
-						/>
-					</span>
-					<span className="field">
-						<label htmlFor="origin_x">
-							Grid origin longitude (degrees):
-						</label>
-						<input
-							type="number"
-							id="origin_x"
-							name="origin_x"
-							min="-180"
-							max="180"
-							maxLength={7}
-							onChange={handleChangeNew}
-							onInput={maxLengthCheck}
-						/>
-					</span>
-					<span className="field">
-						<label htmlFor="origin_y">
-							Grid origin latitude (degrees):{" "}
-						</label>
-						<input
-							type="number"
-							id="origin_y"
-							name="origin_y"
-							min="-90"
-							max="90"
-							maxLength={6}
-							onChange={handleChangeNew}
-						/>
-					</span>
-				</div>
-				<div className="survey__row">
-					<span className="field">
-						<label htmlFor="ship">Ship: </label>
+						<label htmlFor="ship">Ship:</label>
 						<input
 							type="text"
 							id="ship"
@@ -251,7 +194,7 @@ const NewSurveyForm = () => {
 					</span>
 					<span className="field">
 						<label htmlFor="hauls_duration">
-							Hauls duration (in minutes):
+							Hauls duration (minutes):
 						</label>
 						<input
 							type="number"
@@ -263,20 +206,7 @@ const NewSurveyForm = () => {
 						/>
 					</span>
 					<span className="field">
-						<label htmlFor="unit_sample">unit_sample: </label>
-						<input
-							type="number"
-							id="unit_sample"
-							name="unit_sample"
-							min="0"
-							onChange={handleChangeNew}
-							onKeyDown={preventNegativeE}
-						/>
-					</span>
-					<span className="field">
-						<label htmlFor="stratification">
-							stratification_id: PENDIENTE
-						</label>
+						<label htmlFor="stratification">Stratification:</label>
 						<select
 							id="stratification"
 							name="stratification"
@@ -294,12 +224,85 @@ const NewSurveyForm = () => {
 						</select>
 					</span>
 				</div>
+				<fieldset className="wrapper survey__row">
+					<legend>Grid</legend>
+					<span className="field">
+						<label htmlFor="width_x">Width (miles):</label>
+						<input
+							type="number"
+							id="width_x"
+							name="width_x"
+							min="0"
+							max="999"
+							maxLength={3}
+							onChange={handleChangeNew}
+							onKeyDown={preventNegativeE}
+						/>
+					</span>
+					<span className="field">
+						<label htmlFor="width_y">Height (miles):</label>
+						<input
+							type="number"
+							id="width_y"
+							name="width_y"
+							min="0"
+							max="999"
+							maxLength={3}
+							onChange={handleChangeNew}
+							onKeyDown={preventNegativeE}
+						/>
+					</span>
+					<span className="field">
+						<label htmlFor="origin_x">
+							Origin longitude (degrees):
+						</label>
+						<input
+							type="number"
+							id="origin_x"
+							name="origin_x"
+							min="-180"
+							max="180"
+							maxLength={7}
+							onChange={handleChangeNew}
+							onInput={maxLengthCheck}
+						/>
+					</span>
+					<span className="field">
+						<label htmlFor="origin_y">
+							Origin latitude (degrees):
+						</label>
+						<input
+							type="number"
+							id="origin_y"
+							name="origin_y"
+							min="-90"
+							max="90"
+							maxLength={6}
+							onChange={handleChangeNew}
+						/>
+					</span>
+					<span className="field">
+						<label htmlFor="unit_sample">
+							Area sampled (square milles):
+						</label>
+						<input
+							type="number"
+							id="unit_sample"
+							name="unit_sample"
+							min="0"
+							onChange={handleChangeNew}
+							onKeyDown={preventNegativeE}
+						/>
+					</span>
+				</fieldset>
+
 				<div className="survey__row">
-					<label htmlFor="comment">comment: </label>
+					<label htmlFor="comment">Comment:</label>
 					<input
 						type="text"
 						id="comment"
 						name="comment"
+						className="comment"
 						onChange={handleChangeNew}
 					/>
 				</div>
