@@ -1,7 +1,5 @@
 import React, { Component, useState, useContext } from "react";
 
-import { Formik } from "formik";
-
 import SurveysContext from "../../contexts/SuverysContext";
 
 import UiButtonCancelEditSurvey from "./UiButtonCancelEditSurvey";
@@ -20,34 +18,52 @@ const NewSurveyForm = () => {
 
 	const formRef = React.createRef();
 
-	// constructor(props) {
-	// 	super(props);
-
-	// 	this.form = React.createRef();
-
-	// 	this.state = {
-	// 		survey: [],
-	// 	};
-
-	// 	this.handleChangeNew = this.handleChangeNew.bind(this);
-	// 	this.validate = this.validate.bind(this);
-	// }
-
 	/**
 	 * Validate field forms by the HTML Constrait API
 	 * @returns true when all fields are valid.
 	 */
 	const validate = () => {
+		return formRef.current.reportValidity();
+	};
+
+	/**
+	 * Validate start date with end date
+	 * @param {event} e onChange event
+	 * @returns In case of error in date, show report validity.
+	 */
+	const validateStartDate = (e) => {
+		formRef.current.start_date.setCustomValidity("");
 		// Validate end date/start date
-		if (survey.start_date > survey.end_date) {
+		if (
+			typeof survey.end_date != "undefined" &&
+			e.target.value > survey.end_date
+		) {
+			formRef.current.start_date.setCustomValidity(
+				"Start date must be sooner than end date"
+			);
+		}
+
+		return formRef.current.start_date.reportValidity();
+	};
+
+	/**
+	 * Validate end date with start date
+	 * @param {event} e onChange event
+	 * @returns In case of error in date, show report validity.
+	 */
+	const validateEndDate = (e) => {
+		formRef.current.end_date.setCustomValidity("");
+		// Validate end date/start date
+		if (
+			typeof survey.start_date != "undefined" &&
+			survey.start_date > e.target.value
+		) {
 			formRef.current.end_date.setCustomValidity(
 				"End date must be later than start date"
 			);
-		} else {
-			formRef.current.end_date.setCustomValidity("");
 		}
 
-		return formRef.current.reportValidity();
+		return formRef.current.end_date.reportValidity();
 	};
 
 	/**
@@ -72,29 +88,27 @@ const NewSurveyForm = () => {
 	 * @param {event} e - Event
 	 */
 	const maxLengthCheck = (e) => {
+		e.target.setCustomValidity("");
 		if (e.target.value.length > e.target.maxLength) {
-			e.target.value = e.target.value.slice(0, e.target.maxLength);
+			e.target.setCustomValidity(
+				"Maximum " + e.target.maxLength + " digits."
+			);
 		}
+		e.target.reportValidity();
 	};
 
 	/**
 	 * Allow only type the number of digits of maxLength property with sign
-	 * @param {object} object
+	 * @param {event} e - Event
 	 */
-	const maxLengthSignCheck = (object) => {
+	const maxLengthSignCheck = (e) => {
 		if (
-			object.target.value.length > object.target.maxLength &&
-			object.target.value.charAt(0) === "-"
+			e.target.value.length > e.target.maxLength &&
+			e.target.value.charAt(0) === "-"
 		) {
-			object.target.value = object.target.value.slice(
-				0,
-				object.target.maxLength
-			);
+			e.target.value = e.target.value.slice(0, e.target.maxLength);
 		} else {
-			object.target.value = object.target.value.slice(
-				0,
-				object.target.maxLength - 1
-			);
+			e.target.value = e.target.value.slice(0, e.target.maxLength - 1);
 		}
 	};
 
@@ -103,7 +117,9 @@ const NewSurveyForm = () => {
 	 * @param {e} onKeyDown event
 	 */
 	const preventNegativeE = (e) => {
-		(e.key === "e" || e.key === "-") && e.preventDefault();
+		if (e.key === "e" || e.key === "-") {
+			e.preventDefault();
+		}
 	};
 
 	const renderContent = () => {
@@ -123,9 +139,9 @@ const NewSurveyForm = () => {
 							id="description"
 							name="description"
 							className="station_number"
-							onChange={handleChangeNew}
 							required
 							pattern="^[a-zA-Z0-9\s]{1,30}$"
+							onChange={handleChangeNew}
 						/>
 					</span>
 					<span className="field">
@@ -134,9 +150,9 @@ const NewSurveyForm = () => {
 							type="text"
 							id="acronym"
 							name="acronym"
-							onChange={handleChangeNew}
 							required
 							pattern="^[\w|\d]{3}$"
+							onChange={handleChangeNew}
 						/>
 					</span>
 				</div>
@@ -147,7 +163,10 @@ const NewSurveyForm = () => {
 							type="date"
 							id="start_date"
 							name="start_date"
-							onChange={handleChangeNew}
+							onChange={(e) => {
+								handleChangeNew(e);
+								validateStartDate(e);
+							}}
 						/>
 					</span>
 					<span className="field">
@@ -156,7 +175,10 @@ const NewSurveyForm = () => {
 							type="date"
 							id="end_date"
 							name="end_date"
-							onChange={handleChangeNew}
+							onChange={(e) => {
+								handleChangeNew(e);
+								validateEndDate(e);
+							}}
 						/>
 					</span>
 				</div>
@@ -167,11 +189,10 @@ const NewSurveyForm = () => {
 							type="number"
 							id="width_x"
 							name="width_x"
-							onChange={handleChangeNew}
 							min="0"
-							max="180"
+							max="999"
 							maxLength={3}
-							onInput={maxLengthCheck}
+							onChange={handleChangeNew}
 							onKeyDown={preventNegativeE}
 						/>
 					</span>
@@ -181,11 +202,10 @@ const NewSurveyForm = () => {
 							type="number"
 							id="width_y"
 							name="width_y"
-							onChange={handleChangeNew}
 							min="0"
-							max="90"
-							maxLength={2}
-							onInput={maxLengthCheck}
+							max="999"
+							maxLength={3}
+							onChange={handleChangeNew}
 							onKeyDown={preventNegativeE}
 						/>
 					</span>
@@ -197,11 +217,11 @@ const NewSurveyForm = () => {
 							type="number"
 							id="origin_x"
 							name="origin_x"
-							onChange={handleChangeNew}
 							min="-180"
 							max="180"
-							maxLength={4}
-							onInput={maxLengthSignCheck}
+							maxLength={7}
+							onChange={handleChangeNew}
+							onInput={maxLengthCheck}
 						/>
 					</span>
 					<span className="field">
@@ -212,17 +232,16 @@ const NewSurveyForm = () => {
 							type="number"
 							id="origin_y"
 							name="origin_y"
-							onChange={handleChangeNew}
 							min="-90"
 							max="90"
-							maxLength={3}
-							onInput={maxLengthSignCheck}
+							maxLength={6}
+							onChange={handleChangeNew}
 						/>
 					</span>
 				</div>
 				<div className="survey__row">
 					<span className="field">
-						<label htmlFor="ship">ship: </label>
+						<label htmlFor="ship">Ship: </label>
 						<input
 							type="text"
 							id="ship"
@@ -231,21 +250,27 @@ const NewSurveyForm = () => {
 						/>
 					</span>
 					<span className="field">
-						<label htmlFor="hauls_duration">hauls_duration: </label>
+						<label htmlFor="hauls_duration">
+							Hauls duration (in minutes):
+						</label>
 						<input
-							type="text"
+							type="number"
 							id="hauls_duration"
 							name="hauls_duration"
+							min="0"
 							onChange={handleChangeNew}
+							onKeyDown={preventNegativeE}
 						/>
 					</span>
 					<span className="field">
 						<label htmlFor="unit_sample">unit_sample: </label>
 						<input
-							type="text"
+							type="number"
 							id="unit_sample"
 							name="unit_sample"
+							min="0"
 							onChange={handleChangeNew}
+							onKeyDown={preventNegativeE}
 						/>
 					</span>
 					<span className="field">

@@ -20,18 +20,19 @@ class Survey(models.Model):
     ])  # IDENT
     start_date = models.DateField(null=True, blank=True)  # COMI
     end_date = models.DateField(null=True, blank=True)  # FINA
-    width_x = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(180)],
+    width_x = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)],
                                   null=True, blank=True)  # CUX
-    width_y = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(90)],
+    width_y = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)],
                                   null=True, blank=True)  # CUY
-    origin_x = models.DecimalField(max_digits=4, decimal_places=2,
+    origin_x = models.DecimalField(max_digits=7, decimal_places=4,
                                    validators=[MinValueValidator(-180), MaxValueValidator(180)],
                                    null=True, blank=True)  # OCUX
-    origin_y = models.DecimalField(max_digits=4, decimal_places=2,
+    origin_y = models.DecimalField(max_digits=7, decimal_places=4,
                                    validators=[MinValueValidator(-90), MaxValueValidator(90)],
                                    null=True, blank=True)  # OCUY
     ship = models.CharField(max_length=4, null=True, blank=True)
-    hauls_duration = models.IntegerField(null=True, blank=True)
+    hauls_duration = models.IntegerField(validators=[MinValueValidator(0)],
+                                         null=True, blank=True)
     # ew = models.CharField(max_length=2, null=True, blank=True)
     # ns = models.CharField(max_length=2, null=True, blank=True)
     # area_sampled = models.CharField(max_length=2, null=True, blank=True)
