@@ -13,12 +13,12 @@ class UiButtonSaveNewSurvey extends Component {
 		content = (
 			<button
 				className="buttonsWrapper__button"
-				onClick={(e) => {
-					if (this.props.validate(e)) {
-						this.context.createSurvey(e, this.props.survey);
-						this.context.handleAdd(false);
-					}
-				}}
+				// onClick={(e) => {
+				// 	if (this.props.validate(e)) {
+				// 		this.context.createSurvey(e, this.props.survey);
+				// 		this.context.handleAdd(false);
+				// 	}
+				// }}
 			>
 				Save Survey
 			</button>

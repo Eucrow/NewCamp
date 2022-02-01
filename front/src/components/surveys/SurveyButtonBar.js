@@ -11,14 +11,7 @@ const SurveyButtonBar = ({ props, edit }) => {
 		ButtonBar = (
 			<div className="survey__cell survey__cell--right">
 				<div className="buttonsWrapper">
-					<button
-						type="submit"
-						className="buttonsWrapper__button"
-						// onClick={(e) => {
-						// 	surveysContext.updateSurvey(e, props.survey.id);
-						// 	props.changeEdit(false);
-						// }}
-					>
+					<button type="submit" className="buttonsWrapper__button">
 						Save Survey
 					</button>
 					<button

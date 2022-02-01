@@ -165,6 +165,7 @@ class Surveys extends Component {
 			})
 			.catch((error) => alert(error));
 	}
+
 	/**
 	 * Get all stratifications.
 	 */

@@ -1,4 +1,4 @@
-import React, { Component, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import SurveysContext from "../../contexts/SuverysContext";
 
@@ -8,10 +8,7 @@ import UiButtonSaveNewSurvey from "./UiButtonSaveNewSurvey";
 /**
  * Survey component
  */
-// class NewSurveyForm extends Component {
 const NewSurveyForm = () => {
-	// static contextType = SurveysContext;
-
 	const surveysContext = useContext(SurveysContext);
 
 	const [survey, setSurvey] = useState({});
@@ -19,11 +16,12 @@ const NewSurveyForm = () => {
 	const formRef = React.createRef();
 
 	/**
-	 * Validate field forms by the HTML Constrait API
-	 * @returns true when all fields are valid.
+	 * Manage the onSubmit event.
+	 * @param {event} e - onSubmit event.
 	 */
-	const validate = (e) => {
-		return formRef.current.reportValidity();
+	const handleSubmit = (e) => {
+		surveysContext.createSurvey(e, survey);
+		surveysContext.handleAdd(false);
 	};
 
 	/**
@@ -62,11 +60,7 @@ const NewSurveyForm = () => {
 		var content = "";
 
 		content = (
-			<form
-				className="wrapper"
-				ref={formRef}
-				onSubmit={(e) => e.preventDefault()}
-			>
+			<form className="wrapper" ref={formRef} onSubmit={handleSubmit}>
 				<div className="survey__row">
 					<span className="field">
 						<label htmlFor="description">Description:</label>
@@ -252,10 +246,7 @@ const NewSurveyForm = () => {
 				</div>
 				<div className="survey__row">
 					<div className="survey__cell survey__cell--right buttonsWrapper">
-						<UiButtonSaveNewSurvey
-							survey={survey}
-							validate={validate}
-						/>
+						<UiButtonSaveNewSurvey survey={survey} />
 						<UiButtonCancelEditSurvey />
 					</div>
 				</div>
@@ -266,10 +257,6 @@ const NewSurveyForm = () => {
 	};
 
 	return renderContent();
-
-	// render() {
-	// 	return this.renderContent();
-	// }
 };
 
 export default NewSurveyForm;
