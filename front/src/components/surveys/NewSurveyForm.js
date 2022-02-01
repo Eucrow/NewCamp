@@ -22,7 +22,7 @@ const NewSurveyForm = () => {
 	 * Validate field forms by the HTML Constrait API
 	 * @returns true when all fields are valid.
 	 */
-	const validate = () => {
+	const validate = (e) => {
 		return formRef.current.reportValidity();
 	};
 
@@ -32,18 +32,18 @@ const NewSurveyForm = () => {
 	 * @returns In case of error in date, show report validity.
 	 */
 	const validateStartDate = (e) => {
-		formRef.current.start_date.setCustomValidity("");
+		e.target.setCustomValidity("");
 		// Validate end date/start date
 		if (
 			typeof survey.end_date != "undefined" &&
 			e.target.value > survey.end_date
 		) {
-			formRef.current.start_date.setCustomValidity(
-				"Start date must be sooner than end date"
+			e.target.setCustomValidity(
+				"Start date must be sooner than end date."
 			);
 		}
 
-		return formRef.current.start_date.reportValidity();
+		return e.target.reportValidity();
 	};
 
 	/**
@@ -52,18 +52,18 @@ const NewSurveyForm = () => {
 	 * @returns In case of error in date, show report validity.
 	 */
 	const validateEndDate = (e) => {
-		formRef.current.end_date.setCustomValidity("");
+		e.target.setCustomValidity("");
 		// Validate end date/start date
 		if (
 			typeof survey.start_date != "undefined" &&
 			survey.start_date > e.target.value
 		) {
-			formRef.current.end_date.setCustomValidity(
-				"End date must be later than start date"
+			e.target.setCustomValidity(
+				"End date must be later than start date."
 			);
 		}
 
-		return formRef.current.end_date.reportValidity();
+		return e.target.reportValidity();
 	};
 
 	/**
