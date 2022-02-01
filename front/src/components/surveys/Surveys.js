@@ -36,6 +36,7 @@ class Surveys extends Component {
 		this.preventNegativeE = this.preventNegativeE.bind(this);
 		this.validateStartDate = this.validateStartDate.bind(this);
 		this.validateEndDate = this.validateEndDate.bind(this);
+		this.forceReportValidity = this.forceReportValidity.bind(this);
 
 		this.renderContent = this.renderContent.bind(this);
 	}
@@ -248,6 +249,15 @@ class Surveys extends Component {
 	}
 
 	/**
+	 * Force reportValidity() of an element.
+	 * Used with onInput event to show the validation messages in real time instead of show it when the form is submitted.
+	 * @param {e} e onInput event.
+	 */
+	forceReportValidity(e) {
+		e.target.reportValidity();
+	}
+
+	/**
 	 * Create content to render.
 	 * @private
 	 */
@@ -267,6 +277,7 @@ class Surveys extends Component {
 					preventNegativeE: this.preventNegativeE,
 					validateStartDate: this.validateStartDate,
 					validateEndDate: this.validateEndDate,
+					forceReportValidity: this.forceReportValidity,
 				}}
 			>
 				<main>

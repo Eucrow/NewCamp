@@ -13,8 +13,13 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 	const surveysContext = useContext(SurveysContext);
 	const is_disabled = edit === true ? false : true;
 
+	const handleSubmit = (e) => {
+		surveysContext.updateSurvey(e, props.survey.id);
+		props.changeEdit(false);
+	};
+
 	const renderedSurvey = (
-		<form className="wrapper">
+		<form className="wrapper" onSubmit={handleSubmit}>
 			<div className="survey__row">
 				<span className="field">
 					<label htmlFor="description">Description:</label>
@@ -25,6 +30,8 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						disabled={is_disabled}
 						className="survey_description"
 						required
+						autoFocus
+						pattern="^[a-zA-Z0-9\s]{1,30}$"
 						value={props.survey.description || ""}
 						onChange={(e) =>
 							surveysContext.handleChange(e, props.survey.id)
@@ -37,8 +44,9 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						type="text"
 						id="acronym"
 						name="acronym"
-						required
 						disabled={is_disabled}
+						required
+						pattern="^[\w|\d]{3}$"
 						value={props.survey.acronym || ""}
 						onChange={(e) =>
 							surveysContext.handleChange(e, props.survey.id)
@@ -55,9 +63,13 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="start_date"
 						disabled={is_disabled}
 						value={props.survey.start_date || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						onChange={(e) => {
+							surveysContext.handleChange(e, props.survey.id);
+							surveysContext.validateStartDate(
+								e,
+								props.survey.end_date
+							);
+						}}
 					/>
 				</span>
 				<span className="field">
@@ -68,97 +80,16 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="end_date"
 						disabled={is_disabled}
 						value={props.survey.end_date || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						onChange={(e) => {
+							surveysContext.handleChange(e, props.survey.id);
+							surveysContext.validateEndDate(
+								e,
+								props.survey.start_date
+							);
+						}}
 					/>
 				</span>
 			</div>
-			<fieldset className="wrapper survey__row">
-				<legend>Grid</legend>
-				<span className="field">
-					<label htmlFor="width_x">Width (miles):</label>
-					<input
-						type="number"
-						id="width_x"
-						name="width_x"
-						min="0"
-						max="999"
-						maxLength={3}
-						disabled={is_disabled}
-						value={props.survey.width_x || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
-					/>
-				</span>
-				<span className="field">
-					<label htmlFor="width_y">Height (miles):</label>
-					<input
-						type="number"
-						id="width_y"
-						name="width_y"
-						min="0"
-						max="999"
-						maxLength={3}
-						disabled={is_disabled}
-						value={props.survey.width_y || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
-					/>
-				</span>
-				<span className="field">
-					<label htmlFor="origin_x">
-						Origin longitude (degrees):
-					</label>
-					<input
-						type="number"
-						id="origin_x"
-						name="origin_x"
-						min="-180"
-						max="180"
-						maxLength={7}
-						disabled={is_disabled}
-						value={props.survey.origin_x || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
-					/>
-				</span>
-				<span className="field">
-					<label htmlFor="origin_y">Origin latitude (degrees):</label>
-					<input
-						type="number"
-						id="origin_y"
-						name="origin_y"
-						min="-90"
-						max="90"
-						maxLength={6}
-						disabled={is_disabled}
-						value={props.survey.origin_y || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
-					/>
-				</span>
-				<span className="field">
-					<label htmlFor="unit_sample">
-						Area sampled (square milles):
-					</label>
-					<input
-						type="number"
-						id="unit_sample"
-						name="unit_sample"
-						min="0"
-						disabled={is_disabled}
-						value={props.survey.unit_sample || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
-					/>
-				</span>
-			</fieldset>
 			<div className="survey__row">
 				<span className="field">
 					<label htmlFor="ship">Ship:</label>
@@ -187,6 +118,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						onChange={(e) =>
 							surveysContext.handleChange(e, props.survey.id)
 						}
+						onKeyDown={surveysContext.preventNegativeE}
 					/>
 				</span>
 				<span className="field">
@@ -200,6 +132,96 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 			</div>
+			<fieldset className="wrapper survey__row">
+				<legend>Grid</legend>
+				<span className="field">
+					<label htmlFor="width_x">Width (miles):</label>
+					<input
+						type="number"
+						id="width_x"
+						name="width_x"
+						min="0"
+						max="999"
+						maxLength={3}
+						disabled={is_disabled}
+						value={props.survey.width_x || ""}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
+						onKeyDown={surveysContext.preventNegativeE}
+					/>
+				</span>
+				<span className="field">
+					<label htmlFor="width_y">Height (miles):</label>
+					<input
+						type="number"
+						id="width_y"
+						name="width_y"
+						min="0"
+						max="999"
+						maxLength={3}
+						disabled={is_disabled}
+						value={props.survey.width_y || ""}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
+						onKeyDown={surveysContext.preventNegativeE}
+					/>
+				</span>
+				<span className="field">
+					<label htmlFor="origin_x">
+						Origin longitude (degrees):
+					</label>
+					<input
+						type="number"
+						id="origin_x"
+						name="origin_x"
+						min="-180"
+						max="180"
+						step={0.001}
+						disabled={is_disabled}
+						value={props.survey.origin_x || ""}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
+						onInput={surveysContext.forceReportValidity}
+					/>
+				</span>
+				<span className="field">
+					<label htmlFor="origin_y">Origin latitude (degrees):</label>
+					<input
+						type="number"
+						id="origin_y"
+						name="origin_y"
+						min="-90"
+						max="90"
+						step={0.001}
+						disabled={is_disabled}
+						value={props.survey.origin_y || ""}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
+						onInput={surveysContext.forceReportValidity}
+					/>
+				</span>
+				<span className="field">
+					<label htmlFor="unit_sample">
+						Area sampled (square milles):
+					</label>
+					<input
+						type="number"
+						id="unit_sample"
+						name="unit_sample"
+						min="0"
+						disabled={is_disabled}
+						value={props.survey.unit_sample || ""}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
+					/>
+				</span>
+			</fieldset>
+
 			<div className="survey__row">
 				<label htmlFor="comment">Comment:</label>
 				<input

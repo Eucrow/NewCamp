@@ -205,9 +205,9 @@ const NewSurveyForm = () => {
 							name="origin_x"
 							min="-180"
 							max="180"
-							maxLength={7}
+							step={0.001}
 							onChange={handleChangeNew}
-							onInput={surveysContext.maxLengthCheck}
+							onInput={surveysContext.forceReportValidity}
 						/>
 					</span>
 					<span className="field">
@@ -220,8 +220,9 @@ const NewSurveyForm = () => {
 							name="origin_y"
 							min="-90"
 							max="90"
-							maxLength={6}
+							step={0.001}
 							onChange={handleChangeNew}
+							onInput={surveysContext.forceReportValidity}
 						/>
 					</span>
 					<span className="field">
