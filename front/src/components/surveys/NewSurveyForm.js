@@ -27,46 +27,6 @@ const NewSurveyForm = () => {
 	};
 
 	/**
-	 * Validate start date with end date
-	 * @param {event} e onChange event
-	 * @returns In case of error in date, show report validity.
-	 */
-	const validateStartDate = (e) => {
-		e.target.setCustomValidity("");
-		// Validate end date/start date
-		if (
-			typeof survey.end_date != "undefined" &&
-			e.target.value > survey.end_date
-		) {
-			e.target.setCustomValidity(
-				"Start date must be sooner than end date."
-			);
-		}
-
-		return e.target.reportValidity();
-	};
-
-	/**
-	 * Validate end date with start date
-	 * @param {event} e onChange event
-	 * @returns In case of error in date, show report validity.
-	 */
-	const validateEndDate = (e) => {
-		e.target.setCustomValidity("");
-		// Validate end date/start date
-		if (
-			typeof survey.start_date != "undefined" &&
-			survey.start_date > e.target.value
-		) {
-			e.target.setCustomValidity(
-				"End date must be later than start date."
-			);
-		}
-
-		return e.target.reportValidity();
-	};
-
-	/**
 	 * Manage fields change in 'survey' state.
 	 * This method is diferent to handleChange os Surveys component.
 	 * @param {event} e - Event.
@@ -84,43 +44,19 @@ const NewSurveyForm = () => {
 	};
 
 	/**
-	 * Allow only type the number of digits of maxLength property
-	 * @param {event} e - Event
-	 */
-	const maxLengthCheck = (e) => {
-		e.target.setCustomValidity("");
-		if (e.target.value.length > e.target.maxLength) {
-			e.target.setCustomValidity(
-				"Maximum " + e.target.maxLength + " digits."
-			);
-		}
-		e.target.reportValidity();
-	};
-
-	/**
 	 * Allow only type the number of digits of maxLength property with sign
 	 * @param {event} e - Event
 	 */
-	const maxLengthSignCheck = (e) => {
-		if (
-			e.target.value.length > e.target.maxLength &&
-			e.target.value.charAt(0) === "-"
-		) {
-			e.target.value = e.target.value.slice(0, e.target.maxLength);
-		} else {
-			e.target.value = e.target.value.slice(0, e.target.maxLength - 1);
-		}
-	};
-
-	/**
-	 * Prevent 'e' and '-' in numeric input
-	 * @param {e} onKeyDown event
-	 */
-	const preventNegativeE = (e) => {
-		if (e.key === "e" || e.key === "-") {
-			e.preventDefault();
-		}
-	};
+	// const maxLengthSignCheck = (e) => {
+	// 	if (
+	// 		e.target.value.length > e.target.maxLength &&
+	// 		e.target.value.charAt(0) === "-"
+	// 	) {
+	// 		e.target.value = e.target.value.slice(0, e.target.maxLength);
+	// 	} else {
+	// 		e.target.value = e.target.value.slice(0, e.target.maxLength - 1);
+	// 	}
+	// };
 
 	const renderContent = () => {
 		var content = "";
@@ -140,6 +76,7 @@ const NewSurveyForm = () => {
 							name="description"
 							className="survey_description"
 							required
+							autoFocus
 							pattern="^[a-zA-Z0-9\s]{1,30}$"
 							onChange={handleChangeNew}
 						/>
@@ -165,7 +102,10 @@ const NewSurveyForm = () => {
 							name="start_date"
 							onChange={(e) => {
 								handleChangeNew(e);
-								validateStartDate(e);
+								surveysContext.validateStartDate(
+									e,
+									survey.end_date
+								);
 							}}
 						/>
 					</span>
@@ -177,7 +117,10 @@ const NewSurveyForm = () => {
 							name="end_date"
 							onChange={(e) => {
 								handleChangeNew(e);
-								validateEndDate(e);
+								surveysContext.validateEndDate(
+									e,
+									survey.start_date
+								);
 							}}
 						/>
 					</span>
@@ -202,7 +145,7 @@ const NewSurveyForm = () => {
 							name="hauls_duration"
 							min="0"
 							onChange={handleChangeNew}
-							onKeyDown={preventNegativeE}
+							onKeyDown={surveysContext.preventNegativeE}
 						/>
 					</span>
 					<span className="field">
@@ -236,7 +179,7 @@ const NewSurveyForm = () => {
 							max="999"
 							maxLength={3}
 							onChange={handleChangeNew}
-							onKeyDown={preventNegativeE}
+							onKeyDown={surveysContext.preventNegativeE}
 						/>
 					</span>
 					<span className="field">
@@ -249,7 +192,7 @@ const NewSurveyForm = () => {
 							max="999"
 							maxLength={3}
 							onChange={handleChangeNew}
-							onKeyDown={preventNegativeE}
+							onKeyDown={surveysContext.preventNegativeE}
 						/>
 					</span>
 					<span className="field">
@@ -264,7 +207,7 @@ const NewSurveyForm = () => {
 							max="180"
 							maxLength={7}
 							onChange={handleChangeNew}
-							onInput={maxLengthCheck}
+							onInput={surveysContext.maxLengthCheck}
 						/>
 					</span>
 					<span className="field">
@@ -291,7 +234,7 @@ const NewSurveyForm = () => {
 							name="unit_sample"
 							min="0"
 							onChange={handleChangeNew}
-							onKeyDown={preventNegativeE}
+							onKeyDown={surveysContext.preventNegativeE}
 						/>
 					</span>
 				</fieldset>

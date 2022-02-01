@@ -5,6 +5,7 @@ import SurveysContext from "../../contexts/SuverysContext";
 import SurveysButtonBar from "./SurveysButtonBar";
 import Survey from "./Survey";
 import NewSurvey from "./NewSurvey";
+import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
 
 /**
  * Component list of surveys.
@@ -30,6 +31,11 @@ class Surveys extends Component {
 		this.deleteSurvey = this.deleteSurvey.bind(this);
 
 		this.getStratifications = this.getStratifications.bind(this);
+
+		this.maxLengthCheck = this.maxLengthCheck.bind(this);
+		this.preventNegativeE = this.preventNegativeE.bind(this);
+		this.validateStartDate = this.validateStartDate.bind(this);
+		this.validateEndDate = this.validateEndDate.bind(this);
 
 		this.renderContent = this.renderContent.bind(this);
 	}
@@ -181,6 +187,66 @@ class Surveys extends Component {
 			.catch((error) => console.log(error));
 	}
 
+	// VALIDATIONS
+	/**
+	 * Allow only type the number of digits of maxLength property
+	 * @param {event} e - Event
+	 */
+	maxLengthCheck(e) {
+		e.target.setCustomValidity("");
+		if (e.target.value.length > e.target.maxLength) {
+			e.target.setCustomValidity(
+				"Maximum " + e.target.maxLength + " digits."
+			);
+		}
+		e.target.reportValidity();
+	}
+
+	/**
+	 * Prevent 'e' and '-' in numeric input
+	 * @param {e} onKeyDown event
+	 */
+	preventNegativeE(e) {
+		if (e.key === "e" || e.key === "-") {
+			e.preventDefault();
+		}
+	}
+
+	/**
+	 * Validate start date with end date
+	 * @param {event} e onChange event
+	 * @returns In case of error in date, show report validity.
+	 */
+	validateStartDate(e, end_date) {
+		e.target.setCustomValidity("");
+
+		if (typeof end_date != "undefined" && e.target.value > end_date) {
+			e.target.setCustomValidity(
+				"Start date must be sooner than end date."
+			);
+		}
+
+		return e.target.reportValidity();
+	}
+
+	/**
+	 * Validate end date with start date
+	 * @param {event} e onChange event.
+	 * @param {start_date} date Start date to compare with.
+	 * @returns In case of error in date, show report validity.
+	 */
+	validateEndDate(e, start_date) {
+		e.target.setCustomValidity("");
+
+		if (typeof start_date != "undefined" && start_date > e.target.value) {
+			e.target.setCustomValidity(
+				"End date must be later than start date."
+			);
+		}
+
+		return e.target.reportValidity();
+	}
+
 	/**
 	 * Create content to render.
 	 * @private
@@ -197,6 +263,10 @@ class Surveys extends Component {
 					updateSurvey: this.updateSurvey,
 					deleteSurvey: this.deleteSurvey,
 					stratifications: this.state.stratifications,
+					maxLengthCheck: this.maxLengthCheck,
+					preventNegativeE: this.preventNegativeE,
+					validateStartDate: this.validateStartDate,
+					validateEndDate: this.validateEndDate,
 				}}
 			>
 				<main>

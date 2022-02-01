@@ -16,3 +16,7 @@ input.comment {
 input {
 	font-weight: 600;
 }
+
+form:focus-within {
+	background-color: lawngreen;
+}
