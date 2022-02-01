@@ -41,21 +41,6 @@ const NewSurveyForm = () => {
 		});
 	};
 
-	/**
-	 * Allow only type the number of digits of maxLength property with sign
-	 * @param {event} e - Event
-	 */
-	// const maxLengthSignCheck = (e) => {
-	// 	if (
-	// 		e.target.value.length > e.target.maxLength &&
-	// 		e.target.value.charAt(0) === "-"
-	// 	) {
-	// 		e.target.value = e.target.value.slice(0, e.target.maxLength);
-	// 	} else {
-	// 		e.target.value = e.target.value.slice(0, e.target.maxLength - 1);
-	// 	}
-	// };
-
 	const renderContent = () => {
 		var content = "";
 
