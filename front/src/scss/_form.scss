@@ -20,3 +20,8 @@ input {
 // form:focus-within {
 // 	background-color: lawngreen;
 // }
+
+input:invalid {
+	background-color: var(--error_background) !important;
+	color: var(--error_text);
+}
