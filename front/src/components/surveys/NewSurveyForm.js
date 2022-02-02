@@ -132,6 +132,7 @@ const NewSurveyForm = () => {
 						<select
 							id="stratification"
 							name="stratification"
+							required
 							onChange={handleChangeNew}
 						>
 							<option />

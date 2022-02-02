@@ -127,6 +127,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						id="stratification"
 						name="stratification"
 						disabled={is_disabled}
+						required
 						value={props.survey.stratification || ""}
 						onChange={(e) =>
 							surveysContext.handleChange(e, props.survey.id)

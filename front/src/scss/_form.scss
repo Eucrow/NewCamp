@@ -21,6 +21,7 @@ input {
 // 	background-color: lawngreen;
 // }
 
+select:invalid,
 input:invalid {
 	background-color: var(--error_background) !important;
 	color: var(--error_text);
