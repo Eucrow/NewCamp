@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import ViewSpeciesList from "./ViewSpeciesList";
+import Sp from "./Sp";
 import NewSp from "./NewSp";
 
 class Species extends Component {
@@ -55,12 +55,10 @@ class Species extends Component {
 			};
 		});
 	}
-
+	/**
+	 * Update species database
+	 */
 	handleUpdateSp(e, sp_id) {
-		/**
-		 * Update species database
-		 */
-
 		e.preventDefault();
 
 		const api = this.apiSpecies + "/" + sp_id;
@@ -76,11 +74,10 @@ class Species extends Component {
 		}).catch((error) => console.log(error));
 	}
 
+	/**
+	 * Save catch to database.
+	 */
 	createSp(e, new_sp) {
-		/**
-		 * Save catch to database.
-		 */
-
 		e.preventDefault();
 
 		// TODO: detect if the species alraedy exists
@@ -126,29 +123,55 @@ class Species extends Component {
 
 		if (this.state.add === false) {
 			content = (
-				<div>
-					{this.AddButton("Add species", true)}
-					<ViewSpeciesList
-						species={this.state.species}
-						handleChange={this.handleChange}
-						handleUpdateSp={this.handleUpdateSp}
-					/>
-				</div>
+				<main>
+					<header>
+						<h1 className="title">Species</h1>
+					</header>
+
+					<div className="wrapper surveysWrapper">
+						{this.AddButton("Add species", true)}
+						{/* <ViewSpeciesList
+							species={this.state.species}
+							handleChange={this.handleChange}
+							handleUpdateSp={this.handleUpdateSp}
+						/> */}
+						{this.state.species.map((sp) => {
+							return (
+								<Sp
+									key={sp.id}
+									sp={sp}
+									handleChange={this.handleChange}
+									handleUpdateSp={this.handleUpdateSp}
+								/>
+							);
+						})}
+					</div>
+				</main>
 			);
 		} else if (this.state.add === true) {
 			content = (
-				<div>
-					<NewSp
-						species={this.state.species}
-						handleAdd={this.handleAdd}
-						createSp={this.createSp}
-					/>
-					<ViewSpeciesList
-						species={this.state.species}
-						handleChange={this.handleChange}
-						handleUpdateSp={this.handleUpdateSp}
-					/>
-				</div>
+				<main>
+					<header>
+						<h1 className="title">Species</h1>
+					</header>
+					<div>
+						<NewSp
+							species={this.state.species}
+							handleAdd={this.handleAdd}
+							createSp={this.createSp}
+						/>
+						{this.state.species.map((sp) => {
+							return (
+								<Sp
+									key={sp.id}
+									sp={sp}
+									handleChange={this.handleChange}
+									handleUpdateSp={this.handleUpdateSp}
+								/>
+							);
+						})}
+					</div>
+				</main>
 			);
 		}
 
