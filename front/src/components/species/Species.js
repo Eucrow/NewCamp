@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import Sp from "./Sp";
 import NewSp from "./NewSp";
+import EditSp from "./EditSp";
 
 class Species extends Component {
 	/**
@@ -130,11 +131,7 @@ class Species extends Component {
 
 					<div className="wrapper surveysWrapper">
 						{this.AddButton("Add species", true)}
-						{/* <ViewSpeciesList
-							species={this.state.species}
-							handleChange={this.handleChange}
-							handleUpdateSp={this.handleUpdateSp}
-						/> */}
+
 						{this.state.species.map((sp) => {
 							return (
 								<Sp

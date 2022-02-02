@@ -41,8 +41,9 @@ class Sp extends Component {
 
 		if (this.state.detail === false) {
 			return (
-				<div key={sp.id}>
-					group: {sp.group} - sp_code: {sp.sp_code} - name: {sp.sp_name} -
+				<div key={sp.id} className="wrapper">
+					Group: {sp.group} Code: {sp.sp_code} Scientific Name:{" "}
+					{sp.sp_name}
 					<button
 						onClick={() => {
 							this.changeDetail(true);
