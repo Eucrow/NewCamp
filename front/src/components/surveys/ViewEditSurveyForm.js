@@ -122,14 +122,26 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="stratification_id">Stratification:</label>
-					<input
-						type="text"
-						id="stratification_id"
-						name="stratification_id"
+					<label htmlFor="stratification">Stratification:</label>
+					<select
+						id="stratification"
+						name="stratification"
 						disabled={is_disabled}
 						value={props.survey.stratification || ""}
-					/>
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
+					>
+						<option />
+
+						{surveysContext.stratifications.map((st, idx) => {
+							return (
+								<option value={st.id} key={idx}>
+									{st.id} - {st.stratification}
+								</option>
+							);
+						})}
+					</select>
 				</span>
 			</div>
 			<fieldset className="wrapper survey__row">
