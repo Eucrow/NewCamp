@@ -46,6 +46,12 @@
 	--grey-gradient-3: #b8bbbf;
 	--grey-gradient-4: #e2e0e6;
 
+	//orange gradient
+	--orange-gradient-1: #e76326;
+	--orange-gradient-2: #f1a17d;
+	--orange-gradient-3: #f5c1a8;
+	--orange-gradient-4: #fae0d4;
+
 	//global
 	--background-global-color: #f2f3f0;
 	--text-color: black;
@@ -67,8 +73,8 @@
 	--background-nav: var(--blue-gradient-3);
 
 	//error
-	--error_background: #fbc52b;
-	--error_text: #e76326;
+	--error_background: var(--orange-gradient-4);
+	--error_text: var(--orange-gradient-1);
 }
 
 html {
@@ -140,27 +146,4 @@ fieldset.wrapper {
 
 .haul__label {
 	margin-right: 5px;
-}
-
-input:disabled {
-	//border size and padding must be the same as the input enabled style:
-	border: 1px solid var(--wrapper-background-color);
-	background: none;
-	padding: 2px 5px;
-	font-size: 1rem;
-	font-family: var(--normal-font);
-	color: var(--text-color);
-}
-
-input:enabled {
-	font-size: 1rem;
-	border-radius: 5px;
-	border: 1px solid var(--background-global-color);
-	padding: 2px 5px;
-	background-color: var(--background-global-color);
-}
-
-input:focus,
-input:active {
-	border-color: var(--blue-gradient-1);
 }

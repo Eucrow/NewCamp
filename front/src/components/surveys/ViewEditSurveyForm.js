@@ -46,6 +46,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="acronym"
 						disabled={is_disabled}
 						required
+						size={3}
 						pattern="^[\w|\d]{3}$"
 						value={props.survey.acronym || ""}
 						onChange={(e) =>
@@ -113,6 +114,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						id="hauls_duration"
 						name="hauls_duration"
 						min="0"
+						size={4}
 						disabled={is_disabled}
 						value={props.survey.hauls_duration || ""}
 						onChange={(e) =>
@@ -134,11 +136,10 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						}
 					>
 						<option />
-
 						{surveysContext.stratifications.map((st, idx) => {
 							return (
 								<option value={st.id} key={idx}>
-									{st.id} - {st.stratification}
+									{st.stratification}
 								</option>
 							);
 						})}
@@ -155,6 +156,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="width_x"
 						min="0"
 						max="999"
+						size={3}
 						maxLength={3}
 						disabled={is_disabled}
 						value={props.survey.width_x || ""}
@@ -173,6 +175,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						min="0"
 						max="999"
 						maxLength={3}
+						size={3}
 						disabled={is_disabled}
 						value={props.survey.width_y || ""}
 						onChange={(e) =>
@@ -192,6 +195,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						min="-180"
 						max="180"
 						step={0.001}
+						size={8}
 						disabled={is_disabled}
 						value={props.survey.origin_x || ""}
 						onChange={(e) =>
@@ -209,6 +213,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						min="-90"
 						max="90"
 						step={0.001}
+						size={7}
 						disabled={is_disabled}
 						value={props.survey.origin_y || ""}
 						onChange={(e) =>
@@ -237,11 +242,12 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 
 			<div className="survey__row">
 				<label htmlFor="comment">Comment:</label>
-				<input
-					type="text"
+				<textarea
 					id="comment"
 					name="comment"
 					className="comment"
+					rows="2"
+					maxLength={1000}
 					disabled={is_disabled}
 					value={props.survey.comment || ""}
 					onChange={(e) =>

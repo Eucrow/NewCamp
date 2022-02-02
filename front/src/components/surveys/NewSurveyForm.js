@@ -67,6 +67,7 @@ const NewSurveyForm = () => {
 							id="acronym"
 							name="acronym"
 							required
+							size={3}
 							pattern="^[\w|\d]{3}$"
 							onChange={handleChangeNew}
 						/>
@@ -123,6 +124,7 @@ const NewSurveyForm = () => {
 							id="hauls_duration"
 							name="hauls_duration"
 							min="0"
+							size={4}
 							onChange={handleChangeNew}
 							onKeyDown={surveysContext.preventNegativeE}
 						/>
@@ -136,11 +138,10 @@ const NewSurveyForm = () => {
 							onChange={handleChangeNew}
 						>
 							<option />
-
 							{surveysContext.stratifications.map((st, idx) => {
 								return (
 									<option value={st.id} key={idx}>
-										{st.id} - {st.stratification}
+										{st.stratification}
 									</option>
 								);
 							})}
@@ -157,6 +158,7 @@ const NewSurveyForm = () => {
 							name="width_x"
 							min="0"
 							max="999"
+							size={3}
 							maxLength={3}
 							onChange={handleChangeNew}
 							onKeyDown={surveysContext.preventNegativeE}
@@ -170,6 +172,7 @@ const NewSurveyForm = () => {
 							name="width_y"
 							min="0"
 							max="999"
+							size={3}
 							maxLength={3}
 							onChange={handleChangeNew}
 							onKeyDown={surveysContext.preventNegativeE}
@@ -185,6 +188,7 @@ const NewSurveyForm = () => {
 							name="origin_x"
 							min="-180"
 							max="180"
+							size={8}
 							step={0.001}
 							onChange={handleChangeNew}
 							onInput={surveysContext.forceReportValidity}
@@ -200,6 +204,7 @@ const NewSurveyForm = () => {
 							name="origin_y"
 							min="-90"
 							max="90"
+							size={7}
 							step={0.001}
 							onChange={handleChangeNew}
 							onInput={surveysContext.forceReportValidity}
@@ -222,11 +227,12 @@ const NewSurveyForm = () => {
 
 				<div className="survey__row">
 					<label htmlFor="comment">Comment:</label>
-					<input
-						type="text"
+					<textarea
 						id="comment"
 						name="comment"
 						className="comment"
+						rows="2"
+						maxLength={1000}
 						onChange={handleChangeNew}
 					/>
 				</div>
