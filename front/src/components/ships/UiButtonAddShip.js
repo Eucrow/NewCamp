@@ -1,14 +1,18 @@
 import React, { Component } from "react";
+
+import ShipsContext from "../../contexts/ShipsContext";
 /**
  * Component of button to add a new ship
- * @param {method} props.handleAdd: method to manage the 'add' state.
  */
 class UiButtonAddShip extends Component {
+	static contextType = ShipsContext;
+
 	render() {
 		return (
 			<button
+				className="buttonsWrapper__button"
 				onClick={() => {
-					this.props.handleAdd(true);
+					this.context.handleAdd(true);
 				}}
 			>
 				Add Ship

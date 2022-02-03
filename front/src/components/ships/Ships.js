@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 
-import UiButtonAddShip from "./UiButtonAddShip";
+import ShipsContext from "../../contexts/ShipsContext";
+
+import ShipsButtonBar from "./ShipsButtonBar";
 import NewShip from "./NewShip";
 import Ship from "./Ship";
+
 /**
  * Component list of ships.
  * List of all the ships stored in database.
@@ -13,13 +16,11 @@ class Ships extends Component {
 		this.state = {
 			ships: [],
 			add: false, // true to add new ship; false to not to.
-			edit: null, // null to not edit any ship; ship_id to edit that ship_id.
 		};
 
 		this.apiShip = "http://127.0.0.1:8000/api/1.0/ship/";
 
 		this.handleChange = this.handleChange.bind(this);
-		this.handleEdit = this.handleEdit.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
 		this.createShip = this.createShip.bind(this);
 		this.updateShip = this.updateShip.bind(this);
@@ -50,17 +51,6 @@ class Ships extends Component {
 			return {
 				ships: newShips,
 			};
-		});
-	}
-
-	/**
-	 * Manage change of 'edit' state.
-	 * @param {Event} e - Event.
-	 * @param {(numeric|null)} status - Identification number of the ship which fields are managed. If 'null', none is edited.
-	 */
-	handleEdit(status) {
-		this.setState({
-			edit: status,
 		});
 	}
 
@@ -169,48 +159,54 @@ class Ships extends Component {
 	renderContent() {
 		let content = "";
 
-		if (this.state.add === false) {
-			content = (
-				<div>
-					<UiButtonAddShip handleAdd={this.handleAdd} />
-					{this.state.ships.map((ship) => {
-						return (
-							<Ship
-								key={ship.id}
-								ship={ship}
-								edit={this.state.edit}
-								handleEdit={this.handleEdit}
-								handleChange={this.handleChange}
-								updateShip={this.updateShip}
-								deleteShip={this.deleteShip}
-							/>
-						);
-					})}
-				</div>
-			);
-		} else if (this.state.add === true) {
-			content = (
-				<div>
-					<NewShip
-						handleChange={this.handleChange}
-						handleAdd={this.handleAdd}
-						createShip={this.createShip}
-					/>
-					{this.state.ships.map((ship) => {
-						return (
-							<Ship
-								key={ship.id}
-								ref={this.shipElement}
-								ship={ship}
-								handleChange={this.handleChange}
-								updateShip={this.updateShip}
-								deleteShip={this.deleteShip}
-							/>
-						);
-					})}
-				</div>
-			);
-		}
+		// if (this.state.add === false) {
+		content = (
+			<ShipsContext.Provider
+				value={{
+					handleChange: this.handleChange,
+					handleAdd: this.handleAdd,
+					createShip: this.createShip,
+					updateShip: this.updateShip,
+					deleteShip: this.deleteShip,
+				}}
+			>
+				<main>
+					<header>
+						<h1 className="title">Ships</h1>
+					</header>
+					<div className="wrapper surveysWrapper">
+						<ShipsButtonBar add={false} />
+						<NewShip add={this.state.add} />
+						{this.state.ships.map((ship) => {
+							return <Ship key={ship.id} ship={ship} />;
+						})}
+					</div>
+				</main>
+			</ShipsContext.Provider>
+		);
+		// } else if (this.state.add === true) {
+		// 	content = (
+		// 		<div>
+		// 			<NewShip
+		// 				handleChange={this.handleChange}
+		// 				handleAdd={this.handleAdd}
+		// 				createShip={this.createShip}
+		// 			/>
+		// 			{this.state.ships.map((ship) => {
+		// 				return (
+		// 					<Ship
+		// 						key={ship.id}
+		// 						ref={this.shipElement}
+		// 						ship={ship}
+		// 						handleChange={this.handleChange}
+		// 						updateShip={this.updateShip}
+		// 						deleteShip={this.deleteShip}
+		// 					/>
+		// 				);
+		// 			})}
+		// 		</div>
+		// 	);
+		// }
 
 		return content;
 	}

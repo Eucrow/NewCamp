@@ -6,31 +6,35 @@ import EditShip from "./EditShip";
 /**
  * Ship component. Manage component logic.
  * @param {object} props - Ship object
- * @param {method} props.handleChange
- * @param {method} props.handleEdit
- * @param {method} props.updateShip
- * @param {method} props.deleteShip
  */
 class Ship extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			edit: false,
+		};
+
+		this.changeEdit = this.changeEdit.bind(this);
+	}
+
+	changeEdit(edit) {
+		this.setState(() => {
+			return {
+				edit: edit,
+			};
+		});
+	}
+
 	renderContent() {
 		let content = "";
 
-		if (this.props.edit == this.props.ship.id) {
+		if (this.state.edit === true) {
 			content = (
-				<EditShip
-					ship={this.props.ship}
-					handleEdit={this.props.handleEdit}
-					handleChange={this.props.handleChange}
-					updateShip={this.props.updateShip}
-				/>
+				<EditShip ship={this.props.ship} changeEdit={this.changeEdit} />
 			);
 		} else {
 			content = (
-				<ViewShip
-					ship={this.props.ship}
-					handleEdit={this.props.handleEdit}
-					deleteShip={this.props.deleteShip}
-				/>
+				<ViewShip ship={this.props.ship} changeEdit={this.changeEdit} />
 			);
 		}
 

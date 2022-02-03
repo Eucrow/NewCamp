@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+
+import ShipsContext from "../../contexts/ShipsContext";
+
+import ShipButtonBar from "./ShipButtonBar";
+import UiButtonSaveNewShip from "./UiButtonSaveNewShip";
+import UiButtonCancelEditShip from "./UiButtonCancelEditShip";
 /**
  * Ship component
  * @param {object} props.ship: ship object
- * @param {method} props.handleAdd:
- * @param {method} props.handleChange:
- * @param {method} props.createShip:
  */
 class NewShip extends Component {
 	constructor(props) {
@@ -13,7 +16,11 @@ class NewShip extends Component {
 		this.state = {
 			ship: [],
 		};
+		this.handleChange = this.handleChange.bind(this);
 	}
+
+	static contextType = ShipsContext;
+
 	/**
 	 * Manage fields change in 'ship' state.
 	 * @param {event} e - Event.
@@ -28,35 +35,136 @@ class NewShip extends Component {
 				[name]: value,
 			},
 		});
-
-		this.handleChange = this.handleChange.bind(this);
 	}
 
 	renderContent() {
 		var content = "";
 
-		content = (
-			<form
-				onSubmit={(e) => {
-					this.props.createShip(e, this.state.ship);
-					this.props.handleAdd(false);
-				}}
-			>
-				<div>
-					<label htmlFor="name">Name:</label>
-					<input type="text" id="name" name="name" onChange={(e) => this.handleChange(e)} />
-					<label htmlFor="datras_id">DATRAS code:</label>
-					<input type="text" id="datras_id" name="datras_id" onChange={(e) => this.handleChange(e)} />
-					<label htmlFor="length">Length:</label>
-					<input type="text" id="length" name="length" onChange={(e) => this.handleChange(e)} />
-					<label htmlFor="main_power">Main Power:</label>
-					<input type="text" id="main_power" name="main_power" onChange={(e) => this.handleChange(e)} />
-					<label htmlFor="year_built">Year built:</label>
-					<input type="text" id="year_built" name="year_built" onChange={(e) => this.handleChange(e)} />
-					<input type="submit" value="Save" />
-				</div>
-			</form>
-		);
+		if (this.props.add === true) {
+			content = (
+				<form
+					className="wrapper"
+					onSubmit={(e) => {
+						this.context.createShip(e, this.state.ship);
+						this.context.handleAdd(false);
+					}}
+				>
+					<div className="survey__row">
+						<span className="field">
+							<label htmlFor="name">Name:</label>
+							<input
+								type="text"
+								id="name"
+								name="name"
+								className="survey_description"
+								required
+								size={50} //TODO: SEE HOW MANY CHARACTERS ARE ALLOWED IN DB
+								autoFocus
+								onChange={this.handleChange}
+							/>
+						</span>
+					</div>
+					<div className="survey__row">
+						<span className="field">
+							<label htmlFor="datras_id">DATRAS code:</label>
+							<input
+								type="text"
+								id="datras_id"
+								name="datras_id"
+								size={4} //TODO: PUT PATTERN
+								onChange={this.handleChange}
+							/>
+						</span>
+						<span className="field">
+							<label htmlFor="length">Length (m):</label>
+							<input
+								type="number"
+								id="length"
+								name="length"
+								min={0} //TODO: PUT PREVENT E VALIDATION
+								max={999}
+								size={3}
+								onChange={this.handleChange}
+							/>
+						</span>
+						<span className="field">
+							<label htmlFor="main_power">Main Power:</label>
+							<input
+								type="number"
+								id="main_power"
+								name="main_power"
+								min={0} //TODO: PUT PREVENT E VALIDATION
+								max={9999} //TODO: check units in CAMP
+								size={4} //TODO: SEE HOW MANY CHARACTERS ARE ALLOWED IN DB
+								onChange={this.handleChange}
+							/>
+						</span>
+						<span className="field">
+							<label htmlFor="year_built">Year built:</label>
+							<input
+								type="number"
+								id="year_built"
+								name="year_built"
+								min={1900} //TODO: PUT PREVENT E VALIDATION
+								max={9999}
+								onChange={this.handleChange}
+							/>
+						</span>
+					</div>
+					<div className="survey__row">
+						<div className="survey__cell survey__cell--right buttonsWrapper">
+							<UiButtonSaveNewShip />
+							<UiButtonCancelEditShip />
+						</div>
+					</div>
+				</form>
+				// <form
+				// 	onSubmit={(e) => {
+				// 		this.props.createShip(e, this.state.ship);
+				// 		this.props.handleAdd(false);
+				// 	}}
+				// >
+				// 	<div>
+				// 		<label htmlFor="name">Name:</label>
+				// 		<input
+				// 			type="text"
+				// 			id="name"
+				// 			name="name"
+				// 			onChange={(e) => this.handleChange(e)}
+				// 		/>
+				// 		<label htmlFor="datras_id">DATRAS code:</label>
+				// 		<input
+				// 			type="text"
+				// 			id="datras_id"
+				// 			name="datras_id"
+				// 			onChange={(e) => this.handleChange(e)}
+				// 		/>
+				// 		<label htmlFor="length">Length:</label>
+				// 		<input
+				// 			type="text"
+				// 			id="length"
+				// 			name="length"
+				// 			onChange={(e) => this.handleChange(e)}
+				// 		/>
+				// 		<label htmlFor="main_power">Main Power:</label>
+				// 		<input
+				// 			type="text"
+				// 			id="main_power"
+				// 			name="main_power"
+				// 			onChange={(e) => this.handleChange(e)}
+				// 		/>
+				// 		<label htmlFor="year_built">Year built:</label>
+				// 		<input
+				// 			type="text"
+				// 			id="year_built"
+				// 			name="year_built"
+				// 			onChange={(e) => this.handleChange(e)}
+				// 		/>
+				// 		<input type="submit" value="Save" />
+				// 	</div>
+				// </form>
+			);
+		}
 
 		return content;
 	}
