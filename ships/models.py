@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator, RegexVa
 
 
 class Ship(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=30, unique=True)
     datras_id = models.CharField(validators=[
         RegexValidator(regex='^[\w\d]{2,4}$', message='Between 2 and 4 characters, only alphanumeric.',
                        code='invalid_datras_id')

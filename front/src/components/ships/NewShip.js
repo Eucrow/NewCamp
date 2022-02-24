@@ -58,7 +58,7 @@ class NewShip extends Component {
 								name="name"
 								className="survey_description"
 								required
-								size={100}
+								size={30}
 								autoFocus
 								onChange={this.handleChange}
 							/>
@@ -96,8 +96,6 @@ class NewShip extends Component {
 								type="number"
 								id="beam"
 								name="beam"
-								POR
-								AQUI
 								min={0}
 								max={99}
 								size={4}

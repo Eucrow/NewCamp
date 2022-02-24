@@ -29,7 +29,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="name"
 						className="survey_description"
 						required
-						size={100}
+						size={30}
 						autoFocus
 						disabled={is_disabled}
 						value={props.ship.name || ""}
@@ -79,8 +79,6 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						type="number"
 						id="beam"
 						name="beam"
-						POR
-						AQUI
 						min={0}
 						max={99}
 						size={4}
