@@ -58,7 +58,7 @@ class NewShip extends Component {
 								name="name"
 								className="survey_description"
 								required
-								size={50} //TODO: SEE HOW MANY CHARACTERS ARE ALLOWED IN DB
+								size={100}
 								autoFocus
 								onChange={this.handleChange}
 							/>
@@ -71,7 +71,8 @@ class NewShip extends Component {
 								type="text"
 								id="datras_id"
 								name="datras_id"
-								size={4} //TODO: PUT PATTERN
+								size={4}
+								pattern="^[\w|\d]{2,4}$"
 								onChange={this.handleChange}
 							/>
 						</span>
@@ -83,19 +84,35 @@ class NewShip extends Component {
 								name="length"
 								min={0} //TODO: PUT PREVENT E VALIDATION
 								max={999}
-								size={3}
+								size={5}
+								step={0.01}
 								onChange={this.handleChange}
 							/>
 						</span>
 						<span className="field">
-							<label htmlFor="main_power">Main Power:</label>
+							<label htmlFor="beam">Beam (m):</label>
+							<input
+								type="number"
+								id="beam"
+								name="beam"
+								POR
+								AQUI
+								min={0} //TODO: PUT PREVENT E VALIDATION
+								max={99}
+								size={4}
+								step={0.01}
+								onChange={this.handleChange}
+							/>
+						</span>
+						<span className="field">
+							<label htmlFor="main_power">Main Power (kW):</label>
 							<input
 								type="number"
 								id="main_power"
 								name="main_power"
 								min={0} //TODO: PUT PREVENT E VALIDATION
-								max={9999} //TODO: check units in CAMP
-								size={4} //TODO: SEE HOW MANY CHARACTERS ARE ALLOWED IN DB
+								max={9999}
+								size={4}
 								onChange={this.handleChange}
 							/>
 						</span>
@@ -107,6 +124,7 @@ class NewShip extends Component {
 								name="year_built"
 								min={1900} //TODO: PUT PREVENT E VALIDATION
 								max={9999}
+								size={4}
 								onChange={this.handleChange}
 							/>
 						</span>
