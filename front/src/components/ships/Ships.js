@@ -152,6 +152,17 @@ class Ships extends Component {
 			.catch((error) => alert(error));
 	}
 
+	// VALIDATIONS
+	/**
+	 * Prevent 'e' and '-' in numeric input
+	 * @param {e} onKeyDown event
+	 */
+	preventNegativeE(e) {
+		if (e.key === "e" || e.key === "-") {
+			e.preventDefault();
+		}
+	}
+
 	/**
 	 * Create content to render.
 	 * @private
@@ -168,6 +179,7 @@ class Ships extends Component {
 					createShip: this.createShip,
 					updateShip: this.updateShip,
 					deleteShip: this.deleteShip,
+					preventNegativeE: this.preventNegativeE,
 				}}
 			>
 				<main>

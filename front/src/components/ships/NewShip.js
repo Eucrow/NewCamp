@@ -82,11 +82,12 @@ class NewShip extends Component {
 								type="number"
 								id="length"
 								name="length"
-								min={0} //TODO: PUT PREVENT E VALIDATION
+								min={0}
 								max={999}
 								size={5}
 								step={0.01}
 								onChange={this.handleChange}
+								onKeyDown={this.context.preventNegativeE}
 							/>
 						</span>
 						<span className="field">
@@ -97,11 +98,12 @@ class NewShip extends Component {
 								name="beam"
 								POR
 								AQUI
-								min={0} //TODO: PUT PREVENT E VALIDATION
+								min={0}
 								max={99}
 								size={4}
 								step={0.01}
 								onChange={this.handleChange}
+								onKeyDown={this.context.preventNegativeE}
 							/>
 						</span>
 						<span className="field">
@@ -110,10 +112,11 @@ class NewShip extends Component {
 								type="number"
 								id="main_power"
 								name="main_power"
-								min={0} //TODO: PUT PREVENT E VALIDATION
+								min={0}
 								max={9999}
 								size={4}
 								onChange={this.handleChange}
+								onKeyDown={this.context.preventNegativeE}
 							/>
 						</span>
 						<span className="field">
@@ -122,10 +125,11 @@ class NewShip extends Component {
 								type="number"
 								id="year_built"
 								name="year_built"
-								min={1900} //TODO: PUT PREVENT E VALIDATION
+								min={1900}
 								max={9999}
 								size={4}
 								onChange={this.handleChange}
+								onKeyDown={this.context.preventNegativeE}
 							/>
 						</span>
 					</div>

@@ -61,7 +61,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						type="number"
 						id="length"
 						name="length"
-						min={0} //TODO: PUT PREVENT E VALIDATION
+						min={0}
 						max={999}
 						size={5}
 						step={0.01}
@@ -70,6 +70,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						onChange={(e) =>
 							shipsContext.handleChange(e, props.ship.id)
 						}
+						onKeyDown={shipsContext.preventNegativeE}
 					/>
 				</span>
 				<span className="field">
@@ -80,7 +81,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="beam"
 						POR
 						AQUI
-						min={0} //TODO: PUT PREVENT E VALIDATION
+						min={0}
 						max={99}
 						size={4}
 						step={0.01}
@@ -89,6 +90,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						onChange={(e) =>
 							shipsContext.handleChange(e, props.ship.id)
 						}
+						onKeyDown={shipsContext.preventNegativeE}
 					/>
 				</span>
 				<span className="field">
@@ -97,7 +99,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						type="number"
 						id="main_power"
 						name="main_power"
-						min={0} //TODO: PUT PREVENT E VALIDATION
+						min={0}
 						max={9999}
 						size={4}
 						disabled={is_disabled}
@@ -105,6 +107,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						onChange={(e) =>
 							shipsContext.handleChange(e, props.ship.id)
 						}
+						onKeyDown={shipsContext.preventNegativeE}
 					/>
 				</span>
 				<span className="field">
@@ -113,7 +116,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						type="number"
 						id="year_built"
 						name="year_built"
-						min={1900} //TODO: PUT PREVENT E VALIDATION
+						min={1900}
 						max={9999}
 						size={4}
 						disabled={is_disabled}
@@ -121,6 +124,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						onChange={(e) =>
 							shipsContext.handleChange(e, props.ship.id)
 						}
+						onKeyDown={shipsContext.preventNegativeE}
 					/>
 				</span>
 			</div>
