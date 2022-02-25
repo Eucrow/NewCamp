@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 
 import SurveysContext from "../../contexts/SuverysContext";
 
-import UiButtonCancelEditSurvey from "./UiButtonCancelEditSurvey";
+import UiButtonCancelNewSurvey from "./UiButtonCancelNewSurvey";
 import UiButtonSaveNewSurvey from "./UiButtonSaveNewSurvey";
 
 /**
@@ -46,7 +46,7 @@ const NewSurveyForm = () => {
 
 		content = (
 			<form className="wrapper" ref={formRef} onSubmit={handleSubmit}>
-				<div className="survey__row">
+				<div className="form__row">
 					<span className="field">
 						<label htmlFor="description">Description:</label>
 						<input
@@ -73,7 +73,7 @@ const NewSurveyForm = () => {
 						/>
 					</span>
 				</div>
-				<div className="survey__row">
+				<div className="form__row">
 					<span className="field">
 						<label htmlFor="start_date">Start date:</label>
 						<input
@@ -105,7 +105,7 @@ const NewSurveyForm = () => {
 						/>
 					</span>
 				</div>
-				<div className="survey__row">
+				<div className="form__row">
 					<span className="field">
 						<label htmlFor="ship">Ship:</label>
 						<input
@@ -148,7 +148,7 @@ const NewSurveyForm = () => {
 						</select>
 					</span>
 				</div>
-				<fieldset className="wrapper survey__row">
+				<fieldset className="wrapper form__row">
 					<legend>Grid</legend>
 					<span className="field">
 						<label htmlFor="width_x">Width (miles):</label>
@@ -225,21 +225,23 @@ const NewSurveyForm = () => {
 					</span>
 				</fieldset>
 
-				<div className="survey__row">
-					<label htmlFor="comment">Comment:</label>
-					<textarea
-						id="comment"
-						name="comment"
-						className="comment"
-						rows="2"
-						maxLength={1000}
-						onChange={handleChangeNew}
-					/>
+				<div className="form__row">
+					<span className="field__comment">
+						<label htmlFor="comment">Comment:</label>
+						<textarea
+							id="comment"
+							name="comment"
+							className="comment"
+							rows="2"
+							maxLength={1000}
+							onChange={handleChangeNew}
+						/>
+					</span>
 				</div>
-				<div className="survey__row">
+				<div className="form__row">
 					<div className="survey__cell survey__cell--right buttonsWrapper">
 						<UiButtonSaveNewSurvey survey={survey} />
-						<UiButtonCancelEditSurvey />
+						<UiButtonCancelNewSurvey />
 					</div>
 				</div>
 			</form>

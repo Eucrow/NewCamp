@@ -2,9 +2,8 @@ import React, { Component } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
-import ShipButtonBar from "./ShipButtonBar";
 import UiButtonSaveNewShip from "./UiButtonSaveNewShip";
-import UiButtonCancelEditShip from "./UiButtonCancelEditShip";
+import UiButtonCancelNewShip from "./UiButtonCancelNewShip";
 /**
  * Ship component
  * @param {object} props.ship: ship object
@@ -146,7 +145,7 @@ class NewShip extends Component {
 					<div className="form__row">
 						<div className="survey__cell survey__cell--right buttonsWrapper">
 							<UiButtonSaveNewShip />
-							<UiButtonCancelEditShip />
+							<UiButtonCancelNewShip />
 						</div>
 					</div>
 				</form>

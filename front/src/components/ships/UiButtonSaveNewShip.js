@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import SurveysContext from "../../contexts/SuverysContext";
 /**
- * Component of button to add a new survey.
+ * Component of button to add a new ship.
  */
 class UiButtonSaveNewShip extends Component {
 	static contextType = SurveysContext;
@@ -11,7 +11,7 @@ class UiButtonSaveNewShip extends Component {
 		let content = null;
 		content = (
 			<button type="submit" className="buttonsWrapper__button">
-				Save Survey
+				Save Ship
 			</button>
 		);
 

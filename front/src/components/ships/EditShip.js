@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import UiButtonCancelEditShip from "./UiButtonCancelEditShip";
 import ViewEditShipForm from "./ViewEditShipForm";
 
 /**
