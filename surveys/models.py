@@ -11,12 +11,12 @@ class Survey(models.Model):
     stratification = models.ForeignKey('stratifications.Stratification', on_delete=models.PROTECT, )
     acronym = models.CharField(unique=True, max_length=3, blank=False, validators=[
         RegexValidator(regex='^[a-zA-Z0-9]*$', message='Description must be alphanumeric.',
-                       code='invalid_username')
+                       code='invalid_acronym')
     ])  # CLAV
     description = models.CharField(max_length=30, null=False, blank=False, validators=[
         RegexValidator(regex='^[a-zA-Z0-9\s]*$', message='Description must be alphanumeric. White spaces are '
                                                          'allowed.',
-                       code='invalid_username')
+                       code='invalid_description')
     ])  # IDENT
     start_date = models.DateField(null=True, blank=True)  # COMI
     end_date = models.DateField(null=True, blank=True)  # FINA

@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 
-import SurveysContext from "../../contexts/SuverysContext";
+import ShipsContext from "../../contexts/SuverysContext";
 
-const SurveyButtonBar = ({ props, edit }) => {
-	const surveysContext = useContext(SurveysContext);
+const ShipButtonBar = ({ props, edit }) => {
+	const shipsContext = useContext(ShipsContext);
 
 	var ButtonBar = "";
 
@@ -12,7 +12,7 @@ const SurveyButtonBar = ({ props, edit }) => {
 			<div className="form__cell form__cell--right">
 				<div className="buttonsWrapper">
 					<button type="submit" className="buttonsWrapper__button">
-						Save Survey
+						Save Ship
 					</button>
 					<button
 						type="button"
@@ -38,18 +38,18 @@ const SurveyButtonBar = ({ props, edit }) => {
 						props.changeEdit(true);
 					}}
 				>
-					Edit Survey
+					Edit Ship
 				</button>
 				<button
 					type="button"
 					className="buttonsWrapper__button"
 					onClick={(e) => {
-						if (window.confirm("Delete the survey?")) {
-							surveysContext.deleteSurvey(e, props.survey.id);
+						if (window.confirm("Delete the ship?")) {
+							shipsContext.deleteShip(e, props.ship.id);
 						}
 					}}
 				>
-					Delete Survey
+					Delete Ship
 				</button>
 			</div>
 		);
@@ -58,4 +58,4 @@ const SurveyButtonBar = ({ props, edit }) => {
 	return ButtonBar;
 };
 
-export default SurveyButtonBar;
+export default ShipButtonBar;

@@ -1,18 +1,18 @@
 import React from "react";
 
-import UiButtonAddSurvey from "./UiButtonAddSurvey";
+import UiButtonAddShip from "./UiButtonAddShip";
 
 /**
  * Component of Surveys bar.
  * @param {boolean} add true to show "Add Survey" button.
  */
-const SurveysButtonBar = ({ add }) => {
+const ShipsButtonBar = ({ add }) => {
 	var ButtonBar = null;
 
 	if (add === false) {
 		ButtonBar = (
 			<div className="survey__cell survey__cell--right buttonsWrapper">
-				<UiButtonAddSurvey />
+				<UiButtonAddShip />
 			</div>
 		);
 	}
@@ -20,4 +20,4 @@ const SurveysButtonBar = ({ add }) => {
 	return ButtonBar;
 };
 
-export default SurveysButtonBar;
+export default ShipsButtonBar;

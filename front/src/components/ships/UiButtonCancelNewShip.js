@@ -2,23 +2,22 @@ import React, { Component } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
 /**
- * Component of button to add a new ship
+ * Component of button to cancel the creation of a new ship
  */
-class UiButtonAddShip extends Component {
+class UiButtonCancelNewShip extends Component {
 	static contextType = ShipsContext;
 
 	render() {
 		return (
 			<button
-				className="buttonsWrapper__button"
 				onClick={() => {
-					this.context.handleAdd(true);
+					this.context.handleAdd(false);
 				}}
 			>
-				Add Ship
+				Cancel
 			</button>
 		);
 	}
 }
 
-export default UiButtonAddShip;
+export default UiButtonCancelNewShip;

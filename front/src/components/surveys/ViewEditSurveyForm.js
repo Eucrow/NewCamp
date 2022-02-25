@@ -20,7 +20,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 
 	const renderedSurvey = (
 		<form className="wrapper" onSubmit={handleSubmit}>
-			<div className="survey__row">
+			<div className="form__row">
 				<span className="field">
 					<label htmlFor="description">Description:</label>
 					<input
@@ -55,7 +55,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 			</div>
-			<div className="survey__row">
+			<div className="form__row">
 				<span className="field">
 					<label htmlFor="start_date">Start date:</label>
 					<input
@@ -91,7 +91,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 			</div>
-			<div className="survey__row">
+			<div className="form__row">
 				<span className="field">
 					<label htmlFor="ship">Ship:</label>
 					<input
@@ -146,7 +146,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					</select>
 				</span>
 			</div>
-			<fieldset className="wrapper survey__row">
+			<fieldset className="wrapper form__row">
 				<legend>Grid</legend>
 				<span className="field">
 					<label htmlFor="width_x">Width (miles):</label>
@@ -240,22 +240,24 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 				</span>
 			</fieldset>
 
-			<div className="survey__row">
-				<label htmlFor="comment">Comment:</label>
-				<textarea
-					id="comment"
-					name="comment"
-					className="comment"
-					rows="2"
-					maxLength={1000}
-					disabled={is_disabled}
-					value={props.survey.comment || ""}
-					onChange={(e) =>
-						surveysContext.handleChange(e, props.survey.id)
-					}
-				/>
+			<div className="form__row">
+				<span className="field__comment">
+					<label htmlFor="comment">Comment:</label>
+					<textarea
+						id="comment"
+						name="comment"
+						className="comment"
+						rows="2"
+						maxLength={1000}
+						disabled={is_disabled}
+						value={props.survey.comment || ""}
+						onChange={(e) =>
+							surveysContext.handleChange(e, props.survey.id)
+						}
+					/>
+				</span>
 			</div>
-			<div className="survey__row">
+			<div className="form__row">
 				<SurveyButtonBar props={props} edit={edit} />
 			</div>
 		</form>

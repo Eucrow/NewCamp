@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 import SurveysContext from "../../contexts/SuverysContext";
 /**
- * Component of button to add a new survey.
+ * Component of button to cancel the creation of a new survey.
  */
-class UiButtonCancelEditSurvey extends Component {
+class UiButtonCancelNewSurvey extends Component {
 	static contextType = SurveysContext;
 
 	render() {
@@ -21,4 +21,4 @@ class UiButtonCancelEditSurvey extends Component {
 	}
 }
 
-export default UiButtonCancelEditSurvey;
+export default UiButtonCancelNewSurvey;

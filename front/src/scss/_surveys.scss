@@ -11,30 +11,6 @@
 	}
 }
 
-.survey__row {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-items: baseline;
-	min-height: 32px;
-}
-
-.survey__cell {
-	display: inline-flex;
-	flex-direction: row;
-	align-items: baseline;
-	padding-right: 10px;
-}
-
-// cell aligned to the right
-.survey__cell--right {
-	margin-left: auto;
-}
-
-.survey__cell:last-child {
-	padding-right: 0px;
-}
-
 .survey_description {
 	font-family: var(--special-font) !important;
 	font-size: 2rem !important;
