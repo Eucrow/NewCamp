@@ -10,4 +10,4 @@ class ShipSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ship
-        fields = ['id', 'name', 'datras_id', 'length', 'beam', 'main_power', 'year_built', ]
+        fields = ['id', 'name', 'datras_id', 'length', 'beam', 'main_power', 'year_built', 'comment', ]
