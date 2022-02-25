@@ -127,6 +127,21 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 				</span>
 			</div>
 			<div className="survey__row">
+				<span className="field__comment">
+					<label htmlFor="comment">Comment:</label>
+					<textarea
+						id="comment"
+						name="comment"
+						className="comment"
+						size={500}
+						value={props.ship.comment || ""}
+						onChange={(e) =>
+							shipsContext.handleChange(e, props.ship.id)
+						}
+					></textarea>
+				</span>
+			</div>
+			<div className="survey__row">
 				<ShipButtonBar props={props} edit={edit} />
 			</div>
 		</form>

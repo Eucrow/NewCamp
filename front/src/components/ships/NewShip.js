@@ -132,6 +132,18 @@ class NewShip extends Component {
 						</span>
 					</div>
 					<div className="survey__row">
+						<span className="field">
+							<label htmlFor="comment">Comment:</label>
+							<textarea
+								id="comment"
+								name="comment"
+								className="comment"
+								size={500}
+								onChange={this.handleChange}
+							></textarea>
+						</span>
+					</div>
+					<div className="survey__row">
 						<div className="survey__cell survey__cell--right buttonsWrapper">
 							<UiButtonSaveNewShip />
 							<UiButtonCancelEditShip />
