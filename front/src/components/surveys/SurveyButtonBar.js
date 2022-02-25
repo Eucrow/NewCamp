@@ -9,7 +9,7 @@ const SurveyButtonBar = ({ props, edit }) => {
 
 	if (edit === true) {
 		ButtonBar = (
-			<div className="survey__cell survey__cell--right">
+			<div className="form__cell form__cell--right">
 				<div className="buttonsWrapper">
 					<button type="submit" className="buttonsWrapper__button">
 						Save Survey
@@ -30,7 +30,7 @@ const SurveyButtonBar = ({ props, edit }) => {
 
 	if (edit === false) {
 		ButtonBar = (
-			<div className="survey__cell survey__cell--right buttonsWrapper">
+			<div className="form__cell form__cell--right buttonsWrapper">
 				<button
 					type="button"
 					className="buttonsWrapper__button"
