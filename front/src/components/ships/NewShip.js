@@ -49,7 +49,7 @@ class NewShip extends Component {
 						this.context.handleAdd(false);
 					}}
 				>
-					<div className="survey__row">
+					<div className="form__row">
 						<span className="field">
 							<label htmlFor="name">Name:</label>
 							<input
@@ -64,7 +64,7 @@ class NewShip extends Component {
 							/>
 						</span>
 					</div>
-					<div className="survey__row">
+					<div className="form__row">
 						<span className="field">
 							<label htmlFor="datras_id">DATRAS code:</label>
 							<input
@@ -131,8 +131,8 @@ class NewShip extends Component {
 							/>
 						</span>
 					</div>
-					<div className="survey__row">
-						<span className="field">
+					<div className="form__row">
+						<span className="field__comment">
 							<label htmlFor="comment">Comment:</label>
 							<textarea
 								id="comment"
@@ -143,7 +143,7 @@ class NewShip extends Component {
 							></textarea>
 						</span>
 					</div>
-					<div className="survey__row">
+					<div className="form__row">
 						<div className="survey__cell survey__cell--right buttonsWrapper">
 							<UiButtonSaveNewShip />
 							<UiButtonCancelEditShip />

@@ -20,7 +20,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 
 	const content = (
 		<form className="wrapper" onSubmit={handleSubmit}>
-			<div className="survey__row">
+			<div className="form__row">
 				<span className="field">
 					<label htmlFor="name">Name:</label>
 					<input
@@ -39,7 +39,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 			</div>
-			<div className="survey__row">
+			<div className="form__row">
 				<span className="field">
 					<label htmlFor="datras_id">DATRAS code:</label>
 					<input
@@ -126,7 +126,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 			</div>
-			<div className="survey__row">
+			<div className="form__row">
 				<span className="field__comment">
 					<label htmlFor="comment">Comment:</label>
 					<textarea
@@ -134,6 +134,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						name="comment"
 						className="comment"
 						size={500}
+						disabled={is_disabled}
 						value={props.ship.comment || ""}
 						onChange={(e) =>
 							shipsContext.handleChange(e, props.ship.id)
@@ -141,7 +142,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					></textarea>
 				</span>
 			</div>
-			<div className="survey__row">
+			<div className="form__row">
 				<ShipButtonBar props={props} edit={edit} />
 			</div>
 		</form>
