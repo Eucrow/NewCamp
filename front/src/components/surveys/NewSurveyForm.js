@@ -210,19 +210,6 @@ const NewSurveyForm = () => {
 							onInput={surveysContext.forceReportValidity}
 						/>
 					</span>
-					<span className="field">
-						<label htmlFor="unit_sample">
-							Area sampled (square milles):
-						</label>
-						<input
-							type="number"
-							id="unit_sample"
-							name="unit_sample"
-							min="0"
-							onChange={handleChangeNew}
-							onKeyDown={surveysContext.preventNegativeE}
-						/>
-					</span>
 				</fieldset>
 
 				<div className="form__row">
