@@ -1,16 +1,23 @@
 import React, { Component } from "react";
 
+/**
+ * Edit sp component with details.
+ * @param {object} props.sp
+ * @param {method} props.changeDetail
+ * @param {method} props.changeEdit
+ * @param {method} props.handleChange
+ * @param {method} props.handleUpdateSp
+ */
 class EditSp extends Component {
-	/**
-	 * Edit sp component with details.
-	 * @param {object} props.sp
-	 * @param {method} props.changeDetail
-	 * @param {method} props.changeEdit
-	 * @param {method} props.handleChange
-	 * @param {method} props.handleUpdateSp
-	 */
+	constructor(props) {
+		super(props);
+	}
+
 	render() {
 		const sp = this.props.sp;
+
+		const is_disabled = sp.edit;
+
 		return (
 			<form
 				onSubmit={(e) => {
@@ -18,11 +25,13 @@ class EditSp extends Component {
 					this.props.changeEdit(false);
 				}}
 			>
-				group: {sp.group} - sp_code: {sp.sp_code} - <label htmlFor="haul">sp_name:</label>
+				group: {sp.group} - sp_code: {sp.sp_code} -
+				<label htmlFor="haul">sp_name:</label>
 				<input
 					type="text"
 					id="sp_name"
 					name="sp_name"
+					disabled={is_disabled}
 					value={sp.sp_name}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
 				/>
@@ -31,6 +40,7 @@ class EditSp extends Component {
 					type="text"
 					id="spanish_name"
 					name="spanish_name"
+					disabled={is_disabled}
 					value={sp.spanish_name}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
 				/>
@@ -39,6 +49,7 @@ class EditSp extends Component {
 					type="text"
 					id="a_param"
 					name="a_param"
+					disabled={is_disabled}
 					value={sp.a_param}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
 				/>{" "}
@@ -47,6 +58,7 @@ class EditSp extends Component {
 					type="text"
 					id="b_param"
 					name="b_param"
+					disabled={is_disabled}
 					value={sp.b_param}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
 				/>
@@ -55,6 +67,7 @@ class EditSp extends Component {
 					type="text"
 					id="l_infinity"
 					name="l_infinity"
+					disabled={is_disabled}
 					value={sp.l_infinity}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
 				/>
@@ -63,13 +76,16 @@ class EditSp extends Component {
 					type="text"
 					id="k"
 					name="k"
+					disabled={is_disabled}
 					value={sp.k}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
-				/>- <label htmlFor="haul">t_zero:</label>
+				/>
+				- <label htmlFor="haul">t_zero:</label>
 				<input
 					type="text"
 					id="t_zero"
 					name="t_zero"
+					disabled={is_disabled}
 					value={sp.t_zero}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
 				/>{" "}
@@ -78,6 +94,7 @@ class EditSp extends Component {
 					type="text"
 					id="unit"
 					name="unit"
+					disabled={is_disabled}
 					value={sp.unit}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
 				/>
@@ -86,6 +103,7 @@ class EditSp extends Component {
 					type="text"
 					id="increment"
 					name="increment"
+					disabled={is_disabled}
 					value={sp.increment}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
 				/>
@@ -94,6 +112,7 @@ class EditSp extends Component {
 					type="text"
 					id="trophic_group"
 					name="trophic_group"
+					disabled={is_disabled}
 					value={sp.trophic_group}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
 				/>
@@ -102,6 +121,7 @@ class EditSp extends Component {
 					type="text"
 					id="APHIA"
 					name="APHIA"
+					disabled={is_disabled}
 					value={sp.APHIA}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
 				/>
@@ -110,6 +130,7 @@ class EditSp extends Component {
 					type="text"
 					id="comment"
 					name="comment"
+					disabled={is_disabled}
 					value={sp.comment}
 					onChange={(e) => this.props.handleChange(e, sp.id)}
 				/>
