@@ -18,6 +18,7 @@ input:disabled {
 	font-size: 1rem;
 	font-family: var(--normal-font);
 	color: var(--text-color);
+	min-height: 1.8rem;
 }
 
 textarea:enabled,
@@ -28,6 +29,7 @@ input:enabled {
 	border: 1px solid var(--background-global-color);
 	padding: 2px 5px;
 	background-color: var(--background-global-color);
+	min-height: 1.8rem;
 }
 
 textarea:focus,
