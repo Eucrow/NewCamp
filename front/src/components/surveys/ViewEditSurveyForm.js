@@ -222,22 +222,6 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						onInput={surveysContext.forceReportValidity}
 					/>
 				</span>
-				<span className="field">
-					<label htmlFor="unit_sample">
-						Area sampled (square milles):
-					</label>
-					<input
-						type="number"
-						id="unit_sample"
-						name="unit_sample"
-						min="0"
-						disabled={is_disabled}
-						value={props.survey.unit_sample || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
-					/>
-				</span>
 			</fieldset>
 
 			<div className="form__row">

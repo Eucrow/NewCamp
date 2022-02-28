@@ -36,7 +36,7 @@ class Survey(models.Model):
     # ew = models.CharField(max_length=2, null=True, blank=True)
     # ns = models.CharField(max_length=2, null=True, blank=True)
     # area_sampled = models.CharField(max_length=2, null=True, blank=True)
-    unit_sample = models.IntegerField(null=True, blank=True)
+    # unit_sample = models.IntegerField(null=True, blank=True)
     comment = models.CharField(max_length=1000, null=True, blank=True)
 
     # Override the clean method to add a validation involved with two fields:

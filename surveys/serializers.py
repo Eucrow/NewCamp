@@ -11,7 +11,7 @@ class SurveySerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
         fields = ['id', 'acronym', 'description', 'start_date', 'end_date', 'width_x', 'width_y', 'origin_x',
-                  'origin_y', 'ship', 'hauls_duration', 'unit_sample', 'comment', 'stratification']
+                  'origin_y', 'ship', 'hauls_duration', 'comment', 'stratification']
 
 
 class SurveyAcronymsSerializer(serializers.ModelSerializer):
