@@ -7,6 +7,27 @@ const SpButtonBar = (props) => {
 
 	var ButtonBar = "";
 
+	if (props.add === true) {
+		ButtonBar = (
+			<div className="form__cell form__cell--right">
+				<div className="buttonsWrapper">
+					<button type="submit" className="buttonsWrapper__button">
+						Save Species
+					</button>
+					<button
+						type="button"
+						className="buttonsWrapper__button"
+						onClick={(e) => {
+							speciesContext.handleAdd(false);
+						}}
+					>
+						Cancel
+					</button>
+				</div>
+			</div>
+		);
+	}
+
 	if (props.edit === true) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">

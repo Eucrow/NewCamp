@@ -57,7 +57,7 @@ class Sp extends Component {
 									this.changeDetail(true);
 								}}
 							>
-								View Species
+								View Detail
 							</button>
 						</span>
 					</div>

@@ -4,6 +4,7 @@ import SpeciesContext from "../../contexts/SpeciesContext";
 
 import Sp from "./Sp";
 import NewSp from "./NewSp";
+import SpeciesButtonBar from "./SpeciesButtonBar";
 
 class Species extends Component {
 	/**
@@ -136,56 +137,32 @@ class Species extends Component {
 	renderContent() {
 		var content = "";
 
-		if (this.state.add === false) {
-			content = (
-				<SpeciesContext.Provider
-					value={{
-						handleChange: this.handleChange,
-						handleUpdateSp: this.handleUpdateSp,
-						deleteSp: this.deleteSp,
-					}}
-				>
-					<main>
-						<header>
-							<h1 className="title">Species</h1>
-						</header>
-
-						<div className="wrapper surveysWrapper">
-							{this.AddButton("Add species", true)}
-
-							{this.state.species.map((sp) => {
-								return <Sp key={sp.id} sp={sp} />;
-							})}
-						</div>
-					</main>
-				</SpeciesContext.Provider>
-			);
-		} else if (this.state.add === true) {
-			content = (
+		// if (this.state.add === false) {
+		content = (
+			<SpeciesContext.Provider
+				value={{
+					handleChange: this.handleChange,
+					handleUpdateSp: this.handleUpdateSp,
+					deleteSp: this.deleteSp,
+					handleAdd: this.handleAdd,
+				}}
+			>
 				<main>
 					<header>
 						<h1 className="title">Species</h1>
 					</header>
-					<div>
-						<NewSp
-							species={this.state.species}
-							handleAdd={this.handleAdd}
-							createSp={this.createSp}
-						/>
+
+					<div className="wrapper">
+						<SpeciesButtonBar add={this.state.add} />
+						<NewSp add={this.state.add} />
+
 						{this.state.species.map((sp) => {
-							return (
-								<Sp
-									key={sp.id}
-									sp={sp}
-									handleChange={this.handleChange}
-									handleUpdateSp={this.handleUpdateSp}
-								/>
-							);
+							return <Sp key={sp.id} sp={sp} />;
 						})}
 					</div>
 				</main>
-			);
-		}
+			</SpeciesContext.Provider>
+		);
 
 		return content;
 	}

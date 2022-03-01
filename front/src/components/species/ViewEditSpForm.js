@@ -11,7 +11,7 @@ import SpButtonBar from "./SpButtonBar";
  * @param {method} changeDetail
  * @param {method} changeEdit: make fields editable/non editable
  */
-// const ViewEditSpForm = ({ sp, edit, changeDetail, changeEdit }) => {
+
 const ViewEditSpForm = (props) => {
 	const speciesContext = useContext(SpeciesContext);
 	const is_disabled = props.edit === true ? false : true;
