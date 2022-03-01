@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 
+import SpeciesContext from "../../contexts/SpeciesContext";
+
 import Sp from "./Sp";
 import NewSp from "./NewSp";
-import EditSp from "./EditSp";
 
 class Species extends Component {
 	/**
@@ -25,6 +26,7 @@ class Species extends Component {
 		this.handleUpdateSp = this.handleUpdateSp.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
 		this.createSp = this.createSp.bind(this);
+		this.deleteSp = this.deleteSp.bind(this);
 	}
 
 	handleChange(e, sp_id) {
@@ -62,7 +64,7 @@ class Species extends Component {
 	handleUpdateSp(e, sp_id) {
 		e.preventDefault();
 
-		const api = this.apiSpecies + "/" + sp_id;
+		const api = this.apiSpecies + sp_id;
 
 		const updatedSp = this.state.species.filter((sp) => {
 			return sp.id === sp_id;
@@ -75,22 +77,36 @@ class Species extends Component {
 		}).catch((error) => console.log(error));
 	}
 
+	deleteSp(e, sp_id) {
+		e.preventDefault();
+
+		const api = this.apiSpecies + sp_id;
+
+		fetch(api, {
+			method: "DELETE",
+			headers: { "Content-Type": "application/json" },
+		})
+			.then(() => {
+				const NewSpecies = this.state.species.filter(
+					(sp) => sp.id !== sp_id
+				);
+
+				this.setState({
+					species: NewSpecies,
+				});
+			})
+			.catch((error) => alert(error));
+	}
+
 	/**
-	 * Save catch to database.
+	 * Save species to database.
 	 */
 	createSp(e, new_sp) {
 		e.preventDefault();
 
-		// TODO: detect if the species alraedy exists
-		// this.existsCatch(new_sp.haul_id, new_sp.sp_id, new_sp.category).then((response) => {
-		// 	if (response === true) {
-		// 		alert("Catch already exists");
-		// 	} else {
 		fetch(this.apiSpecies, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(new_sp),
 		})
 			.then((response) => response.json())
@@ -103,8 +119,6 @@ class Species extends Component {
 				}).then(() => console.log(this.state));
 			})
 			.catch((error) => console.log(error));
-		// 	}
-		// });
 	}
 
 	AddButton(content, status) {
@@ -124,26 +138,27 @@ class Species extends Component {
 
 		if (this.state.add === false) {
 			content = (
-				<main>
-					<header>
-						<h1 className="title">Species</h1>
-					</header>
+				<SpeciesContext.Provider
+					value={{
+						handleChange: this.handleChange,
+						handleUpdateSp: this.handleUpdateSp,
+						deleteSp: this.deleteSp,
+					}}
+				>
+					<main>
+						<header>
+							<h1 className="title">Species</h1>
+						</header>
 
-					<div className="wrapper surveysWrapper">
-						{this.AddButton("Add species", true)}
+						<div className="wrapper surveysWrapper">
+							{this.AddButton("Add species", true)}
 
-						{this.state.species.map((sp) => {
-							return (
-								<Sp
-									key={sp.id}
-									sp={sp}
-									handleChange={this.handleChange}
-									handleUpdateSp={this.handleUpdateSp}
-								/>
-							);
-						})}
-					</div>
-				</main>
+							{this.state.species.map((sp) => {
+								return <Sp key={sp.id} sp={sp} />;
+							})}
+						</div>
+					</main>
+				</SpeciesContext.Provider>
 			);
 		} else if (this.state.add === true) {
 			content = (

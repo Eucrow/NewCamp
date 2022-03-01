@@ -12,14 +12,9 @@ class Sp(models.Model):
     spanish_name = models.CharField(max_length=50, null=True, blank=True)
     a_param = models.DecimalField(max_digits=7, decimal_places=6, null=True, blank=True)
     b_param = models.DecimalField(max_digits=7, decimal_places=6, null=True, blank=True)
-    l_infinity = models.IntegerField(null=True, blank=True)
-    k = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
-    t_zero = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
     unit = models.IntegerField(null=True, blank=True)
     increment = models.IntegerField(null=True, blank=True)
-    trophic_group = models.IntegerField(null=True, blank=True)
     APHIA = models.IntegerField(null=True, blank=True)
-    comment = models.CharField(max_length=1000, null=True, blank=True)
 
     class Meta:
         constraints = [
@@ -28,4 +23,3 @@ class Sp(models.Model):
 
     def __unicode__(self):
         return self.sp_name
-
