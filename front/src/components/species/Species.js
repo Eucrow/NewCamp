@@ -19,7 +19,6 @@ class Species extends Component {
 		};
 
 		this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species/";
-		// this.apiCreateSp = "http://127.0.0.1:8000/api/1.0/species/new/";
 
 		this.renderContent = this.renderContent.bind(this);
 		this.handleChange = this.handleChange.bind(this);
@@ -28,6 +27,27 @@ class Species extends Component {
 		this.handleAdd = this.handleAdd.bind(this);
 		this.createSp = this.createSp.bind(this);
 		this.deleteSp = this.deleteSp.bind(this);
+
+		this.getEmptySpCode = this.getEmptySpCode.bind(this);
+	}
+
+	/**
+	 * Get the first code unused of a group of the list of species.
+	 * @param {numeric} group Group os species
+	 * @returns {numeric} Code unused in the list of species.
+	 */
+	getEmptySpCode(group) {
+		const sps = this.state.species.filter((sp) => sp.group === group);
+
+		const codes = sps.map((sp) => sp.sp_code);
+
+		codes.sort();
+
+		const correlative = Array.from(codes, (v, i) => i + 1);
+
+		const emptyCode = correlative.find((x) => !codes.includes(x));
+
+		return emptyCode;
 	}
 
 	handleChange(e, sp_id) {
@@ -122,29 +142,18 @@ class Species extends Component {
 			.catch((error) => console.log(error));
 	}
 
-	AddButton(content, status) {
-		return (
-			<button
-				onClick={() => {
-					this.handleAdd(status);
-				}}
-			>
-				{content}
-			</button>
-		);
-	}
-
 	renderContent() {
 		var content = "";
 
-		// if (this.state.add === false) {
 		content = (
 			<SpeciesContext.Provider
 				value={{
 					handleChange: this.handleChange,
 					handleUpdateSp: this.handleUpdateSp,
+					createSp: this.createSp,
 					deleteSp: this.deleteSp,
 					handleAdd: this.handleAdd,
+					getEmptySpCode: this.getEmptySpCode,
 				}}
 			>
 				<main>
@@ -152,7 +161,14 @@ class Species extends Component {
 						<h1 className="title">Species</h1>
 					</header>
 
-					<div className="wrapper">
+					<div className="wrapper surveysWrapper">
+						<button
+							onClick={(e) => {
+								this.getEmptySpCode(2);
+							}}
+						>
+							test
+						</button>
 						<SpeciesButtonBar add={this.state.add} />
 						<NewSp add={this.state.add} />
 

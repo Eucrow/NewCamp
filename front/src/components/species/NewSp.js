@@ -16,14 +16,27 @@ class NewSp extends Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-	handleChange(event) {
-		const name = event.target.name;
-		const value = event.target.value;
+	handleChange(e) {
+		const name = e.target.name;
+		const value = e.target.value;
 
 		this.setState({
 			sp: {
 				...this.state.sp,
 				[name]: value,
+			},
+		});
+	}
+
+	handleChangeGroupSpCode(e) {
+		let freeSpCode = this.context.getEmptySpCode(Number(e.target.value));
+
+		this.handleChange(e);
+		this.setState({
+			sp: {
+				...this.state.sp,
+				[e.target.name]: e.target.value,
+				sp_code: freeSpCode,
 			},
 		});
 	}
@@ -35,13 +48,43 @@ class NewSp extends Component {
 				<form
 					className="wrapper"
 					onSubmit={(e) => {
-						this.props.createSp(e, this.state.sp);
-						this.props.handleAdd(false);
+						this.context.createSp(e, this.state.sp);
+						this.context.handleAdd(false);
 					}}
 				>
 					<div className="form__row">
-						<span className="field">Group:</span>
-						<span className="field">Code:</span>
+						<span className="field">
+							<label htmlFor="group">Group:</label>
+							<select
+								name="group"
+								id="group"
+								required
+								autoFocus
+								onChange={(e) => {
+									this.handleChangeGroupSpCode(e);
+								}}
+							>
+								<option value="" selected></option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+							</select>
+						</span>
+						<span className="field">
+							<label htmlFor="sp_code">Species code:</label>
+							<input
+								type="text"
+								id="sp_code"
+								name="sp_code"
+								disabled
+								size={3}
+								value={this.state.sp.sp_code || null}
+							/>
+							(species code will be generated automatically)
+						</span>
 					</div>
 					<div className="form__row">
 						<span className="field">
@@ -50,12 +93,7 @@ class NewSp extends Component {
 								type="text"
 								id="sp_name"
 								name="sp_name"
-								onChange={(e) =>
-									this.context.handleChange(
-										e,
-										this.props.sp.id
-									)
-								}
+								onChange={(e) => this.handleChange(e)}
 							/>
 						</span>
 
@@ -65,12 +103,7 @@ class NewSp extends Component {
 								type="text"
 								id="spanish_name"
 								name="spanish_name"
-								onChange={(e) =>
-									this.context.handleChange(
-										e,
-										this.props.sp.id
-									)
-								}
+								onChange={(e) => this.handleChange(e)}
 							/>
 						</span>
 						<span className="field">
@@ -79,12 +112,7 @@ class NewSp extends Component {
 								type="text"
 								id="APHIA"
 								name="APHIA"
-								onChange={(e) =>
-									this.context.handleChange(
-										e,
-										this.props.sp.id
-									)
-								}
+								onChange={(e) => this.handleChange(e)}
 							/>
 						</span>
 					</div>
@@ -97,12 +125,7 @@ class NewSp extends Component {
 								type="text"
 								id="a_param"
 								name="a_param"
-								onChange={(e) =>
-									this.context.handleChange(
-										e,
-										this.props.sp.id
-									)
-								}
+								onChange={(e) => this.handleChange(e)}
 							/>
 						</span>
 						<span className="field">
@@ -111,12 +134,7 @@ class NewSp extends Component {
 								type="text"
 								id="b_param"
 								name="b_param"
-								onChange={(e) =>
-									this.context.handleChange(
-										e,
-										this.props.sp.id
-									)
-								}
+								onChange={(e) => this.handleChange(e)}
 							/>
 						</span>
 					</fieldset>
@@ -128,12 +146,7 @@ class NewSp extends Component {
 								type="text"
 								id="unit"
 								name="unit"
-								onChange={(e) =>
-									this.context.handleChange(
-										e,
-										this.props.sp.id
-									)
-								}
+								onChange={(e) => this.handleChange(e)}
 							/>
 						</span>
 
@@ -143,12 +156,7 @@ class NewSp extends Component {
 								type="text"
 								id="increment"
 								name="increment"
-								onChange={(e) =>
-									this.context.handleChange(
-										e,
-										this.props.sp.id
-									)
-								}
+								onChange={(e) => this.handleChange(e)}
 							/>
 						</span>
 					</fieldset>
