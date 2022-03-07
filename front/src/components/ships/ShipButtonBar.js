@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import ShipsContext from "../../contexts/SuverysContext";
+import ShipsContext from "../../contexts/ShipsContext";
 
 const ShipButtonBar = ({ props, edit }) => {
 	const shipsContext = useContext(ShipsContext);
