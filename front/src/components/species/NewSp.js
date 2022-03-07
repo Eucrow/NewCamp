@@ -95,6 +95,7 @@ class NewSp extends Component {
 								name="sp_name"
 								size={50}
 								pattern="^[a-zA-Z\s]{1,50}$"
+								required
 								onChange={(e) => this.handleChange(e)}
 							/>
 						</span>
@@ -148,7 +149,7 @@ class NewSp extends Component {
 						<span className="field">
 							<label htmlFor="b_param">b param:</label>
 							<input
-								type="text"
+								type="number"
 								id="b_param"
 								name="b_param"
 								className="input__noSpinner"
@@ -171,6 +172,7 @@ class NewSp extends Component {
 								required
 								onChange={(e) => this.handleChange(e)}
 							>
+								<option selected></option>
 								<option value="1">mm</option>
 								<option value="2">cm</option>
 							</select>
