@@ -29,6 +29,7 @@ class Species extends Component {
 		this.deleteSp = this.deleteSp.bind(this);
 
 		this.getEmptySpCode = this.getEmptySpCode.bind(this);
+		this.preventNegativeE = this.preventNegativeE.bind(this);
 	}
 
 	/**
@@ -142,6 +143,17 @@ class Species extends Component {
 			.catch((error) => console.log(error));
 	}
 
+	// VALIDATIONS
+	/**
+	 * Prevent 'e' and '-' in numeric input
+	 * @param {e} onKeyDown event
+	 */
+	preventNegativeE(e) {
+		if (e.key === "e" || e.key === "-") {
+			e.preventDefault();
+		}
+	}
+
 	renderContent() {
 		var content = "";
 
@@ -154,6 +166,7 @@ class Species extends Component {
 					deleteSp: this.deleteSp,
 					handleAdd: this.handleAdd,
 					getEmptySpCode: this.getEmptySpCode,
+					preventNegativeE: this.preventNegativeE,
 				}}
 			>
 				<main>
@@ -162,13 +175,6 @@ class Species extends Component {
 					</header>
 
 					<div className="wrapper surveysWrapper">
-						<button
-							onClick={(e) => {
-								this.getEmptySpCode(2);
-							}}
-						>
-							test
-						</button>
 						<SpeciesButtonBar add={this.state.add} />
 						<NewSp add={this.state.add} />
 

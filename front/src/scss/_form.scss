@@ -47,7 +47,7 @@ input:invalid {
 	color: var(--error_text);
 }
 
-//structure
+//STRUCTURE
 .form__row {
 	display: flex;
 	flex-direction: row;
@@ -95,4 +95,16 @@ input:invalid {
 	height: 100%;
 	resize: none;
 	border: 0px;
+}
+
+// Input without spinners
+/* Chrome, Safari, Edge, Opera */
+input.input__noSpinner::-webkit-inner-spin-button,
+input.input__noSpinner::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+/* Firefox */
+input.input__noSpinner[type="number"] {
+	-moz-appearance: textfield;
 }

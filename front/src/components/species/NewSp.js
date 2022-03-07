@@ -88,31 +88,42 @@ class NewSp extends Component {
 					</div>
 					<div className="form__row">
 						<span className="field">
-							<label htmlFor="haul">Name:</label>
+							<label htmlFor="sp_name">Name:</label>
 							<input
 								type="text"
 								id="sp_name"
 								name="sp_name"
+								size={50}
+								pattern="^[a-zA-Z\s]{1,50}$"
 								onChange={(e) => this.handleChange(e)}
 							/>
 						</span>
 
 						<span className="field">
-							<label htmlFor="haul">Spanish name:</label>
+							<label htmlFor="spanish_name">Spanish name:</label>
 							<input
 								type="text"
 								id="spanish_name"
 								name="spanish_name"
+								size={50}
+								pattern="^[a-zA-Z\s]{1,50}$"
 								onChange={(e) => this.handleChange(e)}
 							/>
 						</span>
 						<span className="field">
-							<label htmlFor="haul">AphiaID:</label>
+							<label htmlFor="APHIA">AphiaID:</label>
 							<input
-								type="text"
+								type="number"
 								id="APHIA"
 								name="APHIA"
+								className="input__noSpinner"
+								min={0}
+								max={999999}
+								size={6}
+								step={1}
+								pattern="^[0-9]{1,6}$"
 								onChange={(e) => this.handleChange(e)}
+								onKeyDown={this.context.preventNegativeE}
 							/>
 						</span>
 					</div>
@@ -120,43 +131,64 @@ class NewSp extends Component {
 						<legend>Params</legend>
 
 						<span className="field">
-							<label htmlFor="haul">a param:</label>
+							<label htmlFor="a_param">a param:</label>
 							<input
-								type="text"
+								type="number"
 								id="a_param"
 								name="a_param"
+								className="input__noSpinner"
+								min="0"
+								max="9.999999"
+								size={8}
+								step={0.000001}
 								onChange={(e) => this.handleChange(e)}
+								onKeyDown={this.context.preventNegativeE}
 							/>
 						</span>
 						<span className="field">
-							<label htmlFor="haul">b param:</label>
+							<label htmlFor="b_param">b param:</label>
 							<input
 								type="text"
 								id="b_param"
 								name="b_param"
+								className="input__noSpinner"
+								min="0"
+								max="9.999999"
+								size={8}
+								step={0.000001}
 								onChange={(e) => this.handleChange(e)}
+								onKeyDown={this.context.preventNegativeE}
 							/>
 						</span>
 					</fieldset>
 					<fieldset className="wrapper">
 						<legend>Measurement</legend>
 						<span className="field">
-							<label htmlFor="haul">Measure unit:</label>
-							<input
-								type="text"
+							<label htmlFor="unit">Measure unit:</label>
+							<select
 								id="unit"
 								name="unit"
+								required
 								onChange={(e) => this.handleChange(e)}
-							/>
+							>
+								<option value="1">mm</option>
+								<option value="2">cm</option>
+							</select>
 						</span>
 
 						<span className="field">
-							<label htmlFor="haul">Increment:</label>
+							<label htmlFor="increment">Increment:</label>
 							<input
-								type="text"
+								type="numeric"
 								id="increment"
 								name="increment"
+								className="input__noSpinner"
+								min="0"
+								max="9"
+								size={1}
+								step={1}
 								onChange={(e) => this.handleChange(e)}
+								onKeyDown={this.context.preventNegativeE}
 							/>
 						</span>
 					</fieldset>
