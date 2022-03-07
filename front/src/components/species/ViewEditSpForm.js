@@ -29,11 +29,14 @@ const ViewEditSpForm = (props) => {
 			</div>
 			<div className="form__row">
 				<span className="field">
-					<label htmlFor="haul">Name:</label>
+					<label htmlFor="sp_name">Name:</label>
 					<input
 						type="text"
 						id="sp_name"
 						name="sp_name"
+						size={50}
+						pattern="^[a-zA-Z\s]{1,50}$"
+						required
 						disabled={is_disabled}
 						value={props.sp.sp_name}
 						onChange={(e) =>
@@ -43,11 +46,13 @@ const ViewEditSpForm = (props) => {
 				</span>
 
 				<span className="field">
-					<label htmlFor="haul">Spanish name:</label>
+					<label htmlFor="spanish_name">Spanish name:</label>
 					<input
 						type="text"
 						id="spanish_name"
 						name="spanish_name"
+						size={50}
+						pattern="^[a-zA-Z\s]{1,50}$"
 						disabled={is_disabled}
 						value={props.sp.spanish_name}
 						onChange={(e) =>
@@ -56,16 +61,22 @@ const ViewEditSpForm = (props) => {
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="haul">AphiaID:</label>
+					<label htmlFor="APHIA">AphiaID:</label>
 					<input
-						type="text"
+						type="number"
 						id="APHIA"
 						name="APHIA"
+						className="input__noSpinner"
+						min={0}
+						max={999999}
+						size={6}
+						step={1}
 						disabled={is_disabled}
 						value={props.sp.APHIA}
 						onChange={(e) =>
 							speciesContext.handleChange(e, props.sp.id)
 						}
+						onKeyDown={this.context.preventNegativeE}
 					/>
 				</span>
 			</div>
@@ -73,59 +84,81 @@ const ViewEditSpForm = (props) => {
 				<legend>Params</legend>
 
 				<span className="field">
-					<label htmlFor="haul">a param:</label>
+					<label htmlFor="a_param">a param:</label>
 					<input
-						type="text"
+						type="number"
 						id="a_param"
 						name="a_param"
+						className="input__noSpinner"
+						min="0"
+						max="9.999999"
+						size={8}
+						step={0.000001}
 						disabled={is_disabled}
 						value={props.sp.a_param}
 						onChange={(e) =>
 							speciesContext.handleChange(e, props.sp.id)
 						}
+						onKeyDown={this.context.preventNegativeE}
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="haul">b param:</label>
+					<label htmlFor="b_param">b param:</label>
 					<input
-						type="text"
+						type="number"
 						id="b_param"
 						name="b_param"
+						className="input__noSpinner"
+						min="0"
+						max="9.999999"
+						size={8}
+						step={0.000001}
 						disabled={is_disabled}
 						value={props.sp.b_param}
 						onChange={(e) =>
 							speciesContext.handleChange(e, props.sp.id)
 						}
+						onKeyDown={this.context.preventNegativeE}
 					/>
 				</span>
 			</fieldset>
 			<fieldset className="wrapper">
 				<legend>Measurement</legend>
 				<span className="field">
-					<label htmlFor="haul">Measure unit:</label>
-					<input
-						type="text"
+					<label htmlFor="unit">Measure unit:</label>
+					<select
 						id="unit"
 						name="unit"
+						required
 						disabled={is_disabled}
 						value={props.sp.unit}
 						onChange={(e) =>
 							speciesContext.handleChange(e, props.sp.id)
 						}
-					/>
+					>
+						<option selected></option>
+						<option value="1">mm</option>
+						<option value="2">cm</option>
+					</select>
 				</span>
 
 				<span className="field">
-					<label htmlFor="haul">Increment:</label>
+					<label htmlFor="increment">Increment:</label>
 					<input
-						type="text"
+						type="numeric"
 						id="increment"
 						name="increment"
+						className="input__noSpinner"
+						min="0"
+						max="9"
+						size={1}
+						step={1}
 						disabled={is_disabled}
 						value={props.sp.increment}
 						onChange={(e) =>
 							speciesContext.handleChange(e, props.sp.id)
 						}
+						onKeyDown={this.context.preventNegativeE}
 					/>
 				</span>
 			</fieldset>
