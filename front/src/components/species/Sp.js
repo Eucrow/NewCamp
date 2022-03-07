@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import EditSp from "./EditSp";
 
-import ViewSp from "./ViewSp";
+import ViewEditSpForm from "./ViewEditSpForm";
 
 class Sp extends Component {
 	/**
 	 * Sp component.
 	 * @param {object} props.sp
 	 * @param {method} props.handleChange
+	 * @param {method} props.handleUpdateSp
 	 */
 	constructor(props) {
 		super(props);
@@ -37,43 +37,50 @@ class Sp extends Component {
 	}
 
 	renderContent() {
-		const sp = this.props.sp;
-
 		if (this.state.detail === false) {
 			return (
-				<div key={sp.id} className="wrapper">
-					Group: {sp.group} Code: {sp.sp_code} Scientific Name:{" "}
-					{sp.sp_name}
-					<button
-						onClick={() => {
-							this.changeDetail(true);
-						}}
-					>
-						View
-					</button>
+				<div key={this.props.sp.id} className="wrapper">
+					<div className="form__row">
+						<span className="field">
+							Group: {this.props.sp.group}
+						</span>
+						<span className="field">
+							Code: {this.props.sp.sp_code}
+						</span>
+						<span className="field">
+							Scientific Name: {this.props.sp.sp_name}
+						</span>
+
+						<span className="form__cell form__cell--right">
+							<button
+								onClick={() => {
+									this.changeDetail(true);
+								}}
+							>
+								View Detail
+							</button>
+						</span>
+					</div>
 				</div>
 			);
 		} else if (this.state.detail === true) {
 			if (this.state.edit === true) {
 				return (
-					<EditSp
-						sp={sp}
-						handleChange={this.props.handleChange}
-						handleUpdateSp={this.props.handleUpdateSp}
+					<ViewEditSpForm
+						sp={this.props.sp}
+						edit={true}
 						changeEdit={this.changeEdit}
 					/>
 				);
 			} else {
 				return (
 					<div>
-						<ViewSp sp={sp} changeDetail={this.changeDetail} />
-						<button
-							onClick={() => {
-								this.changeEdit(true);
-							}}
-						>
-							Edit
-						</button>
+						<ViewEditSpForm
+							sp={this.props.sp}
+							edit={false}
+							changeDetail={this.changeDetail}
+							changeEdit={this.changeEdit}
+						/>
 					</div>
 				);
 			}

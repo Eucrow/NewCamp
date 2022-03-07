@@ -335,12 +335,8 @@ class SpeciesImport:
             "spanish_name": "NOMBREE",
             "a_param": "A",
             "b_param": "B",
-            "l_infinity": "LINF",
-            "k": "K",
-            "t_zero": "T0",
             "unit": "MED",
             "increment": "INCREM",
-            "trophic_group": "GT",
             "APHIA": "APHIA",
         }
 
@@ -437,7 +433,8 @@ class SurveysImport:
             tmp.origin_x = convert_comma_to_dot(row['OCUX'])
             tmp.origin_y = convert_comma_to_dot(row['OCUY'])
             tmp.ship = row['BARCO']
-            tmp.area_sampled = row['AREBAR']
+            tmp.hauls_duration = row['DURLAN']
+            # tmp.area_sampled = row['AREBAR']
             # tmp.unit_sample = row['UNISUP']
             if tmp.start_date != None: tmp.start_date = datetime.strptime(fix_year_date(row['COMI']), '%d/%m/%y').date()
             if tmp.end_date != None: tmp.end_date = datetime.strptime(fix_year_date(row['FINA']), '%d/%m/%y').date()
