@@ -76,7 +76,7 @@ const ViewEditSpForm = (props) => {
 						onChange={(e) =>
 							speciesContext.handleChange(e, props.sp.id)
 						}
-						onKeyDown={this.context.preventNegativeE}
+						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
 			</div>
@@ -99,7 +99,7 @@ const ViewEditSpForm = (props) => {
 						onChange={(e) =>
 							speciesContext.handleChange(e, props.sp.id)
 						}
-						onKeyDown={this.context.preventNegativeE}
+						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
 				<span className="field">
@@ -118,7 +118,7 @@ const ViewEditSpForm = (props) => {
 						onChange={(e) =>
 							speciesContext.handleChange(e, props.sp.id)
 						}
-						onKeyDown={this.context.preventNegativeE}
+						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
 			</fieldset>
@@ -158,7 +158,7 @@ const ViewEditSpForm = (props) => {
 						onChange={(e) =>
 							speciesContext.handleChange(e, props.sp.id)
 						}
-						onKeyDown={this.context.preventNegativeE}
+						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
 			</fieldset>
