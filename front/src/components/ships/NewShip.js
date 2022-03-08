@@ -2,8 +2,7 @@ import React, { Component } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
-import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonCancel from "../ui/UiButtonCancel";
+import ShipButtonBar from "./ShipButtonBar";
 
 /**
  * Ship component
@@ -144,10 +143,16 @@ class NewShip extends Component {
 					</div>
 					<div className="form__row">
 						<div className="survey__cell survey__cell--right buttonsWrapper">
-							<UiButtonSave buttonText={"Save Ship"} />
+							<ShipButtonBar
+								edit={this.props.edit}
+								add={this.props.add}
+								handleEdit={this.props.handleEdit}
+							/>
+
+							{/* <UiButtonSave buttonText={"Save Ship"} />
 							<UiButtonCancel
 								handleMethod={this.context.handleAdd}
-							/>
+							/> */}
 						</div>
 					</div>
 				</form>

@@ -5,12 +5,12 @@ import ShipsContext from "../../contexts/ShipsContext";
 import ShipButtonBar from "./ShipButtonBar";
 
 /**
- * ViewEditSurveyForm component
- * @param {object} props survey object.
+ * ViewEditShipForm component
+ * @param {object} props ship object.
  * @param {boolean} edit true if the element is available to edit.
  * @param {method} handleEdit method to change the edit variable in state.
  */
-const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
+const ViewEditShipForm = ({ props, edit, handleEdit }) => {
 	const shipsContext = useContext(ShipsContext);
 	const is_disabled = edit === true ? false : true;
 
@@ -145,7 +145,7 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 			</div>
 			<div className="form__row">
 				<ShipButtonBar
-					props={props}
+					ship_id={props.ship.id}
 					edit={edit}
 					handleEdit={handleEdit}
 				/>
@@ -156,4 +156,4 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 	return content;
 };
 
-export default ViewEditSurveyForm;
+export default ViewEditShipForm;
