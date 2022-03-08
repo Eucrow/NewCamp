@@ -6,8 +6,9 @@ import ShipButtonBar from "./ShipButtonBar";
 
 /**
  * ViewEditSurveyForm component
- * @param {object} props.survey: survey object
- * @param {method} handleEdit: make fields editable/non editable
+ * @param {object} props survey object.
+ * @param {boolean} edit true if the element is available to edit.
+ * @param {method} handleEdit method to change the edit variable in state.
  */
 const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 	const shipsContext = useContext(ShipsContext);

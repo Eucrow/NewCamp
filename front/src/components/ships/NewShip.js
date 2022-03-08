@@ -2,12 +2,11 @@ import React, { Component } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
-import UiButtonSaveNewShip from "./UiButtonSaveNewShip";
+import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
 /**
  * Ship component
- * @param {object} props.ship: ship object
  */
 class NewShip extends Component {
 	constructor(props) {
@@ -145,58 +144,13 @@ class NewShip extends Component {
 					</div>
 					<div className="form__row">
 						<div className="survey__cell survey__cell--right buttonsWrapper">
-							<UiButtonSaveNewShip />
+							<UiButtonSave buttonText={"Save Ship"} />
 							<UiButtonCancel
 								handleMethod={this.context.handleAdd}
 							/>
 						</div>
 					</div>
 				</form>
-				// <form
-				// 	onSubmit={(e) => {
-				// 		this.props.createShip(e, this.state.ship);
-				// 		this.props.handleAdd(false);
-				// 	}}
-				// >
-				// 	<div>
-				// 		<label htmlFor="name">Name:</label>
-				// 		<input
-				// 			type="text"
-				// 			id="name"
-				// 			name="name"
-				// 			onChange={(e) => this.handleChange(e)}
-				// 		/>
-				// 		<label htmlFor="datras_id">DATRAS code:</label>
-				// 		<input
-				// 			type="text"
-				// 			id="datras_id"
-				// 			name="datras_id"
-				// 			onChange={(e) => this.handleChange(e)}
-				// 		/>
-				// 		<label htmlFor="length">Length:</label>
-				// 		<input
-				// 			type="text"
-				// 			id="length"
-				// 			name="length"
-				// 			onChange={(e) => this.handleChange(e)}
-				// 		/>
-				// 		<label htmlFor="main_power">Main Power:</label>
-				// 		<input
-				// 			type="text"
-				// 			id="main_power"
-				// 			name="main_power"
-				// 			onChange={(e) => this.handleChange(e)}
-				// 		/>
-				// 		<label htmlFor="year_built">Year built:</label>
-				// 		<input
-				// 			type="text"
-				// 			id="year_built"
-				// 			name="year_built"
-				// 			onChange={(e) => this.handleChange(e)}
-				// 		/>
-				// 		<input type="submit" value="Save" />
-				// 	</div>
-				// </form>
 			);
 		}
 

@@ -1,10 +1,11 @@
 import React from "react";
 
+import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
 /**
- * Button bar of Survey.
+ * Button bar of survey component.
  * @param {object} props survey object.
  * @param {boolean} edit variable to indicate if the element is edited or not.
  * @param {method} handleEdit method to handle de 'edit' boolean variable.
@@ -18,9 +19,7 @@ const SurveyButtonBar = ({ props, edit, handleEdit, deleteSurvey }) => {
 	if (edit === true) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right buttonsWrapper">
-				<button type="submit" className="buttonsWrapper__button">
-					Save Survey
-				</button>
+				<UiButtonSave buttonText={"Save Survey"} />
 				<UiButtonCancel handleMethod={handleEdit} />
 			</div>
 		);

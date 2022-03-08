@@ -2,9 +2,16 @@ import React, { useContext } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
+import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
+/**
+ * Button bar of ship component.
+ * @param {object} props survey object.
+ * @param {boolean} edit variable to indicate if the element is edited or not.
+ * @param {method} handleEdit method to handle de 'edit' boolean variable.
+ */
 const ShipButtonBar = ({ props, edit, handleEdit }) => {
 	const shipsContext = useContext(ShipsContext);
 
@@ -14,9 +21,7 @@ const ShipButtonBar = ({ props, edit, handleEdit }) => {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<div className="buttonsWrapper">
-					<button type="submit" className="buttonsWrapper__button">
-						Save Ship
-					</button>
+					<UiButtonSave buttonText={"Save Ship"} />
 					<UiButtonCancel handleMethod={handleEdit} />
 				</div>
 			</div>

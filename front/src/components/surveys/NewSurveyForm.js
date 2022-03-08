@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 
 import SurveysContext from "../../contexts/SuverysContext";
 
-import UiButtonSaveNewSurvey from "./UiButtonSaveNewSurvey";
+import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
 /**
@@ -227,7 +227,7 @@ const NewSurveyForm = () => {
 				</div>
 				<div className="form__row">
 					<div className="survey__cell survey__cell--right buttonsWrapper">
-						<UiButtonSaveNewSurvey survey={survey} />
+						<UiButtonSave buttonText={"Save Survey"} />
 						<UiButtonCancel
 							handleMethod={surveysContext.handleAdd}
 						/>

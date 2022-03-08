@@ -4,6 +4,14 @@ import SpeciesContext from "../../contexts/SpeciesContext";
 
 import UiButtonCancel from "../ui/UiButtonCancel";
 import UiButtonDelete from "../ui/UiButtonDelete";
+import UiButtonSave from "../ui/UiButtonSave";
+
+/**
+ * Button bar of Sp component.
+ * @param {object} props survey object.
+ * @param {boolean} edit variable to indicate if the element is edited or not.
+ * @param {method} handleEdit method to handle de 'edit' boolean variable.
+ */
 
 const SpButtonBar = (props) => {
 	const speciesContext = useContext(SpeciesContext);
@@ -13,6 +21,7 @@ const SpButtonBar = (props) => {
 	if (props.add === true) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
+				<UiButtonSave buttonText={"Save Species"} />
 				<UiButtonCancel handleMethod={speciesContext.handleAdd} />
 			</div>
 		);
@@ -21,6 +30,7 @@ const SpButtonBar = (props) => {
 	if (props.edit === true) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
+				<UiButtonSave buttonText={"Save Species"} />
 				<UiButtonCancel handleMethod={props.changeEdit} />
 			</div>
 		);
