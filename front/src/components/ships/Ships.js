@@ -196,29 +196,6 @@ class Ships extends Component {
 				</main>
 			</ShipsContext.Provider>
 		);
-		// } else if (this.state.add === true) {
-		// 	content = (
-		// 		<div>
-		// 			<NewShip
-		// 				handleChange={this.handleChange}
-		// 				handleAdd={this.handleAdd}
-		// 				createShip={this.createShip}
-		// 			/>
-		// 			{this.state.ships.map((ship) => {
-		// 				return (
-		// 					<Ship
-		// 						key={ship.id}
-		// 						ref={this.shipElement}
-		// 						ship={ship}
-		// 						handleChange={this.handleChange}
-		// 						updateShip={this.updateShip}
-		// 						deleteShip={this.deleteShip}
-		// 					/>
-		// 				);
-		// 			})}
-		// 		</div>
-		// 	);
-		// }
 
 		return content;
 	}

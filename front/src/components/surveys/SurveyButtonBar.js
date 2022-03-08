@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 
 import SurveysContext from "../../contexts/SuverysContext";
 
+import UiButtonDeleteSurvey from "./UiButtonDeleteSurvey";
+
 const SurveyButtonBar = ({ props, edit }) => {
 	const surveysContext = useContext(SurveysContext);
 
@@ -40,17 +42,7 @@ const SurveyButtonBar = ({ props, edit }) => {
 				>
 					Edit Survey
 				</button>
-				<button
-					type="button"
-					className="buttonsWrapper__button"
-					onClick={(e) => {
-						if (window.confirm("Delete the survey?")) {
-							surveysContext.deleteSurvey(e, props.survey.id);
-						}
-					}}
-				>
-					Delete Survey
-				</button>
+				<UiButtonDeleteSurvey survey_id={props.survey.id} />
 			</div>
 		);
 	}
