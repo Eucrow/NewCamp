@@ -199,7 +199,7 @@ class NewSp extends Component {
 							edit={this.props.edit}
 							add={this.props.add}
 							changeDetail={this.props.changeDetail}
-							changeEdit={this.props.changeEdit}
+							handleEdit={this.props.handleEdit}
 							changeAdd={this.props.changeAdd}
 						/>
 					</div>

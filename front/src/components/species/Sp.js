@@ -17,7 +17,7 @@ class Sp extends Component {
 		};
 
 		this.changeDetail = this.changeDetail.bind(this);
-		this.changeEdit = this.changeEdit.bind(this);
+		this.handleEdit = this.handleEdit.bind(this);
 	}
 
 	changeDetail(detail) {
@@ -28,7 +28,7 @@ class Sp extends Component {
 		});
 	}
 
-	changeEdit(edit) {
+	handleEdit(edit) {
 		this.setState(() => {
 			return {
 				edit: edit,
@@ -69,7 +69,7 @@ class Sp extends Component {
 					<ViewEditSpForm
 						sp={this.props.sp}
 						edit={true}
-						changeEdit={this.changeEdit}
+						handleEdit={this.handleEdit}
 					/>
 				);
 			} else {
@@ -79,7 +79,7 @@ class Sp extends Component {
 							sp={this.props.sp}
 							edit={false}
 							changeDetail={this.changeDetail}
-							changeEdit={this.changeEdit}
+							handleEdit={this.handleEdit}
 						/>
 					</div>
 				);

@@ -31,7 +31,7 @@ const SpButtonBar = (props) => {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<UiButtonSave buttonText={"Save Species"} />
-				<UiButtonCancel handleMethod={props.changeEdit} />
+				<UiButtonCancel handleMethod={props.handleEdit} />
 			</div>
 		);
 	}
@@ -43,7 +43,7 @@ const SpButtonBar = (props) => {
 					type="button"
 					className="buttonsWrapper__button"
 					onClick={(e) => {
-						props.changeEdit(true);
+						props.handleEdit(true);
 					}}
 				>
 					Edit Species

@@ -9,7 +9,7 @@ import SpButtonBar from "./SpButtonBar";
  * @param {object} sp: sp object
  * @param {boolean} edit:
  * @param {method} changeDetail
- * @param {method} changeEdit: make fields editable/non editable
+ * @param {method} handleEdit: make fields editable/non editable
  */
 
 const ViewEditSpForm = (props) => {
@@ -18,7 +18,7 @@ const ViewEditSpForm = (props) => {
 
 	const handleSubmit = (e) => {
 		speciesContext.handleUpdateSp(e, props.sp.id);
-		props.changeEdit(false);
+		props.handleEdit(false);
 	};
 
 	const content = (
@@ -166,7 +166,7 @@ const ViewEditSpForm = (props) => {
 				<SpButtonBar
 					edit={props.edit}
 					changeDetail={props.changeDetail}
-					changeEdit={props.changeEdit}
+					handleEdit={props.handleEdit}
 					sp_id={props.sp.id}
 				/>
 			</div>
