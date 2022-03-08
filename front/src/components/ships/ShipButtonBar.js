@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
+import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
 const ShipButtonBar = ({ props, edit, handleEdit }) => {
@@ -34,17 +35,12 @@ const ShipButtonBar = ({ props, edit, handleEdit }) => {
 				>
 					Edit Ship
 				</button>
-				<button
-					type="button"
-					className="buttonsWrapper__button"
-					onClick={(e) => {
-						if (window.confirm("Delete the ship?")) {
-							shipsContext.deleteShip(e, props.ship.id);
-						}
-					}}
-				>
-					Delete Ship
-				</button>
+				<UiButtonDelete
+					id={props.ship.id}
+					deleteMethod={shipsContext.deleteShip}
+					buttonText="Delete ship"
+					confirmMessage="Delete the ship?"
+				/>
 			</div>
 		);
 	}

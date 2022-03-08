@@ -1,6 +1,6 @@
 import React from "react";
 
-import UiButtonDeleteSurvey from "./UiButtonDeleteSurvey";
+import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
 /**
@@ -8,10 +8,11 @@ import UiButtonCancel from "../ui/UiButtonCancel";
  * @param {object} props survey object.
  * @param {boolean} edit variable to indicate if the element is edited or not.
  * @param {method} handleEdit method to handle de 'edit' boolean variable.
+ * @param {method} deleteSurvey method to delete survey.
  */
 
 // TODO: test if instead of receive props, receive only survey.id
-const SurveyButtonBar = ({ props, edit, handleEdit }) => {
+const SurveyButtonBar = ({ props, edit, handleEdit, deleteSurvey }) => {
 	var ButtonBar = "";
 
 	if (edit === true) {
@@ -37,7 +38,12 @@ const SurveyButtonBar = ({ props, edit, handleEdit }) => {
 				>
 					Edit Survey
 				</button>
-				<UiButtonDeleteSurvey survey_id={props.survey.id} />
+				<UiButtonDelete
+					id={props.survey.id}
+					deleteMethod={deleteSurvey}
+					buttonText="Delete Survey"
+					confirmMessage="Delete the survey?"
+				/>
 			</div>
 		);
 	}

@@ -247,6 +247,7 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 					props={props}
 					edit={edit}
 					handleEdit={handleEdit}
+					deleteSurvey={surveysContext.deleteSurvey}
 				/>
 			</div>
 		</form>

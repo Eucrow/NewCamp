@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import SpeciesContext from "../../contexts/SpeciesContext";
 
 import UiButtonCancel from "../ui/UiButtonCancel";
+import UiButtonDelete from "../ui/UiButtonDelete";
 
 const SpButtonBar = (props) => {
 	const speciesContext = useContext(SpeciesContext);
@@ -37,21 +38,12 @@ const SpButtonBar = (props) => {
 				>
 					Edit Species
 				</button>
-				<button
-					type="button"
-					className="buttonsWrapper__button"
-					onClick={(e) => {
-						if (
-							window.confirm(
-								"Delete the species? All the samples of this species on ALL the surveys will be removed!!"
-							)
-						) {
-							speciesContext.deleteSp(e, props.sp_id);
-						}
-					}}
-				>
-					Delete Species
-				</button>
+				<UiButtonDelete
+					id={props.sp_id}
+					deleteMethod={speciesContext.deleteSp}
+					buttonText="Delete Species"
+					confirmMessage="Delete this species? All the samples of this species on ALL the surveys will be removed!! Are you sure?"
+				/>
 				<button
 					type="button"
 					className="buttonsWrapper__button"
