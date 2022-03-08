@@ -187,7 +187,10 @@ class Ships extends Component {
 						<h1 className="title">Ships</h1>
 					</header>
 					<div className="wrapper surveysWrapper">
-						<ShipsButtonBar add={false} />
+						<ShipsButtonBar
+							add={false}
+							handleAdd={this.handleAdd}
+						/>
 						<NewShip add={this.state.add} />
 						{this.state.ships.map((ship) => {
 							return <Ship key={ship.id} ship={ship} />;

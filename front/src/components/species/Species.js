@@ -175,7 +175,10 @@ class Species extends Component {
 					</header>
 
 					<div className="wrapper surveysWrapper">
-						<SpeciesButtonBar add={this.state.add} />
+						<SpeciesButtonBar
+							add={this.state.add}
+							handleAdd={this.handleAdd}
+						/>
 						<NewSp add={this.state.add} />
 
 						{this.state.species.map((sp) => {

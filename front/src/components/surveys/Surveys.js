@@ -272,7 +272,10 @@ class Surveys extends Component {
 
 					<div className="wrapper surveysWrapper">
 						<NewSurvey add={this.state.add} />
-						<SurveysButtonBar add={this.state.add} />
+						<SurveysButtonBar
+							add={this.state.add}
+							handleAdd={this.handleAdd}
+						/>
 						{this.state.surveys.map((survey) => {
 							return <Survey key={survey.id} survey={survey} />;
 						})}
