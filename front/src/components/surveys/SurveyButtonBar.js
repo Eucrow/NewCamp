@@ -1,31 +1,26 @@
-import React, { useContext } from "react";
-
-import SurveysContext from "../../contexts/SuverysContext";
+import React from "react";
 
 import UiButtonDeleteSurvey from "./UiButtonDeleteSurvey";
+import UiButtonCancel from "../ui/UiButtonCancel";
 
-const SurveyButtonBar = ({ props, edit }) => {
-	const surveysContext = useContext(SurveysContext);
+/**
+ * Button bar of Survey.
+ * @param {object} props survey object.
+ * @param {boolean} edit variable to indicate if the element is edited or not.
+ * @param {method} handleEdit method to handle de 'edit' boolean variable.
+ */
 
+// TODO: test if instead of receive props, receive only survey.id
+const SurveyButtonBar = ({ props, edit, handleEdit }) => {
 	var ButtonBar = "";
 
 	if (edit === true) {
 		ButtonBar = (
-			<div className="form__cell form__cell--right">
-				<div className="buttonsWrapper">
-					<button type="submit" className="buttonsWrapper__button">
-						Save Survey
-					</button>
-					<button
-						type="button"
-						className="buttonsWrapper__button"
-						onClick={(e) => {
-							props.changeEdit(false);
-						}}
-					>
-						Cancel
-					</button>
-				</div>
+			<div className="form__cell form__cell--right buttonsWrapper">
+				<button type="submit" className="buttonsWrapper__button">
+					Save Survey
+				</button>
+				<UiButtonCancel handleMethod={handleEdit} />
 			</div>
 		);
 	}
@@ -37,7 +32,7 @@ const SurveyButtonBar = ({ props, edit }) => {
 					type="button"
 					className="buttonsWrapper__button"
 					onClick={(e) => {
-						props.changeEdit(true);
+						handleEdit(true);
 					}}
 				>
 					Edit Survey

@@ -6,16 +6,17 @@ import SurveyButtonBar from "./SurveyButtonBar";
 
 /**
  * ViewEditSurveyForm component
- * @param {object} props.survey: survey object
- * @param {method} changeEdit: make fields editable/non editable
+ * @param {object} props survey object.
+ * @param {boolean} edit variable to indicate if the element is edited or not.
+ * @param {method} handleEdit method to handle de 'edit' boolean variable.
  */
-const ViewEditSurveyForm = ({ props, edit }) => {
+const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 	const surveysContext = useContext(SurveysContext);
 	const is_disabled = edit === true ? false : true;
 
 	const handleSubmit = (e) => {
 		surveysContext.updateSurvey(e, props.survey.id);
-		props.changeEdit(false);
+		props.handleEdit(false);
 	};
 
 	const renderedSurvey = (
@@ -242,7 +243,11 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 				</span>
 			</div>
 			<div className="form__row">
-				<SurveyButtonBar props={props} edit={edit} />
+				<SurveyButtonBar
+					props={props}
+					edit={edit}
+					handleEdit={handleEdit}
+				/>
 			</div>
 		</form>
 	);

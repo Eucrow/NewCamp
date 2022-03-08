@@ -7,15 +7,15 @@ import ShipButtonBar from "./ShipButtonBar";
 /**
  * ViewEditSurveyForm component
  * @param {object} props.survey: survey object
- * @param {method} changeEdit: make fields editable/non editable
+ * @param {method} handleEdit: make fields editable/non editable
  */
-const ViewEditSurveyForm = ({ props, edit }) => {
+const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 	const shipsContext = useContext(ShipsContext);
 	const is_disabled = edit === true ? false : true;
 
 	const handleSubmit = (e) => {
 		shipsContext.updateShip(e, props.ship.id);
-		props.changeEdit(false);
+		props.handleEdit(false);
 	};
 
 	const content = (
@@ -143,7 +143,11 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 				</span>
 			</div>
 			<div className="form__row">
-				<ShipButtonBar props={props} edit={edit} />
+				<ShipButtonBar
+					props={props}
+					edit={edit}
+					handleEdit={handleEdit}
+				/>
 			</div>
 		</form>
 	);

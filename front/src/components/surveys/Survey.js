@@ -14,10 +14,10 @@ class Survey extends Component {
 			edit: false,
 		};
 
-		this.changeEdit = this.changeEdit.bind(this);
+		this.handleEdit = this.handleEdit.bind(this);
 	}
 
-	changeEdit(edit) {
+	handleEdit(edit) {
 		this.setState(() => {
 			return {
 				edit: edit,
@@ -32,14 +32,14 @@ class Survey extends Component {
 			content = (
 				<EditSurvey
 					survey={this.props.survey}
-					changeEdit={this.changeEdit}
+					handleEdit={this.handleEdit}
 				/>
 			);
 		} else {
 			content = (
 				<ViewSurvey
 					survey={this.props.survey}
-					changeEdit={this.changeEdit}
+					handleEdit={this.handleEdit}
 				/>
 			);
 		}

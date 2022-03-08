@@ -2,7 +2,9 @@ import React, { useContext } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
-const ShipButtonBar = ({ props, edit }) => {
+import UiButtonCancel from "../ui/UiButtonCancel";
+
+const ShipButtonBar = ({ props, edit, handleEdit }) => {
 	const shipsContext = useContext(ShipsContext);
 
 	var ButtonBar = "";
@@ -14,15 +16,7 @@ const ShipButtonBar = ({ props, edit }) => {
 					<button type="submit" className="buttonsWrapper__button">
 						Save Ship
 					</button>
-					<button
-						type="button"
-						className="buttonsWrapper__button"
-						onClick={(e) => {
-							props.changeEdit(false);
-						}}
-					>
-						Cancel
-					</button>
+					<UiButtonCancel handleMethod={handleEdit} />
 				</div>
 			</div>
 		);
@@ -35,7 +29,7 @@ const ShipButtonBar = ({ props, edit }) => {
 					type="button"
 					className="buttonsWrapper__button"
 					onClick={(e) => {
-						props.changeEdit(true);
+						props.handleEdit(true);
 					}}
 				>
 					Edit Ship

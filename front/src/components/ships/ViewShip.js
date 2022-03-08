@@ -9,7 +9,13 @@ import ViewEditShipFrom from "./ViewEditShipForm";
  */
 class ViewShip extends Component {
 	render() {
-		return <ViewEditShipFrom props={this.props} edit={false} />;
+		return (
+			<ViewEditShipFrom
+				props={this.props}
+				edit={false}
+				handleEdit={this.props.handleEdit}
+			/>
+		);
 	}
 }
 

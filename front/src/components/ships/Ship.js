@@ -14,10 +14,10 @@ class Ship extends Component {
 			edit: false,
 		};
 
-		this.changeEdit = this.changeEdit.bind(this);
+		this.handleEdit = this.handleEdit.bind(this);
 	}
 
-	changeEdit(edit) {
+	handleEdit(edit) {
 		this.setState(() => {
 			return {
 				edit: edit,
@@ -30,11 +30,11 @@ class Ship extends Component {
 
 		if (this.state.edit === true) {
 			content = (
-				<EditShip ship={this.props.ship} changeEdit={this.changeEdit} />
+				<EditShip ship={this.props.ship} handleEdit={this.handleEdit} />
 			);
 		} else {
 			content = (
-				<ViewShip ship={this.props.ship} changeEdit={this.changeEdit} />
+				<ViewShip ship={this.props.ship} handleEdit={this.handleEdit} />
 			);
 		}
 
