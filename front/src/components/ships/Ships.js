@@ -170,7 +170,6 @@ class Ships extends Component {
 	renderContent() {
 		let content = "";
 
-		// if (this.state.add === false) {
 		content = (
 			<ShipsContext.Provider
 				value={{
@@ -188,7 +187,7 @@ class Ships extends Component {
 					</header>
 					<div className="wrapper surveysWrapper">
 						<ShipsButtonBar
-							add={false}
+							add={this.state.add}
 							handleAdd={this.handleAdd}
 						/>
 						<NewShip add={this.state.add} />

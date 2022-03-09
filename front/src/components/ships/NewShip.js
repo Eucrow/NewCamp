@@ -148,11 +148,6 @@ class NewShip extends Component {
 								add={this.props.add}
 								handleEdit={this.props.handleEdit}
 							/>
-
-							{/* <UiButtonSave buttonText={"Save Ship"} />
-							<UiButtonCancel
-								handleMethod={this.context.handleAdd}
-							/> */}
 						</div>
 					</div>
 				</form>
