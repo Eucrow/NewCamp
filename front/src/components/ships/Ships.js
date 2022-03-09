@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import ShipsContext from "../../contexts/ShipsContext";
 
 import ShipsButtonBar from "./ShipsButtonBar";
-import NewShip from "./NewShip";
+import NewShipForm from "./NewShipForm";
 import Ship from "./Ship";
 
 /**
@@ -190,7 +190,9 @@ class Ships extends Component {
 							add={this.state.add}
 							handleAdd={this.handleAdd}
 						/>
-						<NewShip add={this.state.add} />
+
+						{this.state.add === true ? <NewShipForm /> : ""}
+
 						{this.state.ships.map((ship) => {
 							return <Ship key={ship.id} ship={ship} />;
 						})}
