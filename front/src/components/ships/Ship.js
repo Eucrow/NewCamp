@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 
-import ViewShip from "./ViewShip";
-import EditShip from "./EditShip";
+import ViewEditShipForm from "./ViewEditShipForm";
 
 /**
  * Ship component. Manage component logic.
- * @param {object} props - Ship object
+ * @param {object} props ship object
  */
 class Ship extends Component {
 	constructor(props) {
@@ -30,11 +29,19 @@ class Ship extends Component {
 
 		if (this.state.edit === true) {
 			content = (
-				<EditShip ship={this.props.ship} handleEdit={this.handleEdit} />
+				<ViewEditShipForm
+					props={this.props}
+					edit={true}
+					handleEdit={this.handleEdit}
+				/>
 			);
 		} else {
 			content = (
-				<ViewShip ship={this.props.ship} handleEdit={this.handleEdit} />
+				<ViewEditShipForm
+					props={this.props}
+					edit={false}
+					handleEdit={this.handleEdit}
+				/>
 			);
 		}
 
