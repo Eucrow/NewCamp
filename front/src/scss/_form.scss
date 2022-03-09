@@ -41,7 +41,8 @@ input:active {
 	border-color: var(--blue-gradient-1);
 }
 
-textarea:invalid select:invalid,
+textarea:invalid,
+select:invalid,
 input:invalid {
 	background-color: var(--error_background) !important;
 	color: var(--error_text);

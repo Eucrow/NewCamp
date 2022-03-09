@@ -187,6 +187,7 @@ class NewSpForm extends Component {
 							id="increment"
 							name="increment"
 							className="input__noSpinner"
+							required
 							min="0"
 							max="9"
 							size={1}
