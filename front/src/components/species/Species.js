@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import SpeciesContext from "../../contexts/SpeciesContext";
 
 import Sp from "./Sp";
-import NewSp from "./NewSp";
+import NewSpForm from "./NewSpForm";
 import SpeciesButtonBar from "./SpeciesButtonBar";
 
 class Species extends Component {
@@ -179,7 +179,8 @@ class Species extends Component {
 							add={this.state.add}
 							handleAdd={this.handleAdd}
 						/>
-						<NewSp add={this.state.add} />
+
+						{this.state.add === true ? <NewSpForm /> : ""}
 
 						{this.state.species.map((sp) => {
 							return <Sp key={sp.id} sp={sp} />;
