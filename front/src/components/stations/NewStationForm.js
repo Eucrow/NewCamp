@@ -2,9 +2,8 @@ import React, { Component } from "react";
 
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 
-class NewStation extends Component {
+class NewStationForm extends Component {
 	/**
-	 *
 	 * @param {method} props.handleAdd
 	 * @param {method} props.createStation
 	 */
@@ -69,4 +68,4 @@ class NewStation extends Component {
 	}
 }
 
-export default NewStation;
+export default NewStationForm;

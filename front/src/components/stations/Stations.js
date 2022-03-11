@@ -3,7 +3,7 @@ import React, { Component, Fragment } from "react";
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 
 import Station from "./Station";
-import NewStation from "./NewStation";
+import NewStationForm from "./NewStationForm";
 
 class ComponentsStations extends Component {
 	/**
@@ -310,7 +310,7 @@ class ComponentsStations extends Component {
 						<h1 className="title">Stations</h1>
 					</header>
 					<div className="wrapper stationsWrapper">
-						<NewStation
+						<NewStationForm
 							handleAdd={this.handleAdd}
 							createStation={this.createStation}
 						/>

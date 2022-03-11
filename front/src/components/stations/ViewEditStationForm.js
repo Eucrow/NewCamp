@@ -2,7 +2,7 @@ import React from "react";
 
 import StationButtonBar from "./StationButtonBar";
 
-const StationForm = ({ props, edit }) => {
+const ViewEditStationForm = ({ props, edit }) => {
 	const is_disabled = edit === true ? false : true;
 
 	const renderedStation = (
@@ -58,4 +58,4 @@ const StationForm = ({ props, edit }) => {
 	return renderedStation;
 };
 
-export default StationForm;
+export default ViewEditStationForm;
