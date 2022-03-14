@@ -1,18 +1,3 @@
-// a div thia a class field to maintain together a label with an input
-.field {
-	white-space: nowrap;
-	padding-right: 10px;
-	padding-bottom: 10px;
-
-	&:last-child {
-		margin-right: auto;
-	}
-}
-
-textarea.comment {
-	width: 100%;
-}
-
 textarea,
 select,
 input {
@@ -33,6 +18,7 @@ input:disabled {
 	font-size: 1rem;
 	font-family: var(--normal-font);
 	color: var(--text-color);
+	min-height: 1.8rem;
 }
 
 textarea:enabled,
@@ -43,6 +29,7 @@ input:enabled {
 	border: 1px solid var(--background-global-color);
 	padding: 2px 5px;
 	background-color: var(--background-global-color);
+	min-height: 1.8rem;
 }
 
 textarea:focus,
@@ -54,8 +41,71 @@ input:active {
 	border-color: var(--blue-gradient-1);
 }
 
-textarea:invalid select:invalid,
+textarea:invalid,
+select:invalid,
 input:invalid {
 	background-color: var(--error_background) !important;
 	color: var(--error_text);
+}
+
+//STRUCTURE
+.form__row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: baseline;
+	min-height: 32px;
+}
+
+.form__cell {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: baseline;
+	padding-right: 10px;
+}
+
+// cell aligned to the right
+.form__cell--right {
+	margin-left: auto;
+}
+
+.form__cell:last-child {
+	padding-right: 0px;
+}
+
+// a div thia a class field to maintain together a label with an input
+.field {
+	white-space: nowrap;
+	padding-right: 10px;
+	padding-bottom: 10px;
+
+	&:last-child {
+		margin-right: auto;
+	}
+}
+
+//Comment field:
+.field__comment {
+	width: 100%;
+}
+
+.field__comment textarea {
+	display: block;
+	width: 100%;
+	height: 100%;
+	resize: none;
+	border: 0px;
+}
+
+// Input without spinners
+/* Chrome, Safari, Edge, Opera */
+input.input__noSpinner::-webkit-inner-spin-button,
+input.input__noSpinner::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+/* Firefox */
+input.input__noSpinner[type="number"] {
+	-moz-appearance: textfield;
 }

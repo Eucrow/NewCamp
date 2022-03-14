@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 
-import ViewSurvey from "./ViewSurvey";
-import EditSurvey from "./EditSurvey";
+import ViewEditSurveyForm from "./ViewEditSurveyForm";
 
 /**
  * Survey component. Manage component logic.
- * @param {object} props - Survey object
+ * @param {object} props survey object
  */
 class Survey extends Component {
 	constructor(props) {
@@ -14,10 +13,10 @@ class Survey extends Component {
 			edit: false,
 		};
 
-		this.changeEdit = this.changeEdit.bind(this);
+		this.handleEdit = this.handleEdit.bind(this);
 	}
 
-	changeEdit(edit) {
+	handleEdit(edit) {
 		this.setState(() => {
 			return {
 				edit: edit,
@@ -30,16 +29,18 @@ class Survey extends Component {
 
 		if (this.state.edit === true) {
 			content = (
-				<EditSurvey
-					survey={this.props.survey}
-					changeEdit={this.changeEdit}
+				<ViewEditSurveyForm
+					props={this.props}
+					edit={true}
+					handleEdit={this.handleEdit}
 				/>
 			);
 		} else {
 			content = (
-				<ViewSurvey
-					survey={this.props.survey}
-					changeEdit={this.changeEdit}
+				<ViewEditSurveyForm
+					props={this.props}
+					edit={false}
+					handleEdit={this.handleEdit}
 				/>
 			);
 		}

@@ -1,56 +1,48 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import SurveysContext from "../../contexts/SuverysContext";
+import UiButtonSave from "../ui/UiButtonSave";
+import UiButtonDelete from "../ui/UiButtonDelete";
+import UiButtonCancel from "../ui/UiButtonCancel";
 
-const SurveyButtonBar = ({ props, edit }) => {
-	const surveysContext = useContext(SurveysContext);
+/**
+ * Button bar of survey component.
+ * @param {object} props survey object.
+ * @param {boolean} edit variable to indicate if the element is edited or not.
+ * @param {method} handleEdit method to handle de 'edit' boolean variable.
+ * @param {method} deleteSurvey method to delete survey.
+ */
 
+// TODO: test if instead of receive props, receive only survey.id
+const SurveyButtonBar = ({ props, edit, handleEdit, deleteSurvey }) => {
 	var ButtonBar = "";
 
 	if (edit === true) {
 		ButtonBar = (
-			<div className="survey__cell survey__cell--right">
-				<div className="buttonsWrapper">
-					<button type="submit" className="buttonsWrapper__button">
-						Save Survey
-					</button>
-					<button
-						type="button"
-						className="buttonsWrapper__button"
-						onClick={(e) => {
-							props.changeEdit(false);
-						}}
-					>
-						Cancel
-					</button>
-				</div>
+			<div className="form__cell form__cell--right buttonsWrapper">
+				<UiButtonSave buttonText={"Save Survey"} />
+				<UiButtonCancel handleMethod={handleEdit} />
 			</div>
 		);
 	}
 
 	if (edit === false) {
 		ButtonBar = (
-			<div className="survey__cell survey__cell--right buttonsWrapper">
+			<div className="form__cell form__cell--right buttonsWrapper">
 				<button
 					type="button"
 					className="buttonsWrapper__button"
 					onClick={(e) => {
-						props.changeEdit(true);
+						handleEdit(true);
 					}}
 				>
 					Edit Survey
 				</button>
-				<button
-					type="button"
-					className="buttonsWrapper__button"
-					onClick={(e) => {
-						if (window.confirm("Delete the survey?")) {
-							surveysContext.deleteSurvey(e, props.survey.id);
-						}
-					}}
-				>
-					Delete Survey
-				</button>
+				<UiButtonDelete
+					id={props.survey.id}
+					deleteMethod={deleteSurvey}
+					buttonText="Delete Survey"
+					confirmMessage="Delete the survey?"
+				/>
 			</div>
 		);
 	}

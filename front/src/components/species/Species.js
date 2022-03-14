@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 
-import ViewSpeciesList from "./ViewSpeciesList";
-import NewSp from "./NewSp";
+import SpeciesContext from "../../contexts/SpeciesContext";
+
+import Sp from "./Sp";
+import NewSpForm from "./NewSpForm";
+import SpeciesButtonBar from "./SpeciesButtonBar";
 
 class Species extends Component {
 	/**
@@ -16,7 +19,6 @@ class Species extends Component {
 		};
 
 		this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species/";
-		// this.apiCreateSp = "http://127.0.0.1:8000/api/1.0/species/new/";
 
 		this.renderContent = this.renderContent.bind(this);
 		this.handleChange = this.handleChange.bind(this);
@@ -24,6 +26,29 @@ class Species extends Component {
 		this.handleUpdateSp = this.handleUpdateSp.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
 		this.createSp = this.createSp.bind(this);
+		this.deleteSp = this.deleteSp.bind(this);
+
+		this.getEmptySpCode = this.getEmptySpCode.bind(this);
+		this.preventNegativeE = this.preventNegativeE.bind(this);
+	}
+
+	/**
+	 * Get the first code unused of a group of the list of species.
+	 * @param {numeric} group Group os species
+	 * @returns {numeric} Code unused in the list of species.
+	 */
+	getEmptySpCode(group) {
+		const sps = this.state.species.filter((sp) => sp.group === group);
+
+		const codes = sps.map((sp) => sp.sp_code);
+
+		codes.sort();
+
+		const correlative = Array.from(codes, (v, i) => i + 1);
+
+		const emptyCode = correlative.find((x) => !codes.includes(x));
+
+		return emptyCode;
 	}
 
 	handleChange(e, sp_id) {
@@ -55,15 +80,13 @@ class Species extends Component {
 			};
 		});
 	}
-
+	/**
+	 * Update species database
+	 */
 	handleUpdateSp(e, sp_id) {
-		/**
-		 * Update species database
-		 */
-
 		e.preventDefault();
 
-		const api = this.apiSpecies + "/" + sp_id;
+		const api = this.apiSpecies + sp_id;
 
 		const updatedSp = this.state.species.filter((sp) => {
 			return sp.id === sp_id;
@@ -76,23 +99,36 @@ class Species extends Component {
 		}).catch((error) => console.log(error));
 	}
 
-	createSp(e, new_sp) {
-		/**
-		 * Save catch to database.
-		 */
-
+	deleteSp(e, sp_id) {
 		e.preventDefault();
 
-		// TODO: detect if the species alraedy exists
-		// this.existsCatch(new_sp.haul_id, new_sp.sp_id, new_sp.category).then((response) => {
-		// 	if (response === true) {
-		// 		alert("Catch already exists");
-		// 	} else {
+		const api = this.apiSpecies + sp_id;
+
+		fetch(api, {
+			method: "DELETE",
+			headers: { "Content-Type": "application/json" },
+		})
+			.then(() => {
+				const NewSpecies = this.state.species.filter(
+					(sp) => sp.id !== sp_id
+				);
+
+				this.setState({
+					species: NewSpecies,
+				});
+			})
+			.catch((error) => alert(error));
+	}
+
+	/**
+	 * Save species to database.
+	 */
+	createSp(e, new_sp) {
+		e.preventDefault();
+
 		fetch(this.apiSpecies, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(new_sp),
 		})
 			.then((response) => response.json())
@@ -105,52 +141,54 @@ class Species extends Component {
 				}).then(() => console.log(this.state));
 			})
 			.catch((error) => console.log(error));
-		// 	}
-		// });
 	}
 
-	AddButton(content, status) {
-		return (
-			<button
-				onClick={() => {
-					this.handleAdd(status);
-				}}
-			>
-				{content}
-			</button>
-		);
+	// VALIDATIONS
+	/**
+	 * Prevent 'e' and '-' in numeric input
+	 * @param {e} onKeyDown event
+	 */
+	preventNegativeE(e) {
+		if (e.key === "e" || e.key === "-") {
+			e.preventDefault();
+		}
 	}
 
 	renderContent() {
 		var content = "";
 
-		if (this.state.add === false) {
-			content = (
-				<div>
-					{this.AddButton("Add species", true)}
-					<ViewSpeciesList
-						species={this.state.species}
-						handleChange={this.handleChange}
-						handleUpdateSp={this.handleUpdateSp}
-					/>
-				</div>
-			);
-		} else if (this.state.add === true) {
-			content = (
-				<div>
-					<NewSp
-						species={this.state.species}
-						handleAdd={this.handleAdd}
-						createSp={this.createSp}
-					/>
-					<ViewSpeciesList
-						species={this.state.species}
-						handleChange={this.handleChange}
-						handleUpdateSp={this.handleUpdateSp}
-					/>
-				</div>
-			);
-		}
+		content = (
+			<SpeciesContext.Provider
+				value={{
+					handleChange: this.handleChange,
+					handleUpdateSp: this.handleUpdateSp,
+					createSp: this.createSp,
+					deleteSp: this.deleteSp,
+					handleAdd: this.handleAdd,
+					getEmptySpCode: this.getEmptySpCode,
+					preventNegativeE: this.preventNegativeE,
+				}}
+			>
+				<main>
+					<header>
+						<h1 className="title">Species</h1>
+					</header>
+
+					<div className="wrapper surveysWrapper">
+						<SpeciesButtonBar
+							add={this.state.add}
+							handleAdd={this.handleAdd}
+						/>
+
+						{this.state.add === true ? <NewSpForm /> : ""}
+
+						{this.state.species.map((sp) => {
+							return <Sp key={sp.id} sp={sp} />;
+						})}
+					</div>
+				</main>
+			</SpeciesContext.Provider>
+		);
 
 		return content;
 	}

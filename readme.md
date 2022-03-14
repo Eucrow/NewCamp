@@ -1,4 +1,9 @@
 #NewCamp
-Surveys database used in IEO.
+###Demersal surveys database.
 
-Version 0.6
+NewCamp is the upgrade of the old Camp database to technologies used in present day.
+
+Used in demersal surveys of the IEO since the 80's, the original Camp was created in dBase IV over MSDos. Now, the NewCamp is a web application programmed in Python and React, using temporally SQLite as database engine.
+
+
+Version 0.7

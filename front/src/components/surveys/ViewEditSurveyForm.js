@@ -6,21 +6,22 @@ import SurveyButtonBar from "./SurveyButtonBar";
 
 /**
  * ViewEditSurveyForm component
- * @param {object} props.survey: survey object
- * @param {method} changeEdit: make fields editable/non editable
+ * @param {object} props survey object.
+ * @param {boolean} edit variable to indicate if the element is edited or not.
+ * @param {method} handleEdit method to handle de 'edit' boolean variable.
  */
-const ViewEditSurveyForm = ({ props, edit }) => {
+const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 	const surveysContext = useContext(SurveysContext);
 	const is_disabled = edit === true ? false : true;
 
 	const handleSubmit = (e) => {
 		surveysContext.updateSurvey(e, props.survey.id);
-		props.changeEdit(false);
+		props.handleEdit(false);
 	};
 
 	const renderedSurvey = (
 		<form className="wrapper" onSubmit={handleSubmit}>
-			<div className="survey__row">
+			<div className="form__row">
 				<span className="field">
 					<label htmlFor="description">Description:</label>
 					<input
@@ -55,7 +56,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 			</div>
-			<div className="survey__row">
+			<div className="form__row">
 				<span className="field">
 					<label htmlFor="start_date">Start date:</label>
 					<input
@@ -91,7 +92,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					/>
 				</span>
 			</div>
-			<div className="survey__row">
+			<div className="form__row">
 				<span className="field">
 					<label htmlFor="ship">Ship:</label>
 					<input
@@ -146,7 +147,7 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 					</select>
 				</span>
 			</div>
-			<fieldset className="wrapper survey__row">
+			<fieldset className="wrapper form__row">
 				<legend>Grid</legend>
 				<span className="field">
 					<label htmlFor="width_x">Width (miles):</label>
@@ -222,41 +223,32 @@ const ViewEditSurveyForm = ({ props, edit }) => {
 						onInput={surveysContext.forceReportValidity}
 					/>
 				</span>
-				<span className="field">
-					<label htmlFor="unit_sample">
-						Area sampled (square milles):
-					</label>
-					<input
-						type="number"
-						id="unit_sample"
-						name="unit_sample"
-						min="0"
+			</fieldset>
+
+			<div className="form__row">
+				<span className="field__comment">
+					<label htmlFor="comment">Comment:</label>
+					<textarea
+						id="comment"
+						name="comment"
+						className="comment"
+						rows="2"
+						maxLength={1000}
 						disabled={is_disabled}
-						value={props.survey.unit_sample || ""}
+						value={props.survey.comment || ""}
 						onChange={(e) =>
 							surveysContext.handleChange(e, props.survey.id)
 						}
 					/>
 				</span>
-			</fieldset>
-
-			<div className="survey__row">
-				<label htmlFor="comment">Comment:</label>
-				<textarea
-					id="comment"
-					name="comment"
-					className="comment"
-					rows="2"
-					maxLength={1000}
-					disabled={is_disabled}
-					value={props.survey.comment || ""}
-					onChange={(e) =>
-						surveysContext.handleChange(e, props.survey.id)
-					}
-				/>
 			</div>
-			<div className="survey__row">
-				<SurveyButtonBar props={props} edit={edit} />
+			<div className="form__row">
+				<SurveyButtonBar
+					props={props}
+					edit={edit}
+					handleEdit={handleEdit}
+					deleteSurvey={surveysContext.deleteSurvey}
+				/>
 			</div>
 		</form>
 	);

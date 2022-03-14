@@ -29,7 +29,8 @@ from samplers.models import Sampler
 from samples.models import Length, SampledWeight, Sex
 from hauls.utils import get_survey_name, get_sampler_object_and_create
 
-def get_type_survey (filename):
+
+def get_type_survey(filename):
     """
     Get the type of survey (Demersales or Porcupine) from a filename with the format CAMP???.csv,
     where ??? is D or P followed by two digits.
@@ -194,6 +195,7 @@ def get_catch_id(row, survey_name):
 
     return catch_id
 
+
 def get_sex_id(row):
     """
     Get the sexes id of catches. Used in pandas apply function.
@@ -202,6 +204,7 @@ def get_sex_id(row):
     sex_id = Sex.objects.get(catch_id=row['catch_id'], sex=row['SEXO']).id
 
     return sex_id
+
 
 # def get_or_create_categories(sp, category_name):
 #     """
@@ -332,12 +335,8 @@ class SpeciesImport:
             "spanish_name": "NOMBREE",
             "a_param": "A",
             "b_param": "B",
-            "l_infinity": "LINF",
-            "k": "K",
-            "t_zero": "T0",
             "unit": "MED",
             "increment": "INCREM",
-            "trophic_group": "GT",
             "APHIA": "APHIA",
         }
 
@@ -422,7 +421,7 @@ class SurveysImport:
             stratification_object, created = Stratification.objects.get_or_create(
                 stratification=self.stratification_name,
                 comment="<p>In Demersales surveys, the stratification is a combination of geographic sector and " \
-                                     "depth.</p> "
+                        "depth.</p> "
             )
 
             # save survey model
@@ -434,8 +433,9 @@ class SurveysImport:
             tmp.origin_x = convert_comma_to_dot(row['OCUX'])
             tmp.origin_y = convert_comma_to_dot(row['OCUY'])
             tmp.ship = row['BARCO']
-            tmp.area_sampled = row['AREBAR']
-            tmp.unit_sample = row['UNISUP']
+            tmp.hauls_duration = row['DURLAN']
+            # tmp.area_sampled = row['AREBAR']
+            # tmp.unit_sample = row['UNISUP']
             if tmp.start_date != None: tmp.start_date = datetime.strptime(fix_year_date(row['COMI']), '%d/%m/%y').date()
             if tmp.end_date != None: tmp.end_date = datetime.strptime(fix_year_date(row['FINA']), '%d/%m/%y').date()
             tmp.stratification_id = stratification_object.id
@@ -462,14 +462,12 @@ class SurveysImport:
                             stratum=name_stratification,
                             area=row[area_col],
                             comment="<p>In Demersales surveys, the stratification is a combination of geographic sector and " \
-                                     "depth.</p> ",
+                                    "depth.</p> ",
                             stratification_id=stratification_object.id
                         )
 
                     else:
                         message.append("<p>There aren't areas of stratification " + area_col + ".</p>")
-
-
 
             surveys_added.append(row['CLAV'])
 
@@ -866,7 +864,7 @@ class NtallImport:
 
         # merge
         lengths_df = pd.merge(left=lengths_table, right=lengths_df, how='left',
-                                 on=['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO'])
+                              on=['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO'])
 
         fields = list(self.fields_lengths.values())
         fields.extend(['sex_id'])
@@ -906,7 +904,7 @@ class NtallImport:
         sw_table = file
 
         sw_table = sw_table[['LANCE', 'GRUPO', 'ESP', 'CATE', 'PESO_GR', 'PESO_M']].drop_duplicates()
-        sw_table = sw_table[sw_table['PESO_GR']!=sw_table['PESO_M']]
+        sw_table = sw_table[sw_table['PESO_GR'] != sw_table['PESO_M']]
         if species_exists(file):
             sw_table['catch_id'] = sw_table.apply(get_catch_id, axis=1, args=[self.survey_name])
             sw_table['sampled_weight'] = sw_table['PESO_M']
@@ -1104,6 +1102,7 @@ class OldCampImport:
     Import all the tables from old CAMP in newCamp tables.
     The files required are CAMPXXx.csv, LANCEXXX.csv, FAUNAXXX.csv, NTALLXXX.csv and HIDROXXX.csv
     """
+
     def __init__(self):
         self.sectors_col_names = [1, 2, 3, 4, 5]
         self.sectors_names = ["MIÑO-FINISTERRE", "FINISTERRE-ESTA", "ESTACA-PEÑAS", "PEÑAS-AJO", "AJO-BIDASOA"]
@@ -1136,7 +1135,6 @@ class OldCampImport:
         response = [survey_import.content, hauls_import.content, faunas_import.content, ntall_import.content,
                     hydrography_import.content]
         # response = [survey_import.content, hauls_import.content, ]
-
 
         return HttpResponse(response)
 

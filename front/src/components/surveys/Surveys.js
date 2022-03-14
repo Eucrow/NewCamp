@@ -4,8 +4,7 @@ import SurveysContext from "../../contexts/SuverysContext";
 
 import SurveysButtonBar from "./SurveysButtonBar";
 import Survey from "./Survey";
-import NewSurvey from "./NewSurvey";
-import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
+import NewSurveyForm from "./NewSurveyForm";
 
 /**
  * Component list of surveys.
@@ -271,8 +270,12 @@ class Surveys extends Component {
 					</header>
 
 					<div className="wrapper surveysWrapper">
-						<NewSurvey add={this.state.add} />
-						<SurveysButtonBar add={this.state.add} />
+						<SurveysButtonBar
+							add={this.state.add}
+							handleAdd={this.handleAdd}
+						/>
+						{this.state.add === true ? <NewSurveyForm /> : ""}
+
 						{this.state.surveys.map((survey) => {
 							return <Survey key={survey.id} survey={survey} />;
 						})}

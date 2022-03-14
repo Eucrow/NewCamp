@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 
 import SurveysContext from "../../contexts/SuverysContext";
 
-import UiButtonCancelEditSurvey from "./UiButtonCancelEditSurvey";
-import UiButtonSaveNewSurvey from "./UiButtonSaveNewSurvey";
+import UiButtonSave from "../ui/UiButtonSave";
+import UiButtonCancel from "../ui/UiButtonCancel";
 
 /**
  * Survey component
@@ -16,20 +16,11 @@ const NewSurveyForm = () => {
 	const formRef = React.createRef();
 
 	/**
-	 * Manage the onSubmit event.
-	 * @param {event} e - onSubmit event.
-	 */
-	const handleSubmit = (e) => {
-		surveysContext.createSurvey(e, survey);
-		surveysContext.handleAdd(false);
-	};
-
-	/**
 	 * Manage fields change in 'survey' state.
 	 * This method is diferent to handleChange os Surveys component.
 	 * @param {event} e - Event.
 	 */
-	const handleChangeNew = (e) => {
+	const handleChange = (e) => {
 		const name = e.target.name;
 		const value = e.target.value;
 
@@ -41,12 +32,19 @@ const NewSurveyForm = () => {
 		});
 	};
 
-	const renderContent = () => {
-		var content = "";
+	/**
+	 * Manage the onSubmit event.
+	 * @param {event} e - onSubmit event.
+	 */
+	const handleSubmit = (e) => {
+		surveysContext.createSurvey(e, survey);
+		surveysContext.handleAdd(false);
+	};
 
-		content = (
+	const renderContent = () => {
+		const content = (
 			<form className="wrapper" ref={formRef} onSubmit={handleSubmit}>
-				<div className="survey__row">
+				<div className="form__row">
 					<span className="field">
 						<label htmlFor="description">Description:</label>
 						<input
@@ -57,7 +55,7 @@ const NewSurveyForm = () => {
 							required
 							autoFocus
 							pattern="^[a-zA-Z0-9\s]{1,30}$"
-							onChange={handleChangeNew}
+							onChange={handleChange}
 						/>
 					</span>
 					<span className="field">
@@ -69,11 +67,11 @@ const NewSurveyForm = () => {
 							required
 							size={3}
 							pattern="^[\w|\d]{3}$"
-							onChange={handleChangeNew}
+							onChange={handleChange}
 						/>
 					</span>
 				</div>
-				<div className="survey__row">
+				<div className="form__row">
 					<span className="field">
 						<label htmlFor="start_date">Start date:</label>
 						<input
@@ -81,7 +79,7 @@ const NewSurveyForm = () => {
 							id="start_date"
 							name="start_date"
 							onChange={(e) => {
-								handleChangeNew(e);
+								handleChange(e);
 								surveysContext.validateStartDate(
 									e,
 									survey.end_date
@@ -96,7 +94,7 @@ const NewSurveyForm = () => {
 							id="end_date"
 							name="end_date"
 							onChange={(e) => {
-								handleChangeNew(e);
+								handleChange(e);
 								surveysContext.validateEndDate(
 									e,
 									survey.start_date
@@ -105,14 +103,14 @@ const NewSurveyForm = () => {
 						/>
 					</span>
 				</div>
-				<div className="survey__row">
+				<div className="form__row">
 					<span className="field">
 						<label htmlFor="ship">Ship:</label>
 						<input
 							type="text"
 							id="ship"
 							name="ship"
-							onChange={handleChangeNew}
+							onChange={handleChange}
 						/>
 					</span>
 					<span className="field">
@@ -125,7 +123,7 @@ const NewSurveyForm = () => {
 							name="hauls_duration"
 							min="0"
 							size={4}
-							onChange={handleChangeNew}
+							onChange={handleChange}
 							onKeyDown={surveysContext.preventNegativeE}
 						/>
 					</span>
@@ -135,7 +133,7 @@ const NewSurveyForm = () => {
 							id="stratification"
 							name="stratification"
 							required
-							onChange={handleChangeNew}
+							onChange={handleChange}
 						>
 							<option />
 							{surveysContext.stratifications.map((st, idx) => {
@@ -148,7 +146,7 @@ const NewSurveyForm = () => {
 						</select>
 					</span>
 				</div>
-				<fieldset className="wrapper survey__row">
+				<fieldset className="wrapper form__row">
 					<legend>Grid</legend>
 					<span className="field">
 						<label htmlFor="width_x">Width (miles):</label>
@@ -160,7 +158,7 @@ const NewSurveyForm = () => {
 							max="999"
 							size={3}
 							maxLength={3}
-							onChange={handleChangeNew}
+							onChange={handleChange}
 							onKeyDown={surveysContext.preventNegativeE}
 						/>
 					</span>
@@ -174,7 +172,7 @@ const NewSurveyForm = () => {
 							max="999"
 							size={3}
 							maxLength={3}
-							onChange={handleChangeNew}
+							onChange={handleChange}
 							onKeyDown={surveysContext.preventNegativeE}
 						/>
 					</span>
@@ -190,7 +188,7 @@ const NewSurveyForm = () => {
 							max="180"
 							size={8}
 							step={0.001}
-							onChange={handleChangeNew}
+							onChange={handleChange}
 							onInput={surveysContext.forceReportValidity}
 						/>
 					</span>
@@ -206,40 +204,31 @@ const NewSurveyForm = () => {
 							max="90"
 							size={7}
 							step={0.001}
-							onChange={handleChangeNew}
+							onChange={handleChange}
 							onInput={surveysContext.forceReportValidity}
-						/>
-					</span>
-					<span className="field">
-						<label htmlFor="unit_sample">
-							Area sampled (square milles):
-						</label>
-						<input
-							type="number"
-							id="unit_sample"
-							name="unit_sample"
-							min="0"
-							onChange={handleChangeNew}
-							onKeyDown={surveysContext.preventNegativeE}
 						/>
 					</span>
 				</fieldset>
 
-				<div className="survey__row">
-					<label htmlFor="comment">Comment:</label>
-					<textarea
-						id="comment"
-						name="comment"
-						className="comment"
-						rows="2"
-						maxLength={1000}
-						onChange={handleChangeNew}
-					/>
+				<div className="form__row">
+					<span className="field__comment">
+						<label htmlFor="comment">Comment:</label>
+						<textarea
+							id="comment"
+							name="comment"
+							className="comment"
+							rows="2"
+							maxLength={1000}
+							onChange={handleChange}
+						/>
+					</span>
 				</div>
-				<div className="survey__row">
+				<div className="form__row">
 					<div className="survey__cell survey__cell--right buttonsWrapper">
-						<UiButtonSaveNewSurvey survey={survey} />
-						<UiButtonCancelEditSurvey />
+						<UiButtonSave buttonText={"Save Survey"} />
+						<UiButtonCancel
+							handleMethod={surveysContext.handleAdd}
+						/>
 					</div>
 				</div>
 			</form>
