@@ -1,8 +1,0 @@
-{
-    "python.linting.pylintEnabled": false,
-    "python.linting.pydocstyleEnabled": true,
-    "python.linting.enabled": true,
-    "prettier.printWidth": 120,
-    "prettier.tabWidth": 4,
-    "prettier.useTabs": true
-}
