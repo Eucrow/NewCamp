@@ -1,10 +1,4 @@
-import React, {
-	Component,
-	Fragment,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
+import React, { Component, Fragment } from "react";
 
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import StationsContext from "../../contexts/StationsContext";
@@ -12,81 +6,71 @@ import StationsContext from "../../contexts/StationsContext";
 import Station from "./Station";
 import NewStationForm from "./NewStationForm";
 
-// class ComponentsStations extends Component {
-const ComponentsStations = () => {
+class ComponentsStations extends Component {
+	/**
+	 * List of stations
+	 * @param {*} props
+	 */
+
 	// The contextType property on a class can be assigned a Context object created by React.createContext().
 	// This lets you consume the nearest current value of that Context type using this.context. You can reference
 	// this in any of the lifecycle methods including the render function.
-	// static contextType = SelectedSurveyContext;
+	static contextType = SelectedSurveyContext;
 
-	// constructor(props) {
-	// 	super(props);
-	// 	this.state = {
-	// 		stations: [],
-	// 		add: false,
-	// 	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			stations: [],
+			add: false,
+		};
 
-	// 	// The next api retrieve all the stations. If a 'hauls/survey_id' is added at the end, retrieve only the
-	// 	// stations of this survey
-	// 	this.apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
+		// The next api retrieve all the stations. If a 'hauls/survey_id' is added at the end, retrieve only the
+		// stations of this survey
+		this.apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
 
-	// 	this.apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
-	// 	this.apiHydrographyForm =
-	// 		"http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
+		this.apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
+		this.apiHydrographyForm =
+			"http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
 
-	// 	this.apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get, update or add station
-	// 	this.apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
+		this.apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get, update or add station
+		this.apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
 
-	// 	this.handleAdd = this.handleAdd.bind(this);
-	// 	this.UiAddButton = this.UiAddButton.bind(this);
+		this.handleAdd = this.handleAdd.bind(this);
+		this.UiAddButton = this.UiAddButton.bind(this);
 
-	// 	this.handleSubmitEditStation = this.handleSubmitEditStation.bind(this);
-	// 	this.createStation = this.createStation.bind(this);
+		this.handleSubmitEditStation = this.handleSubmitEditStation.bind(this);
+		this.createStation = this.createStation.bind(this);
 
-	// 	this.deleteStation = this.deleteStation.bind(this);
-	// 	this.createHaul = this.createHaul.bind(this);
-	// 	this.deleteHaul = this.deleteHaul.bind(this);
+		this.deleteStation = this.deleteStation.bind(this);
+		this.createHaul = this.createHaul.bind(this);
+		this.deleteHaul = this.deleteHaul.bind(this);
 
-	// 	this.renderContent = this.renderContent.bind(this);
+		this.renderContent = this.renderContent.bind(this);
 
-	// 	this.handleChangeStationFields =
-	// 		this.handleChangeStationFields.bind(this);
-	// }
+		this.handleChangeStationFields =
+			this.handleChangeStationFields.bind(this);
+	}
 
-	const [add, setAdd] = useState(false);
-	const [stations, setStations] = useState();
-
-	const selectedSurveyContext = useContext(SelectedSurveyContext);
-
-	const apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
-
-	const apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
-	const apiHydrographyForm =
-		"http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
-
-	const apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get, update or add station
-	const apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
-
-	const getStationsApi = () => {
+	getStationsApi() {
 		/**
 		 * Build url api of all the stations of a survey, using apiHauls and context
 		 */
-		return selectedSurveyContext.selectedSurveyId === null
-			? apiStationsPartial
-			: apiStationsPartial +
+		return this.context.selectedSurveyId === null
+			? this.apiStationsPartial
+			: this.apiStationsPartial +
 					"hauls/" +
-					selectedSurveyContext.selectedSurveyId;
-	};
+					this.context.selectedSurveyId;
+	}
 
-	const handleAdd = (status) => {
+	handleAdd(status) {
 		this.setState(() => {
 			return {
 				add: status,
 			};
 		});
-	};
+	}
 
-	const UiAddButton = (status) => {
+	UiAddButton(status) {
 		return (
 			<button
 				onClick={(e) => {
@@ -96,9 +80,9 @@ const ComponentsStations = () => {
 				New Station
 			</button>
 		);
-	};
+	}
 
-	const handleSubmitEditStation = (event, station_id) => {
+	handleSubmitEditStation(event, station_id) {
 		event.preventDefault();
 
 		const api = this.apiStation + station_id;
@@ -114,9 +98,9 @@ const ComponentsStations = () => {
 			},
 			body: JSON.stringify(updated_station[0]), //look the [0]!!!
 		}).catch((error) => console.log(error));
-	};
+	}
 
-	const createStation = (event, station) => {
+	createStation(event, station) {
 		event.preventDefault();
 
 		fetch(this.apiStation, {
@@ -136,9 +120,9 @@ const ComponentsStations = () => {
 				});
 			})
 			.catch((error) => console.log(error));
-	};
+	}
 
-	const handleChangeStationFields = (event, ids) => {
+	handleChangeStationFields(event, ids) {
 		event.preventDefault();
 		const name = event.target.name;
 		const value = event.target.value;
@@ -158,9 +142,9 @@ const ComponentsStations = () => {
 		this.setState({
 			stations: new_stations,
 		});
-	};
+	}
 
-	const createHaul = (event, haul) => {
+	createHaul(event, haul) {
 		/**
 		 * Method to create haul
 		 * */
@@ -199,9 +183,9 @@ const ComponentsStations = () => {
 				});
 			})
 			.catch((error) => console.log(error));
-	};
+	}
 
-	const deleteHaul = (e, id_station, id_haul) => {
+	deleteHaul(e, id_station, id_haul) {
 		/**
 		 * Method to delete haul.
 		 */
@@ -232,9 +216,9 @@ const ComponentsStations = () => {
 				});
 			})
 			.catch((error) => alert(error));
-	};
+	}
 
-	const deleteStation = (e, ids) => {
+	deleteStation(e, ids) {
 		/**
 		 * Method to delete haul.
 		 */
@@ -260,62 +244,59 @@ const ComponentsStations = () => {
 				});
 			})
 			.catch((error) => alert(error));
-	};
+	}
 
-	useEffect(() => {
-		if (selectedSurveyContext.selectedSurveyId !== "") {
-			const APIStations = getStationsApi();
+	componentDidMount() {
+		if (this.context.selectedSurveyId !== "") {
+			const APIStations = this.getStationsApi();
 
 			fetch(APIStations)
 				.then((response) => {
 					if (response.status > 400) {
-						// return this.setState(() => {
-						// 	return { placeholder: "Something went wrong!" };
-						// });
-						alert("something were wrong!!");
+						return this.setState(() => {
+							return { placeholder: "Something went wrong!" };
+						});
 					}
 					return response.json();
 				})
 				.then((stations) => {
-					// this.setState(() => {
-					// 	return {
-					// 		stations,
-					// 		loaded: true,
-					// 	};
-					// });
-					setStations(stations);
-					console.log(stations);
+					this.setState(() => {
+						return {
+							stations,
+							loaded: true,
+						};
+					});
 				});
 		}
-	});
+	}
 
-	const renderContent = () => {
+	renderContent() {
 		var content = "";
 
-		if (selectedSurveyContext.selectedSurveyId === "") {
+		if (this.context.selectedSurveyId === "") {
 			content = <div>There is not survey selected</div>;
-		} else if (add === false) {
+		} else if (this.state.add === false) {
 			content = (
 				<main>
 					<header>
 						<h1 className="title">Stations</h1>
 					</header>
 					<div className="wrapper stationsWrapper">
-						{/* <div>{UiAddButton(true)}</div> */}
+						<div>{this.UiAddButton(true)}</div>
 
-						{stations.map((station) => {
+						{this.state.stations.map((station) => {
 							return (
 								<Station
 									key={station.id}
 									station={station}
-									deleteStation={deleteStation}
-									deleteHaul={deleteHaul}
-									createHaul={createHaul}
+									deleteStation={this.deleteStation}
+									deleteHaul={this.deleteHaul}
+									createHaul={this.createHaul}
 									handleChangeStationFields={
-										handleChangeStationFields
+										this.handleChangeStationFields
 									}
 									handleSubmitEditStation={
-										handleSubmitEditStation
+										this.handleSubmitEditStation
 									}
 								/>
 							);
@@ -323,7 +304,7 @@ const ComponentsStations = () => {
 					</div>
 				</main>
 			);
-		} else if (add === true) {
+		} else if (this.state.add === true) {
 			content = (
 				<main>
 					<header>
@@ -359,14 +340,12 @@ const ComponentsStations = () => {
 		}
 
 		return <Fragment>{content}</Fragment>;
-	};
+	}
 
-	return renderContent;
-
-	// render() {
-	// 	const { signedInUser, theme } = this.props;
-	// 	return this.renderContent();
-	// }
-};
+	render() {
+		const { signedInUser, theme } = this.props;
+		return this.renderContent();
+	}
+}
 
 export default ComponentsStations;
