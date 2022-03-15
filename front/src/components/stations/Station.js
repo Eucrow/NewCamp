@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import stationsContext from "../../contexts/StationsContext.js";
+
 import ViewStation from "./ViewStation.js";
 import EditStation from "./EditStation.js";
 
@@ -24,6 +26,8 @@ class Station extends Component {
 
 		this.changeEdit = this.changeEdit.bind(this);
 	}
+
+	static contextType = stationsContext;
 
 	changeEdit(edit) {
 		this.setState(() => {

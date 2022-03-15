@@ -1,13 +1,9 @@
-import React, {
-	Component,
-	Fragment,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import StationsContext from "../../contexts/StationsContext";
+
+import StationsButtonBar from "./StationsButtonBar";
 
 import Station from "./Station";
 import NewStationForm from "./NewStationForm";
@@ -15,7 +11,7 @@ import NewStationForm from "./NewStationForm";
 // class ComponentsStations extends Component {
 const ComponentsStations = () => {
 	const [add, setAdd] = useState(false);
-	const [stations, setStations] = useState();
+	const [stations, setStations] = useState([]);
 
 	const selectedSurveyContext = useContext(SelectedSurveyContext);
 
@@ -37,27 +33,6 @@ const ComponentsStations = () => {
 			: apiStationsPartial +
 					"hauls/" +
 					selectedSurveyContext.selectedSurveyId;
-	};
-
-	const handleAdd = (status) => {
-		setAdd(status);
-		// this.setState(() => {
-		// 	return {
-		// 		add: status,
-		// 	};
-		// });
-	};
-
-	const UiAddButton = (status) => {
-		return (
-			<button
-				onClick={(e) => {
-					handleAdd(status);
-				}}
-			>
-				New Station
-			</button>
-		);
 	};
 
 	const handleSubmitEditStation = (event, station_id) => {
@@ -92,11 +67,6 @@ const ComponentsStations = () => {
 			.then((s) => {
 				const new_stations = [...stations, s];
 				setStations(new_stations);
-				// this.setState(() => {
-				// 	return {
-				// 		stations: new_stations,
-				// 	};
-				// });
 			})
 			.catch((error) => console.log(error));
 	};
@@ -118,10 +88,6 @@ const ComponentsStations = () => {
 			return station;
 		});
 		setStations(new_stations);
-
-		// this.setState({
-		// 	stations: new_stations,
-		// });
 	};
 
 	const createHaul = (event, haul) => {
@@ -157,12 +123,6 @@ const ComponentsStations = () => {
 				});
 
 				setStations(new_stations);
-
-				// this.setState(() => {
-				// 	return {
-				// 		stations: new_stations,
-				// 	};
-				// });
 			})
 			.catch((error) => console.log(error));
 	};
@@ -194,9 +154,6 @@ const ComponentsStations = () => {
 					}
 				});
 				setStations(new_stations);
-				// this.setState({
-				// 	stations: new_stations,
-				// });
 			})
 			.catch((error) => alert(error));
 	};
@@ -222,9 +179,6 @@ const ComponentsStations = () => {
 					(station) => station.id !== ids
 				);
 				setStations(new_stations);
-				// this.setState({
-				// 	stations: new_stations,
-				// });
 			})
 			.catch((error) => alert(error));
 	};
@@ -236,20 +190,11 @@ const ComponentsStations = () => {
 			fetch(APIStations)
 				.then((response) => {
 					if (response.status > 400) {
-						// return this.setState(() => {
-						// 	return { placeholder: "Something went wrong!" };
-						// });
 						alert("something were wrong!!");
 					}
 					return response.json();
 				})
 				.then((stations) => {
-					// this.setState(() => {
-					// 	return {
-					// 		stations,
-					// 		loaded: true,
-					// 	};
-					// });
 					setStations(stations);
 					console.log(stations);
 				});
@@ -261,79 +206,52 @@ const ComponentsStations = () => {
 
 		if (selectedSurveyContext.selectedSurveyId === "") {
 			content = <div>There is not survey selected</div>;
-		} else if ((add === false) & (typeof stations !== "undefined")) {
-			content = (
+			return content;
+		}
+
+		content = (
+			<StationsContext.Provider
+				value={{
+					deleteStation: deleteStation,
+					deleteHaul: deleteHaul,
+					createHaul: createHaul,
+					handleChangeStationFields: handleChangeStationFields,
+					handleSubmitEditStation: handleSubmitEditStation,
+				}}
+			>
+				{add === true ? (
+					<NewStationForm
+						handleAdd={setAdd}
+						createStation={createStation}
+					/>
+				) : (
+					""
+				)}
+
 				<main>
 					<header>
 						<h1 className="title">Stations</h1>
 					</header>
 					<div className="wrapper stationsWrapper">
-						<div>{UiAddButton(true)}</div>
+						<StationsButtonBar
+							add={add}
+							handleAdd={setAdd}
+						></StationsButtonBar>
 
 						{stations.map((station) => {
 							return (
-								<Station
-									key={station.id}
-									station={station}
-									deleteStation={deleteStation}
-									deleteHaul={deleteHaul}
-									createHaul={createHaul}
-									handleChangeStationFields={
-										handleChangeStationFields
-									}
-									handleSubmitEditStation={
-										handleSubmitEditStation
-									}
-								/>
+								<Station key={station.id} station={station} />
 							);
 						})}
 					</div>
 				</main>
-			);
-		} else if (add === true) {
-			content = (
-				<main>
-					<header>
-						<h1 className="title">Stations</h1>
-					</header>
-					<div className="wrapper stationsWrapper">
-						<NewStationForm
-							handleAdd={handleAdd}
-							createStation={createStation}
-						/>
-						<ul>
-							{stations.map((station) => {
-								return (
-									<Station
-										key={station.id}
-										station={station}
-										deleteStation={deleteStation}
-										deleteHaul={deleteHaul}
-										createHaul={createHaul}
-										handleChangeStationFields={
-											handleChangeStationFields
-										}
-										handleSubmitEditStation={
-											handleSubmitEditStation
-										}
-									/>
-								);
-							})}
-						</ul>
-					</div>
-				</main>
-			);
-		}
+			</StationsContext.Provider>
+		);
 
-		return <Fragment>{content}</Fragment>;
+		return content;
 	};
 
 	return renderContent();
-
-	// render() {
-	// 	const { signedInUser, theme } = this.props;
-	// 	return this.renderContent();
-	// }
 };
 
 export default ComponentsStations;
