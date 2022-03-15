@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import stationsContext from "../../contexts/StationsContext.js";
+
 import ViewStation from "./ViewStation.js";
 import EditStation from "./EditStation.js";
 
@@ -22,12 +24,12 @@ class Station extends Component {
 
 		this.apiStation = "http://127.0.0.1:8000/api/1.0/station/";
 
-		// this.handleSubmit = this.handleSubmit.bind(this);
-
-		this.changeEdit = this.changeEdit.bind(this);
+		this.handleEdit = this.handleEdit.bind(this);
 	}
 
-	changeEdit(edit) {
+	static contextType = stationsContext;
+
+	handleEdit(edit) {
 		this.setState(() => {
 			return {
 				edit: edit,
@@ -41,7 +43,7 @@ class Station extends Component {
 				<div className="wrapper">
 					<ViewStation
 						station={this.props.station}
-						changeEdit={this.changeEdit}
+						handleEdit={this.handleEdit}
 						deleteStation={this.props.deleteStation}
 						deleteHaul={this.props.deleteHaul}
 						createHaul={this.props.createHaul}
@@ -53,7 +55,7 @@ class Station extends Component {
 				<div className="wrapper">
 					<EditStation
 						station={this.props.station}
-						changeEdit={this.changeEdit}
+						handleEdit={this.handleEdit}
 						handleChangeStationFields={
 							this.props.handleChangeStationFields
 						}

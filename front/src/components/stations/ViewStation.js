@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 
 import Hauls from "../hauls/Hauls";
-import StationForm from "./StationForm";
+import ViewEditStationForm from "./ViewEditStationForm";
 
 class ViewStation extends Component {
 	/**
@@ -15,7 +15,7 @@ class ViewStation extends Component {
 	render() {
 		return (
 			<Fragment>
-				<StationForm props={this.props} edit={false} />
+				<ViewEditStationForm props={this.props} edit={false} />
 				<Hauls
 					hauls={this.props.station.hauls}
 					station_id={this.props.station.id}
