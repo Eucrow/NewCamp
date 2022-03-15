@@ -254,17 +254,16 @@ const ComponentsStations = () => {
 					<header>
 						<h1 className="title">Stations</h1>
 					</header>
-
-					{add === true ? (
-						<NewStationForm
-							handleAdd={setAdd}
-							createStation={createStation}
-						/>
-					) : (
-						""
-					)}
-
 					<div className="wrapper stationsWrapper">
+						{add === true ? (
+							<NewStationForm
+								handleAdd={setAdd}
+								createStation={createStation}
+							/>
+						) : (
+							""
+						)}
+
 						<StationsButtonBar
 							add={add}
 							handleAdd={setAdd}
