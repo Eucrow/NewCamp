@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
+import StationsContext from "../../contexts/StationsContext";
 
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonCancel from "../ui/UiButtonCancel";
@@ -10,8 +11,9 @@ import UiButtonCancel from "../ui/UiButtonCancel";
  * @param {method} props.handleAdd
  * @param {method} props.createStation
  */
-const NewStationForm = ({ props }) => {
+const NewStationForm = (props) => {
 	const selectedSurveyContext = useContext(SelectedSurveyContext);
+	const stationsContext = useContext(StationsContext);
 
 	const [station, setStation] = useState();
 
@@ -58,6 +60,7 @@ const NewStationForm = ({ props }) => {
 						name="station"
 						onChange={(e) => {
 							handleChange(e);
+							stationsContext.validateStationNumber(e);
 						}}
 					/>
 				</div>
@@ -76,7 +79,7 @@ const NewStationForm = ({ props }) => {
 			<div className="form__row">
 				<div className="survey__cell survey__cell--right buttonsWrapper">
 					<UiButtonSave buttonText={"Save Station"} />
-					<UiButtonCancel handleMethod={this.props.handleAdd} />
+					<UiButtonCancel handleMethod={props.handleAdd} />
 				</div>
 			</div>
 		</form>
