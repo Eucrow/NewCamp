@@ -183,6 +183,37 @@ const ComponentsStations = () => {
 			.catch((error) => alert(error));
 	};
 
+	// VALIDATIONS
+	/**
+	 * Detect if exists an station in state.
+	 * @param {stId} number Station number.
+	 * @returns True if the station exists, false if doesn't.
+	 */
+	const stationExists = (stId) => {
+		if (stations.find((st) => st.station === stId)) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	/**
+	 * Validate start date with end date
+	 * @param {event} e onChange event
+	 * @returns In case of error in date, show report validity.
+	 */
+	const validateStationNumber = (e) => {
+		e.target.setCustomValidity("");
+
+		if (stationExists(parseInt(e.target.value))) {
+			e.target.setCustomValidity(
+				"This station already exists in this survey."
+			);
+		}
+
+		return e.target.reportValidity();
+	};
+
 	useEffect(() => {
 		if (selectedSurveyContext.selectedSurveyId !== "") {
 			const APIStations = getStationsApi();
@@ -196,7 +227,6 @@ const ComponentsStations = () => {
 				})
 				.then((stations) => {
 					setStations(stations);
-					console.log(stations);
 				});
 		}
 	}, []);
@@ -217,21 +247,23 @@ const ComponentsStations = () => {
 					createHaul: createHaul,
 					handleChangeStationFields: handleChangeStationFields,
 					handleSubmitEditStation: handleSubmitEditStation,
+					validateStationNumber: validateStationNumber,
 				}}
 			>
-				{add === true ? (
-					<NewStationForm
-						handleAdd={setAdd}
-						createStation={createStation}
-					/>
-				) : (
-					""
-				)}
-
 				<main>
 					<header>
 						<h1 className="title">Stations</h1>
 					</header>
+
+					{add === true ? (
+						<NewStationForm
+							handleAdd={setAdd}
+							createStation={createStation}
+						/>
+					) : (
+						""
+					)}
+
 					<div className="wrapper stationsWrapper">
 						<StationsButtonBar
 							add={add}

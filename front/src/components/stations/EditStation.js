@@ -7,7 +7,7 @@ class EditStation extends Component {
 	/**
 	 *
 	 * @param {Array} props.station
-	 * @param {method} props.changeEdit
+	 * @param {method} props.handleEdit
 	 * @param {method} props.handleChangeStationFields
 	 * @param {method} props.handleSubmitEditStation
 	 */

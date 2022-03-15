@@ -1,56 +1,67 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import StationsContext from "../../contexts/StationsContext";
 
 import StationButtonBar from "./StationButtonBar";
 
 const ViewEditStationForm = ({ props, edit }) => {
 	const is_disabled = edit === true ? false : true;
 
+	const stationsContext = useContext(StationsContext);
+
+	const handleSubmit = (e) => {
+		stationsContext.handleSubmitEditStation(e, props.station.id);
+		props.handleEdit(false);
+	};
+
 	const renderedStation = (
-		<form className="station__row">
-			<div className="station__cell">
-				<label htmlFor="station">Station:</label>
-				<input
-					type="number"
-					min="0"
-					max="20"
-					maxLength="2"
-					disabled={is_disabled}
-					className="station_number"
-					id="station"
-					name="station"
-					value={props.station.station || ""}
-					onChange={(e) =>
-						props.handleChangeStationFields(e, props.station.id)
-					}
-				/>
-			</div>
-			<div className="station__cell">
-				<label htmlFor="comment">Comment:</label>
-				<input
-					type="text"
-					disabled={is_disabled}
-					id="comment"
-					name="comment"
-					value={props.station.comment || ""}
-					onChange={(e) =>
-						props.handleChangeStationFields(e, props.station.id)
-					}
-				/>
-			</div>
-			<div className="station__cell station__cell--right">
-				<StationButtonBar props={props} edit={edit} />
-				{/* <div className="buttonsWrapper">
-					<button
-						type="submit"
+		<form onSubmit={(e) => handleSubmit(e)}>
+			<div className="form__row">
+				<div className="form__cell">
+					<label htmlFor="station">Station:</label>
+					<input
+						type="number"
+						min="0"
+						max="9999"
+						maxLength="4"
+						size={4}
 						disabled={is_disabled}
-						onClick={(e) => {
-							props.handleSubmitEditStation(e, props.station.id);
-							props.changeEdit(false);
+						className="station_number"
+						id="station"
+						name="station"
+						value={props.station.station || ""}
+						onChange={(e) => {
+							stationsContext.handleChangeStationFields(
+								e,
+								props.station.id
+							);
+							stationsContext.validateStationNumber(e);
 						}}
-					>
-						Save Station
-					</button>
-				</div> */}
+					/>
+				</div>
+				{/* <div className="form__cell field__comment"> */}
+				<div className="form__cell">
+					<label htmlFor="comment">Comment:</label>
+					<textarea
+						type="text"
+						disabled={is_disabled}
+						id="comment"
+						name="comment"
+						rows={1}
+						size={1000}
+						value={props.station.comment || ""}
+						onChange={(e) =>
+							stationsContext.handleChangeStationFields(
+								e,
+								props.station.id
+							)
+						}
+					/>
+				</div>
+
+				<div className="form__cell form__cell--right">
+					<StationButtonBar props={props} edit={edit} />
+				</div>
 			</div>
 		</form>
 	);

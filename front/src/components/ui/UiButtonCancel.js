@@ -9,6 +9,7 @@ class UiButtonCancel extends Component {
 	render() {
 		return (
 			<button
+				type="button"
 				className="buttonsWrapper__button"
 				onClick={() => {
 					this.props.handleMethod(false);
