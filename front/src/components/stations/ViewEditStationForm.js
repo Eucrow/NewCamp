@@ -4,14 +4,14 @@ import StationsContext from "../../contexts/StationsContext";
 
 import StationButtonBar from "./StationButtonBar";
 
-const ViewEditStationForm = ({ props, edit }) => {
+const ViewEditStationForm = ({ station, handleEdit, edit }) => {
 	const is_disabled = edit === true ? false : true;
 
 	const stationsContext = useContext(StationsContext);
 
 	const handleSubmit = (e) => {
-		stationsContext.handleSubmitEditStation(e, props.station.id);
-		props.handleEdit(false);
+		stationsContext.editStation(e, station.id);
+		handleEdit(false);
 	};
 
 	const renderedStation = (
@@ -29,12 +29,9 @@ const ViewEditStationForm = ({ props, edit }) => {
 						className="station_number"
 						id="station"
 						name="station"
-						value={props.station.station || ""}
+						value={station.station || ""}
 						onChange={(e) => {
-							stationsContext.handleChangeStationFields(
-								e,
-								props.station.id
-							);
+							stationsContext.handleChangeStation(e, station.id);
 							stationsContext.validateStationNumber(e);
 						}}
 					/>
@@ -49,18 +46,19 @@ const ViewEditStationForm = ({ props, edit }) => {
 						name="comment"
 						rows={1}
 						size={1000}
-						value={props.station.comment || ""}
+						value={station.comment || ""}
 						onChange={(e) =>
-							stationsContext.handleChangeStationFields(
-								e,
-								props.station.id
-							)
+							stationsContext.handleChangeStation(e, station.id)
 						}
 					/>
 				</div>
 
 				<div className="form__cell form__cell--right">
-					<StationButtonBar props={props} edit={edit} />
+					<StationButtonBar
+						station_id={station.id}
+						handleEdit={handleEdit}
+						edit={edit}
+					/>
 				</div>
 			</div>
 		</form>

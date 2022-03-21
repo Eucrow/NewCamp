@@ -8,14 +8,16 @@ class EditStation extends Component {
 	 *
 	 * @param {Array} props.station
 	 * @param {method} props.handleEdit
-	 * @param {method} props.handleChangeStationFields
-	 * @param {method} props.handleSubmitEditStation
 	 */
 
 	render() {
 		return (
 			<Fragment>
-				<ViewEditStationForm props={this.props} edit={true} />
+				<ViewEditStationForm
+					station={this.props.station}
+					handleEdit={this.props.handleEdit}
+					edit={true}
+				/>
 				<Hauls
 					hauls={this.props.station.hauls}
 					station_id={this.props.station.id}

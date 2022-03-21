@@ -12,8 +12,7 @@ class Station extends Component {
 	 * @param {method} props.deleteStation
 	 * @param {method} props.createHaul
 	 * @param {method} props.deleteHaul
-	 * @param {method} props.handleChangeStationFields
-	 * @param {method} props.handleSubmitEditStation
+	 * @param {method} props.editStation
 	 */
 
 	constructor(props) {
@@ -44,7 +43,6 @@ class Station extends Component {
 					<ViewStation
 						station={this.props.station}
 						handleEdit={this.handleEdit}
-						deleteStation={this.props.deleteStation}
 						deleteHaul={this.props.deleteHaul}
 						createHaul={this.props.createHaul}
 					/>
@@ -56,12 +54,6 @@ class Station extends Component {
 					<EditStation
 						station={this.props.station}
 						handleEdit={this.handleEdit}
-						handleChangeStationFields={
-							this.props.handleChangeStationFields
-						}
-						handleSubmitEditStation={
-							this.props.handleSubmitEditStation
-						}
 					/>
 				</div>
 			);

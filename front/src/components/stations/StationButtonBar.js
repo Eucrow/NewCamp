@@ -6,7 +6,7 @@ import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonCancel from "../ui/UiButtonCancel";
 import UiButtonDelete from "../ui/UiButtonDelete";
 
-const StationButtonBar = ({ props, edit }) => {
+const StationButtonBar = ({ station_id, handleEdit, edit }) => {
 	const stationsContext = useContext(StationsContext);
 	var ButtonBar = "";
 
@@ -15,7 +15,7 @@ const StationButtonBar = ({ props, edit }) => {
 			<div className="station__cell station__cell--right">
 				<div className="buttonsWrapper">
 					<UiButtonSave buttonText={"Save Station"} />
-					<UiButtonCancel handleMethod={props.handleEdit} />
+					<UiButtonCancel handleMethod={handleEdit} />
 				</div>
 			</div>
 		);
@@ -29,13 +29,13 @@ const StationButtonBar = ({ props, edit }) => {
 						type="button"
 						className="buttonsWrapper__button"
 						onClick={(e) => {
-							props.handleEdit(true);
+							handleEdit(true);
 						}}
 					>
 						Edit Station
 					</button>
 					<UiButtonDelete
-						id={props.station.id}
+						id={station_id}
 						deleteMethod={stationsContext.deleteStation}
 						buttonText={"Delete Station"}
 						confirmMessage={

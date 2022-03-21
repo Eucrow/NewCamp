@@ -8,7 +8,6 @@ import StationsButtonBar from "./StationsButtonBar";
 import Station from "./Station";
 import NewStationForm from "./NewStationForm";
 
-// class ComponentsStations extends Component {
 const ComponentsStations = () => {
 	const [add, setAdd] = useState(false);
 	const [stations, setStations] = useState([]);
@@ -24,33 +23,16 @@ const ComponentsStations = () => {
 	const apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get, update or add station
 	const apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
 
+	/**
+	 * Build url api of all the stations of a survey, using apiHauls and SelectedSurveyContext
+	 * @returns url api
+	 */
 	const getStationsApi = () => {
-		/**
-		 * Build url api of all the stations of a survey, using apiHauls and context
-		 */
 		return selectedSurveyContext.selectedSurveyId === null
 			? apiStationsPartial
 			: apiStationsPartial +
 					"hauls/" +
 					selectedSurveyContext.selectedSurveyId;
-	};
-
-	const handleSubmitEditStation = (event, station_id) => {
-		event.preventDefault();
-
-		const api = apiStation + station_id;
-
-		const updated_station = stations.filter(
-			(station) => station.id === station_id
-		);
-
-		fetch(api, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(updated_station[0]), //look the [0]!!!
-		}).catch((error) => console.log(error));
 	};
 
 	const createStation = (event, station) => {
@@ -71,13 +53,57 @@ const ComponentsStations = () => {
 			.catch((error) => console.log(error));
 	};
 
-	const handleChangeStationFields = (event, ids) => {
+	const editStation = (event, station_id) => {
+		event.preventDefault();
+
+		const api = apiStation + station_id;
+
+		const updated_station = stations.filter(
+			(station) => station.id === station_id
+		);
+
+		fetch(api, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(updated_station[0]), //look the [0]!!!
+		}).catch((error) => console.log(error));
+	};
+
+	const deleteStation = (e, ids) => {
+		e.preventDefault();
+
+		const api = apiStation + ids;
+
+		fetch(api, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+			},
+		})
+			.then(() => {
+				const new_stations = stations.filter(
+					(station) => station.id !== ids
+				);
+				setStations(new_stations);
+			})
+			.catch((error) => alert(error));
+	};
+
+	/**
+	 * Handle change fields of Station forms.
+	 * @param {*} event
+	 * @param {*} station_id
+	 */
+	const handleChangeStation = (event, station_id) => {
 		event.preventDefault();
 		const name = event.target.name;
 		const value = event.target.value;
 
 		const new_stations = stations.map((station) => {
-			if (station.id === ids) {
+			if (station.id === station_id) {
 				const updated_station = {
 					...station,
 					[name]: value,
@@ -158,31 +184,6 @@ const ComponentsStations = () => {
 			.catch((error) => alert(error));
 	};
 
-	const deleteStation = (e, ids) => {
-		/**
-		 * Method to delete haul.
-		 */
-
-		e.preventDefault();
-
-		const api = apiStation + ids;
-
-		fetch(api, {
-			method: "DELETE",
-			headers: {
-				"Content-Type": "application/json",
-				Accept: "application/json",
-			},
-		})
-			.then(() => {
-				const new_stations = stations.filter(
-					(station) => station.id !== ids
-				);
-				setStations(new_stations);
-			})
-			.catch((error) => alert(error));
-	};
-
 	// VALIDATIONS
 	/**
 	 * Detect if exists an station in state.
@@ -214,6 +215,9 @@ const ComponentsStations = () => {
 		return e.target.reportValidity();
 	};
 
+	/**
+	 * When the component is rendered, get stations
+	 */
 	useEffect(() => {
 		if (selectedSurveyContext.selectedSurveyId !== "") {
 			const APIStations = getStationsApi();
@@ -245,8 +249,8 @@ const ComponentsStations = () => {
 					deleteStation: deleteStation,
 					deleteHaul: deleteHaul,
 					createHaul: createHaul,
-					handleChangeStationFields: handleChangeStationFields,
-					handleSubmitEditStation: handleSubmitEditStation,
+					handleChangeStation: handleChangeStation,
+					editStation: editStation,
 					validateStationNumber: validateStationNumber,
 				}}
 			>
