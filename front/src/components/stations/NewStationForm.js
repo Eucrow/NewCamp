@@ -15,34 +15,27 @@ const NewStationForm = (props) => {
 	const selectedSurveyContext = useContext(SelectedSurveyContext);
 	const stationsContext = useContext(StationsContext);
 
-	const [station, setStation] = useState();
+	const [station, setStation] = useState({
+		station: "",
+		comment: "",
+		survey_id: selectedSurveyContext.selectedSurveyId,
+	});
 
 	const handleChange = (e) => {
 		const name = e.target.name;
 		const value = e.target.value;
 
-		setStation({
-			station: {
-				...station,
-				[name]: value,
-			},
-		});
+		setStation((prevStation) => ({
+			...prevStation,
+			[name]: value,
+		}));
 	};
-
-	useEffect(() => {
-		setStation({
-			station: {
-				...station,
-				survey_id: selectedSurveyContext.selectedSurveyId,
-			},
-		});
-	}, []);
 
 	const renderedContent = (
 		<form
 			className="wrapper form__row"
 			onSubmit={(e) => {
-				props.createStation(e, this.state.station);
+				props.createStation(e, station);
 				props.handleAdd(false);
 			}}
 		>
