@@ -10,8 +10,19 @@ class ViewCommon extends Component {
 		return (
 			<Fragment>
 				<div className="haul__cell">
-					<div className="haul__label">Haul:</div>
-					<div>{this.props.haul.haul}</div>
+					<label htmlFor="haul">Haul:</label>
+					<input
+						type="number"
+						name="haul"
+						id="haul"
+						disabled
+						min="1"
+						max="99"
+						maxLength="2"
+						size={2}
+						value={this.props.haul.haul || ""}
+						onChange={this.props.handleChangeCommon}
+					/>
 				</div>
 
 				<div className="haul__cell">

@@ -17,9 +17,13 @@ class EditCommon extends Component {
 				<div className="haul__cell">
 					<label htmlFor="haul">Haul:</label>
 					<input
-						type="text"
+						type="number"
 						name="haul"
 						id="haul"
+						min="1"
+						max="99"
+						maxLength="2"
+						size={2}
 						value={haul.haul || ""}
 						onChange={this.props.handleChangeCommon}
 					/>
@@ -28,13 +32,10 @@ class EditCommon extends Component {
 				{/* TODO: station and sampler can't be changed here becasue they are foreing keys*/}
 
 				<div className="haul__cell">
-					<label htmlFor="station">Station:</label>
-					{haul.station.station}
-				</div>
-				<div className="haul__cell">
 					<label htmlFor="sampler">Sampler:</label>
 					{haul.sampler.sampler}
 				</div>
+
 				{/* <div className="haul__cell">
 					<label htmlFor="gear">Gear:</label>
 					<select

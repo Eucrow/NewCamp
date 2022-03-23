@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
 
-import { Link } from "react-router-dom";
 import Haul from "./Haul";
 import NewHaul from "./new/NewHaul";
+
+// import UiButtonAdd from "../ui/UiButtonAdd";
 
 class Hauls extends Component {
 	/**
@@ -19,8 +20,6 @@ class Hauls extends Component {
 			add: false,
 		};
 
-		// The next api retrieve all the hauls. If a survey id is added at the end, retrieve only the
-		// hauls of this survey
 		this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/";
 
 		this.routeTrawlCatches = "Catches/haul/";
@@ -28,10 +27,11 @@ class Hauls extends Component {
 		this.changeAdd = this.changeAdd.bind(this);
 	}
 
+	/**
+	 * Build url api of all the hauls of a survey, using apiHauls and context.
+	 * @returns {character} url api.
+	 */
 	getHaulsApi() {
-		/**
-		 * Build url api of all the hauls of a survey, using apiHauls and context
-		 */
 		return this.context.surveySelector === null
 			? this.apiHauls
 			: this.apiHauls + this.context.surveySelector;
@@ -45,14 +45,14 @@ class Hauls extends Component {
 		});
 	}
 
+	/**
+	 * Method to render list of hauls
+	 * @returns {character} List of hauls in html.
+	 */
 	renderHauls() {
-		/**
-		 * Method to render list of hauls
-		 */
-
 		if (this.props.hauls) {
 			return (
-				<div className="haulsWrapper">
+				<div className="wrapper">
 					{this.props.hauls.map((haul) => {
 						return (
 							<Haul
@@ -74,6 +74,7 @@ class Hauls extends Component {
 			return (
 				<Fragment>
 					{this.renderHauls()}
+					{/* <UiButtonAdd handleAdd={this.changeAdd} text={"Add haul"} /> */}
 					<button
 						onClick={() => {
 							this.changeAdd(true);
