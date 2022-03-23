@@ -25,10 +25,12 @@ class Haul(models.Model):
 
 class Meteorology(models.Model):
     haul = models.OneToOneField('hauls.Haul', on_delete=models.CASCADE, related_name='meteo')
-    wind_direction = models.PositiveIntegerField(validators=[MaxValueValidator(360), MinValueValidator(0)], null=True,
+    wind_direction = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(360)], null=True,
                                                  blank=True)
-    wind_velocity = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
-    sea_state = models.PositiveIntegerField(null=True, blank=True)
+    wind_velocity = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(99.9)], max_digits=3,
+                                        decimal_places=1, null=True, blank=True)
+    sea_state = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(9)], null=True,
+                                            blank=True)
 
 
 class HaulTrawl(models.Model):
