@@ -9,6 +9,37 @@ class EditCommon extends Component {
 	 * @param {function} props.handleChangeCommonValid
 	 */
 
+	// constructor(props) {
+	// 	super(props);
+
+	// 	this.state = {
+	// 		samplers: [],
+	// 	};
+
+	// 	this.apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
+	// }
+
+	// When the component is rendered, get the samplers data to modify the field
+	// TODO: remove it:
+	// componentDidMount() {
+	// 	fetch(this.apiSamplers)
+	// 		.then((response) => {
+	// 			if (response.status > 400) {
+	// 				return this.setState(() => {
+	// 					return { placeholder: "Something went wrong!" };
+	// 				});
+	// 			}
+	// 			return response.json();
+	// 		})
+	// 		.then((samplers) => {
+	// 			this.setState(() => {
+	// 				return {
+	// 					samplers: samplers,
+	// 				};
+	// 			});
+	// 		});
+	// }
+
 	render() {
 		const haul = this.props.haul;
 
@@ -29,12 +60,34 @@ class EditCommon extends Component {
 					/>
 				</div>
 
-				{/* TODO: station and sampler can't be changed here becasue they are foreing keys*/}
-
 				<div className="haul__cell">
 					<label htmlFor="sampler">Sampler:</label>
-					{haul.sampler.sampler}
+					<input
+						name="sampler"
+						id="sampler"
+						disabled
+						value={haul.sampler.sampler}
+					/>
 				</div>
+
+				{/* TODO: station and sampler can't be changed here becasue they are foreing keys*/}
+				{/* <div className="haul__cell">
+					<label htmlFor="sampler">Sampler:</label>
+					<select
+						name="sampler"
+						id="sampler"
+						value={haul.sampler.sampler}
+						onChange={this.props.handleChangeCommon}
+					>
+						{this.state.samplers.map((sampler) => {
+							return (
+								<option key={sampler.id} value={sampler.id}>
+									{sampler.sampler}
+								</option>
+							);
+						})}
+					</select>
+				</div> */}
 
 				{/* <div className="haul__cell">
 					<label htmlFor="gear">Gear:</label>

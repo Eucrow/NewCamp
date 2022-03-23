@@ -21,28 +21,28 @@ class ViewCommon extends Component {
 						maxLength="2"
 						size={2}
 						value={this.props.haul.haul || ""}
-						onChange={this.props.handleChangeCommon}
 					/>
 				</div>
 
 				<div className="haul__cell">
-					<div className="haul__label">Station:</div>
-					<div>{this.props.haul.station.station}</div>
+					<label htmlFor="sampler">Sampler:</label>
+					<input
+						name="sampler"
+						id="sampler"
+						disabled
+						value={this.props.haul.sampler.sampler}
+					/>
 				</div>
 
 				<div className="haul__cell">
-					<div className="haul__label">Sampler:</div>
-					<div>{this.props.haul.sampler.sampler}</div>
-				</div>
-
-				{/* <div className="haul__cell">
-					<div className="haul__label">Gear:</div>
-					<div>{this.props.haul.gear.gear}</div>
-				</div> */}
-
-				<div className="haul__cell">
-					<div className="haul__label">Valid?</div>
-					<div>: {this.props.haul.valid}</div>
+					<label htmlFor="valid">Valid:</label>
+					<input
+						type="checkbox"
+						name="valid"
+						id="valid"
+						disabled
+						defaultChecked={this.props.haul.valid}
+					/>
 				</div>
 			</Fragment>
 		);
