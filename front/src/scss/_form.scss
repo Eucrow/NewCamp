@@ -18,7 +18,7 @@ input:disabled {
 	font-size: 1rem;
 	font-family: var(--normal-font);
 	color: var(--text-color);
-	min-height: 1.8rem;
+	// min-height: 1.8rem;
 }
 
 textarea:enabled,
@@ -29,7 +29,7 @@ input:enabled {
 	border: 1px solid var(--background-global-color);
 	padding: 2px 5px;
 	background-color: var(--background-global-color);
-	min-height: 1.8rem;
+	// min-height: 1.8rem;
 }
 
 textarea:focus,
@@ -55,7 +55,7 @@ input:invalid {
 	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: baseline;
-	min-height: 32px;
+	min-height: 2rem;
 }
 
 .form__cell {

@@ -45,7 +45,7 @@ class EditCommon extends Component {
 
 		return (
 			<Fragment>
-				<div className="haul__cell">
+				<div className="form__cell">
 					<label htmlFor="haul">Haul:</label>
 					<input
 						type="number"
@@ -60,7 +60,7 @@ class EditCommon extends Component {
 					/>
 				</div>
 
-				<div className="haul__cell">
+				<div className="form__cell">
 					<label htmlFor="sampler">Sampler:</label>
 					<input
 						name="sampler"
@@ -71,7 +71,7 @@ class EditCommon extends Component {
 				</div>
 
 				{/* TODO: station and sampler can't be changed here becasue they are foreing keys*/}
-				{/* <div className="haul__cell">
+				{/* <div className="form__cell">
 					<label htmlFor="sampler">Sampler:</label>
 					<select
 						name="sampler"
@@ -89,7 +89,7 @@ class EditCommon extends Component {
 					</select>
 				</div> */}
 
-				{/* <div className="haul__cell">
+				{/* <div className="form__cell">
 					<label htmlFor="gear">Gear:</label>
 					<select
 						id="gear"
@@ -107,7 +107,7 @@ class EditCommon extends Component {
 					</select>
 				</div> */}
 
-				<div className="haul__cell">
+				<div className="form__cell">
 					<label htmlFor="valid">Valid:</label>
 					<input
 						type="checkbox"

@@ -9,7 +9,7 @@ class ViewCommon extends Component {
 	render() {
 		return (
 			<Fragment>
-				<div className="haul__cell">
+				<div className="form__cell">
 					<label htmlFor="haul">Haul:</label>
 					<input
 						type="number"
@@ -24,7 +24,7 @@ class ViewCommon extends Component {
 					/>
 				</div>
 
-				<div className="haul__cell">
+				<div className="form__cell">
 					<label htmlFor="sampler">Sampler:</label>
 					<input
 						name="sampler"
@@ -34,7 +34,7 @@ class ViewCommon extends Component {
 					/>
 				</div>
 
-				<div className="haul__cell">
+				<div className="form__cell">
 					<label htmlFor="valid">Valid:</label>
 					<input
 						type="checkbox"

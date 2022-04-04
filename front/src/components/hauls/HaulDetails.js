@@ -158,9 +158,9 @@ class HaulDetails extends Component {
 			if (this.state.edit === false) {
 				return (
 					<Fragment>
-						<div className="haul__row">
+						<div className="form__row">
 							<ViewCommon haul={this.state.haul} />
-							<div className="haul__cell haul__cell--right">
+							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<button
 										className="buttonsWrapper__button"
@@ -181,10 +181,10 @@ class HaulDetails extends Component {
 								</div>
 							</div>
 						</div>
-						<div className="haul__row">
+						<div className="form__row">
 							<ViewMeteorology haul={this.state.haul} />
 						</div>
-						<div className="haul__row">
+						<div className="form__row">
 							<ViewTrawl haul={this.state.haul} />
 						</div>
 					</Fragment>
@@ -194,7 +194,7 @@ class HaulDetails extends Component {
 			if (this.state.edit === true) {
 				return (
 					<form>
-						<div className="haul__row">
+						<div className="form__row">
 							<EditCommon
 								haul={this.state.haul}
 								handleChangeCommonValid={
@@ -204,7 +204,7 @@ class HaulDetails extends Component {
 								gears={this.state.gears}
 							/>
 						</div>
-						<div className="haul__row">
+						<div className="form__row">
 							<EditMeteorology
 								haul={this.state.haul}
 								handleChangeMeteorology={
@@ -213,14 +213,14 @@ class HaulDetails extends Component {
 							/>
 						</div>
 
-						<div className="haul__row">
+						<div className="form__row">
 							<EditTrawl
 								haul={this.state.haul}
 								handleChangeTrawl={this.handleChangeTrawl}
 							/>
 						</div>
-						<div className="haul__row">
-							<div className="haul__cell haul__cell--right">
+						<div className="form__row">
+							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<button
 										className="buttonsWrapper__button"
