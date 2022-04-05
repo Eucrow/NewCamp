@@ -132,17 +132,14 @@ class NewHaul extends Component {
 			 * When the component is mounted, retrieve the posible stratum and sampler and save in state
 			 */
 
-			//First, get the stratification of the survey
 			const apiSurvey =
 				this.apiSurveyPartial + this.context.selectedSurveyId;
 
-			// const apiStrata =
-			// 	this.apiStrataPartial + this.context.surveySelector;
 			const apiSamplers = this.apiSamplers;
 			const apiGears = this.apiGears;
 
 			// TODO: Optimize fetchs
-			// Fetch survey
+			// Fetch strata (require previously fetch survey to get stratification).
 			fetch(apiSurvey)
 				.then((response) => {
 					if (response.status > 400) {
@@ -152,19 +149,6 @@ class NewHaul extends Component {
 					}
 					return response.json();
 				})
-				// .then((survey) => {
-				// 	this.setState(() => {
-				// 		return {
-				// 			survey: survey,
-				// 		};
-				// 	});
-				// })
-				// .then(() => {
-				// 	const apiStrata =
-				// 		this.apiStrataPartial +
-				// 		this.state.survey.stratification;
-				// 	return apiStrata;
-				// })
 				.then((survey) => {
 					const apiStrata =
 						this.apiStrataPartial + survey.stratification;
@@ -187,24 +171,6 @@ class NewHaul extends Component {
 							});
 						});
 				});
-
-			// Fetch strata
-			// fetch(apiStrata)
-			// 	.then((response) => {
-			// 		if (response.status > 400) {
-			// 			return this.setState(() => {
-			// 				return { placeholder: "Something went wrong!" };
-			// 			});
-			// 		}
-			// 		return response.json();
-			// 	})
-			// 	.then((strata) => {
-			// 		this.setState(() => {
-			// 			return {
-			// 				strata: strata,
-			// 			};
-			// 		});
-			// 	});
 
 			// Fetch samplers
 			fetch(apiSamplers)
