@@ -70,7 +70,7 @@ class EditCommon extends Component {
 					/>
 				</div>
 
-				{/* TODO: station and sampler can't be changed here becasue they are foreing keys*/}
+				{/* TODO: station and gear can't be changed here becasue they are foreing keys*/}
 				{/* <div className="form__cell">
 					<label htmlFor="sampler">Sampler:</label>
 					<select

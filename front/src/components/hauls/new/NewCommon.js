@@ -24,7 +24,7 @@ class NewCommon extends Component {
 					onChange={this.props.handleChange}
 				/>
 
-				<label htmlFor="stratum_id">Stratum: </label>
+				<label htmlFor="stratum_id">Stratum:</label>
 				<select
 					id="stratum_id"
 					name="stratum"

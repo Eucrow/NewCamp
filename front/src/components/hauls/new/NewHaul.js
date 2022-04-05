@@ -3,6 +3,8 @@ import React, { Component, Fragment } from "react";
 import NewCommon from "./NewCommon";
 import NewSpecific from "./NewSpecific.js";
 
+import SelectedSurveyContext from "../../../contexts/SelectedSuveryContext";
+
 class NewHaul extends Component {
 	/**
 	 * New haul component
@@ -10,6 +12,9 @@ class NewHaul extends Component {
 	 * @param {method} props.changeAdd
 	 * @param {method} props.createHaul
 	 */
+
+	static contextType = SelectedSurveyContext;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -22,10 +27,12 @@ class NewHaul extends Component {
 				trawl_characteristics: {},
 				hydrography_characteristics: {},
 			},
+			survey: {},
 			strata: [],
 			samplers: [],
 			gears: [],
 		};
+		this.apiSurveyPartial = "http://127.0.0.1:8000/api/1.0/survey/";
 		this.apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
 		this.apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
 		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawl/basic/";
@@ -124,14 +131,19 @@ class NewHaul extends Component {
 			/**
 			 * When the component is mounted, retrieve the posible stratum and sampler and save in state
 			 */
-			const apiStrata =
-				this.apiStrataPartial + this.context.surveySelector;
+
+			//First, get the stratification of the survey
+			const apiSurvey =
+				this.apiSurveyPartial + this.context.selectedSurveyId;
+
+			// const apiStrata =
+			// 	this.apiStrataPartial + this.context.surveySelector;
 			const apiSamplers = this.apiSamplers;
 			const apiGears = this.apiGears;
 
 			// TODO: Optimize fetchs
-			// Fetch strata
-			fetch(apiStrata)
+			// Fetch survey
+			fetch(apiSurvey)
 				.then((response) => {
 					if (response.status > 400) {
 						return this.setState(() => {
@@ -140,13 +152,59 @@ class NewHaul extends Component {
 					}
 					return response.json();
 				})
-				.then((strata) => {
-					this.setState(() => {
-						return {
-							strata: strata,
-						};
-					});
+				// .then((survey) => {
+				// 	this.setState(() => {
+				// 		return {
+				// 			survey: survey,
+				// 		};
+				// 	});
+				// })
+				// .then(() => {
+				// 	const apiStrata =
+				// 		this.apiStrataPartial +
+				// 		this.state.survey.stratification;
+				// 	return apiStrata;
+				// })
+				.then((survey) => {
+					const apiStrata =
+						this.apiStrataPartial + survey.stratification;
+					fetch(apiStrata)
+						.then((response) => {
+							if (response.status > 400) {
+								return this.setState(() => {
+									return {
+										placeholder: "Something went wrong!",
+									};
+								});
+							}
+							return response.json();
+						})
+						.then((strata) => {
+							this.setState(() => {
+								return {
+									strata: strata,
+								};
+							});
+						});
 				});
+
+			// Fetch strata
+			// fetch(apiStrata)
+			// 	.then((response) => {
+			// 		if (response.status > 400) {
+			// 			return this.setState(() => {
+			// 				return { placeholder: "Something went wrong!" };
+			// 			});
+			// 		}
+			// 		return response.json();
+			// 	})
+			// 	.then((strata) => {
+			// 		this.setState(() => {
+			// 			return {
+			// 				strata: strata,
+			// 			};
+			// 		});
+			// 	});
 
 			// Fetch samplers
 			fetch(apiSamplers)
