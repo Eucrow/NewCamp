@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 import ViewCommon from "./view/ViewCommon";
 import HaulDetails from "./HaulDetails";
@@ -44,9 +44,9 @@ class Haul extends Component {
 	renderContent() {
 		if (this.state.detail === false) {
 			return (
-				<div className="haul__row">
+				<div className="form__row">
 					<ViewCommon haul={this.props.haul} />
-					<div className="haul__cell haul__cell--right">
+					<div className="form__cell form__cell--right">
 						<div className="buttonsWrapper">
 							<this.UiShowDetailButton />
 							<button
@@ -61,7 +61,7 @@ class Haul extends Component {
 							>
 								Delete haul
 							</button>
-							<Link
+							{/* <Link
 								to={{
 									pathname:
 										this.routeTrawlCatches +
@@ -71,7 +71,7 @@ class Haul extends Component {
 								}}
 							>
 								view catches
-							</Link>
+							</Link> */}
 						</div>
 					</div>
 				</div>

@@ -9,29 +9,40 @@ class ViewCommon extends Component {
 	render() {
 		return (
 			<Fragment>
-				<div className="haul__cell">
-					<div className="haul__label">Haul:</div>
-					<div>{this.props.haul.haul}</div>
+				<div className="form__cell">
+					<label htmlFor="haul">Haul:</label>
+					<input
+						type="number"
+						name="haul"
+						id="haul"
+						disabled
+						min="1"
+						max="99"
+						maxLength="2"
+						size={2}
+						value={this.props.haul.haul || ""}
+					/>
 				</div>
 
-				<div className="haul__cell">
-					<div className="haul__label">Station:</div>
-					<div>{this.props.haul.station.station}</div>
+				<div className="form__cell">
+					<label htmlFor="sampler">Sampler:</label>
+					<input
+						name="sampler"
+						id="sampler"
+						disabled
+						value={this.props.haul.sampler.sampler}
+					/>
 				</div>
 
-				<div className="haul__cell">
-					<div className="haul__label">Sampler:</div>
-					<div>{this.props.haul.sampler.sampler}</div>
-				</div>
-
-				{/* <div className="haul__cell">
-					<div className="haul__label">Gear:</div>
-					<div>{this.props.haul.gear.gear}</div>
-				</div> */}
-
-				<div className="haul__cell">
-					<div className="haul__label">Valid?</div>
-					<div>: {this.props.haul.valid}</div>
+				<div className="form__cell">
+					<label htmlFor="valid">Valid:</label>
+					<input
+						type="checkbox"
+						name="valid"
+						id="valid"
+						disabled
+						defaultChecked={this.props.haul.valid}
+					/>
 				</div>
 			</Fragment>
 		);

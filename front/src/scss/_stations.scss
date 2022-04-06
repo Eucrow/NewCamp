@@ -11,14 +11,6 @@
 	}
 }
 
-.station__row {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-items: baseline;
-	min-height: 32px;
-}
-
 .station__cell {
 	display: inline-flex;
 	flex-direction: row;

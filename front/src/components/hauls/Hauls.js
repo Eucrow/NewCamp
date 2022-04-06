@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from "react";
 
-import { Link } from "react-router-dom";
 import Haul from "./Haul";
 import NewHaul from "./new/NewHaul";
+
+import UiButtonAdd from "../ui/UiButtonAdd";
+import UiButtonCancel from "../ui/UiButtonCancel";
 
 class Hauls extends Component {
 	/**
@@ -19,8 +21,6 @@ class Hauls extends Component {
 			add: false,
 		};
 
-		// The next api retrieve all the hauls. If a survey id is added at the end, retrieve only the
-		// hauls of this survey
 		this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/";
 
 		this.routeTrawlCatches = "Catches/haul/";
@@ -28,15 +28,20 @@ class Hauls extends Component {
 		this.changeAdd = this.changeAdd.bind(this);
 	}
 
+	/**
+	 * Build url api of all the hauls of a survey, using apiHauls and context.
+	 * @returns {character} url api.
+	 */
 	getHaulsApi() {
-		/**
-		 * Build url api of all the hauls of a survey, using apiHauls and context
-		 */
 		return this.context.surveySelector === null
 			? this.apiHauls
 			: this.apiHauls + this.context.surveySelector;
 	}
 
+	/**
+	 * Manage the state of variable 'add' to show or not he NewHaul component.
+	 * @param {boolean} add True if NewHaul component must be showed. False if doesn't.
+	 */
 	changeAdd(add) {
 		this.setState(() => {
 			return {
@@ -45,14 +50,14 @@ class Hauls extends Component {
 		});
 	}
 
+	/**
+	 * Method to render list of hauls
+	 * @returns {character} List of hauls in html.
+	 */
 	renderHauls() {
-		/**
-		 * Method to render list of hauls
-		 */
-
 		if (this.props.hauls) {
 			return (
-				<div className="haulsWrapper">
+				<div className="wrapper">
 					{this.props.hauls.map((haul) => {
 						return (
 							<Haul
@@ -74,13 +79,7 @@ class Hauls extends Component {
 			return (
 				<Fragment>
 					{this.renderHauls()}
-					<button
-						onClick={() => {
-							this.changeAdd(true);
-						}}
-					>
-						Add haul
-					</button>
+					<UiButtonAdd handleAdd={this.changeAdd} text={"Add haul"} />
 				</Fragment>
 			);
 		} else if (this.state.add === true) {
@@ -91,13 +90,10 @@ class Hauls extends Component {
 						changeAdd={this.changeAdd}
 						createHaul={this.props.createHaul}
 					/>
-					<button
-						onClick={() => {
-							this.changeAdd(false);
-						}}
-					>
-						Cancel
-					</button>
+					<UiButtonCancel
+						handleMethod={this.changeAdd}
+						text={"Cancel"}
+					/>
 					{this.renderHauls()}
 				</Fragment>
 			);

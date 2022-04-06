@@ -23,18 +23,6 @@ const ComponentsStations = () => {
 	const apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get, update or add station
 	const apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
 
-	/**
-	 * Build url api of all the stations of a survey, using apiHauls and SelectedSurveyContext
-	 * @returns url api
-	 */
-	const getStationsApi = () => {
-		return selectedSurveyContext.selectedSurveyId === null
-			? apiStationsPartial
-			: apiStationsPartial +
-					"hauls/" +
-					selectedSurveyContext.selectedSurveyId;
-	};
-
 	const createStation = (event, station) => {
 		event.preventDefault();
 
@@ -219,6 +207,18 @@ const ComponentsStations = () => {
 	 * When the component is rendered, get stations
 	 */
 	useEffect(() => {
+		/**
+		 * Build url api of all the stations of a survey, using apiHauls and SelectedSurveyContext
+		 * @returns url api
+		 */
+		const getStationsApi = () => {
+			return selectedSurveyContext.selectedSurveyId === null
+				? apiStationsPartial
+				: apiStationsPartial +
+						"hauls/" +
+						selectedSurveyContext.selectedSurveyId;
+		};
+
 		if (selectedSurveyContext.selectedSurveyId !== "") {
 			const APIStations = getStationsApi();
 
@@ -275,7 +275,11 @@ const ComponentsStations = () => {
 
 						{stations.map((station) => {
 							return (
-								<Station key={station.id} station={station} />
+								<Station
+									key={station.id}
+									station={station}
+									createHaul={createHaul}
+								/>
 							);
 						})}
 					</div>
