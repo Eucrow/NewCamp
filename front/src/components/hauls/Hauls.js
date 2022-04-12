@@ -23,8 +23,6 @@ class Hauls extends Component {
 
 		this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/";
 
-		this.routeTrawlCatches = "Catches/haul/";
-
 		this.changeAdd = this.changeAdd.bind(this);
 	}
 
@@ -85,6 +83,7 @@ class Hauls extends Component {
 		} else if (this.state.add === true) {
 			return (
 				<Fragment>
+					{this.renderHauls()}
 					<NewHaul
 						station_id={this.props.station_id}
 						changeAdd={this.changeAdd}
@@ -94,7 +93,6 @@ class Hauls extends Component {
 						handleMethod={this.changeAdd}
 						text={"Cancel"}
 					/>
-					{this.renderHauls()}
 				</Fragment>
 			);
 		}

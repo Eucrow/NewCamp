@@ -128,8 +128,9 @@ const ComponentsStations = () => {
 			.then((h) => {
 				const new_stations = stations.map((station) => {
 					if (station.id === parseInt(haul.station.id)) {
-						const new_hauls = [...station.hauls, h];
-						station.hauls = new_hauls;
+						station.hauls
+							? (station.hauls = [...station.hauls, h])
+							: (station.hauls = [h]);
 						return station;
 					} else {
 						return station;
@@ -273,15 +274,17 @@ const ComponentsStations = () => {
 							handleAdd={setAdd}
 						></StationsButtonBar>
 
-						{stations.map((station) => {
-							return (
-								<Station
-									key={station.id}
-									station={station}
-									createHaul={createHaul}
-								/>
-							);
-						})}
+						{stations
+							? stations.map((station) => {
+									return (
+										<Station
+											key={station.id}
+											station={station}
+											createHaul={createHaul}
+										/>
+									);
+							  })
+							: ""}
 					</div>
 				</main>
 			</StationsContext.Provider>
