@@ -5,6 +5,8 @@ import NewSpecific from "./NewSpecific.js";
 
 import SelectedSurveyContext from "../../../contexts/SelectedSuveryContext";
 
+import UiButtonSave from "../../ui/UiButtonSave";
+
 class NewHaul extends Component {
 	/**
 	 * New haul component
@@ -213,7 +215,13 @@ class NewHaul extends Component {
 	render() {
 		return (
 			<Fragment>
-				<form>
+				<form
+					className="wrapper"
+					onSubmit={(e) => {
+						this.props.createHaul(e, this.state.haul);
+						this.props.changeAdd(false);
+					}}
+				>
 					<NewCommon
 						haul={this.state.haul}
 						handleChange={this.handleChange}
@@ -228,15 +236,7 @@ class NewHaul extends Component {
 						handleChangeHydrography={this.handleChangeHydrography}
 						sampler_id={this.state.haul.sampler.id}
 					/>
-
-					<input
-						type="submit"
-						value="Save Haul"
-						onClick={(e) => {
-							this.props.createHaul(e, this.state.haul);
-							this.props.changeAdd(false);
-						}}
-					/>
+					<UiButtonSave buttonText="Save Haul" />
 				</form>
 			</Fragment>
 		);
