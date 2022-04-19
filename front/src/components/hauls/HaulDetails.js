@@ -12,6 +12,9 @@ import EditMeteorology from "./edit/EditMeteorology";
 import EditTrawl from "./edit/EditTrawl";
 import EditHydrography from "./edit/EditHydrography";
 
+import UiButtonSave from "../ui/UiButtonSave";
+import UiButtonCancel from "../ui/UiButtonCancel";
+
 class HaulDetails extends Component {
 	/**
 	 * View haul detail component.
@@ -193,7 +196,12 @@ class HaulDetails extends Component {
 
 			if (this.state.edit === true) {
 				return (
-					<form>
+					<form
+						onSubmit={(e) => {
+							this.handleSubmit(e);
+							this.changeIsEdit(false);
+						}}
+					>
 						<div className="form__row">
 							<EditCommon
 								haul={this.state.haul}
@@ -204,6 +212,7 @@ class HaulDetails extends Component {
 								gears={this.state.gears}
 							/>
 						</div>
+
 						<div className="form__row">
 							<EditMeteorology
 								haul={this.state.haul}
@@ -219,25 +228,15 @@ class HaulDetails extends Component {
 								handleChangeTrawl={this.handleChangeTrawl}
 							/>
 						</div>
+
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
-									<button
-										className="buttonsWrapper__button"
-										onClick={() => {
-											this.handleSubmit();
-										}}
-									>
-										Save Haul
-									</button>
-									<button
-										className="buttonsWrapper__button"
-										onClick={() => {
-											this.changeIsEdit(false);
-										}}
-									>
-										Cancel Edition
-									</button>
+									<UiButtonSave buttonText="Save Haul" />
+									<UiButtonCancel
+										buttonText="Cancel"
+										handleMethod={this.changeIsEdit}
+									/>
 								</div>
 							</div>
 						</div>
@@ -253,11 +252,10 @@ class HaulDetails extends Component {
 						<ViewCommon haul={this.state.haul} />
 						<ViewHydrography haul={this.state.haul} />
 						<button
-							onClick={() => {
-								this.changeIsEdit(true);
-							}}
+							type="submit"
+							className="buttonsWrapper__button"
 						>
-							Edit
+							Save
 						</button>
 						<button
 							onClick={() => {
