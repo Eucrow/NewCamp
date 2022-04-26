@@ -163,6 +163,14 @@ class HaulDetails extends Component {
 					<Fragment>
 						<div className="form__row">
 							<ViewCommon haul={this.state.haul} />
+						</div>
+						<div className="form__row">
+							<ViewMeteorology haul={this.state.haul} />
+						</div>
+						<div className="form__row">
+							<ViewTrawl haul={this.state.haul} />
+						</div>
+						<div className="form__row">
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<button
@@ -183,12 +191,6 @@ class HaulDetails extends Component {
 									</button>
 								</div>
 							</div>
-						</div>
-						<div className="form__row">
-							<ViewMeteorology haul={this.state.haul} />
-						</div>
-						<div className="form__row">
-							<ViewTrawl haul={this.state.haul} />
 						</div>
 					</Fragment>
 				);

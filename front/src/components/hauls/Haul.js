@@ -44,7 +44,7 @@ class Haul extends Component {
 	renderContent() {
 		if (this.state.detail === false) {
 			return (
-				<div className="form__row">
+				<div className="wrapper form__row">
 					<ViewCommon haul={this.props.haul} />
 					<div className="form__cell form__cell--right">
 						<div className="buttonsWrapper">
@@ -80,10 +80,12 @@ class Haul extends Component {
 
 		if (this.state.detail === true) {
 			return (
-				<HaulDetails
-					haul={this.props.haul}
-					changeDetail={this.changeDetail}
-				/>
+				<div className="wrapper">
+					<HaulDetails
+						haul={this.props.haul}
+						changeDetail={this.changeDetail}
+					/>
+				</div>
 			);
 		}
 	}

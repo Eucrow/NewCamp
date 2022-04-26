@@ -55,7 +55,7 @@ class Hauls extends Component {
 	renderHauls() {
 		if (this.props.hauls) {
 			return (
-				<div className="wrapper">
+				<div>
 					{this.props.hauls.map((haul) => {
 						return (
 							<Haul
