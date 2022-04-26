@@ -15,6 +15,9 @@ import EditHydrography from "./edit/EditHydrography";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
+import UiButtonHideDetails from "../ui/UiButtonHideDetails";
+import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
+
 class HaulDetails extends Component {
 	/**
 	 * View haul detail component.
@@ -173,22 +176,17 @@ class HaulDetails extends Component {
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
-									<button
-										className="buttonsWrapper__button"
-										onClick={() => {
-											this.props.changeDetail(false);
-										}}
-									>
-										Hide detail
-									</button>
-									<button
-										className="buttonsWrapper__button"
-										onClick={() => {
-											this.changeIsEdit(true);
-										}}
-									>
-										Edit
-									</button>
+									<UiButtonBooleanHandle
+										buttonText={"Hide detail"}
+										handleMethod={this.props.changeDetail}
+										newBoolean={false}
+									></UiButtonBooleanHandle>
+
+									<UiButtonBooleanHandle
+										buttonText={"Edit"}
+										handleMethod={this.changeIsEdit}
+										newBoolean={true}
+									></UiButtonBooleanHandle>
 								</div>
 							</div>
 						</div>
