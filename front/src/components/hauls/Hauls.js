@@ -61,7 +61,7 @@ class Hauls extends Component {
 							<Haul
 								key={haul.id}
 								haul={haul}
-								deleteHaul={this.deleteHaul}
+								deleteHaul={this.props.deleteHaul}
 							/>
 						);
 					})}
