@@ -28,6 +28,9 @@
 // css stations
 @use "./scss/stations";
 
+// css characteristics grid
+@use "./scss/characteristicsGrid";
+
 // css custom properties
 :root {
 	//FONT VARIABLES
@@ -106,7 +109,6 @@ main {
 // fieldset
 fieldset.wrapper {
 	width: 100%;
-	padding-left: 5px;
 }
 
 // hauls

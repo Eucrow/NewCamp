@@ -7,21 +7,6 @@ import React, { Component } from "react";
  * @param {boolean} newBoolean The new boolean value of the variable
  */
 
-// class UiButtonBooleanHandle extends Component {
-// 	render() {
-// 		return (
-// 			<button
-// 				className="buttonsWrapper__button"
-// 				onClick={() => {
-// 					this.props.handleMethod(this.props.newBoolean);
-// 				}}
-// 			>
-// 				{this.props.buttonText}
-// 			</button>
-// 		);
-// 	}
-// }
-
 const UiButtonBooleanHandle = ({ buttonText, handleMethod, newBoolean }) => {
 	const renderedButton = (
 		<button

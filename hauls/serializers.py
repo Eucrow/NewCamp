@@ -118,7 +118,7 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
 
             # Second, save the instance validated (this does not have the meteo and trawl_characteristics data)
             for attr, value in validated_data.items():
-                print(attr, value)
+                # print(attr, value)
                 setattr(instance, attr, value)
 
             instance.save()
@@ -126,14 +126,14 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
             # Then, create a meteo instance, fill with the validated meto data, and save it
             meteo = instance.meteo
             for attr, value in meteo_datas.items():
-                print(attr, value)
+                # print(attr, value)
                 setattr(meteo, attr, value)
             meteo.save()
 
             # And do the same with trawl_characteristics data
             trawl_characteristics = instance.trawl_characteristics
             for attr, value in trawl_characteristics_datas.items():
-                print(attr, value)
+                # print(attr, value)
                 setattr(trawl_characteristics, attr, value)
             trawl_characteristics.save()
 

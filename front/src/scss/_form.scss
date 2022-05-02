@@ -53,7 +53,7 @@ input:invalid {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: flex-start;
 	align-items: baseline;
 	min-height: 2rem;
 }
@@ -63,15 +63,16 @@ input:invalid {
 	flex-direction: row;
 	align-items: baseline;
 	padding-right: 10px;
+
+	&:last-child {
+		padding-right: 0px;
+	}
+
 }
 
 // cell aligned to the right
 .form__cell--right {
 	margin-left: auto;
-}
-
-.form__cell:last-child {
-	padding-right: 0px;
 }
 
 // a div thia a class field to maintain together a label with an input
@@ -97,6 +98,7 @@ input:invalid {
 	resize: none;
 	border: 0px;
 }
+
 
 // Input without spinners
 /* Chrome, Safari, Edge, Opera */
