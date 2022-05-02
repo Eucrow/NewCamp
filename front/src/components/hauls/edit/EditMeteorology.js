@@ -30,7 +30,7 @@ class EditMeteorology extends Component {
 				</div>
 				<div className="form__cell">
 					<label htmlFor="wind_velocity">
-						Wind Velocity (knots):
+						Wind velocity (knots):
 					</label>
 					<input
 						type="number"
@@ -46,7 +46,9 @@ class EditMeteorology extends Component {
 					/>
 				</div>
 				<div className="form__cell">
-					<label htmlFor="sea_state">Sea State:</label>
+					<label htmlFor="sea_state">
+						Sea state (Douglas scale):
+					</label>
 					<input
 						type="number"
 						name="sea_state"
