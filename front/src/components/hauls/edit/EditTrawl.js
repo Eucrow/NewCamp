@@ -57,7 +57,7 @@ class EditTrawl extends Component {
 						className="characteristicsGrid__colName"
 						aria-hidden="true"
 					>
-						Depth:
+						Depth (m):
 					</div>
 					<div></div>
 
@@ -67,7 +67,7 @@ class EditTrawl extends Component {
 						className="characteristicsGrid__rowName"
 						aria-hidden="true"
 					>
-						Shooting
+						Shooting:
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
@@ -140,7 +140,7 @@ class EditTrawl extends Component {
 						className="characteristicsGrid__rowName"
 						aria-hidden="true"
 					>
-						Hauling
+						Hauling:
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
@@ -232,8 +232,8 @@ class EditTrawl extends Component {
 							id="bottom_latitude"
 							min={0}
 							max={90}
-							maxLength={10}
-							size={10}
+							maxLength={6}
+							size={6}
 							step={0.0001}
 							value={
 								haul.trawl_characteristics.bottom_latitude || ""
@@ -344,7 +344,7 @@ class EditTrawl extends Component {
 				</div>
 				<div className="form__row">
 					<label className="field">
-						Otte Boards Distance (m):
+						Otter Boards Distance (m):
 						<input
 							type="number"
 							name="otter_boards_distance"
