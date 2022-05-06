@@ -9,7 +9,7 @@ class ComponentsHaulTrawl extends Component {
 	render() {
 		const haul = this.props.haul;
 		return (
-			<fieldset class="wrapper">
+			<fieldset className="wrapper">
 				<legend>Trawl characteristics:</legend>
 				<div className="characteristicsGrid form__row">
 					{/* first row */}

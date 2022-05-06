@@ -350,7 +350,7 @@ class EditTrawl extends Component {
 							name="otter_boards_distance"
 							id="otter_boards_distance"
 							min={0}
-							max={99}
+							max={999}
 							maxLength={4}
 							size={4}
 							step={0.1}

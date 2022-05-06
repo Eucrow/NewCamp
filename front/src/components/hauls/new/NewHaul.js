@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 
-import NewCommon from "./NewCommon";
-import NewSpecific from "./NewSpecific.js";
-
 import SelectedSurveyContext from "../../../contexts/SelectedSuveryContext";
+
+import NewCommonDetail from "./NewCommonDetail";
+import NewSpecific from "./NewSpecific.js";
 
 import UiButtonSave from "../../ui/UiButtonSave";
 
@@ -222,7 +222,7 @@ class NewHaul extends Component {
 						this.props.changeAdd(false);
 					}}
 				>
-					<NewCommon
+					<NewCommonDetail
 						haul={this.state.haul}
 						handleChange={this.handleChange}
 						handleChangeNestedIds={this.handleChangeNestedIds}

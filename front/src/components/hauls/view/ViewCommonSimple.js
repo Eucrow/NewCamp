@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 
-class ViewCommon extends Component {
+class ViewCommonSimple extends Component {
 	/**
 	 * Component of the common part of the haul form.
 	 * @param {object} props.haul
@@ -9,8 +9,8 @@ class ViewCommon extends Component {
 	render() {
 		return (
 			<Fragment>
-				<div className="form__cell">
-					<label htmlFor="haul">Haul:</label>
+				<label className="form__cell">
+					Haul:
 					<input
 						type="number"
 						name="haul"
@@ -20,22 +20,24 @@ class ViewCommon extends Component {
 						max="99"
 						maxLength="2"
 						size={2}
-						value={this.props.haul.haul || ""}
+						value={this.props.haul.haul}
 					/>
-				</div>
+					{console.log(this.props.haul)}
+				</label>
 
-				<div className="form__cell">
-					<label htmlFor="sampler">Sampler:</label>
+				<label className="form__cell">
+					Sampler:
 					<input
+						id="sampler_id"
 						name="sampler"
-						id="sampler"
+						className="select__normalWidth"
 						disabled
 						value={this.props.haul.sampler.sampler}
 					/>
-				</div>
+				</label>
 
-				<div className="form__cell">
-					<label htmlFor="valid">Valid:</label>
+				<label className="form__cell">
+					Valid:
 					<input
 						type="checkbox"
 						name="valid"
@@ -43,10 +45,10 @@ class ViewCommon extends Component {
 						disabled
 						defaultChecked={this.props.haul.valid}
 					/>
-				</div>
+				</label>
 			</Fragment>
 		);
 	}
 }
 
-export default ViewCommon;
+export default ViewCommonSimple;

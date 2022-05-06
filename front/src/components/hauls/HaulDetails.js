@@ -1,13 +1,13 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import update from "immutability-helper";
 
-import ViewCommon from "./view/ViewCommon";
+import ViewCommonDetail from "./view/ViewCommonDetail";
 import ViewMeteorology from "./view/ViewMeteorology";
 import ViewTrawl from "./view/ViewTrawl";
 import ViewHydrography from "./view/ViewHydrography";
 
-import EditCommon from "./edit/EditCommon";
+import EditCommonDetail from "./edit/EditCommonDetail";
 import EditMeteorology from "./edit/EditMeteorology";
 import EditTrawl from "./edit/EditTrawl";
 import EditHydrography from "./edit/EditHydrography";
@@ -15,13 +15,15 @@ import EditHydrography from "./edit/EditHydrography";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
-import UiButtonHideDetails from "../ui/UiButtonHideDetails";
 import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
 
 class HaulDetails extends Component {
 	/**
 	 * View haul detail component.
 	 * @param {object} props.haul
+	 * @param {object} props.strata
+	 * @param {object} props.samplers
+	 * @param {object} props.gears
 	 */
 
 	constructor(props) {
@@ -35,8 +37,6 @@ class HaulDetails extends Component {
 				station: {},
 				sampler: {},
 			},
-			gears: [],
-
 			edit: false,
 		};
 
@@ -45,11 +45,11 @@ class HaulDetails extends Component {
 		this.apiHydrographyHaul =
 			"http://127.0.0.1:8000/api/1.0/haul/hydrography/" +
 			this.props.haul.id;
-		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawl/basic/";
 
 		this.changeIsEdit = this.changeIsEdit.bind(this);
 		this.handleChangeCommon = this.handleChangeCommon.bind(this);
 		this.handleChangeCommonValid = this.handleChangeCommonValid.bind(this);
+		this.handleChangeNestedIds = this.handleChangeNestedIds.bind(this);
 		this.handleChangeMeteorology = this.handleChangeMeteorology.bind(this);
 		this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
 		this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
@@ -86,6 +86,20 @@ class HaulDetails extends Component {
 
 		this.setState({
 			haul: newHaulState,
+		});
+	}
+
+	handleChangeNestedIds(event) {
+		const name = event.target.name;
+		const value = event.target.value;
+
+		this.setState({
+			haul: {
+				...this.state.haul,
+				[name]: {
+					id: value,
+				},
+			},
 		});
 	}
 
@@ -163,9 +177,9 @@ class HaulDetails extends Component {
 		if (this.state.haul.sampler.id === 1) {
 			if (this.state.edit === false) {
 				return (
-					<Fragment>
+					<form disabled>
 						<div className="form__row">
-							<ViewCommon haul={this.state.haul} />
+							<ViewCommonDetail haul={this.state.haul} />
 						</div>
 						<div className="form__row">
 							<ViewMeteorology haul={this.state.haul} />
@@ -190,7 +204,7 @@ class HaulDetails extends Component {
 								</div>
 							</div>
 						</div>
-					</Fragment>
+					</form>
 				);
 			}
 
@@ -203,13 +217,18 @@ class HaulDetails extends Component {
 						}}
 					>
 						<div className="form__row">
-							<EditCommon
+							<EditCommonDetail
 								haul={this.state.haul}
 								handleChangeCommonValid={
 									this.handleChangeCommonValid
 								}
 								handleChangeCommon={this.handleChangeCommon}
-								gears={this.state.gears}
+								handleChangeNestedIds={
+									this.handleChangeNestedIds
+								}
+								strata={this.props.strata}
+								samplers={this.props.samplers}
+								gears={this.props.gears}
 							/>
 						</div>
 
@@ -249,7 +268,7 @@ class HaulDetails extends Component {
 			if (this.state.edit === false) {
 				return (
 					<div>
-						<ViewCommon haul={this.state.haul} />
+						<ViewCommonDetail haul={this.state.haul} />
 						<ViewHydrography haul={this.state.haul} />
 						<button
 							type="submit"
@@ -271,7 +290,7 @@ class HaulDetails extends Component {
 			if (this.state.edit === true) {
 				return (
 					<div>
-						<EditCommon
+						<EditCommonDetail
 							haul={this.state.haul}
 							handleChangeCommonValid={
 								this.handleChangeCommonValid
@@ -325,24 +344,6 @@ class HaulDetails extends Component {
 				this.setState(() => {
 					return {
 						haul,
-					};
-				});
-			});
-
-		// Fetch gears to use in imput fields.
-		fetch(this.apiGears)
-			.then((response) => {
-				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
-					});
-				}
-				return response.json();
-			})
-			.then((gears) => {
-				this.setState(() => {
-					return {
-						gears: gears,
 					};
 				});
 			});

@@ -19,12 +19,13 @@ class HaulSerializer(serializers.ModelSerializer):
     Haul serializer to use with StationsHaulsSerializer.
     Cannot import a similar haul serializer from Haul app due to problems with circular imports.
     '''
+
     # TODO: The sampler field return all the fields of the Sampler model. Try to minimize it:
     #  https://www.django-rest-framework.org/api-guide/serializers/#specifying-nested-serialization
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'gear', 'valid', 'sampler', 'station']
+        fields = ['id', 'haul', 'gear', 'valid', 'sampler', 'station', 'stratum']
         depth = 1
 
 
@@ -37,4 +38,3 @@ class StationsHaulsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
         fields = ['id', 'station', 'comment', 'hauls', ]
-

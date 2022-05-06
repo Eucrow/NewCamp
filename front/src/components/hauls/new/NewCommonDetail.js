@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class NewCommon extends Component {
+class NewCommonDetail extends Component {
 	/**
 	 * Component of the common part of the haul form.
 	 * @param {object} props.haul
@@ -93,4 +93,4 @@ class NewCommon extends Component {
 	}
 }
 
-export default NewCommon;
+export default NewCommonDetail;

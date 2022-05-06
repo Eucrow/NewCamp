@@ -57,6 +57,7 @@
 
 	//global
 	--background-global-color: #f2f3f0;
+	// --text-color: var(--grey-gradient-1);
 	--text-color: black;
 	--highlight-text-color: var(--blue-gradient-1);
 
@@ -85,6 +86,10 @@ html {
 	color: var(--text-color);
 	font-family: var(--normal-font);
 }
+
+// select {
+// 	font-family: var(--normal-font);
+// }
 
 h1,
 h2,

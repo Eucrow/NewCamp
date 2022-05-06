@@ -2,13 +2,16 @@ import React, { Component } from "react";
 
 // import { Link } from "react-router-dom";
 
-import ViewCommon from "./view/ViewCommon";
+import ViewCommonSimple from "./view/ViewCommonSimple";
 import HaulDetails from "./HaulDetails";
 
 class Haul extends Component {
 	/**
 	 * Haul component
 	 * @param {array} props.haul: haul.
+	 * @param {object} props.strata
+	 * @param {object} props.samplers
+	 * @param {object} props.gears
 	 */
 	constructor(props) {
 		super(props);
@@ -45,7 +48,7 @@ class Haul extends Component {
 		if (this.state.detail === false) {
 			return (
 				<div className="wrapper form__row">
-					<ViewCommon haul={this.props.haul} />
+					<ViewCommonSimple haul={this.props.haul} />
 					<div className="form__cell form__cell--right">
 						<div className="buttonsWrapper">
 							<this.UiShowDetailButton />
@@ -84,6 +87,9 @@ class Haul extends Component {
 					<HaulDetails
 						haul={this.props.haul}
 						changeDetail={this.changeDetail}
+						strata={this.props.strata}
+						samplers={this.props.samplers}
+						gears={this.props.gears}
 					/>
 				</div>
 			);

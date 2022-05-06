@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 /**
  * Component of button to manage any process related with an update of a boolean variable.
