@@ -21,8 +21,6 @@ class Station extends Component {
 			edit: false,
 		};
 
-		this.apiStation = "http://127.0.0.1:8000/api/1.0/station/";
-
 		this.handleEdit = this.handleEdit.bind(this);
 	}
 

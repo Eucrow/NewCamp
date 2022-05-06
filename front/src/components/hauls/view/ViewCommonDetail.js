@@ -82,44 +82,6 @@ class ViewCommonDetail extends Component {
 					/>
 				</label>
 			</Fragment>
-
-			// <Fragment>
-			// 	<div className="form__cell">
-			// 		<label htmlFor="haul">Haul:</label>
-			// 		<input
-			// 			type="number"
-			// 			name="haul"
-			// 			id="haul"
-			// 			disabled
-			// 			min="1"
-			// 			max="99"
-			// 			maxLength="2"
-			// 			size={2}
-			// 			value={this.props.haul.haul || ""}
-			// 		/>
-			// 	</div>
-
-			// 	<div className="form__cell">
-			// 		<label htmlFor="sampler">Sampler:</label>
-			// 		<input
-			// 			name="sampler"
-			// 			id="sampler"
-			// 			disabled
-			// 			value={this.props.haul.sampler.sampler}
-			// 		/>
-			// 	</div>
-
-			// 	<div className="form__cell">
-			// 		<label htmlFor="valid">Valid:</label>
-			// 		<input
-			// 			type="checkbox"
-			// 			name="valid"
-			// 			id="valid"
-			// 			disabled
-			// 			defaultChecked={this.props.haul.valid}
-			// 		/>
-			// 	</div>
-			// </Fragment>
 		);
 	}
 }

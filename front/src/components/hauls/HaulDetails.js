@@ -323,10 +323,14 @@ class HaulDetails extends Component {
 	}
 
 	componentDidMount() {
+		/**
+		 * When the component is mounted, get the sampler_id from props, fetch the complete
+		 * data of the haul and update the state with it.
+		 */
 		const apiHaul =
-			this.props.haul.sampler.id === 1
+			this.props.haul.sampler_id === 1
 				? this.apiTrawlHaul
-				: this.props.haul.sampler.id === 2
+				: this.props.haul.sampler_id === 2
 				? this.apiHydrographyHaul
 				: null;
 

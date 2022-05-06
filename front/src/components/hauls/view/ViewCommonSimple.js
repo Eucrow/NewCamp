@@ -32,7 +32,7 @@ class ViewCommonSimple extends Component {
 						name="sampler"
 						className="select__normalWidth"
 						disabled
-						value={this.props.haul.sampler.sampler}
+						value={this.props.haul.sampler}
 					/>
 				</label>
 

@@ -39,9 +39,6 @@ class HaulSerializer(serializers.ModelSerializer):
     class Meta:
         model = Haul
         fields = ['id', 'haul', 'gear', 'valid', 'sampler', 'stratum', 'station', ]
-        # TODO: select only sampler and id from sampler model
-        # TODO: select only station and id from station model
-        # TODO: select only stratum from stratum model
         depth = 1
 
 
