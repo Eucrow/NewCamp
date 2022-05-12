@@ -12,7 +12,7 @@ class Hauls extends Component {
 	/**
 	 * List of hauls
 	 * @param {object} props.hauls
-	 * @param {object} props.haul_id
+	 * @param {object} props.station_id
 	 * @param {object} props.sampler_id
 	 * @param {method} props.deleteHaul
 	 */
@@ -29,7 +29,7 @@ class Hauls extends Component {
 			gears: [],
 		};
 
-		this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/";
+		// this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/";
 
 		this.apiSurveyPartial = "http://127.0.0.1:8000/api/1.0/survey/";
 		this.apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
@@ -44,11 +44,11 @@ class Hauls extends Component {
 	 * Build url api of all the hauls of a survey, using apiHauls and context.
 	 * @returns {character} url api.
 	 */
-	getHaulsApi() {
-		return this.context.surveySelector === null
-			? this.apiHauls
-			: this.apiHauls + this.context.surveySelector;
-	}
+	// getHaulsApi() {
+	// 	return this.context.surveySelector === null
+	// 		? this.apiHauls
+	// 		: this.apiHauls + this.context.surveySelector;
+	// }
 
 	/**
 	 * Manage the state of variable 'add' to show or not he NewHaul component.
@@ -209,6 +209,7 @@ class Hauls extends Component {
 							<Haul
 								key={haul.id}
 								haul={haul}
+								station_id={this.props.station_id}
 								deleteHaul={this.props.deleteHaul}
 								strata={this.state.strata}
 								samplers={this.state.samplers}

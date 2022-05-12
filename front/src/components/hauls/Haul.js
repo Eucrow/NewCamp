@@ -58,7 +58,7 @@ class Haul extends Component {
 								onClick={(e) => {
 									this.props.deleteHaul(
 										e,
-										this.props.haul.station.id,
+										this.props.station_id,
 										this.props.haul.id
 									);
 								}}
