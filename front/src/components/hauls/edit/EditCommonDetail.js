@@ -5,9 +5,10 @@ class EditCommonDetail extends Component {
 	 * Component of the common part of the haul form.
 	 * @param {object} props.haul
 	 * @param {object} props.gears
-	 * @param {function} props.handleChangeCommon
-	 * @param {function} props.handleChangeCommonValid
-	 * @param {function} props.handleChangeNestedIds
+	 * @param {method} props.handleChangeCommon
+	 * @param {method} props.handleChangeCommonValid
+	 * @param {method} props.handleChangeNestedIds
+	 * @param {method} props.validateHaulSampler
 	 */
 	render() {
 		const haul = this.props.haul;
@@ -26,7 +27,10 @@ class EditCommonDetail extends Component {
 						maxLength="2"
 						size={2}
 						value={haul.haul || ""}
-						onChange={this.props.handleChangeCommon}
+						onChange={(e) => {
+							this.props.handleChangeCommon(e);
+							this.props.validateHaulSampler(e);
+						}}
 					/>
 				</label>
 

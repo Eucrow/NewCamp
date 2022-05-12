@@ -9,6 +9,7 @@ class NewCommonDetail extends Component {
 	 * @param {object} props.gears
 	 * @param {method} props.handleChange
 	 * @param {method} props.handleChangeNestedIds
+	 * @param {method} props.validateHaulSampler
 	 */
 
 	render() {
@@ -18,16 +19,26 @@ class NewCommonDetail extends Component {
 
 				<label htmlFor="haul">Haul:</label>
 				<input
-					type="text"
+					type="number"
 					id="haul"
 					name="haul"
-					onChange={this.props.handleChange}
+					required
+					onChange={(e) => {
+						this.props.handleChange(e);
+						this.props.validateHaulSampler(
+							e,
+							e.target.value,
+							this.props.haul.sampler.id
+						);
+						// console.log("haul change event dispatched.");
+					}}
 				/>
 
 				<label htmlFor="stratum_id">Stratum:</label>
 				<select
 					id="stratum_id"
 					name="stratum"
+					required
 					value={this.props.haul.stratum.id || "choose"}
 					onChange={this.props.handleChangeNestedIds}
 				>
@@ -47,8 +58,16 @@ class NewCommonDetail extends Component {
 				<select
 					id="sampler_id"
 					name="sampler"
+					required
 					value={this.props.haul.sampler.id || "choose"}
-					onChange={this.props.handleChangeNestedIds}
+					onChange={(e) => {
+						this.props.handleChangeNestedIds(e);
+						this.props.validateHaulSampler(
+							e,
+							this.props.haul.haul,
+							e.target.value
+						);
+					}}
 				>
 					<option disabled value="choose">
 						--chose a sampler--
@@ -66,6 +85,7 @@ class NewCommonDetail extends Component {
 				<select
 					id="gear_id"
 					name="gear"
+					required
 					value={this.props.haul.gear || "choose"}
 					onChange={this.props.handleChange}
 				>

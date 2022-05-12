@@ -31,6 +31,13 @@ input:enabled {
 	background-color: var(--background-global-color);
 }
 
+// textarea:required:enabled,
+// select:required:enabled,
+// input:required:enabled {
+// 	background-color: var(--error_background) !important;
+// 	color: var(--error_text);
+// }
+
 textarea:focus,
 textarea:active,
 select:focus,
@@ -47,7 +54,7 @@ select:invalid,
 option:invalid,
 input:invalid {
 	background-color: var(--error_background) !important;
-	color: var(--error_text);
+	color: var(--error_text) !important;
 }
 
 //STRUCTURE

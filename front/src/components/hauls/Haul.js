@@ -12,6 +12,7 @@ class Haul extends Component {
 	 * @param {object} props.strata
 	 * @param {object} props.samplers
 	 * @param {object} props.gears
+	 * @param {method} props.validateHaulSampler
 	 */
 	constructor(props) {
 		super(props);
@@ -90,6 +91,7 @@ class Haul extends Component {
 						strata={this.props.strata}
 						samplers={this.props.samplers}
 						gears={this.props.gears}
+						validateHaulSampler={this.props.validateHaulSampler}
 					/>
 				</div>
 			);

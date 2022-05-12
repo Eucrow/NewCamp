@@ -13,6 +13,7 @@ class NewHaul extends Component {
 	 * @param {number} props.station_id
 	 * @param {method} props.changeAdd
 	 * @param {method} props.createHaul
+	 * @param {method} props.validateHaulSampler
 	 */
 
 	static contextType = SelectedSurveyContext;
@@ -229,6 +230,7 @@ class NewHaul extends Component {
 						samplers={this.state.samplers}
 						strata={this.state.strata}
 						gears={this.state.gears}
+						validateHaulSampler={this.props.validateHaulSampler}
 					/>
 					<NewSpecific
 						handleChangeMeteo={this.handleChangeMeteo}

@@ -15,9 +15,6 @@ class Hauls extends Component {
 	 * @param {object} props.haul_id
 	 * @param {object} props.sampler_id
 	 * @param {method} props.deleteHaul
-	 * @param {object} props.strata
-	 * @param {object} props.samplers
-	 * @param {object} props.gears
 	 */
 
 	static contextType = SelectedSurveyContext;
@@ -40,6 +37,7 @@ class Hauls extends Component {
 		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawl/basic/";
 
 		this.changeAdd = this.changeAdd.bind(this);
+		this.validateHaulSampler = this.validateHaulSampler.bind(this);
 	}
 
 	/**
@@ -62,6 +60,47 @@ class Hauls extends Component {
 				add: add,
 			};
 		});
+	}
+
+	/**
+	 * Method to check if a combination of haul / sampler_id already exists in the hauls of this component.
+	 * @param {string} haul haul to check if alreay exists.
+	 * @param {string} sampler_id sampler_id to check if alreay exists.
+	 * @returns True if exists, false if doesn't.
+	 */
+	haulSamplerExists(haul, sampler_id) {
+		var sampler_exists = Object.keys(this.props.hauls).map((h) => {
+			if (
+				(this.props.hauls[h]["haul"] === parseInt(haul)) &
+				(this.props.hauls[h]["sampler_id"] === parseInt(sampler_id))
+			) {
+				return true;
+			} else {
+				return false;
+			}
+		});
+
+		return sampler_exists.some((s) => s === true);
+	}
+
+	/**
+	 * Validate the combination of sampler / haul.
+	 * @param {event} e event.
+	 * @param {string} sampler sampler to check if is valid.
+	 * @param {string} haul haul to check if is valid.
+	 * @returns Throw reportValidity, showing an error when the validation is not passed.
+	 */
+	validateHaulSampler(e, haul, sampler) {
+		const sampler_exists = this.haulSamplerExists(haul, sampler);
+
+		if (sampler_exists === true) {
+			e.target.setCustomValidity(
+				"This combination of haul/sampler already exists."
+			);
+		} else {
+			e.target.setCustomValidity("");
+		}
+		return e.target.reportValidity();
 	}
 
 	componentDidMount() {
@@ -174,6 +213,7 @@ class Hauls extends Component {
 								strata={this.state.strata}
 								samplers={this.state.samplers}
 								gears={this.state.gears}
+								validateHaulSampler={this.validateHaulSampler}
 							/>
 						);
 					})}
@@ -200,6 +240,7 @@ class Hauls extends Component {
 						station_id={this.props.station_id}
 						changeAdd={this.changeAdd}
 						createHaul={this.props.createHaul}
+						validateHaulSampler={this.validateHaulSampler}
 					/>
 					<UiButtonCancel
 						handleMethod={this.changeAdd}
