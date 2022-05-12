@@ -84,14 +84,14 @@ class Hauls extends Component {
 	}
 
 	/**
-	 * Validate the combination of sampler / haul.
+	 * Validate the combination of sampler_id / haul.
 	 * @param {event} e event.
-	 * @param {string} sampler sampler to check if is valid.
+	 * @param {string} sampler_id sampler to check if is valid.
 	 * @param {string} haul haul to check if is valid.
 	 * @returns Throw reportValidity, showing an error when the validation is not passed.
 	 */
-	validateHaulSampler(e, haul, sampler) {
-		const sampler_exists = this.haulSamplerExists(haul, sampler);
+	validateHaulSampler(e, haul, sampler_id) {
+		const sampler_exists = this.haulSamplerExists(haul, sampler_id);
 
 		if (sampler_exists === true) {
 			e.target.setCustomValidity(
