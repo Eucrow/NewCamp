@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 class NewCommonDetail extends Component {
 	/**
@@ -14,17 +14,15 @@ class NewCommonDetail extends Component {
 
 	render() {
 		return (
-			<fieldset>
-				<legend>Common information:</legend>
-
+			<Fragment>
 				<label className="form__cell">
 					Haul:
 					<input
 						type="number"
 						id="haul"
 						name="haul"
-						required
 						className="input__noSpinner"
+						required
 						min="1"
 						max="99"
 						maxLength="2"
@@ -45,6 +43,7 @@ class NewCommonDetail extends Component {
 					<select
 						id="stratum_id"
 						name="stratum"
+						className="select__largeWidth"
 						required
 						value={this.props.haul.stratum.id || "choose"}
 						onChange={this.props.handleChangeNestedIds}
@@ -65,6 +64,7 @@ class NewCommonDetail extends Component {
 					<select
 						id="sampler_id"
 						name="sampler"
+						className="select__normalWidth"
 						required
 						value={this.props.haul.sampler.id || "choose"}
 						onChange={(e) => {
@@ -116,7 +116,7 @@ class NewCommonDetail extends Component {
 						onChange={this.props.handleChange}
 					/>
 				</label>
-			</fieldset>
+			</Fragment>
 		);
 	}
 }
