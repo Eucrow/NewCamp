@@ -8,11 +8,10 @@ from gears.models import Trawl
 
 
 class Haul(models.Model):
-
     station = models.ForeignKey('stations.Station', on_delete=models.CASCADE, related_name='hauls')
     stratum = models.ForeignKey('strata.Stratum', null=True, blank=True, on_delete=models.CASCADE)
     sampler = models.ForeignKey('samplers.Sampler', on_delete=models.CASCADE)
-    haul = models.PositiveIntegerField(null=True, blank=True)
+    haul = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(99)])
     # gear = models.PositiveIntegerField(null=True, blank=True)
     valid = models.BooleanField(null=True, blank=True)
     # right now, the gear field can be null because there are no gear for ctd. Gear field is really only
@@ -21,53 +20,62 @@ class Haul(models.Model):
     gear = models.ForeignKey('gears.Trawl', null=True, blank=True, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together=('station', 'stratum', 'sampler', 'haul',)
+        unique_together = ('station', 'stratum', 'sampler', 'haul',)
 
 
 class Meteorology(models.Model):
-
     haul = models.OneToOneField('hauls.Haul', on_delete=models.CASCADE, related_name='meteo')
-    wind_direction = models.PositiveIntegerField(validators=[MaxValueValidator(360), MinValueValidator(0)], null=True,
-                                                blank=True)
-    wind_velocity = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
-    sea_state = models.PositiveIntegerField(null=True, blank=True)
+    wind_direction = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(360)], null=True,
+                                                 blank=True)
+    wind_velocity = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(99.9)], max_digits=3,
+                                        decimal_places=1, null=True, blank=True)
+    sea_state = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(9)], null=True,
+                                            blank=True)
 
 
 class HaulTrawl(models.Model):
-
     haul = models.OneToOneField('hauls.Haul', on_delete=models.CASCADE, related_name='trawl_characteristics')
 
     shooting_date_time = models.DateTimeField(null=True, blank=True)
-    shooting_latitude = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
-    shooting_longitude = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
-    shooting_depth = models.PositiveIntegerField(null=True, blank=True)
+    shooting_latitude = models.DecimalField(validators=[MinValueValidator(-90), MaxValueValidator(90)], max_digits=6,
+                                            decimal_places=4, null=True, blank=True)
+    shooting_longitude = models.DecimalField(validators=[MinValueValidator(-180), MaxValueValidator(180)], max_digits=7,
+                                             decimal_places=4, null=True, blank=True)
+    shooting_depth = models.PositiveIntegerField(validators=[MaxValueValidator(9999)], null=True, blank=True)
 
     hauling_date_time = models.DateTimeField(null=True, blank=True)
-    hauling_latitude = models.DecimalField(max_digits=9, decimal_places=4, null=True, blank=True)
-    hauling_longitude = models.DecimalField(max_digits=9, decimal_places=4, null=True, blank=True)
-    hauling_depth = models.PositiveIntegerField(null=True, blank=True)
+    hauling_latitude = models.DecimalField(validators=[MinValueValidator(-90), MaxValueValidator(90)], max_digits=6,
+                                           decimal_places=4, null=True, blank=True)
+    hauling_longitude = models.DecimalField(validators=[MinValueValidator(-180), MaxValueValidator(180)], max_digits=7,
+                                            decimal_places=4, null=True, blank=True)
+    hauling_depth = models.PositiveIntegerField(validators=[MaxValueValidator(9999)], null=True, blank=True)
 
     bottom_date_time = models.DateTimeField(null=True, blank=True)
-    bottom_latitude = models.DecimalField(max_digits=9, decimal_places=4, null=True, blank=True)
-    bottom_longitude = models.DecimalField(max_digits=9, decimal_places=4, null=True, blank=True)
-    bottom_depth = models.PositiveIntegerField(null=True, blank=True)
+    bottom_latitude = models.DecimalField(validators=[MinValueValidator(-90), MaxValueValidator(90)], max_digits=6,
+                                          decimal_places=4, null=True, blank=True)
+    bottom_longitude = models.DecimalField(validators=[MinValueValidator(-180), MaxValueValidator(180)], max_digits=7,
+                                           decimal_places=4, null=True, blank=True)
+    bottom_depth = models.PositiveIntegerField(validators=[MaxValueValidator(9999)], null=True, blank=True)
 
-    course = models.PositiveIntegerField(validators=[MaxValueValidator(360), MinValueValidator(0)], null=True,
+    course = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(360)], null=True,
                                          blank=True)
-    velocity = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
-    cable = models.PositiveIntegerField(null=True, blank=True)
-    sweep = models.PositiveIntegerField(null=True, blank=True)
-    otter_boards_distance = models.DecimalField(max_digits=4, decimal_places=1, null=True, blank=True)
-    horizontal_aperture = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
-    vertical_aperture = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
-    grid = models.PositiveIntegerField(null=True, blank=True)
-    track = models.PositiveIntegerField(null=True, blank=True)
+    velocity = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(99)], max_digits=3,
+                                   decimal_places=1, null=True, blank=True)
+    cable = models.PositiveIntegerField(validators=[MaxValueValidator(9999)], null=True, blank=True)
+    sweep = models.PositiveIntegerField(validators=[MaxValueValidator(999)], null=True, blank=True)
+    otter_boards_distance = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(999)], max_digits=4,
+                                                decimal_places=1, null=True, blank=True)
+    horizontal_aperture = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(99)], max_digits=3,
+                                              decimal_places=1, null=True, blank=True)
+    vertical_aperture = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(99)], max_digits=3,
+                                            decimal_places=1, null=True, blank=True)
+    grid = models.PositiveIntegerField(validators=[MaxValueValidator(99)], null=True, blank=True)
+    track = models.PositiveIntegerField(validators=[MaxValueValidator(9999)], null=True, blank=True)
 
     comment = models.CharField(max_length=1000, null=True, blank=True)
 
 
 class HaulHydrography(models.Model):
-
     haul = models.OneToOneField('hauls.Haul', on_delete=models.CASCADE, related_name='hydrography_characteristics')
 
     latitude = models.DecimalField(max_digits=10, decimal_places=4, null=True, blank=True)
@@ -90,7 +98,3 @@ class HaulHydrography(models.Model):
     sigma = models.PositiveIntegerField(null=True, blank=True)
 
     comment = models.CharField(max_length=1000, null=True, blank=True)
-
-
-
-

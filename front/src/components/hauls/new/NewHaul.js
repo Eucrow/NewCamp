@@ -1,7 +1,11 @@
 import React, { Component, Fragment } from "react";
 
-import NewCommon from "./NewCommon";
+import SelectedSurveyContext from "../../../contexts/SelectedSuveryContext";
+
+import NewCommonDetail from "./NewCommonDetail";
 import NewSpecific from "./NewSpecific.js";
+
+import UiButtonSave from "../../ui/UiButtonSave";
 
 class NewHaul extends Component {
 	/**
@@ -9,7 +13,11 @@ class NewHaul extends Component {
 	 * @param {number} props.station_id
 	 * @param {method} props.changeAdd
 	 * @param {method} props.createHaul
+	 * @param {method} props.validateHaulSampler
 	 */
+
+	static contextType = SelectedSurveyContext;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -22,10 +30,12 @@ class NewHaul extends Component {
 				trawl_characteristics: {},
 				hydrography_characteristics: {},
 			},
+			survey: {},
 			strata: [],
 			samplers: [],
 			gears: [],
 		};
+		this.apiSurveyPartial = "http://127.0.0.1:8000/api/1.0/survey/";
 		this.apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
 		this.apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
 		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawl/basic/";
@@ -124,14 +134,16 @@ class NewHaul extends Component {
 			/**
 			 * When the component is mounted, retrieve the posible stratum and sampler and save in state
 			 */
-			const apiStrata =
-				this.apiStrataPartial + this.context.surveySelector;
+
+			const apiSurvey =
+				this.apiSurveyPartial + this.context.selectedSurveyId;
+
 			const apiSamplers = this.apiSamplers;
 			const apiGears = this.apiGears;
 
 			// TODO: Optimize fetchs
-			// Fetch strata
-			fetch(apiStrata)
+			// Fetch strata (require previously fetch survey to get stratification).
+			fetch(apiSurvey)
 				.then((response) => {
 					if (response.status > 400) {
 						return this.setState(() => {
@@ -140,12 +152,27 @@ class NewHaul extends Component {
 					}
 					return response.json();
 				})
-				.then((strata) => {
-					this.setState(() => {
-						return {
-							strata: strata,
-						};
-					});
+				.then((survey) => {
+					const apiStrata =
+						this.apiStrataPartial + survey.stratification;
+					fetch(apiStrata)
+						.then((response) => {
+							if (response.status > 400) {
+								return this.setState(() => {
+									return {
+										placeholder: "Something went wrong!",
+									};
+								});
+							}
+							return response.json();
+						})
+						.then((strata) => {
+							this.setState(() => {
+								return {
+									strata: strata,
+								};
+							});
+						});
 				});
 
 			// Fetch samplers
@@ -189,14 +216,21 @@ class NewHaul extends Component {
 	render() {
 		return (
 			<Fragment>
-				<form>
-					<NewCommon
+				<form
+					className="wrapper"
+					onSubmit={(e) => {
+						this.props.createHaul(e, this.state.haul);
+						this.props.changeAdd(false);
+					}}
+				>
+					<NewCommonDetail
 						haul={this.state.haul}
 						handleChange={this.handleChange}
 						handleChangeNestedIds={this.handleChangeNestedIds}
 						samplers={this.state.samplers}
 						strata={this.state.strata}
 						gears={this.state.gears}
+						validateHaulSampler={this.props.validateHaulSampler}
 					/>
 					<NewSpecific
 						handleChangeMeteo={this.handleChangeMeteo}
@@ -204,15 +238,7 @@ class NewHaul extends Component {
 						handleChangeHydrography={this.handleChangeHydrography}
 						sampler_id={this.state.haul.sampler.id}
 					/>
-
-					<input
-						type="submit"
-						value="Save Haul"
-						onClick={(e) => {
-							this.props.createHaul(e, this.state.haul);
-							this.props.changeAdd(false);
-						}}
-					/>
+					<UiButtonSave buttonText="Save Haul" />
 				</form>
 			</Fragment>
 		);

@@ -29,191 +29,418 @@ class EditTrawl extends Component {
 				: haul.trawl_characteristics.bottom_date_time.replace("Z", "");
 
 		return (
-			<fieldset class="wrapper haul__row">
+			<fieldset class="wrapper">
 				<legend>Trawl characteristics:</legend>
-				<label htmlFor="shooting_date_time">shooting_date_time:</label>
-				<input
-					type="datetime-local"
-					name="shooting_date_time"
-					id="shooting_date_time"
-					value={shooting_date_time}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="shooting_latitude">shooting_latitude:</label>
-				<input
-					type="text"
-					name="shooting_latitude"
-					id="shooting_latitude"
-					value={haul.trawl_characteristics.shooting_latitude || ""}
-					onChange={this.props.handleChangeTrawl}
-					disabled
-				/>
-				<label htmlFor="shooting_longitude">shooting_longitude:</label>
-				<input
-					type="text"
-					name="shooting_longitude"
-					id="shooting_longitude"
-					value={haul.trawl_characteristics.shooting_longitude || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="shooting_depth">shooting_depth:</label>
-				<input
-					type="text"
-					name="shooting_depth"
-					id="shooting_depth"
-					value={haul.trawl_characteristics.shooting_depth || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="hauling_date_time">hauling_date_time:</label>
-				<input
-					type="text"
-					name="hauling_date_time"
-					id="hauling_date_time"
-					value={hauling_date_time}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="hauling_latitude">hauling_latitude:</label>
-				<input
-					type="text"
-					name="hauling_latitude"
-					id="hauling_latitude"
-					value={haul.trawl_characteristics.hauling_latitude || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="hauling_longitude">hauling_longitude:</label>
-				<input
-					type="text"
-					name="hauling_longitude"
-					id="hauling_longitude"
-					value={haul.trawl_characteristics.hauling_longitude || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="hauling_depth">hauling_depth:</label>
-				<input
-					type="text"
-					name="hauling_depth"
-					id="hauling_depth"
-					value={haul.trawl_characteristics.hauling_depth || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="bottom_date_time">bottom_date_time:</label>
-				<input
-					type="text"
-					name="bottom_date_time"
-					id="bottom_date_time"
-					value={bottom_date_time}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="bottom_latitude">bottom_latitude:</label>
-				<input
-					type="text"
-					name="bottom_latitude"
-					id="bottom_latitude"
-					value={haul.trawl_characteristics.bottom_latitude || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="bottom_longitude">bottom_longitude:</label>
-				<input
-					type="text"
-					name="bottom_longitude"
-					id="bottom_longitude"
-					value={haul.trawl_characteristics.bottom_longitude || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="bottom_depth">bottom_depth:</label>
-				<input
-					type="text"
-					name="bottom_depth"
-					id="bottom_depth"
-					value={haul.trawl_characteristics.bottom_depth || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="course">course:</label>
-				<input
-					type="text"
-					name="course"
-					id="course"
-					value={haul.trawl_characteristics.course || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="velocity">velocity:</label>
-				<input
-					type="text"
-					name="velocity"
-					id="velocity"
-					value={haul.trawl_characteristics.velocity || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="cable">cable:</label>
-				<input
-					type="text"
-					name="cable"
-					id="cable"
-					value={haul.trawl_characteristics.cable || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="sweep">sweep:</label>
-				<input
-					type="text"
-					name="sweep"
-					id="sweep"
-					value={haul.trawl_characteristics.sweep || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="otter_boards_distance">
-					otter_boards_distance:
-				</label>
-				<input
-					type="text"
-					name="otter_boards_distance"
-					id="otter_boards_distance"
-					value={
-						haul.trawl_characteristics.otter_boards_distance || ""
-					}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="horizontal_aperture">
-					horizontal_aperture:
-				</label>
-				<input
-					type="text"
-					name="horizontal_aperture"
-					id="horizontal_aperture"
-					value={haul.trawl_characteristics.horizontal_aperture || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="vertical_aperture">vertical_aperture:</label>
-				<input
-					type="text"
-					name="vertical_aperture"
-					id="vertical_aperture"
-					value={haul.trawl_characteristics.vertical_aperture || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="grid">grid:</label>
-				<input
-					type="text"
-					name="grid"
-					id="grid"
-					value={haul.trawl_characteristics.grid || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="track">track:</label>
-				<input
-					type="text"
-					name="track"
-					id="track"
-					value={haul.trawl_characteristics.track || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
-				<label htmlFor="comment">comment:</label>
-				<input
-					type="text"
-					name="comment"
-					id="comment"
-					value={haul.trawl_characteristics.comment || ""}
-					onChange={this.props.handleChangeTrawl}
-				/>
+				<div className="characteristicsGrid form__row">
+					{/* first row */}
+					<div></div>
+					<div></div>
+					<div
+						className="characteristicsGrid__colName"
+						aria-hidden="true"
+					>
+						Date/time:
+					</div>
+					<div
+						className="characteristicsGrid__colName"
+						aria-hidden="true"
+					>
+						Latitude:
+					</div>
+					<div
+						className="characteristicsGrid__colName"
+						aria-hidden="true"
+					>
+						Longitude:
+					</div>
+					<div
+						className="characteristicsGrid__colName"
+						aria-hidden="true"
+					>
+						Depth (m):
+					</div>
+					<div></div>
+
+					{/* second row */}
+					<div></div>
+					<div
+						className="characteristicsGrid__rowName"
+						aria-hidden="true"
+					>
+						Shooting:
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="datetime-local"
+							name="shooting_date_time"
+							id="shooting_date_time"
+							value={shooting_date_time}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Shooting date and time"
+						/>
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="number"
+							name="shooting_latitude"
+							id="shooting_latitude"
+							min={0}
+							max={90}
+							maxLength={6}
+							size={6}
+							step={0.0001}
+							value={
+								haul.trawl_characteristics.shooting_latitude ||
+								""
+							}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Shooting latitude"
+						/>
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="number"
+							name="shooting_longitude"
+							id="shooting_longitude"
+							min={-180}
+							max={180}
+							maxLength={7}
+							size={7}
+							step={0.0001}
+							value={
+								haul.trawl_characteristics.shooting_longitude ||
+								""
+							}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Shooting longitude"
+						/>
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="number"
+							name="shooting_depth"
+							id="shooting_depth"
+							min={0}
+							max={9999}
+							maxLength={4}
+							size={4}
+							step={1}
+							value={
+								haul.trawl_characteristics.shooting_depth || ""
+							}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Shooting depth"
+						/>
+					</div>
+					<div></div>
+
+					{/* third row */}
+					<div></div>
+					<div
+						className="characteristicsGrid__rowName"
+						aria-hidden="true"
+					>
+						Hauling:
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="datetime-local"
+							name="hauling_date_time"
+							id="hauling_date_time"
+							value={hauling_date_time}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Hauling date and time"
+						/>
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="number"
+							name="hauling_latitude"
+							id="hauling_latitude"
+							min={0}
+							max={90}
+							maxLength={6}
+							size={6}
+							step={0.0001}
+							value={
+								haul.trawl_characteristics.hauling_latitude ||
+								""
+							}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Hauling latitude"
+						/>
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="number"
+							name="hauling_longitude"
+							id="hauling_longitude"
+							min={-180}
+							max={180}
+							maxLength={7}
+							size={7}
+							step={0.0001}
+							value={
+								haul.trawl_characteristics.hauling_longitude ||
+								""
+							}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Hauling longitude"
+						/>
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="number"
+							name="hauling_depth"
+							id="hauling_depth"
+							min={0}
+							max={9999}
+							maxLength={4}
+							size={4}
+							step={1}
+							value={
+								haul.trawl_characteristics.hauling_depth || ""
+							}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Hauling depth"
+						/>
+					</div>
+					<div></div>
+
+					{/* fourth row */}
+					<div></div>
+					<div
+						className="characteristicsGrid__rowName"
+						aria-hidden="true"
+					>
+						Bottom:
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="datetime-local"
+							name="bottom_date_time"
+							id="bottom_date_time"
+							value={bottom_date_time}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Bottom date and time"
+						/>
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="number"
+							name="bottom_latitude"
+							id="bottom_latitude"
+							min={0}
+							max={90}
+							maxLength={6}
+							size={6}
+							step={0.0001}
+							value={
+								haul.trawl_characteristics.bottom_latitude || ""
+							}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Bottom latitude"
+						/>
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="number"
+							name="bottom_longitude"
+							id="bottom_longitude"
+							min={-180}
+							max={180}
+							maxLength={7}
+							size={7}
+							step={0.0001}
+							value={
+								haul.trawl_characteristics.bottom_longitude ||
+								""
+							}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Bottom longitude"
+						/>
+					</div>
+					<div className="characteristicsGrid__field">
+						<input
+							type="number"
+							name="bottom_depth"
+							id="bottom_depth"
+							min={0}
+							max={9999}
+							maxLength={4}
+							size={4}
+							step={1}
+							value={
+								haul.trawl_characteristics.bottom_depth || ""
+							}
+							onChange={this.props.handleChangeTrawl}
+							aria-label="Bottom depth"
+						/>
+					</div>
+					<div></div>
+				</div>
+
+				<div className="form__row">
+					<label className="field">
+						Course (degrees):
+						<input
+							type="number"
+							name="course"
+							id="course"
+							min={0}
+							max={360}
+							maxLength={3}
+							size={3}
+							step={1}
+							value={haul.trawl_characteristics.course || ""}
+							onChange={this.props.handleChangeTrawl}
+						/>
+					</label>
+					<label className="field">
+						Velocity (m/s):
+						<input
+							type="number"
+							name="velocity"
+							id="velocity"
+							min={0}
+							max={99}
+							maxLength={4}
+							size={4}
+							step={0.1}
+							value={haul.trawl_characteristics.velocity || ""}
+							onChange={this.props.handleChangeTrawl}
+						/>
+					</label>
+					<label className="field">
+						Cable (m):
+						<input
+							type="number"
+							name="cable"
+							id="cable"
+							min={0}
+							max={9999}
+							maxLength={4}
+							size={4}
+							step={1}
+							value={haul.trawl_characteristics.cable || ""}
+							onChange={this.props.handleChangeTrawl}
+						/>
+					</label>
+					<label className="field">
+						Sweep (m):
+						<input
+							type="number"
+							name="sweep"
+							id="sweep"
+							min={0}
+							max={999}
+							maxLength={3}
+							size={3}
+							step={1}
+							value={haul.trawl_characteristics.sweep || ""}
+							onChange={this.props.handleChangeTrawl}
+						/>
+					</label>
+				</div>
+				<div className="form__row">
+					<label className="field">
+						Otter Boards Distance (m):
+						<input
+							type="number"
+							name="otter_boards_distance"
+							id="otter_boards_distance"
+							min={0}
+							max={999}
+							maxLength={4}
+							size={4}
+							step={0.1}
+							value={
+								haul.trawl_characteristics
+									.otter_boards_distance || ""
+							}
+							onChange={this.props.handleChangeTrawl}
+						/>
+					</label>
+					<label className="field">
+						Horizontal Aperture (m):
+						<input
+							type="number"
+							name="horizontal_aperture"
+							id="horizontal_aperture"
+							min={0}
+							max={99}
+							maxLength={4}
+							size={4}
+							step={0.1}
+							value={
+								haul.trawl_characteristics
+									.horizontal_aperture || ""
+							}
+							onChange={this.props.handleChangeTrawl}
+						/>
+					</label>
+					<label className="field">
+						Vertical Aperture (m):
+						<input
+							type="number"
+							name="vertical_aperture"
+							id="vertical_aperture"
+							min={0}
+							max={99}
+							maxLength={4}
+							size={4}
+							step={0.1}
+							value={
+								haul.trawl_characteristics.vertical_aperture ||
+								""
+							}
+							onChange={this.props.handleChangeTrawl}
+						/>
+					</label>
+				</div>
+				<div className="form__row">
+					<label className="field">
+						Grid (m):
+						<input
+							type="number"
+							name="grid"
+							id="grid"
+							min={0}
+							max={99}
+							maxLength={2}
+							size={2}
+							step={1}
+							value={haul.trawl_characteristics.grid || ""}
+							onChange={this.props.handleChangeTrawl}
+						/>
+					</label>
+					<label className="field">
+						Track (m):
+						<input
+							type="number"
+							name="track"
+							id="track"
+							min={0}
+							max={9999}
+							maxLength={4}
+							size={4}
+							step={1}
+							value={haul.trawl_characteristics.track || ""}
+							onChange={this.props.handleChangeTrawl}
+						/>
+					</label>
+				</div>
+				<div className="form__row">
+					<label className="field__comment">
+						Comment:
+						<textarea
+							name="comment"
+							id="comment"
+							value={haul.trawl_characteristics.comment || ""}
+							onChange={this.props.handleChangeTrawl}
+						/>
+					</label>
+				</div>
 			</fieldset>
 		);
 	}

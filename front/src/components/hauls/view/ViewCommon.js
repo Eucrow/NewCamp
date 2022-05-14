@@ -9,30 +9,78 @@ class ViewCommon extends Component {
 	render() {
 		return (
 			<Fragment>
-				<div className="haul__cell">
-					<div className="haul__label">Haul:</div>
-					<div>{this.props.haul.haul}</div>
-				</div>
+				<label className="form__cell">
+					Haul:
+					<input
+						type="number"
+						name="haul"
+						id="haul"
+						className="input__noSpinner"
+						disabled
+						min="1"
+						max="99"
+						maxLength="2"
+						size={2}
+						value={this.props.haul.haul}
+					/>
+				</label>
 
-				<div className="haul__cell">
-					<div className="haul__label">Station:</div>
-					<div>{this.props.haul.station.station}</div>
-				</div>
+				<label className="form__cell">
+					Stratum:
+					<select
+						id="stratum_id"
+						name="stratum"
+						className="select__largeWidth"
+						disabled
+					>
+						<option
+							key={this.props.haul.stratum.id}
+							value={this.props.haul.stratum.id}
+						>
+							{this.props.haul.stratum.stratum}
+						</option>
+					</select>
+				</label>
 
-				<div className="haul__cell">
-					<div className="haul__label">Sampler:</div>
-					<div>{this.props.haul.sampler.sampler}</div>
-				</div>
+				<label className="form__cell">
+					Sampler:
+					<select
+						id="sampler_id"
+						name="sampler"
+						className="select__normalWidth"
+						disabled
+					>
+						<option
+							key={this.props.haul.sampler.id}
+							value={this.props.haul.sampler.id}
+						>
+							{this.props.haul.sampler.sampler}
+						</option>
+					</select>
+				</label>
 
-				{/* <div className="haul__cell">
-					<div className="haul__label">Gear:</div>
-					<div>{this.props.haul.gear.gear}</div>
-				</div> */}
+				<label className="form__cell">
+					Gear:
+					<select id="gear_id" name="gear" disabled>
+						<option
+							key={this.props.haul.gear}
+							value={this.props.haul.gear}
+						>
+							{this.props.haul.gear}
+						</option>
+					</select>
+				</label>
 
-				<div className="haul__cell">
-					<div className="haul__label">Valid?</div>
-					<div>: {this.props.haul.valid}</div>
-				</div>
+				<label className="form__cell">
+					Valid:
+					<input
+						type="checkbox"
+						name="valid"
+						id="valid"
+						disabled
+						defaultChecked={this.props.haul.valid}
+					/>
+				</label>
 			</Fragment>
 		);
 	}

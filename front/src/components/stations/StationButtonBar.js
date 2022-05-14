@@ -1,30 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 
-const StationButtonBar = ({ props, edit }) => {
+import StationsContext from "../../contexts/StationsContext";
+
+import UiButtonSave from "../ui/UiButtonSave";
+import UiButtonCancel from "../ui/UiButtonCancel";
+import UiButtonDelete from "../ui/UiButtonDelete";
+
+const StationButtonBar = ({ station_id, handleEdit, edit }) => {
+	const stationsContext = useContext(StationsContext);
 	var ButtonBar = "";
 
 	if (edit === true) {
 		ButtonBar = (
 			<div className="station__cell station__cell--right">
 				<div className="buttonsWrapper">
-					<button
-						type="submit"
-						className="buttonsWrapper__button"
-						onClick={(e) => {
-							props.handleSubmitEditStation(e, props.station.id);
-							props.changeEdit(false);
-						}}
-					>
-						Save Station
-					</button>
-					<button
-						className="buttonsWrapper__button"
-						onClick={(e) => {
-							props.changeEdit(false);
-						}}
-					>
-						Cancel
-					</button>
+					<UiButtonSave buttonText={"Save Station"} />
+					<UiButtonCancel handleMethod={handleEdit} />
 				</div>
 			</div>
 		);
@@ -35,23 +26,22 @@ const StationButtonBar = ({ props, edit }) => {
 			<div className="station__cell station__cell--right">
 				<div className="buttonsWrapper">
 					<button
+						type="button"
 						className="buttonsWrapper__button"
 						onClick={(e) => {
-							props.changeEdit(true);
+							handleEdit(true);
 						}}
 					>
 						Edit Station
 					</button>
-					<button
-						className="buttonsWrapper__button"
-						onClick={(e) => {
-							if (window.confirm("Delete the station?")) {
-								props.deleteStation(e, props.station.id);
-							}
-						}}
-					>
-						Delete Station
-					</button>
+					<UiButtonDelete
+						id={station_id}
+						deleteMethod={stationsContext.deleteStation}
+						buttonText={"Delete Station"}
+						confirmMessage={
+							"All the data of the station, including hauls, catches, lengths... will be removed, are you sure?"
+						}
+					/>
 				</div>
 			</div>
 		);

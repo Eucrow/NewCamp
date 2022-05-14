@@ -39,9 +39,6 @@ class HaulSerializer(serializers.ModelSerializer):
     class Meta:
         model = Haul
         fields = ['id', 'haul', 'gear', 'valid', 'sampler', 'stratum', 'station', ]
-        # TODO: select only sampler and id from sampler model
-        # TODO: select only station and id from station model
-        # TODO: select only stratum from stratum model
         depth = 1
 
 
@@ -112,13 +109,15 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
             # value)
             meteo_datas = validated_data.pop('meteo')
             trawl_characteristics_datas = validated_data.pop('trawl_characteristics')
+            # sampler_data = validated_data.pop('sampler')
+            strata_data = validated_data.pop('stratum')
 
             # instance.gear must be a Trawl object, so get the trawl of the name:
             instance.gear = Trawl.objects.get(name=validated_data.pop('gear')['name'])
 
             # Second, save the instance validated (this does not have the meteo and trawl_characteristics data)
             for attr, value in validated_data.items():
-                print(attr, value)
+                # print(attr, value)
                 setattr(instance, attr, value)
 
             instance.save()
@@ -126,16 +125,27 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
             # Then, create a meteo instance, fill with the validated meto data, and save it
             meteo = instance.meteo
             for attr, value in meteo_datas.items():
-                print(attr, value)
+                # print(attr, value)
                 setattr(meteo, attr, value)
             meteo.save()
 
             # And do the same with trawl_characteristics data
             trawl_characteristics = instance.trawl_characteristics
             for attr, value in trawl_characteristics_datas.items():
-                print(attr, value)
+                # print(attr, value)
                 setattr(trawl_characteristics, attr, value)
             trawl_characteristics.save()
+
+            # sampler = instance.sampler
+            # for attr, value in sampler_data.items():
+            #     setattr(sampler, attr, value)
+            # sampler.save()
+
+            strata = instance.strata
+            for attr, value in strata_data.items():
+                # print(attr, value)
+                setattr(strata, attr, value)
+            strata.save()
 
         return instance
 
