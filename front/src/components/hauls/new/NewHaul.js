@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from "react";
 
-import NewCommon from "./NewCommon";
+import SelectedSurveyContext from "../../../contexts/SelectedSuveryContext";
+
+import NewCommonDetail from "./NewCommonDetail";
 import NewSpecific from "./NewSpecific.js";
 
-import SelectedSurveyContext from "../../../contexts/SelectedSuveryContext";
+import UiButtonSave from "../../ui/UiButtonSave";
 
 class NewHaul extends Component {
 	/**
@@ -11,6 +13,7 @@ class NewHaul extends Component {
 	 * @param {number} props.station_id
 	 * @param {method} props.changeAdd
 	 * @param {method} props.createHaul
+	 * @param {method} props.validateHaulSampler
 	 */
 
 	static contextType = SelectedSurveyContext;
@@ -213,14 +216,21 @@ class NewHaul extends Component {
 	render() {
 		return (
 			<Fragment>
-				<form>
-					<NewCommon
+				<form
+					className="wrapper"
+					onSubmit={(e) => {
+						this.props.createHaul(e, this.state.haul);
+						this.props.changeAdd(false);
+					}}
+				>
+					<NewCommonDetail
 						haul={this.state.haul}
 						handleChange={this.handleChange}
 						handleChangeNestedIds={this.handleChangeNestedIds}
 						samplers={this.state.samplers}
 						strata={this.state.strata}
 						gears={this.state.gears}
+						validateHaulSampler={this.props.validateHaulSampler}
 					/>
 					<NewSpecific
 						handleChangeMeteo={this.handleChangeMeteo}
@@ -228,15 +238,7 @@ class NewHaul extends Component {
 						handleChangeHydrography={this.handleChangeHydrography}
 						sampler_id={this.state.haul.sampler.id}
 					/>
-
-					<input
-						type="submit"
-						value="Save Haul"
-						onClick={(e) => {
-							this.props.createHaul(e, this.state.haul);
-							this.props.changeAdd(false);
-						}}
-					/>
+					<UiButtonSave buttonText="Save Haul" />
 				</form>
 			</Fragment>
 		);

@@ -28,6 +28,9 @@
 // css stations
 @use "./scss/stations";
 
+// css characteristics grid
+@use "./scss/characteristicsGrid";
+
 // css custom properties
 :root {
 	//FONT VARIABLES
@@ -54,6 +57,7 @@
 
 	//global
 	--background-global-color: #f2f3f0;
+	// --text-color: var(--grey-gradient-1);
 	--text-color: black;
 	--highlight-text-color: var(--blue-gradient-1);
 
@@ -83,6 +87,10 @@ html {
 	font-family: var(--normal-font);
 }
 
+// select {
+// 	font-family: var(--normal-font);
+// }
+
 h1,
 h2,
 h3,
@@ -106,7 +114,6 @@ main {
 // fieldset
 fieldset.wrapper {
 	width: 100%;
-	padding-left: 5px;
 }
 
 // hauls

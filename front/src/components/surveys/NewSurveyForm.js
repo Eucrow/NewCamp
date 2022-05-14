@@ -68,6 +68,7 @@ const NewSurveyForm = () => {
 							size={3}
 							pattern="^[\w|\d]{3}$"
 							onChange={handleChange}
+							onInput={surveysContext.forceReportValidity}
 						/>
 					</span>
 				</div>

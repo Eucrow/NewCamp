@@ -134,6 +134,7 @@ table {
 }
 // Certain controls are not defaulted to inherit font settings, so override this:
 input,
+select,
 textarea {
 	font-family: inherit;
 	font-size: inherit;

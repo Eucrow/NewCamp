@@ -6,12 +6,14 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from stations.models import Station
 from stations.serializers import StationSerializer, StationsHaulsSerializer
 
+
 class StationsAPI(ListAPIView):
     '''
     Retrieve list of all stations
     '''
     queryset = Station.objects.all()
     serializer_class = StationSerializer
+
 
 class StationsBySurveyAPI(ListAPIView):
     '''Retrieve list of all stations of a survey'''
@@ -23,7 +25,8 @@ class StationsBySurveyAPI(ListAPIView):
         the user as determined by the username portion of the URL.
         """
         survey_id = self.kwargs['survey_id']
-        return Station.objects.filter(survey_id = survey_id)
+        return Station.objects.filter(survey_id=survey_id)
+
 
 class StationAPI(APIView):
 
@@ -54,14 +57,15 @@ class StationAPI(APIView):
         station.delete()
         return Response(status=HTTP_204_NO_CONTENT)
 
+
 class StationsHaulsAPI(APIView):
     """
     Api to get all the stations of a survey with its related hauls and sampler data.
     """
 
     def get(self, request, survey_id):
-        stations = get_list_or_404(Station, survey_id=survey_id)
+        # stations = get_list_or_404(Station, survey_id=survey_id)
+        stations = Station.objects.filter(survey__pk=survey_id)
         serializer = StationsHaulsSerializer(stations, many=True)
 
         return Response(serializer.data)
-

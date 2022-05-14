@@ -10,32 +10,40 @@ input {
 
 textarea:disabled,
 select:disabled,
+option:disabled,
 input:disabled {
 	//border size and padding must be the same as the input enabled style:
 	border: 1px solid var(--wrapper-background-color);
 	background: none;
 	padding: 2px 5px;
 	font-size: 1rem;
-	font-family: var(--normal-font);
 	color: var(--text-color);
-	// min-height: 1.8rem;
 }
 
 textarea:enabled,
 select:enabled,
+option:enabled,
 input:enabled {
 	font-size: 1rem;
 	border-radius: 5px;
 	border: 1px solid var(--background-global-color);
 	padding: 2px 5px;
 	background-color: var(--background-global-color);
-	// min-height: 1.8rem;
 }
+
+// textarea:required:enabled,
+// select:required:enabled,
+// input:required:enabled {
+// 	background-color: var(--error_background) !important;
+// 	color: var(--error_text);
+// }
 
 textarea:focus,
 textarea:active,
 select:focus,
 select:active,
+option:focus,
+option:active,
 input:focus,
 input:active {
 	border-color: var(--blue-gradient-1);
@@ -43,9 +51,10 @@ input:active {
 
 textarea:invalid,
 select:invalid,
+option:invalid,
 input:invalid {
 	background-color: var(--error_background) !important;
-	color: var(--error_text);
+	color: var(--error_text) !important;
 }
 
 //STRUCTURE
@@ -53,7 +62,7 @@ input:invalid {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: flex-start;
 	align-items: baseline;
 	min-height: 2rem;
 }
@@ -63,15 +72,17 @@ input:invalid {
 	flex-direction: row;
 	align-items: baseline;
 	padding-right: 10px;
+	min-height: 2rem;
+
+	&:last-child {
+		padding-right: 0px;
+	}
+
 }
 
 // cell aligned to the right
 .form__cell--right {
 	margin-left: auto;
-}
-
-.form__cell:last-child {
-	padding-right: 0px;
 }
 
 // a div thia a class field to maintain together a label with an input
@@ -98,6 +109,7 @@ input:invalid {
 	border: 0px;
 }
 
+
 // Input without spinners
 /* Chrome, Safari, Edge, Opera */
 input.input__noSpinner::-webkit-inner-spin-button,
@@ -108,4 +120,12 @@ input.input__noSpinner::-webkit-outer-spin-button {
 /* Firefox */
 input.input__noSpinner[type="number"] {
 	-moz-appearance: textfield;
+}
+
+// select width
+select.select__normalWidth {
+	width: 15ch;
+}
+select.select__largeWidth {
+	width: 30ch;
 }

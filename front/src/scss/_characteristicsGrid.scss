@@ -1,0 +1,25 @@
+.characteristicsGrid{
+	display: grid;
+    width: 100%;
+    grid-template-columns: repeat(7, auto);
+    gap: 10px;
+    justify-content: space-around;
+    justify-items: left;
+    align-items: center;
+    padding: 10px;
+
+}
+
+.characteristicsGrid__colName{
+    text-align: center;
+    justify-self: center;
+}
+
+.characteristicsGrid__rowName{
+    text-align: right;
+    justify-self: right;
+}
+
+.characteristicsGrid__field{
+    justify-self: center;
+}
