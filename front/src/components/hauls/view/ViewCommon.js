@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 
-class ViewCommonDetail extends Component {
+class ViewCommon extends Component {
 	/**
 	 * Component of the common part of the haul form.
 	 * @param {object} props.haul
@@ -86,4 +86,4 @@ class ViewCommonDetail extends Component {
 	}
 }
 
-export default ViewCommonDetail;
+export default ViewCommon;

@@ -22,7 +22,6 @@ class ViewCommonSimple extends Component {
 						size={2}
 						value={this.props.haul.haul}
 					/>
-					{console.log(this.props.haul)}
 				</label>
 
 				<label className="form__cell">

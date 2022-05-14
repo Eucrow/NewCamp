@@ -8,6 +8,7 @@ class EditCommonDetail extends Component {
 	 * @param {method} props.handleChangeCommon
 	 * @param {method} props.handleChangeCommonValid
 	 * @param {method} props.handleChangeNestedIds
+	 * handleChangeStratum
 	 * @param {method} props.validateHaulSampler
 	 */
 	render() {
@@ -41,7 +42,8 @@ class EditCommonDetail extends Component {
 						name="stratum"
 						className="select__largeWidth"
 						value={this.props.haul.stratum.id || "choose"}
-						onChange={this.props.handleChangeNestedIds}
+						// onChange={this.props.handleChangeNestedIds}
+						onChange={this.props.handleChangeStratum}
 					>
 						{this.props.strata.map((stratum) => {
 							return (

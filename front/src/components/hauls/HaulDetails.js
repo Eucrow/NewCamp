@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import update from "immutability-helper";
 
-import ViewCommonDetail from "./view/ViewCommonDetail";
+import ViewCommon from "./view/ViewCommon";
 import ViewMeteorology from "./view/ViewMeteorology";
 import ViewTrawl from "./view/ViewTrawl";
 import ViewHydrography from "./view/ViewHydrography";
@@ -36,6 +36,7 @@ class HaulDetails extends Component {
 				trawl_characteristics: {},
 				hydrography_characteristics: {},
 				station: {},
+				stratum: [],
 				sampler: {},
 			},
 			edit: false,
@@ -51,6 +52,7 @@ class HaulDetails extends Component {
 		this.handleChangeCommon = this.handleChangeCommon.bind(this);
 		this.handleChangeCommonValid = this.handleChangeCommonValid.bind(this);
 		this.handleChangeNestedIds = this.handleChangeNestedIds.bind(this);
+		this.handleChangeStratum = this.handleChangeStratum.bind(this);
 		this.handleChangeMeteorology = this.handleChangeMeteorology.bind(this);
 		this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
 		this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
@@ -100,6 +102,23 @@ class HaulDetails extends Component {
 				[name]: {
 					id: value,
 				},
+			},
+		});
+	}
+
+	handleChangeStratum(event) {
+		const value = event.target.value;
+
+		const newValue = this.props.strata.find(
+			(s) => s.id === parseInt(value)
+		);
+
+		console.log(newValue);
+
+		this.setState({
+			haul: {
+				...this.state.haul,
+				stratum: newValue,
 			},
 		});
 	}
@@ -174,13 +193,44 @@ class HaulDetails extends Component {
 			.catch((error) => console.log(error));
 	}
 
+	componentDidMount() {
+		/**
+		 * When the component is mounted, get the sampler_id from props, fetch the complete
+		 * data of the haul and update the state with it.
+		 */
+		const apiHaul =
+			this.props.haul.sampler_id === 1
+				? this.apiTrawlHaul
+				: this.props.haul.sampler_id === 2
+				? this.apiHydrographyHaul
+				: null;
+
+		// Fetch haul.
+		fetch(apiHaul)
+			.then((response) => {
+				if (response.status > 400) {
+					return this.setState(() => {
+						return { placeholder: "Something went wrong!" };
+					});
+				}
+				return response.json();
+			})
+			.then((haul) => {
+				this.setState(() => {
+					return {
+						haul,
+					};
+				});
+			});
+	}
+
 	renderContent() {
 		if (this.state.haul.sampler.id === 1) {
 			if (this.state.edit === false) {
 				return (
 					<form disabled>
 						<div className="form__row">
-							<ViewCommonDetail haul={this.state.haul} />
+							<ViewCommon haul={this.state.haul} />
 						</div>
 						<div className="form__row">
 							<ViewMeteorology haul={this.state.haul} />
@@ -227,6 +277,7 @@ class HaulDetails extends Component {
 								handleChangeNestedIds={
 									this.handleChangeNestedIds
 								}
+								handleChangeStratum={this.handleChangeStratum}
 								strata={this.props.strata}
 								samplers={this.props.samplers}
 								gears={this.props.gears}
@@ -272,7 +323,7 @@ class HaulDetails extends Component {
 			if (this.state.edit === false) {
 				return (
 					<div>
-						<ViewCommonDetail haul={this.state.haul} />
+						<ViewCommon haul={this.state.haul} />
 						<ViewHydrography haul={this.state.haul} />
 						<button
 							type="submit"
@@ -324,37 +375,6 @@ class HaulDetails extends Component {
 			}
 		}
 		return "The type of sampler must be 1 or 2";
-	}
-
-	componentDidMount() {
-		/**
-		 * When the component is mounted, get the sampler_id from props, fetch the complete
-		 * data of the haul and update the state with it.
-		 */
-		const apiHaul =
-			this.props.haul.sampler_id === 1
-				? this.apiTrawlHaul
-				: this.props.haul.sampler_id === 2
-				? this.apiHydrographyHaul
-				: null;
-
-		// Fetch haul.
-		fetch(apiHaul)
-			.then((response) => {
-				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
-					});
-				}
-				return response.json();
-			})
-			.then((haul) => {
-				this.setState(() => {
-					return {
-						haul,
-					};
-				});
-			});
 	}
 
 	render() {
