@@ -28,7 +28,7 @@ SECRET_KEY = '1!xp89z^$1+7@4j#s*t94eh(3r0u77f=srdbbi==g*x0_=*sez'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://newcampdemo.azurewebsites.net/', ]
+ALLOWED_HOSTS = ['newcampdemo.azurewebsites.net', ]
 
 # Application definition
 
