@@ -142,7 +142,7 @@ const ComponentsStations = () => {
 			.catch((error) => console.log(error));
 	};
 
-	const deleteHaul = (e, id_station, id_haul) => {
+	const deleteHaul = (e, id_haul) => {
 		/**
 		 * Method to delete haul.
 		 */
@@ -158,15 +158,13 @@ const ComponentsStations = () => {
 		})
 			.then(() => {
 				var new_stations = stations.map((station) => {
-					if (station.id === id_station) {
+					if (station.hauls.some((h) => h.id === id_haul)) {
 						var new_hauls = station.hauls.filter(
 							(haul) => haul.id !== id_haul
 						);
 						station.hauls = new_hauls;
-						return station;
-					} else {
-						return station;
 					}
+					return station;
 				});
 				setStations(new_stations);
 			})

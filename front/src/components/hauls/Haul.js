@@ -2,9 +2,10 @@ import React, { Component } from "react";
 
 // import { Link } from "react-router-dom";
 
-import ViewCommonSimple from "./view/ViewCommonSimple";
+import ViewCommon from "./view/ViewCommon";
 import HaulDetails from "./HaulDetails";
 
+import UiButtonDelete from "../ui/UiButtonDelete";
 class Haul extends Component {
 	/**
 	 * Haul component
@@ -49,22 +50,16 @@ class Haul extends Component {
 		if (this.state.detail === false) {
 			return (
 				<div className="wrapper form__row">
-					<ViewCommonSimple haul={this.props.haul} />
+					<ViewCommon haul={this.props.haul} />
 					<div className="form__cell form__cell--right">
 						<div className="buttonsWrapper">
 							<this.UiShowDetailButton />
-							<button
-								className="buttonsWrapper__button"
-								onClick={(e) => {
-									this.props.deleteHaul(
-										e,
-										this.props.station_id,
-										this.props.haul.id
-									);
-								}}
-							>
-								Delete haul
-							</button>
+							<UiButtonDelete
+								id={this.props.haul.id}
+								deleteMethod={this.props.deleteHaul}
+								buttonText="Delete haul"
+								confirmMessage="Are you sure to delete this haul?"
+							/>
 							{/* <Link
 								to={{
 									pathname:
@@ -84,7 +79,8 @@ class Haul extends Component {
 
 		if (this.state.detail === true) {
 			return (
-				<div className="wrapper">
+				<div className="wrapper form__row">
+					<ViewCommon haul={this.props.haul} />
 					<HaulDetails
 						haul={this.props.haul}
 						changeDetail={this.changeDetail}

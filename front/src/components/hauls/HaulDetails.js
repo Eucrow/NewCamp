@@ -228,10 +228,7 @@ class HaulDetails extends Component {
 		if (this.state.haul.sampler.id === 1) {
 			if (this.state.edit === false) {
 				return (
-					<form disabled>
-						<div className="form__row">
-							<ViewCommon haul={this.state.haul} />
-						</div>
+					<form className="form--wide" disabled>
 						<div className="form__row">
 							<ViewMeteorology haul={this.state.haul} />
 						</div>

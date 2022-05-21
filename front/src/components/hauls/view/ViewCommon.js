@@ -37,7 +37,7 @@ class ViewCommon extends Component {
 							key={this.props.haul.stratum.id}
 							value={this.props.haul.stratum.id}
 						>
-							{this.props.haul.stratum.stratum}
+							{this.props.haul.stratum}
 						</option>
 					</select>
 				</label>

@@ -57,6 +57,10 @@ input:invalid {
 	color: var(--error_text) !important;
 }
 
+.form--wide {
+	width: 100%;
+}
+
 //STRUCTURE
 .form__row {
 	display: flex;
