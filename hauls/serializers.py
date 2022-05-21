@@ -65,7 +65,8 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
     trawl_characteristics = TrawlSerializer()
     # station and sampler can't be changed...
     station = StationSerializer(read_only=True)
-    stratum = StrataSerializer(read_only=True)
+    # stratum = StrataSerializer(read_only=True)
+    stratum = serializers.IntegerField(source='stratum.id')
     sampler = SamplerSerializer(read_only=True)
     # gear is the 'name' of the gear
     gear = serializers.IntegerField(source='gear.name')
