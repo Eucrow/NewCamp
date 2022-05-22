@@ -7,7 +7,7 @@ import ViewMeteorology from "./view/ViewMeteorology";
 import ViewTrawl from "./view/ViewTrawl";
 import ViewHydrography from "./view/ViewHydrography";
 
-import EditCommonDetail from "./edit/EditCommonDetail";
+// import EditCommonDetail from "./edit/EditCommonDetail";
 import EditMeteorology from "./edit/EditMeteorology";
 import EditTrawl from "./edit/EditTrawl";
 import EditHydrography from "./edit/EditHydrography";
@@ -35,13 +35,15 @@ class HaulDetails extends Component {
 				meteo: {},
 				trawl_characteristics: {},
 				hydrography_characteristics: {},
-				station: {},
-				stratum: [],
+				// station: {},
+				// stratum: [],
 				sampler: {},
 			},
 			edit: false,
 		};
 
+		//TODO: optimize requests: the request only need to return station_id, meteo,
+		// trawl_characteristics and hydrograpy_characteristics
 		this.apiTrawlHaul =
 			"http://127.0.0.1:8000/api/1.0/haul/trawl/" + this.props.haul.id;
 		this.apiHydrographyHaul =
@@ -49,10 +51,10 @@ class HaulDetails extends Component {
 			this.props.haul.id;
 
 		this.changeIsEdit = this.changeIsEdit.bind(this);
-		this.handleChangeCommon = this.handleChangeCommon.bind(this);
-		this.handleChangeCommonValid = this.handleChangeCommonValid.bind(this);
-		this.handleChangeNestedIds = this.handleChangeNestedIds.bind(this);
-		this.handleChangeStratum = this.handleChangeStratum.bind(this);
+		// this.handleChangeCommon = this.handleChangeCommon.bind(this);
+		// this.handleChangeCommonValid = this.handleChangeCommonValid.bind(this);
+		// this.handleChangeNestedIds = this.handleChangeNestedIds.bind(this);
+		// this.handleChangeStratum = this.handleChangeStratum.bind(this);
 		this.handleChangeMeteorology = this.handleChangeMeteorology.bind(this);
 		this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
 		this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
@@ -69,59 +71,59 @@ class HaulDetails extends Component {
 		});
 	}
 
-	handleChangeCommon(event) {
-		const name = event.target.name;
-		const value = event.target.value;
+	// handleChangeCommon(event) {
+	// 	const name = event.target.name;
+	// 	const value = event.target.value;
 
-		const newHaulState = update(this.state.haul, {
-			[name]: { $set: value },
-		});
+	// 	const newHaulState = update(this.state.haul, {
+	// 		[name]: { $set: value },
+	// 	});
 
-		this.setState({
-			haul: newHaulState,
-		});
-	}
+	// 	this.setState({
+	// 		haul: newHaulState,
+	// 	});
+	// }
 
-	handleChangeCommonValid(event) {
-		const newHaulState = update(this.state.haul, {
-			valid: { $set: !this.state.haul.valid },
-		});
+	// handleChangeCommonValid(event) {
+	// 	const newHaulState = update(this.state.haul, {
+	// 		valid: { $set: !this.state.haul.valid },
+	// 	});
 
-		this.setState({
-			haul: newHaulState,
-		});
-	}
+	// 	this.setState({
+	// 		haul: newHaulState,
+	// 	});
+	// }
 
-	handleChangeNestedIds(event) {
-		const name = event.target.name;
-		const value = event.target.value;
+	// handleChangeNestedIds(event) {
+	// 	const name = event.target.name;
+	// 	const value = event.target.value;
 
-		this.setState({
-			haul: {
-				...this.state.haul,
-				[name]: {
-					id: value,
-				},
-			},
-		});
-	}
+	// 	this.setState({
+	// 		haul: {
+	// 			...this.state.haul,
+	// 			[name]: {
+	// 				id: value,
+	// 			},
+	// 		},
+	// 	});
+	// }
 
-	handleChangeStratum(event) {
-		const value = event.target.value;
+	// handleChangeStratum(event) {
+	// 	const value = event.target.value;
 
-		const newValue = this.props.strata.find(
-			(s) => s.id === parseInt(value)
-		);
+	// 	const newValue = this.props.strata.find(
+	// 		(s) => s.id === parseInt(value)
+	// 	);
 
-		console.log(newValue);
+	// 	console.log(newValue);
 
-		this.setState({
-			haul: {
-				...this.state.haul,
-				stratum: newValue,
-			},
-		});
-	}
+	// 	this.setState({
+	// 		haul: {
+	// 			...this.state.haul,
+	// 			stratum: newValue,
+	// 		},
+	// 	});
+	// }
 
 	handleChangeMeteorology(event) {
 		const name = event.target.name;
@@ -264,7 +266,7 @@ class HaulDetails extends Component {
 							this.changeIsEdit(false);
 						}}
 					>
-						<div className="form__row">
+						{/* <div className="form__row">
 							<EditCommonDetail
 								haul={this.state.haul}
 								handleChangeCommonValid={
@@ -282,7 +284,7 @@ class HaulDetails extends Component {
 									this.props.validateHaulSampler
 								}
 							/>
-						</div>
+						</div> */}
 
 						<div className="form__row">
 							<EditMeteorology
@@ -342,13 +344,13 @@ class HaulDetails extends Component {
 			if (this.state.edit === true) {
 				return (
 					<div>
-						<EditCommonDetail
+						{/* <EditCommonDetail
 							haul={this.state.haul}
 							handleChangeCommonValid={
 								this.handleChangeCommonValid
 							}
 							handleChangeCommon={this.handleChangeCommon}
-						/>
+						/> */}
 						<EditHydrography
 							haul={this.state.haul}
 							handleChangeHydrography={
