@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
 
+import update from "immutability-helper";
+
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 
 import Haul from "./Haul";
@@ -215,6 +217,7 @@ class Hauls extends Component {
 								samplers={this.state.samplers}
 								gears={this.state.gears}
 								validateHaulSampler={this.validateHaulSampler}
+								handleChangeCommon={this.handleChangeCommon}
 							/>
 						);
 					})}

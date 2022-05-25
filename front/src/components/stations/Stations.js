@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
+import update from "immutability-helper";
+
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import StationsContext from "../../contexts/StationsContext";
 
@@ -171,6 +173,41 @@ const ComponentsStations = () => {
 			.catch((error) => alert(error));
 	};
 
+	const handleChangeCommonHaul = (e, id_haul) => {
+		const name = e.target.name;
+		const value = e.target.value;
+
+		var new_stations = stations.map((station) => {
+			if (station.hauls.some((haul) => haul.id === id_haul)) {
+				var id_haul_index = station.hauls.findIndex(
+					(h) => h.id === id_haul
+				);
+
+				station.hauls[id_haul_index][name] = value;
+			}
+			return station;
+		});
+		setStations(new_stations);
+
+		// const newStations = update(stations, {
+		// 	id: [152],
+		// 	hauls: [
+		// 		{
+		// 			id: [id_haul],
+		// 			[name]: { $set: value },
+		// 		},
+		// 	],
+		// });
+
+		// const newHaulState = update(this.state.haul, {
+		// 	[name]: { $set: value },
+		// });
+
+		// this.setState({
+		// 	stations: newStations,
+		// });
+	};
+
 	// VALIDATIONS
 	/**
 	 * Detect if exists an station in state.
@@ -251,6 +288,7 @@ const ComponentsStations = () => {
 					handleChangeStation: handleChangeStation,
 					editStation: editStation,
 					validateStationNumber: validateStationNumber,
+					handleChangeCommonHaul: handleChangeCommonHaul,
 				}}
 			>
 				<main>

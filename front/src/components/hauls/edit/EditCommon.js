@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 
-class EditCommonDetail extends Component {
+import StationsContext from "../../../contexts/StationsContext";
+
+class EditCommon extends Component {
 	/**
 	 * Component of the common part of the haul form.
 	 * @param {object} props.haul
@@ -11,6 +13,9 @@ class EditCommonDetail extends Component {
 	 * handleChangeStratum
 	 * @param {method} props.validateHaulSampler
 	 */
+
+	static contextType = StationsContext;
+
 	render() {
 		const haul = this.props.haul;
 
@@ -29,8 +34,8 @@ class EditCommonDetail extends Component {
 						size={2}
 						value={haul.haul || ""}
 						onChange={(e) => {
-							this.props.handleChangeCommon(e);
-							this.props.validateHaulSampler(e);
+							this.context.handleChangeCommonHaul(e, haul.id);
+							// this.props.validateHaulSampler(e);
 						}}
 					/>
 				</label>
@@ -41,7 +46,7 @@ class EditCommonDetail extends Component {
 						id="stratum_id"
 						name="stratum"
 						className="select__largeWidth"
-						value={this.props.haul.stratum.id || "choose"}
+						value={this.props.haul.stratum_id || "choose"}
 						// onChange={this.props.handleChangeNestedIds}
 						onChange={this.props.handleChangeStratum}
 					>
@@ -61,7 +66,8 @@ class EditCommonDetail extends Component {
 						id="sampler_id"
 						name="sampler"
 						className="select__normalWidth"
-						value={this.props.haul.sampler.id || "choose"}
+						disabled
+						value={this.props.haul.sampler_id || "choose"}
 						onChange={this.props.handleChangeNestedIds}
 					>
 						{this.props.samplers.map((sampler) => {
@@ -80,7 +86,9 @@ class EditCommonDetail extends Component {
 						id="gear_id"
 						name="gear"
 						value={this.props.haul.gear || "choose"}
-						onChange={this.props.handleChangeCommon}
+						onChange={(e) => {
+							this.context.handleChangeCommonHaul(e, haul.id);
+						}}
 					>
 						{this.props.gears.map((gear) => {
 							return (
@@ -107,4 +115,4 @@ class EditCommonDetail extends Component {
 	}
 }
 
-export default EditCommonDetail;
+export default EditCommon;
