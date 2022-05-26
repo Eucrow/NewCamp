@@ -1,8 +1,10 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import StationsContext from "../../../contexts/StationsContext";
 
-class EditCommon extends Component {
+// import HaulButtonBar from "../HaulButtonBar";
+
+class EditCommonForm extends Component {
 	/**
 	 * Component of the common part of the haul form.
 	 * @param {object} props.haul
@@ -19,7 +21,8 @@ class EditCommon extends Component {
 		const haul = this.props.haul;
 
 		return (
-			<Fragment>
+			<form>
+				{/* onSubmit={(e) => handleSubmit(e)} */}
 				<label className="form__cell">
 					Haul:
 					<input
@@ -112,9 +115,14 @@ class EditCommon extends Component {
 						onChange={this.props.handleChangeCommonValid}
 					/>
 				</label>
-			</Fragment>
+
+				{/* <HaulButtonBar
+					edit={this.state.edit}
+					handleEdit={this.handleEdit}
+				/> */}
+			</form>
 		);
 	}
 }
 
-export default EditCommon;
+export default EditCommonForm;

@@ -1,14 +1,22 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
+
+import StationsContext from "../../../contexts/StationsContext";
+
+import HaulButtonBar from "../HaulButtonBar";
 
 class ViewCommon extends Component {
 	/**
 	 * Component of the common part of the haul form.
 	 * @param {object} props.haul
+	 * @param {boolena} edit
+	 * @param {method} handleEdit
 	 */
+
+	static contextType = StationsContext;
 
 	render() {
 		return (
-			<Fragment>
+			<form>
 				<label className="form__cell">
 					Haul:
 					<input
@@ -81,7 +89,15 @@ class ViewCommon extends Component {
 						defaultChecked={this.props.haul.valid}
 					/>
 				</label>
-			</Fragment>
+				<div className="form__row">
+					<HaulButtonBar
+						haul_id={this.props.haul.id}
+						edit={this.props.edit}
+						handleEdit={this.props.handleEdit}
+						deleteHaul={this.context.deleteHaul}
+					/>
+				</div>
+			</form>
 		);
 	}
 }
