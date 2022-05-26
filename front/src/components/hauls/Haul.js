@@ -100,7 +100,7 @@ class Haul extends Component {
 					<EditCommon
 						haul={this.props.haul}
 						// handleChangeCommonValid={this.handleChangeCommonValid}
-						handleChangeCommon={this.props.handleChangeCommon}
+
 						// handleChangeNestedIds={this.handleChangeNestedIds}
 						// handleChangeStratum={this.handleChangeStratum}
 						strata={this.props.strata}
@@ -114,7 +114,7 @@ class Haul extends Component {
 							<UiButtonBooleanHandle
 								buttonText={"Cancel"}
 								handleMethod={this.changeIsEdit}
-								newBoolean={true}
+								newBoolean={false}
 							/>
 						</div>
 					</div>

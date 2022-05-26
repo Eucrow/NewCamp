@@ -34,7 +34,7 @@ class Hauls extends Component {
 		// this.apiHauls = "http://127.0.0.1:8000/api/1.0/hauls/";
 
 		this.apiSurveyPartial = "http://127.0.0.1:8000/api/1.0/survey/";
-		this.apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
+		// this.apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
 		this.apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
 		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawl/basic/";
 
@@ -127,38 +127,38 @@ class Hauls extends Component {
 			const apiGears = this.apiGears;
 
 			// TODO: Optimize fetchs
-			// Fetch strata (require previously fetch survey to get stratification).
-			fetch(apiSurvey)
-				.then((response) => {
-					if (response.status > 400) {
-						return this.setState(() => {
-							return { placeholder: "Something went wrong!" };
-						});
-					}
-					return response.json();
-				})
-				.then((survey) => {
-					const apiStrata =
-						this.apiStrataPartial + survey.stratification;
-					fetch(apiStrata)
-						.then((response) => {
-							if (response.status > 400) {
-								return this.setState(() => {
-									return {
-										placeholder: "Something went wrong!",
-									};
-								});
-							}
-							return response.json();
-						})
-						.then((strata) => {
-							this.setState(() => {
-								return {
-									strata: strata,
-								};
-							});
-						});
-				});
+			// // Fetch strata (require previously fetch survey to get stratification).
+			// fetch(apiSurvey)
+			// 	.then((response) => {
+			// 		if (response.status > 400) {
+			// 			return this.setState(() => {
+			// 				return { placeholder: "Something went wrong!" };
+			// 			});
+			// 		}
+			// 		return response.json();
+			// 	})
+			// 	.then((survey) => {
+			// 		const apiStrata =
+			// 			this.apiStrataPartial + survey.stratification;
+			// 		fetch(apiStrata)
+			// 			.then((response) => {
+			// 				if (response.status > 400) {
+			// 					return this.setState(() => {
+			// 						return {
+			// 							placeholder: "Something went wrong!",
+			// 						};
+			// 					});
+			// 				}
+			// 				return response.json();
+			// 			})
+			// 			.then((strata) => {
+			// 				this.setState(() => {
+			// 					return {
+			// 						strata: strata,
+			// 					};
+			// 				});
+			// 			});
+			// 	});
 
 			// Fetch samplers
 			fetch(apiSamplers)
@@ -217,7 +217,6 @@ class Hauls extends Component {
 								samplers={this.state.samplers}
 								gears={this.state.gears}
 								validateHaulSampler={this.validateHaulSampler}
-								handleChangeCommon={this.handleChangeCommon}
 							/>
 						);
 					})}

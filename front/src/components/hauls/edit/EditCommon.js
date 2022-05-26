@@ -7,7 +7,6 @@ class EditCommon extends Component {
 	 * Component of the common part of the haul form.
 	 * @param {object} props.haul
 	 * @param {object} props.gears
-	 * @param {method} props.handleChangeCommon
 	 * @param {method} props.handleChangeCommonValid
 	 * @param {method} props.handleChangeNestedIds
 	 * handleChangeStratum
@@ -48,9 +47,12 @@ class EditCommon extends Component {
 						className="select__largeWidth"
 						value={this.props.haul.stratum_id || "choose"}
 						// onChange={this.props.handleChangeNestedIds}
-						onChange={this.props.handleChangeStratum}
+						// onChange={this.props.handleChangeStratum}
+						onChange={(e) => {
+							this.context.handleChangeStratum(e, haul.id);
+						}}
 					>
-						{this.props.strata.map((stratum) => {
+						{this.context.strata.map((stratum) => {
 							return (
 								<option key={stratum.id} value={stratum.id}>
 									{stratum.stratum}

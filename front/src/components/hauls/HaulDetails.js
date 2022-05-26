@@ -51,7 +51,6 @@ class HaulDetails extends Component {
 			this.props.haul.id;
 
 		this.changeIsEdit = this.changeIsEdit.bind(this);
-		// this.handleChangeCommon = this.handleChangeCommon.bind(this);
 		// this.handleChangeCommonValid = this.handleChangeCommonValid.bind(this);
 		// this.handleChangeNestedIds = this.handleChangeNestedIds.bind(this);
 		// this.handleChangeStratum = this.handleChangeStratum.bind(this);
@@ -70,19 +69,6 @@ class HaulDetails extends Component {
 			};
 		});
 	}
-
-	// handleChangeCommon(event) {
-	// 	const name = event.target.name;
-	// 	const value = event.target.value;
-
-	// 	const newHaulState = update(this.state.haul, {
-	// 		[name]: { $set: value },
-	// 	});
-
-	// 	this.setState({
-	// 		haul: newHaulState,
-	// 	});
-	// }
 
 	// handleChangeCommonValid(event) {
 	// 	const newHaulState = update(this.state.haul, {
@@ -104,23 +90,6 @@ class HaulDetails extends Component {
 	// 			[name]: {
 	// 				id: value,
 	// 			},
-	// 		},
-	// 	});
-	// }
-
-	// handleChangeStratum(event) {
-	// 	const value = event.target.value;
-
-	// 	const newValue = this.props.strata.find(
-	// 		(s) => s.id === parseInt(value)
-	// 	);
-
-	// 	console.log(newValue);
-
-	// 	this.setState({
-	// 		haul: {
-	// 			...this.state.haul,
-	// 			stratum: newValue,
 	// 		},
 	// 	});
 	// }

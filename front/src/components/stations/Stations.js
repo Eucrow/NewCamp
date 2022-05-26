@@ -13,6 +13,7 @@ import NewStationForm from "./NewStationForm";
 const ComponentsStations = () => {
 	const [add, setAdd] = useState(false);
 	const [stations, setStations] = useState([]);
+	const [strata, setStrata] = useState([]);
 
 	const selectedSurveyContext = useContext(SelectedSurveyContext);
 
@@ -24,6 +25,10 @@ const ComponentsStations = () => {
 
 	const apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get, update or add station
 	const apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
+
+	const apiSurveyPartial = "http://127.0.0.1:8000/api/1.0/survey/";
+
+	const apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
 
 	const createStation = (event, station) => {
 		event.preventDefault();
@@ -188,23 +193,43 @@ const ComponentsStations = () => {
 			return station;
 		});
 		setStations(new_stations);
+	};
 
-		// const newStations = update(stations, {
-		// 	id: [152],
-		// 	hauls: [
-		// 		{
-		// 			id: [id_haul],
-		// 			[name]: { $set: value },
-		// 		},
-		// 	],
-		// });
+	const handleChangeStratum = (e, id_haul) => {
+		const name = e.target.name;
+		const value = e.target.value;
+		const newValue = strata.find((s) => s.id === parseInt(value));
+		console.log(newValue);
 
-		// const newHaulState = update(this.state.haul, {
-		// 	[name]: { $set: value },
-		// });
+		var new_stations = stations.map((station) => {
+			if (station.hauls.some((haul) => haul.id === id_haul)) {
+				var id_haul_index = station.hauls.findIndex(
+					(h) => h.id === id_haul
+				);
+
+				station.hauls[id_haul_index][name] = value;
+			}
+			return station;
+		});
+		setStations(new_stations);
 
 		// this.setState({
-		// 	stations: newStations,
+		// 	haul: {
+		// 		...this.state.haul,
+		// 		stratum: newValue,
+		// 	},
+		// });
+
+		// const value = e.target.value;
+		// const newValue = this.props.strata.find(
+		// 	(s) => s.id === parseInt(value)
+		// );
+		// console.log(newValue);
+		// this.setState({
+		// 	haul: {
+		// 		...this.state.haul,
+		// 		stratum: newValue,
+		// 	},
 		// });
 	};
 
@@ -256,6 +281,32 @@ const ComponentsStations = () => {
 		};
 
 		if (selectedSurveyContext.selectedSurveyId !== "") {
+			// Fetch strata (require previously fetch survey to get stratification).
+			const apiSurvey =
+				apiSurveyPartial + selectedSurveyContext.selectedSurveyId;
+
+			fetch(apiSurvey)
+				.then((response) => {
+					if (response.status > 400) {
+						alert("something were wrong!!");
+					}
+					return response.json();
+				})
+				.then((survey) => {
+					const apiStrata = apiStrataPartial + survey.stratification;
+					fetch(apiStrata)
+						.then((response) => {
+							if (response.status > 400) {
+								alert("something were wrong!!");
+							}
+							return response.json();
+						})
+						.then((strata) => {
+							setStrata(strata);
+						});
+				});
+
+			// Fetch stations
 			const APIStations = getStationsApi();
 
 			fetch(APIStations)
@@ -289,6 +340,8 @@ const ComponentsStations = () => {
 					editStation: editStation,
 					validateStationNumber: validateStationNumber,
 					handleChangeCommonHaul: handleChangeCommonHaul,
+					handleChangeStratum: handleChangeStratum,
+					strata: strata,
 				}}
 			>
 				<main>
