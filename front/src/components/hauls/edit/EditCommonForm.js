@@ -2,12 +2,14 @@ import React, { Component } from "react";
 
 import StationsContext from "../../../contexts/StationsContext";
 
-// import HaulButtonBar from "../HaulButtonBar";
+import HaulButtonBar from "../HaulButtonBar";
 
 class EditCommonForm extends Component {
 	/**
 	 * Component of the common part of the haul form.
 	 * @param {object} props.haul
+	 * edit
+	 * samplers
 	 * @param {object} props.gears
 	 * @param {method} props.handleChangeCommonValid
 	 * @param {method} props.handleChangeNestedIds
@@ -115,11 +117,14 @@ class EditCommonForm extends Component {
 						onChange={this.props.handleChangeCommonValid}
 					/>
 				</label>
-
-				{/* <HaulButtonBar
-					edit={this.state.edit}
-					handleEdit={this.handleEdit}
-				/> */}
+				<div className="form__row">
+					<HaulButtonBar
+						haul_id={this.props.haul.id}
+						edit={this.props.edit}
+						handleEdit={this.props.handleEdit}
+						deleteHaul={this.context.deleteHaul}
+					/>
+				</div>
 			</form>
 		);
 	}

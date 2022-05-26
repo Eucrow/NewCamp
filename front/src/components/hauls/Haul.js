@@ -93,13 +93,15 @@ class Haul extends Component {
 				<div className="wrapper form__row">
 					<EditCommonForm
 						haul={this.props.haul}
+						edit={this.state.edit}
 						// handleChangeCommonValid={this.handleChangeCommonValid}
-
+						handleEdit={this.handleEdit}
 						// handleChangeNestedIds={this.handleChangeNestedIds}
 						// handleChangeStratum={this.handleChangeStratum}
 						// strata={this.props.strata}
 						samplers={this.props.samplers}
 						gears={this.props.gears}
+
 						// validateHaulSampler={this.props.validateHaulSampler}
 					/>
 					{/* <div className="form__cell form__cell--right">
