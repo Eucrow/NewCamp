@@ -48,7 +48,7 @@ class EditCommonForm extends Component {
 					Stratum:
 					<select
 						id="stratum_id"
-						name="stratum"
+						name="stratum_id"
 						className="select__largeWidth"
 						value={this.props.haul.stratum_id || "choose"}
 						// onChange={this.props.handleChangeNestedIds}

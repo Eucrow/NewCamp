@@ -196,7 +196,7 @@ const ComponentsStations = () => {
 	};
 
 	const handleChangeStratum = (e, id_haul) => {
-		const name = e.target.name;
+		// const name = e.target.name;
 		const value = e.target.value;
 		const newValue = strata.find((s) => s.id === parseInt(value));
 		console.log(newValue);
@@ -207,11 +207,16 @@ const ComponentsStations = () => {
 					(h) => h.id === id_haul
 				);
 
-				station.hauls[id_haul_index][name] = value;
+				station.hauls[id_haul_index]["stratum_id"] = value;
+				// get stratum name:
+				const stratum = strata.find((s) => s.id === parseInt(value));
+				station.hauls[id_haul_index]["stratum"] = stratum.stratum;
 			}
 			return station;
 		});
 		setStations(new_stations);
+
+		console.log(stations);
 
 		// this.setState({
 		// 	haul: {
