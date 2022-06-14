@@ -59,8 +59,8 @@ class ViewCommon extends Component {
 						disabled
 					>
 						<option
-							key={this.props.haul.sampler.id}
-							value={this.props.haul.sampler.id}
+							key={this.props.haul.sampler_id}
+							value={this.props.haul.sampler_id}
 						>
 							{this.props.haul.sampler}
 						</option>

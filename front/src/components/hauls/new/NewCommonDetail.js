@@ -32,7 +32,7 @@ class NewCommonDetail extends Component {
 							this.props.validateHaulSampler(
 								e,
 								e.target.value,
-								this.props.haul.sampler.id
+								this.props.haul.sampler_id
 							);
 						}}
 					/>
@@ -42,11 +42,11 @@ class NewCommonDetail extends Component {
 					Stratum:
 					<select
 						id="stratum_id"
-						name="stratum"
+						name="stratum_id"
 						className="select__largeWidth"
 						required
-						value={this.props.haul.stratum.id || "choose"}
-						onChange={this.props.handleChangeNestedIds}
+						value={this.props.haul.stratum_id || "choose"}
+						onChange={this.props.handleChange}
 					>
 						<option value="" selected></option>
 						{this.props.strata.map((stratum) => {
@@ -63,12 +63,12 @@ class NewCommonDetail extends Component {
 					Sampler:
 					<select
 						id="sampler_id"
-						name="sampler"
+						name="sampler_id"
 						className="select__normalWidth"
 						required
-						value={this.props.haul.sampler.id || "choose"}
+						value={this.props.haul.sampler_id || "choose"}
 						onChange={(e) => {
-							this.props.handleChangeNestedIds(e);
+							this.props.handleChange(e);
 							this.props.validateHaulSampler(
 								e,
 								this.props.haul.haul,

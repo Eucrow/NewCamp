@@ -23,8 +23,9 @@ class NewHaul extends Component {
 		this.state = {
 			haul: {
 				meteo: {},
-				station: { id: this.props.station_id },
-				sampler: {},
+				// station: { id: this.props.station_id },
+				station_id: this.props.station_id,
+				sampler_id: null,
 				stratum: {},
 				gear: null,
 				trawl_characteristics: {},
@@ -91,7 +92,6 @@ class NewHaul extends Component {
 	handleChangeTrawl(event) {
 		const name = event.target.name;
 		const value = event.target.value;
-		console.log("value in handleChangeTrawl: " + value);
 
 		this.setState({
 			haul: {
@@ -236,7 +236,7 @@ class NewHaul extends Component {
 						handleChangeMeteo={this.handleChangeMeteo}
 						handleChangeTrawl={this.handleChangeTrawl}
 						handleChangeHydrography={this.handleChangeHydrography}
-						sampler_id={this.state.haul.sampler.id}
+						sampler_id={this.state.haul.sampler_id}
 					/>
 					<UiButtonSave buttonText="Save Haul" />
 				</form>

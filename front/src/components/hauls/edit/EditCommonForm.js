@@ -13,7 +13,6 @@ class EditCommonForm extends Component {
 	 * @param {object} props.gears
 	 * @param {method} props.handleChangeCommonValid
 	 * @param {method} props.handleChangeNestedIds
-	 * handleChangeStratum
 	 * @param {method} props.validateHaulSampler
 	 */
 

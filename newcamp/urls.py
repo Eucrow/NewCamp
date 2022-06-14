@@ -16,7 +16,7 @@ Including another URLconf
 from django.urls import path, re_path, include
 from django.contrib import admin
 
-#this is for compile the static files:
+# this is for compile the static files:
 # from django.conf import settings
 # from django.conf.urls.static import static
 
@@ -33,13 +33,12 @@ from stratifications.api import StratificationsAPI
 from strata.api import StrataAPI
 from samplers.api import SamplersAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
-from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI,\
+from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI, \
     HaulHydrographyAPI
 from catches.api import CatchHaulListAPI, CatchHaulAPI, CatchVerboseAPI
 from samples.api import LengthsAPI, SexDetail, SexAPI, SexLengthsAPI, SampledWeightDetail, SampledWeightCreate
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 from conn_r.api import GetTrawlHaulsAPIConnR, GetDataStationsAPIConnR
-
 
 urlpatterns = [
     re_path(r'^admin/', admin.site.urls),
@@ -104,16 +103,16 @@ urlpatterns = [
 
     # Hauls API URLs
     re_path(r'^api/1.0/haul/(?P<haul_id>[0-9]+)$', HaulAPI.as_view(), name="haul_api"),
-    # re_path(r'^api/1.0/haul/new$', HaulAPI.as_view(), name="add_haul_api"),
+    re_path(r'^api/1.0/haul/new/$', HaulAPI.as_view(), name="add_haul_api"),
 
-        # Trawl hauls
-        re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="get_trawl_haul_api"),
-        re_path(r'^api/1.0/haul/trawl/new/$', HaulTrawlAPI.as_view(), name="add_trawl_haul_api"),
+    # Trawl hauls
+    re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="get_trawl_haul_api"),
+    re_path(r'^api/1.0/haul/trawl/new/$', HaulTrawlAPI.as_view(), name="add_trawl_haul_api"),
 
-        # Hydrography hauls
-        re_path(r'^api/1.0/haul/hydrography/(?P<haul_id>[0-9]+)$', HaulHydrographyAPI.as_view(),
-                name="get_hydrography_haul_api"),
-        re_path(r'^api/1.0/haul/hydrography/new/$', HaulHydrographyAPI.as_view(), name="add_hydrography_haul_api"),
+    # Hydrography hauls
+    re_path(r'^api/1.0/haul/hydrography/(?P<haul_id>[0-9]+)$', HaulHydrographyAPI.as_view(),
+            name="get_hydrography_haul_api"),
+    re_path(r'^api/1.0/haul/hydrography/new/$', HaulHydrographyAPI.as_view(), name="add_hydrography_haul_api"),
 
     re_path(r'^api/1.0/hauls/$', HaulListAllAPI.as_view(), name="get_hauls_api"),
     re_path(r'^api/1.0/hauls/(?P<survey_id>[0-9][0-9])$', HaulListAPI.as_view(), name="get_hauls_api"),
@@ -128,14 +127,16 @@ urlpatterns = [
     re_path(r'^api/1.0/catches/new$', CatchHaulAPI.as_view(), name="add_catch_api"),
     re_path(r'^api/1.0/catch/(?P<haul_id>[0-9]+)/(?P<sp_id>[0-9]+)/(?P<category>[0-9]+)$', CatchHaulAPI.as_view(),
             name="get_catch_api"),
-    re_path(r'^api/1.0/catch/verbose/(?P<catch_id>[0-9]+)$', CatchVerboseAPI.as_view(), name="retrieve_verbosed_catch_api"),
+    re_path(r'^api/1.0/catch/verbose/(?P<catch_id>[0-9]+)$', CatchVerboseAPI.as_view(),
+            name="retrieve_verbosed_catch_api"),
     re_path(r'^api/1.0/catch$', CatchHaulAPI.as_view(), name="edit_catch_api"),
     re_path(r'^api/1.0/catch/remove$', CatchHaulAPI.as_view(), name="remove_catch_api"),
 
     # Samples API URLs
     # re_path(r'^api/1.0/samples/new$', SampleAPI.as_view(), name="add_sample_api"),
     path('api/1.0/sampled_weight/new', SampledWeightCreate.as_view(), name="create_sampled_weight_api"),
-    path('api/1.0/sampled_weight/<int:pk>', SampledWeightDetail.as_view(), name="retrieve_update_delete_sampled_weight_api"),
+    path('api/1.0/sampled_weight/<int:pk>', SampledWeightDetail.as_view(),
+         name="retrieve_update_delete_sampled_weight_api"),
 
     # Sexes API URLs
     path('api/1.0/sexes/<int:pk>', SexDetail.as_view(), name="retrieve_update_delete_sex_api"),
@@ -145,7 +146,7 @@ urlpatterns = [
     re_path(r'^api/1.0/lengths/(?P<sex_id>[0-9]+)$', LengthsAPI.as_view(), name="get_lenghts_api"),
     re_path(r'^api/1.0/lengths/new/(?P<sex_id>[0-9]+)$', LengthsAPI.as_view(), name="add_lenghts_api"),
     # re_path(r'^api/1.0/lengths/update', LengthsAPI.as_view(), name="update_lenghts_api"),
-    #The next line is not neccesary:
+    # The next line is not neccesary:
     # re_path(r'^api/1.0/lengths/remove/(?P<length_id>[0-9]+)$', LengthAPI.as_view(), name="remove_length_api"),
     # re_path(r'^api/1.0/sampled_weights/import$', SampledWeightsImportAPI.as_view(), name="lengths_import"),
 
@@ -156,12 +157,14 @@ urlpatterns = [
     re_path(r'^api/1.0/import$', ImportOldCampAPI.as_view(), name="old_camp_import"),
 
     # conn_r
-    re_path(r'^api/1.0/conn_r/get_trawl_hauls/(?P<acronym>[A-Z][0-9][0-9])$', GetTrawlHaulsAPIConnR.as_view(), name="get_trawls_hauls_api_conn_r"),
-    re_path(r'^api/1.0/conn_r/get_data_stations/(?P<acronym>[A-Z][0-9][0-9])$', GetDataStationsAPIConnR.as_view(), name="get_data_stations_api_conn_r"),
+    re_path(r'^api/1.0/conn_r/get_trawl_hauls/(?P<acronym>[A-Z][0-9][0-9])$', GetTrawlHaulsAPIConnR.as_view(),
+            name="get_trawls_hauls_api_conn_r"),
+    re_path(r'^api/1.0/conn_r/get_data_stations/(?P<acronym>[A-Z][0-9][0-9])$', GetDataStationsAPIConnR.as_view(),
+            name="get_data_stations_api_conn_r"),
 
     # Frontend
     # path('', include('frontend.urls')),
 
-]\
-    #this is for compile the static files:
-    # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] \
+    # this is for compile the static files:
+# + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

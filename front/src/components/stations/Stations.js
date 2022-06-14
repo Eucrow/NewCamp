@@ -118,9 +118,9 @@ const ComponentsStations = () => {
 		event.preventDefault();
 
 		const apiForm =
-			haul.sampler.id === "1"
+			haul.sampler_id === "1"
 				? apiTrawlForm
-				: haul.sampler.id === "2"
+				: haul.sampler_id === "2"
 				? apiHydrographyForm
 				: null;
 
@@ -134,7 +134,7 @@ const ComponentsStations = () => {
 			.then((response) => response.json())
 			.then((h) => {
 				const new_stations = stations.map((station) => {
-					if (station.id === parseInt(haul.station.id)) {
+					if (station.id === parseInt(haul.station_id)) {
 						station.hauls
 							? (station.hauls = [...station.hauls, h])
 							: (station.hauls = [h]);
@@ -317,7 +317,7 @@ const ComponentsStations = () => {
 			fetch(APIStations)
 				.then((response) => {
 					if (response.status > 400) {
-						alert("something were wrong!!");
+						alert("something were wrong fetching the Stations!!");
 					}
 					return response.json();
 				})
