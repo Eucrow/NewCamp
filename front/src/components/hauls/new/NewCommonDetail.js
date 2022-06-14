@@ -45,10 +45,10 @@ class NewCommonDetail extends Component {
 						name="stratum_id"
 						className="select__largeWidth"
 						required
-						value={this.props.haul.stratum_id || "choose"}
+						value={this.props.haul.stratum_id || ""}
 						onChange={this.props.handleChange}
 					>
-						<option value="" selected></option>
+						<option value=""></option>
 						{this.props.strata.map((stratum) => {
 							return (
 								<option key={stratum.id} value={stratum.id}>
