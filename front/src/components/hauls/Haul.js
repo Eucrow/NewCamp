@@ -69,22 +69,6 @@ class Haul extends Component {
 						handleEdit={this.handleEdit}
 						handleDetail={this.handleDetail}
 					/>
-					{/* <div className="form__cell form__cell--right">
-						<div className="buttonsWrapper">
-							<this.UiShowDetailButton />
-							<UiButtonBooleanHandle
-								buttonText={"Edit Haul"}
-								handleMethod={this.changeIsEdit}
-								newBoolean={true}
-							/>
-							<UiButtonDelete
-								id={this.props.haul.id}
-								deleteMethod={this.props.deleteHaul}
-								buttonText="Delete haul"
-								confirmMessage="Are you sure to delete this haul?"
-							/>
-						</div>
-					</div> */}
 				</div>
 			);
 		}
@@ -95,26 +79,10 @@ class Haul extends Component {
 					<EditCommonForm
 						haul={this.props.haul}
 						edit={this.state.edit}
-						// handleChangeCommonValid={this.handleChangeCommonValid}
 						handleEdit={this.handleEdit}
-						// handleChangeNestedIds={this.handleChangeNestedIds}
-						// handleChangeStratum={this.handleChangeStratum}
-						// strata={this.props.strata}
 						samplers={this.props.samplers}
 						gears={this.props.gears}
-
-						// validateHaulSampler={this.props.validateHaulSampler}
 					/>
-					{/* <div className="form__cell form__cell--right">
-						<div className="buttonsWrapper">
-							<UiButtonBooleanHandle
-								buttonText={"Cancel"}
-								handleMethod={this.changeIsEdit}
-								newBoolean={false}
-							/>
-							<UiButtonSave buttonText="Save Haul" />
-						</div>
-					</div> */}
 				</div>
 			);
 		}
