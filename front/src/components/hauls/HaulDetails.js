@@ -165,15 +165,20 @@ class HaulDetails extends Component {
 			.catch((error) => console.log(error));
 	}
 
+	componentDidUpdate() {
+		console.log("the component has been updated...");
+	}
+
 	componentDidMount() {
 		/**
 		 * When the component is mounted, get the sampler_id from props, fetch the complete
 		 * data of the haul and update the state with it.
 		 */
+		console.log("the component has been mounted...");
 		const apiHaul =
-			this.props.haul.sampler_id === 1
+			parseInt(this.props.haul.sampler_id) === 1
 				? this.apiTrawlHaul
-				: this.props.haul.sampler_id === 2
+				: parseInt(this.props.haul.sampler_id) === 2
 				? this.apiHydrographyHaul
 				: null;
 
@@ -324,7 +329,8 @@ class HaulDetails extends Component {
 				);
 			}
 		}
-		return "The type of sampler must be 1 or 2";
+		// return "The type of sampler must be 1 or 2";
+		return null;
 	}
 
 	render() {

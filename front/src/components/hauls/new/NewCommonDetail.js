@@ -66,7 +66,7 @@ class NewCommonDetail extends Component {
 						name="sampler_id"
 						className="select__normalWidth"
 						required
-						value={this.props.haul.sampler_id || "choose"}
+						value={this.props.haul.sampler_id || ""}
 						onChange={(e) => {
 							this.props.handleChange(e);
 							this.props.validateHaulSampler(
@@ -76,7 +76,7 @@ class NewCommonDetail extends Component {
 							);
 						}}
 					>
-						<option value="" selected></option>
+						<option value=""></option>
 						{this.props.samplers.map((sampler) => {
 							return (
 								<option key={sampler.id} value={sampler.id}>
@@ -93,10 +93,10 @@ class NewCommonDetail extends Component {
 						id="gear_id"
 						name="gear"
 						required
-						value={this.props.haul.gear || "choose"}
+						value={this.props.haul.gear || ""}
 						onChange={this.props.handleChange}
 					>
-						<option value="" selected></option>
+						<option value=""></option>
 						{this.props.gears.map((gear) => {
 							return (
 								<option key={gear.name} value={gear.name}>
