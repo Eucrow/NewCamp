@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import update from "immutability-helper";
-
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import StationsContext from "../../contexts/StationsContext";
 
@@ -30,8 +28,13 @@ const ComponentsStations = () => {
 
 	const apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
 
-	const createStation = (event, station) => {
-		event.preventDefault();
+	/**
+	 * Create station.
+	 * @param {event} e
+	 * @param {object} station
+	 */
+	const createStation = (e, station) => {
+		e.preventDefault();
 
 		fetch(apiStation, {
 			method: "POST",
@@ -48,8 +51,13 @@ const ComponentsStations = () => {
 			.catch((error) => console.log(error));
 	};
 
-	const editStation = (event, station_id) => {
-		event.preventDefault();
+	/**
+	 * Edit station.
+	 * @param {event} e
+	 * @param {number} station_id
+	 */
+	const editStation = (e, station_id) => {
+		e.preventDefault();
 
 		const api = apiStation + station_id;
 
@@ -66,10 +74,15 @@ const ComponentsStations = () => {
 		}).catch((error) => console.log(error));
 	};
 
-	const deleteStation = (e, ids) => {
+	/**
+	 * Delete station.
+	 * @param {event} e
+	 * @param {number} station_id
+	 */
+	const deleteStation = (e, station_id) => {
 		e.preventDefault();
 
-		const api = apiStation + ids;
+		const api = apiStation + station_id;
 
 		fetch(api, {
 			method: "DELETE",
@@ -80,7 +93,7 @@ const ComponentsStations = () => {
 		})
 			.then(() => {
 				const new_stations = stations.filter(
-					(station) => station.id !== ids
+					(station) => station.id !== station_id
 				);
 				setStations(new_stations);
 			})
@@ -89,13 +102,13 @@ const ComponentsStations = () => {
 
 	/**
 	 * Handle change fields of Station forms.
-	 * @param {*} event
-	 * @param {*} station_id
+	 * @param {event} e
+	 * @param {number} station_id
 	 */
-	const handleChangeStation = (event, station_id) => {
-		event.preventDefault();
-		const name = event.target.name;
-		const value = event.target.value;
+	const handleChangeStation = (e, station_id) => {
+		e.preventDefault();
+		const name = e.target.name;
+		const value = e.target.value;
 
 		const new_stations = stations.map((station) => {
 			if (station.id === station_id) {
@@ -111,11 +124,13 @@ const ComponentsStations = () => {
 		setStations(new_stations);
 	};
 
-	const createHaul = (event, haul) => {
-		/**
-		 * Method to create haul
-		 * */
-		event.preventDefault();
+	/**
+	 * Create new haul
+	 * @param {event} e
+	 * @param {object} haul
+	 */
+	const createHaul = (e, haul) => {
+		e.preventDefault();
 
 		const apiForm =
 			haul.sampler_id === "1"
@@ -149,11 +164,12 @@ const ComponentsStations = () => {
 			.catch((error) => console.log(error));
 	};
 
+	/**
+	 * Detele haul.
+	 * @param {event} e
+	 * @param {number} id_haul
+	 */
 	const deleteHaul = (e, id_haul) => {
-		/**
-		 * Method to delete haul.
-		 */
-
 		const api = apiDeleteHaul + id_haul;
 
 		fetch(api, {
@@ -178,6 +194,11 @@ const ComponentsStations = () => {
 			.catch((error) => alert(error));
 	};
 
+	/**
+	 * Handle change fields of Common Haul forms.
+	 * @param {event} e
+	 * @param {number} id_haul of haul to change.
+	 */
 	const handleChangeCommonHaul = (e, id_haul) => {
 		const name = e.target.name;
 		const value = e.target.value;
@@ -195,6 +216,11 @@ const ComponentsStations = () => {
 		setStations(new_stations);
 	};
 
+	/**
+	 * Handle change Stratum field.
+	 * @param {event} e
+	 * @param {number} id_haul of haul to change.
+	 */
 	const handleChangeStratum = (e, id_haul) => {
 		// const name = e.target.name;
 		const value = e.target.value;

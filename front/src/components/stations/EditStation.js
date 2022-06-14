@@ -8,6 +8,8 @@ class EditStation extends Component {
 	 *
 	 * @param {Array} props.station
 	 * @param {method} props.handleEdit
+	 * @param {method} props.createHaul
+	 * @param {method} props.deleteHaul
 	 */
 
 	render() {

@@ -25,7 +25,10 @@ class Station extends Component {
 	}
 
 	static contextType = stationsContext;
-
+	/**
+	 * Handle edit state.
+	 * @param {boolean} edit
+	 */
 	handleEdit(edit) {
 		this.setState(() => {
 			return {
@@ -52,6 +55,8 @@ class Station extends Component {
 					<EditStation
 						station={this.props.station}
 						handleEdit={this.handleEdit}
+						deleteHaul={this.props.deleteHaul}
+						createHaul={this.props.createHaul}
 					/>
 				</div>
 			);

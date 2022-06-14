@@ -15,7 +15,6 @@ class ViewStation extends Component {
 	render() {
 		return (
 			<Fragment>
-				{/* <ViewEditStationForm props={this.props} edit={false} /> */}
 				<ViewEditStationForm
 					station={this.props.station}
 					handleEdit={this.props.handleEdit}
