@@ -8,8 +8,15 @@ import UiButtonDelete from "../ui/UiButtonDelete";
  * Component of Species bar.
  * @param {boolean} add true to show "Add" button.
  * @param {method} handleAdd Method to handle the 'add' parameter.
+ * @param {method} handleDetail
  */
-const HaulButtonBar = ({ haul_id, edit, handleEdit, deleteHaul }) => {
+const HaulButtonBar = ({
+	haul_id,
+	edit,
+	handleEdit,
+	handleDetail,
+	deleteHaul,
+}) => {
 	var ButtonBar = null;
 
 	if (edit === true) {
@@ -42,6 +49,12 @@ const HaulButtonBar = ({ haul_id, edit, handleEdit, deleteHaul }) => {
 					deleteMethod={deleteHaul}
 					buttonText="Delete haul"
 					confirmMessage="Are you sure to delete this haul?"
+				/>
+
+				<UiButtonBooleanHandle
+					buttonText={"View Detail"}
+					handleMethod={handleDetail}
+					newBoolean={true}
 				/>
 			</div>
 		);

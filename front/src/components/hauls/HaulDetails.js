@@ -25,6 +25,7 @@ class HaulDetails extends Component {
 	 * @param {object} props.samplers
 	 * @param {object} props.gears
 	 * @param {method} props.validateHaulSampler
+	 * @param {method} props.handleDetail
 	 */
 
 	constructor(props) {
@@ -143,9 +144,9 @@ class HaulDetails extends Component {
 		event.preventDefault();
 
 		const apiHaul =
-			this.state.haul.sampler.id === 1
+			this.state.haul.sampler_id === 1
 				? this.apiTrawlHaul
-				: this.state.haul.sampler.id === 2
+				: this.state.haul.sampler_id === 2
 				? this.apiHydrographyHaul
 				: null;
 
@@ -196,7 +197,7 @@ class HaulDetails extends Component {
 	}
 
 	renderContent() {
-		if (this.state.haul.sampler.id === 1) {
+		if (this.state.haul.sampler_id === 1) {
 			if (this.state.edit === false) {
 				return (
 					<form className="form--wide" disabled>
@@ -211,7 +212,7 @@ class HaulDetails extends Component {
 								<div className="buttonsWrapper">
 									<UiButtonBooleanHandle
 										buttonText={"Hide detail"}
-										handleMethod={this.props.changeDetail}
+										handleMethod={this.props.handleDetail}
 										newBoolean={false}
 									></UiButtonBooleanHandle>
 
@@ -230,31 +231,12 @@ class HaulDetails extends Component {
 			if (this.state.edit === true) {
 				return (
 					<form
+						className="form--wide"
 						onSubmit={(e) => {
 							this.handleSubmit(e);
 							this.changeIsEdit(false);
 						}}
 					>
-						{/* <div className="form__row">
-							<EditCommonDetail
-								haul={this.state.haul}
-								handleChangeCommonValid={
-									this.handleChangeCommonValid
-								}
-								handleChangeCommon={this.handleChangeCommon}
-								handleChangeNestedIds={
-									this.handleChangeNestedIds
-								}
-								handleChangeStratum={this.handleChangeStratum}
-								strata={this.props.strata}
-								samplers={this.props.samplers}
-								gears={this.props.gears}
-								validateHaulSampler={
-									this.props.validateHaulSampler
-								}
-							/>
-						</div> */}
-
 						<div className="form__row">
 							<EditMeteorology
 								haul={this.state.haul}
@@ -287,7 +269,7 @@ class HaulDetails extends Component {
 			}
 		}
 
-		if (this.state.haul.sampler.id === 2) {
+		if (this.state.haul.sampler_id === 2) {
 			if (this.state.edit === false) {
 				return (
 					<div>
@@ -301,7 +283,7 @@ class HaulDetails extends Component {
 						</button>
 						<button
 							onClick={() => {
-								this.props.changeDetail(false);
+								this.props.handleDetail(false);
 							}}
 						>
 							Hide detail

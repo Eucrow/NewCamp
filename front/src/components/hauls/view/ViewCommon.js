@@ -10,6 +10,7 @@ class ViewCommon extends Component {
 	 * @param {object} props.haul
 	 * @param {boolena} edit
 	 * @param {method} handleEdit
+	 * @param {method} handleDetail
 	 */
 
 	static contextType = StationsContext;
@@ -94,6 +95,7 @@ class ViewCommon extends Component {
 						haul_id={this.props.haul.id}
 						edit={this.props.edit}
 						handleEdit={this.props.handleEdit}
+						handleDetail={this.props.handleDetail}
 						deleteHaul={this.context.deleteHaul}
 					/>
 				</div>

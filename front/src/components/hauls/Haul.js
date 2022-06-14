@@ -25,12 +25,12 @@ class Haul extends Component {
 			edit: false,
 		};
 
-		this.changeDetail = this.changeDetail.bind(this);
+		this.handleDetail = this.handleDetail.bind(this);
 		this.handleEdit = this.handleEdit.bind(this);
 		this.UiShowDetailButton = this.UiShowDetailButton.bind(this);
 	}
 
-	changeDetail(detail) {
+	handleDetail(detail) {
 		this.setState(() => {
 			return {
 				detail: detail,
@@ -51,7 +51,7 @@ class Haul extends Component {
 			<button
 				className="buttonsWrapper__button"
 				onClick={() => {
-					this.changeDetail(true);
+					this.handleDetail(true);
 				}}
 			>
 				Show detail
@@ -67,6 +67,7 @@ class Haul extends Component {
 						haul={this.props.haul}
 						edit={this.state.edit}
 						handleEdit={this.handleEdit}
+						handleDetail={this.handleDetail}
 					/>
 					{/* <div className="form__cell form__cell--right">
 						<div className="buttonsWrapper">
@@ -124,7 +125,7 @@ class Haul extends Component {
 					<ViewCommon haul={this.props.haul} />
 					<HaulDetails
 						haul={this.props.haul}
-						changeDetail={this.changeDetail}
+						handleDetail={this.handleDetail}
 						strata={this.props.strata}
 						samplers={this.props.samplers}
 						gears={this.props.gears}
