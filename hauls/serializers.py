@@ -127,7 +127,7 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
         # Then, save the nested parts in its own models
         Meteorology.objects.create(haul=haul, **meteo_data)
         HaulTrawl.objects.create(haul=haul, **trawl_characteristics_data)
-        
+
         # And finally, return the haul
         return haul
 
@@ -138,9 +138,6 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
             # value)
             meteo_datas = validated_data.pop('meteo')
             trawl_characteristics_datas = validated_data.pop('trawl_characteristics')
-            # sampler_data = validated_data.pop('sampler')
-            strata_data = validated_data.pop('stratum')
-
             # instance.gear must be a Trawl object, so get the trawl of the name:
             instance.gear = Trawl.objects.get(name=validated_data.pop('gear')['name'])
 
@@ -164,17 +161,6 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
                 # print(attr, value)
                 setattr(trawl_characteristics, attr, value)
             trawl_characteristics.save()
-
-            # sampler = instance.sampler
-            # for attr, value in sampler_data.items():
-            #     setattr(sampler, attr, value)
-            # sampler.save()
-
-            strata = instance.strata
-            for attr, value in strata_data.items():
-                # print(attr, value)
-                setattr(strata, attr, value)
-            strata.save()
 
         return instance
 

@@ -150,6 +150,8 @@ class HaulDetails extends Component {
 				? this.apiHydrographyHaul
 				: null;
 
+		console.log(JSON.stringify(this.state.haul));
+
 		fetch(apiHaul, {
 			method: "PUT",
 			headers: {
@@ -165,16 +167,11 @@ class HaulDetails extends Component {
 			.catch((error) => console.log(error));
 	}
 
-	componentDidUpdate() {
-		console.log("the component has been updated...");
-	}
-
 	componentDidMount() {
 		/**
 		 * When the component is mounted, get the sampler_id from props, fetch the complete
 		 * data of the haul and update the state with it.
 		 */
-		console.log("the component has been mounted...");
 		const apiHaul =
 			parseInt(this.props.haul.sampler_id) === 1
 				? this.apiTrawlHaul

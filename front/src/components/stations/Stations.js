@@ -164,6 +164,42 @@ const ComponentsStations = () => {
 			.catch((error) => console.log(error));
 	};
 
+	// const updateHaul = (e, haul) => {
+	// WORK IN PROGRESS
+	// 	e.preventDefault();
+
+	// 	const apiForm =
+	// 		haul.sampler_id === "1"
+	// 			? apiTrawlForm
+	// 			: haul.sampler_id === "2"
+	// 			? apiHydrographyForm
+	// 			: null;
+
+	// 	fetch(apiForm, {
+	// 		method: "POST",
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 		},
+	// 		body: JSON.stringify(haul),
+	// 	})
+	// 		.then((response) => response.json())
+	// 		.then((h) => {
+	// 			const new_stations = stations.map((station) => {
+	// 				if (station.id === parseInt(haul.station_id)) {
+	// 					station.hauls
+	// 						? (station.hauls = [...station.hauls, h])
+	// 						: (station.hauls = [h]);
+	// 					return station;
+	// 				} else {
+	// 					return station;
+	// 				}
+	// 			});
+
+	// 			setStations(new_stations);
+	// 		})
+	// 		.catch((error) => console.log(error));
+	// };
+
 	/**
 	 * Detele haul.
 	 * @param {event} e
