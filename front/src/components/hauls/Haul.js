@@ -13,9 +13,9 @@ class Haul extends Component {
 	/**
 	 * Haul component
 	 * @param {array} props.haul: haul.
+	 * @param {number} props.station_id
 	 * @param {object} props.strata
 	 * @param {object} props.samplers
-	 * @param {object} props.gears
 	 * @param {method} props.validateHaulSampler
 	 */
 	constructor(props) {
@@ -78,10 +78,10 @@ class Haul extends Component {
 				<div className="wrapper form__row">
 					<EditCommonForm
 						haul={this.props.haul}
+						station_id={this.props.station_id}
 						edit={this.state.edit}
 						handleEdit={this.handleEdit}
 						samplers={this.props.samplers}
-						gears={this.props.gears}
 					/>
 				</div>
 			);
@@ -96,7 +96,6 @@ class Haul extends Component {
 						handleDetail={this.handleDetail}
 						strata={this.props.strata}
 						samplers={this.props.samplers}
-						gears={this.props.gears}
 						validateHaulSampler={this.props.validateHaulSampler}
 					/>
 				</div>

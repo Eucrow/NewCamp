@@ -63,8 +63,8 @@ urlpatterns = [
 
     # Trawls API URLS
     re_path(r'^api/1.0/trawl/$', GearTrawlsAPI.as_view(), name="gear_list_create_api"),
-    # re_path(r'^api/1.0/trawls/basic/$', GearTrawlsBasicAPI.as_view(), name="gear"),
-    re_path(r'^api/1.0/trawl/basic/$', GearTrawlsNamesAPI.as_view(), name="gear_names"),
+    re_path(r'^api/1.0/trawl/basic/$', GearTrawlsBasicAPI.as_view(), name="gear"),
+    # re_path(r'^api/1.0/trawl/basic/$', GearTrawlsNamesAPI.as_view(), name="gear_names"),
     re_path(r'^api/1.0/trawl/(?P<pk>[0-9]+)$', GearTrawlAPI.as_view(), name="gear_get_update_delete_api"),
 
     # Samplers API URLS

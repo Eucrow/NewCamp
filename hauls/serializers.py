@@ -33,32 +33,42 @@ class ImportHydrographyesSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+# class HaulSerializer(serializers.ModelSerializer):
+#     """
+#     Serializer of hauls data.
+#     """
+#
+#     class Meta:
+#         model = Haul
+#         fields = ['id', 'haul', 'gear_id', 'valid', 'sampler_id', 'stratum_id', 'station_id']
+
+
+# OLD HAUL SERIALIZER
 class HaulSerializer(serializers.ModelSerializer):
     """
     Serializer of hauls data.
     """
 
-    gear = GearTrawlBasicSerializer(read_only=True)
-    gear_id = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Trawl.objects.all(),
+    # gear = GearTrawlBasicSerializer(read_only=True)
+    gear_id = serializers.PrimaryKeyRelatedField(queryset=Trawl.objects.all(),
                                                  source='gear')
 
-    sampler = SamplerSerializer(read_only=True)
-    sampler_id = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Sampler.objects.all(),
+    # sampler = SamplerSerializer(read_only=True)
+    sampler_id = serializers.PrimaryKeyRelatedField(queryset=Sampler.objects.all(),
                                                     source='sampler')
 
-    station = StationSerializer(read_only=True)
-    station_id = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Station.objects.all(),
+    # station = StationSerializer(read_only=True)
+    station_id = serializers.PrimaryKeyRelatedField(queryset=Station.objects.all(),
                                                     source='station')
 
-    stratum = StrataSerializer(read_only=True)
-    stratum_id = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Stratum.objects.all(),
+    # stratum = StrataSerializer(read_only=True)
+    stratum_id = serializers.PrimaryKeyRelatedField(queryset=Stratum.objects.all(),
                                                     source='stratum')
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'gear', 'gear_id', 'valid', 'sampler', 'sampler_id', 'stratum', 'stratum_id', 'station',
-                  'station_id']
-        depth = 1
+        fields = ['id', 'haul', 'valid', 'gear_id', 'sampler_id', 'stratum_id', 'station_id']
+        # depth = 1
 
 
 # class HaulSerializer(serializers.ModelSerializer):

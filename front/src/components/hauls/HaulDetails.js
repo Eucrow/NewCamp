@@ -23,7 +23,6 @@ class HaulDetails extends Component {
 	 * @param {object} props.haul
 	 * @param {object} props.strata
 	 * @param {object} props.samplers
-	 * @param {object} props.gears
 	 * @param {method} props.validateHaulSampler
 	 * @param {method} props.handleDetail
 	 */

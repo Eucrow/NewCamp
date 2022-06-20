@@ -8,22 +8,36 @@ class EditCommonForm extends Component {
 	/**
 	 * Component of the common part of the haul form.
 	 * @param {object} props.haul
+	 * @param {number} props.station_id
 	 * edit
 	 * samplers
-	 * @param {object} props.gears
 	 * @param {method} props.handleChangeCommonValid
 	 * @param {method} props.handleChangeNestedIds
 	 * @param {method} props.validateHaulSampler
 	 */
 
+	constructor(props) {
+		super(props);
+
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
 	static contextType = StationsContext;
+
+	handleSubmit(e, haul_id, station_id) {
+		this.context.updateHaulCommon(e, haul_id, station_id);
+		this.props.handleEdit(false);
+	}
 
 	render() {
 		const haul = this.props.haul;
 
 		return (
-			<form>
-				{/* onSubmit={(e) => handleSubmit(e)} */}
+			<form
+				onSubmit={(e) =>
+					this.handleSubmit(e, haul.id, this.props.station_id)
+				}
+			>
 				<label className="form__cell">
 					Haul:
 					<input
@@ -42,7 +56,6 @@ class EditCommonForm extends Component {
 						}}
 					/>
 				</label>
-
 				<label className="form__cell">
 					Stratum:
 					<select
@@ -65,7 +78,6 @@ class EditCommonForm extends Component {
 						})}
 					</select>
 				</label>
-
 				<label className="form__cell">
 					Sampler:
 					<select
@@ -85,7 +97,6 @@ class EditCommonForm extends Component {
 						})}
 					</select>
 				</label>
-
 				<label className="form__cell">
 					Gear:
 					<select
@@ -93,19 +104,18 @@ class EditCommonForm extends Component {
 						name="gear"
 						value={this.props.haul.gear || "choose"}
 						onChange={(e) => {
-							this.context.handleChangeCommonHaul(e, haul.id);
+							this.context.handleChangeGear(e, haul.id);
 						}}
 					>
-						{this.props.gears.map((gear) => {
+						{this.context.gears.map((gear) => {
 							return (
-								<option key={gear.name} value={gear.name}>
+								<option key={gear.id} value={gear.id}>
 									{gear.name}
 								</option>
 							);
 						})}
 					</select>
 				</label>
-
 				<label className="form__cell">
 					Valid:
 					<input
@@ -113,7 +123,12 @@ class EditCommonForm extends Component {
 						name="valid"
 						id="valid"
 						defaultChecked={haul.valid}
-						onChange={this.props.handleChangeCommonValid}
+						onChange={
+							(e) => {
+								this.context.handleChangeCommonValid(haul.id);
+							}
+							// this.context.handleChangeCommonValid
+						}
 					/>
 				</label>
 				<div className="form__row">
