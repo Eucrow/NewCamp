@@ -6,8 +6,6 @@ import ViewCommon from "./view/ViewCommon";
 import ViewMeteorology from "./view/ViewMeteorology";
 import ViewTrawl from "./view/ViewTrawl";
 import ViewHydrography from "./view/ViewHydrography";
-
-// import EditCommonDetail from "./edit/EditCommonDetail";
 import EditMeteorology from "./edit/EditMeteorology";
 import EditTrawl from "./edit/EditTrawl";
 import EditHydrography from "./edit/EditHydrography";
@@ -20,11 +18,11 @@ import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
 class HaulDetails extends Component {
 	/**
 	 * View haul detail component.
-	 * @param {object} props.haul
-	 * @param {object} props.strata
-	 * @param {object} props.samplers
-	 * @param {method} props.validateHaulSampler
-	 * @param {method} props.handleDetail
+	 * @param {object} haul
+	 * @param {object} strata
+	 * @param {object} samplers
+	 * @param {method} validateHaulSampler
+	 * @param {method} handleDetail
 	 */
 
 	constructor(props) {
@@ -35,8 +33,6 @@ class HaulDetails extends Component {
 				meteo: {},
 				trawl_characteristics: {},
 				hydrography_characteristics: {},
-				// station: {},
-				// stratum: [],
 				sampler: {},
 			},
 			edit: false,
@@ -51,9 +47,6 @@ class HaulDetails extends Component {
 			this.props.haul.id;
 
 		this.changeIsEdit = this.changeIsEdit.bind(this);
-		// this.handleChangeCommonValid = this.handleChangeCommonValid.bind(this);
-		// this.handleChangeNestedIds = this.handleChangeNestedIds.bind(this);
-		// this.handleChangeStratum = this.handleChangeStratum.bind(this);
 		this.handleChangeMeteorology = this.handleChangeMeteorology.bind(this);
 		this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
 		this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
@@ -69,30 +62,6 @@ class HaulDetails extends Component {
 			};
 		});
 	}
-
-	// handleChangeCommonValid(event) {
-	// 	const newHaulState = update(this.state.haul, {
-	// 		valid: { $set: !this.state.haul.valid },
-	// 	});
-
-	// 	this.setState({
-	// 		haul: newHaulState,
-	// 	});
-	// }
-
-	// handleChangeNestedIds(event) {
-	// 	const name = event.target.name;
-	// 	const value = event.target.value;
-
-	// 	this.setState({
-	// 		haul: {
-	// 			...this.state.haul,
-	// 			[name]: {
-	// 				id: value,
-	// 			},
-	// 		},
-	// 	});
-	// }
 
 	handleChangeMeteorology(event) {
 		const name = event.target.name;
@@ -296,13 +265,6 @@ class HaulDetails extends Component {
 			if (this.state.edit === true) {
 				return (
 					<div>
-						{/* <EditCommonDetail
-							haul={this.state.haul}
-							handleChangeCommonValid={
-								this.handleChangeCommonValid
-							}
-							handleChangeCommon={this.handleChangeCommon}
-						/> */}
 						<EditHydrography
 							haul={this.state.haul}
 							handleChangeHydrography={
@@ -325,7 +287,7 @@ class HaulDetails extends Component {
 				);
 			}
 		}
-		// return "The type of sampler must be 1 or 2";
+
 		return null;
 	}
 

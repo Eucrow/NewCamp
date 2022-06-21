@@ -114,6 +114,7 @@ input:invalid {
 }
 
 
+
 // Input without spinners
 /* Chrome, Safari, Edge, Opera */
 input.input__noSpinner::-webkit-inner-spin-button,
@@ -132,4 +133,14 @@ select.select__normalWidth {
 }
 select.select__largeWidth {
 	width: 30ch;
+}
+select.select__gear {
+	width: 4rem;
+}
+select:disabled {
+		-o-appearance: none;
+		-ms-appearance: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
 }

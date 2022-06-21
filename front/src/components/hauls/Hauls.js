@@ -1,22 +1,18 @@
 import React, { Component, Fragment } from "react";
 
-import update from "immutability-helper";
-
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
-
 import Haul from "./Haul";
 import NewHaul from "./new/NewHaul";
-
 import UiButtonAdd from "../ui/UiButtonAdd";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
 class Hauls extends Component {
 	/**
 	 * List of hauls
-	 * @param {object} props.hauls
-	 * @param {object} props.station_id
-	 * @param {object} props.sampler_id
-	 * @param {method} props.deleteHaul
+	 * @param {object} hauls
+	 * @param {object} station_id
+	 * @param {object} sampler_id
+	 * @param {method} deleteHaul
 	 */
 
 	static contextType = SelectedSurveyContext;

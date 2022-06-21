@@ -21,23 +21,21 @@ const HaulButtonBar = ({
 
 	if (edit === true) {
 		ButtonBar = (
-			<div className="form__cell form__cell--right">
-				<div className="buttonsWrapper">
-					<UiButtonBooleanHandle
-						buttonText={"Cancel"}
-						handleMethod={handleEdit}
-						newBoolean={false}
-					/>
-					<UiButtonSave buttonText="Save Haul" />
-				</div>
+			<div className="form__cell form__cell--right buttonsWrapper">
+				{/* <div className="buttonsWrapper"> */}
+				<UiButtonBooleanHandle
+					buttonText={"Cancel"}
+					handleMethod={handleEdit}
+					newBoolean={false}
+				/>
+				<UiButtonSave buttonText="Save Haul" />
+				{/* </div> */}
 			</div>
 		);
 	}
 	if (edit === false) {
-		// console.log(this.props);
 		ButtonBar = (
-			<div className="form__cell form__cell--right">
-				{/* <this.UiShowDetailButton /> */}
+			<div className="form__cell form__cell--right buttonsWrapper">
 				<UiButtonBooleanHandle
 					buttonText={"Edit Haul"}
 					handleMethod={handleEdit}

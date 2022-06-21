@@ -1,22 +1,17 @@
 import React, { Component } from "react";
 
-// import { Link } from "react-router-dom";
-
 import ViewCommon from "./view/ViewCommon";
 import EditCommonForm from "./edit/EditCommonForm";
 import HaulDetails from "./HaulDetails";
 
-// import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
-// import UiButtonDelete from "../ui/UiButtonDelete";
-
 class Haul extends Component {
 	/**
 	 * Haul component
-	 * @param {array} props.haul: haul.
-	 * @param {number} props.station_id
-	 * @param {object} props.strata
-	 * @param {object} props.samplers
-	 * @param {method} props.validateHaulSampler
+	 * @param {object} haul
+	 * @param {number} station_id
+	 * @param {object} strata
+	 * @param {object} samplers
+	 * @param {method} validateHaulSampler
 	 */
 	constructor(props) {
 		super(props);

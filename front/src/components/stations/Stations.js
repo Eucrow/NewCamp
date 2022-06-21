@@ -1,12 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import update from "immutability-helper";
-
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import StationsContext from "../../contexts/StationsContext";
-
 import StationsButtonBar from "./StationsButtonBar";
-
 import Station from "./Station";
 import NewStationForm from "./NewStationForm";
 
@@ -25,7 +21,7 @@ const ComponentsStations = () => {
 	const apiHydrographyForm =
 		"http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
 
-	const apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get, update or add station
+	const apiStation = "http://127.0.0.1:8000/api/1.0/station/";
 
 	const apiHaul = "http://127.0.0.1:8000/api/1.0/haul/";
 
@@ -171,7 +167,12 @@ const ComponentsStations = () => {
 			.catch((error) => console.log(error));
 	};
 
-	// WORK IN PROGRESS
+	/**
+	 * Update haul.
+	 * @param {event} e
+	 * @param {number} haul_id
+	 * @param {number} station_id
+	 */
 	const updateHaulCommon = (e, haul_id, station_id) => {
 		e.preventDefault();
 
@@ -254,14 +255,6 @@ const ComponentsStations = () => {
 			return station;
 		});
 		setStations(new_stations);
-
-		// const newHaulState = update(this.state.haul, {
-		// 	valid: { $set: !this.state.haul.valid },
-		// });
-
-		// this.setState({
-		// 	haul: newHaulState,
-		// });
 	};
 
 	/**
@@ -270,10 +263,7 @@ const ComponentsStations = () => {
 	 * @param {number} id_haul of haul to change.
 	 */
 	const handleChangeGear = (e, id_haul) => {
-		// const name = e.target.name;
 		const value = e.target.value;
-		// const newValue = strata.find((s) => s.id === parseInt(value));
-		// console.log(newValue);
 
 		var new_stations = stations.map((station) => {
 			if (station.hauls.some((haul) => haul.id === id_haul)) {
@@ -289,27 +279,6 @@ const ComponentsStations = () => {
 			return station;
 		});
 		setStations(new_stations);
-
-		// console.log(stations);
-
-		// this.setState({
-		// 	haul: {
-		// 		...this.state.haul,
-		// 		stratum: newValue,
-		// 	},
-		// });
-
-		// const value = e.target.value;
-		// const newValue = this.props.strata.find(
-		// 	(s) => s.id === parseInt(value)
-		// );
-		// console.log(newValue);
-		// this.setState({
-		// 	haul: {
-		// 		...this.state.haul,
-		// 		stratum: newValue,
-		// 	},
-		// });
 	};
 
 	/**
@@ -318,10 +287,7 @@ const ComponentsStations = () => {
 	 * @param {number} id_haul of haul to change.
 	 */
 	const handleChangeStratum = (e, id_haul) => {
-		// const name = e.target.name;
 		const value = e.target.value;
-		// const newValue = strata.find((s) => s.id === parseInt(value));
-		// console.log(newValue);
 
 		var new_stations = stations.map((station) => {
 			if (station.hauls.some((haul) => haul.id === id_haul)) {
@@ -337,27 +303,6 @@ const ComponentsStations = () => {
 			return station;
 		});
 		setStations(new_stations);
-
-		// console.log(stations);
-
-		// this.setState({
-		// 	haul: {
-		// 		...this.state.haul,
-		// 		stratum: newValue,
-		// 	},
-		// });
-
-		// const value = e.target.value;
-		// const newValue = this.props.strata.find(
-		// 	(s) => s.id === parseInt(value)
-		// );
-		// console.log(newValue);
-		// this.setState({
-		// 	haul: {
-		// 		...this.state.haul,
-		// 		stratum: newValue,
-		// 	},
-		// });
 	};
 
 	// VALIDATIONS
