@@ -19,8 +19,6 @@ class HaulDetails extends Component {
 	/**
 	 * View haul detail component.
 	 * @param {object} haul
-	 * @param {object} strata
-	 * @param {object} samplers
 	 * @param {method} validateHaulSampler
 	 * @param {method} handleDetail
 	 */

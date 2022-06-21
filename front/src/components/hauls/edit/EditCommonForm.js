@@ -10,7 +10,6 @@ class EditCommonForm extends Component {
 	 * @param {object} haul
 	 * @param {number} station_id
 	 * @param {boolean} edit
-	 * @param {object} samplers
 	 * @param {method} handleChangeCommonValid
 	 * @param {method} handleChangeNestedIds
 	 * @param {method} validateHaulSampler
@@ -86,7 +85,7 @@ class EditCommonForm extends Component {
 							value={this.props.haul.sampler_id || "choose"}
 							onChange={this.props.handleChangeNestedIds}
 						>
-							{this.props.samplers.map((sampler) => {
+							{this.context.samplers.map((sampler) => {
 								return (
 									<option key={sampler.id} value={sampler.id}>
 										{sampler.sampler}

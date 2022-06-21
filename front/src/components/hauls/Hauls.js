@@ -22,12 +22,7 @@ class Hauls extends Component {
 		this.state = {
 			add: false,
 			survey: {},
-			strata: [],
-			samplers: [],
-			gears: [],
 		};
-
-		this.apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
 
 		this.changeAdd = this.changeAdd.bind(this);
 		this.validateHaulSampler = this.validateHaulSampler.bind(this);
@@ -86,43 +81,6 @@ class Hauls extends Component {
 		return e.target.reportValidity();
 	}
 
-	componentDidMount() {
-		/**
-		 * First, check if a survey is selected. If doesn't, redirec to hauls page.
-		 */
-		if (this.context.surveySelector === null) {
-			//TODO: I think this is not working in the right way
-			this.setState(() => {
-				this.context.surveySelector = 1;
-			});
-			this.forceUpdate();
-		} else {
-			/**
-			 * When the component is mounted, retrieve the posible stratum and sampler and save in state
-			 */
-
-			const apiSamplers = this.apiSamplers;
-
-			// Fetch samplers
-			fetch(apiSamplers)
-				.then((response) => {
-					if (response.status > 400) {
-						return this.setState(() => {
-							return { placeholder: "Something went wrong!" };
-						});
-					}
-					return response.json();
-				})
-				.then((samplers) => {
-					this.setState(() => {
-						return {
-							samplers: samplers,
-						};
-					});
-				});
-		}
-	}
-
 	/**
 	 * Method to render list of hauls
 	 * @returns {character} List of hauls in html.
@@ -138,8 +96,8 @@ class Hauls extends Component {
 								haul={haul}
 								station_id={this.props.station_id}
 								deleteHaul={this.props.deleteHaul}
-								strata={this.state.strata}
-								samplers={this.state.samplers}
+								// strata={this.state.strata}
+								// samplers={this.state.samplers}
 								validateHaulSampler={this.validateHaulSampler}
 							/>
 						);

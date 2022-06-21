@@ -9,8 +9,6 @@ class Haul extends Component {
 	 * Haul component
 	 * @param {object} haul
 	 * @param {number} station_id
-	 * @param {object} strata
-	 * @param {object} samplers
 	 * @param {method} validateHaulSampler
 	 */
 	constructor(props) {
@@ -89,8 +87,6 @@ class Haul extends Component {
 					<HaulDetails
 						haul={this.props.haul}
 						handleDetail={this.handleDetail}
-						strata={this.props.strata}
-						samplers={this.props.samplers}
 						validateHaulSampler={this.props.validateHaulSampler}
 					/>
 				</div>

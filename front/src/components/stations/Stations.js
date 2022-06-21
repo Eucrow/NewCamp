@@ -11,6 +11,7 @@ const ComponentsStations = () => {
 	const [stations, setStations] = useState([]);
 	const [strata, setStrata] = useState([]);
 	const [gears, setGears] = useState([]);
+	const [samplers, setSamplers] = useState([]);
 
 	const selectedSurveyContext = useContext(SelectedSurveyContext);
 
@@ -30,6 +31,8 @@ const ComponentsStations = () => {
 	const apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
 
 	const apiGears = "http://127.0.0.1:8000/api/1.0/trawl/basic/";
+
+	const apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
 
 	/**
 	 * Create station.
@@ -405,6 +408,20 @@ const ComponentsStations = () => {
 				.then((gears) => {
 					setGears(gears);
 				});
+
+			// Fetch samplers
+			fetch(apiSamplers)
+				.then((response) => {
+					if (response.status > 400) {
+						return this.setState(() => {
+							return { placeholder: "Something went wrong!" };
+						});
+					}
+					return response.json();
+				})
+				.then((samplers) => {
+					setSamplers(samplers);
+				});
 		}
 	}, []);
 
@@ -432,6 +449,7 @@ const ComponentsStations = () => {
 					handleChangeStratum: handleChangeStratum,
 					strata: strata,
 					gears: gears,
+					samplers: samplers,
 				}}
 			>
 				<main>
