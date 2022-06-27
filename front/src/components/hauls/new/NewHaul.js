@@ -1,112 +1,100 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, useContext, useState } from "react";
 
 import SelectedSurveyContext from "../../../contexts/SelectedSuveryContext";
+import StationsContext from "../../../contexts/StationsContext";
 
 import NewCommonDetail from "./NewCommonDetail";
 import NewSpecific from "./NewSpecific.js";
 
 import UiButtonSave from "../../ui/UiButtonSave";
 
-class NewHaul extends Component {
-	/**
-	 * New haul component
-	 * @param {number} props.station_id
-	 * @param {method} props.changeAdd
-	 * @param {method} props.createHaul
-	 * @param {method} props.validateHaulSampler
-	 */
+/**
+ * New haul component
+ * @param {number} props.station_id
+ * @param {method} props.changeAdd
+ * @param {method} props.validateHaulSampler
+ */
 
-	static contextType = SelectedSurveyContext;
+const NewHaul = ({ station_id, changeAdd, validateHaulSampler }) => {
+	const selectedSurveyContext = useContext(SelectedSurveyContext);
+	const stationsContext = useContext(StationsContext);
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			haul: {
-				meteo: {},
-				station: { id: this.props.station_id },
-				sampler: {},
-				stratum: {},
-				gear: null,
-				trawl_characteristics: {},
-				hydrography_characteristics: {},
-			},
-			survey: {},
-			strata: [],
-			samplers: [],
-			gears: [],
-		};
-		this.apiSurveyPartial = "http://127.0.0.1:8000/api/1.0/survey/";
-		this.apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
-		this.apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
-		this.apiGears = "http://127.0.0.1:8000/api/1.0/trawl/basic/";
+	const [haulCommon, setFormValue] = useState({
+		gear_id: "",
+		station_id: "",
+		sampler_id: "",
+	});
 
-		this.handleChange = this.handleChange.bind(this);
-		this.handleChangeNestedIds = this.handleChangeNestedIds.bind(this);
-		this.handleChangeMeteo = this.handleChangeMeteo.bind(this);
-		this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
-		this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
-	}
+	const [meteo, setMeteo] = useState({});
 
-	handleChange(event) {
-		const name = event.target.name;
-		const value = event.target.value;
+	const [trawlCharacteristics, setTrawlCharacteristics] = useState({});
+	const [hydrographyCharacteristics, setHydrographyCharacteristics] =
+		useState({});
 
-		this.setState({
-			haul: {
-				...this.state.haul,
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+
+		setFormValue((prev_state) => {
+			return {
+				...prev_state,
 				[name]: value,
-			},
+			};
 		});
-	}
+	};
 
-	handleChangeNestedIds(event) {
-		const name = event.target.name;
-		const value = event.target.value;
+	const createHaulObject = () => {
+		const newHaul = {
+			haul: haulCommon.haul,
+			gear: haulCommon.gear,
+			sampler_id: haulCommon.sampler_id,
+			stratum_id: haulCommon.stratum_id,
+			station_id: station_id, // it comes from props
+			meteo: meteo,
+			trawl_characteristics: trawlCharacteristics,
+		};
 
-		this.setState({
-			haul: {
-				...this.state.haul,
-				[name]: {
-					id: value,
-				},
-			},
+		return newHaul;
+	};
+
+	const handleChangeMeteo = (e) => {
+		const { name, value } = e.target;
+
+		setMeteo((prev_state) => {
+			return {
+				...prev_state,
+				[name]: value,
+			};
 		});
-	}
+	};
 
-	handleChangeMeteo(event) {
-		const name = event.target.name;
-		const value = event.target.value;
+	// const handleChangeNestedIds = (e) => {
+	// 	const name = e.target.name;
+	// 	const value = e.target.value;
 
-		this.setState({
-			haul: {
-				...this.state.haul,
-				meteo: {
-					...this.state.haul.meteo,
-					[name]: value,
-				},
-			},
+	// 	this.setState({
+	// 		haul: {
+	// 			...this.state.haul,
+	// 			[name]: {
+	// 				id: value,
+	// 			},
+	// 		},
+	// 	});
+	// };
+
+	const handleChangeTrawl = (e) => {
+		const { name, value } = e.target;
+
+		setTrawlCharacteristics((prev_state) => {
+			return {
+				...prev_state,
+				[name]: value,
+			};
 		});
-	}
+	};
 
-	handleChangeTrawl(event) {
-		const name = event.target.name;
-		const value = event.target.value;
-		console.log("value in handleChangeTrawl: " + value);
-
-		this.setState({
-			haul: {
-				...this.state.haul,
-				trawl_characteristics: {
-					...this.state.haul.trawl_characteristics,
-					[name]: value,
-				},
-			},
-		});
-	}
-
-	handleChangeHydrography(event) {
-		const name = event.target.name;
-		const value = event.target.value;
+	const handleChangeHydrography = (e) => {
+		const name = e.target.name;
+		const value = e.target.value;
 		console.log("value in handleChangeHydrography: " + value);
 
 		this.setState({
@@ -118,131 +106,33 @@ class NewHaul extends Component {
 				},
 			},
 		});
-	}
+	};
 
-	componentDidMount() {
-		/**
-		 * First, check if a survey is selected. If doesn't, redirec to hauls page.
-		 */
-		if (this.context.surveySelector === null) {
-			//TODO: I think this is not working in the right way
-			this.setState(() => {
-				this.context.surveySelector = 1;
-			});
-			this.forceUpdate();
-		} else {
-			/**
-			 * When the component is mounted, retrieve the posible stratum and sampler and save in state
-			 */
+	const content = (
+		<form
+			className="wrapper"
+			onSubmit={(e) => {
+				const haul = createHaulObject();
+				stationsContext.createHaul(e, haul);
+				changeAdd(false);
+			}}
+		>
+			<NewCommonDetail
+				haul={haulCommon}
+				handleChange={handleChange}
+				validateHaulSampler={validateHaulSampler}
+			/>
+			<NewSpecific
+				handleChangeMeteo={handleChangeMeteo}
+				handleChangeTrawl={handleChangeTrawl}
+				handleChangeHydrography={handleChangeHydrography}
+				sampler_id={haulCommon.sampler_id}
+			/>
+			<UiButtonSave buttonText="Save Haul" />
+		</form>
+	);
 
-			const apiSurvey =
-				this.apiSurveyPartial + this.context.selectedSurveyId;
-
-			const apiSamplers = this.apiSamplers;
-			const apiGears = this.apiGears;
-
-			// TODO: Optimize fetchs
-			// Fetch strata (require previously fetch survey to get stratification).
-			fetch(apiSurvey)
-				.then((response) => {
-					if (response.status > 400) {
-						return this.setState(() => {
-							return { placeholder: "Something went wrong!" };
-						});
-					}
-					return response.json();
-				})
-				.then((survey) => {
-					const apiStrata =
-						this.apiStrataPartial + survey.stratification;
-					fetch(apiStrata)
-						.then((response) => {
-							if (response.status > 400) {
-								return this.setState(() => {
-									return {
-										placeholder: "Something went wrong!",
-									};
-								});
-							}
-							return response.json();
-						})
-						.then((strata) => {
-							this.setState(() => {
-								return {
-									strata: strata,
-								};
-							});
-						});
-				});
-
-			// Fetch samplers
-			fetch(apiSamplers)
-				.then((response) => {
-					if (response.status > 400) {
-						return this.setState(() => {
-							return { placeholder: "Something went wrong!" };
-						});
-					}
-					return response.json();
-				})
-				.then((samplers) => {
-					this.setState(() => {
-						return {
-							samplers: samplers,
-						};
-					});
-				});
-
-			// Fetch gears
-			fetch(apiGears)
-				.then((response) => {
-					if (response.status > 400) {
-						return this.setState(() => {
-							return { placeholder: "Something went wrong!" };
-						});
-					}
-					return response.json();
-				})
-				.then((gears) => {
-					this.setState(() => {
-						return {
-							gears: gears,
-						};
-					});
-				});
-		}
-	}
-
-	render() {
-		return (
-			<Fragment>
-				<form
-					className="wrapper"
-					onSubmit={(e) => {
-						this.props.createHaul(e, this.state.haul);
-						this.props.changeAdd(false);
-					}}
-				>
-					<NewCommonDetail
-						haul={this.state.haul}
-						handleChange={this.handleChange}
-						handleChangeNestedIds={this.handleChangeNestedIds}
-						samplers={this.state.samplers}
-						strata={this.state.strata}
-						gears={this.state.gears}
-						validateHaulSampler={this.props.validateHaulSampler}
-					/>
-					<NewSpecific
-						handleChangeMeteo={this.handleChangeMeteo}
-						handleChangeTrawl={this.handleChangeTrawl}
-						handleChangeHydrography={this.handleChangeHydrography}
-						sampler_id={this.state.haul.sampler.id}
-					/>
-					<UiButtonSave buttonText="Save Haul" />
-				</form>
-			</Fragment>
-		);
-	}
-}
+	return content;
+};
 
 export default NewHaul;

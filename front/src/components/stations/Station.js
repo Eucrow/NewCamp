@@ -5,16 +5,11 @@ import stationsContext from "../../contexts/StationsContext.js";
 import ViewStation from "./ViewStation.js";
 import EditStation from "./EditStation.js";
 
+/**
+ *
+ * @param {Array} station
+ */
 class Station extends Component {
-	/**
-	 *
-	 * @param {Array} props.station
-	 * @param {method} props.deleteStation
-	 * @param {method} props.createHaul
-	 * @param {method} props.deleteHaul
-	 * @param {method} props.editStation
-	 */
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -25,7 +20,10 @@ class Station extends Component {
 	}
 
 	static contextType = stationsContext;
-
+	/**
+	 * Handle edit state.
+	 * @param {boolean} edit
+	 */
 	handleEdit(edit) {
 		this.setState(() => {
 			return {
@@ -41,8 +39,6 @@ class Station extends Component {
 					<ViewStation
 						station={this.props.station}
 						handleEdit={this.handleEdit}
-						deleteHaul={this.props.deleteHaul}
-						createHaul={this.props.createHaul}
 					/>
 				</div>
 			);

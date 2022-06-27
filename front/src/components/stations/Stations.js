@@ -2,29 +2,45 @@ import React, { useContext, useEffect, useState } from "react";
 
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import StationsContext from "../../contexts/StationsContext";
-
 import StationsButtonBar from "./StationsButtonBar";
-
 import Station from "./Station";
 import NewStationForm from "./NewStationForm";
 
 const ComponentsStations = () => {
 	const [add, setAdd] = useState(false);
 	const [stations, setStations] = useState([]);
+	const [strata, setStrata] = useState([]);
+	const [gears, setGears] = useState([]);
+	const [samplers, setSamplers] = useState([]);
 
 	const selectedSurveyContext = useContext(SelectedSurveyContext);
 
 	const apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
 
 	const apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
+
 	const apiHydrographyForm =
 		"http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
 
-	const apiStation = "http://127.0.0.1:8000/api/1.0/station/"; //to get, update or add station
-	const apiDeleteHaul = "http://127.0.0.1:8000/api/1.0/haul/";
+	const apiStation = "http://127.0.0.1:8000/api/1.0/station/";
 
-	const createStation = (event, station) => {
-		event.preventDefault();
+	const apiHaul = "http://127.0.0.1:8000/api/1.0/haul/";
+
+	const apiSurveyPartial = "http://127.0.0.1:8000/api/1.0/survey/";
+
+	const apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
+
+	const apiGears = "http://127.0.0.1:8000/api/1.0/trawl/basic/";
+
+	const apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
+
+	/**
+	 * Create station.
+	 * @param {event} e
+	 * @param {object} station
+	 */
+	const createStation = (e, station) => {
+		e.preventDefault();
 
 		fetch(apiStation, {
 			method: "POST",
@@ -41,8 +57,13 @@ const ComponentsStations = () => {
 			.catch((error) => console.log(error));
 	};
 
-	const editStation = (event, station_id) => {
-		event.preventDefault();
+	/**
+	 * Edit station.
+	 * @param {event} e
+	 * @param {number} station_id
+	 */
+	const editStation = (e, station_id) => {
+		e.preventDefault();
 
 		const api = apiStation + station_id;
 
@@ -59,10 +80,15 @@ const ComponentsStations = () => {
 		}).catch((error) => console.log(error));
 	};
 
-	const deleteStation = (e, ids) => {
+	/**
+	 * Delete station.
+	 * @param {event} e
+	 * @param {number} station_id
+	 */
+	const deleteStation = (e, station_id) => {
 		e.preventDefault();
 
-		const api = apiStation + ids;
+		const api = apiStation + station_id;
 
 		fetch(api, {
 			method: "DELETE",
@@ -73,7 +99,7 @@ const ComponentsStations = () => {
 		})
 			.then(() => {
 				const new_stations = stations.filter(
-					(station) => station.id !== ids
+					(station) => station.id !== station_id
 				);
 				setStations(new_stations);
 			})
@@ -82,13 +108,13 @@ const ComponentsStations = () => {
 
 	/**
 	 * Handle change fields of Station forms.
-	 * @param {*} event
-	 * @param {*} station_id
+	 * @param {event} e
+	 * @param {number} station_id
 	 */
-	const handleChangeStation = (event, station_id) => {
-		event.preventDefault();
-		const name = event.target.name;
-		const value = event.target.value;
+	const handleChangeStation = (e, station_id) => {
+		e.preventDefault();
+		const name = e.target.name;
+		const value = e.target.value;
 
 		const new_stations = stations.map((station) => {
 			if (station.id === station_id) {
@@ -104,16 +130,18 @@ const ComponentsStations = () => {
 		setStations(new_stations);
 	};
 
-	const createHaul = (event, haul) => {
-		/**
-		 * Method to create haul
-		 * */
-		event.preventDefault();
+	/**
+	 * Create new haul
+	 * @param {event} e
+	 * @param {object} haul
+	 */
+	const createHaul = (e, haul) => {
+		e.preventDefault();
 
 		const apiForm =
-			haul.sampler.id === "1"
+			haul.sampler_id === "1"
 				? apiTrawlForm
-				: haul.sampler.id === "2"
+				: haul.sampler_id === "2"
 				? apiHydrographyForm
 				: null;
 
@@ -127,7 +155,7 @@ const ComponentsStations = () => {
 			.then((response) => response.json())
 			.then((h) => {
 				const new_stations = stations.map((station) => {
-					if (station.id === parseInt(haul.station.id)) {
+					if (station.id === parseInt(haul.station_id)) {
 						station.hauls
 							? (station.hauls = [...station.hauls, h])
 							: (station.hauls = [h]);
@@ -142,12 +170,36 @@ const ComponentsStations = () => {
 			.catch((error) => console.log(error));
 	};
 
-	const deleteHaul = (e, id_station, id_haul) => {
-		/**
-		 * Method to delete haul.
-		 */
+	/**
+	 * Update haul.
+	 * @param {event} e
+	 * @param {number} haul_id
+	 * @param {number} station_id
+	 */
+	const updateHaulCommon = (e, haul_id, station_id) => {
+		e.preventDefault();
 
-		const api = apiDeleteHaul + id_haul;
+		const apiForm = apiHaul + haul_id;
+
+		const station = stations.find((s) => s.id === station_id);
+		const haul = station.hauls.find((h) => h.id === haul_id);
+
+		fetch(apiForm, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(haul),
+		}).catch((error) => console.log(error));
+	};
+
+	/**
+	 * Detele haul.
+	 * @param {event} e
+	 * @param {number} id_haul
+	 */
+	const deleteHaul = (e, id_haul) => {
+		const api = apiHaul + id_haul;
 
 		fetch(api, {
 			method: "DELETE",
@@ -158,19 +210,102 @@ const ComponentsStations = () => {
 		})
 			.then(() => {
 				var new_stations = stations.map((station) => {
-					if (station.id === id_station) {
+					if (station.hauls.some((h) => h.id === id_haul)) {
 						var new_hauls = station.hauls.filter(
 							(haul) => haul.id !== id_haul
 						);
 						station.hauls = new_hauls;
-						return station;
-					} else {
-						return station;
 					}
+					return station;
 				});
 				setStations(new_stations);
 			})
 			.catch((error) => alert(error));
+	};
+
+	/**
+	 * Handle change fields of Common Haul forms.
+	 * @param {event} e
+	 * @param {number} id_haul of haul to change.
+	 */
+	const handleChangeCommonHaul = (e, id_haul) => {
+		const name = e.target.name;
+		const value = e.target.value;
+
+		var new_stations = stations.map((station) => {
+			if (station.hauls.some((haul) => haul.id === id_haul)) {
+				var id_haul_index = station.hauls.findIndex(
+					(h) => h.id === id_haul
+				);
+
+				station.hauls[id_haul_index][name] = value;
+			}
+			return station;
+		});
+		setStations(new_stations);
+	};
+
+	const handleChangeCommonValid = (id_haul) => {
+		var new_stations = stations.map((station) => {
+			if (station.hauls.some((haul) => haul.id === id_haul)) {
+				var id_haul_index = station.hauls.findIndex(
+					(h) => h.id === id_haul
+				);
+
+				station.hauls[id_haul_index]["valid"] =
+					!station.hauls[id_haul_index]["valid"];
+			}
+			return station;
+		});
+		setStations(new_stations);
+	};
+
+	/**
+	 * Handle change Gear field.
+	 * @param {event} e
+	 * @param {number} id_haul of haul to change.
+	 */
+	const handleChangeGear = (e, id_haul) => {
+		const value = e.target.value;
+
+		var new_stations = stations.map((station) => {
+			if (station.hauls.some((haul) => haul.id === id_haul)) {
+				var id_haul_index = station.hauls.findIndex(
+					(h) => h.id === id_haul
+				);
+
+				station.hauls[id_haul_index]["gear_id"] = value;
+				// get stratum name:
+				const gear = gears.find((s) => s.id === parseInt(value));
+				station.hauls[id_haul_index]["gear"] = gear.name;
+			}
+			return station;
+		});
+		setStations(new_stations);
+	};
+
+	/**
+	 * Handle change Stratum field.
+	 * @param {event} e
+	 * @param {number} id_haul of haul to change.
+	 */
+	const handleChangeStratum = (e, id_haul) => {
+		const value = e.target.value;
+
+		var new_stations = stations.map((station) => {
+			if (station.hauls.some((haul) => haul.id === id_haul)) {
+				var id_haul_index = station.hauls.findIndex(
+					(h) => h.id === id_haul
+				);
+
+				station.hauls[id_haul_index]["stratum_id"] = value;
+				// get stratum name:
+				const stratum = strata.find((s) => s.id === parseInt(value));
+				station.hauls[id_haul_index]["stratum"] = stratum.stratum;
+			}
+			return station;
+		});
+		setStations(new_stations);
 	};
 
 	// VALIDATIONS
@@ -221,17 +356,71 @@ const ComponentsStations = () => {
 		};
 
 		if (selectedSurveyContext.selectedSurveyId !== "") {
-			const APIStations = getStationsApi();
+			// Fetch strata (require previously fetch survey to get stratification).
+			const apiSurvey =
+				apiSurveyPartial + selectedSurveyContext.selectedSurveyId;
 
-			fetch(APIStations)
+			fetch(apiSurvey)
 				.then((response) => {
 					if (response.status > 400) {
 						alert("something were wrong!!");
 					}
 					return response.json();
 				})
+				.then((survey) => {
+					const apiStrata = apiStrataPartial + survey.stratification;
+					fetch(apiStrata)
+						.then((response) => {
+							if (response.status > 400) {
+								alert("something were wrong!!");
+							}
+							return response.json();
+						})
+						.then((strata) => {
+							setStrata(strata);
+						});
+				});
+
+			// Fetch stations
+			const APIStations = getStationsApi();
+
+			fetch(APIStations)
+				.then((response) => {
+					if (response.status > 400) {
+						alert("something were wrong fetching the Stations!!");
+					}
+					return response.json();
+				})
 				.then((stations) => {
 					setStations(stations);
+				});
+
+			// Fetch gears
+			fetch(apiGears)
+				.then((response) => {
+					if (response.status > 400) {
+						return this.setState(() => {
+							return { placeholder: "Something went wrong!" };
+						});
+					}
+					return response.json();
+				})
+				.then((gears) => {
+					setGears(gears);
+				});
+
+			// Fetch samplers
+			fetch(apiSamplers)
+				.then((response) => {
+					if (response.status > 400) {
+						return this.setState(() => {
+							return { placeholder: "Something went wrong!" };
+						});
+					}
+					return response.json();
+				})
+				.then((samplers) => {
+					setSamplers(samplers);
 				});
 		}
 	}, []);
@@ -250,9 +439,17 @@ const ComponentsStations = () => {
 					deleteStation: deleteStation,
 					deleteHaul: deleteHaul,
 					createHaul: createHaul,
+					updateHaulCommon: updateHaulCommon,
+					handleChangeGear: handleChangeGear,
 					handleChangeStation: handleChangeStation,
 					editStation: editStation,
 					validateStationNumber: validateStationNumber,
+					handleChangeCommonHaul: handleChangeCommonHaul,
+					handleChangeCommonValid: handleChangeCommonValid,
+					handleChangeStratum: handleChangeStratum,
+					strata: strata,
+					gears: gears,
+					samplers: samplers,
 				}}
 			>
 				<main>
@@ -280,8 +477,6 @@ const ComponentsStations = () => {
 										<Station
 											key={station.id}
 											station={station}
-											createHaul={createHaul}
-											deleteHaul={deleteHaul}
 										/>
 									);
 							  })

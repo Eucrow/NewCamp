@@ -6,8 +6,6 @@ import ViewCommon from "./view/ViewCommon";
 import ViewMeteorology from "./view/ViewMeteorology";
 import ViewTrawl from "./view/ViewTrawl";
 import ViewHydrography from "./view/ViewHydrography";
-
-import EditCommonDetail from "./edit/EditCommonDetail";
 import EditMeteorology from "./edit/EditMeteorology";
 import EditTrawl from "./edit/EditTrawl";
 import EditHydrography from "./edit/EditHydrography";
@@ -20,11 +18,9 @@ import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
 class HaulDetails extends Component {
 	/**
 	 * View haul detail component.
-	 * @param {object} props.haul
-	 * @param {object} props.strata
-	 * @param {object} props.samplers
-	 * @param {object} props.gears
-	 * @param {method} props.validateHaulSampler
+	 * @param {object} haul
+	 * @param {method} validateHaulSampler
+	 * @param {method} handleDetail
 	 */
 
 	constructor(props) {
@@ -35,13 +31,13 @@ class HaulDetails extends Component {
 				meteo: {},
 				trawl_characteristics: {},
 				hydrography_characteristics: {},
-				station: {},
-				stratum: [],
 				sampler: {},
 			},
 			edit: false,
 		};
 
+		//TODO: optimize requests: the request only need to return station_id, meteo,
+		// trawl_characteristics and hydrograpy_characteristics
 		this.apiTrawlHaul =
 			"http://127.0.0.1:8000/api/1.0/haul/trawl/" + this.props.haul.id;
 		this.apiHydrographyHaul =
@@ -49,10 +45,6 @@ class HaulDetails extends Component {
 			this.props.haul.id;
 
 		this.changeIsEdit = this.changeIsEdit.bind(this);
-		this.handleChangeCommon = this.handleChangeCommon.bind(this);
-		this.handleChangeCommonValid = this.handleChangeCommonValid.bind(this);
-		this.handleChangeNestedIds = this.handleChangeNestedIds.bind(this);
-		this.handleChangeStratum = this.handleChangeStratum.bind(this);
 		this.handleChangeMeteorology = this.handleChangeMeteorology.bind(this);
 		this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
 		this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
@@ -66,60 +58,6 @@ class HaulDetails extends Component {
 			return {
 				edit: edit,
 			};
-		});
-	}
-
-	handleChangeCommon(event) {
-		const name = event.target.name;
-		const value = event.target.value;
-
-		const newHaulState = update(this.state.haul, {
-			[name]: { $set: value },
-		});
-
-		this.setState({
-			haul: newHaulState,
-		});
-	}
-
-	handleChangeCommonValid(event) {
-		const newHaulState = update(this.state.haul, {
-			valid: { $set: !this.state.haul.valid },
-		});
-
-		this.setState({
-			haul: newHaulState,
-		});
-	}
-
-	handleChangeNestedIds(event) {
-		const name = event.target.name;
-		const value = event.target.value;
-
-		this.setState({
-			haul: {
-				...this.state.haul,
-				[name]: {
-					id: value,
-				},
-			},
-		});
-	}
-
-	handleChangeStratum(event) {
-		const value = event.target.value;
-
-		const newValue = this.props.strata.find(
-			(s) => s.id === parseInt(value)
-		);
-
-		console.log(newValue);
-
-		this.setState({
-			haul: {
-				...this.state.haul,
-				stratum: newValue,
-			},
 		});
 	}
 
@@ -172,11 +110,13 @@ class HaulDetails extends Component {
 		event.preventDefault();
 
 		const apiHaul =
-			this.state.haul.sampler.id === 1
+			this.state.haul.sampler_id === 1
 				? this.apiTrawlHaul
-				: this.state.haul.sampler.id === 2
+				: this.state.haul.sampler_id === 2
 				? this.apiHydrographyHaul
 				: null;
+
+		console.log(JSON.stringify(this.state.haul));
 
 		fetch(apiHaul, {
 			method: "PUT",
@@ -199,9 +139,9 @@ class HaulDetails extends Component {
 		 * data of the haul and update the state with it.
 		 */
 		const apiHaul =
-			this.props.haul.sampler_id === 1
+			parseInt(this.props.haul.sampler_id) === 1
 				? this.apiTrawlHaul
-				: this.props.haul.sampler_id === 2
+				: parseInt(this.props.haul.sampler_id) === 2
 				? this.apiHydrographyHaul
 				: null;
 
@@ -225,13 +165,10 @@ class HaulDetails extends Component {
 	}
 
 	renderContent() {
-		if (this.state.haul.sampler.id === 1) {
+		if (this.state.haul.sampler_id === 1) {
 			if (this.state.edit === false) {
 				return (
-					<form disabled>
-						<div className="form__row">
-							<ViewCommon haul={this.state.haul} />
-						</div>
+					<form className="form--wide" disabled>
 						<div className="form__row">
 							<ViewMeteorology haul={this.state.haul} />
 						</div>
@@ -243,7 +180,7 @@ class HaulDetails extends Component {
 								<div className="buttonsWrapper">
 									<UiButtonBooleanHandle
 										buttonText={"Hide detail"}
-										handleMethod={this.props.changeDetail}
+										handleMethod={this.props.handleDetail}
 										newBoolean={false}
 									></UiButtonBooleanHandle>
 
@@ -262,31 +199,12 @@ class HaulDetails extends Component {
 			if (this.state.edit === true) {
 				return (
 					<form
+						className="form--wide"
 						onSubmit={(e) => {
 							this.handleSubmit(e);
 							this.changeIsEdit(false);
 						}}
 					>
-						<div className="form__row">
-							<EditCommonDetail
-								haul={this.state.haul}
-								handleChangeCommonValid={
-									this.handleChangeCommonValid
-								}
-								handleChangeCommon={this.handleChangeCommon}
-								handleChangeNestedIds={
-									this.handleChangeNestedIds
-								}
-								handleChangeStratum={this.handleChangeStratum}
-								strata={this.props.strata}
-								samplers={this.props.samplers}
-								gears={this.props.gears}
-								validateHaulSampler={
-									this.props.validateHaulSampler
-								}
-							/>
-						</div>
-
 						<div className="form__row">
 							<EditMeteorology
 								haul={this.state.haul}
@@ -319,7 +237,7 @@ class HaulDetails extends Component {
 			}
 		}
 
-		if (this.state.haul.sampler.id === 2) {
+		if (this.state.haul.sampler_id === 2) {
 			if (this.state.edit === false) {
 				return (
 					<div>
@@ -333,7 +251,7 @@ class HaulDetails extends Component {
 						</button>
 						<button
 							onClick={() => {
-								this.props.changeDetail(false);
+								this.props.handleDetail(false);
 							}}
 						>
 							Hide detail
@@ -345,13 +263,6 @@ class HaulDetails extends Component {
 			if (this.state.edit === true) {
 				return (
 					<div>
-						<EditCommonDetail
-							haul={this.state.haul}
-							handleChangeCommonValid={
-								this.handleChangeCommonValid
-							}
-							handleChangeCommon={this.handleChangeCommon}
-						/>
 						<EditHydrography
 							haul={this.state.haul}
 							handleChangeHydrography={
@@ -374,7 +285,8 @@ class HaulDetails extends Component {
 				);
 			}
 		}
-		return "The type of sampler must be 1 or 2";
+
+		return null;
 	}
 
 	render() {

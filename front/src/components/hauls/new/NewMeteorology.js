@@ -6,7 +6,7 @@ class NewMeteorology extends Component {
 	 */
 	render() {
 		return (
-			<fieldset class="wrapper form__row">
+			<fieldset className="wrapper form__row">
 				<legend>Meteorology:</legend>
 				<label className="form__cell">
 					Wind direction (degrees):
