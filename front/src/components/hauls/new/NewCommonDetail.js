@@ -88,7 +88,7 @@ const NewCommonDetail = ({ haul, handleChange, validateHaulSampler }) => {
 					<option value=""></option>
 					{stationsContext.gears.map((gear) => {
 						return (
-							<option key={gear.id} value={gear.name}>
+							<option key={gear.id} value={gear.id}>
 								{gear.name}
 							</option>
 						);

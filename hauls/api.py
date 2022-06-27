@@ -130,7 +130,7 @@ class HaulTrawlAPI(APIView):
                             stratum_id=request.data['stratum_id'],
                             # stratum=request.data['stratum'],
                             sampler_id=request.data['sampler_id'],
-                            gear=request.data['gear'])
+                            gear_id=request.data['gear_id'])
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
