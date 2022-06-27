@@ -12,7 +12,6 @@ class Hauls extends Component {
 	 * @param {object} hauls
 	 * @param {object} station_id
 	 * @param {object} sampler_id
-	 * @param {method} deleteHaul
 	 */
 
 	static contextType = SelectedSurveyContext;
@@ -95,9 +94,6 @@ class Hauls extends Component {
 								key={haul.id}
 								haul={haul}
 								station_id={this.props.station_id}
-								deleteHaul={this.props.deleteHaul}
-								// strata={this.state.strata}
-								// samplers={this.state.samplers}
 								validateHaulSampler={this.validateHaulSampler}
 							/>
 						);

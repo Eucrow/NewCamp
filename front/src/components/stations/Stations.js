@@ -477,8 +477,6 @@ const ComponentsStations = () => {
 										<Station
 											key={station.id}
 											station={station}
-											createHaul={createHaul}
-											deleteHaul={deleteHaul}
 										/>
 									);
 							  })

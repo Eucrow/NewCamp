@@ -17,11 +17,11 @@ class NewSpecific extends Component {
 		if (sampler_id === "1") {
 			return (
 				<Fragment>
-					<NewTrawl
-						handleChangeTrawl={this.props.handleChangeTrawl}
-					/>
 					<NewMeteorology
 						handleChangeMeteo={this.props.handleChangeMeteo}
+					/>
+					<NewTrawl
+						handleChangeTrawl={this.props.handleChangeTrawl}
 					/>
 				</Fragment>
 			);

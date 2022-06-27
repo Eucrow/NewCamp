@@ -5,10 +5,12 @@ import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
 
 /**
- * Component of Species bar.
- * @param {boolean} add true to show "Add" button.
- * @param {method} handleAdd Method to handle the 'add' parameter.
+ * Component haul button bar.
+ * @param {numerics} haul_id
+ * @param {boolean} edit
+ * @param {method} handleEdit
  * @param {method} handleDetail
+ * @param {method} deleteHaul: method used to delete haul.
  */
 const HaulButtonBar = ({
 	haul_id,
@@ -22,14 +24,12 @@ const HaulButtonBar = ({
 	if (edit === true) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right buttonsWrapper">
-				{/* <div className="buttonsWrapper"> */}
 				<UiButtonBooleanHandle
 					buttonText={"Cancel"}
 					handleMethod={handleEdit}
 					newBoolean={false}
 				/>
 				<UiButtonSave buttonText="Save Haul" />
-				{/* </div> */}
 			</div>
 		);
 	}
