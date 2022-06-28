@@ -110,12 +110,12 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
     sampler = serializers.CharField(source='sampler.sampler', read_only=True)
 
     # gear is the 'name' of the gear
-    gear = serializers.IntegerField(source='gear.name')
+    gear = serializers.IntegerField(source='gear.name', read_only=True)
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'gear', 'valid', 'meteo', 'trawl_characteristics', 'station_id', 'stratum_id',
-                  'stratum', 'sampler_id', 'sampler']
+        fields = ['id', 'haul', 'valid', 'meteo', 'trawl_characteristics', 'station_id', 'stratum_id',
+                  'stratum', 'sampler_id', 'sampler', 'gear', 'gear_id']
 
     # This is a nested serializer, so we have to overwrite the create function
     def create(self, validated_data):
@@ -123,13 +123,8 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
         meteo_data = validated_data.pop('meteo')
         trawl_characteristics_data = validated_data.pop('trawl_characteristics')
 
-        # haul_data['gear'] must be a Trawl instance, so:
-        gear_data = Trawl.objects.get(name=validated_data.pop('gear'))
-
         # Second, create the new haul with its nested data:
         haul_data = validated_data.copy()
-
-        haul_data['gear'] = gear_data
 
         # Then, save the haul
         haul = Haul.objects.create(**haul_data)

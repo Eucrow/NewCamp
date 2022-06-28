@@ -45,7 +45,7 @@ const NewHaul = ({ station_id, changeAdd, validateHaulSampler }) => {
 	const createHaulObject = () => {
 		const newHaul = {
 			haul: haulCommon.haul,
-			gear: haulCommon.gear,
+			gear_id: haulCommon.gear,
 			sampler_id: haulCommon.sampler_id,
 			stratum_id: haulCommon.stratum_id,
 			station_id: station_id, // it comes from props

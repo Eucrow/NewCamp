@@ -20,10 +20,6 @@ class StationsBySurveyAPI(ListAPIView):
     serializer_class = StationSerializer
 
     def get_queryset(self):
-        """
-        This view should return a list of all the purchases for
-        the user as determined by the username portion of the URL.
-        """
         survey_id = self.kwargs['survey_id']
         return Station.objects.filter(survey_id=survey_id)
 
