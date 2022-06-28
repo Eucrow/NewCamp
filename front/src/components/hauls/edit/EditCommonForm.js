@@ -100,7 +100,7 @@ class EditCommonForm extends Component {
 							id="gear_id"
 							name="gear"
 							className="select__gear"
-							value={this.props.haul.gear || "choose"}
+							value={this.props.haul.gear_id || "choose"}
 							onChange={(e) => {
 								this.context.handleChangeGear(e, haul.id);
 							}}
