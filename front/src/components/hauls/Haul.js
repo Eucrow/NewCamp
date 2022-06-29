@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import ViewCommon from "./view/ViewCommon";
 import EditCommonForm from "./edit/EditCommonForm";
 import HaulDetails from "./HaulDetails";
+import ComponentsTrawlCatches from "../trawlCatches/TrawlHaulCatches";
 
 class Haul extends Component {
 	/**
@@ -62,6 +63,7 @@ class Haul extends Component {
 						handleEdit={this.handleEdit}
 						handleDetail={this.handleDetail}
 					/>
+					<ComponentsTrawlCatches haul_id={this.props.haul.id} />
 				</div>
 			);
 		}

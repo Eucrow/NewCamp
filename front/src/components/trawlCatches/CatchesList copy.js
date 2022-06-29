@@ -581,26 +581,32 @@ class CatchesList extends Component {
 			);
 		} else {
 			return (
-				// <table style={{ verticalAlign: "top", borderWidth: 1, borderColor: "blue", borderStyle: "dotted" }}>
-				// 	<thead>
-				// 		<tr style={{ verticalAlign: "top" }}>
-				// 			<td>Code</td>
-				// 			<td>Name</td>
-				// 			<td>Category</td>
-				// 			<td>Total Weight</td>
-				// 			<td>Sampled Weight</td>
-				// 			<td>Sexes</td>
-				// 		</tr>
-				// 	</thead>
-				// 	<tbody>
-				<Fragment>
-					<Catch
-						status_catch="add"
-						species={this.state.species}
-						createCatch={this.createCatch}
-						existsCatch={this.existsCatch}
-					/>
-					<div>
+				<table
+					style={{
+						verticalAlign: "top",
+						borderWidth: 1,
+						borderColor: "blue",
+						borderStyle: "dotted",
+					}}
+				>
+					<thead>
+						<tr style={{ verticalAlign: "top" }}>
+							<td>Code</td>
+							<td>Name</td>
+							<td>Category</td>
+							<td>Total Weight</td>
+							<td>Sampled Weight</td>
+							<td>Sexes</td>
+						</tr>
+					</thead>
+					<tbody>
+						<Catch
+							status_catch="add"
+							species={this.state.species}
+							createCatch={this.createCatch}
+							existsCatch={this.existsCatch}
+						/>
+
 						{this.state.catches.map((c) => {
 							return (
 								<Catch
@@ -635,10 +641,8 @@ class CatchesList extends Component {
 								/>
 							);
 						})}
-					</div>
-				</Fragment>
-				// 	</tbody>
-				// </table>
+					</tbody>
+				</table>
 			);
 		}
 	}
