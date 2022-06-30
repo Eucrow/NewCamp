@@ -593,50 +593,38 @@ class CatchesList extends Component {
 				// 		</tr>
 				// 	</thead>
 				// 	<tbody>
-				<Fragment>
-					<Catch
+				<div className="wrapper">
+					{/* <Catch
 						status_catch="add"
 						species={this.state.species}
 						createCatch={this.createCatch}
 						existsCatch={this.existsCatch}
-					/>
-					<div>
-						{this.state.catches.map((c) => {
-							return (
-								<Catch
-									key={c.id}
-									this_catch={c}
-									species={this.state.species}
-									handleChangeSampledWeight={
-										this.handleChangeSampledWeight
-									}
-									updateSampledWeight={
-										this.updateSampledWeight
-									}
-									deleteSex={this.deleteSex}
-									handleChangeGroup={this.handleChangeGroup}
-									handleChangeSpecies={
-										this.handleChangeSpecies
-									}
-									handleChangeCategory={
-										this.handleChangeCategory
-									}
-									handleChangeWeight={this.handleChangeWeight}
-									updateCatch={this.updateCatch}
-									removeCatch={this.removeCatch}
-									handleChangeSex={this.handleChangeSex}
-									handleNewSexSubmit={this.handleNewSexSubmit}
-									createSampledWeight={
-										this.createSampledWeight
-									}
-									deleteSampledWeight={
-										this.deleteSampledWeight
-									}
-								/>
-							);
-						})}
-					</div>
-				</Fragment>
+					/> */}
+					{this.state.catches.map((c) => {
+						return (
+							<Catch
+								key={c.id}
+								this_catch={c}
+								species={this.state.species}
+								handleChangeSampledWeight={
+									this.handleChangeSampledWeight
+								}
+								updateSampledWeight={this.updateSampledWeight}
+								deleteSex={this.deleteSex}
+								handleChangeGroup={this.handleChangeGroup}
+								handleChangeSpecies={this.handleChangeSpecies}
+								handleChangeCategory={this.handleChangeCategory}
+								handleChangeWeight={this.handleChangeWeight}
+								updateCatch={this.updateCatch}
+								removeCatch={this.removeCatch}
+								handleChangeSex={this.handleChangeSex}
+								handleNewSexSubmit={this.handleNewSexSubmit}
+								createSampledWeight={this.createSampledWeight}
+								deleteSampledWeight={this.deleteSampledWeight}
+							/>
+						);
+					})}
+				</div>
 				// 	</tbody>
 				// </table>
 			);

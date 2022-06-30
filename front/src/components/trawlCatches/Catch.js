@@ -53,8 +53,7 @@ class Catch extends Component {
 			const sexes = this_catch.sexes ? this_catch.sexes : null;
 
 			return (
-				<Fragment>
-					{/* <tr style={{ verticalAlign: "top" }} key={this_catch.id}> */}
+				<div className="form__row form--wide">
 					<ComponentCategory
 						status_catch={this.state.status_catch}
 						this_catch={this.props.this_catch}
@@ -65,7 +64,6 @@ class Catch extends Component {
 						createSampledWeight={this.props.createSampledWeight}
 						deleteSampledWeight={this.props.deleteSampledWeight}
 					/>
-					{/* <td> */}
 					<button
 						onClick={() => {
 							this.editCatchStatus("edit");
@@ -76,52 +74,42 @@ class Catch extends Component {
 					<button onClick={this.props.removeCatch(this_catch.id)}>
 						Remove catch
 					</button>
-					{/* </td> */}
-
-					{/* <td> */}
-					<ComponentSexes
+					{/* <ComponentSexes
 						sexes={sexes}
 						catch_id={this.props.this_catch.id}
 						handleChangeSex={this.props.handleChangeSex}
 						editCatchStatus={this.editCatchStatus}
 						handleNewSexSubmit={this.props.handleNewSexSubmit}
 						deleteSex={this.props.deleteSex}
-					/>
-					{/* </td> */}
-					{/* </tr> */}
-				</Fragment>
+					/> */}
+				</div>
 			);
 		} else if (this.state.status_catch === "edit") {
 			const this_catch = this.props.this_catch;
 
 			return (
-				<Fragment>
-					<tr style={{ verticalAlign: "top" }} key={this_catch.id}>
-						<ComponentCategory
-							status_catch={this.state.status_catch}
-							this_catch={this.props.this_catch}
-							species={this.props.species}
-							handleChangeGroup={this.props.handleChangeGroup}
-							handleChangeSpecies={this.props.handleChangeSpecies}
-							handleChangeCategory={
-								this.props.handleChangeCategory
-							}
-							handleChangeWeight={this.props.handleChangeWeight}
-							deleteSampledWeight={this.props.deleteSampledWeight}
-						/>
-						<td>
-							<button
-								onClick={() => {
-									this.props.updateCatch(this_catch.id);
-									this.editCatchStatus("view");
-								}}
-							>
-								Save
-							</button>
-							<input type="submit" value="Save catch" />
-						</td>
-					</tr>
-				</Fragment>
+				<div className="form__row">
+					<ComponentCategory
+						status_catch={this.state.status_catch}
+						this_catch={this.props.this_catch}
+						species={this.props.species}
+						handleChangeGroup={this.props.handleChangeGroup}
+						handleChangeSpecies={this.props.handleChangeSpecies}
+						handleChangeCategory={this.props.handleChangeCategory}
+						handleChangeWeight={this.props.handleChangeWeight}
+						deleteSampledWeight={this.props.deleteSampledWeight}
+					/>
+
+					<button
+						onClick={() => {
+							this.props.updateCatch(this_catch.id);
+							this.editCatchStatus("view");
+						}}
+					>
+						Save
+					</button>
+					{/* <input type="submit" value="Save catch" /> */}
+				</div>
 			);
 		}
 	};
