@@ -40,6 +40,9 @@ class CatchesList extends Component {
 		this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
 		this.handleChangeCategory = this.handleChangeCategory.bind(this);
 		this.handleChangeWeight = this.handleChangeWeight.bind(this);
+		this.handleCancelChangeWeight =
+			this.handleCancelChangeWeight.bind(this);
+		this.handleCancelEditCatch = this.handleCancelEditCatch.bind(this);
 		this.updateCatch = this.updateCatch.bind(this);
 		this.removeCatch = this.removeCatch.bind(this);
 		this.createCatch = this.createCatch.bind(this);
@@ -367,6 +370,39 @@ class CatchesList extends Component {
 		});
 	};
 
+	handleCancelChangeWeight = (idx, old_value) => {
+		const newCatches = this.state.catches.map((c) => {
+			if (c.id !== idx) return c;
+			return {
+				...c,
+				weight: old_value,
+			};
+		});
+
+		this.setState({
+			catches: newCatches,
+		});
+	};
+
+	handleCancelEditCatch = (idx, old_state) => {
+		const newCatches = this.state.catches.map((c) => {
+			if (c.id !== idx) return c;
+			return {
+				...c,
+				id: old_state.id,
+				weight: old_state.weight,
+				category: old_state.category,
+				sp_code: old_state.sp_code,
+				sp_id: old_state.sp_id,
+				sp_name: old_state.sp_name,
+			};
+		});
+
+		this.setState({
+			catches: newCatches,
+		});
+	};
+
 	updateCatch = (idx) => {
 		/**
 		 * Update catch in database.
@@ -581,18 +617,6 @@ class CatchesList extends Component {
 			);
 		} else {
 			return (
-				// <table style={{ verticalAlign: "top", borderWidth: 1, borderColor: "blue", borderStyle: "dotted" }}>
-				// 	<thead>
-				// 		<tr style={{ verticalAlign: "top" }}>
-				// 			<td>Code</td>
-				// 			<td>Name</td>
-				// 			<td>Category</td>
-				// 			<td>Total Weight</td>
-				// 			<td>Sampled Weight</td>
-				// 			<td>Sexes</td>
-				// 		</tr>
-				// 	</thead>
-				// 	<tbody>
 				<div className="wrapper">
 					{/* <Catch
 						status_catch="add"
@@ -615,6 +639,12 @@ class CatchesList extends Component {
 								handleChangeSpecies={this.handleChangeSpecies}
 								handleChangeCategory={this.handleChangeCategory}
 								handleChangeWeight={this.handleChangeWeight}
+								handleCancelChangeWeight={
+									this.handleCancelChangeWeight
+								}
+								handleCancelEditCatch={
+									this.handleCancelEditCatch
+								}
 								updateCatch={this.updateCatch}
 								removeCatch={this.removeCatch}
 								handleChangeSex={this.handleChangeSex}

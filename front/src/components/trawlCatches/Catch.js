@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 
 import ComponentSexes from "../sexes/SexesList.js";
+import UiButtonCancel from "../ui/UiButtonCancel.js";
 import ComponentCategory from "./Category.js";
 
 class Catch extends Component {
@@ -13,6 +14,8 @@ class Catch extends Component {
 	 * @param {method} props.handleChangeSpecies: managing of species state and field.
 	 * @param {method} props.handleChangeCategory: managing of category state and field.
 	 * @param {method} props.handleChangeWeight: managing of weight state and field.
+	 * @param {method} props.handleCancelChangeWeigth: ????
+	 * handleCancelEditCatch
 	 * @param {method} props.updateCatch: update catch in database.
 	 * @param {method} props.removeCatch: delete catch of database.
 	 * @param {method} props.handleChangeSex: manage sex state.
@@ -26,13 +29,34 @@ class Catch extends Component {
 			status_catch: this.props.status_catch || "view",
 		};
 
+		this.original_catch = "";
+
 		this.editCatchStatus = this.editCatchStatus.bind(this);
+		this.handleCancel = this.handleCancel.bind(this);
 	}
 
 	editCatchStatus(status) {
 		this.setState({
 			["status_catch"]: status,
 		});
+	}
+
+	handleCancel = () => {
+		// this.props.handleChangeGroup()
+		// this.props.handleChangeSpecies()
+		// this.props.handleChangeCategory()
+		// this.props.handleCancelChangeWeight(
+		// 	this.props.this_catch.id,
+		// 	this.original_catch.weight
+		// );
+		this.props.handleCancelEditCatch(
+			this.props.this_catch.id,
+			this.original_catch
+		);
+	};
+
+	componentDidMount() {
+		this.original_catch = this.props.this_catch;
 	}
 
 	renderContent = () => {
@@ -104,6 +128,15 @@ class Catch extends Component {
 						}}
 					>
 						Save
+					</button>
+
+					<button
+						onClick={() => {
+							this.handleCancel();
+							this.editCatchStatus("view");
+						}}
+					>
+						Cancel
 					</button>
 				</div>
 			);
