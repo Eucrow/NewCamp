@@ -37,16 +37,13 @@ class Catch extends Component {
 
 	renderContent = () => {
 		if (this.state.status_catch === "add") {
-			// console.log(this.props);
 			return (
-				// <tr>
 				<ComponentCategory
 					status_catch={this.state.status_catch}
 					species={this.props.species}
 					createCatch={this.props.createCatch}
 					existsCatch={this.props.existsCatch}
 				/>
-				// </tr>
 			);
 		} else if (this.state.status_catch === "view") {
 			const this_catch = this.props.this_catch;
@@ -108,79 +105,12 @@ class Catch extends Component {
 					>
 						Save
 					</button>
-					{/* <input type="submit" value="Save catch" /> */}
 				</div>
 			);
 		}
 	};
 
 	render() {
-		// const this_catch = this.props.this_catch;
-		// const sampled_weight =
-		// 	this_catch.samples && this_catch.samples.sampled_weight ? this_catch.samples.sampled_weight : null;
-		// const sexes = this_catch.sexes ? this_catch.sexes : null;
-		// if (this.state.status_catch === "view" || this.state.status_catch === "") {
-		// 	return (
-		// 		<Fragment>
-		// 			<tr style={{ verticalAlign: "top" }} key={this_catch.id}>
-		// 				<ComponentCategory
-		// 					status_catch={this.state.status_catch}
-		// 					this_catch={this.props.this_catch}
-		// 					handleChangeSampledWeight={this.props.handleChangeSampledWeight}
-		// 					updateSampledWeight={this.props.updateSampledWeight}
-		// 					createSampledWeight={this.props.createSampledWeight}
-		// 				/>
-		// 				<td>
-		// 					<button
-		// 						onClick={() => {
-		// 							this.editCatchStatus("edit");
-		// 						}}
-		// 					>
-		// 						Edit catch
-		// 					</button>
-		// 					<button onClick={this.props.removeCatch(this_catch.id)}>Remove catch</button>
-		// 				</td>
-		// 				<td>
-		// 					<ComponentSexes
-		// 						sexes={sexes}
-		// 						catch_id={this.props.this_catch.id}
-		// 						handleChangeSex={this.props.handleChangeSex}
-		// 						editCatchStatus={this.editCatchStatus}
-		// 						handleNewSexSubmit={this.props.handleNewSexSubmit}
-		// 						deleteSex={this.props.deleteSex}
-		// 					/>
-		// 				</td>
-		// 			</tr>
-		// 		</Fragment>
-		// 	);
-		// } else if (this.state.status_catch === "edit") {
-		// 	return (
-		// 		<Fragment>
-		// 			<tr style={{ verticalAlign: "top" }} key={this_catch.id}>
-		// 				<ComponentCategory
-		// 					status_catch={this.state.status_catch}
-		// 					this_catch={this.props.this_catch}
-		// 					species={this.props.species}
-		// 					handleChangeGroup={this.props.handleChangeGroup}
-		// 					handleChangeSpecies={this.props.handleChangeSpecies}
-		// 					handleChangeCategory={this.props.handleChangeCategory}
-		// 					handleChangeWeight={this.props.handleChangeWeight}
-		// 				/>
-		// 				<td>
-		// 					<button
-		// 						onClick={() => {
-		// 							this.props.updateCatch(this_catch.id);
-		// 							this.editCatchStatus("view");
-		// 						}}
-		// 					>
-		// 						Save
-		// 					</button>
-		// 					<input type="submit" value="Save catch" />
-		// 				</td>
-		// 			</tr>
-		// 		</Fragment>
-		// 	);
-		// }
 		return this.renderContent();
 	}
 }
