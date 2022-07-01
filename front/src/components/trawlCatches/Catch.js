@@ -10,12 +10,11 @@ class Catch extends Component {
 	 * @param {object} props.this_catch: catch managed by this component.
 	 * @param {object} props.species: species list.
 	 * @param {method} props.deleteSex: delete sex of database.
-	 * @param {method} props.handleChangeGroup: managing of group state and field.
-	 * @param {method} props.handleChangeSpecies: managing of species state and field.
-	 * @param {method} props.handleChangeCategory: managing of category state and field.
-	 * @param {method} props.handleChangeWeight: managing of weight state and field.
-	 * @param {method} props.handleCancelChangeWeigth: ????
-	 * handleCancelEditCatch
+	 * @param {method} props.handleChangeGroup: manage group state and field.
+	 * @param {method} props.handleChangeSpecies: manage pecies state and field.
+	 * @param {method} props.handleChangeCategory: manage ategory state and field.
+	 * @param {method} props.handleChangeWeight: manage weight state and field.
+	 * @param {method} props.handleCancelEditCatch: manage cancellation of catch edition.
 	 * @param {method} props.updateCatch: update catch in database.
 	 * @param {method} props.removeCatch: delete catch of database.
 	 * @param {method} props.handleChangeSex: manage sex state.

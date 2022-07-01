@@ -40,8 +40,6 @@ class CatchesList extends Component {
 		this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
 		this.handleChangeCategory = this.handleChangeCategory.bind(this);
 		this.handleChangeWeight = this.handleChangeWeight.bind(this);
-		this.handleCancelChangeWeight =
-			this.handleCancelChangeWeight.bind(this);
 		this.handleCancelEditCatch = this.handleCancelEditCatch.bind(this);
 		this.updateCatch = this.updateCatch.bind(this);
 		this.removeCatch = this.removeCatch.bind(this);
@@ -370,20 +368,11 @@ class CatchesList extends Component {
 		});
 	};
 
-	handleCancelChangeWeight = (idx, old_value) => {
-		const newCatches = this.state.catches.map((c) => {
-			if (c.id !== idx) return c;
-			return {
-				...c,
-				weight: old_value,
-			};
-		});
-
-		this.setState({
-			catches: newCatches,
-		});
-	};
-
+	/**
+	 * Manage cancellation of catch edition.
+	 * @param {number} idx haul id.
+	 * @param {object} old_state catch state previous to the edition.
+	 */
 	handleCancelEditCatch = (idx, old_state) => {
 		const newCatches = this.state.catches.map((c) => {
 			if (c.id !== idx) return c;
