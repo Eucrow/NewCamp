@@ -431,9 +431,10 @@ class CatchesList extends Component {
 
 		return fetch(apiCatch)
 			.then((response) => {
-				if (response.status == 200) {
+				if (response.status === 200) {
 					return true;
 				} else {
+					console.log("dñlfkjadñlkf");
 					return false;
 				}
 			})
@@ -475,7 +476,7 @@ class CatchesList extends Component {
 								catches: new_catches,
 								status_catch: "add",
 							};
-						}).then(() => console.log(this.state));
+						});
 					})
 					.catch((error) => console.log(error));
 			}
@@ -595,24 +596,30 @@ class CatchesList extends Component {
 		if (this.state.catches.length === 0) {
 			return (
 				<Fragment>
-					<p>There aren't catches yet</p>
-					<Catch
-						status_catch="add"
-						species={this.state.species}
-						createCatch={this.createCatch}
-						existsCatch={this.existsCatch}
-					/>
+					<div className="form__row form--wide">
+						There aren't catches yet
+					</div>
+					<div className="form__row form--wide">
+						<Catch
+							status_catch="add"
+							species={this.state.species}
+							createCatch={this.createCatch}
+							existsCatch={this.existsCatch}
+						/>
+					</div>
 				</Fragment>
 			);
 		} else {
 			return (
-				<div className="wrapper">
-					{/* <Catch
-						status_catch="add"
-						species={this.state.species}
-						createCatch={this.createCatch}
-						existsCatch={this.existsCatch}
-					/> */}
+				<div className="wrapper form__row form--wide catchesList">
+					<div className="form__row form--wide">
+						<Catch
+							status_catch="add"
+							species={this.state.species}
+							createCatch={this.createCatch}
+							existsCatch={this.existsCatch}
+						/>
+					</div>
 					{this.state.catches.map((c) => {
 						return (
 							<Catch

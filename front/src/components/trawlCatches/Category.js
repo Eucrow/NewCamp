@@ -29,9 +29,10 @@ class ComponentCategory extends Component {
 		if (this.props.status_catch === "add") {
 			return (
 				<form>
-					<label>
+					<label className="form__cell">
 						Group:
 						<input
+							value={this.state.group}
 							style={{ width: 5 + "ch" }}
 							type="number"
 							id="group"
@@ -43,7 +44,7 @@ class ComponentCategory extends Component {
 							}
 						/>
 					</label>
-					<label>
+					<label className="form__cell">
 						Species:
 						<select
 							style={{ width: 30 + "ch" }}
@@ -57,17 +58,20 @@ class ComponentCategory extends Component {
 							{this.props.species.map((s) => {
 								if (s.group === parseInt(this.state.group)) {
 									return (
-										<option value={s.id}>
+										<option value={s.id} key={s.id}>
 											{s.sp_code}-{s.sp_name}
 										</option>
 									);
+								} else {
+									return null;
 								}
 							})}
 						</select>
 					</label>
-					<label>
+					<label className="form__cell">
 						Category:
 						<input
+							value={this.state.category}
 							style={{ width: 4 + "ch" }}
 							type="number"
 							id="category"
@@ -79,9 +83,10 @@ class ComponentCategory extends Component {
 							}
 						/>
 					</label>
-					<label>
+					<label className="form__cell">
 						Weight(g.):
 						<input
+							value={this.state.weight}
 							style={{ width: 8 + "ch" }}
 							type="number"
 							id="weight"
@@ -93,13 +98,20 @@ class ComponentCategory extends Component {
 							}
 						/>
 					</label>
-					<input
-						type="button"
-						value="Save catch"
+					<button
+						className="buttonsWrapper__button"
 						onClick={(e) => {
 							this.props.createCatch(e, this.state);
+							this.setState({
+								group: "",
+								sp_id: "",
+								category: "",
+								weight: "",
+							});
 						}}
-					/>
+					>
+						Add catch
+					</button>
 				</form>
 			);
 		} else if (
@@ -115,7 +127,7 @@ class ComponentCategory extends Component {
 
 			return (
 				<form>
-					<label>
+					<label className="form__cell">
 						Group:
 						<input
 							style={{ width: 5 + "ch" }}
@@ -128,7 +140,7 @@ class ComponentCategory extends Component {
 							value={this.props.this_catch.group}
 						/>
 					</label>
-					<label>
+					<label className="form__cell">
 						Species:
 						<select
 							style={{ width: 30 + "ch" }}
@@ -145,7 +157,7 @@ class ComponentCategory extends Component {
 							</option>
 						</select>
 					</label>
-					<label>
+					<label className="form__cell">
 						Category:
 						<input
 							style={{ width: 4 + "ch" }}
@@ -158,7 +170,7 @@ class ComponentCategory extends Component {
 							value={this.props.this_catch.category}
 						/>
 					</label>
-					<label>
+					<label className="form__cell">
 						Weight(g.):
 						<input
 							style={{ width: 8 + "ch" }}
@@ -202,7 +214,7 @@ class ComponentCategory extends Component {
 						name="haul_id"
 						value={this.props.this_catch.haul_id}
 					/>
-					<label>
+					<label className="form__cell">
 						Group:
 						<input
 							style={{ width: 5 + "ch" }}
@@ -217,7 +229,7 @@ class ComponentCategory extends Component {
 							)}
 						/>
 					</label>
-					<label>
+					<label className="form__cell">
 						Species:
 						<select
 							style={{ width: 30 + "ch" }}
@@ -253,11 +265,13 @@ class ComponentCategory extends Component {
 											{s.sp_code}-{s.sp_name}
 										</option>
 									);
+								} else {
+									return null;
 								}
 							})}
 						</select>
 					</label>
-					<label>
+					<label className="form__cell">
 						Category:
 						<input
 							style={{ width: 4 + "ch" }}
@@ -272,7 +286,7 @@ class ComponentCategory extends Component {
 							)}
 						/>
 					</label>
-					<label>
+					<label className="form__cell">
 						Weight(g.):
 						<input
 							style={{ width: 8 + "ch" }}

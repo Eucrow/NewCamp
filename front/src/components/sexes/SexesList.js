@@ -21,10 +21,11 @@ class ComponentSexes extends Component {
 		this.handleAddSexButton = this.handleAddSexButton.bind(this);
 	}
 
+	/**
+	 * Manage if the button 'Add sex' is showed.
+	 * @param {boolean} status
+	 */
 	handleAddSexButton(status) {
-		/**
-		 * Manage if the button 'Add sex' is showed.
-		 */
 		this.setState({
 			showAddSexForm: status,
 		});

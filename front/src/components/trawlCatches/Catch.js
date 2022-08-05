@@ -41,13 +41,6 @@ class Catch extends Component {
 	}
 
 	handleCancel = () => {
-		// this.props.handleChangeGroup()
-		// this.props.handleChangeSpecies()
-		// this.props.handleChangeCategory()
-		// this.props.handleCancelChangeWeight(
-		// 	this.props.this_catch.id,
-		// 	this.original_catch.weight
-		// );
 		this.props.handleCancelEditCatch(
 			this.props.this_catch.id,
 			this.original_catch
@@ -61,19 +54,21 @@ class Catch extends Component {
 	renderContent = () => {
 		if (this.state.status_catch === "add") {
 			return (
-				<ComponentCategory
-					status_catch={this.state.status_catch}
-					species={this.props.species}
-					createCatch={this.props.createCatch}
-					existsCatch={this.props.existsCatch}
-				/>
+				<div className="form__row form--wide">
+					<ComponentCategory
+						status_catch={this.state.status_catch}
+						species={this.props.species}
+						createCatch={this.props.createCatch}
+						existsCatch={this.props.existsCatch}
+					/>
+				</div>
 			);
 		} else if (this.state.status_catch === "view") {
 			const this_catch = this.props.this_catch;
 			const sexes = this_catch.sexes ? this_catch.sexes : null;
 
 			return (
-				<div className="form__row form--wide">
+				<div className="form__row form--wide catch">
 					<ComponentCategory
 						status_catch={this.state.status_catch}
 						this_catch={this.props.this_catch}
@@ -84,24 +79,28 @@ class Catch extends Component {
 						createSampledWeight={this.props.createSampledWeight}
 						deleteSampledWeight={this.props.deleteSampledWeight}
 					/>
-					<button
-						onClick={() => {
-							this.editCatchStatus("edit");
-						}}
-					>
-						Edit catch
-					</button>
-					<button onClick={this.props.removeCatch(this_catch.id)}>
-						Remove catch
-					</button>
-					{/* <ComponentSexes
-						sexes={sexes}
-						catch_id={this.props.this_catch.id}
-						handleChangeSex={this.props.handleChangeSex}
-						editCatchStatus={this.editCatchStatus}
-						handleNewSexSubmit={this.props.handleNewSexSubmit}
-						deleteSex={this.props.deleteSex}
-					/> */}
+					<div className="form__cell form__cell--right">
+						<button
+							onClick={() => {
+								this.editCatchStatus("edit");
+							}}
+						>
+							Edit catch
+						</button>
+						<button onClick={this.props.removeCatch(this_catch.id)}>
+							Remove catch
+						</button>
+					</div>
+					{/* <div className="form__row">
+						<ComponentSexes
+							sexes={sexes}
+							catch_id={this.props.this_catch.id}
+							handleChangeSex={this.props.handleChangeSex}
+							editCatchStatus={this.editCatchStatus}
+							handleNewSexSubmit={this.props.handleNewSexSubmit}
+							deleteSex={this.props.deleteSex}
+						/>
+					</div> */}
 				</div>
 			);
 		} else if (this.state.status_catch === "edit") {

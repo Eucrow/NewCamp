@@ -7,7 +7,7 @@ class Catch(models.Model):
     haul = models.ForeignKey('hauls.Haul', on_delete=models.CASCADE, )
     sp = models.ForeignKey('species.Sp', on_delete=models.CASCADE, )
     weight = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(99999999)])
-    category = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(2)])
+    category = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(99)])
 
     class Meta:
         constraints = [
