@@ -1,0 +1,25 @@
+.weightsGrid{
+	display: grid;
+    width: 100%;
+    grid-template-columns: repeat(7, auto);
+    gap: 10px;
+    justify-content: space-around;
+    justify-items: left;
+    align-items: center;
+    padding: 10px;
+
+}
+
+.weightsGrid__colName{
+    text-align: center;
+    justify-self: center;
+}
+
+.weightsGrid__rowName{
+    text-align: right;
+    justify-self: right;
+}
+
+.weightsGrid__field{
+    justify-self: center;
+}

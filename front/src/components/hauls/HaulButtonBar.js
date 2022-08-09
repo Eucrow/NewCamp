@@ -23,7 +23,7 @@ const HaulButtonBar = ({
 
 	if (edit === true) {
 		ButtonBar = (
-			<div className="form__cell form__cell--right buttonsWrapper">
+			<div className="form__cell form__cell--right">
 				<UiButtonBooleanHandle
 					buttonText={"Cancel"}
 					handleMethod={handleEdit}
@@ -35,7 +35,7 @@ const HaulButtonBar = ({
 	}
 	if (edit === false) {
 		ButtonBar = (
-			<div className="form__cell form__cell--right buttonsWrapper">
+			<div className="form__cell form__cell--right">
 				<UiButtonBooleanHandle
 					buttonText={"Edit Haul"}
 					handleMethod={handleEdit}

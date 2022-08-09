@@ -40,7 +40,6 @@ class CatchesList extends Component {
 		this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
 		this.handleChangeCategory = this.handleChangeCategory.bind(this);
 		this.handleChangeWeight = this.handleChangeWeight.bind(this);
-		this.handleCancelEditCatch = this.handleCancelEditCatch.bind(this);
 		this.updateCatch = this.updateCatch.bind(this);
 		this.removeCatch = this.removeCatch.bind(this);
 		this.createCatch = this.createCatch.bind(this);
@@ -368,30 +367,6 @@ class CatchesList extends Component {
 		});
 	};
 
-	/**
-	 * Manage cancellation of catch edition.
-	 * @param {number} idx haul id.
-	 * @param {object} old_state catch state previous to the edition.
-	 */
-	handleCancelEditCatch = (idx, old_state) => {
-		const newCatches = this.state.catches.map((c) => {
-			if (c.id !== idx) return c;
-			return {
-				...c,
-				id: old_state.id,
-				weight: old_state.weight,
-				category: old_state.category,
-				sp_code: old_state.sp_code,
-				sp_id: old_state.sp_id,
-				sp_name: old_state.sp_name,
-			};
-		});
-
-		this.setState({
-			catches: newCatches,
-		});
-	};
-
 	updateCatch = (idx) => {
 		/**
 		 * Update catch in database.
@@ -431,10 +406,9 @@ class CatchesList extends Component {
 
 		return fetch(apiCatch)
 			.then((response) => {
-				if (response.status === 200) {
+				if (response.status == 200) {
 					return true;
 				} else {
-					console.log("dñlfkjadñlkf");
 					return false;
 				}
 			})
@@ -476,7 +450,7 @@ class CatchesList extends Component {
 								catches: new_catches,
 								status_catch: "add",
 							};
-						});
+						}).then(() => console.log(this.state));
 					})
 					.catch((error) => console.log(error));
 			}
@@ -596,63 +570,79 @@ class CatchesList extends Component {
 		if (this.state.catches.length === 0) {
 			return (
 				<Fragment>
-					<div className="form__row form--wide">
-						There aren't catches yet
-					</div>
-					<div className="form__row form--wide">
-						<Catch
-							status_catch="add"
-							species={this.state.species}
-							createCatch={this.createCatch}
-							existsCatch={this.existsCatch}
-						/>
-					</div>
+					<p>There aren't catches yet</p>
+					<Catch
+						status_catch="add"
+						species={this.state.species}
+						createCatch={this.createCatch}
+						existsCatch={this.existsCatch}
+					/>
 				</Fragment>
 			);
 		} else {
 			return (
-				<div className="wrapper form__row form--wide catchesList">
-					<div className="form__row">
+				<table
+					style={{
+						verticalAlign: "top",
+						borderWidth: 1,
+						borderColor: "blue",
+						borderStyle: "dotted",
+					}}
+				>
+					<thead>
+						<tr style={{ verticalAlign: "top" }}>
+							<td>Code</td>
+							<td>Name</td>
+							<td>Category</td>
+							<td>Total Weight</td>
+							<td>Sampled Weight</td>
+							<td>Sexes</td>
+						</tr>
+					</thead>
+					<tbody>
 						<Catch
 							status_catch="add"
 							species={this.state.species}
 							createCatch={this.createCatch}
 							existsCatch={this.existsCatch}
 						/>
-					</div>
-					{this.state.catches.map((c) => {
-						return (
-							<Catch
-								key={c.id}
-								this_catch={c}
-								species={this.state.species}
-								handleChangeSampledWeight={
-									this.handleChangeSampledWeight
-								}
-								updateSampledWeight={this.updateSampledWeight}
-								deleteSex={this.deleteSex}
-								handleChangeGroup={this.handleChangeGroup}
-								handleChangeSpecies={this.handleChangeSpecies}
-								handleChangeCategory={this.handleChangeCategory}
-								handleChangeWeight={this.handleChangeWeight}
-								handleCancelChangeWeight={
-									this.handleCancelChangeWeight
-								}
-								handleCancelEditCatch={
-									this.handleCancelEditCatch
-								}
-								updateCatch={this.updateCatch}
-								removeCatch={this.removeCatch}
-								handleChangeSex={this.handleChangeSex}
-								handleNewSexSubmit={this.handleNewSexSubmit}
-								createSampledWeight={this.createSampledWeight}
-								deleteSampledWeight={this.deleteSampledWeight}
-							/>
-						);
-					})}
-				</div>
-				// 	</tbody>
-				// </table>
+
+						{this.state.catches.map((c) => {
+							return (
+								<Catch
+									key={c.id}
+									this_catch={c}
+									species={this.state.species}
+									handleChangeSampledWeight={
+										this.handleChangeSampledWeight
+									}
+									updateSampledWeight={
+										this.updateSampledWeight
+									}
+									deleteSex={this.deleteSex}
+									handleChangeGroup={this.handleChangeGroup}
+									handleChangeSpecies={
+										this.handleChangeSpecies
+									}
+									handleChangeCategory={
+										this.handleChangeCategory
+									}
+									handleChangeWeight={this.handleChangeWeight}
+									updateCatch={this.updateCatch}
+									removeCatch={this.removeCatch}
+									handleChangeSex={this.handleChangeSex}
+									handleNewSexSubmit={this.handleNewSexSubmit}
+									createSampledWeight={
+										this.createSampledWeight
+									}
+									deleteSampledWeight={
+										this.deleteSampledWeight
+									}
+								/>
+							);
+						})}
+					</tbody>
+				</table>
 			);
 		}
 	}

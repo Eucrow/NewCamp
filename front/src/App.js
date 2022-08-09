@@ -25,9 +25,8 @@ export default function App() {
 	// const value = { surveySelector, setSurvey };
 
 	const [selectedSurvey, setSelectedSurvey] = useState(() => {
-		const survey_description = window.localStorage.getItem(
-			"survey_description"
-		);
+		const survey_description =
+			window.localStorage.getItem("survey_description");
 
 		return survey_description !== null ? survey_description : "";
 	});
