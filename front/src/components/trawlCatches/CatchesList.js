@@ -612,7 +612,7 @@ class CatchesList extends Component {
 		} else {
 			return (
 				<div className="wrapper form__row form--wide catchesList">
-					<div className="form__row form--wide">
+					<div className="form__row">
 						<Catch
 							status_catch="add"
 							species={this.state.species}

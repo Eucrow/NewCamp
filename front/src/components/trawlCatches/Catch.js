@@ -81,13 +81,17 @@ class Catch extends Component {
 					/>
 					<div className="form__cell form__cell--right">
 						<button
+							className="buttonsWrapper__button"
 							onClick={() => {
 								this.editCatchStatus("edit");
 							}}
 						>
 							Edit catch
 						</button>
-						<button onClick={this.props.removeCatch(this_catch.id)}>
+						<button
+							className="buttonsWrapper__button"
+							onClick={this.props.removeCatch(this_catch.id)}
+						>
 							Remove catch
 						</button>
 					</div>
