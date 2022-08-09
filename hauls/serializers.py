@@ -1,6 +1,9 @@
 from rest_framework import serializers
 
 from gears.models import Trawl
+from samplers.models import Sampler
+from stations.models import Station
+from strata.models import Stratum
 from gears.serializers import GearTrawlBasicSerializer
 from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 from samplers.serializers import SamplerSerializer
@@ -30,16 +33,54 @@ class ImportHydrographyesSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+# class HaulSerializer(serializers.ModelSerializer):
+#     """
+#     Serializer of hauls data.
+#     """
+#
+#     class Meta:
+#         model = Haul
+#         fields = ['id', 'haul', 'gear_id', 'valid', 'sampler_id', 'stratum_id', 'station_id']
+
+
+# OLD HAUL SERIALIZER
 class HaulSerializer(serializers.ModelSerializer):
     """
-    Serializer of hauls data with sampler.
+    Serializer of hauls data.
     """
-    gear = GearTrawlBasicSerializer()
+
+    # gear = GearTrawlBasicSerializer(read_only=True)
+    gear_id = serializers.PrimaryKeyRelatedField(queryset=Trawl.objects.all(),
+                                                 source='gear')
+
+    # sampler = SamplerSerializer(read_only=True)
+    sampler_id = serializers.PrimaryKeyRelatedField(queryset=Sampler.objects.all(),
+                                                    source='sampler')
+
+    # station = StationSerializer(read_only=True)
+    station_id = serializers.PrimaryKeyRelatedField(queryset=Station.objects.all(),
+                                                    source='station')
+
+    # stratum = StrataSerializer(read_only=True)
+    stratum_id = serializers.PrimaryKeyRelatedField(queryset=Stratum.objects.all(),
+                                                    source='stratum')
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'gear', 'valid', 'sampler', 'stratum', 'station', ]
-        depth = 1
+        fields = ['id', 'haul', 'valid', 'gear_id', 'sampler_id', 'stratum_id', 'station_id']
+        # depth = 1
+
+
+# class HaulSerializer(serializers.ModelSerializer):
+#     """
+#     Serializer of hauls data with sampler.
+#     """
+#     gear = GearTrawlBasicSerializer()
+#
+#     class Meta:
+#         model = Haul
+#         fields = ['id', 'haul', 'gear', 'valid', 'sampler', 'stratum', 'station', ]
+#         depth = 1
 
 
 class HaulMeteorologySerializer(serializers.ModelSerializer):
@@ -63,42 +104,35 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
     """
     meteo = HaulMeteorologySerializer()
     trawl_characteristics = TrawlSerializer()
-    # station and sampler can't be changed...
-    station = StationSerializer(read_only=True)
-    stratum = StrataSerializer(read_only=True)
-    sampler = SamplerSerializer(read_only=True)
+
+    stratum = serializers.CharField(source='stratum.stratum', read_only=True)
+
+    sampler = serializers.CharField(source='sampler.sampler', read_only=True)
+
     # gear is the 'name' of the gear
-    gear = serializers.IntegerField(source='gear.name')
+    gear = serializers.IntegerField(source='gear.name', read_only=True)
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'gear', 'valid', 'meteo', 'trawl_characteristics', 'station', 'stratum', 'sampler', ]
+        fields = ['id', 'haul', 'valid', 'meteo', 'trawl_characteristics', 'station_id', 'stratum_id',
+                  'stratum', 'sampler_id', 'sampler', 'gear', 'gear_id']
 
     # This is a nested serializer, so we have to overwrite the create function
     def create(self, validated_data):
-        # Firstly, get the data from the nested parts
+        # First, get the data from the nested parts
         meteo_data = validated_data.pop('meteo')
         trawl_characteristics_data = validated_data.pop('trawl_characteristics')
-        station_data = validated_data.pop('station')
-        stratum_data = validated_data.pop('stratum')
-        sampler_data = validated_data.pop('sampler')
-        # gear_data = validated_data.pop('gear')
-        # haul_data['gear'] must be a Trawl instance, so:
-        gear_data = Trawl.objects.get(name=validated_data.pop('gear'))
 
-        # Secondly, create the station_id and sampler_id from its nested data
+        # Second, create the new haul with its nested data:
         haul_data = validated_data.copy()
-        haul_data['station_id'] = station_data['id']
-        haul_data['stratum_id'] = stratum_data['id']
-        haul_data['sampler_id'] = sampler_data['id']
-        haul_data['gear'] = gear_data
 
-        # Then, save the Haul
+        # Then, save the haul
         haul = Haul.objects.create(**haul_data)
 
         # Then, save the nested parts in its own models
         Meteorology.objects.create(haul=haul, **meteo_data)
         HaulTrawl.objects.create(haul=haul, **trawl_characteristics_data)
+
         # And finally, return the haul
         return haul
 
@@ -109,9 +143,6 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
             # value)
             meteo_datas = validated_data.pop('meteo')
             trawl_characteristics_datas = validated_data.pop('trawl_characteristics')
-            # sampler_data = validated_data.pop('sampler')
-            strata_data = validated_data.pop('stratum')
-
             # instance.gear must be a Trawl object, so get the trawl of the name:
             instance.gear = Trawl.objects.get(name=validated_data.pop('gear')['name'])
 
@@ -135,17 +166,6 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
                 # print(attr, value)
                 setattr(trawl_characteristics, attr, value)
             trawl_characteristics.save()
-
-            # sampler = instance.sampler
-            # for attr, value in sampler_data.items():
-            #     setattr(sampler, attr, value)
-            # sampler.save()
-
-            strata = instance.strata
-            for attr, value in strata_data.items():
-                # print(attr, value)
-                setattr(strata, attr, value)
-            strata.save()
 
         return instance
 

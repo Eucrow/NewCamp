@@ -15,11 +15,11 @@ class CatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        fields = ['id', 'weight', 'sp', 'sp_code', 'sp_name', 'group', 'category', 'haul_id']
+        # fields = ['id', 'weight', 'sp', 'sp_code', 'sp_name', 'group', 'category', 'haul_id']
+        fields = ['id', 'weight', 'sp_code', 'sp_name', 'group', 'category', 'haul_id']
 
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
-
     # category = CategorySerializer()
     sp = SpSimpleSerializer()
     # species_name = serializers.RelatedField(source='species.Sp.name', read_only=True)
@@ -88,9 +88,7 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
     #     return instance
 
 
-
-class SexCatchSerializer (serializers.ModelSerializer):
-
+class SexCatchSerializer(serializers.ModelSerializer):
     lengths = LengthSerializer2(many=True)
 
     class Meta:

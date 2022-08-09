@@ -1,14 +1,23 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
+
+import StationsContext from "../../../contexts/StationsContext";
+
+import HaulButtonBar from "../HaulButtonBar";
 
 class ViewCommon extends Component {
 	/**
 	 * Component of the common part of the haul form.
-	 * @param {object} props.haul
+	 * @param {object} haul
+	 * @param {boolean} edit
+	 * @param {method} handleEdit
+	 * @param {method} handleDetail
 	 */
+
+	static contextType = StationsContext;
 
 	render() {
 		return (
-			<Fragment>
+			<form className="form__row form--wide">
 				<label className="form__cell">
 					Haul:
 					<input
@@ -29,15 +38,15 @@ class ViewCommon extends Component {
 					Stratum:
 					<select
 						id="stratum_id"
-						name="stratum"
+						name="stratum_id"
 						className="select__largeWidth"
 						disabled
 					>
 						<option
-							key={this.props.haul.stratum.id}
-							value={this.props.haul.stratum.id}
+							key={this.props.haul.stratum_id}
+							value={this.props.haul.stratum_id}
 						>
-							{this.props.haul.stratum.stratum}
+							{this.props.haul.stratum}
 						</option>
 					</select>
 				</label>
@@ -51,17 +60,22 @@ class ViewCommon extends Component {
 						disabled
 					>
 						<option
-							key={this.props.haul.sampler.id}
-							value={this.props.haul.sampler.id}
+							key={this.props.haul.sampler_id}
+							value={this.props.haul.sampler_id}
 						>
-							{this.props.haul.sampler.sampler}
+							{this.props.haul.sampler}
 						</option>
 					</select>
 				</label>
 
 				<label className="form__cell">
 					Gear:
-					<select id="gear_id" name="gear" disabled>
+					<select
+						id="gear_id"
+						name="gear"
+						className="select__gear"
+						disabled
+					>
 						<option
 							key={this.props.haul.gear}
 							value={this.props.haul.gear}
@@ -81,7 +95,14 @@ class ViewCommon extends Component {
 						defaultChecked={this.props.haul.valid}
 					/>
 				</label>
-			</Fragment>
+				<HaulButtonBar
+					haul_id={this.props.haul.id}
+					edit={this.props.edit}
+					handleEdit={this.props.handleEdit}
+					handleDetail={this.props.handleDetail}
+					deleteHaul={this.context.deleteHaul}
+				/>
+			</form>
 		);
 	}
 }

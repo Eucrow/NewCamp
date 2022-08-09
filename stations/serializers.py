@@ -60,15 +60,19 @@ class HaulSerializer(serializers.ModelSerializer):
     Serializer of hauls data with sampler.
     """
     gear = serializers.IntegerField(source="gear.name")
+    gear_id = serializers.IntegerField(source="gear.id")
+
     sampler = serializers.CharField(source="sampler.sampler")
     sampler_id = serializers.IntegerField(source="sampler.id")
 
     stratum = serializers.CharField(source="stratum.stratum")
+    stratum_id = serializers.IntegerField(source="stratum.id")
+
     station = serializers.IntegerField(source="station.station")
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'valid', 'gear', 'sampler', 'sampler_id', 'stratum', 'station']
+        fields = ['id', 'haul', 'valid', 'gear', 'gear_id', 'sampler', 'sampler_id', 'stratum', 'stratum_id', 'station']
         depth = 1
 
 

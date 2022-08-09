@@ -23,7 +23,8 @@ class ComponentsTrawlCatches extends Component {
 	}
 
 	render() {
-		return <CatchesList haul_id={this.props.match.params.haul_id} />;
+		// return <CatchesList haul_id={this.props.match.params.haul_id} />;
+		return <CatchesList haul_id={this.props.haul_id} />;
 	}
 }
 

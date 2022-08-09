@@ -36,7 +36,6 @@ const ViewEditStationForm = ({ station, handleEdit, edit }) => {
 						}}
 					/>
 				</div>
-				{/* <div className="form__cell field__comment"> */}
 				<div className="form__cell">
 					<label htmlFor="comment">Comment:</label>
 					<textarea

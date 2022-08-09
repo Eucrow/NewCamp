@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import SampledWeight from "../sampledWeight/SampledWeight";
 
@@ -28,102 +28,211 @@ class ComponentCategory extends Component {
 	renderContent = () => {
 		if (this.props.status_catch === "add") {
 			return (
-				<Fragment>
-					<td>
+				<form>
+					<label className="form__cell">
+						Group:
 						<input
+							value={this.state.group}
+							style={{ width: 5 + "ch" }}
 							type="number"
 							id="group"
 							name="group"
 							min="1"
 							max="5"
-							onChange={(e) => this.setState({ group: e.target.value })}
+							onChange={(e) =>
+								this.setState({ group: e.target.value })
+							}
 						/>
-					</td>
-					<td>
-						<select id="sp_code" name="sp_code" onChange={(e) => this.setState({ sp_id: e.target.value })}>
+					</label>
+					<label className="form__cell">
+						Species:
+						<select
+							style={{ width: 30 + "ch" }}
+							id="sp_code"
+							name="sp_code"
+							onChange={(e) =>
+								this.setState({ sp_id: e.target.value })
+							}
+						>
 							<option>Select species...</option>
 							{this.props.species.map((s) => {
 								if (s.group === parseInt(this.state.group)) {
 									return (
-										<option value={s.id}>
+										<option value={s.id} key={s.id}>
 											{s.sp_code}-{s.sp_name}
 										</option>
 									);
+								} else {
+									return null;
 								}
 							})}
 						</select>
-					</td>
-					<td>
+					</label>
+					<label className="form__cell">
+						Category:
 						<input
+							value={this.state.category}
+							style={{ width: 4 + "ch" }}
 							type="number"
 							id="category"
 							name="category"
-							onChange={(e) => this.setState({ category: e.target.value })}
+							min="1"
+							max="99"
+							onChange={(e) =>
+								this.setState({ category: e.target.value })
+							}
 						/>
-					</td>
-					<td>
+					</label>
+					<label className="form__cell">
+						Weight(g.):
 						<input
+							value={this.state.weight}
+							style={{ width: 8 + "ch" }}
 							type="number"
 							id="weight"
 							name="weight"
-							onChange={(e) => this.setState({ weight: e.target.value })}
+							min="1"
+							max="99999999"
+							onChange={(e) =>
+								this.setState({ weight: e.target.value })
+							}
 						/>
-					</td>
-					<td>
-						<input
-							type="button"
-							value="Save catch"
-							onClick={(e) => {
-								this.props.createCatch(e, this.state);
-							}}
-						/>
-					</td>
-				</Fragment>
+					</label>
+					<button
+						className="buttonsWrapper__button"
+						onClick={(e) => {
+							this.props.createCatch(e, this.state);
+							this.setState({
+								group: "",
+								sp_id: "",
+								category: "",
+								weight: "",
+							});
+						}}
+					>
+						Add catch
+					</button>
+				</form>
 			);
-		} else if (this.props.status_catch === "view" || this.props.status_catch === "") {
-			const sampled_weight = this.props.this_catch.sampled_weight ? this.props.this_catch.sampled_weight : null;
+		} else if (
+			this.props.status_catch === "view" ||
+			this.props.status_catch === ""
+		) {
+			const sampled_weight = this.props.this_catch.sampled_weight
+				? this.props.this_catch.sampled_weight
+				: null;
 			const sampled_weight_id = this.props.this_catch.sampled_weight_id
 				? this.props.this_catch.sampled_weight_id
 				: null;
 
 			return (
-				<Fragment>
-					<td>
-						catch_id: {this.props.this_catch.id} -- {this.props.this_catch.group}{" "}
-						{this.props.this_catch.sp_code}
-					</td>
-					<td>{this.props.this_catch.sp_name}</td>
-					<td>{this.props.this_catch.category}</td>
-					<td>{this.props.this_catch.weight}</td>
-					<td>
-						<SampledWeight
-							sampled_weight_id={sampled_weight_id}
-							sampled_weight={sampled_weight}
-							catch_id={this.props.this_catch.id}
-							handleChangeSampledWeight={this.props.handleChangeSampledWeight}
-							updateSampledWeight={this.props.updateSampledWeight}
-							createSampledWeight={this.props.createSampledWeight}
-							deleteSampledWeight={this.props.deleteSampledWeight}
+				<form>
+					<label className="form__cell">
+						Group:
+						<input
+							style={{ width: 5 + "ch" }}
+							type="number"
+							id="group"
+							name="group"
+							min="1"
+							max="5"
+							disabled
+							value={this.props.this_catch.group}
 						/>
-					</td>
-				</Fragment>
+					</label>
+					<label className="form__cell">
+						Species:
+						<select
+							style={{ width: 30 + "ch" }}
+							id="sp_code"
+							name="sp_code"
+							disabled
+						>
+							<option
+								key={this.props.this_catch.sp_id}
+								// value={this.props.this_catch.sp_id}
+							>
+								{/* {this.props.species.find((s) => s.)} */}
+								{this.props.this_catch.sp_name}
+							</option>
+						</select>
+					</label>
+					<label className="form__cell">
+						Category:
+						<input
+							style={{ width: 4 + "ch" }}
+							type="number"
+							id="category"
+							name="category"
+							min="1"
+							max="99"
+							disabled
+							value={this.props.this_catch.category}
+						/>
+					</label>
+					<label className="form__cell">
+						Weight(g.):
+						<input
+							style={{ width: 8 + "ch" }}
+							type="number"
+							id="weight"
+							name="weight"
+							min="1"
+							max="99000000"
+							disabled
+							value={this.props.this_catch.weight}
+						/>
+					</label>
+
+					{/* <button
+						value="Save catch"
+						onClick={(e) => {
+							this.props.createCatch(e, this.state);
+						}}
+					>
+						Save catch
+					</button> */}
+					{/* <SampledWeight
+						sampled_weight_id={sampled_weight_id}
+						sampled_weight={sampled_weight}
+						catch_id={this.props.this_catch.id}
+						handleChangeSampledWeight={
+							this.props.handleChangeSampledWeight
+						}
+						updateSampledWeight={this.props.updateSampledWeight}
+						createSampledWeight={this.props.createSampledWeight}
+						deleteSampledWeight={this.props.deleteSampledWeight}
+					/> */}
+				</form>
 			);
 		} else if (this.props.status_catch === "edit") {
 			return (
-				<Fragment>
-					<td>
-						<input type="hidden" id="haul_id" name="haul_id" value={this.props.this_catch.haul_id} />
-						catch_id: {this.props.this_catch.id} --
+				<form>
+					<input
+						type="hidden"
+						id="haul_id"
+						name="haul_id"
+						value={this.props.this_catch.haul_id}
+					/>
+					<label className="form__cell">
+						Group:
 						<input
+							style={{ width: 5 + "ch" }}
 							type="number"
 							id="group"
 							name="group"
 							min="1"
 							max="5"
 							value={this.props.this_catch.group}
-							onChange={this.props.handleChangeGroup(this.props.this_catch.id)}
+							onChange={this.props.handleChangeGroup(
+								this.props.this_catch.id
+							)}
 						/>
+					</label>
+					<label className="form__cell">
+						Species:
 						<select
+							style={{ width: 30 + "ch" }}
 							id="sp_code"
 							name="sp_code"
 							value={
@@ -133,40 +242,66 @@ class ComponentCategory extends Component {
 								"--" +
 								this.props.this_catch.sp_name
 							}
-							onChange={this.props.handleChangeSpecies(this.props.this_catch.id)}
+							onChange={this.props.handleChangeSpecies(
+								this.props.this_catch.id
+							)}
 						>
 							<option>Select species...</option>
 							{this.props.species.map((s) => {
-								if (s.group === parseInt(this.props.this_catch.group)) {
+								if (
+									s.group ===
+									parseInt(this.props.this_catch.group)
+								) {
 									return (
-										<option value={s.id + "--" + s.sp_code + "--" + s.sp_name}>
+										<option
+											value={
+												s.id +
+												"--" +
+												s.sp_code +
+												"--" +
+												s.sp_name
+											}
+										>
 											{s.sp_code}-{s.sp_name}
 										</option>
 									);
+								} else {
+									return null;
 								}
 							})}
 						</select>
-					</td>
-					<td></td>
-					<td>
+					</label>
+					<label className="form__cell">
+						Category:
 						<input
+							style={{ width: 4 + "ch" }}
 							type="number"
-							id="category_id"
-							name="category_id"
+							id="category"
+							name="category"
+							min="1"
+							max="99"
 							value={this.props.this_catch.category}
-							onChange={this.props.handleChangeCategory(this.props.this_catch.id)}
+							onChange={this.props.handleChangeCategory(
+								this.props.this_catch.id
+							)}
 						/>
-					</td>
-					<td>
+					</label>
+					<label className="form__cell">
+						Weight(g.):
 						<input
+							style={{ width: 8 + "ch" }}
 							type="number"
 							id="weight"
 							name="weight"
+							min="1"
+							max="99999999"
 							value={this.props.this_catch.weight}
-							onChange={this.props.handleChangeWeight(this.props.this_catch.id)}
+							onChange={this.props.handleChangeWeight(
+								this.props.this_catch.id
+							)}
 						/>
-					</td>
-				</Fragment>
+					</label>
+				</form>
 			);
 		}
 	};

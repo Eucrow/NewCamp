@@ -29,12 +29,14 @@ class GearTrawlsBasicAPI(ListAPIView):
     queryset = Trawl.objects.all()
     serializer_class = GearTrawlBasicSerializer
 
+
 class GearTrawlsNamesAPI(APIView):
     '''
     API to get the list of names of gears.
     To use as options in select fields of a form.
     '''
+
     def get(self, request):
         gears = Trawl.objects.all()
         serializer = GearTrawlsNamesSerializer(gears, many=True)
-        return Response (serializer.data)
+        return Response(serializer.data)

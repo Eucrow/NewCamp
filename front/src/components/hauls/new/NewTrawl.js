@@ -13,7 +13,7 @@ class FormTrawl extends Component {
 
 	render() {
 		return (
-			<fieldset class="wrapper">
+			<fieldset className="wrapper">
 				<legend>Trawl characteristics:</legend>
 				<div className="characteristicsGrid form__row">
 					{/* first row */}

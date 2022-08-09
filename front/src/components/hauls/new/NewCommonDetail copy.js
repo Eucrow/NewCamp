@@ -1,36 +1,39 @@
 import React, { Component, Fragment } from "react";
 
-class EditCommonDetail extends Component {
+class NewCommonDetail extends Component {
 	/**
 	 * Component of the common part of the haul form.
 	 * @param {object} props.haul
+	 * @param {object} props.strata
+	 * @param {object} props.samplers
 	 * @param {object} props.gears
-	 * @param {method} props.handleChangeCommon
-	 * @param {method} props.handleChangeCommonValid
+	 * @param {method} props.handleChange
 	 * @param {method} props.handleChangeNestedIds
-	 * handleChangeStratum
 	 * @param {method} props.validateHaulSampler
 	 */
-	render() {
-		const haul = this.props.haul;
 
+	render() {
 		return (
 			<Fragment>
 				<label className="form__cell">
 					Haul:
 					<input
 						type="number"
-						name="haul"
 						id="haul"
+						name="haul"
 						className="input__noSpinner"
+						required
 						min="1"
 						max="99"
 						maxLength="2"
 						size={2}
-						value={haul.haul || ""}
 						onChange={(e) => {
-							this.props.handleChangeCommon(e);
-							this.props.validateHaulSampler(e);
+							this.props.handleChange(e);
+							this.props.validateHaulSampler(
+								e,
+								e.target.value,
+								this.props.haul.sampler_id
+							);
 						}}
 					/>
 				</label>
@@ -39,12 +42,13 @@ class EditCommonDetail extends Component {
 					Stratum:
 					<select
 						id="stratum_id"
-						name="stratum"
+						name="stratum_id"
 						className="select__largeWidth"
-						value={this.props.haul.stratum.id || "choose"}
-						// onChange={this.props.handleChangeNestedIds}
-						onChange={this.props.handleChangeStratum}
+						required
+						value={this.props.haul.stratum_id || ""}
+						onChange={this.props.handleChange}
 					>
+						<option value=""></option>
 						{this.props.strata.map((stratum) => {
 							return (
 								<option key={stratum.id} value={stratum.id}>
@@ -59,11 +63,20 @@ class EditCommonDetail extends Component {
 					Sampler:
 					<select
 						id="sampler_id"
-						name="sampler"
+						name="sampler_id"
 						className="select__normalWidth"
-						value={this.props.haul.sampler.id || "choose"}
-						onChange={this.props.handleChangeNestedIds}
+						required
+						value={this.props.haul.sampler_id || ""}
+						onChange={(e) => {
+							this.props.handleChange(e);
+							this.props.validateHaulSampler(
+								e,
+								this.props.haul.haul,
+								e.target.value
+							);
+						}}
 					>
+						<option value=""></option>
 						{this.props.samplers.map((sampler) => {
 							return (
 								<option key={sampler.id} value={sampler.id}>
@@ -71,7 +84,7 @@ class EditCommonDetail extends Component {
 								</option>
 							);
 						})}
-					</select>
+					</select>{" "}
 				</label>
 
 				<label className="form__cell">
@@ -79,9 +92,11 @@ class EditCommonDetail extends Component {
 					<select
 						id="gear_id"
 						name="gear"
-						value={this.props.haul.gear || "choose"}
-						onChange={this.props.handleChangeCommon}
+						required
+						value={this.props.haul.gear || ""}
+						onChange={this.props.handleChange}
 					>
+						<option value=""></option>
 						{this.props.gears.map((gear) => {
 							return (
 								<option key={gear.name} value={gear.name}>
@@ -96,10 +111,9 @@ class EditCommonDetail extends Component {
 					Valid:
 					<input
 						type="checkbox"
-						name="valid"
 						id="valid"
-						defaultChecked={haul.valid}
-						onChange={this.props.handleChangeCommonValid}
+						name="valid"
+						onChange={this.props.handleChange}
 					/>
 				</label>
 			</Fragment>
@@ -107,4 +121,4 @@ class EditCommonDetail extends Component {
 	}
 }
 
-export default EditCommonDetail;
+export default NewCommonDetail;

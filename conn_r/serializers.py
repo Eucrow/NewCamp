@@ -1,10 +1,9 @@
-
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from stations.models import Station
 from hauls.models import Haul, HaulTrawl, HaulHydrography
-from hauls.serializers import HaulSerializer, TrawlSerializer, HaulMeteorologySerializer, HydrographySerializer
+from hauls.serializers import TrawlSerializer, HaulMeteorologySerializer, HydrographySerializer
 from samplers.serializers import SamplerSerializer
 from stations.serializers import StationSerializer
 from strata.serializers import StrataSerializer
@@ -53,12 +52,12 @@ class HaulConnR(ModelSerializer):
 
 
 class HydrographyConnR(ModelSerializer):
-
     class Meta:
         model = HaulHydrography
         fields = ['latitude', 'longitude', 'date_time', 'depth_probe', 'cable', 'depth', 'temperature_0', 'salinity_0',
-                 'sigma_0', 'temperature_50', 'salinity_50', 'sigma_50', 'temperature_100', 'salinity_100',
-                 'sigma_100', 'temperature', 'salinity', 'sigma', 'comment', ]
+                  'sigma_0', 'temperature_50', 'salinity_50', 'sigma_50', 'temperature_100', 'salinity_100',
+                  'sigma_100', 'temperature', 'salinity', 'sigma', 'comment', ]
+
 
 class DataStationsConnR(ModelSerializer):
     # meteo = HaulMeteorologySerializer(read_only=True)
@@ -68,6 +67,7 @@ class DataStationsConnR(ModelSerializer):
     # trawl = TrawlSerializer(read_only=True)
 
     hauls = HaulConnR(read_only=True, many=True)
+
     # hydro = HydrographyConnR(read_only=True, many=True)
 
     class Meta:
