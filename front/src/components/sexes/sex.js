@@ -192,13 +192,10 @@ class ComponentSex extends Component {
 		} else if (this.state.status_sex === "delete") {
 		} else if (this.state.status_sex === "add") {
 			return (
-				<form className="form__row">
+				<div className="form__row">
 					<label className="form__cell">
 						Sex:
 						<select onChange={this.handleNewSex}>
-							<option disabled selected value>
-								-- select a sex --
-							</option>
 							<option value="3">Undetermined</option>
 							<option value="1">Male</option>
 							<option value="2">Female</option>
@@ -221,7 +218,7 @@ class ComponentSex extends Component {
 					{/* <ComponentsLengths status_lengths={ "hidden" }
                                         sex_id={ this.props.sex_id }
                                         sex={ this.props.sex } /> */}
-				</form>
+				</div>
 			);
 		}
 	}
