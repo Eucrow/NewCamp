@@ -95,7 +95,7 @@ class Catch extends Component {
 							Remove catch
 						</button>
 					</div>
-					{/* <div className="form__row">
+					<div className="form__row">
 						<ComponentSexes
 							sexes={sexes}
 							catch_id={this.props.this_catch.id}
@@ -104,7 +104,7 @@ class Catch extends Component {
 							handleNewSexSubmit={this.props.handleNewSexSubmit}
 							deleteSex={this.props.deleteSex}
 						/>
-					</div> */}
+					</div>
 				</div>
 			);
 		} else if (this.state.status_catch === "edit") {
