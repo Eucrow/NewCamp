@@ -143,13 +143,15 @@ class ComponentSex extends Component {
 								this.props.deleteSex(this.props.sex_id);
 							}}
 						>
-							Delete sex{" "}
+							Delete sex
 						</button>
-						<ComponentsLengths
-							sex_id={this.props.sex_id}
-							sex={this.props.sex}
-						/>
 					</div>
+					{/* <div className="form__row form--wide"> */}
+					<ComponentsLengths
+						sex_id={this.props.sex_id}
+						sex={this.props.sex}
+					/>
+					{/* </div> */}
 				</div>
 			);
 		} else if (this.state.status_sex === "edit") {
@@ -184,9 +186,11 @@ class ComponentSex extends Component {
 					>
 						Save sex
 					</button>
-					{/* <ComponentsLengths status_lengths={ "hidden" }
-                                   sex_id={ this.props.sex_id }
-                                   sex={ this.props.sex } /> */}
+					<ComponentsLengths
+						status_lengths={"hidden"}
+						sex_id={this.props.sex_id}
+						sex={this.props.sex}
+					/>
 				</div>
 			);
 		} else if (this.state.status_sex === "delete") {
@@ -215,9 +219,11 @@ class ComponentSex extends Component {
 						Save new sex
 					</button>
 
-					{/* <ComponentsLengths status_lengths={ "hidden" }
-                                        sex_id={ this.props.sex_id }
-                                        sex={ this.props.sex } /> */}
+					<ComponentsLengths
+						status_lengths={"hidden"}
+						sex_id={this.props.sex_id}
+						sex={this.props.sex}
+					/>
 				</div>
 			);
 		}

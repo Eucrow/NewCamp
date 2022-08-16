@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 
-import FormLengths from "./FormLengths.js";
+import LengthsForm from "./LengthsForm.js";
+import LengthsButtonBar from "./LengthsButtonBar.js";
 
 class ComponentsLengths extends Component {
 	/**
@@ -32,7 +33,8 @@ class ComponentsLengths extends Component {
 		this.deleteLengths = this.deleteLengths.bind(this);
 		this.saveLengths = this.saveLengths.bind(this);
 		this.saveOrUpdateLengths = this.saveOrUpdateLengths.bind(this);
-		this.checkForLengthsDuplicated = this.checkForLengthsDuplicated.bind(this);
+		this.checkForLengthsDuplicated =
+			this.checkForLengthsDuplicated.bind(this);
 	}
 
 	// **** start handle of legnths form
@@ -56,7 +58,9 @@ class ComponentsLengths extends Component {
 
 	handleAddLength = () => {
 		this.setState({
-			lengths: this.state.lengths.concat([{ length: "", number_individuals: 0 }]),
+			lengths: this.state.lengths.concat([
+				{ length: "", number_individuals: 0 },
+			]),
 		});
 	};
 
@@ -235,36 +239,51 @@ class ComponentsLengths extends Component {
 
 	render() {
 		if (this.state.status_lengths === "hide") {
-			return <button onClick={this.handleShowLengths}>Show lengths</button>;
+			return (
+				<div>
+					<LengthsButtonBar
+						status_lengths={this.state.status_lengths}
+						handleShowLengths={this.handleShowLengths}
+					/>
+				</div>
+			);
 		} else if (this.state.status_lengths === "view") {
 			return (
-				<FormLengths
-					lengths={this.state.lengths}
-					status_lengths={this.state.status_lengths}
-					handleHideLengths={this.handleHideLengths}
-					handleEditLengths={this.handleEditLengths}
-				/>
+				<div>
+					<LengthsForm
+						lengths={this.state.lengths}
+						status_lengths={this.state.status_lengths}
+						handleHideLengths={this.handleHideLengths}
+						handleEditLengths={this.handleEditLengths}
+					/>
+					<LengthsButtonBar
+						status_lengths={this.state.status_lengths}
+						handleEditLengths={this.handleEditLengths}
+						handleHideLengths={this.handleHideLengths}
+					/>
+				</div>
 			);
 		} else if (this.state.status_lengths === "edit") {
 			return (
-				<Fragment>
-					<FormLengths
+				<div>
+					<LengthsForm
 						lengths={this.state.lengths}
 						status_lengths={this.state.status_lengths}
 						handleHideLengths={this.handleHideLengths}
 						handleDeleteLength={this.handleDeleteLength}
-						handleNumberIndividualsChange={this.handleNumberIndividualsChange}
+						handleNumberIndividualsChange={
+							this.handleNumberIndividualsChange
+						}
 						handleLenghtNameChange={this.handleLenghtNameChange}
 						handleEditLengths={this.handleEditLengths}
 					/>
-
-					<button type="button" onClick={this.handleAddLength}>
-						{" "}
-						Add length{" "}
-					</button>
-					<button onClick={this.saveOrUpdateLengths}>Save</button>
-					<button onClick={this.handleCancelLengths}>Cancel</button>
-				</Fragment>
+					<LengthsButtonBar
+						status_lengths={this.state.status_lengths}
+						handleAddLength={this.handleAddLength}
+						saveOrUpdateLengths={this.saveOrUpdateLengths}
+						handleCancelLengths={this.handleCancelLengths}
+					/>
+				</div>
 			);
 		} else if (this.state.status_lengths === "remove") {
 		}
