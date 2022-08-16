@@ -21,27 +21,32 @@ class LengthsForm extends Component {
 		}
 		if (this.props.status_lengths === "view") {
 			return (
-				<div>
+				<form>
+					<div className="formLengths__row">
+						<div className="formLengths__cell">Length (mm)</div>
+						<div className="formLengths__cell">N. individuals</div>
+					</div>
 					{lengths.map((l) => {
 						return (
-							<div
-								className="form__row form--wide"
-								key={l.length}
-							>
-								<div className="form--cell">
+							<div className="formLengths__row" key={l.id}>
+								<div className="formLengths__cell">
 									<input
 										type="number"
 										id="length"
 										name="length"
+										min="0"
+										max="9999"
 										value={l.length}
 										disabled
 									/>
 								</div>
-								<div className="form--cell">
+								<div className="formLengths__cell">
 									<input
 										type="number"
 										id="number_individuals"
 										name="number_individuals"
+										min="0"
+										max="9999"
 										value={l.number_individuals}
 										disabled
 									/>
@@ -49,33 +54,45 @@ class LengthsForm extends Component {
 							</div>
 						);
 					})}
-				</div>
+				</form>
 			);
 		} else if (this.props.status_lengths === "edit") {
 			return (
-				<div>
+				<form>
+					<div className="formLengths__row">
+						<div className="formLengths__cell">Length (mm)</div>
+						<div className="formLengths__cell">N. individuals</div>
+					</div>
 					{lengths.map((l, idx) => {
 						return (
-							<div className="form__row form--wide">
-								<input
-									type="number"
-									id="length"
-									name="length"
-									value={l.length}
-									onChange={this.props.handleLenghtNameChange(
-										idx
-									)}
-								/>
+							<div className="formLengths__row" key={l.id}>
+								<div className="formLengths__cell">
+									<input
+										type="number"
+										id="length"
+										name="length"
+										min="0"
+										max="9999"
+										value={l.length}
+										onChange={this.props.handleLenghtNameChange(
+											idx
+										)}
+									/>
+								</div>
 
-								<input
-									type="number"
-									id="number_individuals"
-									name="number_individuals"
-									value={l.number_individuals}
-									onChange={this.props.handleNumberIndividualsChange(
-										idx
-									)}
-								></input>
+								<div className="formLengths__cell">
+									<input
+										type="number"
+										id="number_individuals"
+										name="number_individuals"
+										min="0"
+										max="9999"
+										value={l.number_individuals}
+										onChange={this.props.handleNumberIndividualsChange(
+											idx
+										)}
+									/>
+								</div>
 
 								{/* <button
 									type="button"
@@ -86,7 +103,7 @@ class LengthsForm extends Component {
 							</div>
 						);
 					})}
-				</div>
+				</form>
 			);
 		}
 	}
