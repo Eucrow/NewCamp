@@ -95,7 +95,7 @@ class Catch extends Component {
 							Remove catch
 						</button>
 					</div>
-					<div className="form__row wrapperSexes">
+					<div className="form__row sexesWrapper">
 						<ComponentSexes
 							sexes={sexes}
 							catch_id={this.props.this_catch.id}
