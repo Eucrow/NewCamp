@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import ComponentsLengths from "../lengths/Lengths.js";
 
@@ -117,7 +117,7 @@ class ComponentSex extends Component {
 					<label className="form__cell">
 						Sex:
 						<select
-							style={{ width: 30 + "ch" }}
+							// style={{ width: 30 + "ch" }}
 							id="sex"
 							name="sex"
 							disabled
@@ -200,6 +200,7 @@ class ComponentSex extends Component {
 					<label className="form__cell">
 						Sex:
 						<select onChange={this.handleNewSex}>
+							<option></option>
 							<option value="3">Undetermined</option>
 							<option value="1">Male</option>
 							<option value="2">Female</option>
