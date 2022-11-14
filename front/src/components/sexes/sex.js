@@ -113,15 +113,10 @@ class ComponentSex extends Component {
 	render() {
 		if (this.state.status_sex === "view" || this.state.status_sex === "") {
 			return (
-				<div className="form__row form--wide">
+				<div className="form__row">
 					<label className="form__cell">
 						Sex:
-						<select
-							// style={{ width: 30 + "ch" }}
-							id="sex"
-							name="sex"
-							disabled
-						>
+						<select id="sex" name="sex" disabled>
 							<option key={this.props.sex}>
 								{this.props.sex}
 							</option>
@@ -146,12 +141,12 @@ class ComponentSex extends Component {
 							Delete sex
 						</button>
 					</div>
-					{/* <div className="form__row form--wide"> */}
-					<ComponentsLengths
-						sex_id={this.props.sex_id}
-						sex={this.props.sex}
-					/>
-					{/* </div> */}
+					<div className="form__row lengthsWrapper">
+						<ComponentsLengths
+							sex_id={this.props.sex_id}
+							sex={this.props.sex}
+						/>
+					</div>
 				</div>
 			);
 		} else if (this.state.status_sex === "edit") {

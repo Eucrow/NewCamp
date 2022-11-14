@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import LengthsForm from "./LengthsForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
@@ -35,7 +35,21 @@ class ComponentsLengths extends Component {
 		this.saveOrUpdateLengths = this.saveOrUpdateLengths.bind(this);
 		this.checkForLengthsDuplicated =
 			this.checkForLengthsDuplicated.bind(this);
+		this.createRangeLengths = this.createRangeLengths.bind(this);
 	}
+
+	createRangeLengths = (minLength, maxLength) => {
+		var newLengths = [];
+
+		for (var l = minLength; l <= maxLength; l++) {
+			newLengths.push({
+				length: l,
+				number_individuals: "",
+			});
+		}
+
+		this.setState({ lengths: newLengths });
+	};
 
 	// **** start handle of legnths form
 	handleLenghtNameChange = (idx) => (evt) => {

@@ -22,7 +22,6 @@ const LengthsButtonBar = ({
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
 				<button onClick={handleShowLengths}>Show lengths</button>
-				{/* <UiButtonAdd handleAdd={handleAdd} text={"Add Survey"} /> */}
 			</div>
 		);
 	} else if (status_lengths === "view") {
@@ -30,8 +29,6 @@ const LengthsButtonBar = ({
 			<div className="form__cell buttonsWrapper">
 				<button onClick={handleEditLengths}>Edit lengths</button>
 				<button onClick={handleHideLengths}>Hide lengths</button>
-				{/* <button onClick={handleShowLengths}>Show lengths</button> */}
-				{/* <UiButtonAdd handleAdd={handleAdd} text={"Add Survey"} /> */}
 			</div>
 		);
 	} else if (status_lengths === "edit") {

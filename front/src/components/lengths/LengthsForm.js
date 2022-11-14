@@ -1,5 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import LengthsButtonBar from "./LengthsButtonBar";
+
+import LengthsRangeForm from "./LengthsRangeForm";
 
 class LengthsForm extends Component {
 	/**
@@ -21,11 +23,18 @@ class LengthsForm extends Component {
 		}
 		if (this.props.status_lengths === "view") {
 			return (
-				<form>
-					<div className="formLengths__row">
-						<div className="formLengths__cell">Length (mm)</div>
-						<div className="formLengths__cell">N. individuals</div>
-					</div>
+				<Fragment>
+					<LengthsRangeForm
+						createRangeLengths={this.createRangeLengths}
+					/>
+
+					{/* <form>
+						<div className="formLengths__row">
+							<div className="formLengths__cell">Length (mm)</div>
+							<div className="formLengths__cell">
+								N. individuals
+							</div>
+						</div> */}
 					{lengths.map((l) => {
 						return (
 							<div className="formLengths__row" key={l.id}>
@@ -54,7 +63,8 @@ class LengthsForm extends Component {
 							</div>
 						);
 					})}
-				</form>
+					{/* </form> */}
+				</Fragment>
 			);
 		} else if (this.props.status_lengths === "edit") {
 			return (
