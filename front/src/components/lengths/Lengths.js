@@ -42,6 +42,11 @@ class ComponentsLengths extends Component {
 			this.handleAddLengthFromRange.bind(this);
 	}
 
+	/**
+	 * Create length range.
+	 * @param {number} minLength Minimun length.
+	 * @param {number} maxLength Maximum length.
+	 */
 	createRangeLengths = (minLength, maxLength) => {
 		var newLengths = [];
 
@@ -279,6 +284,10 @@ class ComponentsLengths extends Component {
 		) {
 			return (
 				<div>
+					{/* <LengthsRangeForm
+						handleAddLengthFromRange={this.handleAddLengthFromRange}
+						createRangeLengths={this.createRangeLengths}
+					/> */}
 					<LengthsForm
 						lengths={this.state.lengths}
 						status_lengths={this.state.status_lengths}
@@ -300,6 +309,7 @@ class ComponentsLengths extends Component {
 				<div>
 					<LengthsRangeForm
 						handleAddLengthFromRange={this.handleAddLengthFromRange}
+						createRangeLengths={this.createRangeLengths}
 					/>
 					{/* <LengthsForm
 						lengths={this.state.lengths}

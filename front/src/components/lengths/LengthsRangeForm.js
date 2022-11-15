@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-const LengthsRangeForm = ({ handleAddLengthFromRange }) => {
+const LengthsRangeForm = ({ handleAddLengthFromRange, createRangeLengths }) => {
 	const [inputLengths, setInputLengths] = useState([]);
 
 	const [minimumRange, setMinimumRange] = useState([{ minimum: "" }]);
@@ -12,7 +12,6 @@ const LengthsRangeForm = ({ handleAddLengthFromRange }) => {
 		let data = [...inputLengths];
 		data[index][e.target.name] = e.target.value;
 		setInputLengths(data);
-		console.log(e.target);
 	};
 
 	const handleMinimumRange = (e) => {
@@ -22,27 +21,6 @@ const LengthsRangeForm = ({ handleAddLengthFromRange }) => {
 	const handleMaximumRange = (e) => {
 		setMaximumRange(e.target.value);
 	};
-
-	const addLengthsRange = () => {
-		let range = [Number(minimumRange)];
-
-		while (maximunRange > range[range.length - 1]) {
-			range = [...range, range[range.length - 1] + 1];
-		}
-
-		let data = [...inputLengths];
-
-		range.forEach((x) => {
-			data.push({ name: x, number_individuals: 0 });
-			handleAddLengthFromRange(x);
-		});
-
-		setInputLengths(data);
-		setMinimumRange("");
-		setMaximumRange("");
-	};
-
-	// var RangeForm = null;
 
 	return (
 		<form>
@@ -77,7 +55,9 @@ const LengthsRangeForm = ({ handleAddLengthFromRange }) => {
 					<button
 						className="buttonsWrapper__button"
 						type="button"
-						onClick={addLengthsRange}
+						onClick={() =>
+							createRangeLengths(minimumRange, maximunRange)
+						}
 						value="Add"
 					>
 						Add lengths range
@@ -115,35 +95,7 @@ const LengthsRangeForm = ({ handleAddLengthFromRange }) => {
 				);
 			})}
 		</form>
-
-		// <div className="formLengths__row">
-		// 	<div className="formLengths__cell">
-		// 		<input
-		// 			type="number"
-		// 			id="minLength"
-		// 			name="minLength"
-		// 			min="0"
-		// 			max="9999"
-		// 		/>
-		// 	</div>
-
-		// 	<div className="formLengths__cell">
-		// 		<input
-		// 			type="number"
-		// 			id="minLength"
-		// 			name="minLength"
-		// 			min="0"
-		// 			max="9999"
-		// 		/>
-		// 	</div>
-
-		// 	<div className="formLengths__cell">
-		// 		<button onClick={createRangeLengths}>Create range</button>
-		// 	</div>
-		// </div>
 	);
-
-	// return RangeForm;
 };
 
 export default LengthsRangeForm;
