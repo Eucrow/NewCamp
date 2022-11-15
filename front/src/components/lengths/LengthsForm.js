@@ -24,20 +24,23 @@ class LengthsForm extends Component {
 		if (this.props.status_lengths === "view") {
 			return (
 				<Fragment>
-					<LengthsRangeForm
-						createRangeLengths={this.createRangeLengths}
-					/>
+					{/* <LengthsRangeForm
+						// createRangeLengths={this.createRangeLengths}
+						handleLenghtNameChange={
+							this.props.handleLenghtNameChange
+						}
+						handleNumberIndividualsChange={
+							this.props.handleNumberIndividualsChange
+						}
+					/> */}
 
-					{/* <form>
-						<div className="formLengths__row">
-							<div className="formLengths__cell">Length (mm)</div>
-							<div className="formLengths__cell">
-								N. individuals
-							</div>
-						</div> */}
+					<div className="formLengths__row">
+						<div className="formLengths__cell">Length (mm)</div>
+						<div className="formLengths__cell">N. individuals</div>
+					</div>
 					{lengths.map((l) => {
 						return (
-							<div className="formLengths__row" key={l.id}>
+							<div className="formLengths__row" key={l.length}>
 								<div className="formLengths__cell">
 									<input
 										type="number"

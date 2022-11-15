@@ -30,8 +30,8 @@ class ComponentSex extends Component {
 			status_sex: this.props.status_sex ? this.props.status_sex : "view",
 		};
 
-		this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
-		this.apiSexAndLengths = "http://127.0.0.1:8000/api/1.0/sex/lengths/";
+		// this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
+		// this.apiSexAndLengths = "http://127.0.0.1:8000/api/1.0/sex/lengths/";
 		this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
 
 		this.editSexStatus = this.editSexStatus.bind(this);

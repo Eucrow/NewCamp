@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import LengthsForm from "./LengthsForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
+import LengthsRangeForm from "./LengthsRangeForm.js";
 
 class ComponentsLengths extends Component {
 	/**
@@ -36,6 +37,9 @@ class ComponentsLengths extends Component {
 		this.checkForLengthsDuplicated =
 			this.checkForLengthsDuplicated.bind(this);
 		this.createRangeLengths = this.createRangeLengths.bind(this);
+
+		this.handleAddLengthFromRange =
+			this.handleAddLengthFromRange.bind(this);
 	}
 
 	createRangeLengths = (minLength, maxLength) => {
@@ -68,6 +72,14 @@ class ComponentsLengths extends Component {
 		});
 
 		this.setState({ lengths: newNumberIndividuals });
+	};
+
+	handleAddLengthFromRange = (length_name) => {
+		this.setState({
+			lengths: this.state.lengths.concat([
+				{ length: length_name, number_individuals: 0 },
+			]),
+		});
 	};
 
 	handleAddLength = () => {
@@ -261,7 +273,10 @@ class ComponentsLengths extends Component {
 					/>
 				</div>
 			);
-		} else if (this.state.status_lengths === "view") {
+		} else if (
+			this.state.status_lengths === "view" &&
+			this.state.lengths.length !== 0
+		) {
 			return (
 				<div>
 					<LengthsForm
@@ -270,6 +285,28 @@ class ComponentsLengths extends Component {
 						handleHideLengths={this.handleHideLengths}
 						handleEditLengths={this.handleEditLengths}
 					/>
+					<LengthsButtonBar
+						status_lengths={this.state.status_lengths}
+						handleEditLengths={this.handleEditLengths}
+						handleHideLengths={this.handleHideLengths}
+					/>
+				</div>
+			);
+		} else if (
+			this.state.status_lengths === "view" &&
+			this.state.lengths.length === 0
+		) {
+			return (
+				<div>
+					<LengthsRangeForm
+						handleAddLengthFromRange={this.handleAddLengthFromRange}
+					/>
+					{/* <LengthsForm
+						lengths={this.state.lengths}
+						status_lengths={this.state.status_lengths}
+						handleHideLengths={this.handleHideLengths}
+						handleEditLengths={this.handleEditLengths}
+					/> */}
 					<LengthsButtonBar
 						status_lengths={this.state.status_lengths}
 						handleEditLengths={this.handleEditLengths}

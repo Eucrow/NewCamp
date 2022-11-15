@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-const LengthsRangeForm = () => {
+const LengthsRangeForm = ({ handleAddLengthFromRange }) => {
 	const [inputLengths, setInputLengths] = useState([]);
 
 	const [minimumRange, setMinimumRange] = useState([{ minimum: "" }]);
@@ -34,6 +34,7 @@ const LengthsRangeForm = () => {
 
 		range.forEach((x) => {
 			data.push({ name: x, number_individuals: 0 });
+			handleAddLengthFromRange(x);
 		});
 
 		setInputLengths(data);
@@ -73,11 +74,14 @@ const LengthsRangeForm = () => {
 					/>
 				</label>
 				<div className="formLengths__cell">
-					<input
+					<button
+						className="buttonsWrapper__button"
 						type="button"
 						onClick={addLengthsRange}
 						value="Add"
-					/>
+					>
+						Add lengths range
+					</button>
 				</div>
 			</div>
 			{inputLengths.map((l, index) => {
