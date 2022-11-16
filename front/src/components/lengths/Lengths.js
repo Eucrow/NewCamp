@@ -57,7 +57,7 @@ class ComponentsLengths extends Component {
 			});
 		}
 
-		this.setState({ lengths: newLengths });
+		this.setState({ lengths: newLengths, status_lengths: "edit" });
 	};
 
 	// **** start handle of legnths form
