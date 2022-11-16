@@ -82,8 +82,6 @@ class CatchesList extends Component {
 			sampled_weight: newSampledWeight,
 		};
 
-		console.log(JSON.stringify(data));
-
 		fetch(this.apiCreateSampledWeight, {
 			method: "POST",
 			headers: {
@@ -272,7 +270,6 @@ class CatchesList extends Component {
 		const sp_name = val[2];
 
 		const apiCategoriesSpecies = this.apiCategoriesSpecies + sp;
-		console.log(apiCategoriesSpecies);
 
 		const newCatches = this.state.catches.map((c) => {
 			if (idx !== c.id) return c;
@@ -434,7 +431,6 @@ class CatchesList extends Component {
 				if (response.status === 200) {
 					return true;
 				} else {
-					console.log("dñlfkjadñlkf");
 					return false;
 				}
 			})
@@ -521,8 +517,6 @@ class CatchesList extends Component {
 			catch_id: idc,
 			sex: sex,
 		};
-
-		console.log(JSON.stringify(data));
 
 		fetch(this.apiSex, {
 			method: "POST",
