@@ -1,12 +1,12 @@
 import React from "react";
 import { useState } from "react";
 
-const LengthsRangeForm = ({ handleAddLengthFromRange, createRangeLengths }) => {
+const LengthsRangeForm = ({ createRangeLengths }) => {
 	const [inputLengths, setInputLengths] = useState([]);
 
-	const [minimumRange, setMinimumRange] = useState([{ minimum: "" }]);
+	const [minimumRange, setMinimumRange] = useState("");
 
-	const [maximunRange, setMaximumRange] = useState([{ maximum: "" }]);
+	const [maximunRange, setMaximumRange] = useState("");
 
 	const handleLength = (index, e) => {
 		let data = [...inputLengths];
@@ -35,7 +35,6 @@ const LengthsRangeForm = ({ handleAddLengthFromRange, createRangeLengths }) => {
 						max="9999"
 						value={minimumRange}
 						onChange={(e) => handleMinimumRange(e)}
-						// disabled
 					/>
 				</label>
 				<label className="formLengths__cell">
@@ -48,7 +47,6 @@ const LengthsRangeForm = ({ handleAddLengthFromRange, createRangeLengths }) => {
 						max="9999"
 						value={maximunRange}
 						onChange={(e) => handleMaximumRange(e)}
-						// disabled
 					/>
 				</label>
 				<div className="formLengths__cell">
@@ -76,7 +74,6 @@ const LengthsRangeForm = ({ handleAddLengthFromRange, createRangeLengths }) => {
 								max="9999"
 								value={l.name}
 								onChange={(e) => handleLength(index, e)}
-								// disabled
 							/>
 						</div>
 						<div className="formLengths__cell">
@@ -88,7 +85,6 @@ const LengthsRangeForm = ({ handleAddLengthFromRange, createRangeLengths }) => {
 								max="9999"
 								value={l.number_individuals}
 								onChange={(e) => handleLength(index, e)}
-								// disabled
 							/>
 						</div>
 					</div>
