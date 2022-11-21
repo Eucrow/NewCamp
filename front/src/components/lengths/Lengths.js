@@ -154,11 +154,10 @@ class ComponentsLengths extends Component {
 		});
 	}
 
+	/**
+	 * Get all lengths of a sex_id from database.
+	 */
 	getLengths() {
-		/**
-		 * Get all lengths of a sex_id from database.
-		 */
-
 		const apiLengths = this.apiLengths + this.props.sex_id;
 
 		return fetch(apiLengths).then((response) => {
@@ -284,10 +283,6 @@ class ComponentsLengths extends Component {
 		) {
 			return (
 				<div>
-					{/* <LengthsRangeForm
-						handleAddLengthFromRange={this.handleAddLengthFromRange}
-						createRangeLengths={this.createRangeLengths}
-					/> */}
 					<LengthsForm
 						lengths={this.state.lengths}
 						status_lengths={this.state.status_lengths}
@@ -311,12 +306,6 @@ class ComponentsLengths extends Component {
 						handleAddLengthFromRange={this.handleAddLengthFromRange}
 						createRangeLengths={this.createRangeLengths}
 					/>
-					{/* <LengthsForm
-						lengths={this.state.lengths}
-						status_lengths={this.state.status_lengths}
-						handleHideLengths={this.handleHideLengths}
-						handleEditLengths={this.handleEditLengths}
-					/> */}
 					<LengthsButtonBar
 						status_lengths={this.state.status_lengths}
 						handleEditLengths={this.handleEditLengths}

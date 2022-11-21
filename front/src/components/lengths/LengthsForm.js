@@ -1,39 +1,22 @@
-import React, { Component, Fragment } from "react";
-import LengthsButtonBar from "./LengthsButtonBar";
+import React, { Fragment, useState } from "react";
 
-import LengthsRangeForm from "./LengthsRangeForm";
+const LengthsForm = ({
+	lengths,
+	status_lengths,
+	handleDeleteLength,
+	handleNumberIndividualsChange,
+	handleLenghtNameChange,
+}) => {
+	const [originalLengths, setOriginalLengths] = useState([lengths]);
+	const [statusLengths, setStatusLengths] = useState(status_lengths);
 
-class LengthsForm extends Component {
-	/**
-	 * Component with the form of lengths.
-	 * @param {number} props.lengths
-	 * @param {string} props.status_lengths: must be "view", "edit".
-	 * @param {string} props.handleHideLengths
-	 * @param {string} props.handleDeleteLength
-	 * @param {string} props.handleNumberIndividualsChange
-	 * @param {string} props.handleLenghtNameChange
-	 * @param {method} props.handleEditLengths
-	 */
-
-	render() {
-		const lengths = this.props.lengths;
-
-		if (this.props.status_lengths === "") {
+	const renderContent = () => {
+		if (status_lengths === "") {
 			return null;
 		}
-		if (this.props.status_lengths === "view") {
+		if (status_lengths === "view") {
 			return (
 				<Fragment>
-					{/* <LengthsRangeForm
-						// createRangeLengths={this.createRangeLengths}
-						handleLenghtNameChange={
-							this.props.handleLenghtNameChange
-						}
-						handleNumberIndividualsChange={
-							this.props.handleNumberIndividualsChange
-						}
-					/> */}
-
 					<div className="formLengths__row">
 						<div className="formLengths__cell">Length (mm)</div>
 						<div className="formLengths__cell">N. individuals</div>
@@ -66,10 +49,9 @@ class LengthsForm extends Component {
 							</div>
 						);
 					})}
-					{/* </form> */}
 				</Fragment>
 			);
-		} else if (this.props.status_lengths === "edit") {
+		} else if (status_lengths === "edit") {
 			return (
 				<form>
 					<div className="formLengths__row">
@@ -87,9 +69,7 @@ class LengthsForm extends Component {
 										min="0"
 										max="9999"
 										value={l.length}
-										onChange={this.props.handleLenghtNameChange(
-											idx
-										)}
+										onChange={handleLenghtNameChange(idx)}
 									/>
 								</div>
 
@@ -101,25 +81,27 @@ class LengthsForm extends Component {
 										min="0"
 										max="9999"
 										value={l.number_individuals}
-										onChange={this.props.handleNumberIndividualsChange(
+										onChange={handleNumberIndividualsChange(
 											idx
 										)}
 									/>
 								</div>
 
-								{/* <button
+								<button
 									type="button"
-									onClick={this.props.handleDeleteLength(idx)}
+									onClick={handleDeleteLength(idx)}
 								>
-									Delete length{" "}
-								</button> */}
+									Delete length
+								</button>
 							</div>
 						);
 					})}
 				</form>
 			);
 		}
-	}
-}
+	};
+
+	return renderContent();
+};
 
 export default LengthsForm;
