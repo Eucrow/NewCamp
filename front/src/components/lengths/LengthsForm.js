@@ -1,7 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 
-const LengthsForm = ({ lengths, status_lengths, handleCancelLengths }) => {
+const LengthsForm = ({
+	lengths,
+	status_lengths,
+	handleCancelLengths,
+	saveOrUpdateLengths,
+}) => {
 	// is mandatory to make a deep copy of the lengths received from props: JSON.parse(JSON.stringify(lengths))
 	const [updatedLengths, setUpdatedLengths] = useState(
 		JSON.parse(JSON.stringify(lengths))
@@ -13,7 +18,6 @@ const LengthsForm = ({ lengths, status_lengths, handleCancelLengths }) => {
 		let newLengths = JSON.parse(JSON.stringify(updatedLengths));
 		newLengths[index][e.target.name] = e.target.value;
 		setUpdatedLengths(newLengths);
-		console.log(lengths);
 	};
 
 	const handleDeleteLength = (index) => {
@@ -129,12 +133,12 @@ const LengthsForm = ({ lengths, status_lengths, handleCancelLengths }) => {
 						);
 					})}
 					<LengthsButtonBar
+						updatedLengths={updatedLengths}
 						status_lengths={status_lengths}
 						handleAddLength={handleAddLength}
 						handleCancelLengths={handleCancelLengths}
 						recoverLengths={recoverLengths}
-						// saveOrUpdateLengths={this.saveOrUpdateLengths}
-						// handleCancelLengths={this.handleCancelLengths}
+						saveOrUpdateLengths={saveOrUpdateLengths}
 					/>
 				</form>
 			);

@@ -8,6 +8,7 @@ import React from "react";
  * @param {method} handleAdd Method to handle the 'add' parameter.
  */
 const LengthsButtonBar = ({
+	updatedLengths,
 	status_lengths,
 	handleShowLengths,
 	handleEditLengths,
@@ -38,9 +39,14 @@ const LengthsButtonBar = ({
 				<button type="button" onClick={handleAddLength}>
 					Add length
 				</button>
-				<button onClick={saveOrUpdateLengths}>Save</button>
 				<button
-					// onClick={recoverLengths}
+					onClick={(e) => {
+						saveOrUpdateLengths(e, updatedLengths);
+					}}
+				>
+					Save
+				</button>
+				<button
 					onClick={() => {
 						recoverLengths();
 						handleCancelLengths();

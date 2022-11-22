@@ -60,25 +60,6 @@ class ComponentsLengths extends Component {
 		this.setState({ lengths: newLengths, status_lengths: "edit" });
 	};
 
-	// **** start handle of legnths form
-	handleLenghtNameChange = (idx) => (evt) => {
-		const newLenght = this.state.lengths.map((l, lidx) => {
-			if (idx !== lidx) return l;
-			return { ...l, length: Number(evt.target.value) };
-		});
-
-		this.setState({ lengths: newLenght });
-	};
-
-	handleNumberIndividualsChange = (idx) => (evt) => {
-		const newNumberIndividuals = this.state.lengths.map((l, lidx) => {
-			if (idx !== lidx) return l;
-			return { ...l, number_individuals: evt.target.value };
-		});
-
-		this.setState({ lengths: newNumberIndividuals });
-	};
-
 	handleAddLengthFromRange = (length_name) => {
 		this.setState({
 			lengths: this.state.lengths.concat([
@@ -86,14 +67,6 @@ class ComponentsLengths extends Component {
 			]),
 		});
 	};
-
-	// handleAddLength = () => {
-	// 	this.setState({
-	// 		lengths: this.state.lengths.concat([
-	// 			{ length: "", number_individuals: 0 },
-	// 		]),
-	// 	});
-	// };
 
 	handleDeleteLength = (idx) => () => {
 		this.setState({
@@ -191,22 +164,22 @@ class ComponentsLengths extends Component {
 		});
 	}
 
-	checkForLengthsDuplicated() {
+	checkForLengthsDuplicated(lengths) {
 		/**
-		 * Check if the lengths variable in state contains duplicated lengths.
+		 * Check if the lengths array contains duplicated lengths.
 		 * Return true if there are any duplicates.
 		 */
 
 		var vals = [];
 
-		for (var i = 0; i < this.state.lengths.length; i++) {
-			vals.push(this.state.lengths[i].length);
+		for (var i = 0; i < lengths.length; i++) {
+			vals.push(lengths[i].length);
 		}
 
-		return new Set(vals).size !== this.state.lengths.length;
+		return new Set(vals).size !== lengths.length;
 	}
 
-	saveLengths() {
+	saveLengths(lengths) {
 		/**
 		 * Save lengths of a sex_id in database.
 		 */
@@ -218,7 +191,7 @@ class ComponentsLengths extends Component {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(this.state.lengths),
+			body: JSON.stringify(lengths),
 		})
 			.then((response) => {
 				if (response.status > 400) {
@@ -231,7 +204,7 @@ class ComponentsLengths extends Component {
 			.catch((error) => console.log(error));
 	}
 
-	saveOrUpdateLengths(event) {
+	saveOrUpdateLengths(event, lengths) {
 		/**
 		 * Save the lengths of state to database.
 		 */
@@ -240,19 +213,21 @@ class ComponentsLengths extends Component {
 
 		// Firstly, check if exists duplicated lengths
 		// TODO: check this in validation form
-		if (this.checkForLengthsDuplicated() === true) {
+		if (this.checkForLengthsDuplicated(lengths) === true) {
 			alert("Duplicated lengths");
 		} else {
 			this.getLengths()
 				.then((lengthts_in_database) => {
 					if (Object.keys(lengthts_in_database).length === 0) {
 						// if there are not lengths already saved, save the new lengths:
-						this.saveLengths().catch((error) => console.log(error));
+						this.saveLengths(lengths).catch((error) =>
+							console.log(error)
+						);
 					} else {
 						// if there are lengths, first delete it, and then save the updated lengths.
 						this.deleteLengths()
 							.then(() => {
-								this.saveLengths();
+								this.saveLengths(lengths);
 							})
 							.catch((error) => console.log(error));
 					}
@@ -320,6 +295,7 @@ class ComponentsLengths extends Component {
 						lengths={this.state.lengths}
 						status_lengths={this.state.status_lengths}
 						handleCancelLengths={this.handleCancelLengths}
+						saveOrUpdateLengths={this.saveOrUpdateLengths}
 						// handleHideLengths={this.handleHideLengths}
 					/>
 				</div>
