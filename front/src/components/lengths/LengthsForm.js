@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import LengthsButtonBar from "./LengthsButtonBar.js";
 
 const LengthsForm = ({ lengths, status_lengths }) => {
 	const [updatedLengths, setUpdatedLengths] = useState(lengths);
@@ -14,6 +15,12 @@ const LengthsForm = ({ lengths, status_lengths }) => {
 		let newLengths = [...updatedLengths];
 		newLengths = newLengths.filter((l, lidx) => index !== lidx);
 		setUpdatedLengths(newLengths);
+	};
+
+	const handleAddLength = () => {
+		let newLenghts = [...updatedLengths];
+		newLenghts.push({ length: "", number_individuals: 0 });
+		setUpdatedLengths(newLenghts);
 	};
 
 	const renderContent = () => {
@@ -106,6 +113,12 @@ const LengthsForm = ({ lengths, status_lengths }) => {
 							</div>
 						);
 					})}
+					<LengthsButtonBar
+						status_lengths={status_lengths}
+						handleAddLength={handleAddLength}
+						// saveOrUpdateLengths={this.saveOrUpdateLengths}
+						// handleCancelLengths={this.handleCancelLengths}
+					/>
 				</form>
 			);
 		}
