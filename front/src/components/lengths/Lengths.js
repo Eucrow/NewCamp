@@ -278,7 +278,6 @@ class ComponentsLengths extends Component {
 			return (
 				<div>
 					<LengthsRangeForm
-						handleAddLengthFromRange={this.handleAddLengthFromRange}
 						createRangeLengths={this.createRangeLengths}
 					/>
 					<LengthsButtonBar

@@ -1,18 +1,15 @@
 import React from "react";
 import { useState } from "react";
 
+/**
+ * Form to create a range of lenghts.
+ * @param {method} createRAngeLengths: method to add lengths to state in parent component.
+ * @returns Lenghts range form.
+ */
 const LengthsRangeForm = ({ createRangeLengths }) => {
-	// const [inputLengths, setInputLengths] = useState([]);
-
 	const [minimumRange, setMinimumRange] = useState("");
 
 	const [maximunRange, setMaximumRange] = useState("");
-
-	// const handleLength = (index, e) => {
-	// 	let data = [...inputLengths];
-	// 	data[index][e.target.name] = e.target.value;
-	// 	setInputLengths(data);
-	// };
 
 	const handleMinimumRange = (e) => {
 		setMinimumRange(e.target.value);
@@ -62,34 +59,6 @@ const LengthsRangeForm = ({ createRangeLengths }) => {
 					</button>
 				</div>
 			</div>
-			{/* {inputLengths.map((l, index) => {
-				return (
-					<div className="formLengths__row" key={index}>
-						<div className="formLengths__cell">
-							<input
-								type="number"
-								id="name"
-								name="name"
-								min="0"
-								max="9999"
-								value={l.name}
-								onChange={(e) => handleLength(index, e)}
-							/>
-						</div>
-						<div className="formLengths__cell">
-							<input
-								type="number"
-								id="number_individuals"
-								name="number_individuals"
-								min="0"
-								max="9999"
-								value={l.number_individuals}
-								onChange={(e) => handleLength(index, e)}
-							/>
-						</div>
-					</div>
-				);
-			})} */}
 		</form>
 	);
 };
