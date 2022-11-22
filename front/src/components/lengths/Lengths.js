@@ -320,12 +320,12 @@ class ComponentsLengths extends Component {
 						lengths={this.state.lengths}
 						status_lengths={this.state.status_lengths}
 						handleHideLengths={this.handleHideLengths}
-						handleDeleteLength={this.handleDeleteLength}
-						handleNumberIndividualsChange={
-							this.handleNumberIndividualsChange
-						}
-						handleLenghtNameChange={this.handleLenghtNameChange}
-						handleEditLengths={this.handleEditLengths}
+						// handleDeleteLength={this.handleDeleteLength}
+						// handleNumberIndividualsChange={
+						// 	this.handleNumberIndividualsChange
+						// }
+						// handleLenghtNameChange={this.handleLenghtNameChange}
+						// handleEditLengths={this.handleEditLengths}
 					/>
 					<LengthsButtonBar
 						status_lengths={this.state.status_lengths}

@@ -1,14 +1,20 @@
 import React, { Fragment, useState } from "react";
 
-const LengthsForm = ({
-	lengths,
-	status_lengths,
-	handleDeleteLength,
-	handleNumberIndividualsChange,
-	handleLenghtNameChange,
-}) => {
-	const [originalLengths, setOriginalLengths] = useState([lengths]);
+const LengthsForm = ({ lengths, status_lengths }) => {
+	const [updatedLengths, setUpdatedLengths] = useState(lengths);
 	const [statusLengths, setStatusLengths] = useState(status_lengths);
+
+	const handleEditLength = (index, e) => {
+		let newLengths = [...updatedLengths];
+		newLengths[index][e.target.name] = e.target.value;
+		setUpdatedLengths(newLengths);
+	};
+
+	const handleDeleteLength = (index) => {
+		let newLengths = [...updatedLengths];
+		newLengths = newLengths.filter((l, lidx) => index !== lidx);
+		setUpdatedLengths(newLengths);
+	};
 
 	const renderContent = () => {
 		if (status_lengths === "") {
@@ -21,7 +27,7 @@ const LengthsForm = ({
 						<div className="formLengths__cell">Length (mm)</div>
 						<div className="formLengths__cell">N. individuals</div>
 					</div>
-					{lengths.map((l) => {
+					{updatedLengths.map((l) => {
 						return (
 							<div className="formLengths__row" key={l.length}>
 								<div className="formLengths__cell">
@@ -58,7 +64,7 @@ const LengthsForm = ({
 						<div className="formLengths__cell">Length (mm)</div>
 						<div className="formLengths__cell">N. individuals</div>
 					</div>
-					{lengths.map((l, idx) => {
+					{updatedLengths.map((l, idx) => {
 						return (
 							<div className="formLengths__row" key={l.id}>
 								<div className="formLengths__cell">
@@ -69,7 +75,9 @@ const LengthsForm = ({
 										min="0"
 										max="9999"
 										value={l.length}
-										onChange={handleLenghtNameChange(idx)}
+										onChange={(e) =>
+											handleEditLength(idx, e)
+										}
 									/>
 								</div>
 
@@ -81,15 +89,17 @@ const LengthsForm = ({
 										min="0"
 										max="9999"
 										value={l.number_individuals}
-										onChange={handleNumberIndividualsChange(
-											idx
-										)}
+										onChange={(e) =>
+											handleEditLength(idx, e)
+										}
 									/>
 								</div>
 
 								<button
 									type="button"
-									onClick={handleDeleteLength(idx)}
+									onClick={(e) => {
+										handleDeleteLength(idx);
+									}}
 								>
 									Delete length
 								</button>
