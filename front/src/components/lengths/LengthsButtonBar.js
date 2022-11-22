@@ -15,6 +15,7 @@ const LengthsButtonBar = ({
 	handleAddLength,
 	saveOrUpdateLengths,
 	handleCancelLengths,
+	recoverLengths,
 }) => {
 	var ButtonBar = null;
 
@@ -38,7 +39,15 @@ const LengthsButtonBar = ({
 					Add length
 				</button>
 				<button onClick={saveOrUpdateLengths}>Save</button>
-				<button onClick={handleCancelLengths}>Cancel</button>
+				<button
+					// onClick={recoverLengths}
+					onClick={() => {
+						recoverLengths();
+						handleCancelLengths();
+					}}
+				>
+					Cancel
+				</button>
 			</div>
 		);
 	}

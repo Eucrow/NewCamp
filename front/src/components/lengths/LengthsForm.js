@@ -2,15 +2,18 @@ import React, { Fragment, useEffect, useState } from "react";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 
 const LengthsForm = ({ lengths, status_lengths, handleCancelLengths }) => {
-	// var kkkk = [...lengths];
-	// const [originalLengths, setOriginalLengths] = useState(lengths);
-	const [updatedLengths, setUpdatedLengths] = useState(lengths);
+	// is mandatory to make a deep copy of the lengths received from props: JSON.parse(JSON.stringify(lengths))
+	const [updatedLengths, setUpdatedLengths] = useState(
+		JSON.parse(JSON.stringify(lengths))
+	);
 	const [statusLengths, setStatusLengths] = useState(status_lengths);
 
-	const handleEditLength = (index, e) => {
-		let newLengths = [...updatedLengths];
+	const handleEditedLength = (index, e) => {
+		// a deep copy is mandatory because the data to be modified is nested:
+		let newLengths = JSON.parse(JSON.stringify(updatedLengths));
 		newLengths[index][e.target.name] = e.target.value;
 		setUpdatedLengths(newLengths);
+		console.log(lengths);
 	};
 
 	const handleDeleteLength = (index) => {
@@ -20,13 +23,15 @@ const LengthsForm = ({ lengths, status_lengths, handleCancelLengths }) => {
 	};
 
 	const handleAddLength = () => {
-		let newLenghts = [...updatedLengths];
-		newLenghts.push({ length: "", number_individuals: 0 });
-		setUpdatedLengths(newLenghts);
+		let newLengths = [...updatedLengths];
+		newLengths.push({ length: "", number_individuals: 0 });
+		setUpdatedLengths(newLengths);
 	};
 
 	const recoverLengths = () => {
+		// let newLengths = [...lengths];
 		setUpdatedLengths(lengths);
+		handleCancelLengths();
 	};
 
 	// useEffect(() => {
@@ -93,7 +98,7 @@ const LengthsForm = ({ lengths, status_lengths, handleCancelLengths }) => {
 										max="9999"
 										value={l.length}
 										onChange={(e) =>
-											handleEditLength(idx, e)
+											handleEditedLength(idx, e)
 										}
 									/>
 								</div>
@@ -107,7 +112,7 @@ const LengthsForm = ({ lengths, status_lengths, handleCancelLengths }) => {
 										max="9999"
 										value={l.number_individuals}
 										onChange={(e) =>
-											handleEditLength(idx, e)
+											handleEditedLength(idx, e)
 										}
 									/>
 								</div>

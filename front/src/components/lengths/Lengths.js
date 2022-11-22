@@ -319,7 +319,8 @@ class ComponentsLengths extends Component {
 					<LengthsForm
 						lengths={this.state.lengths}
 						status_lengths={this.state.status_lengths}
-						handleHideLengths={this.handleHideLengths}
+						handleCancelLengths={this.handleCancelLengths}
+						// handleHideLengths={this.handleHideLengths}
 					/>
 				</div>
 			);
