@@ -1,7 +1,9 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 
-const LengthsForm = ({ lengths, status_lengths }) => {
+const LengthsForm = ({ lengths, status_lengths, handleCancelLengths }) => {
+	// var kkkk = [...lengths];
+	// const [originalLengths, setOriginalLengths] = useState(lengths);
 	const [updatedLengths, setUpdatedLengths] = useState(lengths);
 	const [statusLengths, setStatusLengths] = useState(status_lengths);
 
@@ -22,6 +24,14 @@ const LengthsForm = ({ lengths, status_lengths }) => {
 		newLenghts.push({ length: "", number_individuals: 0 });
 		setUpdatedLengths(newLenghts);
 	};
+
+	const recoverLengths = () => {
+		setUpdatedLengths(lengths);
+	};
+
+	// useEffect(() => {
+	// 	setUpdatedLengths(lengths);
+	// });
 
 	const renderContent = () => {
 		if (status_lengths === "") {
@@ -73,7 +83,7 @@ const LengthsForm = ({ lengths, status_lengths }) => {
 					</div>
 					{updatedLengths.map((l, idx) => {
 						return (
-							<div className="formLengths__row" key={l.id}>
+							<div className="formLengths__row" key={idx}>
 								<div className="formLengths__cell">
 									<input
 										type="number"
@@ -116,6 +126,8 @@ const LengthsForm = ({ lengths, status_lengths }) => {
 					<LengthsButtonBar
 						status_lengths={status_lengths}
 						handleAddLength={handleAddLength}
+						handleCancelLengths={handleCancelLengths}
+						recoverLengths={recoverLengths}
 						// saveOrUpdateLengths={this.saveOrUpdateLengths}
 						// handleCancelLengths={this.handleCancelLengths}
 					/>
