@@ -2,17 +2,17 @@ import React from "react";
 import { useState } from "react";
 
 const LengthsRangeForm = ({ createRangeLengths }) => {
-	const [inputLengths, setInputLengths] = useState([]);
+	// const [inputLengths, setInputLengths] = useState([]);
 
 	const [minimumRange, setMinimumRange] = useState("");
 
 	const [maximunRange, setMaximumRange] = useState("");
 
-	const handleLength = (index, e) => {
-		let data = [...inputLengths];
-		data[index][e.target.name] = e.target.value;
-		setInputLengths(data);
-	};
+	// const handleLength = (index, e) => {
+	// 	let data = [...inputLengths];
+	// 	data[index][e.target.name] = e.target.value;
+	// 	setInputLengths(data);
+	// };
 
 	const handleMinimumRange = (e) => {
 		setMinimumRange(e.target.value);
@@ -62,7 +62,7 @@ const LengthsRangeForm = ({ createRangeLengths }) => {
 					</button>
 				</div>
 			</div>
-			{inputLengths.map((l, index) => {
+			{/* {inputLengths.map((l, index) => {
 				return (
 					<div className="formLengths__row" key={index}>
 						<div className="formLengths__cell">
@@ -89,7 +89,7 @@ const LengthsRangeForm = ({ createRangeLengths }) => {
 						</div>
 					</div>
 				);
-			})}
+			})} */}
 		</form>
 	);
 };

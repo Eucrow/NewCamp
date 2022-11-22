@@ -271,23 +271,23 @@ class ComponentsLengths extends Component {
 					/>
 				</div>
 			);
-			// } else if (
-			// 	this.state.status_lengths === "view" &&
-			// 	this.state.lengths.length === 0
-			// ) {
-			// 	return (
-			// 		<div>
-			// 			<LengthsRangeForm
-			// 				handleAddLengthFromRange={this.handleAddLengthFromRange}
-			// 				createRangeLengths={this.createRangeLengths}
-			// 			/>
-			// 			<LengthsButtonBar
-			// 				status_lengths={this.state.status_lengths}
-			// 				handleEditLengths={this.handleEditLengths}
-			// 				handleHideLengths={this.handleHideLengths}
-			// 			/>
-			// 		</div>
-			// 	);
+		} else if (
+			this.state.status_lengths === "view" &&
+			this.state.lengths.length === 0
+		) {
+			return (
+				<div>
+					<LengthsRangeForm
+						handleAddLengthFromRange={this.handleAddLengthFromRange}
+						createRangeLengths={this.createRangeLengths}
+					/>
+					<LengthsButtonBar
+						status_lengths={this.state.status_lengths}
+						handleEditLengths={this.handleEditLengths}
+						handleHideLengths={this.handleHideLengths}
+					/>
+				</div>
+			);
 		} else if (this.state.status_lengths === "edit") {
 			return (
 				<div>
