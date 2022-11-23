@@ -50,10 +50,11 @@ const LengthsRangeForm = ({ createRangeLengths }) => {
 					<button
 						className="buttonsWrapper__button"
 						type="button"
-						onClick={() =>
-							createRangeLengths(minimumRange, maximunRange)
-						}
-						value="Add"
+						onClick={() => {
+							createRangeLengths(minimumRange, maximunRange);
+							setMaximumRange("");
+							setMinimumRange("");
+						}}
 					>
 						Add lengths range
 					</button>

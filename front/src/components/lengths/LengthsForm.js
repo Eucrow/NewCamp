@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 
 const LengthsForm = ({
@@ -11,7 +11,6 @@ const LengthsForm = ({
 	const [updatedLengths, setUpdatedLengths] = useState(
 		JSON.parse(JSON.stringify(lengths))
 	);
-	const [statusLengths, setStatusLengths] = useState(status_lengths);
 
 	const handleEditedLength = (index, e) => {
 		// a deep copy is mandatory because the data to be modified is nested:
@@ -37,10 +36,6 @@ const LengthsForm = ({
 		setUpdatedLengths(lengths);
 		handleCancelLengths();
 	};
-
-	// useEffect(() => {
-	// 	setUpdatedLengths(lengths);
-	// });
 
 	const renderContent = () => {
 		if (status_lengths === "") {

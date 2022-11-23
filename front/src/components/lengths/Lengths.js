@@ -37,9 +37,6 @@ class ComponentsLengths extends Component {
 		this.checkForLengthsDuplicated =
 			this.checkForLengthsDuplicated.bind(this);
 		this.createRangeLengths = this.createRangeLengths.bind(this);
-
-		this.handleAddLengthFromRange =
-			this.handleAddLengthFromRange.bind(this);
 	}
 
 	/**
@@ -59,21 +56,6 @@ class ComponentsLengths extends Component {
 
 		this.setState({ lengths: newLengths, status_lengths: "edit" });
 	};
-
-	handleAddLengthFromRange = (length_name) => {
-		this.setState({
-			lengths: this.state.lengths.concat([
-				{ length: length_name, number_individuals: 0 },
-			]),
-		});
-	};
-
-	handleDeleteLength = (idx) => () => {
-		this.setState({
-			lengths: this.state.lengths.filter((s, sidx) => idx !== sidx),
-		});
-	};
-	// **** end handle of legnths form
 
 	handleShowLengths(event) {
 		/**
@@ -179,11 +161,12 @@ class ComponentsLengths extends Component {
 		return new Set(vals).size !== lengths.length;
 	}
 
+	/**
+	 * Save lengths of a sex_id in database.
+	 * @param {array} lengths Array of dictionaries with lengths to save or update.
+	 * @returns JSON response or error.
+	 */
 	saveLengths(lengths) {
-		/**
-		 * Save lengths of a sex_id in database.
-		 */
-
 		const apiLengths = this.apiLengths + this.props.sex_id;
 
 		return fetch(apiLengths, {
@@ -204,11 +187,14 @@ class ComponentsLengths extends Component {
 			.catch((error) => console.log(error));
 	}
 
+	/**
+	 * Save or Update lengths. Check if exists duplicated lengths in the array. If already exists
+	 * lengths for this sex, delete it first and save the new lengths.
+	 * TODO: make the length validation in the form, and not here.
+	 * @param {event} event
+	 * @param {array} lengths Array of dictionaries with lengths to save or update.
+	 */
 	saveOrUpdateLengths(event, lengths) {
-		/**
-		 * Save the lengths of state to database.
-		 */
-
 		event.preventDefault();
 
 		// Firstly, check if exists duplicated lengths
@@ -295,7 +281,6 @@ class ComponentsLengths extends Component {
 						status_lengths={this.state.status_lengths}
 						handleCancelLengths={this.handleCancelLengths}
 						saveOrUpdateLengths={this.saveOrUpdateLengths}
-						// handleHideLengths={this.handleHideLengths}
 					/>
 				</div>
 			);
