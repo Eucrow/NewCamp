@@ -57,12 +57,11 @@ class ComponentsLengths extends Component {
 		this.setState({ lengths: newLengths, status_lengths: "edit" });
 	};
 
-	handleShowLengths(event) {
-		/**
-		 * Show lengths.
-		 */
-		// TODO: Detect if the legths are already in state and doesn't fetcth if it is the case.
-		// In this case the legths has been hide by css.
+	/**
+	 * Show lengths.
+	 */
+	// TODO: Detect if the legths are already in state and doesn't fetcth if it is the case.
+	handleShowLengths() {
 		this.getLengths().then((lengths) => {
 			this.setState(() => {
 				return {
@@ -73,12 +72,11 @@ class ComponentsLengths extends Component {
 		});
 	}
 
+	/**
+	 * Hide lengths.
+	 */
+	//TODO: Maybe use css to hide the lenghts when they are fetched from the backend?
 	handleHideLengths(event) {
-		/**
-		 * Hide legths.
-		 */
-		//TODO: Maybe use css to hide the lenghts when they are fetched from the backend?
-
 		this.setState(() => {
 			return {
 				lengths: [],
@@ -87,10 +85,10 @@ class ComponentsLengths extends Component {
 		});
 	}
 
+	/**
+	 * Change the state of status_lengths to "edit".
+	 */
 	handleEditLengths() {
-		/**
-		 * Change the state of status_lengths to "edit".
-		 */
 		this.setState(() => {
 			return {
 				status_lengths: "edit",
@@ -98,10 +96,10 @@ class ComponentsLengths extends Component {
 		});
 	}
 
+	/**
+	 *  Cancel the edition of the lengths. Set status_lengths state to "view".
+	 */
 	handleCancelLengths() {
-		/**
-		 * Cancel the edition of the lengths. Set status_lengths state to "view".
-		 */
 		this.setState(() => {
 			return {
 				status_lengths: "view",
@@ -111,6 +109,7 @@ class ComponentsLengths extends Component {
 
 	/**
 	 * Get all lengths of a sex_id from database.
+	 * @returns JSON with lengths.
 	 */
 	getLengths() {
 		const apiLengths = this.apiLengths + this.props.sex_id;
@@ -125,11 +124,11 @@ class ComponentsLengths extends Component {
 		});
 	}
 
+	/**
+	 * Delete all lengths of a sex_id in database. The sex_id variable is taken from parent component via props.
+	 * @returns JSON
+	 */
 	deleteLengths() {
-		/**
-		 * Delete all lengths of a sex_id in database.
-		 */
-
 		const apiLengths = this.apiLengths + this.props.sex_id;
 
 		return fetch(apiLengths, {
@@ -146,12 +145,12 @@ class ComponentsLengths extends Component {
 		});
 	}
 
+	/**
+	 * Check if the lengths array contains duplicated lengths.
+	 * @param {array} lengths Array of dictionaries with lengths to save or update.
+	 * @returns True if there are duplicates.
+	 */
 	checkForLengthsDuplicated(lengths) {
-		/**
-		 * Check if the lengths array contains duplicated lengths.
-		 * Return true if there are any duplicates.
-		 */
-
 		var vals = [];
 
 		for (var i = 0; i < lengths.length; i++) {
@@ -162,7 +161,7 @@ class ComponentsLengths extends Component {
 	}
 
 	/**
-	 * Save lengths of a sex_id in database.
+	 * Save lengths of a sex_id in database. The sex_id variable is taken from parent component via props.
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
 	 * @returns JSON response or error.
 	 */

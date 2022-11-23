@@ -12,27 +12,40 @@ const LengthsForm = ({
 		JSON.parse(JSON.stringify(lengths))
 	);
 
+	/**
+	 * Edit length of updated lengths state.
+	 * @param {number} index index of length in the dictionary.
+	 * @param {event} e
+	 */
 	const handleEditedLength = (index, e) => {
 		// a deep copy is mandatory because the data to be modified is nested:
 		let newLengths = JSON.parse(JSON.stringify(updatedLengths));
 		newLengths[index][e.target.name] = e.target.value;
 		setUpdatedLengths(newLengths);
 	};
-
+	/**
+	 * Delete length of updated lengths state.
+	 * @param {number} index  index index of length in the dictionary.
+	 */
 	const handleDeleteLength = (index) => {
 		let newLengths = [...updatedLengths];
 		newLengths = newLengths.filter((l, lidx) => index !== lidx);
 		setUpdatedLengths(newLengths);
 	};
 
+	/**
+	 * Add empty length to updated lengths state.
+	 */
 	const handleAddLength = () => {
 		let newLengths = [...updatedLengths];
 		newLengths.push({ length: "", number_individuals: 0 });
 		setUpdatedLengths(newLengths);
 	};
 
+	/**
+	 * Initialize updated lengths state with lengths received via prop.
+	 */
 	const recoverLengths = () => {
-		// let newLengths = [...lengths];
 		setUpdatedLengths(lengths);
 		handleCancelLengths();
 	};
