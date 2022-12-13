@@ -13,6 +13,18 @@ const LengthsForm = ({
 	handleCancelLengths,
 	saveOrUpdateLengths,
 }) => {
+	// const orderLengths = (a, b) => {
+	// 	if (a.length < b.length) {
+	// 		return -1;
+	// 	}
+
+	// 	if (a.length > b.length) {
+	// 		return 1;
+	// 	}
+
+	// 	return 0;
+	// };
+
 	// is mandatory to make a deep copy of the lengths received from props: JSON.parse(JSON.stringify(lengths))
 	const [updatedLengths, setUpdatedLengths] = useState(
 		JSON.parse(JSON.stringify(lengths))
@@ -42,9 +54,16 @@ const LengthsForm = ({
 	/**
 	 * Add empty length to updated lengths state.
 	 */
-	const handleAddLength = () => {
+	const handleAddLength = (l, index) => {
 		let newLengths = [...updatedLengths];
-		newLengths.push({ length: "", number_individuals: 0 });
+		let newLength = l + 1;
+		newLengths.splice(index + 1, 0, {
+			length: newLength,
+			number_individuals: 0,
+		});
+		console.log(newLengths);
+		// newLengths.push({ length: "", number_individuals: 0 });
+
 		setUpdatedLengths(newLengths);
 	};
 
@@ -153,6 +172,15 @@ const LengthsForm = ({
 										>
 											{/* Delete length */}
 											<UiButtonIconDelete />
+										</button>
+										<button
+											className="icon_button"
+											type="button"
+											onClick={(e) => {
+												handleAddLength(l.length, idx);
+											}}
+										>
+											add length
 										</button>
 									</div>
 								</div>
