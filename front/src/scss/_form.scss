@@ -4,10 +4,6 @@ input {
 	font-weight: 600;
 }
 
-// form:focus-within {
-// 	background-color: lawngreen;
-// }
-
 textarea:disabled,
 select:disabled,
 option:disabled,
@@ -30,13 +26,6 @@ input:enabled {
 	padding: 2px 5px;
 	background-color: var(--background-global-color);
 }
-
-// textarea:required:enabled,
-// select:required:enabled,
-// input:required:enabled {
-// 	background-color: var(--error_background) !important;
-// 	color: var(--error_text);
-// }
 
 textarea:focus,
 textarea:active,

@@ -40,11 +40,11 @@ class ComponentSex extends Component {
 		this.updateSex = this.updateSex.bind(this);
 	}
 
+	/**
+	 * Change the state of status_sex variable.
+	 * @param {character} status This variable contains the state of the component: "view", "edit", "delete" or "add".
+	 */
 	editSexStatus(status) {
-		/**
-		 * Change the state of status_sex variable.
-		 * This variable contains the state of the component: "view", "edit", "delete" or "add".
-		 */
 		this.setState(() => {
 			return {
 				catch_id: "",
@@ -77,13 +77,13 @@ class ComponentSex extends Component {
 	//     .catch(error => console.log('Error'))
 	// }
 
-	handleNewSex(evt) {
+	handleNewSex(e) {
 		/**
 		 * Change the state of new_sex variable.
 		 * This variable contains the value of the new sex which will be saved in database.
 		 */
 
-		this.setState({ new_sex: evt.target.value });
+		this.setState({ new_sex: e.target.value });
 	}
 
 	updateSex(event) {

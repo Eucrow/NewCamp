@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import LengthsButtonBar from "./LengthsButtonBar.js";
+import UiButtonIconDelete from "../ui/UiButtonIconDelete";
 
 /**
  *
@@ -61,10 +62,14 @@ const LengthsForm = ({
 		}
 		if (status_lengths === "view") {
 			return (
-				<Fragment>
+				<form>
 					<div className="formLengths__row">
-						<div className="formLengths__cell">Length (mm)</div>
-						<div className="formLengths__cell">N. individuals</div>
+						<div className="formLengths__cell formLengths__cell--header">
+							mm
+						</div>
+						<div className="formLengths__cell formLengths__cell--header">
+							number
+						</div>
 					</div>
 					{updatedLengths.map((l) => {
 						return (
@@ -94,57 +99,66 @@ const LengthsForm = ({
 							</div>
 						);
 					})}
-				</Fragment>
+				</form>
 			);
 		} else if (status_lengths === "edit") {
 			return (
-				<form>
-					<div className="formLengths__row">
-						<div className="formLengths__cell">Length (mm)</div>
-						<div className="formLengths__cell">N. individuals</div>
-					</div>
-					{updatedLengths.map((l, idx) => {
-						return (
-							<div className="formLengths__row" key={idx}>
-								<div className="formLengths__cell">
-									<input
-										type="number"
-										id="length"
-										name="length"
-										min="0"
-										max="9999"
-										value={l.length}
-										onChange={(e) =>
-											handleEditedLength(idx, e)
-										}
-									/>
-								</div>
-
-								<div className="formLengths__cell">
-									<input
-										type="number"
-										id="number_individuals"
-										name="number_individuals"
-										min="0"
-										max="9999"
-										value={l.number_individuals}
-										onChange={(e) =>
-											handleEditedLength(idx, e)
-										}
-									/>
-								</div>
-
-								<button
-									type="button"
-									onClick={(e) => {
-										handleDeleteLength(idx);
-									}}
-								>
-									Delete length
-								</button>
+				<Fragment>
+					<form>
+						<div className="formLengths__row">
+							<div className="formLengths__cell formLengths__cell--header">
+								mm
 							</div>
-						);
-					})}
+							<div className="formLengths__cell formLengths__cell--header">
+								number
+							</div>
+						</div>
+						{updatedLengths.map((l, idx) => {
+							return (
+								<div className="formLengths__row" key={idx}>
+									<div className="formLengths__cell">
+										<input
+											type="number"
+											id="length"
+											name="length"
+											min="0"
+											max="9999"
+											value={l.length}
+											onChange={(e) =>
+												handleEditedLength(idx, e)
+											}
+										/>
+									</div>
+
+									<div className="formLengths__cell">
+										<input
+											type="number"
+											id="number_individuals"
+											name="number_individuals"
+											min="0"
+											max="9999"
+											value={l.number_individuals}
+											onChange={(e) =>
+												handleEditedLength(idx, e)
+											}
+										/>
+									</div>
+									<div className="formLengths__cell">
+										<button
+											className="icon_button"
+											type="button"
+											onClick={(e) => {
+												handleDeleteLength(idx);
+											}}
+										>
+											{/* Delete length */}
+											<UiButtonIconDelete />
+										</button>
+									</div>
+								</div>
+							);
+						})}
+					</form>
 					<LengthsButtonBar
 						updatedLengths={updatedLengths}
 						status_lengths={status_lengths}
@@ -153,7 +167,7 @@ const LengthsForm = ({
 						recoverLengths={recoverLengths}
 						saveOrUpdateLengths={saveOrUpdateLengths}
 					/>
-				</form>
+				</Fragment>
 			);
 		}
 	};
