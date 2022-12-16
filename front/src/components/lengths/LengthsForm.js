@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import LengthsButtonBar from "./LengthsButtonBar.js";
+import UiButtonIconAdd from "../ui/UiButtonIconAdd";
 import UiButtonIconDelete from "../ui/UiButtonIconDelete";
 
 /**
@@ -167,20 +168,23 @@ const LengthsForm = ({
 											className="icon_button"
 											type="button"
 											onClick={(e) => {
-												handleDeleteLength(idx);
-											}}
-										>
-											{/* Delete length */}
-											<UiButtonIconDelete />
-										</button>
-										<button
-											className="icon_button"
-											type="button"
-											onClick={(e) => {
 												handleAddLength(l.length, idx);
 											}}
 										>
-											add length
+											{/* add length */}
+											<UiButtonIconAdd />
+										</button>
+									</div>
+									<div className="formLengths__cell">
+										<button
+											className="icon_button"
+											type="button"
+											title="Delete length"
+											onClick={(e) => {
+												handleDeleteLength(idx);
+											}}
+										>
+											<UiButtonIconDelete />
 										</button>
 									</div>
 								</div>
