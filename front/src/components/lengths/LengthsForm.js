@@ -167,11 +167,11 @@ const LengthsForm = ({
 										<button
 											className="icon_button"
 											type="button"
+											title="Add length"
 											onClick={(e) => {
 												handleAddLength(l.length, idx);
 											}}
 										>
-											{/* add length */}
 											<UiButtonIconAdd />
 										</button>
 									</div>
@@ -194,7 +194,6 @@ const LengthsForm = ({
 					<LengthsButtonBar
 						updatedLengths={updatedLengths}
 						status_lengths={status_lengths}
-						handleAddLength={handleAddLength}
 						handleCancelLengths={handleCancelLengths}
 						recoverLengths={recoverLengths}
 						saveOrUpdateLengths={saveOrUpdateLengths}

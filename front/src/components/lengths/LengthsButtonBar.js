@@ -13,7 +13,6 @@ const LengthsButtonBar = ({
 	handleShowLengths,
 	handleEditLengths,
 	handleHideLengths,
-	handleAddLength,
 	saveOrUpdateLengths,
 	handleCancelLengths,
 	recoverLengths,
@@ -36,9 +35,9 @@ const LengthsButtonBar = ({
 	} else if (status_lengths === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
-				<button type="button" onClick={handleAddLength}>
+				{/* <button type="button" onClick={handleAddLength}>
 					Add length
-				</button>
+				</button> */}
 				<button
 					onClick={(e) => {
 						saveOrUpdateLengths(e, updatedLengths);
