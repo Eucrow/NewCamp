@@ -32,6 +32,8 @@ class ComponentsLengths extends Component {
 		this.handleCancelLengths = this.handleCancelLengths.bind(this);
 		this.getLengths = this.getLengths.bind(this);
 		this.deleteLengths = this.deleteLengths.bind(this);
+		this.orderLengthsFunction = this.orderLengthsFunction.bind(this);
+		this.orderLengths = this.orderLengths.bind(this);
 		this.saveLengths = this.saveLengths.bind(this);
 		this.saveOrUpdateLengths = this.saveOrUpdateLengths.bind(this);
 		this.checkForLengthsDuplicated =
@@ -160,6 +162,24 @@ class ComponentsLengths extends Component {
 		return new Set(vals).size !== lengths.length;
 	}
 
+	orderLengthsFunction(a, b) {
+		if (a.length < b.length) {
+			return -1;
+		}
+
+		if (a.length > b.length) {
+			return 1;
+		}
+
+		return 0;
+	}
+
+	orderLengths() {
+		var newLengths = this.state.lengths;
+		newLengths.sort(this.orderLengthsFunction);
+		this.setState({ lengths: newLengths });
+	}
+
 	/**
 	 * Save lengths of a sex_id in database. The sex_id variable is taken from parent component via props.
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
@@ -195,6 +215,8 @@ class ComponentsLengths extends Component {
 	 */
 	saveOrUpdateLengths(event, lengths) {
 		event.preventDefault();
+
+		this.orderLengths();
 
 		// Firstly, check if exists duplicated lengths
 		// TODO: check this in validation form

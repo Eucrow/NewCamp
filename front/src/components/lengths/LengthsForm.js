@@ -1,11 +1,11 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import UiButtonIconAdd from "../ui/UiButtonIconAdd";
 import UiButtonIconDelete from "../ui/UiButtonIconDelete";
 
 /**
  *
- * @param {props} param0 props: lengths, status_lengths, handleCancelLengths, saveOrUpdateLengths
+ * @param {props} props: lengths, status_lengths, handleCancelLengths, saveOrUpdateLengths
  * @returns
  */
 const LengthsForm = ({
@@ -14,21 +14,21 @@ const LengthsForm = ({
 	handleCancelLengths,
 	saveOrUpdateLengths,
 }) => {
-	// const orderLengths = (a, b) => {
-	// 	if (a.length < b.length) {
-	// 		return -1;
-	// 	}
+	const orderLengthsFunction = (a, b) => {
+		if (Number(a.length) < Number(b.length)) {
+			return -1;
+		}
 
-	// 	if (a.length > b.length) {
-	// 		return 1;
-	// 	}
+		if (Number(a.length) > Number(b.length)) {
+			return 1;
+		}
 
-	// 	return 0;
-	// };
+		return 0;
+	};
 
 	// is mandatory to make a deep copy of the lengths received from props: JSON.parse(JSON.stringify(lengths))
 	const [updatedLengths, setUpdatedLengths] = useState(
-		JSON.parse(JSON.stringify(lengths))
+		JSON.parse(JSON.stringify(lengths)).sort(orderLengthsFunction)
 	);
 
 	/**
@@ -39,9 +39,19 @@ const LengthsForm = ({
 	const handleEditedLength = (index, e) => {
 		// a deep copy is mandatory because the data to be modified is nested:
 		let newLengths = JSON.parse(JSON.stringify(updatedLengths));
+
 		newLengths[index][e.target.name] = e.target.value;
-		setUpdatedLengths(newLengths);
+
+		setUpdatedLengths(newLengths.sort(orderLengthsFunction));
+
+		// When the lengths are orderer and change its position in updatedLengths,
+		// the focus must change to the new position:
+		if (e.target.name === "length") {
+			const lengthId = newLengths[index]["id"];
+			document.getElementById(lengthId).focus();
+		}
 	};
+
 	/**
 	 * Delete length of updated lengths state.
 	 * @param {number} index  index index of length in the dictionary.
@@ -97,7 +107,8 @@ const LengthsForm = ({
 								<div className="formLengths__cell">
 									<input
 										type="number"
-										id="length"
+										// id="length"
+										id={l.id}
 										name="length"
 										min="0"
 										max="9999"
@@ -139,7 +150,8 @@ const LengthsForm = ({
 									<div className="formLengths__cell">
 										<input
 											type="number"
-											id="length"
+											// id="length"
+											id={l.id}
 											name="length"
 											min="0"
 											max="9999"
