@@ -1,0 +1,17 @@
+.icon_button{
+    padding: 0px;
+    margin: 0px;
+    min-height: 0px; //mandatory reset min-height. Inheridet from <button>
+    width: 0.9rem;
+    height: 0.9rem;
+    border: 0px;
+    border-radius: 5px;
+    background-color: var(--wrapper-global-color);
+    
+    &:hover,
+	&:active {
+		color: var(--higlight-front-color);
+		background-color: transparent;
+        fill: var(--grey-gradient-2);
+	}
+}

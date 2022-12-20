@@ -22,8 +22,8 @@ class Sex(models.Model):
 
 class Length(models.Model):
     sex = models.ForeignKey('samples.Sex', on_delete=models.CASCADE, related_name='lengths')
-    length = models.IntegerField()
-    number_individuals = models.IntegerField()
+    length = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(9999)])
+    number_individuals = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(9999)])
 
     class Meta:
         unique_together = ('sex', 'length')

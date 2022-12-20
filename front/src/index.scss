@@ -7,8 +7,14 @@
 // css button
 @use "./scss/button";
 
+// css icons
+@use "./scss/icons";
+
 // css form
 @use "./scss/form";
+
+// css length form
+@use "./scss/formLengths";
 
 // css buttons wrapper
 @use "./scss/buttonsWrapper";
@@ -30,6 +36,9 @@
 
 // css characteristics grid
 @use "./scss/characteristicsGrid";
+
+// css sexes
+@use "./scss/sexes";
 
 // css custom properties
 :root {
