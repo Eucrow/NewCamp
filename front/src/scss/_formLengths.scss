@@ -1,0 +1,29 @@
+.lengthsWrapper{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.formLengths__row {
+    display: table-row;
+    // height: 2.5em;
+}
+
+.formLengths__cell {
+    display: table-cell;
+    padding-right: 10px;
+	height: 2rem;
+    // border-bottom: dashed;
+    // border-right: dashed;
+    vertical-align: middle;
+	// &:last-child {
+    //     padding-right: 0px;
+	// }
+}
+
+.formLengths__cell--header{
+    font-size: 0.8em;
+}
+
+
+
