@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import ComponentsLengths from "../lengths/Lengths.js";
+import ComponentLengths from "../lengths/Lengths.js";
 
 import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
 
@@ -142,7 +142,7 @@ class ComponentSex extends Component {
 						</button>
 					</div>
 					<div className="form__row lengthsWrapper">
-						<ComponentsLengths
+						<ComponentLengths
 							sex_id={this.props.sex_id}
 							sex={this.props.sex}
 						/>
@@ -181,7 +181,7 @@ class ComponentSex extends Component {
 					>
 						Save sex
 					</button>
-					<ComponentsLengths
+					<ComponentLengths
 						status_lengths={"hidden"}
 						sex_id={this.props.sex_id}
 						sex={this.props.sex}
@@ -215,8 +215,8 @@ class ComponentSex extends Component {
 						Save new sex
 					</button>
 
-					<ComponentsLengths
-						status_lengths={"hidden"}
+					<ComponentLengths
+						status_lengths={"hide"}
 						sex_id={this.props.sex_id}
 						sex={this.props.sex}
 					/>

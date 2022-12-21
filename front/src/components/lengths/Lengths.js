@@ -1,168 +1,95 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
 import LengthsForm from "./LengthsForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
 
-class ComponentsLengths extends Component {
-	/**
-	 * Component of lengths. This component is for every species-category-sex of a haul.
-	 * @param {number} props.sex_id: sex id of lengths.
-	 * @param {string} props.status_lengths: must be "view", "edit", "hide" or "add"
-	 * @param {method} props.saveSexAndLengths
-	 */
+const ComponentLengths = ({ sex_id, status_lengths }) => {
+	const [lengths, setLengths] = useState([
+		{
+			length: "",
+			number_individuals: "",
+		},
+	]);
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			lengths: [
-				{
-					length: "",
-					number_individuals: "",
-				},
-			],
-			status_lengths: "hide",
-		};
+	const [statusLengths, setStatusLengths] = useState(
+		status_lengths || "hide"
+	);
 
-		this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
+	const [responseError, setResponseError] = useState();
 
-		this.handleShowLengths = this.handleShowLengths.bind(this);
-		this.handleHideLengths = this.handleHideLengths.bind(this);
-		this.handleEditLengths = this.handleEditLengths.bind(this);
-		this.handleCancelLengths = this.handleCancelLengths.bind(this);
-		this.getLengths = this.getLengths.bind(this);
-		this.deleteLengths = this.deleteLengths.bind(this);
-		this.orderLengthsFunction = this.orderLengthsFunction.bind(this);
-		this.orderLengths = this.orderLengths.bind(this);
-		this.saveLengths = this.saveLengths.bind(this);
-		this.saveOrUpdateLengths = this.saveOrUpdateLengths.bind(this);
-		this.checkForLengthsDuplicated =
-			this.checkForLengthsDuplicated.bind(this);
-		this.createRangeLengths = this.createRangeLengths.bind(this);
-	}
-
-	/**
-	 * Create length range.
-	 * @param {number} minLength Minimun length.
-	 * @param {number} maxLength Maximum length.
-	 */
-	createRangeLengths = (minLength, maxLength) => {
-		var newLengths = [];
-
-		for (var l = minLength; l <= maxLength; l++) {
-			newLengths.push({
-				length: l,
-				number_individuals: "",
-			});
-		}
-
-		this.setState({ lengths: newLengths, status_lengths: "edit" });
-	};
+	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
 
 	/**
 	 * Show lengths.
 	 */
 	// TODO: Detect if the legths are already in state and doesn't fetcth if it is the case.
-	handleShowLengths() {
-		this.getLengths().then((lengths) => {
-			this.setState(() => {
-				return {
-					lengths: lengths,
-					status_lengths: "view",
-				};
-			});
+	const handleShowLengths = () => {
+		getLengths().then((lengths) => {
+			setLengths(lengths);
+			setStatusLengths("view");
 		});
-	}
+	};
 
 	/**
 	 * Hide lengths.
 	 */
 	//TODO: Maybe use css to hide the lenghts when they are fetched from the backend?
-	handleHideLengths(event) {
-		this.setState(() => {
-			return {
-				lengths: [],
-				status_lengths: "hide",
-			};
-		});
-	}
+	const handleHideLengths = () => {
+		setLengths([]);
+		setStatusLengths("hide");
+	};
 
 	/**
 	 * Change the state of status_lengths to "edit".
 	 */
-	handleEditLengths() {
-		this.setState(() => {
-			return {
-				status_lengths: "edit",
-			};
-		});
-	}
+	const handleEditLengths = () => {
+		setStatusLengths("edit");
+	};
 
 	/**
 	 *  Cancel the edition of the lengths. Set status_lengths state to "view".
 	 */
-	handleCancelLengths() {
-		this.setState(() => {
-			return {
-				status_lengths: "view",
-			};
-		});
-	}
+	const handleCancelLengths = () => {
+		setStatusLengths("view");
+	};
 
 	/**
 	 * Get all lengths of a sex_id from database.
 	 * @returns JSON with lengths.
 	 */
-	getLengths() {
-		const apiLengths = this.apiLengths + this.props.sex_id;
+	const getLengths = async () => {
+		const api = apiLengths + sex_id;
 
-		return fetch(apiLengths).then((response) => {
-			if (response.status > 400) {
-				return this.setState(() => {
-					return { placeholder: "Something went wrong!" };
-				});
-			}
-			return response.json();
-		});
-	}
+		const response = await fetch(api);
+		if (response.status > 400) {
+			setResponseError("Something went wrong! (getLengths)");
+		}
+		return response.json();
+	};
 
 	/**
 	 * Delete all lengths of a sex_id in database. The sex_id variable is taken from parent component via props.
 	 * @returns JSON
 	 */
-	deleteLengths() {
-		const apiLengths = this.apiLengths + this.props.sex_id;
+	const deleteLengths = async () => {
+		const api = apiLengths + sex_id;
 
-		return fetch(apiLengths, {
+		const response = await fetch(api, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
 			},
-		}).then((response) => {
-			if (response.status > 400) {
-				return this.setState(() => {
-					return { placeholder: "Something went wrong!" };
-				});
-			}
 		});
-	}
+		if (response.status > 400) {
+			setResponseError("Something went wrong!");
+		}
+	};
 
 	/**
-	 * Check if the lengths array contains duplicated lengths.
-	 * @param {array} lengths Array of dictionaries with lengths to save or update.
-	 * @returns True if there are duplicates.
+	 * Method used in orderLengths to sort lengths.
 	 */
-	checkForLengthsDuplicated(lengths) {
-		var vals = [];
-
-		for (var i = 0; i < lengths.length; i++) {
-			vals.push(lengths[i].length);
-		}
-
-		return new Set(vals).size !== lengths.length;
-	}
-
-	orderLengthsFunction(a, b) {
+	const orderLengthsFunction = (a, b) => {
 		if (a.length < b.length) {
 			return -1;
 		}
@@ -172,142 +99,169 @@ class ComponentsLengths extends Component {
 		}
 
 		return 0;
-	}
+	};
 
-	orderLengths() {
-		var newLengths = this.state.lengths;
-		newLengths.sort(this.orderLengthsFunction);
-		this.setState({ lengths: newLengths });
-	}
+	/**
+	 * Order lengths array.
+	 */
+	const orderLengths = () => {
+		var newLengths = lengths;
+		newLengths.sort(orderLengthsFunction);
+		setLengths(newLengths);
+	};
 
 	/**
 	 * Save lengths of a sex_id in database. The sex_id variable is taken from parent component via props.
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
-	 * @returns JSON response or error.
+	 * @return JSON response or error.
 	 */
-	saveLengths(lengths) {
-		const apiLengths = this.apiLengths + this.props.sex_id;
+	const saveLengths = async (lengths) => {
+		const api = apiLengths + sex_id;
 
-		return fetch(apiLengths, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(lengths),
-		})
-			.then((response) => {
-				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
-					});
-				}
-				return response.json();
-			})
-			.catch((error) => console.log(error));
-	}
+		try {
+			const response = await fetch(api, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(lengths),
+			});
+			if (response.status > 400) {
+				setResponseError("Something went wrong!");
+			}
+			return await response.json();
+		} catch (error) {
+			return console.log(error);
+		}
+	};
 
 	/**
 	 * Save or Update lengths. Check if exists duplicated lengths in the array. If already exists
 	 * lengths for this sex, delete it first and save the new lengths.
 	 * TODO: make the length validation in the form, and not here.
-	 * @param {event} event
+	 * @param {event} e
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
 	 */
-	saveOrUpdateLengths(event, lengths) {
-		event.preventDefault();
+	const saveOrUpdateLengths = (e, lengths) => {
+		e.preventDefault();
 
-		this.orderLengths();
+		orderLengths();
 
 		// Firstly, check if exists duplicated lengths
 		// TODO: check this in validation form
-		if (this.checkForLengthsDuplicated(lengths) === true) {
+		if (checkForLengthsDuplicated(lengths) === true) {
 			alert("Duplicated lengths");
 		} else {
-			this.getLengths()
+			getLengths()
 				.then((lengthts_in_database) => {
 					if (Object.keys(lengthts_in_database).length === 0) {
 						// if there are not lengths already saved, save the new lengths:
-						this.saveLengths(lengths).catch((error) =>
+						saveLengths(lengths).catch((error) =>
 							console.log(error)
 						);
 					} else {
 						// if there are lengths, first delete it, and then save the updated lengths.
-						this.deleteLengths()
+						deleteLengths()
 							.then(() => {
-								this.saveLengths(lengths);
+								saveLengths(lengths);
 							})
 							.catch((error) => console.log(error));
 					}
 				})
 
 				.then(() => {
-					this.setState(() => {
-						return { status_lengths: "view" };
-					});
+					setStatusLengths("view");
 				})
 				.catch((error) => console.log("Error"));
 		}
-	}
+	};
 
-	render() {
-		if (this.state.status_lengths === "hide") {
-			return (
-				<div>
-					<LengthsButtonBar
-						status_lengths={this.state.status_lengths}
-						handleShowLengths={this.handleShowLengths}
-					/>
-				</div>
-			);
-		} else if (
-			this.state.status_lengths === "view" &&
-			this.state.lengths.length !== 0
-		) {
-			return (
-				<div>
-					<LengthsForm
-						lengths={this.state.lengths}
-						status_lengths={this.state.status_lengths}
-						handleHideLengths={this.handleHideLengths}
-						handleEditLengths={this.handleEditLengths}
-					/>
-					<LengthsButtonBar
-						status_lengths={this.state.status_lengths}
-						handleEditLengths={this.handleEditLengths}
-						handleHideLengths={this.handleHideLengths}
-					/>
-				</div>
-			);
-		} else if (
-			this.state.status_lengths === "view" &&
-			this.state.lengths.length === 0
-		) {
-			return (
-				<div>
-					<LengthsRangeForm
-						createRangeLengths={this.createRangeLengths}
-					/>
-					<LengthsButtonBar
-						status_lengths={this.state.status_lengths}
-						handleEditLengths={this.handleEditLengths}
-						handleHideLengths={this.handleHideLengths}
-					/>
-				</div>
-			);
-		} else if (this.state.status_lengths === "edit") {
-			return (
-				<div>
-					<LengthsForm
-						lengths={this.state.lengths}
-						status_lengths={this.state.status_lengths}
-						handleCancelLengths={this.handleCancelLengths}
-						saveOrUpdateLengths={this.saveOrUpdateLengths}
-					/>
-				</div>
-			);
-		} else if (this.state.status_lengths === "remove") {
+	/**
+	 * Check if the lengths array contains duplicated lengths.
+	 * @param {array} lengths Array of dictionaries with lengths to save or update.
+	 * @returns True if there are duplicates.
+	 */
+	const checkForLengthsDuplicated = (lengths) => {
+		var vals = [];
+
+		for (var i = 0; i < lengths.length; i++) {
+			vals.push(lengths[i].length);
 		}
-	}
-}
 
-export default ComponentsLengths;
+		return new Set(vals).size !== lengths.length;
+	};
+
+	/**
+	 * Create length range.
+	 * @param {number} minLength Minimun length.
+	 * @param {number} maxLength Maximum length.
+	 */
+	const createRangeLengths = (minLength, maxLength) => {
+		var newLengths = [];
+
+		for (var l = minLength; l <= maxLength; l++) {
+			newLengths.push({
+				length: l,
+				number_individuals: "",
+			});
+		}
+
+		setLengths(newLengths);
+		setStatusLengths("edit");
+	};
+
+	// render content
+	const renderContent = () => {
+		if (statusLengths === "hide") {
+			return (
+				<div>
+					<LengthsButtonBar
+						statusLengths={statusLengths}
+						handleShowLengths={handleShowLengths}
+					/>
+				</div>
+			);
+		} else if (statusLengths === "view" && lengths.length !== 0) {
+			return (
+				<div>
+					<LengthsForm
+						lengths={lengths}
+						statusLengths={statusLengths}
+					/>
+					<LengthsButtonBar
+						statusLengths={statusLengths}
+						handleEditLengths={handleEditLengths}
+						handleHideLengths={handleHideLengths}
+					/>
+				</div>
+			);
+		} else if (statusLengths === "view" && lengths.length === 0) {
+			return (
+				<div>
+					<LengthsRangeForm createRangeLengths={createRangeLengths} />
+					<LengthsButtonBar
+						statusLengths={statusLengths}
+						handleEditLengths={handleEditLengths}
+						handleHideLengths={handleHideLengths}
+					/>
+				</div>
+			);
+		} else if (statusLengths === "edit") {
+			return (
+				<div>
+					<LengthsForm
+						lengths={lengths}
+						statusLengths={statusLengths}
+						handleCancelLengths={handleCancelLengths}
+						saveOrUpdateLengths={saveOrUpdateLengths}
+					/>
+				</div>
+			);
+		} else if (statusLengths === "remove") {
+		}
+	};
+
+	return renderContent();
+};
+
+export default ComponentLengths;

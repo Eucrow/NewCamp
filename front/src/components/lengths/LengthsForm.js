@@ -1,16 +1,16 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import UiButtonIconAdd from "../ui/UiButtonIconAdd";
 import UiButtonIconDelete from "../ui/UiButtonIconDelete";
 
 /**
  *
- * @param {props} props: lengths, status_lengths, handleCancelLengths, saveOrUpdateLengths
+ * @param {props} props: lengths, statusLengths, handleCancelLengths, saveOrUpdateLengths
  * @returns
  */
 const LengthsForm = ({
 	lengths,
-	status_lengths,
+	statusLengths,
 	handleCancelLengths,
 	saveOrUpdateLengths,
 }) => {
@@ -87,10 +87,10 @@ const LengthsForm = ({
 	};
 
 	const renderContent = () => {
-		if (status_lengths === "") {
+		if (statusLengths === "") {
 			return null;
 		}
-		if (status_lengths === "view") {
+		if (statusLengths === "view") {
 			return (
 				<form>
 					<div className="formLengths__row">
@@ -132,7 +132,7 @@ const LengthsForm = ({
 					})}
 				</form>
 			);
-		} else if (status_lengths === "edit") {
+		} else if (statusLengths === "edit") {
 			return (
 				<Fragment>
 					<form>
@@ -205,7 +205,7 @@ const LengthsForm = ({
 					</form>
 					<LengthsButtonBar
 						updatedLengths={updatedLengths}
-						status_lengths={status_lengths}
+						statusLengths={statusLengths}
 						handleCancelLengths={handleCancelLengths}
 						recoverLengths={recoverLengths}
 						saveOrUpdateLengths={saveOrUpdateLengths}

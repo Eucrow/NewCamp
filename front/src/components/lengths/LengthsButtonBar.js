@@ -9,7 +9,7 @@ import React from "react";
  */
 const LengthsButtonBar = ({
 	updatedLengths,
-	status_lengths,
+	statusLengths,
 	handleShowLengths,
 	handleEditLengths,
 	handleHideLengths,
@@ -19,20 +19,20 @@ const LengthsButtonBar = ({
 }) => {
 	var ButtonBar = null;
 
-	if (status_lengths === "hide") {
+	if (statusLengths === "hide") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
 				<button onClick={handleShowLengths}>Show lengths</button>
 			</div>
 		);
-	} else if (status_lengths === "view") {
+	} else if (statusLengths === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
 				<button onClick={handleEditLengths}>Edit lengths</button>
 				<button onClick={handleHideLengths}>Hide lengths</button>
 			</div>
 		);
-	} else if (status_lengths === "edit") {
+	} else if (statusLengths === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
 				{/* <button type="button" onClick={handleAddLength}>
