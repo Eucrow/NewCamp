@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import LengthsForm from "./LengthsForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
 
 const ComponentLengths = ({ sex_id, status_lengths }) => {
+	const [backupLengths, setBackupLengths] = useState([
+		{
+			length: "",
+			number_individuals: "",
+		},
+	]);
+
 	const [lengths, setLengths] = useState([
 		{
 			length: "",
@@ -23,9 +30,9 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 	/**
 	 * Show lengths.
 	 */
-	// TODO: Detect if the legths are already in state and doesn't fetcth if it is the case.
 	const handleShowLengths = () => {
 		getLengths().then((lengths) => {
+			setBackupLengths(lengths);
 			setLengths(lengths);
 			setStatusLengths("view");
 		});
@@ -210,6 +217,50 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		setStatusLengths("edit");
 	};
 
+	/**
+	 * Edit length of lengths state.
+	 * @param {number} index index of length in the dictionary.
+	 * @param {event} e
+	 */
+	const editLength = (index, e) => {
+		// a deep copy is mandatory because the data to be modified is nested:
+		let newLengths = JSON.parse(JSON.stringify(lengths));
+		newLengths[index][e.target.name] = e.target.value;
+		setLengths(newLengths);
+	};
+
+	/**
+	 * Delete length of lengths state.
+	 * @param {number} index  index index of length in the dictionary.
+	 */
+	const deleteLength = (index) => {
+		let newLengths = [...lengths];
+		newLengths = newLengths.filter((l, lidx) => index !== lidx);
+		setLengths(newLengths);
+	};
+
+	/**
+	 * Add empty length to lengths state.
+	 */
+	const addLength = (l, index) => {
+		let newLengths = [...lengths];
+		let newLength = Number(l) + 1;
+		newLengths.splice(index + 1, 0, {
+			length: newLength,
+			number_individuals: 0,
+		});
+
+		setLengths(newLengths);
+	};
+
+	/**
+	 * Cancel edition of lengths, restoring the original lengths.
+	 */
+	const cancelEditLengths = () => {
+		setLengths(backupLengths);
+		handleCancelLengths();
+	};
+
 	// render content
 	const renderContent = () => {
 		if (statusLengths === "hide") {
@@ -252,8 +303,11 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 					<LengthsForm
 						lengths={lengths}
 						statusLengths={statusLengths}
-						handleCancelLengths={handleCancelLengths}
 						saveOrUpdateLengths={saveOrUpdateLengths}
+						editLength={editLength}
+						deleteLength={deleteLength}
+						addLength={addLength}
+						cancelEditLengths={cancelEditLengths}
 					/>
 				</div>
 			);

@@ -1,21 +1,16 @@
 import React from "react";
 
-// import UiButtonAdd from "../ui/UiButtonAdd";
-
 /**
  * Component of Surveys bar.
- * @param {boolean} add true to show "Add" button.
- * @param {method} handleAdd Method to handle the 'add' parameter.
  */
 const LengthsButtonBar = ({
-	updatedLengths,
+	lengths,
 	statusLengths,
 	handleShowLengths,
 	handleEditLengths,
 	handleHideLengths,
 	saveOrUpdateLengths,
-	handleCancelLengths,
-	recoverLengths,
+	cancelEditLengths,
 }) => {
 	var ButtonBar = null;
 
@@ -35,20 +30,16 @@ const LengthsButtonBar = ({
 	} else if (statusLengths === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
-				{/* <button type="button" onClick={handleAddLength}>
-					Add length
-				</button> */}
 				<button
 					onClick={(e) => {
-						saveOrUpdateLengths(e, updatedLengths);
+						saveOrUpdateLengths(e, lengths);
 					}}
 				>
 					Save
 				</button>
 				<button
 					onClick={() => {
-						recoverLengths();
-						handleCancelLengths();
+						cancelEditLengths();
 					}}
 				>
 					Cancel
