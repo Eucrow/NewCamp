@@ -23,9 +23,15 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		status_lengths || "hide"
 	);
 
-	const [responseError, setResponseError] = useState();
+	const [responseError, setResponseError] = useState("none");
 
 	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
+
+	useEffect(() => {
+		if (responseError !== "none") {
+			alert(responseError);
+		}
+	}, [responseError]);
 
 	/**
 	 * Show lengths.
@@ -89,7 +95,7 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 			},
 		});
 		if (response.status > 400) {
-			setResponseError("Something went wrong!");
+			setResponseError("Something went wrong! (deleteLengths())");
 		}
 	};
 
@@ -134,7 +140,7 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 				body: JSON.stringify(lengths),
 			});
 			if (response.status > 400) {
-				setResponseError("Something went wrong!");
+				setResponseError("Something went wrong! (saveLengths())");
 			}
 			return await response.json();
 		} catch (error) {
@@ -157,7 +163,8 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		// Firstly, check if exists duplicated lengths
 		// TODO: check this in validation form
 		if (checkForLengthsDuplicated(lengths) === true) {
-			alert("Duplicated lengths");
+			// alert("Duplicated lengths");
+			setResponseError("Duplicated lengths!");
 		} else {
 			getLengths()
 				.then((lengthts_in_database) => {

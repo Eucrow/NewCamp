@@ -36,7 +36,7 @@ const LengthsForm = ({
 								<div className="formLengths__cell">
 									<input
 										type="number"
-										id={l.id}
+										// id={l.id}
 										name="length"
 										min="0"
 										max="9999"
@@ -47,7 +47,7 @@ const LengthsForm = ({
 								<div className="formLengths__cell">
 									<input
 										type="number"
-										id="number_individuals"
+										// id="number_individuals"
 										name="number_individuals"
 										min="0"
 										max="9999"
@@ -78,7 +78,7 @@ const LengthsForm = ({
 									<div className="formLengths__cell">
 										<input
 											type="number"
-											id={l.id}
+											// id={l.id}
 											name="length"
 											min="0"
 											max="9999"
@@ -90,7 +90,7 @@ const LengthsForm = ({
 									<div className="formLengths__cell">
 										<input
 											type="number"
-											id="number_individuals"
+											// id="number_individuals"
 											name="number_individuals"
 											min="0"
 											max="9999"
