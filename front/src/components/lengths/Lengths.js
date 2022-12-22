@@ -268,6 +268,22 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		handleCancelLengths();
 	};
 
+	const lengthsExists = (length) => {
+		if (lengths.find((l) => l.length === Number(length))) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	const validateLength = (e) => {
+		e.target.setCustomValidity("");
+
+		if (lengthsExists(e.target.value) === true) {
+			e.target.setCustomValidity("This length already exists.");
+		}
+	};
+
 	// render content
 	const renderContent = () => {
 		if (statusLengths === "hide") {
@@ -315,6 +331,7 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 						deleteLength={deleteLength}
 						addLength={addLength}
 						cancelEditLengths={cancelEditLengths}
+						validateLength={validateLength}
 					/>
 				</div>
 			);

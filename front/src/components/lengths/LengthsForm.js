@@ -14,6 +14,7 @@ const LengthsForm = ({
 	deleteLength,
 	addLength,
 	cancelEditLengths,
+	validateLength,
 }) => {
 	const renderContent = () => {
 		if (statusLengths === "") {
@@ -83,7 +84,10 @@ const LengthsForm = ({
 											min="0"
 											max="9999"
 											value={l.length}
-											onChange={(e) => editLength(idx, e)}
+											onChange={(e) => {
+												editLength(idx, e);
+												validateLength(e);
+											}}
 										/>
 									</div>
 
