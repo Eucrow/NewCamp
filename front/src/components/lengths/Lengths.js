@@ -268,6 +268,11 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		handleCancelLengths();
 	};
 
+	/**
+	 * Detect if already exists a length in the lengths state.
+	 * @param {number} length Lenght to check if exists.
+	 * @returns true if the length already exists in lengths state. false if doesn't.
+	 */
 	const lengthsExists = (length) => {
 		if (lengths.find((l) => l.length === Number(length))) {
 			return true;
@@ -276,6 +281,11 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		}
 	};
 
+	/**
+	 * Validate lenght
+	 * @param {event} e onChange event
+	 * @returns In case of errors in length, show report validity.
+	 */
 	const validateLength = (e) => {
 		e.target.setCustomValidity("");
 
