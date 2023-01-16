@@ -232,7 +232,7 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 	const editLength = (index, e) => {
 		// a deep copy is mandatory because the data to be modified is nested:
 		let newLengths = JSON.parse(JSON.stringify(lengths));
-		newLengths[index][e.target.name] = e.target.value;
+		newLengths[index][e.target.name] = Number(e.target.value);
 		setLengths(newLengths);
 	};
 
@@ -292,6 +292,8 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		if (lengthsExists(e.target.value) === true) {
 			e.target.setCustomValidity("This length already exists.");
 		}
+
+		return e.target.reportValidity();
 	};
 
 	// render content
