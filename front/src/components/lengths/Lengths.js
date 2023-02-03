@@ -296,6 +296,8 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 			number_individuals: 0,
 		});
 
+		newLengths = validateLengths(newLengths);
+
 		setLengths(newLengths);
 	};
 
