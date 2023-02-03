@@ -1,30 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import LengthsContext from "../../contexts/LengthsContext";
 
 /**
- * Component of Surveys bar.
+ * Lengths button bar component.
  */
-const LengthsButtonBar = ({
-	lengths,
-	statusLengths,
-	handleShowLengths,
-	handleEditLengths,
-	handleHideLengths,
-	saveOrUpdateLengths,
-	cancelEditLengths,
-}) => {
+const LengthsButtonBar = ({ lengths, statusLengths }) => {
 	var ButtonBar = null;
+
+	const lengthsContext = useContext(LengthsContext);
 
 	if (statusLengths === "hide") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
-				<button onClick={handleShowLengths}>Show lengths</button>
+				<button onClick={lengthsContext.handleShowLengths}>
+					Show lengths
+				</button>
 			</div>
 		);
 	} else if (statusLengths === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
-				<button onClick={handleEditLengths}>Edit lengths</button>
-				<button onClick={handleHideLengths}>Hide lengths</button>
+				<button onClick={lengthsContext.handleEditLengths}>
+					Edit lengths
+				</button>
+				<button onClick={lengthsContext.handleHideLengths}>
+					Hide lengths
+				</button>
 			</div>
 		);
 	} else if (statusLengths === "edit") {
@@ -32,14 +34,14 @@ const LengthsButtonBar = ({
 			<div className="form__cell buttonsWrapper">
 				<button
 					onClick={(e) => {
-						saveOrUpdateLengths(e, lengths);
+						lengthsContext.saveOrUpdateLengths(e, lengths);
 					}}
 				>
 					Save
 				</button>
 				<button
 					onClick={() => {
-						cancelEditLengths();
+						lengthsContext.cancelEditLengths();
 					}}
 				>
 					Cancel

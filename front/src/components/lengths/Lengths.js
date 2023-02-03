@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
+import LengthsContext from "../../contexts/LengthsContext";
 
 import LengthsForm from "./LengthsForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
 
+/**
+ * Lengths component.
+ * @param {number} sex_id
+ * @param {string} lengths Posible values: "view", "edit", "hide".
+ * @returns
+ */
 const ComponentLengths = ({ sex_id, status_lengths }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
@@ -16,6 +23,7 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		{
 			length: "",
 			number_individuals: "",
+			is_valid: true,
 		},
 	]);
 
@@ -41,13 +49,20 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 			setBackupLengths(lengths);
 			setLengths(lengths);
 			setStatusLengths("view");
+
+			// a deep copy is mandatory because the data to be modified is nested:
+			let newLengths = JSON.parse(JSON.stringify(lengths));
+			// newLengths[index][e.target.name] = Number(e.target.value);
+			newLengths.forEach((el) => {
+				el["is_valid"] = true;
+			});
+			setLengths(newLengths);
 		});
 	};
 
 	/**
 	 * Hide lengths.
 	 */
-	//TODO: Maybe use css to hide the lenghts when they are fetched from the backend?
 	const handleHideLengths = () => {
 		setLengths([]);
 		setStatusLengths("hide");
@@ -225,14 +240,38 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 	};
 
 	/**
+	 * Get a lengths array and update the property "is_valid" propertly:
+	 * set to "false" in all the repeated lengths and "true" where doesn't.
+	 * @param {array of objects} lengthsToValidate Lengths to validate.
+	 * @returns Array with lengths with "is_valid" property updated.
+	 */
+	const validateLengths = (lengthsToValidate) => {
+		lengthsToValidate.forEach((element, i, a) => {
+			if (a.filter((el) => el.length === element.length).length > 1) {
+				lengthsToValidate[i]["is_valid"] = false;
+			} else {
+				lengthsToValidate[i]["is_valid"] = true;
+			}
+		});
+
+		return lengthsToValidate;
+	};
+
+	/**
 	 * Edit length of lengths state.
+	 * In case the length already exists in the lengths state, its is_valid variable
+	 * is changed to "false". If doesn't, is changed to "true",
 	 * @param {number} index index of length in the dictionary.
 	 * @param {event} e
 	 */
 	const editLength = (index, e) => {
 		// a deep copy is mandatory because the data to be modified is nested:
 		let newLengths = JSON.parse(JSON.stringify(lengths));
+
 		newLengths[index][e.target.name] = Number(e.target.value);
+
+		newLengths = validateLengths(newLengths);
+
 		setLengths(newLengths);
 	};
 
@@ -268,87 +307,71 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		handleCancelLengths();
 	};
 
-	/**
-	 * Detect if already exists a length in the lengths state.
-	 * @param {number} length Lenght to check if exists.
-	 * @returns true if the length already exists in lengths state. false if doesn't.
-	 */
-	const lengthsExists = (length) => {
-		if (lengths.find((l) => l.length === Number(length))) {
-			return true;
-		} else {
-			return false;
-		}
-	};
-
-	/**
-	 * Validate lenght
-	 * @param {event} e onChange event
-	 * @returns In case of errors in length, show report validity.
-	 */
-	const validateLength = (e) => {
-		e.target.setCustomValidity("");
-
-		if (lengthsExists(e.target.value) === true) {
-			e.target.setCustomValidity("This length already exists.");
-		}
-
-		return e.target.reportValidity();
-	};
-
 	// render content
 	const renderContent = () => {
-		if (statusLengths === "hide") {
-			return (
-				<div>
-					<LengthsButtonBar
-						statusLengths={statusLengths}
-						handleShowLengths={handleShowLengths}
-					/>
-				</div>
-			);
-		} else if (statusLengths === "view" && lengths.length !== 0) {
-			return (
-				<div>
-					<LengthsForm
-						lengths={lengths}
-						statusLengths={statusLengths}
-					/>
-					<LengthsButtonBar
-						statusLengths={statusLengths}
-						handleEditLengths={handleEditLengths}
-						handleHideLengths={handleHideLengths}
-					/>
-				</div>
-			);
-		} else if (statusLengths === "view" && lengths.length === 0) {
-			return (
-				<div>
-					<LengthsRangeForm createRangeLengths={createRangeLengths} />
-					<LengthsButtonBar
-						statusLengths={statusLengths}
-						handleEditLengths={handleEditLengths}
-						handleHideLengths={handleHideLengths}
-					/>
-				</div>
-			);
-		} else if (statusLengths === "edit") {
-			return (
-				<div>
-					<LengthsForm
-						lengths={lengths}
-						statusLengths={statusLengths}
-						saveOrUpdateLengths={saveOrUpdateLengths}
-						editLength={editLength}
-						deleteLength={deleteLength}
-						addLength={addLength}
-						cancelEditLengths={cancelEditLengths}
-						validateLength={validateLength}
-					/>
-				</div>
-			);
-		} else if (statusLengths === "remove") {
-		}
+		const partialContent = () => {
+			if (statusLengths === "hide") {
+				return (
+					<div>
+						<LengthsButtonBar
+							lengths={lengths}
+							statusLengths={statusLengths}
+						/>
+					</div>
+				);
+			} else if (statusLengths === "view" && lengths.length !== 0) {
+				return (
+					<div>
+						<LengthsForm
+							lengths={lengths}
+							statusLengths={statusLengths}
+						/>
+						<LengthsButtonBar statusLengths={statusLengths} />
+					</div>
+				);
+			} else if (statusLengths === "view" && lengths.length === 0) {
+				return (
+					<div>
+						<LengthsRangeForm
+							createRangeLengths={createRangeLengths}
+						/>
+						<LengthsButtonBar statusLengths={statusLengths} />
+					</div>
+				);
+			} else if (statusLengths === "edit") {
+				return (
+					<div>
+						<LengthsForm
+							lengths={lengths}
+							statusLengths={statusLengths}
+						/>
+						<LengthsButtonBar
+							lengths={lengths}
+							statusLengths={statusLengths}
+						/>
+					</div>
+				);
+			}
+		};
+
+		return (
+			<LengthsContext.Provider
+				value={{
+					lengths: lengths,
+					statusLengths: statusLengths,
+					saveOrUpdateLengths: saveOrUpdateLengths,
+					editLength: editLength,
+					deleteLength: deleteLength,
+					addLength: addLength,
+					handleEditLengths: handleEditLengths,
+					handleShowLengths: handleShowLengths,
+					cancelEditLengths: cancelEditLengths,
+					handleHideLengths: handleHideLengths,
+				}}
+			>
+				<div>{partialContent()}</div>
+			</LengthsContext.Provider>
+		);
 	};
 
 	return renderContent();
