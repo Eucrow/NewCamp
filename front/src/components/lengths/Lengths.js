@@ -315,20 +315,14 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 			if (statusLengths === "hide") {
 				return (
 					<div>
-						<LengthsButtonBar
-							lengths={lengths}
-							statusLengths={statusLengths}
-						/>
+						<LengthsButtonBar />
 					</div>
 				);
 			} else if (statusLengths === "view" && lengths.length !== 0) {
 				return (
 					<div>
-						<LengthsForm
-							lengths={lengths}
-							statusLengths={statusLengths}
-						/>
-						<LengthsButtonBar statusLengths={statusLengths} />
+						<LengthsForm />
+						<LengthsButtonBar />
 					</div>
 				);
 			} else if (statusLengths === "view" && lengths.length === 0) {
@@ -337,20 +331,14 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 						<LengthsRangeForm
 							createRangeLengths={createRangeLengths}
 						/>
-						<LengthsButtonBar statusLengths={statusLengths} />
+						<LengthsButtonBar />
 					</div>
 				);
 			} else if (statusLengths === "edit") {
 				return (
 					<div>
-						<LengthsForm
-							lengths={lengths}
-							statusLengths={statusLengths}
-						/>
-						<LengthsButtonBar
-							lengths={lengths}
-							statusLengths={statusLengths}
-						/>
+						<LengthsForm />
+						<LengthsButtonBar />
 					</div>
 				);
 			}

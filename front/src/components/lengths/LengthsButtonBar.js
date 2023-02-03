@@ -5,12 +5,12 @@ import LengthsContext from "../../contexts/LengthsContext";
 /**
  * Lengths button bar component.
  */
-const LengthsButtonBar = ({ lengths, statusLengths }) => {
+const LengthsButtonBar = () => {
 	var ButtonBar = null;
 
 	const lengthsContext = useContext(LengthsContext);
 
-	if (statusLengths === "hide") {
+	if (lengthsContext.statusLengths === "hide") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
 				<button onClick={lengthsContext.handleShowLengths}>
@@ -18,7 +18,7 @@ const LengthsButtonBar = ({ lengths, statusLengths }) => {
 				</button>
 			</div>
 		);
-	} else if (statusLengths === "view") {
+	} else if (lengthsContext.statusLengths === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
 				<button onClick={lengthsContext.handleEditLengths}>
@@ -29,12 +29,15 @@ const LengthsButtonBar = ({ lengths, statusLengths }) => {
 				</button>
 			</div>
 		);
-	} else if (statusLengths === "edit") {
+	} else if (lengthsContext.statusLengths === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
 				<button
 					onClick={(e) => {
-						lengthsContext.saveOrUpdateLengths(e, lengths);
+						lengthsContext.saveOrUpdateLengths(
+							e,
+							lengthsContext.lengths
+						);
 					}}
 				>
 					Save

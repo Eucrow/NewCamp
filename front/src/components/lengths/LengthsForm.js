@@ -1,38 +1,33 @@
-import React, { Fragment } from "react";
+import React, { useContext } from "react";
 import LengthForm from "./LengthForm.js";
+
+import LengthsContext from "../../contexts/LengthsContext";
 
 /**
  * Lengths form.
  */
-const LengthsForm = ({ lengths, statusLengths }) => {
+const LengthsForm = () => {
+	const lengthsContext = useContext(LengthsContext);
+
 	const renderContent = () => {
-		if (statusLengths === "") {
+		if (lengthsContext.statusLengths === "") {
 			return null;
 		}
 
 		return (
-			<Fragment>
-				<form>
-					<div className="formLengths__row">
-						<div className="formLengths__cell formLengths__cell--header">
-							mm
-						</div>
-						<div className="formLengths__cell formLengths__cell--header">
-							number
-						</div>
+			<form>
+				<div className="formLengths__row">
+					<div className="formLengths__cell formLengths__cell--header">
+						mm
 					</div>
-					{lengths.map((l, idx) => {
-						return (
-							<LengthForm
-								l={l}
-								idx={idx}
-								key={idx}
-								statusLengths={statusLengths}
-							/>
-						);
-					})}
-				</form>
-			</Fragment>
+					<div className="formLengths__cell formLengths__cell--header">
+						number
+					</div>
+				</div>
+				{lengthsContext.lengths.map((l, idx) => {
+					return <LengthForm l={l} idx={idx} key={idx} />;
+				})}
+			</form>
 		);
 	};
 

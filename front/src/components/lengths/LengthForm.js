@@ -5,7 +5,7 @@ import LengthsContext from "../../contexts/LengthsContext";
 import UiButtonIconAdd from "../ui/UiButtonIconAdd";
 import UiButtonIconDelete from "../ui/UiButtonIconDelete";
 
-const LengthForm = ({ l, idx, key, statusLengths }) => {
+const LengthForm = ({ l, idx, key }) => {
 	useEffect(() => {
 		if (l.is_valid === false) {
 			lengthRef.current.setCustomValidity("This length already exists.");
@@ -19,11 +19,11 @@ const LengthForm = ({ l, idx, key, statusLengths }) => {
 	let lengthRef = useRef(null);
 
 	const renderContent = () => {
-		if (statusLengths === "") {
+		if (lengthsContext.statusLengths === "") {
 			return null;
 		}
 
-		if (statusLengths === "view") {
+		if (lengthsContext.statusLengths === "view") {
 			return (
 				<div className="formLengths__row" key={l.length}>
 					<div className="formLengths__cell">
@@ -49,7 +49,7 @@ const LengthForm = ({ l, idx, key, statusLengths }) => {
 					</div>
 				</div>
 			);
-		} else if (statusLengths === "edit") {
+		} else if (lengthsContext.statusLengths === "edit") {
 			return (
 				<div className="formLengths__row" key={idx}>
 					<div className="formLengths__cell">
