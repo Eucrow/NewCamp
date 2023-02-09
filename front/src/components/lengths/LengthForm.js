@@ -5,7 +5,7 @@ import LengthsContext from "../../contexts/LengthsContext";
 import UiButtonIconAdd from "../ui/UiButtonIconAdd";
 import UiButtonIconDelete from "../ui/UiButtonIconDelete";
 
-const LengthForm = ({ l, idx, key }) => {
+const LengthForm = ({ l, idx }) => {
 	useEffect(() => {
 		if (l.is_valid === false) {
 			lengthRef.current.setCustomValidity("This length already exists.");
