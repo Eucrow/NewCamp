@@ -46,12 +46,13 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 	 */
 	const handleShowLengths = () => {
 		getLengths().then((lengths) => {
-			setBackupLengths(lengths);
-			setLengths(lengths);
+			var filledLengths = fillLengths(lengths);
+			setBackupLengths(filledLengths);
+			setLengths(filledLengths);
 			setStatusLengths("view");
 
 			// a deep copy is mandatory because the data to be modified is nested:
-			let newLengths = JSON.parse(JSON.stringify(lengths));
+			let newLengths = JSON.parse(JSON.stringify(filledLengths));
 			// newLengths[index][e.target.name] = Number(e.target.value);
 			newLengths.forEach((el) => {
 				el["is_valid"] = true;
@@ -139,6 +140,40 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 	};
 
 	/**
+	 * Fill lengths array with the lengths that are missing.
+	 * @param {array} lengths to fill.
+	 * @returns array with filled lengths.
+	 */
+	const fillLengths = (lengths) => {
+		var len = Array.from(lengths, (length) => length.length);
+
+		var minimumLength = Math.min(...len);
+		var maximumLength = Math.max(...len);
+
+		var newLenghts = [];
+
+		for (let i = minimumLength; i <= maximumLength; i++) {
+			let originalLength = lengths.filter((e) => e.length === i);
+
+			if (originalLength.length !== 0) {
+				newLenghts.push({
+					id: originalLength[0].id,
+					length: originalLength[0].length,
+					number_individuals: originalLength[0].number_individuals,
+				});
+			} else {
+				newLenghts.push({
+					id: 0,
+					length: i,
+					number_individuals: 0,
+				});
+			}
+		}
+
+		return newLenghts;
+	};
+
+	/**
 	 * Save lengths of a sex_id in database. The sex_id variable is taken from parent component via props.
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
 	 * @return JSON response or error.
@@ -146,13 +181,16 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 	const saveLengths = async (lengths) => {
 		const api = apiLengths + sex_id;
 
+		var newLengths = fillLengths(lengths);
+		setLengths(newLengths);
+
 		try {
 			const response = await fetch(api, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(lengths),
+				body: JSON.stringify(newLengths),
 			});
 			if (response.status > 400) {
 				setResponseError("Something went wrong! (saveLengths())");
