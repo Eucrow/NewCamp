@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import LengthsContext from "../../contexts/LengthsContext";
 
 import LengthsForm from "./LengthsForm.js";
@@ -314,32 +314,32 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		const partialContent = () => {
 			if (statusLengths === "hide") {
 				return (
-					<div>
+					<Fragment>
 						<LengthsButtonBar />
-					</div>
+					</Fragment>
 				);
 			} else if (statusLengths === "view" && lengths.length !== 0) {
 				return (
-					<div>
+					<Fragment>
 						<LengthsForm />
 						<LengthsButtonBar />
-					</div>
+					</Fragment>
 				);
 			} else if (statusLengths === "view" && lengths.length === 0) {
 				return (
-					<div>
+					<Fragment>
 						<LengthsRangeForm
 							createRangeLengths={createRangeLengths}
 						/>
 						<LengthsButtonBar />
-					</div>
+					</Fragment>
 				);
 			} else if (statusLengths === "edit") {
 				return (
-					<div>
+					<Fragment>
 						<LengthsForm />
 						<LengthsButtonBar />
-					</div>
+					</Fragment>
 				);
 			}
 		};
@@ -359,7 +359,7 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 					handleHideLengths: handleHideLengths,
 				}}
 			>
-				<div>{partialContent()}</div>
+				<Fragment>{partialContent()}</Fragment>
 			</LengthsContext.Provider>
 		);
 	};

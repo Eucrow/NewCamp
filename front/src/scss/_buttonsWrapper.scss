@@ -2,10 +2,13 @@
 .buttonsWrapper {
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-end;
+	
 	align-items: center;
 	width: 100%;
-	margin: 5px 0;
+	// margin: 5px 0;
+}
+.buttonsWrapper--right {
+	justify-content: flex-end;
 }
 .buttonsWrapper__button {
 	margin-right: 5px;

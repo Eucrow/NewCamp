@@ -141,7 +141,7 @@ class ComponentSex extends Component {
 							Delete sex
 						</button>
 					</div>
-					<div className="form__row lengthsWrapper">
+					<div className="form__cell lengthsWrapper">
 						<ComponentLengths
 							sex_id={this.props.sex_id}
 							sex={this.props.sex}
