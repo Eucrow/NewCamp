@@ -76,6 +76,7 @@ const LengthForm = ({ l, idx }) => {
 							onChange={(e) => lengthsContext.editLength(idx, e)}
 						/>
 					</div>
+
 					<div className="formLengths__cell">
 						<button
 							className="icon_button"
@@ -88,6 +89,7 @@ const LengthForm = ({ l, idx }) => {
 							<UiButtonIconAdd />
 						</button>
 					</div>
+
 					<div className="formLengths__cell">
 						<button
 							className="icon_button"

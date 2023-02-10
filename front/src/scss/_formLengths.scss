@@ -4,26 +4,50 @@
     
 }
 
+.formLengths {
+    display: table;
+    padding: 5px 0 5px 0;
+}
+
 .formLengths__row {
     display: table-row;
-    // height: 2.5em;
 }
 
 .formLengths__cell {
     display: table-cell;
-    padding-right: 10px;
-	height: 2rem;
-    // border-bottom: dashed;
-    // border-right: dashed;
+    padding:1px 5px 1px 0px;
     vertical-align: middle;
-	// &:last-child {
-    //     padding-right: 0px;
-	// }
 }
 
 .formLengths__cell--header{
     font-size: 0.8em;
+    font-weight: bold;
 }
+
+// Lines before first lengths row and after the last one.
+// Is mandatory use the > to select the .formLengths__cell because display:table prevent
+// the use of padding-bottom (and others) in the table-row. This property only can be
+// altered in display:table-cell elements.
+.formLengths__row:last-child > .formLengths__cell,
+.formLengths__row:first-child > .formLengths__cell
+{
+    border-width: 0 0 1px 0 ;
+    border-style: solid;
+    border-color: var(--blue-gradient-3);
+    padding-bottom: 3px
+}
+
+.formLengths__row:nth-child(2) > .formLengths__cell {
+    padding-top: 3px;
+}
+
+// Mandatory to show propertly the lines of the first row:
+.formLengths--hidden{
+    width: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
 
 
 
