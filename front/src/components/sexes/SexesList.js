@@ -58,13 +58,16 @@ class ComponentSexes extends Component {
 						handleAddSexButton={this.handleAddSexButton}
 					/>
 				) : (
-					<button
-						onClick={() => {
-							this.handleAddSexButton(true);
-						}}
-					>
-						Add sex
-					</button>
+					<div className="buttonsWrapper">
+						<button
+							className="buttonsWrapper__button"
+							onClick={() => {
+								this.handleAddSexButton(true);
+							}}
+						>
+							Add sex
+						</button>
+					</div>
 				)}
 			</Fragment>
 		);

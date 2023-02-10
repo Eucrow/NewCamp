@@ -122,7 +122,7 @@ class ComponentSex extends Component {
 							</option>
 						</select>
 					</label>
-					<div className="form__cell">
+					<div className="form__cell buttonsWrapper">
 						<button
 							className="buttonsWrapper__button"
 							onClick={() => {
@@ -151,7 +151,7 @@ class ComponentSex extends Component {
 			);
 		} else if (this.state.status_sex === "edit") {
 			return (
-				<div className="form__row form--wide">
+				<div className="form__row form--wide buttonsWrapper">
 					<label className="form__cell">
 						Sex:
 						<select
@@ -173,6 +173,7 @@ class ComponentSex extends Component {
 						</select>
 					</label>
 					<button
+						className="buttonsWrapper__button"
 						type="button"
 						onClick={(e) => {
 							this.updateSex(e);
