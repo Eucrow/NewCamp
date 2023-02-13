@@ -1,5 +1,4 @@
-from django.shortcuts import get_list_or_404
-from rest_framework import status, generics
+from rest_framework import generics
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -8,7 +7,7 @@ from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED, HTTP_40
 from catches.serializers import SexCatchSerializer
 from samples.models import Length, Sex, SampledWeight
 
-from samples.serializers import LenghtSerializer, SampleWeightSerializer, LengthListSerializer, LengthSerializer2, \
+from samples.serializers import LenghtSerializer, SampleWeightSerializer, LengthSerializer2, \
     SexSerializer
 
 
