@@ -174,6 +174,17 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 	};
 
 	/**
+	 * Remove zero number individuals from lengths array.
+	 * @param {array of objec} lengths to remove zero number individuals.
+	 */
+	const removeZeroNumberIndividuals = (lengths) => {
+		var newLengths = lengths.filter(
+			(e) => e.number_individuals !== 0 && e.number_individuals !== ""
+		);
+		return newLengths;
+	};
+
+	/**
 	 * Save lengths of a sex_id in database. The sex_id variable is taken from parent component via props.
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
 	 * @return JSON response or error.
@@ -181,8 +192,10 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 	const saveLengths = async (lengths) => {
 		const api = apiLengths + sex_id;
 
-		var newLengths = fillLengths(lengths);
-		setLengths(newLengths);
+		// var newLengths = fillLengths(lengths);
+		// setLengths(newLengths);
+
+		var newLengths = removeZeroNumberIndividuals(lengths);
 
 		try {
 			const response = await fetch(api, {
@@ -191,6 +204,7 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify(newLengths),
+				// body: JSON.stringify(lengths),
 			});
 			if (response.status > 400) {
 				setResponseError("Something went wrong! (saveLengths())");

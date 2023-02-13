@@ -33,3 +33,6 @@ front/debug.log
 /static
 /manage.spec
 
+# files to make my test
+/front/src/components/test.js
+
