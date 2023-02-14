@@ -10,35 +10,41 @@ const LengthsButtonBar = () => {
 
 	const lengthsContext = useContext(LengthsContext);
 
-	if (lengthsContext.statusLengths === "hide") {
+	if (lengthsContext.status_lengths === "hide") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
 				<button
 					className="buttonsWrapper__button"
-					onClick={lengthsContext.handleShowLengths}
+					onclick={() => {
+						lengthsContext.handleStatusLengths("view");
+					}}
 				>
 					Show lengths
 				</button>
 			</div>
 		);
-	} else if (lengthsContext.statusLengths === "view") {
+	} else if (lengthsContext.status_lengths === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
 				<button
 					className="buttonsWrapper__button"
-					onClick={lengthsContext.handleEditLengths}
+					onClick={() => {
+						lengthsContext.handleStatusLengths("edit");
+					}}
 				>
 					Edit lengths
 				</button>
 				<button
 					className="buttonsWrapper__button"
-					onClick={lengthsContext.handleHideLengths}
+					onClick={() => {
+						lengthsContext.handleStatusLengths("hide");
+					}}
 				>
 					Hide lengths
 				</button>
 			</div>
 		);
-	} else if (lengthsContext.statusLengths === "edit") {
+	} else if (lengthsContext.status_lengths === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper">
 				<button

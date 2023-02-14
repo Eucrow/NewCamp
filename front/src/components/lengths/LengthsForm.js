@@ -10,7 +10,7 @@ const LengthsForm = () => {
 	const lengthsContext = useContext(LengthsContext);
 
 	const renderContent = () => {
-		if (lengthsContext.statusLengths === "") {
+		if (lengthsContext.status_lengths === "") {
 			return null;
 		}
 

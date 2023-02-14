@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 import ComponentLengths from "../lengths/Lengths.js";
 
-import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
-
 class ComponentSex extends Component {
 	/**
 	 *
@@ -38,6 +36,7 @@ class ComponentSex extends Component {
 		// this.saveSexAndLengths = this.saveSexAndLengths.bind(this);
 		this.handleNewSex = this.handleNewSex.bind(this);
 		this.updateSex = this.updateSex.bind(this);
+		this.handleStatusLengths = this.handleStatusLengths.bind(this);
 	}
 
 	/**
@@ -84,6 +83,14 @@ class ComponentSex extends Component {
 		 */
 
 		this.setState({ new_sex: e.target.value });
+	}
+
+	/**
+	 *
+	 * @param {character} status: "view", "edit" or "hide"
+	 */
+	handleStatusLengths(status) {
+		this.setState({ status_lengths: status });
 	}
 
 	updateSex(event) {
@@ -140,11 +147,22 @@ class ComponentSex extends Component {
 						>
 							Delete sex
 						</button>
+						<button
+							className="buttonsWrapper__button"
+							type="button"
+							onClick={() => {
+								this.handleStatusLengths("view");
+							}}
+						>
+							Show Lengths
+						</button>
 					</div>
+
 					<div className="form__cell lengthsWrapper">
 						<ComponentLengths
 							sex_id={this.props.sex_id}
-							sex={this.props.sex}
+							status_lengths={this.state.status_lengths}
+							handleStatusLengths={this.handleStatusLengths}
 						/>
 					</div>
 				</div>
@@ -182,11 +200,6 @@ class ComponentSex extends Component {
 					>
 						Save sex
 					</button>
-					<ComponentLengths
-						status_lengths={"hidden"}
-						sex_id={this.props.sex_id}
-						sex={this.props.sex}
-					/>
 				</div>
 			);
 		} else if (this.state.status_sex === "delete") {
@@ -215,12 +228,6 @@ class ComponentSex extends Component {
 					>
 						Save new sex
 					</button>
-
-					<ComponentLengths
-						status_lengths={"hide"}
-						sex_id={this.props.sex_id}
-						sex={this.props.sex}
-					/>
 				</div>
 			);
 		}

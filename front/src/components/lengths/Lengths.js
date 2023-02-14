@@ -11,7 +11,7 @@ import LengthsRangeForm from "./LengthsRangeForm.js";
  * @param {string} lengths Posible values: "view", "edit", "hide".
  * @returns
  */
-const ComponentLengths = ({ sex_id, status_lengths }) => {
+const ComponentLengths = ({ sex_id, status_lengths, handleStatusLengths }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -27,10 +27,6 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		},
 	]);
 
-	const [statusLengths, setStatusLengths] = useState(
-		status_lengths || "hide"
-	);
-
 	const [responseError, setResponseError] = useState("none");
 
 	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
@@ -41,47 +37,9 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		}
 	}, [responseError]);
 
-	/**
-	 * Show lengths.
-	 */
-	const handleShowLengths = () => {
-		getLengths().then((lengths) => {
-			var filledLengths = fillLengths(lengths);
-			setBackupLengths(filledLengths);
-			setLengths(filledLengths);
-			setStatusLengths("view");
-
-			// a deep copy is mandatory because the data to be modified is nested:
-			let newLengths = JSON.parse(JSON.stringify(filledLengths));
-			// newLengths[index][e.target.name] = Number(e.target.value);
-			newLengths.forEach((el) => {
-				el["is_valid"] = true;
-			});
-			setLengths(newLengths);
-		});
-	};
-
-	/**
-	 * Hide lengths.
-	 */
-	const handleHideLengths = () => {
-		setLengths([]);
-		setStatusLengths("hide");
-	};
-
-	/**
-	 * Change the state of status_lengths to "edit".
-	 */
-	const handleEditLengths = () => {
-		setStatusLengths("edit");
-	};
-
-	/**
-	 *  Cancel the edition of the lengths. Set status_lengths state to "view".
-	 */
-	const handleCancelLengths = () => {
-		setStatusLengths("view");
-	};
+	useEffect(() => {
+		handleShowLengths();
+	}, []);
 
 	/**
 	 * Get all lengths of a sex_id from database.
@@ -95,6 +53,24 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 			setResponseError("Something went wrong! (getLengths)");
 		}
 		return response.json();
+	};
+
+	/**
+	 * Show lengths.
+	 */
+	const handleShowLengths = () => {
+		getLengths().then((lengths) => {
+			var filledLengths = fillLengths(lengths);
+			setBackupLengths(filledLengths);
+			setLengths(filledLengths);
+
+			// a deep copy is mandatory because the data to be modified is nested:
+			let newLengths = JSON.parse(JSON.stringify(filledLengths));
+			newLengths.forEach((el) => {
+				el["is_valid"] = true;
+			});
+			setLengths(newLengths);
+		});
 	};
 
 	/**
@@ -206,16 +182,13 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 	const saveLengths = async (lengths) => {
 		const api = apiLengths + sex_id;
 
-		var newLengths = removeZeroNumberIndividuals(lengths);
-		newLengths = removeUselessElementsLengths(newLengths);
-
 		try {
 			const response = await fetch(api, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(newLengths),
+				body: JSON.stringify(lengths),
 			});
 			if (response.status > 400) {
 				setResponseError("Something went wrong! (saveLengths())");
@@ -241,28 +214,31 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		// Firstly, check if exists duplicated lengths
 		// TODO: check this in validation form
 		if (checkForLengthsDuplicated(lengths) === true) {
-			// alert("Duplicated lengths");
 			setResponseError("Duplicated lengths!");
 		} else {
 			getLengths()
 				.then((lengthts_in_database) => {
+					lengths = removeZeroNumberIndividuals(lengths);
+					lengths = removeUselessElementsLengths(lengths);
 					if (Object.keys(lengthts_in_database).length === 0) {
 						// if there are not lengths already saved, save the new lengths:
 						saveLengths(lengths).catch((error) =>
 							console.log(error)
 						);
+						setBackupLengths(lengths);
 					} else {
 						// if there are lengths, first delete it, and then save the updated lengths.
 						deleteLengths()
 							.then(() => {
 								saveLengths(lengths);
+								setBackupLengths(lengths);
 							})
 							.catch((error) => console.log(error));
 					}
 				})
 
 				.then(() => {
-					setStatusLengths("view");
+					handleStatusLengths("view");
 				})
 				.catch((error) => console.log("Error"));
 		}
@@ -299,7 +275,7 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 		}
 
 		setLengths(newLengths);
-		setStatusLengths("edit");
+		handleStatusLengths("edit");
 	};
 
 	/**
@@ -369,26 +345,20 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 	 */
 	const cancelEditLengths = () => {
 		setLengths(backupLengths);
-		handleCancelLengths();
+		handleStatusLengths("view");
 	};
 
 	// render content
 	const renderContent = () => {
 		const partialContent = () => {
-			if (statusLengths === "hide") {
-				return (
-					<Fragment>
-						<LengthsButtonBar />
-					</Fragment>
-				);
-			} else if (statusLengths === "view" && lengths.length !== 0) {
+			if (status_lengths === "view" && lengths.length !== 0) {
 				return (
 					<Fragment>
 						<LengthsForm />
 						<LengthsButtonBar />
 					</Fragment>
 				);
-			} else if (statusLengths === "view" && lengths.length === 0) {
+			} else if (status_lengths === "view" && lengths.length === 0) {
 				return (
 					<Fragment>
 						<LengthsRangeForm
@@ -397,7 +367,7 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 						<LengthsButtonBar />
 					</Fragment>
 				);
-			} else if (statusLengths === "edit") {
+			} else if (status_lengths === "edit") {
 				return (
 					<Fragment>
 						<LengthsForm />
@@ -411,15 +381,14 @@ const ComponentLengths = ({ sex_id, status_lengths }) => {
 			<LengthsContext.Provider
 				value={{
 					lengths: lengths,
-					statusLengths: statusLengths,
+					status_lengths: status_lengths,
+					handleStatusLengths: handleStatusLengths,
 					saveOrUpdateLengths: saveOrUpdateLengths,
 					editLength: editLength,
 					deleteLength: deleteLength,
 					addLength: addLength,
-					handleEditLengths: handleEditLengths,
 					handleShowLengths: handleShowLengths,
 					cancelEditLengths: cancelEditLengths,
-					handleHideLengths: handleHideLengths,
 				}}
 			>
 				<Fragment>{partialContent()}</Fragment>
