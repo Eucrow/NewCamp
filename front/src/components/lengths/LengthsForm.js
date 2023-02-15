@@ -1,44 +1,44 @@
 import React, { useContext } from "react";
 import LengthForm from "./LengthForm.js";
+import LengthsButtonBar from "./LengthsButtonBar.js";
 
 import LengthsContext from "../../contexts/LengthsContext";
 
 /**
  * Lengths form.
  */
-const LengthsForm = () => {
+const LengthsForm = ({ status_lengths }) => {
 	const lengthsContext = useContext(LengthsContext);
 
 	const renderContent = () => {
-		if (lengthsContext.status_lengths === "") {
-			return null;
-		}
-
 		return (
-			<form className="formLengths">
-				<div className="formLengths__row ">
-					<div className="formLengths__cell formLengths__cell--header">
-						mm
+			<form className="lengthsWrapper">
+				<div className="formLenghts__table">
+					<div className="formLengths__row ">
+						<div className="formLengths__cell formLengths__cell--header">
+							mm
+						</div>
+						<div className="formLengths__cell formLengths__cell--header">
+							number
+						</div>
+						<div
+							className="formLengths__cell formLengths__cell--header formLengths--hidden"
+							aria-hidden="true"
+						>
+							{/* Prevent space for two columns more. Mandatory to show propertly the lines of the first row */}
+						</div>
+						<div
+							className="formLengths__cell formLengths__cell--header formLengths--hidden"
+							aria-hidden="true"
+						>
+							{/* Prevent space for two columns more. Mandatory to show propertly the lines of the first row */}
+						</div>
 					</div>
-					<div className="formLengths__cell formLengths__cell--header">
-						number
-					</div>
-					<div
-						className="formLengths__cell formLengths__cell--header formLengths--hidden"
-						aria-hidden="true"
-					>
-						{/* Prevent space for two columns more. Mandatory to show propertly the lines of the first row */}
-					</div>
-					<div
-						className="formLengths__cell formLengths__cell--header formLengths--hidden"
-						aria-hidden="true"
-					>
-						{/* Prevent space for two columns more. Mandatory to show propertly the lines of the first row */}
-					</div>
+					{lengthsContext.lengths.map((l, idx) => {
+						return <LengthForm l={l} idx={idx} key={idx} />;
+					})}
 				</div>
-				{lengthsContext.lengths.map((l, idx) => {
-					return <LengthForm l={l} idx={idx} key={idx} />;
-				})}
+				<LengthsButtonBar />
 			</form>
 		);
 	};

@@ -19,13 +19,15 @@ const ComponentLengths = ({ sex_id, status_lengths, handleStatusLengths }) => {
 		},
 	]);
 
-	const [lengths, setLengths] = useState([
-		{
-			length: "",
-			number_individuals: "",
-			is_valid: true,
-		},
-	]);
+	// const [lengths, setLengths] = useState([
+	// 	{
+	// 		length: "",
+	// 		number_individuals: "",
+	// 		is_valid: true,
+	// 	},
+	// ]);
+
+	const [lengths, setLengths] = useState([]);
 
 	const [responseError, setResponseError] = useState("none");
 
@@ -63,6 +65,7 @@ const ComponentLengths = ({ sex_id, status_lengths, handleStatusLengths }) => {
 			var filledLengths = fillLengths(lengths);
 			setBackupLengths(filledLengths);
 			setLengths(filledLengths);
+			handleStatusLengths(status_lengths);
 
 			// a deep copy is mandatory because the data to be modified is nested:
 			let newLengths = JSON.parse(JSON.stringify(filledLengths));
@@ -351,13 +354,10 @@ const ComponentLengths = ({ sex_id, status_lengths, handleStatusLengths }) => {
 	// render content
 	const renderContent = () => {
 		const partialContent = () => {
-			if (status_lengths === "view" && lengths.length !== 0) {
-				return (
-					<Fragment>
-						<LengthsForm />
-						<LengthsButtonBar />
-					</Fragment>
-				);
+			if (status_lengths === "hide") {
+				return null;
+			} else if (status_lengths === "view" && lengths.length !== 0) {
+				return <LengthsForm status_lengths={status_lengths} />;
 			} else if (status_lengths === "view" && lengths.length === 0) {
 				return (
 					<Fragment>
@@ -368,12 +368,7 @@ const ComponentLengths = ({ sex_id, status_lengths, handleStatusLengths }) => {
 					</Fragment>
 				);
 			} else if (status_lengths === "edit") {
-				return (
-					<Fragment>
-						<LengthsForm />
-						<LengthsButtonBar />
-					</Fragment>
-				);
+				return <LengthsForm status_lengths={status_lengths} />;
 			}
 		};
 

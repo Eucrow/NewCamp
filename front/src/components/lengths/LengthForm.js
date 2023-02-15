@@ -19,10 +19,6 @@ const LengthForm = ({ l, idx }) => {
 	let lengthRef = useRef(null);
 
 	const renderContent = () => {
-		if (lengthsContext.status_lengths === "") {
-			return null;
-		}
-
 		if (lengthsContext.status_lengths === "view") {
 			return (
 				<div className="formLengths__row" key={l.length}>

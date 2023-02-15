@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { Fragment, useContext } from "react";
 
 import LengthsContext from "../../contexts/LengthsContext";
 
@@ -12,9 +12,10 @@ const LengthsButtonBar = () => {
 
 	if (lengthsContext.status_lengths === "hide") {
 		ButtonBar = (
-			<div className="form__cell buttonsWrapper">
+			<div className="form__cell buttonsWrapper--center">
 				<button
 					className="buttonsWrapper__button"
+					type="button"
 					onclick={() => {
 						lengthsContext.handleStatusLengths("view");
 					}}
@@ -25,9 +26,10 @@ const LengthsButtonBar = () => {
 		);
 	} else if (lengthsContext.status_lengths === "view") {
 		ButtonBar = (
-			<div className="form__cell buttonsWrapper">
+			<div className="form__cell buttonsWrapper--center">
 				<button
 					className="buttonsWrapper__button"
+					type="button"
 					onClick={() => {
 						lengthsContext.handleStatusLengths("edit");
 					}}
@@ -36,6 +38,7 @@ const LengthsButtonBar = () => {
 				</button>
 				<button
 					className="buttonsWrapper__button"
+					type="button"
 					onClick={() => {
 						lengthsContext.handleStatusLengths("hide");
 					}}
@@ -46,9 +49,10 @@ const LengthsButtonBar = () => {
 		);
 	} else if (lengthsContext.status_lengths === "edit") {
 		ButtonBar = (
-			<div className="form__cell buttonsWrapper">
+			<div className="form__cell buttonsWrapper--center">
 				<button
 					className="buttonsWrapper__button"
+					type="button"
 					onClick={(e) => {
 						lengthsContext.saveOrUpdateLengths(
 							e,
@@ -60,8 +64,9 @@ const LengthsButtonBar = () => {
 				</button>
 				<button
 					className="buttonsWrapper__button"
+					type="button"
 					onClick={() => {
-						lengthsContext.cancelEditLengths();
+						lengthsContext.handleStatusLengths("view");
 					}}
 				>
 					Cancel
