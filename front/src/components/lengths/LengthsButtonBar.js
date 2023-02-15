@@ -36,15 +36,6 @@ const LengthsButtonBar = () => {
 				>
 					Edit lengths
 				</button>
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={() => {
-						lengthsContext.handleStatusLengths("hide");
-					}}
-				>
-					Hide lengths
-				</button>
 			</div>
 		);
 	} else if (lengthsContext.status_lengths === "edit") {

@@ -151,26 +151,36 @@ class ComponentSex extends Component {
 							>
 								Delete sex
 							</button>
-							<button
-								className="buttonsWrapper__button"
-								type="button"
-								onClick={() => {
-									this.handleStatusLengths("view");
-								}}
-							>
-								Show Lengths
-							</button>
+
+							{this.state.status_lengths === "view" ? (
+								<button
+									className="buttonsWrapper__button"
+									type="button"
+									onClick={() => {
+										this.handleStatusLengths("hide");
+									}}
+								>
+									Hide Lengths
+								</button>
+							) : (
+								<button
+									className="buttonsWrapper__button"
+									type="button"
+									onClick={() => {
+										this.handleStatusLengths("view");
+									}}
+								>
+									Show Lengths
+								</button>
+							)}
 						</div>
 					</div>
 
-					{/* <div className=""> */}
 					<ComponentLengths
-						// className="form__cell"
 						sex_id={this.props.sex_id}
 						status_lengths={this.state.status_lengths}
 						handleStatusLengths={this.handleStatusLengths}
 					/>
-					{/* </div> */}
 				</Fragment>
 			);
 		} else if (this.state.status_sex === "edit") {
@@ -208,7 +218,6 @@ class ComponentSex extends Component {
 					</button>
 				</div>
 			);
-		} else if (this.state.status_sex === "delete") {
 		} else if (this.state.status_sex === "add") {
 			return (
 				<div className="form__row">
