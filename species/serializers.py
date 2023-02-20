@@ -13,10 +13,10 @@ class SpSimpleSerializer(serializers.ModelSerializer):
     '''
     Serializer of species name.
     '''
+
     class Meta:
         model = Sp
-        fields = ['id', 'sp_name', 'group', 'sp_code' ]
-
+        fields = ['id', 'sp_name', 'group', 'sp_code', 'unit', 'increment', ]
 
 # class CategorySerializer(serializers.ModelSerializer):
 #     '''
@@ -27,5 +27,3 @@ class SpSimpleSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Category
 #         fields = ['id', 'category_name', 'sp', ]
-
-

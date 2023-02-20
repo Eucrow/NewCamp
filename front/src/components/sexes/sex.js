@@ -9,6 +9,8 @@ class ComponentSex extends Component {
 	 * @param {number} props.sex
 	 * @param {number} props.catch_id
 	 * @param {string} props.status_sex: contains the state of the component: "view", "edit", "delete" or "add".
+	 * @param {number} props.unit: measurement unit of the species.
+	 * @param {number} props.increment: measurement increment of the species.
 	 * @param {method} props.handleChangeSex
 	 * @param {method} props.handleNewSexSubmit
 	 * @param {method} props.handleAddSexButton
@@ -179,6 +181,8 @@ class ComponentSex extends Component {
 					<ComponentLengths
 						sex_id={this.props.sex_id}
 						status_lengths={this.state.status_lengths}
+						unit={this.props.unit}
+						increment={this.props.increment}
 						handleStatusLengths={this.handleStatusLengths}
 					/>
 				</Fragment>

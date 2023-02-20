@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useReducer } from "react";
 import LengthsContext from "../../contexts/LengthsContext";
 
 import LengthsForm from "./LengthsForm.js";
@@ -11,7 +11,13 @@ import LengthsRangeForm from "./LengthsRangeForm.js";
  * @param {string} lengths Posible values: "view", "edit", "hide".
  * @returns
  */
-const ComponentLengths = ({ sex_id, status_lengths, handleStatusLengths }) => {
+const ComponentLengths = ({
+	sex_id,
+	status_lengths,
+	unit,
+	increment,
+	handleStatusLengths,
+}) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -33,6 +39,18 @@ const ComponentLengths = ({ sex_id, status_lengths, handleStatusLengths }) => {
 
 	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
 
+	const getUnit = (u) => {
+		if (u === 1) {
+			return "cm";
+		} else if (u === 2) {
+			return "mm";
+		} else {
+			return "no unit";
+		}
+	};
+
+	const [measureUnit, setMeasureUnit] = useReducer(getUnit, unit);
+
 	useEffect(() => {
 		if (responseError !== "none") {
 			alert(responseError);
@@ -41,6 +59,8 @@ const ComponentLengths = ({ sex_id, status_lengths, handleStatusLengths }) => {
 
 	useEffect(() => {
 		handleShowLengths();
+
+		setMeasureUnit(unit);
 	}, []);
 
 	/**
@@ -394,6 +414,7 @@ const ComponentLengths = ({ sex_id, status_lengths, handleStatusLengths }) => {
 			<LengthsContext.Provider
 				value={{
 					lengths: lengths,
+					measureUnit: measureUnit,
 					status_lengths: status_lengths,
 					handleStatusLengths: handleStatusLengths,
 					saveOrUpdateLengths: saveOrUpdateLengths,

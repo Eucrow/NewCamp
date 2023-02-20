@@ -7,7 +7,7 @@ import LengthsContext from "../../contexts/LengthsContext";
 /**
  * Lengths form.
  */
-const LengthsForm = ({ status_lengths }) => {
+const LengthsForm = () => {
 	const lengthsContext = useContext(LengthsContext);
 
 	const renderContent = () => {
@@ -16,7 +16,7 @@ const LengthsForm = ({ status_lengths }) => {
 				<div className="formLenghts__table">
 					<div className="formLengths__row ">
 						<div className="formLengths__cell formLengths__cell--header">
-							mm
+							{lengthsContext.measureUnit}
 						</div>
 						<div className="formLengths__cell formLengths__cell--header">
 							number
