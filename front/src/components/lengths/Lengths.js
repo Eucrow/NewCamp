@@ -178,6 +178,24 @@ const ComponentLengths = ({ sex_id, status_lengths, handleStatusLengths }) => {
 	};
 
 	/**
+	 * Remove zero tails from lengths array.
+	 * @param {array} lengths to remove zero tails.
+	 */
+	const removeZeroTails = (lengths) => {
+		var newLengths = lengths;
+
+		while (newLengths[0]["number_individuals"] === 0) {
+			newLengths.shift();
+		}
+
+		while (newLengths[newLengths.length - 1]["number_individuals"] === 0) {
+			newLengths.pop();
+		}
+
+		setLengths(newLengths);
+	};
+
+	/**
 	 * Save lengths of a sex_id in database. The sex_id variable is taken from parent component via props.
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
 	 * @return JSON response or error.
@@ -379,6 +397,7 @@ const ComponentLengths = ({ sex_id, status_lengths, handleStatusLengths }) => {
 					status_lengths: status_lengths,
 					handleStatusLengths: handleStatusLengths,
 					saveOrUpdateLengths: saveOrUpdateLengths,
+					removeZeroTails: removeZeroTails,
 					editLength: editLength,
 					deleteLength: deleteLength,
 					addLength: addLength,

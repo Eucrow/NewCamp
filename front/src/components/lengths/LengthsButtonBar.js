@@ -49,6 +49,7 @@ const LengthsButtonBar = () => {
 							e,
 							lengthsContext.lengths
 						);
+						lengthsContext.removeZeroTails(lengthsContext.lengths);
 					}}
 				>
 					Save
