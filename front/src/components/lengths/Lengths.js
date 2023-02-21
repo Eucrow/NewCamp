@@ -25,14 +25,6 @@ const ComponentLengths = ({
 		},
 	]);
 
-	// const [lengths, setLengths] = useState([
-	// 	{
-	// 		length: "",
-	// 		number_individuals: "",
-	// 		is_valid: true,
-	// 	},
-	// ]);
-
 	const [lengths, setLengths] = useState([]);
 
 	const [responseError, setResponseError] = useState("none");
@@ -56,6 +48,12 @@ const ComponentLengths = ({
 			alert(responseError);
 		}
 	}, [responseError]);
+
+	// useEffect(() => {
+	// 	handleShowLengths();
+
+	// 	setMeasureUnit(unit);
+	// }, [status_lengths]);
 
 	useEffect(() => {
 		handleShowLengths();
@@ -83,6 +81,7 @@ const ComponentLengths = ({
 	const handleShowLengths = () => {
 		getLengths().then((lengths) => {
 			var filledLengths = fillLengths(lengths);
+			filledLengths = transformUnitsFromMm(filledLengths);
 			setBackupLengths(filledLengths);
 			setLengths(filledLengths);
 			handleStatusLengths(status_lengths);
@@ -151,7 +150,16 @@ const ComponentLengths = ({
 
 		var newLenghts = [];
 
-		for (let i = minimumLength; i <= maximumLength; i++) {
+		// to calculate the increment in lengths, in case the unit is cm
+		// simply multiply the increment by 10... TODO: Try to do it in a more global way.
+		var totalIncrement = 1;
+
+		if (unit === 1) {
+			totalIncrement = 10 * Number(increment);
+		}
+
+		// for (let i = minimumLength; i <= maximumLength; i++) {
+		for (let i = minimumLength; i <= maximumLength; i += totalIncrement) {
 			let originalLength = lengths.filter((e) => e.length === i);
 
 			if (originalLength.length !== 0) {
@@ -202,17 +210,59 @@ const ComponentLengths = ({
 	 * @param {array} lengths to remove zero tails.
 	 */
 	const removeZeroTails = (lengths) => {
+		if (lengths.length !== 0) {
+			var newLengths = lengths;
+
+			while (newLengths[0]["number_individuals"] === 0) {
+				newLengths.shift();
+			}
+
+			while (
+				newLengths[newLengths.length - 1]["number_individuals"] === 0
+			) {
+				newLengths.pop();
+			}
+
+			setLengths(newLengths);
+		}
+	};
+
+	/**
+	 * Transform units to milimeters.
+	 * @param {array} lengths to transform.
+	 */
+	const transformUnitsToMm = (lengths) => {
 		var newLengths = lengths;
 
-		while (newLengths[0]["number_individuals"] === 0) {
-			newLengths.shift();
+		if (unit === 1) {
+			newLengths = newLengths.map((l) => {
+				return {
+					length: l.length * 10,
+					number_individuals: l.number_individuals,
+				};
+			});
 		}
 
-		while (newLengths[newLengths.length - 1]["number_individuals"] === 0) {
-			newLengths.pop();
+		return newLengths;
+	};
+
+	/**
+	 * Transform units from milimeters to measure unit in state.
+	 * @param {array} lengths to transform.
+	 */
+	const transformUnitsFromMm = (lengths) => {
+		var newLengths = lengths;
+
+		if (unit === 1) {
+			newLengths = newLengths.map((l) => {
+				return {
+					length: l.length / 10,
+					number_individuals: l.number_individuals,
+				};
+			});
 		}
 
-		setLengths(newLengths);
+		return newLengths;
 	};
 
 	/**
@@ -261,6 +311,7 @@ const ComponentLengths = ({
 				.then((lengthts_in_database) => {
 					lengths = removeZeroNumberIndividuals(lengths);
 					lengths = removeUselessElementsLengths(lengths);
+					lengths = transformUnitsToMm(lengths);
 					if (Object.keys(lengthts_in_database).length === 0) {
 						// if there are not lengths already saved, save the new lengths:
 						saveLengths(lengths).catch((error) =>
