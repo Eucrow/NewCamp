@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from samples.models import Length, SampledWeight, Sex
 
+
 class SampleWeightSerializer(serializers.ModelSerializer):
     """
     Sample Weights serializer
@@ -23,6 +24,7 @@ class LengthListSerializer(serializers.ListSerializer):
     List serializer customized to upload multiple objects in the same request.
     (https://www.django-rest-framework.org/api-guide/serializers/#listserializer)
     """
+
     def update(self, instance, validated_data):
         # Maps for id->instance and id->data item.
         # Map of the instance (data stored in database):
@@ -71,9 +73,9 @@ class LenghtSerializer(serializers.ModelSerializer):
         fields = ['id', 'length', 'number_individuals', ]
         list_serializer_class = LengthListSerializer
 
+
 # TODO: The next serializer should be included in LengthSerializer, but I can't make it works.
 class LengthSerializer2(serializers.ModelSerializer):
-
     class Meta:
-        model= Length
-        fields = ['sex_id', 'length', 'number_individuals',  ]
+        model = Length
+        fields = ['sex_id', 'length', 'number_individuals', ]

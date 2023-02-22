@@ -1,8 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import ComponentLengths from "../lengths/Lengths.js";
-
-import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
 
 class ComponentSex extends Component {
 	/**
@@ -11,6 +9,8 @@ class ComponentSex extends Component {
 	 * @param {number} props.sex
 	 * @param {number} props.catch_id
 	 * @param {string} props.status_sex: contains the state of the component: "view", "edit", "delete" or "add".
+	 * @param {number} props.unit: measurement unit of the species.
+	 * @param {number} props.increment: measurement increment of the species.
 	 * @param {method} props.handleChangeSex
 	 * @param {method} props.handleNewSexSubmit
 	 * @param {method} props.handleAddSexButton
@@ -28,6 +28,8 @@ class ComponentSex extends Component {
 				},
 			],
 			status_sex: this.props.status_sex ? this.props.status_sex : "view",
+			status_lengths: "hide",
+			// status_lengths: "lll",
 		};
 
 		// this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
@@ -38,6 +40,7 @@ class ComponentSex extends Component {
 		// this.saveSexAndLengths = this.saveSexAndLengths.bind(this);
 		this.handleNewSex = this.handleNewSex.bind(this);
 		this.updateSex = this.updateSex.bind(this);
+		this.handleStatusLengths = this.handleStatusLengths.bind(this);
 	}
 
 	/**
@@ -86,6 +89,14 @@ class ComponentSex extends Component {
 		this.setState({ new_sex: e.target.value });
 	}
 
+	/**
+	 *
+	 * @param {character} status: "view", "edit" or "hide"
+	 */
+	handleStatusLengths(status) {
+		this.setState({ status_lengths: status });
+	}
+
 	updateSex(event) {
 		/**
 		 * Save the sex of state to database.
@@ -113,45 +124,72 @@ class ComponentSex extends Component {
 	render() {
 		if (this.state.status_sex === "view" || this.state.status_sex === "") {
 			return (
-				<div className="form__row">
-					<label className="form__cell">
-						Sex:
-						<select id="sex" name="sex" disabled>
-							<option key={this.props.sex}>
-								{this.props.sex}
-							</option>
-						</select>
-					</label>
-					<div className="form__cell">
-						<button
-							className="buttonsWrapper__button"
-							onClick={() => {
-								this.editSexStatus("edit");
-							}}
-						>
-							Edit sex
-						</button>
-						<button
-							className="buttonsWrapper__button"
-							type="button"
-							onClick={() => {
-								this.props.deleteSex(this.props.sex_id);
-							}}
-						>
-							Delete sex
-						</button>
+				<Fragment>
+					<div className="form__row">
+						<label className="form__cell">
+							Sex:
+							<select id="sex" name="sex" disabled>
+								<option key={this.props.sex}>
+									{this.props.sex}
+								</option>
+							</select>
+						</label>
+						<div className="form__cell buttonsWrapper">
+							<button
+								className="buttonsWrapper__button"
+								type="button"
+								onClick={() => {
+									this.editSexStatus("edit");
+								}}
+							>
+								Edit sex
+							</button>
+							<button
+								className="buttonsWrapper__button"
+								type="button"
+								onClick={() => {
+									this.props.deleteSex(this.props.sex_id);
+								}}
+							>
+								Delete sex
+							</button>
+
+							{this.state.status_lengths === "view" ? (
+								<button
+									className="buttonsWrapper__button"
+									type="button"
+									onClick={() => {
+										this.handleStatusLengths("hide");
+									}}
+								>
+									Hide Lengths
+								</button>
+							) : (
+								<button
+									className="buttonsWrapper__button"
+									type="button"
+									onClick={() => {
+										this.handleStatusLengths("view");
+									}}
+								>
+									Show Lengths
+								</button>
+							)}
+						</div>
 					</div>
-					<div className="form__row lengthsWrapper">
-						<ComponentLengths
-							sex_id={this.props.sex_id}
-							sex={this.props.sex}
-						/>
-					</div>
-				</div>
+
+					<ComponentLengths
+						sex_id={this.props.sex_id}
+						status_lengths={this.state.status_lengths}
+						unit={this.props.unit}
+						increment={this.props.increment}
+						handleStatusLengths={this.handleStatusLengths}
+					/>
+				</Fragment>
 			);
 		} else if (this.state.status_sex === "edit") {
 			return (
-				<div className="form__row form--wide">
+				<div className="form__row form--wide buttonsWrapper">
 					<label className="form__cell">
 						Sex:
 						<select
@@ -173,6 +211,7 @@ class ComponentSex extends Component {
 						</select>
 					</label>
 					<button
+						className="buttonsWrapper__button"
 						type="button"
 						onClick={(e) => {
 							this.updateSex(e);
@@ -181,14 +220,8 @@ class ComponentSex extends Component {
 					>
 						Save sex
 					</button>
-					<ComponentLengths
-						status_lengths={"hidden"}
-						sex_id={this.props.sex_id}
-						sex={this.props.sex}
-					/>
 				</div>
 			);
-		} else if (this.state.status_sex === "delete") {
 		} else if (this.state.status_sex === "add") {
 			return (
 				<div className="form__row">
@@ -203,6 +236,7 @@ class ComponentSex extends Component {
 					</label>
 
 					<button
+						type="button"
 						onClick={(e) => {
 							this.props.handleNewSexSubmit(
 								e,
@@ -214,12 +248,6 @@ class ComponentSex extends Component {
 					>
 						Save new sex
 					</button>
-
-					<ComponentLengths
-						status_lengths={"hide"}
-						sex_id={this.props.sex_id}
-						sex={this.props.sex}
-					/>
 				</div>
 			);
 		}

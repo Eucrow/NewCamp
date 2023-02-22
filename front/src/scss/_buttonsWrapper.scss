@@ -2,14 +2,11 @@
 .buttonsWrapper {
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-end;
-	align-items: center;
-	width: 100%;
-	margin: 5px 0;
 }
+
 .buttonsWrapper__button {
-	margin-right: 5px;
-	margin-left: 5px;
+	margin-right: 2px;
+	margin-left: 2px;
 }
 
 .buttonsWrapper__button:first-child {
@@ -18,4 +15,8 @@
 
 .buttonsWrapper__button:last-child {
 	margin-right: 0px;
+}
+
+.buttonsWrapper--center {
+	justify-content: center;
 }

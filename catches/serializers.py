@@ -49,11 +49,13 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
         data['group'] = instance.sp.group
         data['sp_code'] = instance.sp.sp_code
         data['sp_name'] = instance.sp.sp_name
+        data['unit'] = instance.sp.unit
+        data['increment'] = instance.sp.increment
 
         data.pop('sp')
 
         # change representation of sampled weight
-        if (hasattr(instance, 'samples')):
+        if hasattr(instance, 'samples'):
             data['sampled_weight'] = instance.samples.sampled_weight
             data['sampled_weight_id'] = instance.samples.id
 

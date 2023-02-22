@@ -24,7 +24,7 @@ class Catch extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			// status_catch: "", // State of Catch component: "", "view" or "edit".
+			// status_catch: "", // State of Catch component: "", "add", "view" or "edit".
 			status_catch: this.props.status_catch || "view",
 		};
 
@@ -99,6 +99,8 @@ class Catch extends Component {
 						<ComponentSexes
 							sexes={sexes}
 							catch_id={this.props.this_catch.id}
+							unit={this.props.this_catch.unit}
+							increment={this.props.this_catch.increment}
 							handleChangeSex={this.props.handleChangeSex}
 							editCatchStatus={this.editCatchStatus}
 							handleNewSexSubmit={this.props.handleNewSexSubmit}

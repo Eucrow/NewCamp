@@ -137,8 +137,8 @@ const ViewEditSpForm = (props) => {
 						}
 					>
 						<option selected></option>
-						<option value="1">mm</option>
-						<option value="2">cm</option>
+						<option value="1">cm</option>
+						<option value="2">mm</option>
 					</select>
 				</span>
 
