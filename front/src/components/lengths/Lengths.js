@@ -13,10 +13,10 @@ import LengthsRangeForm from "./LengthsRangeForm.js";
  */
 const ComponentLengths = ({
 	sex_id,
-	status_lengths,
+	lengths_status,
 	unit,
 	increment,
-	handleStatusLengths,
+	handleLengthsStatus,
 }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
@@ -53,7 +53,7 @@ const ComponentLengths = ({
 	// 	handleShowLengths();
 
 	// 	setMeasureUnit(unit);
-	// }, [status_lengths]);
+	// }, [lengths_status]);
 
 	useEffect(() => {
 		handleShowLengths();
@@ -84,7 +84,7 @@ const ComponentLengths = ({
 			filledLengths = transformUnitsFromMm(filledLengths);
 			setBackupLengths(filledLengths);
 			setLengths(filledLengths);
-			handleStatusLengths(status_lengths);
+			handleLengthsStatus(lengths_status);
 
 			// a deep copy is mandatory because the data to be modified is nested:
 			let newLengths = JSON.parse(JSON.stringify(filledLengths));
@@ -330,7 +330,7 @@ const ComponentLengths = ({
 				})
 
 				.then(() => {
-					handleStatusLengths("view");
+					handleLengthsStatus("view");
 				})
 				.catch((error) => console.log("Error"));
 		}
@@ -367,7 +367,7 @@ const ComponentLengths = ({
 		}
 
 		setLengths(newLengths);
-		handleStatusLengths("edit");
+		handleLengthsStatus("edit");
 	};
 
 	/**
@@ -437,17 +437,17 @@ const ComponentLengths = ({
 	 */
 	const cancelEditLengths = () => {
 		setLengths(backupLengths);
-		handleStatusLengths("view");
+		handleLengthsStatus("view");
 	};
 
 	// render content
 	const renderContent = () => {
 		const partialContent = () => {
-			if (status_lengths === "hide") {
+			if (lengths_status === "hide") {
 				return null;
-			} else if (status_lengths === "view" && lengths.length !== 0) {
-				return <LengthsForm status_lengths={status_lengths} />;
-			} else if (status_lengths === "view" && lengths.length === 0) {
+			} else if (lengths_status === "view" && lengths.length !== 0) {
+				return <LengthsForm lengths_status={lengths_status} />;
+			} else if (lengths_status === "view" && lengths.length === 0) {
 				return (
 					<Fragment>
 						<LengthsRangeForm
@@ -456,8 +456,8 @@ const ComponentLengths = ({
 						<LengthsButtonBar />
 					</Fragment>
 				);
-			} else if (status_lengths === "edit") {
-				return <LengthsForm status_lengths={status_lengths} />;
+			} else if (lengths_status === "edit") {
+				return <LengthsForm lengths_status={lengths_status} />;
 			}
 		};
 
@@ -466,8 +466,8 @@ const ComponentLengths = ({
 				value={{
 					lengths: lengths,
 					measureUnit: measureUnit,
-					status_lengths: status_lengths,
-					handleStatusLengths: handleStatusLengths,
+					lengths_status: lengths_status,
+					handleLengthsStatus: handleLengthsStatus,
 					saveOrUpdateLengths: saveOrUpdateLengths,
 					removeZeroTails: removeZeroTails,
 					editLength: editLength,

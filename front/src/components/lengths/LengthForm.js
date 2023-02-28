@@ -19,7 +19,7 @@ const LengthForm = ({ l, idx }) => {
 	let lengthRef = useRef(null);
 
 	const renderContent = () => {
-		if (lengthsContext.status_lengths === "view") {
+		if (lengthsContext.lengths_status === "view") {
 			return (
 				<div className="formLengths__row" key={l.length}>
 					<div className="formLengths__cell">
@@ -45,7 +45,7 @@ const LengthForm = ({ l, idx }) => {
 					</div>
 				</div>
 			);
-		} else if (lengthsContext.status_lengths === "edit") {
+		} else if (lengthsContext.lengths_status === "edit") {
 			return (
 				<div className="formLengths__row" key={idx}>
 					<div className="formLengths__cell">
