@@ -17,19 +17,19 @@ class ComponentSexes extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showAddSexForm: false, //Manage if the button 'Add sex' is showed.
+			add_sex_status: false, //Manage if the button 'Add sex' is showed.
 		};
 
-		this.handleAddSexButton = this.handleAddSexButton.bind(this);
+		this.handleAddSexStatus = this.handleAddSexStatus.bind(this);
 	}
 
 	/**
 	 * Manage if the button 'Add sex' is showed.
 	 * @param {boolean} status
 	 */
-	handleAddSexButton(status) {
+	handleAddSexStatus(status) {
 		this.setState({
-			showAddSexForm: status,
+			add_sex_status: status,
 		});
 	}
 
@@ -53,20 +53,20 @@ class ComponentSexes extends Component {
 					);
 				})}
 
-				{this.state.showAddSexForm === true ? (
+				{this.state.add_sex_status === true ? (
 					<ComponentSex
 						catch_id={this.props.catch_id}
-						status_sex={"add"}
+						sex_status={"add"}
 						handleChangeSex={this.props.handleChangeSex}
 						handleNewSexSubmit={this.props.handleNewSexSubmit}
-						handleAddSexButton={this.handleAddSexButton}
+						handleAddSexButton={this.handleAddSexStatus}
 					/>
 				) : (
 					<div className="buttonsWrapper">
 						<button
 							className="buttonsWrapper__button"
 							onClick={() => {
-								this.handleAddSexButton(true);
+								this.handleAddSexStatus(true);
 							}}
 						>
 							Add sex

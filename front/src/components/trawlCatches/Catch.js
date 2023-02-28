@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import ComponentSexes from "../sexes/SexesList.js";
+import ComponentSexes from "../sexes/Sexes.js";
 import UiButtonCancel from "../ui/UiButtonCancel.js";
 import ComponentCategory from "./Category.js";
 

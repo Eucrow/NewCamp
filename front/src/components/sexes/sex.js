@@ -28,8 +28,8 @@ class ComponentSex extends Component {
 					number_individuals: "",
 				},
 			],
-			// sex_status: this.props.sex_status ? this.props.sex_status : "view",
-			sex_status: "view",
+			sex_status: this.props.sex_status ? this.props.sex_status : "view",
+			// sex_status: "view",
 			lengths_status: "hide",
 		};
 
@@ -128,7 +128,7 @@ class ComponentSex extends Component {
 	}
 
 	render() {
-		if (this.state.sex_status === "view" || this.state.sex_status === "") {
+		if (this.state.sex_status === "view") {
 			return (
 				<Fragment>
 					<div className="form__row">
@@ -202,7 +202,11 @@ class ComponentSex extends Component {
 				<div className="form__row">
 					<label className="form__cell">
 						Sex:
-						<select onChange={this.handleNewSex}>
+						<select
+							onChange={(e) => {
+								this.handleNewSex(e);
+							}}
+						>
 							<option></option>
 							<option value="3">Undetermined</option>
 							<option value="1">Male</option>
