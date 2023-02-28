@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 
+import SexButtonBar from "./SexButtonBar.js";
 import ComponentLengths from "../lengths/Lengths.js";
 
 class ComponentSex extends Component {
@@ -8,7 +9,7 @@ class ComponentSex extends Component {
 	 * @param {number} props.sex_id
 	 * @param {number} props.sex
 	 * @param {number} props.catch_id
-	 * @param {string} props.status_sex: contains the state of the component: "view", "edit", "delete" or "add".
+	 * @param {string} props.sex_status: contains the state of the component: "view", "edit", "delete" or "add".
 	 * @param {number} props.unit: measurement unit of the species.
 	 * @param {number} props.increment: measurement increment of the species.
 	 * @param {method} props.handleChangeSex
@@ -27,9 +28,9 @@ class ComponentSex extends Component {
 					number_individuals: "",
 				},
 			],
-			status_sex: this.props.status_sex ? this.props.status_sex : "view",
-			status_lengths: "hide",
-			// status_lengths: "lll",
+			// sex_status: this.props.sex_status ? this.props.sex_status : "view",
+			sex_status: "view",
+			lengths_status: "hide",
 		};
 
 		// this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
@@ -37,14 +38,15 @@ class ComponentSex extends Component {
 		this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
 
 		this.editSexStatus = this.editSexStatus.bind(this);
+		this.handleSexStatus = this.handleSexStatus.bind(this);
 		// this.saveSexAndLengths = this.saveSexAndLengths.bind(this);
 		this.handleNewSex = this.handleNewSex.bind(this);
 		this.updateSex = this.updateSex.bind(this);
-		this.handleStatusLengths = this.handleStatusLengths.bind(this);
+		this.handleLengthsStatus = this.handleLengthsStatus.bind(this);
 	}
 
 	/**
-	 * Change the state of status_sex variable.
+	 * Change the state of sex_status variable.
 	 * @param {character} status This variable contains the state of the component: "view", "edit", "delete" or "add".
 	 */
 	editSexStatus(status) {
@@ -52,9 +54,13 @@ class ComponentSex extends Component {
 			return {
 				catch_id: "",
 				sex: "",
-				status_sex: status,
+				sex_status: status,
 			};
 		});
+	}
+
+	handleSexStatus(status) {
+		this.setState({ sex_status: status });
 	}
 
 	// saveSexAndLengths(event){
@@ -74,7 +80,7 @@ class ComponentSex extends Component {
 	//     })
 	//     .then(() => {
 	//         this.setState(() => {
-	//             return{status_lengths : "view"}
+	//             return{lengths_status : "view"}
 	//         })
 	//     })
 	//     .catch(error => console.log('Error'))
@@ -93,8 +99,8 @@ class ComponentSex extends Component {
 	 *
 	 * @param {character} status: "view", "edit" or "hide"
 	 */
-	handleStatusLengths(status) {
-		this.setState({ status_lengths: status });
+	handleLengthsStatus(status) {
+		this.setState({ lengths_status: status });
 	}
 
 	updateSex(event) {
@@ -122,7 +128,7 @@ class ComponentSex extends Component {
 	}
 
 	render() {
-		if (this.state.status_sex === "view" || this.state.status_sex === "") {
+		if (this.state.sex_status === "view" || this.state.sex_status === "") {
 			return (
 				<Fragment>
 					<div className="form__row">
@@ -135,59 +141,28 @@ class ComponentSex extends Component {
 							</select>
 						</label>
 						<div className="form__cell buttonsWrapper">
-							<button
-								className="buttonsWrapper__button"
-								type="button"
-								onClick={() => {
-									this.editSexStatus("edit");
-								}}
-							>
-								Edit sex
-							</button>
-							<button
-								className="buttonsWrapper__button"
-								type="button"
-								onClick={() => {
-									this.props.deleteSex(this.props.sex_id);
-								}}
-							>
-								Delete sex
-							</button>
-
-							{this.state.status_lengths === "view" ? (
-								<button
-									className="buttonsWrapper__button"
-									type="button"
-									onClick={() => {
-										this.handleStatusLengths("hide");
-									}}
-								>
-									Hide Lengths
-								</button>
-							) : (
-								<button
-									className="buttonsWrapper__button"
-									type="button"
-									onClick={() => {
-										this.handleStatusLengths("view");
-									}}
-								>
-									Show Lengths
-								</button>
-							)}
+							<SexButtonBar
+								sex_id={this.props.sex_id}
+								sex_status={this.state.sex_status}
+								handleSexStatus={this.handleSexStatus}
+								updateSex={this.updateSex}
+								deleteSex={this.props.deleteSex}
+								lengths_status={this.state.lengths_status}
+								handleLengthsStatus={this.handleLengthsStatus}
+							/>
 						</div>
 					</div>
 
 					<ComponentLengths
 						sex_id={this.props.sex_id}
-						status_lengths={this.state.status_lengths}
+						lengths_status={this.state.lengths_status}
 						unit={this.props.unit}
 						increment={this.props.increment}
-						handleStatusLengths={this.handleStatusLengths}
+						handleLengthsStatus={this.handleLengthsStatus}
 					/>
 				</Fragment>
 			);
-		} else if (this.state.status_sex === "edit") {
+		} else if (this.state.sex_status === "edit") {
 			return (
 				<div className="form__row form--wide buttonsWrapper">
 					<label className="form__cell">
@@ -222,7 +197,7 @@ class ComponentSex extends Component {
 					</button>
 				</div>
 			);
-		} else if (this.state.status_sex === "add") {
+		} else if (this.state.sex_status === "add") {
 			return (
 				<div className="form__row">
 					<label className="form__cell">
