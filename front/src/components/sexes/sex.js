@@ -3,7 +3,7 @@ import React, { Component, Fragment } from "react";
 import SexButtonBar from "./SexButtonBar.js";
 import ComponentLengths from "../lengths/Lengths.js";
 
-class ComponentSex extends Component {
+class Sex extends Component {
 	/**
 	 *
 	 * @param {number} props.sex_id
@@ -29,17 +29,13 @@ class ComponentSex extends Component {
 				},
 			],
 			sex_status: this.props.sex_status ? this.props.sex_status : "view",
-			// sex_status: "view",
 			lengths_status: "hide",
 		};
 
-		// this.apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
-		// this.apiSexAndLengths = "http://127.0.0.1:8000/api/1.0/sex/lengths/";
 		this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
 
 		this.editSexStatus = this.editSexStatus.bind(this);
 		this.handleSexStatus = this.handleSexStatus.bind(this);
-		// this.saveSexAndLengths = this.saveSexAndLengths.bind(this);
 		this.handleNewSex = this.handleNewSex.bind(this);
 		this.updateSex = this.updateSex.bind(this);
 		this.handleLengthsStatus = this.handleLengthsStatus.bind(this);
@@ -63,29 +59,6 @@ class ComponentSex extends Component {
 		this.setState({ sex_status: status });
 	}
 
-	// saveSexAndLengths(event){
-	//     /**
-	//     * Save the sex and lengths of state to database.
-	//     */
-
-	//     event.preventDefault();
-
-	//     console.log(JSON.stringify(this.state.sex))
-	//     fetch(this.apiSexAndLengths, {
-	//         method: 'POST',
-	//         headers: {
-	//             'Content-Type': 'application/json',
-	//             },
-	//         body: JSON.stringify(this.state.sex)
-	//     })
-	//     .then(() => {
-	//         this.setState(() => {
-	//             return{lengths_status : "view"}
-	//         })
-	//     })
-	//     .catch(error => console.log('Error'))
-	// }
-
 	handleNewSex(e) {
 		/**
 		 * Change the state of new_sex variable.
@@ -96,18 +69,18 @@ class ComponentSex extends Component {
 	}
 
 	/**
-	 *
-	 * @param {character} status: "view", "edit" or "hide"
+	 * Change the state of lengths_status variable.
+	 * @param {character} status:  "view", "edit" or "hide"
 	 */
 	handleLengthsStatus(status) {
 		this.setState({ lengths_status: status });
 	}
 
+	/**
+	 * Save the sex stored in state to database.
+	 * @param {event} event
+	 */
 	updateSex(event) {
-		/**
-		 * Save the sex of state to database.
-		 */
-
 		event.preventDefault();
 
 		// get the sex of the catch which has been changed
@@ -233,4 +206,4 @@ class ComponentSex extends Component {
 	}
 }
 
-export default ComponentSex;
+export default Sex;

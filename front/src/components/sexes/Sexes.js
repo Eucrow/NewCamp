@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from "react";
 
-import ComponentSex from "./sex";
+import Sex from "./sex";
 
-class ComponentSexes extends Component {
+class Sexes extends Component {
 	/**
-	 * por aquí
 	 * @param {object} props.sexes: sexes of the catch.
 	 * @param {number} props.catch_id: id of the catch.
 	 * @param {number} props.unit: measure unit of the species.
@@ -40,7 +39,7 @@ class ComponentSexes extends Component {
 			<Fragment>
 				{sexes.map((s) => {
 					return (
-						<ComponentSex
+						<Sex
 							key={s.id}
 							sex_id={s.id}
 							sex={s.sex}
@@ -54,7 +53,7 @@ class ComponentSexes extends Component {
 				})}
 
 				{this.state.add_sex_status === true ? (
-					<ComponentSex
+					<Sex
 						catch_id={this.props.catch_id}
 						sex_status={"add"}
 						handleChangeSex={this.props.handleChangeSex}
@@ -78,4 +77,4 @@ class ComponentSexes extends Component {
 	}
 }
 
-export default ComponentSexes;
+export default Sexes;
