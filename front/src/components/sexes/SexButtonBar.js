@@ -66,10 +66,20 @@ const SexButtonBar = ({
 					type="button"
 					onClick={(e) => {
 						updateSex(e);
+						handleSexStatus("view");
+					}}
+				>
+					Save sex
+				</button>
+				{/* <button
+					className="buttonsWrapper__button"
+					type="button"
+					onClick={(e) => {
+						updateSex(e);
 					}}
 				>
 					Save
-				</button>
+				</button> */}
 				<button
 					className="buttonsWrapper__button"
 					type="button"

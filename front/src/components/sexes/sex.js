@@ -34,7 +34,7 @@ class Sex extends Component {
 
 		this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
 
-		this.editSexStatus = this.editSexStatus.bind(this);
+		// this.editSexStatus = this.editSexStatus.bind(this);
 		this.handleSexStatus = this.handleSexStatus.bind(this);
 		this.handleNewSex = this.handleNewSex.bind(this);
 		this.updateSex = this.updateSex.bind(this);
@@ -45,15 +45,15 @@ class Sex extends Component {
 	 * Change the state of sex_status variable.
 	 * @param {character} status This variable contains the state of the component: "view", "edit", "delete" or "add".
 	 */
-	editSexStatus(status) {
-		this.setState(() => {
-			return {
-				catch_id: "",
-				sex: "",
-				sex_status: status,
-			};
-		});
-	}
+	// editSexStatus(status) {
+	// 	this.setState(() => {
+	// 		return {
+	// 			catch_id: "",
+	// 			sex: "",
+	// 			sex_status: status,
+	// 		};
+	// 	});
+	// }
 
 	handleSexStatus(status) {
 		this.setState({ sex_status: status });
@@ -158,16 +158,17 @@ class Sex extends Component {
 							<option value="2">Female</option>
 						</select>
 					</label>
-					<button
-						className="buttonsWrapper__button"
-						type="button"
-						onClick={(e) => {
-							this.updateSex(e);
-							this.editSexStatus("view");
-						}}
-					>
-						Save sex
-					</button>
+					<div className="form__cell buttonsWrapper">
+						<SexButtonBar
+							sex_id={this.props.sex_id}
+							sex_status={"edit"}
+							handleSexStatus={this.handleSexStatus}
+							updateSex={this.updateSex}
+							deleteSex={this.props.deleteSex}
+							lengths_status={this.state.lengths_status}
+							handleLengthsStatus={this.handleLengthsStatus}
+						/>
+					</div>
 				</div>
 			);
 		} else if (this.state.sex_status === "add") {
