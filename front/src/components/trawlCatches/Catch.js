@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import ComponentSexes from "../sexes/SexesList.js";
+import ComponentSexes from "../sexes/Sexes.js";
 import UiButtonCancel from "../ui/UiButtonCancel.js";
 import ComponentCategory from "./Category.js";
 
@@ -18,7 +18,7 @@ class Catch extends Component {
 	 * @param {method} props.updateCatch: update catch in database.
 	 * @param {method} props.removeCatch: delete catch of database.
 	 * @param {method} props.handleChangeSex: manage sex state.
-	 * @param {method} props.handleNewSexSubmit: handle the new sex form.
+	 * @param {method} props.addSex: handle the new sex form.
 	 */
 
 	constructor(props) {
@@ -103,7 +103,7 @@ class Catch extends Component {
 							increment={this.props.this_catch.increment}
 							handleChangeSex={this.props.handleChangeSex}
 							editCatchStatus={this.editCatchStatus}
-							handleNewSexSubmit={this.props.handleNewSexSubmit}
+							addSex={this.props.addSex}
 							deleteSex={this.props.deleteSex}
 						/>
 					</div>

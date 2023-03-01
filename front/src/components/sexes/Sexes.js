@@ -1,35 +1,35 @@
 import React, { Component, Fragment } from "react";
 
-import ComponentSex from "./sex";
+import Sex from "./sex";
+import SexesButtonBar from "./SexesButtonBar";
 
-class ComponentSexes extends Component {
+class Sexes extends Component {
 	/**
-	 * por aquí
 	 * @param {object} props.sexes: sexes of the catch.
 	 * @param {number} props.catch_id: id of the catch.
 	 * @param {number} props.unit: measure unit of the species.
 	 * @param {number} props.increment: measure increment of the species.
 	 * @param {method} props.deleteSex: delete sex of database.
 	 * @param {method} props.handleChangeSex:
-	 * @param {method} props.handleNewSexSubmit
+	 * @param {method} props.addSex
 	 */
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			showAddSexForm: false, //Manage if the button 'Add sex' is showed.
+			add_sex_status: false, //Manage if the button 'Add sex' is showed.
 		};
 
-		this.handleAddSexButton = this.handleAddSexButton.bind(this);
+		this.handleAddSexStatus = this.handleAddSexStatus.bind(this);
 	}
 
 	/**
 	 * Manage if the button 'Add sex' is showed.
 	 * @param {boolean} status
 	 */
-	handleAddSexButton(status) {
+	handleAddSexStatus(status) {
 		this.setState({
-			showAddSexForm: status,
+			add_sex_status: status,
 		});
 	}
 
@@ -40,7 +40,7 @@ class ComponentSexes extends Component {
 			<Fragment>
 				{sexes.map((s) => {
 					return (
-						<ComponentSex
+						<Sex
 							key={s.id}
 							sex_id={s.id}
 							sex={s.sex}
@@ -53,29 +53,23 @@ class ComponentSexes extends Component {
 					);
 				})}
 
-				{this.state.showAddSexForm === true ? (
-					<ComponentSex
+				{this.state.add_sex_status === true ? (
+					<Sex
 						catch_id={this.props.catch_id}
-						status_sex={"add"}
+						sex_status={"add"}
 						handleChangeSex={this.props.handleChangeSex}
-						handleNewSexSubmit={this.props.handleNewSexSubmit}
-						handleAddSexButton={this.handleAddSexButton}
+						addSex={this.props.addSex}
+						handleAddSexStatus={this.handleAddSexStatus}
 					/>
 				) : (
-					<div className="buttonsWrapper">
-						<button
-							className="buttonsWrapper__button"
-							onClick={() => {
-								this.handleAddSexButton(true);
-							}}
-						>
-							Add sex
-						</button>
-					</div>
+					<SexesButtonBar
+						add_sex_status={"view"}
+						handleAddSexStatus={this.handleAddSexStatus}
+					/>
 				)}
 			</Fragment>
 		);
 	}
 }
 
-export default ComponentSexes;
+export default Sexes;
