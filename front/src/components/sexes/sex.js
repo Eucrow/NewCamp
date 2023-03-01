@@ -34,7 +34,6 @@ class Sex extends Component {
 
 		this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
 
-		// this.editSexStatus = this.editSexStatus.bind(this);
 		this.handleSexStatus = this.handleSexStatus.bind(this);
 		this.handleNewSex = this.handleNewSex.bind(this);
 		this.updateSex = this.updateSex.bind(this);
@@ -43,28 +42,18 @@ class Sex extends Component {
 
 	/**
 	 * Change the state of sex_status variable.
-	 * @param {character} status This variable contains the state of the component: "view", "edit", "delete" or "add".
+	 * @param {character} status: "view", "edit" or "hide"
 	 */
-	// editSexStatus(status) {
-	// 	this.setState(() => {
-	// 		return {
-	// 			catch_id: "",
-	// 			sex: "",
-	// 			sex_status: status,
-	// 		};
-	// 	});
-	// }
-
 	handleSexStatus(status) {
 		this.setState({ sex_status: status });
 	}
 
+	/**
+	 * Change the state of new_sex variable.
+	 * This variable contains the value of the new sex which will be saved in database.
+	 * @param {event} e: Click event
+	 */
 	handleNewSex(e) {
-		/**
-		 * Change the state of new_sex variable.
-		 * This variable contains the value of the new sex which will be saved in database.
-		 */
-
 		this.setState({ new_sex: e.target.value });
 	}
 
