@@ -44,7 +44,7 @@ class CatchesList extends Component {
 		this.removeCatch = this.removeCatch.bind(this);
 		this.createCatch = this.createCatch.bind(this);
 		this.handleChangeSex = this.handleChangeSex.bind(this);
-		this.handleNewSexSubmit = this.handleNewSexSubmit.bind(this);
+		this.addSex = this.addSex.bind(this);
 	}
 
 	handleChangeSampledWeight = (ids) => (evt) => {
@@ -483,7 +483,7 @@ class CatchesList extends Component {
 		});
 	};
 
-	handleNewSexSubmit = (evt, sex, idc) => {
+	addSex = (evt, sex, idc) => {
 		/**
 		 * Handle new sex form.
 		 * Fetch the new sex and update the catches state.
@@ -631,7 +631,7 @@ class CatchesList extends Component {
 									updateCatch={this.updateCatch}
 									removeCatch={this.removeCatch}
 									handleChangeSex={this.handleChangeSex}
-									handleNewSexSubmit={this.handleNewSexSubmit}
+									addSex={this.addSex}
 									createSampledWeight={
 										this.createSampledWeight
 									}

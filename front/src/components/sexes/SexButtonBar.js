@@ -6,11 +6,15 @@ import React from "react";
 const SexButtonBar = ({
 	sex_id,
 	sex_status,
+	new_sex,
+	catch_id,
 	handleSexStatus,
 	updateSex,
 	deleteSex,
 	lengths_status,
 	handleLengthsStatus,
+	addSex,
+	handleAddSexStatus,
 }) => {
 	var ButtonBar = null;
 
@@ -71,20 +75,35 @@ const SexButtonBar = ({
 				>
 					Save sex
 				</button>
-				{/* <button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={(e) => {
-						updateSex(e);
-					}}
-				>
-					Save
-				</button> */}
 				<button
 					className="buttonsWrapper__button"
 					type="button"
 					onClick={() => {
 						handleSexStatus("view");
+					}}
+				>
+					Cancel
+				</button>
+			</div>
+		);
+	} else if (sex_status === "add") {
+		ButtonBar = (
+			<div className="form__cell buttonsWrapper--center">
+				<button
+					className="buttonsWrapper__button"
+					type="button"
+					onClick={(e) => {
+						addSex(e, new_sex, catch_id);
+						handleAddSexStatus(false);
+					}}
+				>
+					Save sex
+				</button>
+				<button
+					className="buttonsWrapper__button"
+					type="button"
+					onClick={() => {
+						handleAddSexStatus(false);
 					}}
 				>
 					Cancel

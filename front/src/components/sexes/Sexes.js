@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 
 import Sex from "./sex";
+import SexesButtonBar from "./SexesButtonBar";
 
 class Sexes extends Component {
 	/**
@@ -10,7 +11,7 @@ class Sexes extends Component {
 	 * @param {number} props.increment: measure increment of the species.
 	 * @param {method} props.deleteSex: delete sex of database.
 	 * @param {method} props.handleChangeSex:
-	 * @param {method} props.handleNewSexSubmit
+	 * @param {method} props.addSex
 	 */
 
 	constructor(props) {
@@ -57,20 +58,14 @@ class Sexes extends Component {
 						catch_id={this.props.catch_id}
 						sex_status={"add"}
 						handleChangeSex={this.props.handleChangeSex}
-						handleNewSexSubmit={this.props.handleNewSexSubmit}
-						handleAddSexButton={this.handleAddSexStatus}
+						addSex={this.props.addSex}
+						handleAddSexStatus={this.handleAddSexStatus}
 					/>
 				) : (
-					<div className="buttonsWrapper">
-						<button
-							className="buttonsWrapper__button"
-							onClick={() => {
-								this.handleAddSexStatus(true);
-							}}
-						>
-							Add sex
-						</button>
-					</div>
+					<SexesButtonBar
+						add_sex_status={"view"}
+						handleAddSexStatus={this.handleAddSexStatus}
+					/>
 				)}
 			</Fragment>
 		);

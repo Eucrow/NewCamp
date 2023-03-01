@@ -13,7 +13,7 @@ class Sex extends Component {
 	 * @param {number} props.unit: measurement unit of the species.
 	 * @param {number} props.increment: measurement increment of the species.
 	 * @param {method} props.handleChangeSex
-	 * @param {method} props.handleNewSexSubmit
+	 * @param {method} props.addSex
 	 * @param {method} props.handleAddSexButton
 	 * @param {method} props.deleteSex: delete sex of database.
 	 */
@@ -177,19 +177,15 @@ class Sex extends Component {
 						</select>
 					</label>
 
-					<button
-						type="button"
-						onClick={(e) => {
-							this.props.handleNewSexSubmit(
-								e,
-								this.state.new_sex,
-								this.props.catch_id
-							);
-							this.props.handleAddSexButton(false);
-						}}
-					>
-						Save new sex
-					</button>
+					<SexButtonBar
+						sex_status={"add"}
+						new_sex={this.state.new_sex}
+						catch_id={this.props.catch_id}
+						addSex={this.props.addSex}
+						handleAddSexStatus={this.props.handleAddSexStatus}
+						updateSex={this.updateSex}
+						handleSexStatus={this.handleSexStatus}
+					/>
 				</div>
 			);
 		}
