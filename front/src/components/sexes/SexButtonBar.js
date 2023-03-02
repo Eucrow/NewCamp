@@ -6,13 +6,13 @@ import React from "react";
 const SexButtonBar = ({
 	sex_id,
 	sex_status,
-	new_sex,
+	newSex,
 	catch_id,
-	handleSexStatus,
+	setSexStatus,
 	updateSex,
 	deleteSex,
 	lengths_status,
-	handleLengthsStatus,
+	setLengthsStatus,
 	addSex,
 	handleAddSexStatus,
 }) => {
@@ -25,7 +25,7 @@ const SexButtonBar = ({
 					className="buttonsWrapper__button"
 					type="button"
 					onClick={() => {
-						handleSexStatus("edit");
+						setSexStatus("edit");
 					}}
 				>
 					Edit sex
@@ -44,7 +44,7 @@ const SexButtonBar = ({
 						className="buttonsWrapper__button"
 						type="button"
 						onClick={() => {
-							handleLengthsStatus("hide");
+							setLengthsStatus("hide");
 						}}
 					>
 						Hide Lengths
@@ -54,7 +54,7 @@ const SexButtonBar = ({
 						className="buttonsWrapper__button"
 						type="button"
 						onClick={() => {
-							handleLengthsStatus("view");
+							setLengthsStatus("view");
 						}}
 					>
 						Show Lengths
@@ -70,7 +70,7 @@ const SexButtonBar = ({
 					type="button"
 					onClick={(e) => {
 						updateSex(e);
-						handleSexStatus("view");
+						setSexStatus("view");
 					}}
 				>
 					Save sex
@@ -79,7 +79,7 @@ const SexButtonBar = ({
 					className="buttonsWrapper__button"
 					type="button"
 					onClick={() => {
-						handleSexStatus("view");
+						setSexStatus("view");
 					}}
 				>
 					Cancel
@@ -93,7 +93,7 @@ const SexButtonBar = ({
 					className="buttonsWrapper__button"
 					type="button"
 					onClick={(e) => {
-						addSex(e, new_sex, catch_id);
+						addSex(e, newSex, catch_id);
 						handleAddSexStatus(false);
 					}}
 				>

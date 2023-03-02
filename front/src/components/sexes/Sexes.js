@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 
-import Sex from "./sex";
+import Sex from "./Sex";
 import SexesButtonBar from "./SexesButtonBar";
 
 class Sexes extends Component {

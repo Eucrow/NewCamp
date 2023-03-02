@@ -17,7 +17,7 @@ const LengthsButtonBar = () => {
 					className="buttonsWrapper__button"
 					type="button"
 					onclick={() => {
-						lengthsContext.handleLengthsStatus("view");
+						lengthsContext.setLengthsStatus("view");
 					}}
 				>
 					Show lengths
@@ -31,7 +31,7 @@ const LengthsButtonBar = () => {
 					className="buttonsWrapper__button"
 					type="button"
 					onClick={() => {
-						lengthsContext.handleLengthsStatus("edit");
+						lengthsContext.setLengthsStatus("edit");
 					}}
 				>
 					Edit lengths
@@ -58,7 +58,7 @@ const LengthsButtonBar = () => {
 					className="buttonsWrapper__button"
 					type="button"
 					onClick={() => {
-						lengthsContext.handleLengthsStatus("view");
+						lengthsContext.setLengthsStatus("view");
 					}}
 				>
 					Cancel

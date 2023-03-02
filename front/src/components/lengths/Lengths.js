@@ -16,7 +16,7 @@ const ComponentLengths = ({
 	lengths_status,
 	unit,
 	increment,
-	handleLengthsStatus,
+	setLengthsStatus,
 }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
@@ -84,7 +84,7 @@ const ComponentLengths = ({
 			filledLengths = transformUnitsFromMm(filledLengths);
 			setBackupLengths(filledLengths);
 			setLengths(filledLengths);
-			handleLengthsStatus(lengths_status);
+			setLengthsStatus(lengths_status);
 
 			// a deep copy is mandatory because the data to be modified is nested:
 			let newLengths = JSON.parse(JSON.stringify(filledLengths));
@@ -330,7 +330,7 @@ const ComponentLengths = ({
 				})
 
 				.then(() => {
-					handleLengthsStatus("view");
+					setLengthsStatus("view");
 				})
 				.catch((error) => console.log("Error"));
 		}
@@ -367,7 +367,7 @@ const ComponentLengths = ({
 		}
 
 		setLengths(newLengths);
-		handleLengthsStatus("edit");
+		setLengthsStatus("edit");
 	};
 
 	/**
@@ -437,7 +437,7 @@ const ComponentLengths = ({
 	 */
 	const cancelEditLengths = () => {
 		setLengths(backupLengths);
-		handleLengthsStatus("view");
+		setLengthsStatus("view");
 	};
 
 	// render content
@@ -467,7 +467,7 @@ const ComponentLengths = ({
 					lengths: lengths,
 					measureUnit: measureUnit,
 					lengths_status: lengths_status,
-					handleLengthsStatus: handleLengthsStatus,
+					setLengthsStatus: setLengthsStatus,
 					saveOrUpdateLengths: saveOrUpdateLengths,
 					removeZeroTails: removeZeroTails,
 					editLength: editLength,

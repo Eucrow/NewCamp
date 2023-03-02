@@ -3,11 +3,7 @@ import React from "react";
 /**
  * Lengths button bar component.
  */
-const SexButtonBar = ({
-	add_sex_status,
-	handleAddSexStatus,
-	handleSexStatus,
-}) => {
+const SexButtonBar = ({ add_sex_status, handleAddSexStatus }) => {
 	var ButtonBar = null;
 
 	if (add_sex_status === "view") {
