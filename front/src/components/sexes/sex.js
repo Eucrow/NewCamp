@@ -4,10 +4,9 @@ import ComponentLengths from "../lengths/Lengths.js";
 
 /**
  * Sex component.
- * @param {character} sex_status "view", "edit" or "add".
+ * @param {string} sex_status "view", "edit" or "add".
  * @param {number} sex_id Id of sex.
- * @param {character} sex Sex.
- * @param {method} deleteSex Method to delete sex.
+ * @param {string} sex Sex.
  * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is milimeters.
  * @param {numeric} increment Increment of measurement unit.
  * @param {method} handleChangeSex Method to handle the change of sex value.

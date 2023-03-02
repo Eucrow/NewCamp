@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import ComponentSexes from "../sexes/Sexes.js";
+import Sexes from "../sexes/Sexes.js";
 import UiButtonCancel from "../ui/UiButtonCancel.js";
 import ComponentCategory from "./Category.js";
 
@@ -65,7 +65,7 @@ class Catch extends Component {
 			);
 		} else if (this.state.status_catch === "view") {
 			const this_catch = this.props.this_catch;
-			const sexes = this_catch.sexes ? this_catch.sexes : null;
+			const sexes = this_catch.sexes ? this_catch.sexes : [];
 
 			return (
 				<div className="form__row form--wide catch">
@@ -96,7 +96,7 @@ class Catch extends Component {
 						</button>
 					</div>
 					<div className="form__row sexesWrapper">
-						<ComponentSexes
+						<Sexes
 							sexes={sexes}
 							catch_id={this.props.this_catch.id}
 							unit={this.props.this_catch.unit}
