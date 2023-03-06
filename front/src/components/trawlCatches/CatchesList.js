@@ -22,16 +22,13 @@ class CatchesList extends Component {
 		this.apiCreateCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
 		// TODO: change the apiSpecies api to only return the id, sp_name, group and sp_code variables.
 		this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
-		this.apiCategoriesSpecies =
-			"http://127.0.0.1:8000/api/1.0/species/category/";
+		this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
 		this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
 		this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
 		this.apiSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/";
-		this.apiCreateSampledWeight =
-			"http://127.0.0.1:8000/api/1.0/sampled_weight/new";
+		this.apiCreateSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/new";
 
-		this.handleChangeSampledWeight =
-			this.handleChangeSampledWeight.bind(this);
+		this.handleChangeSampledWeight = this.handleChangeSampledWeight.bind(this);
 		this.updateSampledWeight = this.updateSampledWeight.bind(this);
 		this.deleteSampledWeight = this.deleteSampledWeight.bind(this);
 		this.deleteSexFromState = this.deleteSexFromState.bind(this);
@@ -322,9 +319,7 @@ class CatchesList extends Component {
 		const repeatedCatch = this.state.catches.some(
 			(c) =>
 				//the comparison between c.category and value must be with == instead of ===
-				(c.group === thisCatch.group) &
-				(c.sp_code === thisCatch.sp_code) &
-				(c.category == value)
+				(c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category == value)
 		);
 
 		// And finally save the state or thrown an alert.
@@ -449,11 +444,7 @@ class CatchesList extends Component {
 		// add haul id to data request:
 		new_catch["haul_id"] = this.props.haul_id;
 
-		this.existsCatch(
-			new_catch.haul_id,
-			new_catch.sp_id,
-			new_catch.category
-		).then((response) => {
+		this.existsCatch(new_catch.haul_id, new_catch.sp_id, new_catch.category).then((response) => {
 			if (response === true) {
 				alert("Catch already exists");
 			} else {
@@ -590,9 +581,7 @@ class CatchesList extends Component {
 		if (this.state.catches.length === 0) {
 			return (
 				<Fragment>
-					<div className="form__row form--wide">
-						There aren't catches yet
-					</div>
+					<div className="form__row form--wide">There aren't catches yet</div>
 					<div className="form__row form--wide">
 						<Catch
 							status_catch="add"
@@ -620,21 +609,15 @@ class CatchesList extends Component {
 								key={c.id}
 								this_catch={c}
 								species={this.state.species}
-								handleChangeSampledWeight={
-									this.handleChangeSampledWeight
-								}
+								handleChangeSampledWeight={this.handleChangeSampledWeight}
 								updateSampledWeight={this.updateSampledWeight}
 								deleteSex={this.deleteSex}
 								handleChangeGroup={this.handleChangeGroup}
 								handleChangeSpecies={this.handleChangeSpecies}
 								handleChangeCategory={this.handleChangeCategory}
 								handleChangeWeight={this.handleChangeWeight}
-								handleCancelChangeWeight={
-									this.handleCancelChangeWeight
-								}
-								handleCancelEditCatch={
-									this.handleCancelEditCatch
-								}
+								handleCancelChangeWeight={this.handleCancelChangeWeight}
+								handleCancelEditCatch={this.handleCancelEditCatch}
 								updateCatch={this.updateCatch}
 								removeCatch={this.removeCatch}
 								handleChangeSex={this.handleChangeSex}

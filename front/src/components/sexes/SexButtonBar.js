@@ -15,6 +15,7 @@ const SexButtonBar = ({
 	setLengthsStatus,
 	addSex,
 	handleAddSexStatus,
+	saveSexButtonStatus,
 }) => {
 	var ButtonBar = null;
 
@@ -68,6 +69,7 @@ const SexButtonBar = ({
 				<button
 					className="buttonsWrapper__button"
 					type="button"
+					disabled={!saveSexButtonStatus}
 					onClick={(e) => {
 						updateSex(e);
 						setSexStatus("view");

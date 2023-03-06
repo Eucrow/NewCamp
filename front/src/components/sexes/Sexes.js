@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 
-import Sex from "./Sex";
+import Sex from "./Sex.js";
 import SexesButtonBar from "./SexesButtonBar";
 /**
  * Sexes component.
@@ -13,15 +13,7 @@ import SexesButtonBar from "./SexesButtonBar";
  * @param {method} addSex Method to add sex.
  * @returns JSX of sexes component.
  */
-const Sexes = ({
-	sexes,
-	catch_id,
-	unit,
-	increment,
-	handleChangeSex,
-	deleteSex,
-	addSex,
-}) => {
+const Sexes = ({ sexes, catch_id, unit, increment, handleChangeSex, deleteSex, addSex }) => {
 	var [addSetStatus, setAddSetStatus] = useState(false);
 
 	var content = (
@@ -37,6 +29,7 @@ const Sexes = ({
 						increment={increment}
 						handleChangeSex={handleChangeSex}
 						deleteSex={deleteSex}
+						sexes={sexes}
 					/>
 				);
 			})}
@@ -50,10 +43,7 @@ const Sexes = ({
 					handleAddSexStatus={setAddSetStatus}
 				/>
 			) : (
-				<SexesButtonBar
-					add_sex_status={"view"}
-					handleAddSexStatus={setAddSetStatus}
-				/>
+				<SexesButtonBar add_sex_status={"view"} handleAddSexStatus={setAddSetStatus} />
 			)}
 		</Fragment>
 	);
