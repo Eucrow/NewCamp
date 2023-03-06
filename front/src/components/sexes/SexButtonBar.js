@@ -71,7 +71,7 @@ const SexButtonBar = ({
 					type="button"
 					disabled={!saveSexButtonStatus}
 					onClick={(e) => {
-						updateSex(e);
+						updateSex();
 						setSexStatus("view");
 					}}
 				>

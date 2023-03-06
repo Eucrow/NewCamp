@@ -55,10 +55,9 @@ const Sex = ({
 
 	/**
 	 * Save the sex stored in state to database.
-	 * @param {event} event
+	 *
 	 */
-	const updateSex = (event) => {
-		event.preventDefault();
+	const updateSex = () => {
 		const newSexData = {
 			id: sex_id,
 			sex: newSex,
@@ -120,7 +119,7 @@ const Sex = ({
 							if (e.target.checkValidity() === false) {
 								e.target.reportValidity("Repeated sex.");
 							} else {
-								setNewSex(e);
+								setNewSex(e.target.value);
 							}
 						}}
 						id={sex_id}
