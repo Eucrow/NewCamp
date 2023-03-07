@@ -41,7 +41,6 @@ class CatchesList extends Component {
 		this.updateCatch = this.updateCatch.bind(this);
 		this.removeCatch = this.removeCatch.bind(this);
 		this.createCatch = this.createCatch.bind(this);
-		this.handleChangeSex = this.handleChangeSex.bind(this);
 		this.addSex = this.addSex.bind(this);
 	}
 
@@ -470,32 +469,6 @@ class CatchesList extends Component {
 		});
 	};
 
-	handleChangeSex = (evt, ids, idc) => {
-		/**
-		 * Manage sex state.
-		 */
-
-		const value = evt.target.value;
-
-		const newCatches = this.state.catches.map((c) => {
-			if (idc !== c.id) {
-				return c;
-			} else {
-				const newSexes = c.sexes.map((s) => {
-					if (ids !== s.id) return s;
-					return { ...s, sex: value };
-				});
-				return { ...c, sexes: newSexes };
-			}
-		});
-
-		this.setState(() => {
-			return {
-				catches: newCatches,
-			};
-		});
-	};
-
 	addSex = (evt, sex, idc) => {
 		/**
 		 * Handle new sex form.
@@ -620,7 +593,6 @@ class CatchesList extends Component {
 								handleCancelEditCatch={this.handleCancelEditCatch}
 								updateCatch={this.updateCatch}
 								removeCatch={this.removeCatch}
-								handleChangeSex={this.handleChangeSex}
 								addSex={this.addSex}
 								createSampledWeight={this.createSampledWeight}
 								deleteSampledWeight={this.deleteSampledWeight}

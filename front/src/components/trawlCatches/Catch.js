@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import Sexes from "../sexes/Sexes.js";
-import UiButtonCancel from "../ui/UiButtonCancel.js";
 import ComponentCategory from "./Category.js";
 
 class Catch extends Component {
@@ -17,7 +16,6 @@ class Catch extends Component {
 	 * @param {method} props.handleCancelEditCatch: manage cancellation of catch edition.
 	 * @param {method} props.updateCatch: update catch in database.
 	 * @param {method} props.removeCatch: delete catch of database.
-	 * @param {method} props.handleChangeSex: manage sex state.
 	 * @param {method} props.addSex: handle the new sex form.
 	 */
 
@@ -41,10 +39,7 @@ class Catch extends Component {
 	}
 
 	handleCancel = () => {
-		this.props.handleCancelEditCatch(
-			this.props.this_catch.id,
-			this.original_catch
-		);
+		this.props.handleCancelEditCatch(this.props.this_catch.id, this.original_catch);
 	};
 
 	componentDidMount() {
@@ -72,9 +67,7 @@ class Catch extends Component {
 					<ComponentCategory
 						status_catch={this.state.status_catch}
 						this_catch={this.props.this_catch}
-						handleChangeSampledWeight={
-							this.props.handleChangeSampledWeight
-						}
+						handleChangeSampledWeight={this.props.handleChangeSampledWeight}
 						updateSampledWeight={this.props.updateSampledWeight}
 						createSampledWeight={this.props.createSampledWeight}
 						deleteSampledWeight={this.props.deleteSampledWeight}
@@ -88,10 +81,7 @@ class Catch extends Component {
 						>
 							Edit catch
 						</button>
-						<button
-							className="buttonsWrapper__button"
-							onClick={this.props.removeCatch(this_catch.id)}
-						>
+						<button className="buttonsWrapper__button" onClick={this.props.removeCatch(this_catch.id)}>
 							Remove catch
 						</button>
 					</div>
@@ -101,7 +91,6 @@ class Catch extends Component {
 							catch_id={this.props.this_catch.id}
 							unit={this.props.this_catch.unit}
 							increment={this.props.this_catch.increment}
-							handleChangeSex={this.props.handleChangeSex}
 							editCatchStatus={this.editCatchStatus}
 							addSex={this.props.addSex}
 							deleteSex={this.props.deleteSex}

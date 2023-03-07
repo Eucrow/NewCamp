@@ -8,12 +8,11 @@ import SexesButtonBar from "./SexesButtonBar";
  * @param {numeric} catch_id Id of catch.
  * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is milimeters.
  * @param {numeric} increment Increment of measurement unit.
- * @param {method} handleChangeSex Method to handle the change of sex value.
  * @param {method} deleteSex Method to delete sex.
  * @param {method} addSex Method to add sex.
  * @returns JSX of sexes component.
  */
-const Sexes = ({ sexes, catch_id, unit, increment, handleChangeSex, deleteSex, addSex }) => {
+const Sexes = ({ sexes, catch_id, unit, increment, deleteSex, addSex }) => {
 	var [addSetStatus, setAddSetStatus] = useState(false);
 
 	const sexesBackup = sexes;
@@ -29,7 +28,6 @@ const Sexes = ({ sexes, catch_id, unit, increment, handleChangeSex, deleteSex, a
 						catch_id={catch_id}
 						unit={unit}
 						increment={increment}
-						handleChangeSex={handleChangeSex}
 						deleteSex={deleteSex}
 						sexesBackup={sexesBackup}
 					/>
@@ -40,7 +38,6 @@ const Sexes = ({ sexes, catch_id, unit, increment, handleChangeSex, deleteSex, a
 				<Sex
 					catch_id={catch_id}
 					sex_status={"add"}
-					handleChangeSex={handleChangeSex}
 					addSex={addSex}
 					handleAddSexStatus={setAddSetStatus}
 					sexesBackup={sexesBackup}

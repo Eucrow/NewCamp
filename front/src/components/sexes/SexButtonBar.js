@@ -1,6 +1,5 @@
 import React from "react";
 
-import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonCancel from "../ui/UiButtonCancel";
