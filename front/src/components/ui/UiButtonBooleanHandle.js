@@ -5,6 +5,8 @@ import React from "react";
  * @param {method} handleMethod Method to handle the boolean parameter.
  * @param {character} buttonText Text to show in the button.
  * @param {boolean} newBoolean The new boolean value of the variable
+ * TODO: I think it is not a good idea to use this component. Without the name of the variable,
+ * it is not possible to know what component will be renderer.
  */
 
 const UiButtonBooleanHandle = ({ buttonText, handleMethod, newBoolean }) => {
