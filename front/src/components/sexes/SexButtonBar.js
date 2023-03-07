@@ -14,8 +14,6 @@ const SexButtonBar = ({
 	setLengthsStatus,
 	handleAddSexStatus,
 	saveSexButtonStatus,
-	handleSaveSex,
-	handleSaveEditSex,
 	handleCancelEditSex,
 }) => {
 	var ButtonBar = null;
@@ -67,14 +65,7 @@ const SexButtonBar = ({
 	} else if (sex_status === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					disabled={!saveSexButtonStatus}
-					onClick={(e) => {
-						handleSaveEditSex(e);
-					}}
-				>
+				<button className="buttonsWrapper__button" type="submit" disabled={!saveSexButtonStatus}>
 					Save sex
 				</button>
 				<button
@@ -91,13 +82,7 @@ const SexButtonBar = ({
 	} else if (sex_status === "add") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={(e) => {
-						handleSaveSex(e);
-					}}
-				>
+				<button className="buttonsWrapper__button" type="submit">
 					Save sex
 				</button>
 				<UiButtonBooleanHandle buttonText="Cancel" handleMethod={handleAddSexStatus} newBoolean={false} />

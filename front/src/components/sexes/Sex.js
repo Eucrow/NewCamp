@@ -39,16 +39,6 @@ const Sex = ({
 
 	const apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
 
-	const handleSaveEditSex = (e) => {
-		updateSex();
-		setSexStatus("view");
-	};
-
-	const handleSaveSex = (e) => {
-		addSex(e, newSex, catch_id);
-		handleAddSexStatus(false);
-	};
-
 	const handleCancelEditSex = (e) => {
 		setSexStatus("view");
 		setNewSex(sex);
@@ -129,7 +119,13 @@ const Sex = ({
 		);
 	} else if (sexStatus === "edit") {
 		content = (
-			<div className="form__row form--wide buttonsWrapper">
+			<form
+				className="form__row form--wide buttonsWrapper"
+				onSubmit={(e) => {
+					updateSex();
+					setSexStatus("view");
+				}}
+			>
 				<label className="form__cell">
 					Sex:
 					<select
@@ -158,15 +154,20 @@ const Sex = ({
 						saveSexButtonStatus={validSex}
 						sex={sex}
 						setNewSex={setNewSex}
-						handleSaveEditSex={handleSaveEditSex}
 						handleCancelEditSex={handleCancelEditSex}
 					/>
 				</div>
-			</div>
+			</form>
 		);
 	} else if (sexStatus === "add") {
 		content = (
-			<div className="form__row form--wide buttonsWrapper">
+			<form
+				className="form__row form--wide buttonsWrapper"
+				onSubmit={(e) => {
+					addSex(e, newSex, catch_id);
+					handleAddSexStatus(false);
+				}}
+			>
 				<label className="form__cell">
 					Sex:
 					<select
@@ -190,9 +191,8 @@ const Sex = ({
 					handleAddSexStatus={handleAddSexStatus}
 					updateSex={updateSex}
 					setSexStatus={setSexStatus}
-					handleSaveSex={handleSaveSex}
 				/>
-			</div>
+			</form>
 		);
 	}
 
