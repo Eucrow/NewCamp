@@ -11,6 +11,7 @@ const UiButtonBooleanHandle = ({ buttonText, handleMethod, newBoolean }) => {
 	const renderedButton = (
 		<button
 			className="buttonsWrapper__button"
+			type="button"
 			onClick={() => {
 				handleMethod(newBoolean);
 			}}

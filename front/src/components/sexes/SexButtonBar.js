@@ -1,5 +1,7 @@
 import React from "react";
 
+import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
+
 /**
  * Lengths button bar component.
  */
@@ -98,15 +100,7 @@ const SexButtonBar = ({
 				>
 					Save sex
 				</button>
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={() => {
-						handleAddSexStatus(false);
-					}}
-				>
-					Cancel
-				</button>
+				<UiButtonBooleanHandle buttonText="Cancel" handleMethod={handleAddSexStatus} newBoolean={false} />
 			</div>
 		);
 	}
