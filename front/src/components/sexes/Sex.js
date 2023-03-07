@@ -42,6 +42,17 @@ const Sex = ({
 		setNewSex(sex);
 	};
 
+	const getSexText = (sex) => {
+		switch (sex) {
+			case 1:
+				return "Male";
+			case 2:
+				return "Female";
+			default:
+				return "Undetermined";
+		}
+	};
+
 	/**
 	 * Validate if a sex already exists in the catch. In case it exists, thrown an error and
 	 * set validSex variable to false and viceversa.
@@ -88,10 +99,10 @@ const Sex = ({
 		content = (
 			<Fragment>
 				<div className="form__row form--wide buttonsWrapper">
-					<label className="form__cell">
+					<label className="form__cell sexes__sex">
 						Sex:
 						<select id="sex" name="sex" disabled>
-							<option key={newSex}>{newSex}</option>
+							<option key={newSex}>{getSexText(newSex)}</option>
 						</select>
 					</label>
 					<div className="form__cell buttonsWrapper">
@@ -124,7 +135,7 @@ const Sex = ({
 					setSexStatus("view");
 				}}
 			>
-				<label className="form__cell">
+				<label className="form__cell sexes__sex">
 					Sex:
 					<select
 						onChange={(e) => {
@@ -166,7 +177,7 @@ const Sex = ({
 					handleAddSexStatus(false);
 				}}
 			>
-				<label className="form__cell">
+				<label className="form__cell sexes__sex">
 					Sex:
 					<select
 						onChange={(e) => {
