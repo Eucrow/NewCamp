@@ -128,9 +128,7 @@ class Ships extends Component {
 	 * @param {event} e Event.
 	 * @param {numeric} ship_id Ship identificator of ship to delete.
 	 */
-	deleteShip(e, ship_id) {
-		e.preventDefault();
-
+	deleteShip(ship_id) {
 		const api = this.apiShip + ship_id;
 
 		fetch(api, {
@@ -141,9 +139,7 @@ class Ships extends Component {
 			},
 		})
 			.then(() => {
-				const newShips = this.state.ships.filter(
-					(ship) => ship.id !== ship_id
-				);
+				const newShips = this.state.ships.filter((ship) => ship.id !== ship_id);
 
 				this.setState({
 					ships: newShips,
@@ -186,10 +182,7 @@ class Ships extends Component {
 						<h1 className="title">Ships</h1>
 					</header>
 					<div className="wrapper surveysWrapper">
-						<ShipsButtonBar
-							add={this.state.add}
-							handleAdd={this.handleAdd}
-						/>
+						<ShipsButtonBar add={this.state.add} handleAdd={this.handleAdd} />
 
 						{this.state.add === true ? <NewShipForm /> : ""}
 

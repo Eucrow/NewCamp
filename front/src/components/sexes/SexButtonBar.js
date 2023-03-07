@@ -1,6 +1,7 @@
 import React from "react";
 
 import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
+import UiButtonDelete from "../ui/UiButtonDelete";
 
 /**
  * Lengths button bar component.
@@ -30,7 +31,13 @@ const SexButtonBar = ({
 				>
 					Edit sex
 				</button>
-				<button
+				<UiButtonDelete
+					id={sex_id}
+					deleteMethod={deleteSex}
+					buttonText={"Delete sex"}
+					confirmMessage={"Are you sure to remove this sex?"}
+				/>
+				{/* <button
 					className="buttonsWrapper__button"
 					type="button"
 					onClick={() => {
@@ -38,7 +45,7 @@ const SexButtonBar = ({
 					}}
 				>
 					Delete sex
-				</button>
+				</button> */}
 				{lengths_status === "view" ? (
 					<button
 						className="buttonsWrapper__button"

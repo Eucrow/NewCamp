@@ -20,8 +20,7 @@ class Surveys extends Component {
 		};
 
 		this.apiSurvey = "http://127.0.0.1:8000/api/1.0/survey/";
-		this.apiStratification =
-			"http://127.0.0.1:8000/api/1.0/stratifications/";
+		this.apiStratification = "http://127.0.0.1:8000/api/1.0/stratifications/";
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
@@ -140,9 +139,7 @@ class Surveys extends Component {
 	 * @param {event} e Event.
 	 * @param {numeric} survey_id Survey identificator of survey to delete.
 	 */
-	deleteSurvey(e, survey_id) {
-		e.preventDefault();
-
+	deleteSurvey(survey_id) {
 		const api = this.apiSurvey + survey_id;
 
 		fetch(api, {
@@ -153,9 +150,7 @@ class Surveys extends Component {
 			},
 		})
 			.then(() => {
-				const newSurveys = this.state.surveys.filter(
-					(survey) => survey.id !== survey_id
-				);
+				const newSurveys = this.state.surveys.filter((survey) => survey.id !== survey_id);
 
 				this.setState({
 					surveys: newSurveys,
@@ -207,9 +202,7 @@ class Surveys extends Component {
 		e.target.setCustomValidity("");
 
 		if (typeof end_date != "undefined" && e.target.value > end_date) {
-			e.target.setCustomValidity(
-				"Start date must be sooner than end date."
-			);
+			e.target.setCustomValidity("Start date must be sooner than end date.");
 		}
 
 		return e.target.reportValidity();
@@ -225,9 +218,7 @@ class Surveys extends Component {
 		e.target.setCustomValidity("");
 
 		if (typeof start_date != "undefined" && start_date > e.target.value) {
-			e.target.setCustomValidity(
-				"End date must be later than start date."
-			);
+			e.target.setCustomValidity("End date must be later than start date.");
 		}
 
 		return e.target.reportValidity();
@@ -270,10 +261,7 @@ class Surveys extends Component {
 					</header>
 
 					<div className="wrapper surveysWrapper">
-						<SurveysButtonBar
-							add={this.state.add}
-							handleAdd={this.handleAdd}
-						/>
+						<SurveysButtonBar add={this.state.add} handleAdd={this.handleAdd} />
 						{this.state.add === true ? <NewSurveyForm /> : ""}
 
 						{this.state.surveys.map((survey) => {

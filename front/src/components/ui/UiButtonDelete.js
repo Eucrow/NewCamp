@@ -13,7 +13,7 @@ const UiButtonDelete = ({ id, deleteMethod, buttonText, confirmMessage }) => {
 			className="buttonsWrapper__button"
 			onClick={(e) => {
 				if (window.confirm(confirmMessage)) {
-					deleteMethod(e, id);
+					deleteMethod(id);
 				}
 			}}
 		>
