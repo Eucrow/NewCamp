@@ -16,6 +16,8 @@ import SexesButtonBar from "./SexesButtonBar";
 const Sexes = ({ sexes, catch_id, unit, increment, handleChangeSex, deleteSex, addSex }) => {
 	var [addSetStatus, setAddSetStatus] = useState(false);
 
+	const sexesBackup = sexes;
+
 	var content = (
 		<Fragment>
 			{sexes.map((s) => {
@@ -30,6 +32,7 @@ const Sexes = ({ sexes, catch_id, unit, increment, handleChangeSex, deleteSex, a
 						handleChangeSex={handleChangeSex}
 						deleteSex={deleteSex}
 						sexes={sexes}
+						sexesBackup={sexesBackup}
 					/>
 				);
 			})}
@@ -41,6 +44,7 @@ const Sexes = ({ sexes, catch_id, unit, increment, handleChangeSex, deleteSex, a
 					handleChangeSex={handleChangeSex}
 					addSex={addSex}
 					handleAddSexStatus={setAddSetStatus}
+					sexesBackup={sexesBackup}
 				/>
 			) : (
 				<SexesButtonBar add_sex_status={"view"} handleAddSexStatus={setAddSetStatus} />

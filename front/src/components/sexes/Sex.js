@@ -27,23 +27,30 @@ const Sex = ({
 	addSex,
 	handleAddSexStatus,
 	sexes,
+	sexesBackup,
 }) => {
 	const [newSex, setNewSex] = useState("");
 	const [lengthsStatus, setLengthsStatus] = useState("hide");
 	const [sexStatus, setSexStatus] = useState(sex_status ? sex_status : "view");
 	const [validSex, setValidSex] = useState(true);
 
+	useEffect(() => {
+		setNewSex(sex);
+	}, [sex]);
+
 	const apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
 
 	/**
-	 * Get a lengths array and update the property "is_valid" propertly:
-	 * set to "false" in all the repeated lengths and "true" where doesn't.
-	 * @param {array of objects} lengthsToValidate Lengths to validate.
-	 * @returns Array with lengths with "is_valid" property updated.
+	 * Validate if a sex already exists in the catch. In case it exists, thrown an error and
+	 * set validSex variable to false and viceversa.
+	 * @param {event}
 	 */
-
 	const validateSex = (e) => {
-		if (sexes.some((p) => p.sex === Number(e.target.value))) {
+		const sexesBackupClean = sexesBackup.filter((s) => {
+			return s.sex !== sex;
+		});
+
+		if (sexesBackupClean.some((p) => p.sex === Number(e.target.value))) {
 			e.target.setCustomValidity("The sex already exists.");
 			setValidSex(false);
 			return e.target.reportValidity();
@@ -55,7 +62,6 @@ const Sex = ({
 
 	/**
 	 * Save the sex stored in state to database.
-	 *
 	 */
 	const updateSex = () => {
 		const newSexData = {
@@ -83,7 +89,7 @@ const Sex = ({
 					<label className="form__cell">
 						Sex:
 						<select id="sex" name="sex" disabled>
-							<option key={sex}>{sex}</option>
+							<option key={newSex}>{newSex}</option>
 						</select>
 					</label>
 					<div className="form__cell buttonsWrapper">
@@ -114,17 +120,12 @@ const Sex = ({
 					Sex:
 					<select
 						onChange={(e) => {
-							handleChangeSex(e, sex_id, catch_id);
+							setNewSex(e.target.value);
 							validateSex(e);
-							if (e.target.checkValidity() === false) {
-								e.target.reportValidity("Repeated sex.");
-							} else {
-								setNewSex(e.target.value);
-							}
 						}}
 						id={sex_id}
 						name={sex_id}
-						value={sex}
+						value={newSex}
 					>
 						<option value="3">Undetermined</option>
 						<option value="1">Male</option>
@@ -141,6 +142,8 @@ const Sex = ({
 						lengths_status={lengthsStatus}
 						setLengthsStatus={setLengthsStatus}
 						saveSexButtonStatus={validSex}
+						sex={sex}
+						setNewSex={setNewSex}
 					/>
 				</div>
 			</div>
@@ -153,6 +156,7 @@ const Sex = ({
 					<select
 						onChange={(e) => {
 							setNewSex(e.target.value);
+							validateSex(e);
 						}}
 					>
 						<option></option>

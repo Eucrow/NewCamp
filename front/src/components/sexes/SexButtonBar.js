@@ -16,6 +16,8 @@ const SexButtonBar = ({
 	addSex,
 	handleAddSexStatus,
 	saveSexButtonStatus,
+	sex,
+	setNewSex,
 }) => {
 	var ButtonBar = null;
 
@@ -82,6 +84,7 @@ const SexButtonBar = ({
 					type="button"
 					onClick={() => {
 						setSexStatus("view");
+						setNewSex(sex);
 					}}
 				>
 					Cancel
