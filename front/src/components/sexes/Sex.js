@@ -26,7 +26,6 @@ const Sex = ({
 	catch_id,
 	addSex,
 	handleAddSexStatus,
-	sexes,
 	sexesBackup,
 }) => {
 	const [newSex, setNewSex] = useState("");
@@ -39,6 +38,21 @@ const Sex = ({
 	}, [sex]);
 
 	const apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
+
+	const handleSaveEditSex = (e) => {
+		updateSex();
+		setSexStatus("view");
+	};
+
+	const handleSaveSex = (e) => {
+		addSex(e, newSex, catch_id);
+		handleAddSexStatus(false);
+	};
+
+	const handleCancelEditSex = (e) => {
+		setSexStatus("view");
+		setNewSex(sex);
+	};
 
 	/**
 	 * Validate if a sex already exists in the catch. In case it exists, thrown an error and
@@ -144,6 +158,8 @@ const Sex = ({
 						saveSexButtonStatus={validSex}
 						sex={sex}
 						setNewSex={setNewSex}
+						handleSaveEditSex={handleSaveEditSex}
+						handleCancelEditSex={handleCancelEditSex}
 					/>
 				</div>
 			</div>
@@ -174,6 +190,7 @@ const Sex = ({
 					handleAddSexStatus={handleAddSexStatus}
 					updateSex={updateSex}
 					setSexStatus={setSexStatus}
+					handleSaveSex={handleSaveSex}
 				/>
 			</div>
 		);

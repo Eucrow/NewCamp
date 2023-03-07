@@ -31,7 +31,6 @@ const Sexes = ({ sexes, catch_id, unit, increment, handleChangeSex, deleteSex, a
 						increment={increment}
 						handleChangeSex={handleChangeSex}
 						deleteSex={deleteSex}
-						sexes={sexes}
 						sexesBackup={sexesBackup}
 					/>
 				);

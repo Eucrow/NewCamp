@@ -6,18 +6,15 @@ import React from "react";
 const SexButtonBar = ({
 	sex_id,
 	sex_status,
-	newSex,
-	catch_id,
 	setSexStatus,
-	updateSex,
 	deleteSex,
 	lengths_status,
 	setLengthsStatus,
-	addSex,
 	handleAddSexStatus,
 	saveSexButtonStatus,
-	sex,
-	setNewSex,
+	handleSaveSex,
+	handleSaveEditSex,
+	handleCancelEditSex,
 }) => {
 	var ButtonBar = null;
 
@@ -73,8 +70,7 @@ const SexButtonBar = ({
 					type="button"
 					disabled={!saveSexButtonStatus}
 					onClick={(e) => {
-						updateSex();
-						setSexStatus("view");
+						handleSaveEditSex(e);
 					}}
 				>
 					Save sex
@@ -83,8 +79,7 @@ const SexButtonBar = ({
 					className="buttonsWrapper__button"
 					type="button"
 					onClick={() => {
-						setSexStatus("view");
-						setNewSex(sex);
+						handleCancelEditSex();
 					}}
 				>
 					Cancel
@@ -98,8 +93,7 @@ const SexButtonBar = ({
 					className="buttonsWrapper__button"
 					type="button"
 					onClick={(e) => {
-						addSex(e, newSex, catch_id);
-						handleAddSexStatus(false);
+						handleSaveSex(e);
 					}}
 				>
 					Save sex
