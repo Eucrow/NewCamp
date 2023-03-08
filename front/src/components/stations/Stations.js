@@ -19,8 +19,7 @@ const ComponentsStations = () => {
 
 	const apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
 
-	const apiHydrographyForm =
-		"http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
+	const apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
 
 	const apiStation = "http://127.0.0.1:8000/api/1.0/station/";
 
@@ -67,9 +66,7 @@ const ComponentsStations = () => {
 
 		const api = apiStation + station_id;
 
-		const updated_station = stations.filter(
-			(station) => station.id === station_id
-		);
+		const updated_station = stations.filter((station) => station.id === station_id);
 
 		fetch(api, {
 			method: "PUT",
@@ -85,9 +82,7 @@ const ComponentsStations = () => {
 	 * @param {event} e
 	 * @param {number} station_id
 	 */
-	const deleteStation = (e, station_id) => {
-		e.preventDefault();
-
+	const deleteStation = (station_id) => {
 		const api = apiStation + station_id;
 
 		fetch(api, {
@@ -98,9 +93,7 @@ const ComponentsStations = () => {
 			},
 		})
 			.then(() => {
-				const new_stations = stations.filter(
-					(station) => station.id !== station_id
-				);
+				const new_stations = stations.filter((station) => station.id !== station_id);
 				setStations(new_stations);
 			})
 			.catch((error) => alert(error));
@@ -138,12 +131,7 @@ const ComponentsStations = () => {
 	const createHaul = (e, haul) => {
 		e.preventDefault();
 
-		const apiForm =
-			haul.sampler_id === "1"
-				? apiTrawlForm
-				: haul.sampler_id === "2"
-				? apiHydrographyForm
-				: null;
+		const apiForm = haul.sampler_id === "1" ? apiTrawlForm : haul.sampler_id === "2" ? apiHydrographyForm : null;
 
 		fetch(apiForm, {
 			method: "POST",
@@ -156,9 +144,7 @@ const ComponentsStations = () => {
 			.then((h) => {
 				const new_stations = stations.map((station) => {
 					if (station.id === parseInt(haul.station_id)) {
-						station.hauls
-							? (station.hauls = [...station.hauls, h])
-							: (station.hauls = [h]);
+						station.hauls ? (station.hauls = [...station.hauls, h]) : (station.hauls = [h]);
 						return station;
 					} else {
 						return station;
@@ -198,7 +184,7 @@ const ComponentsStations = () => {
 	 * @param {event} e
 	 * @param {number} id_haul
 	 */
-	const deleteHaul = (e, id_haul) => {
+	const deleteHaul = (id_haul) => {
 		const api = apiHaul + id_haul;
 
 		fetch(api, {
@@ -211,9 +197,7 @@ const ComponentsStations = () => {
 			.then(() => {
 				var new_stations = stations.map((station) => {
 					if (station.hauls.some((h) => h.id === id_haul)) {
-						var new_hauls = station.hauls.filter(
-							(haul) => haul.id !== id_haul
-						);
+						var new_hauls = station.hauls.filter((haul) => haul.id !== id_haul);
 						station.hauls = new_hauls;
 					}
 					return station;
@@ -234,9 +218,7 @@ const ComponentsStations = () => {
 
 		var new_stations = stations.map((station) => {
 			if (station.hauls.some((haul) => haul.id === id_haul)) {
-				var id_haul_index = station.hauls.findIndex(
-					(h) => h.id === id_haul
-				);
+				var id_haul_index = station.hauls.findIndex((h) => h.id === id_haul);
 
 				station.hauls[id_haul_index][name] = value;
 			}
@@ -248,12 +230,9 @@ const ComponentsStations = () => {
 	const handleChangeCommonValid = (id_haul) => {
 		var new_stations = stations.map((station) => {
 			if (station.hauls.some((haul) => haul.id === id_haul)) {
-				var id_haul_index = station.hauls.findIndex(
-					(h) => h.id === id_haul
-				);
+				var id_haul_index = station.hauls.findIndex((h) => h.id === id_haul);
 
-				station.hauls[id_haul_index]["valid"] =
-					!station.hauls[id_haul_index]["valid"];
+				station.hauls[id_haul_index]["valid"] = !station.hauls[id_haul_index]["valid"];
 			}
 			return station;
 		});
@@ -270,9 +249,7 @@ const ComponentsStations = () => {
 
 		var new_stations = stations.map((station) => {
 			if (station.hauls.some((haul) => haul.id === id_haul)) {
-				var id_haul_index = station.hauls.findIndex(
-					(h) => h.id === id_haul
-				);
+				var id_haul_index = station.hauls.findIndex((h) => h.id === id_haul);
 
 				station.hauls[id_haul_index]["gear_id"] = value;
 				// get stratum name:
@@ -294,9 +271,7 @@ const ComponentsStations = () => {
 
 		var new_stations = stations.map((station) => {
 			if (station.hauls.some((haul) => haul.id === id_haul)) {
-				var id_haul_index = station.hauls.findIndex(
-					(h) => h.id === id_haul
-				);
+				var id_haul_index = station.hauls.findIndex((h) => h.id === id_haul);
 
 				station.hauls[id_haul_index]["stratum_id"] = value;
 				// get stratum name:
@@ -331,9 +306,7 @@ const ComponentsStations = () => {
 		e.target.setCustomValidity("");
 
 		if (stationExists(parseInt(e.target.value))) {
-			e.target.setCustomValidity(
-				"This station already exists in this survey."
-			);
+			e.target.setCustomValidity("This station already exists in this survey.");
 		}
 
 		return e.target.reportValidity();
@@ -350,15 +323,12 @@ const ComponentsStations = () => {
 		const getStationsApi = () => {
 			return selectedSurveyContext.selectedSurveyId === null
 				? apiStationsPartial
-				: apiStationsPartial +
-						"hauls/" +
-						selectedSurveyContext.selectedSurveyId;
+				: apiStationsPartial + "hauls/" + selectedSurveyContext.selectedSurveyId;
 		};
 
 		if (selectedSurveyContext.selectedSurveyId !== "") {
 			// Fetch strata (require previously fetch survey to get stratification).
-			const apiSurvey =
-				apiSurveyPartial + selectedSurveyContext.selectedSurveyId;
+			const apiSurvey = apiSurveyPartial + selectedSurveyContext.selectedSurveyId;
 
 			fetch(apiSurvey)
 				.then((response) => {
@@ -457,28 +427,13 @@ const ComponentsStations = () => {
 						<h1 className="title">Stations</h1>
 					</header>
 					<div className="wrapper stationsWrapper">
-						{add === true ? (
-							<NewStationForm
-								handleAdd={setAdd}
-								createStation={createStation}
-							/>
-						) : (
-							""
-						)}
+						{add === true ? <NewStationForm handleAdd={setAdd} createStation={createStation} /> : ""}
 
-						<StationsButtonBar
-							add={add}
-							handleAdd={setAdd}
-						></StationsButtonBar>
+						<StationsButtonBar add={add} handleAdd={setAdd}></StationsButtonBar>
 
 						{stations
 							? stations.map((station) => {
-									return (
-										<Station
-											key={station.id}
-											station={station}
-										/>
-									);
+									return <Station key={station.id} station={station} />;
 							  })
 							: ""}
 					</div>

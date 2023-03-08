@@ -1,20 +1,22 @@
 import React from "react";
 
+import UiButtonDelete from "../ui/UiButtonDelete";
+import UiButtonSave from "../ui/UiButtonSave";
+import UiButtonCancel from "../ui/UiButtonCancel";
+
 /**
  * Lengths button bar component.
  */
 const SexButtonBar = ({
 	sex_id,
 	sex_status,
-	newSex,
-	catch_id,
 	setSexStatus,
-	updateSex,
 	deleteSex,
 	lengths_status,
 	setLengthsStatus,
-	addSex,
 	handleAddSexStatus,
+	saveSexButtonStatus,
+	handleCancelEditSex,
 }) => {
 	var ButtonBar = null;
 
@@ -24,21 +26,19 @@ const SexButtonBar = ({
 				<button
 					className="buttonsWrapper__button"
 					type="button"
-					onClick={() => {
+					onClick={(e) => {
+						e.preventDefault();
 						setSexStatus("edit");
 					}}
 				>
 					Edit sex
 				</button>
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={() => {
-						deleteSex(sex_id);
-					}}
-				>
-					Delete sex
-				</button>
+				<UiButtonDelete
+					id={sex_id}
+					deleteMethod={deleteSex}
+					buttonText={"Delete sex"}
+					confirmMessage={"Are you sure to remove this sex?"}
+				/>
 				{lengths_status === "view" ? (
 					<button
 						className="buttonsWrapper__button"
@@ -65,21 +65,14 @@ const SexButtonBar = ({
 	} else if (sex_status === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={(e) => {
-						updateSex(e);
-						setSexStatus("view");
-					}}
-				>
+				<button className="buttonsWrapper__button" type="submit" disabled={!saveSexButtonStatus}>
 					Save sex
 				</button>
 				<button
 					className="buttonsWrapper__button"
 					type="button"
 					onClick={() => {
-						setSexStatus("view");
+						handleCancelEditSex();
 					}}
 				>
 					Cancel
@@ -89,25 +82,8 @@ const SexButtonBar = ({
 	} else if (sex_status === "add") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={(e) => {
-						addSex(e, newSex, catch_id);
-						handleAddSexStatus(false);
-					}}
-				>
-					Save sex
-				</button>
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={() => {
-						handleAddSexStatus(false);
-					}}
-				>
-					Cancel
-				</button>
+				<UiButtonSave buttonText={"Save sex"} />
+				<UiButtonCancel handleMethod={handleAddSexStatus} />
 			</div>
 		);
 	}

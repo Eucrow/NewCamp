@@ -4,9 +4,9 @@ import { ReactComponent as DeleteIcon } from "../../icons/trash-can.svg";
 /**
  * Generic delete button.
  */
-const UiButtonDelete = () => {
+const UiButtonIconDelete = () => {
 	const renderedButton = <DeleteIcon />;
 	return renderedButton;
 };
 
-export default UiButtonDelete;
+export default UiButtonIconDelete;
