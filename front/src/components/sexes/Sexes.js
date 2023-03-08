@@ -12,27 +12,29 @@ import SexesButtonBar from "./SexesButtonBar";
  * @param {method} addSex Method to add sex.
  * @returns JSX of sexes component.
  */
-const Sexes = ({ sexes, catch_id, unit, increment, deleteSex, addSex }) => {
+const Sexes = ({ sexes, catch_id, unit, increment, deleteSex, addSex, handleViewSexes, view_sexes }) => {
 	var [addSetStatus, setAddSetStatus] = useState(false);
 
 	const sexesBackup = sexes;
 
 	var content = (
 		<Fragment>
-			{sexes.map((s) => {
-				return (
-					<Sex
-						key={s.id}
-						sex_id={s.id}
-						sex={s.sex}
-						catch_id={catch_id}
-						unit={unit}
-						increment={increment}
-						deleteSex={deleteSex}
-						sexesBackup={sexesBackup}
-					/>
-				);
-			})}
+			{view_sexes === true
+				? sexes.map((s) => {
+						return (
+							<Sex
+								key={s.id}
+								sex_id={s.id}
+								sex={s.sex}
+								catch_id={catch_id}
+								unit={unit}
+								increment={increment}
+								deleteSex={deleteSex}
+								sexesBackup={sexesBackup}
+							/>
+						);
+				  })
+				: null}
 
 			{addSetStatus === true ? (
 				<Sex

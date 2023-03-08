@@ -24,6 +24,7 @@ class Catch extends Component {
 		this.state = {
 			// status_catch: "", // State of Catch component: "", "add", "view" or "edit".
 			status_catch: this.props.status_catch || "view",
+			view_sexes: false,
 		};
 
 		this.original_catch = "";
@@ -37,6 +38,12 @@ class Catch extends Component {
 			["status_catch"]: status,
 		});
 	}
+
+	handleViewSexes = (status) => {
+		this.setState({
+			["view_sexes"]: status,
+		});
+	};
 
 	handleCancel = () => {
 		this.props.handleCancelEditCatch(this.props.this_catch.id, this.original_catch);
@@ -84,6 +91,15 @@ class Catch extends Component {
 						<button className="buttonsWrapper__button" onClick={this.props.removeCatch(this_catch.id)}>
 							Remove catch
 						</button>
+						{this.state.view_sexes === false ? (
+							<button className="buttonsWrapper__button" onClick={() => this.handleViewSexes(true)}>
+								View sexes
+							</button>
+						) : (
+							<button className="buttonsWrapper__button" onClick={() => this.handleViewSexes(false)}>
+								Hide sexes
+							</button>
+						)}
 					</div>
 					<div className="form__row sexesWrapper">
 						<Sexes
@@ -94,8 +110,28 @@ class Catch extends Component {
 							editCatchStatus={this.editCatchStatus}
 							addSex={this.props.addSex}
 							deleteSex={this.props.deleteSex}
+							handleViewSexes={this.handleViewSexes}
+							view_sexes={this.state.view_sexes}
 						/>
 					</div>
+
+					{/* {this.state.view_sexes === false ? (
+							<button className="buttonsWrapper__button" onClick={() => this.handleViewSexes(true)}>
+								View sexes
+							</button>
+						) : (
+							<div className="form__row sexesWrapper">
+								<Sexes
+									sexes={sexes}
+									catch_id={this.props.this_catch.id}
+									unit={this.props.this_catch.unit}
+									increment={this.props.this_catch.increment}
+									editCatchStatus={this.editCatchStatus}
+									addSex={this.props.addSex}
+									deleteSex={this.props.deleteSex}
+								/>
+							</div>
+						)} */}
 				</div>
 			);
 		} else if (this.state.status_catch === "edit") {
