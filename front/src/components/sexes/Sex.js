@@ -98,11 +98,13 @@ const Sex = ({
 	if (sexStatus === "view") {
 		content = (
 			<Fragment>
-				<div className="form__row form--wide buttonsWrapper">
+				<form className="form__row form--wide buttonsWrapper">
 					<label className="form__cell sexes__sex">
 						Sex:
-						<select id="sex" name="sex" disabled>
-							<option key={newSex}>{getSexText(newSex)}</option>
+						<select id={sex_id} name={sex_id} disabled>
+							<option value={newSex} key={newSex}>
+								{getSexText(newSex)}
+							</option>
 						</select>
 					</label>
 					<div className="form__cell buttonsWrapper">
@@ -116,7 +118,7 @@ const Sex = ({
 							setLengthsStatus={setLengthsStatus}
 						/>
 					</div>
-				</div>
+				</form>
 				<ComponentLengths
 					sex_id={sex_id}
 					lengths_status={lengthsStatus}

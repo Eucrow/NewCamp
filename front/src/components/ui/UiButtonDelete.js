@@ -9,8 +9,8 @@ import React from "react";
 const UiButtonDelete = ({ id, deleteMethod, buttonText, confirmMessage }) => {
 	const renderedButton = (
 		<button
-			type="button"
 			className="buttonsWrapper__button"
+			type="button"
 			onClick={(e) => {
 				if (window.confirm(confirmMessage)) {
 					deleteMethod(id);

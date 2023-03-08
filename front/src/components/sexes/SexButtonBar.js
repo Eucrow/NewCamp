@@ -26,7 +26,8 @@ const SexButtonBar = ({
 				<button
 					className="buttonsWrapper__button"
 					type="button"
-					onClick={() => {
+					onClick={(e) => {
+						e.preventDefault();
 						setSexStatus("edit");
 					}}
 				>
