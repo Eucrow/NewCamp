@@ -22,6 +22,7 @@ from django.contrib import admin
 
 from djgeojson.views import GeoJSONLayerView
 
+from sexes.api import SexesAPI
 from ships.api import ShipsAPI, ShipAPI
 from gears.api import GearTrawlsAPI, GearTrawlsBasicAPI, GearTrawlAPI, GearTrawlsNamesAPI
 from species.api import SpAPI, SpeciesGroupAPI, SpeciesAPI
@@ -139,12 +140,13 @@ urlpatterns = [
          name="retrieve_update_delete_sampled_weight_api"),
 
     # Sexes API URLs
-    path('api/1.0/sexes/<int:pk>', SexDetail.as_view(), name="retrieve_update_delete_sex_api"),
-    re_path(r'^api/1.0/sexes/$', SexAPI.as_view(), name="create_update_sex_api"),
+    re_path(r'^api/1.0/sexes/(?P<catch_id>[0-9]+)$', SexesAPI.as_view(), name="retrieve_sexes_api"),
+    path('api/1.0/sex/<int:pk>', SexDetail.as_view(), name="retrieve_update_delete_sex_api"),
+    re_path(r'^api/1.0/sex/$', SexAPI.as_view(), name="create_update_sex_api"),
 
     # Lengths API URLs
     re_path(r'^api/1.0/lengths/(?P<sex_id>[0-9]+)$', LengthsAPI.as_view(), name="get_lenghts_api"),
-   
+
     # re_path(r'^api/1.0/sampled_weights/import$', SampledWeightsImportAPI.as_view(), name="lengths_import"),
 
     # Sex and Lengths API URLs
