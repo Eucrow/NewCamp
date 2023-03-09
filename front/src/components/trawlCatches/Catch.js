@@ -103,7 +103,7 @@ class Catch extends Component {
 					</div>
 					<div className="form__row sexesWrapper">
 						<Sexes
-							sexes={sexes}
+							// sexes={sexes}
 							catch_id={this.props.this_catch.id}
 							unit={this.props.this_catch.unit}
 							increment={this.props.this_catch.increment}

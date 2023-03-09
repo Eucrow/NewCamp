@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import Sex from "./Sex.js";
 import SexesButtonBar from "./SexesButtonBar";
@@ -12,8 +12,21 @@ import SexesButtonBar from "./SexesButtonBar";
  * @param {method} addSex Method to add sex.
  * @returns JSX of sexes component.
  */
-const Sexes = ({ sexes, catch_id, unit, increment, deleteSex, addSex, handleViewSexes, view_sexes }) => {
-	var [addSetStatus, setAddSetStatus] = useState(false);
+const Sexes = ({ catch_id, unit, increment, deleteSex, addSex, handleViewSexes, view_sexes }) => {
+	var [addSexStatus, setAddSexStatus] = useState(false);
+
+	var [sexes, setSexes] = useState([]);
+
+	const apiSexes = "http://127.0.0.1:8000/api/1.0/sexes/" + catch_id;
+
+	useEffect(() => {
+		if (view_sexes === true) {
+			fetch(apiSexes)
+				.then((res) => res.json())
+				.then((res) => setSexes(res))
+				.catch((error) => alert(error));
+		}
+	}, [apiSexes, view_sexes]);
 
 	const sexesBackup = sexes;
 
@@ -36,16 +49,16 @@ const Sexes = ({ sexes, catch_id, unit, increment, deleteSex, addSex, handleView
 				  })
 				: null}
 
-			{addSetStatus === true ? (
+			{addSexStatus === true ? (
 				<Sex
 					catch_id={catch_id}
 					sex_status={"add"}
 					addSex={addSex}
-					handleAddSexStatus={setAddSetStatus}
+					setAddSexStatus={setAddSexStatus}
 					sexesBackup={sexesBackup}
 				/>
 			) : (
-				<SexesButtonBar add_sex_status={"view"} handleAddSexStatus={setAddSetStatus} />
+				<SexesButtonBar add_sex_status={"view"} setAddSexStatus={setAddSexStatus} />
 			)}
 		</Fragment>
 	);
