@@ -22,7 +22,8 @@ from django.contrib import admin
 
 from djgeojson.views import GeoJSONLayerView
 
-from sexes.api import SexesAPI
+from sexes.api import SexesAPI \
+    # , SexesExists
 from ships.api import ShipsAPI, ShipAPI
 from gears.api import GearTrawlsAPI, GearTrawlsBasicAPI, GearTrawlAPI, GearTrawlsNamesAPI
 from species.api import SpAPI, SpeciesGroupAPI, SpeciesAPI
@@ -143,6 +144,7 @@ urlpatterns = [
     re_path(r'^api/1.0/sexes/(?P<catch_id>[0-9]+)$', SexesAPI.as_view(), name="retrieve_sexes_api"),
     path('api/1.0/sex/<int:pk>', SexDetail.as_view(), name="retrieve_update_delete_sex_api"),
     re_path(r'^api/1.0/sex/$', SexAPI.as_view(), name="create_update_sex_api"),
+    # re_path(r'^api/1.0/sexes/exists/(?P<catch_id>[0-9]+)$', SexesExists.as_view(), name="exists_sexes_api"),
 
     # Lengths API URLs
     re_path(r'^api/1.0/lengths/(?P<sex_id>[0-9]+)$', LengthsAPI.as_view(), name="get_lenghts_api"),

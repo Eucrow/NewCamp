@@ -1,8 +1,10 @@
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 
 from catches.models import Catch
 from samples.models import Sex, Length, SampledWeight
 from samples.serializers import SampleWeightSerializer, SexSerializer, LengthSerializer2
+# from sexes.serializers import SexesExistsSerializer
 # from species.serializers import CategorySerializer
 from species.models import Sp
 from species.serializers import SpSimpleSerializer
@@ -28,12 +30,24 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
     # 'samples' must be the related_name of a one to one field on SampleWeight model.
     samples = SampleWeightSerializer(required=True)
 
-    # 'sexes' must be the related_name of a foreing key field on the Sex model.
-    sexes = SexSerializer(many=True)
+    # 'sexes' must be the related_name of a foreign key field on the Sex model.
+    # sexes = SexSerializer(many=True)
+
+    # Field to return if the catch has sexes or not
+    # TODO: I think this is not required.
+    def has_sexes(self, instance):
+        if instance.sexes.count() > 0:
+            return True
+        else:
+            return False
+
+    catch_has_sexes = SerializerMethodField(method_name="has_sexes")
 
     class Meta:
         model = Catch
-        fields = ['id', 'weight', 'category', 'haul', 'haul_id', 'sp', 'samples', 'sexes', ]
+        fields = ['id', 'weight', 'category', 'haul', 'haul_id', 'sp', 'samples', 'catch_has_sexes'
+                  # , 'sexes'
+                  ]
 
     # Override the to_representation method, which format the output of the serializer
     # Example of use to_representation. In this case, the category model is related by a foreing key with the species model.
