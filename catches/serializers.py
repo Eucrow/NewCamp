@@ -35,17 +35,17 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
 
     # Field to return if the catch has sexes or not
     # TODO: I think this is not required.
-    def has_sexes(self, instance):
+    def catch_has_sexes(self, instance):
         if instance.sexes.count() > 0:
             return True
         else:
             return False
 
-    catch_has_sexes = SerializerMethodField(method_name="has_sexes")
+    has_sexes = SerializerMethodField(method_name="catch_has_sexes")
 
     class Meta:
         model = Catch
-        fields = ['id', 'weight', 'category', 'haul', 'haul_id', 'sp', 'samples', 'catch_has_sexes'
+        fields = ['id', 'weight', 'category', 'haul', 'haul_id', 'sp', 'samples', 'has_sexes'
                   # , 'sexes'
                   ]
 

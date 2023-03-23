@@ -105,6 +105,7 @@ class Catch extends Component {
 						<Sexes
 							// sexes={sexes}
 							catch_id={this.props.this_catch.id}
+							has_sexes={this.props.this_catch.has_sexes}
 							unit={this.props.this_catch.unit}
 							increment={this.props.this_catch.increment}
 							editCatchStatus={this.editCatchStatus}

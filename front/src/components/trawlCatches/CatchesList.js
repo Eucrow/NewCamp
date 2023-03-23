@@ -41,7 +41,7 @@ class CatchesList extends Component {
 		this.updateCatch = this.updateCatch.bind(this);
 		this.removeCatch = this.removeCatch.bind(this);
 		this.createCatch = this.createCatch.bind(this);
-		this.addSex = this.addSex.bind(this);
+		// this.addSex = this.addSex.bind(this);
 	}
 
 	handleChangeSampledWeight = (ids) => (evt) => {
@@ -469,47 +469,47 @@ class CatchesList extends Component {
 		});
 	};
 
-	addSex = (evt, sex, idc) => {
-		/**
-		 * Handle new sex form.
-		 * Fetch the new sex and update the catches state.
-		 */
+	// addSex = (evt, sex, idc) => {
+	// 	/**
+	// 	 * Handle new sex form.
+	// 	 * Fetch the new sex and update the catches state.
+	// 	 */
 
-		evt.preventDefault();
+	// 	evt.preventDefault();
 
-		var data = {
-			catch_id: idc,
-			sex: sex,
-		};
+	// 	var data = {
+	// 		catch_id: idc,
+	// 		sex: sex,
+	// 	};
 
-		fetch(this.apiSex, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(data),
-		})
-			.then((response) => {
-				if (response.status > 400) {
-					alert("Error: maybe the sex already exists.");
-				}
-				return response.json();
-			})
-			.then((newSex) => {
-				const newCatches = this.state.catches.map((c) => {
-					if (c.id !== idc) return c;
-					c.sexes.push(newSex);
-					return c;
-				});
+	// 	fetch(this.apiSex, {
+	// 		method: "POST",
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 		},
+	// 		body: JSON.stringify(data),
+	// 	})
+	// 		.then((response) => {
+	// 			if (response.status > 400) {
+	// 				alert("Error: maybe the sex already exists.");
+	// 			}
+	// 			return response.json();
+	// 		})
+	// 		.then((newSex) => {
+	// 			const newCatches = this.state.catches.map((c) => {
+	// 				if (c.id !== idc) return c;
+	// 				c.sexes.push(newSex);
+	// 				return c;
+	// 			});
 
-				this.setState(() => {
-					return {
-						catches: newCatches,
-					};
-				});
-			})
-			.catch((error) => console.log("Error"));
-	};
+	// 			this.setState(() => {
+	// 				return {
+	// 					catches: newCatches,
+	// 				};
+	// 			});
+	// 		})
+	// 		.catch((error) => console.log("Error"));
+	// };
 
 	componentDidMount() {
 		const apiCatches = this.apiCatches + this.props.haul_id;
@@ -593,7 +593,7 @@ class CatchesList extends Component {
 								handleCancelEditCatch={this.handleCancelEditCatch}
 								updateCatch={this.updateCatch}
 								removeCatch={this.removeCatch}
-								addSex={this.addSex}
+								// addSex={this.addSex}
 								createSampledWeight={this.createSampledWeight}
 								deleteSampledWeight={this.deleteSampledWeight}
 							/>
