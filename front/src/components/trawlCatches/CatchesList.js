@@ -24,7 +24,6 @@ class CatchesList extends Component {
 		this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
 		this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
 		this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
-		this.apiSex = "http://127.0.0.1:8000/api/1.0/sex/";
 		this.apiSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/";
 		this.apiCreateSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/new";
 

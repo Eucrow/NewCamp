@@ -67,7 +67,6 @@ class Catch extends Component {
 			);
 		} else if (this.state.status_catch === "view") {
 			const this_catch = this.props.this_catch;
-			const sexes = this_catch.sexes ? this_catch.sexes : [];
 
 			return (
 				<div className="form__row form--wide catch">
@@ -91,6 +90,7 @@ class Catch extends Component {
 						<button className="buttonsWrapper__button" onClick={this.props.removeCatch(this_catch.id)}>
 							Remove catch
 						</button>
+
 						{this.state.view_sexes === false ? (
 							<button className="buttonsWrapper__button" onClick={() => this.handleViewSexes(true)}>
 								View sexes
@@ -103,7 +103,6 @@ class Catch extends Component {
 					</div>
 					<div className="form__row sexesWrapper">
 						<Sexes
-							// sexes={sexes}
 							catch_id={this.props.this_catch.id}
 							has_sexes={this.props.this_catch.has_sexes}
 							unit={this.props.this_catch.unit}
@@ -115,24 +114,6 @@ class Catch extends Component {
 							view_sexes={this.state.view_sexes}
 						/>
 					</div>
-
-					{/* {this.state.view_sexes === false ? (
-							<button className="buttonsWrapper__button" onClick={() => this.handleViewSexes(true)}>
-								View sexes
-							</button>
-						) : (
-							<div className="form__row sexesWrapper">
-								<Sexes
-									sexes={sexes}
-									catch_id={this.props.this_catch.id}
-									unit={this.props.this_catch.unit}
-									increment={this.props.this_catch.increment}
-									editCatchStatus={this.editCatchStatus}
-									addSex={this.props.addSex}
-									deleteSex={this.props.deleteSex}
-								/>
-							</div>
-						)} */}
 				</div>
 			);
 		} else if (this.state.status_catch === "edit") {
