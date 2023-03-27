@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import Sexes from "../sexes/Sexes.js";
 import ComponentCategory from "./Category.js";
+import CatchButtonBar from "./CatchButtonBar.js";
 
 class Catch extends Component {
 	/**
@@ -67,7 +68,6 @@ class Catch extends Component {
 			);
 		} else if (this.state.status_catch === "view") {
 			const this_catch = this.props.this_catch;
-
 			return (
 				<div className="form__row form--wide catch">
 					<ComponentCategory
@@ -78,7 +78,15 @@ class Catch extends Component {
 						createSampledWeight={this.props.createSampledWeight}
 						deleteSampledWeight={this.props.deleteSampledWeight}
 					/>
-					<div className="form__cell form__cell--right">
+					<CatchButtonBar
+						catch_id={this.props.this_catch.id}
+						catch_status={this.state.status_catch}
+						view_sexes={this.state.view_sexes}
+						editCatchStatus={this.editCatchStatus}
+						removeCatch={this.props.removeCatch}
+						handleViewSexes={this.handleViewSexes}
+					/>
+					{/* <div className="form__cell form__cell--right">
 						<button
 							className="buttonsWrapper__button"
 							onClick={() => {
@@ -100,7 +108,7 @@ class Catch extends Component {
 								Hide sexes
 							</button>
 						)}
-					</div>
+					</div> */}
 					<div className="form__row sexesWrapper">
 						<Sexes
 							catch_id={this.props.this_catch.id}
