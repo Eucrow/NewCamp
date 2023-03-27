@@ -14,15 +14,8 @@ const CatchButtonBar = ({
 	editCatchStatus,
 	removeCatch,
 	handleViewSexes,
-	// sex_id,
-	// sex_status,
-	// setSexStatus,
-	// deleteSex,
-	// lengths_status,
-	// setLengthsStatus,
-	// setAddSexStatus,
-	// saveSexButtonStatus,
-	// handleCancelEditSex,
+	updateCatch,
+	handleCancel,
 }) => {
 	var ButtonBar = null;
 
@@ -56,34 +49,29 @@ const CatchButtonBar = ({
 				)}
 			</div>
 		);
-	} else {
-		ButtonBar = null;
+	} else if (catch_status === "edit") {
+		ButtonBar = (
+			<div className="form__cell form__cell--right">
+				<button
+					onClick={() => {
+						updateCatch(catch_id);
+						editCatchStatus("view");
+					}}
+				>
+					Save
+				</button>
+
+				<button
+					onClick={() => {
+						handleCancel();
+						editCatchStatus("view");
+					}}
+				>
+					Cancel
+				</button>
+			</div>
+		);
 	}
-	//  else if (sex_status === "edit") {
-	// 	ButtonBar = (
-	// 		<div className="form__cell buttonsWrapper--center">
-	// 			<button className="buttonsWrapper__button" type="submit" disabled={!saveSexButtonStatus}>
-	// 				Save sex
-	// 			</button>
-	// 			<button
-	// 				className="buttonsWrapper__button"
-	// 				type="button"
-	// 				onClick={() => {
-	// 					handleCancelEditSex();
-	// 				}}
-	// 			>
-	// 				Cancel
-	// 			</button>
-	// 		</div>
-	// 	);
-	// } else if (sex_status === "add") {
-	// 	ButtonBar = (
-	// 		<div className="form__cell buttonsWrapper--center">
-	// 			<UiButtonSave buttonText={"Save sex"} />
-	// 			<UiButtonCancel handleMethod={setAddSexStatus} />
-	// 		</div>
-	// 	);
-	// }
 
 	return ButtonBar;
 };
