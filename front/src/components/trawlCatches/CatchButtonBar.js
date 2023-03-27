@@ -30,14 +30,16 @@ const CatchButtonBar = ({
 				>
 					Edit catch
 				</button>
-				<button
-					className="buttonsWrapper__button"
-					onClick={() => {
-						removeCatch(catch_id);
-					}}
-				>
-					Delete catch
-				</button>
+
+				<UiButtonDelete
+					id={catch_id}
+					deleteMethod={removeCatch}
+					buttonText={"Delete Catch"}
+					confirmMessage={
+						"Are you sure to delete this catch? This delete the catch and its sexes and lengths."
+					}
+				/>
+
 				{view_sexes === false ? (
 					<button className="buttonsWrapper__button" onClick={() => handleViewSexes(true)}>
 						View sexes
