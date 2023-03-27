@@ -8,9 +8,10 @@ import SexesButtonBar from "./SexesButtonBar";
  * @param {numeric} catch_id Id of catch.
  * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is milimeters.
  * @param {numeric} increment Increment of measurement unit.
+ * @param {boolean} view_sexes Show or hide this Sexes component.
  * @returns JSX of sexes component.
  */
-const Sexes = ({ catch_id, has_sexes, unit, increment, handleViewSexes, view_sexes }) => {
+const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 	var [addSexStatus, setAddSexStatus] = useState(false);
 
 	var [sexes, setSexes] = useState([]);
