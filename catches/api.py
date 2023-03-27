@@ -12,21 +12,23 @@ class CatchHaulListAPI(APIView):
     """
     Endpoint to retrieve all the catches of a trawl haul.
     """
+
     def get(self, request, haul_id):
         # catches = get_list_or_404(Catch, haul_id=haul_id)
         catches = Catch.objects.filter(haul_id=haul_id)
         serializer = CatchesVerboseSerializer(catches, many=True)
 
-
         return Response(serializer.data)
+
 
 class CatchVerboseAPI(APIView):
     """
     Endpoint to retrieve verbose catch.
     """
+
     def get(self, request, catch_id):
         catch = get_object_or_404(Catch, id=catch_id)
-        serializer= CatchesVerboseSerializer(catch)
+        serializer = CatchesVerboseSerializer(catch)
         return Response(serializer.data)
 
     # def post(self, request):
@@ -49,14 +51,16 @@ class CatchVerboseAPI(APIView):
     #     else:
     #         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
+
 class CatchHaulAPI(APIView):
     """
     Endpoint to retrieve, update and create catch.
     """
+
     def get(self, request, haul_id, sp_id, category):
         # catch = Catch.objects.get(category_id = category_id)
         catch = get_object_or_404(Catch, haul_id=haul_id, sp_id=sp_id, category=category)
-        serializer= CatchSerializer(catch)
+        serializer = CatchSerializer(catch)
         return Response(serializer.data)
 
     def post(self, request):

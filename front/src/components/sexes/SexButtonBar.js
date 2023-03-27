@@ -14,7 +14,7 @@ const SexButtonBar = ({
 	deleteSex,
 	lengths_status,
 	setLengthsStatus,
-	handleAddSexStatus,
+	setAddSexStatus,
 	saveSexButtonStatus,
 	handleCancelEditSex,
 }) => {
@@ -83,7 +83,7 @@ const SexButtonBar = ({
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<UiButtonSave buttonText={"Save sex"} />
-				<UiButtonCancel handleMethod={handleAddSexStatus} />
+				<UiButtonCancel handleMethod={setAddSexStatus} />
 			</div>
 		);
 	}

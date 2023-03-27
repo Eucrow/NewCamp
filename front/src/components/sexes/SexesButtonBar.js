@@ -3,7 +3,7 @@ import React from "react";
 /**
  * Lengths button bar component.
  */
-const SexButtonBar = ({ add_sex_status, handleAddSexStatus }) => {
+const SexesButtonBar = ({ add_sex_status, setAddSexStatus }) => {
 	var ButtonBar = null;
 
 	if (add_sex_status === "view") {
@@ -12,7 +12,7 @@ const SexButtonBar = ({ add_sex_status, handleAddSexStatus }) => {
 				<button
 					className="buttonsWrapper__button"
 					onClick={() => {
-						handleAddSexStatus(true);
+						setAddSexStatus(true);
 					}}
 				>
 					Add sex
@@ -53,4 +53,4 @@ const SexButtonBar = ({ add_sex_status, handleAddSexStatus }) => {
 	return ButtonBar;
 };
 
-export default SexButtonBar;
+export default SexesButtonBar;

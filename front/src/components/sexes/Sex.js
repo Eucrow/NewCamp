@@ -23,7 +23,7 @@ const Sex = ({
 	increment,
 	catch_id,
 	addSex,
-	handleAddSexStatus,
+	setAddSexStatus,
 	sexesBackup,
 }) => {
 	const [newSex, setNewSex] = useState("");
@@ -176,7 +176,7 @@ const Sex = ({
 				className="form__row form--wide buttonsWrapper"
 				onSubmit={(e) => {
 					addSex(e, newSex, catch_id);
-					handleAddSexStatus(false);
+					setAddSexStatus(false);
 				}}
 			>
 				<label className="form__cell sexes__sex">
@@ -199,7 +199,7 @@ const Sex = ({
 					newSex={newSex}
 					catch_id={catch_id}
 					addSex={addSex}
-					handleAddSexStatus={handleAddSexStatus}
+					setAddSexStatus={setAddSexStatus}
 					updateSex={updateSex}
 					setSexStatus={setSexStatus}
 				/>

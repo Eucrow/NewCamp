@@ -24,15 +24,12 @@ class CatchesList extends Component {
 		this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
 		this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
 		this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
-		this.apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
 		this.apiSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/";
 		this.apiCreateSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/new";
 
 		this.handleChangeSampledWeight = this.handleChangeSampledWeight.bind(this);
 		this.updateSampledWeight = this.updateSampledWeight.bind(this);
 		this.deleteSampledWeight = this.deleteSampledWeight.bind(this);
-		this.deleteSexFromState = this.deleteSexFromState.bind(this);
-		this.deleteSex = this.deleteSex.bind(this);
 		this.handleChangeGroup = this.handleChangeGroup.bind(this);
 		this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
 		this.handleChangeCategory = this.handleChangeCategory.bind(this);
@@ -41,7 +38,6 @@ class CatchesList extends Component {
 		this.updateCatch = this.updateCatch.bind(this);
 		this.removeCatch = this.removeCatch.bind(this);
 		this.createCatch = this.createCatch.bind(this);
-		this.addSex = this.addSex.bind(this);
 	}
 
 	handleChangeSampledWeight = (ids) => (evt) => {
@@ -170,40 +166,6 @@ class CatchesList extends Component {
 			},
 		})
 			.then(() => this.deleteSampledWeightFromState(ids))
-			.catch((error) => alert(error));
-	};
-
-	deleteSexFromState = (ids) => {
-		/**
-		 * Method to manage the remove of sex.
-		 */
-
-		const newCatches = this.state.catches.map((c) => {
-			const newSexes = c.sexes.filter((s) => {
-				if (ids !== s.id) return s;
-			});
-			c.sexes = newSexes;
-			return c;
-		});
-
-		this.setState(() => {
-			return {
-				catches: newCatches,
-			};
-		});
-	};
-
-	deleteSex = (ids) => {
-		const apiSex = this.apiSex + ids;
-
-		fetch(apiSex, {
-			method: "DELETE",
-			headers: {
-				"Content-Type": "application/json",
-				Accept: "application/json",
-			},
-		})
-			.then(() => this.deleteSexFromState(ids))
 			.catch((error) => alert(error));
 	};
 
@@ -469,48 +431,6 @@ class CatchesList extends Component {
 		});
 	};
 
-	addSex = (evt, sex, idc) => {
-		/**
-		 * Handle new sex form.
-		 * Fetch the new sex and update the catches state.
-		 */
-
-		evt.preventDefault();
-
-		var data = {
-			catch_id: idc,
-			sex: sex,
-		};
-
-		fetch(this.apiSex, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(data),
-		})
-			.then((response) => {
-				if (response.status > 400) {
-					alert("Error: maybe the sex already exists.");
-				}
-				return response.json();
-			})
-			.then((newSex) => {
-				const newCatches = this.state.catches.map((c) => {
-					if (c.id !== idc) return c;
-					c.sexes.push(newSex);
-					return c;
-				});
-
-				this.setState(() => {
-					return {
-						catches: newCatches,
-					};
-				});
-			})
-			.catch((error) => console.log("Error"));
-	};
-
 	componentDidMount() {
 		const apiCatches = this.apiCatches + this.props.haul_id;
 
@@ -584,7 +504,6 @@ class CatchesList extends Component {
 								species={this.state.species}
 								handleChangeSampledWeight={this.handleChangeSampledWeight}
 								updateSampledWeight={this.updateSampledWeight}
-								deleteSex={this.deleteSex}
 								handleChangeGroup={this.handleChangeGroup}
 								handleChangeSpecies={this.handleChangeSpecies}
 								handleChangeCategory={this.handleChangeCategory}
@@ -593,7 +512,6 @@ class CatchesList extends Component {
 								handleCancelEditCatch={this.handleCancelEditCatch}
 								updateCatch={this.updateCatch}
 								removeCatch={this.removeCatch}
-								addSex={this.addSex}
 								createSampledWeight={this.createSampledWeight}
 								deleteSampledWeight={this.deleteSampledWeight}
 							/>
