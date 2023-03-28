@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import Sexes from "../sexes/Sexes.js";
 import ComponentCategory from "./Category.js";
+import CatchButtonBar from "./CatchButtonBar.js";
 
 class Catch extends Component {
 	/**
@@ -66,8 +67,6 @@ class Catch extends Component {
 				</div>
 			);
 		} else if (this.state.status_catch === "view") {
-			const this_catch = this.props.this_catch;
-
 			return (
 				<div className="form__row form--wide catch">
 					<ComponentCategory
@@ -78,29 +77,14 @@ class Catch extends Component {
 						createSampledWeight={this.props.createSampledWeight}
 						deleteSampledWeight={this.props.deleteSampledWeight}
 					/>
-					<div className="form__cell form__cell--right">
-						<button
-							className="buttonsWrapper__button"
-							onClick={() => {
-								this.editCatchStatus("edit");
-							}}
-						>
-							Edit catch
-						</button>
-						<button className="buttonsWrapper__button" onClick={this.props.removeCatch(this_catch.id)}>
-							Remove catch
-						</button>
-
-						{this.state.view_sexes === false ? (
-							<button className="buttonsWrapper__button" onClick={() => this.handleViewSexes(true)}>
-								View sexes
-							</button>
-						) : (
-							<button className="buttonsWrapper__button" onClick={() => this.handleViewSexes(false)}>
-								Hide sexes
-							</button>
-						)}
-					</div>
+					<CatchButtonBar
+						catch_id={this.props.this_catch.id}
+						catch_status={this.state.status_catch}
+						view_sexes={this.state.view_sexes}
+						editCatchStatus={this.editCatchStatus}
+						removeCatch={this.props.removeCatch}
+						handleViewSexes={this.handleViewSexes}
+					/>
 					<div className="form__row sexesWrapper">
 						<Sexes
 							catch_id={this.props.this_catch.id}
@@ -117,8 +101,6 @@ class Catch extends Component {
 				</div>
 			);
 		} else if (this.state.status_catch === "edit") {
-			const this_catch = this.props.this_catch;
-
 			return (
 				<div className="form__row">
 					<ComponentCategory
@@ -132,23 +114,14 @@ class Catch extends Component {
 						deleteSampledWeight={this.props.deleteSampledWeight}
 					/>
 
-					<button
-						onClick={() => {
-							this.props.updateCatch(this_catch.id);
-							this.editCatchStatus("view");
-						}}
-					>
-						Save
-					</button>
-
-					<button
-						onClick={() => {
-							this.handleCancel();
-							this.editCatchStatus("view");
-						}}
-					>
-						Cancel
-					</button>
+					<CatchButtonBar
+						catch_id={this.props.this_catch.id}
+						catch_status={this.state.status_catch}
+						view_sexes={this.state.view_sexes}
+						editCatchStatus={this.editCatchStatus}
+						updateCatch={this.props.updateCatch}
+						handleCancel={this.handleCancel}
+					/>
 				</div>
 			);
 		}
