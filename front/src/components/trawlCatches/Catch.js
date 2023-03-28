@@ -16,7 +16,7 @@ class Catch extends Component {
 	 * @param {method} props.handleChangeWeight: manage weight state and field.
 	 * @param {method} props.handleCancelEditCatch: manage cancellation of catch edition.
 	 * @param {method} props.updateCatch: update catch in database.
-	 * @param {method} props.removeCatch: delete catch of database.
+	 * @param {method} props.deleteCatch: delete catch of database.
 	 * @param {method} props.addSex: handle the new sex form.
 	 */
 
@@ -82,7 +82,7 @@ class Catch extends Component {
 						catch_status={this.state.status_catch}
 						view_sexes={this.state.view_sexes}
 						editCatchStatus={this.editCatchStatus}
-						removeCatch={this.props.removeCatch}
+						deleteCatch={this.props.deleteCatch}
 						handleViewSexes={this.handleViewSexes}
 					/>
 					<div className="form__row sexesWrapper">

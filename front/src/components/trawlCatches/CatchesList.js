@@ -36,7 +36,7 @@ class CatchesList extends Component {
 		this.handleChangeWeight = this.handleChangeWeight.bind(this);
 		this.handleCancelEditCatch = this.handleCancelEditCatch.bind(this);
 		this.updateCatch = this.updateCatch.bind(this);
-		this.removeCatch = this.removeCatch.bind(this);
+		this.deleteCatch = this.deleteCatch.bind(this);
 		this.createCatch = this.createCatch.bind(this);
 	}
 
@@ -169,7 +169,7 @@ class CatchesList extends Component {
 			.catch((error) => alert(error));
 	};
 
-	removeCatch = (idx) => () => {
+	deleteCatch = (idx) => {
 		/**
 		 * Remove catch to database.
 		 */
@@ -184,7 +184,6 @@ class CatchesList extends Component {
 			},
 			body: JSON.stringify(request),
 		})
-			// .then( response => response.json())
 			.then(() => {
 				this.setState({
 					catches: this.state.catches.filter((c) => {
@@ -511,7 +510,7 @@ class CatchesList extends Component {
 								handleCancelChangeWeight={this.handleCancelChangeWeight}
 								handleCancelEditCatch={this.handleCancelEditCatch}
 								updateCatch={this.updateCatch}
-								removeCatch={this.removeCatch}
+								deleteCatch={this.deleteCatch}
 								createSampledWeight={this.createSampledWeight}
 								deleteSampledWeight={this.deleteSampledWeight}
 							/>

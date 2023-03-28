@@ -12,7 +12,7 @@ const CatchButtonBar = ({
 	catch_status,
 	view_sexes,
 	editCatchStatus,
-	removeCatch,
+	deleteCatch,
 	handleViewSexes,
 	updateCatch,
 	handleCancel,
@@ -33,7 +33,7 @@ const CatchButtonBar = ({
 
 				<UiButtonDelete
 					id={catch_id}
-					deleteMethod={removeCatch}
+					deleteMethod={deleteCatch}
 					buttonText={"Delete Catch"}
 					confirmMessage={
 						"Are you sure to delete this catch? This delete the catch and its sexes and lengths."
