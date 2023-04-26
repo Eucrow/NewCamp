@@ -1,28 +1,12 @@
 import React from "react";
 
-const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
+const ComponentsHaulTrawl = ({ haul }) => {
 	/**
 	 * Component of trawl form of haul.
 	 * @param {object} haul
-	 * @param {function} handleChangeTrawl
 	 */
 
 	const renderContent = () => {
-		const shooting_date_time =
-			haul.trawl_characteristics.shooting_date_time === null
-				? ""
-				: haul.trawl_characteristics.shooting_date_time.replace("Z", "");
-
-		const hauling_date_time =
-			haul.trawl_characteristics.hauling_date_time === null
-				? ""
-				: haul.trawl_characteristics.hauling_date_time.replace("Z", "");
-
-		const bottom_date_time =
-			haul.trawl_characteristics.bottom_date_time === null
-				? ""
-				: haul.trawl_characteristics.bottom_date_time.replace("Z", "");
-
 		return (
 			<fieldset className="wrapper">
 				<legend>Trawl characteristics:</legend>
@@ -51,16 +35,17 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="datetime-local"
 							name="shooting_date_time"
 							id="shooting_date_time"
-							value={shooting_date_time}
-							onChange={handleChangeTrawl}
+							value={haul.trawl_characteristics.shooting_date_time || ""}
 							aria-label="Shooting date and time"
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="number"
 							name="shooting_latitude"
 							id="shooting_latitude"
@@ -70,12 +55,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={6}
 							step={0.0001}
 							value={haul.trawl_characteristics.shooting_latitude || ""}
-							onChange={handleChangeTrawl}
 							aria-label="Shooting latitude"
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="number"
 							name="shooting_longitude"
 							id="shooting_longitude"
@@ -85,12 +70,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={7}
 							step={0.0001}
 							value={haul.trawl_characteristics.shooting_longitude || ""}
-							onChange={handleChangeTrawl}
 							aria-label="Shooting longitude"
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="number"
 							name="shooting_depth"
 							id="shooting_depth"
@@ -100,7 +85,6 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={1}
 							value={haul.trawl_characteristics.shooting_depth || ""}
-							onChange={handleChangeTrawl}
 							aria-label="Shooting depth"
 						/>
 					</div>
@@ -113,16 +97,17 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="datetime-local"
 							name="hauling_date_time"
 							id="hauling_date_time"
-							value={hauling_date_time}
-							onChange={handleChangeTrawl}
+							value={haul.trawl_characteristics.hauling_date_time || ""}
 							aria-label="Hauling date and time"
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="number"
 							name="hauling_latitude"
 							id="hauling_latitude"
@@ -132,12 +117,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={6}
 							step={0.0001}
 							value={haul.trawl_characteristics.hauling_latitude || ""}
-							onChange={handleChangeTrawl}
 							aria-label="Hauling latitude"
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="number"
 							name="hauling_longitude"
 							id="hauling_longitude"
@@ -147,12 +132,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={7}
 							step={0.0001}
 							value={haul.trawl_characteristics.hauling_longitude || ""}
-							onChange={handleChangeTrawl}
 							aria-label="Hauling longitude"
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="number"
 							name="hauling_depth"
 							id="hauling_depth"
@@ -162,7 +147,6 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={1}
 							value={haul.trawl_characteristics.hauling_depth || ""}
-							onChange={handleChangeTrawl}
 							aria-label="Hauling depth"
 						/>
 					</div>
@@ -175,16 +159,17 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="datetime-local"
 							name="bottom_date_time"
 							id="bottom_date_time"
-							value={bottom_date_time}
-							onChange={handleChangeTrawl}
+							value={haul.trawl_characteristics.bottom_date_time || ""}
 							aria-label="Bottom date and time"
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="number"
 							name="bottom_latitude"
 							id="bottom_latitude"
@@ -194,12 +179,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={6}
 							step={0.0001}
 							value={haul.trawl_characteristics.bottom_latitude || ""}
-							onChange={handleChangeTrawl}
 							aria-label="Bottom latitude"
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="number"
 							name="bottom_longitude"
 							id="bottom_longitude"
@@ -209,12 +194,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={7}
 							step={0.0001}
 							value={haul.trawl_characteristics.bottom_longitude || ""}
-							onChange={handleChangeTrawl}
 							aria-label="Bottom longitude"
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
+							disabled
 							type="number"
 							name="bottom_depth"
 							id="bottom_depth"
@@ -224,7 +209,6 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={1}
 							value={haul.trawl_characteristics.bottom_depth || ""}
-							onChange={handleChangeTrawl}
 							aria-label="Bottom depth"
 						/>
 					</div>
@@ -235,6 +219,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 					<label className="field">
 						Course (degrees):
 						<input
+							disabled
 							type="number"
 							name="course"
 							id="course"
@@ -244,12 +229,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={3}
 							step={1}
 							value={haul.trawl_characteristics.course || ""}
-							onChange={handleChangeTrawl}
 						/>
 					</label>
 					<label className="field">
 						Velocity (m/s):
 						<input
+							disabled
 							type="number"
 							name="velocity"
 							id="velocity"
@@ -259,12 +244,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={0.1}
 							value={haul.trawl_characteristics.velocity || ""}
-							onChange={handleChangeTrawl}
 						/>
 					</label>
 					<label className="field">
 						Cable (m):
 						<input
+							disabled
 							type="number"
 							name="cable"
 							id="cable"
@@ -274,12 +259,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={1}
 							value={haul.trawl_characteristics.cable || ""}
-							onChange={handleChangeTrawl}
 						/>
 					</label>
 					<label className="field">
 						Sweep (m):
 						<input
+							disabled
 							type="number"
 							name="sweep"
 							id="sweep"
@@ -289,7 +274,6 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={3}
 							step={1}
 							value={haul.trawl_characteristics.sweep || ""}
-							onChange={handleChangeTrawl}
 						/>
 					</label>
 				</div>
@@ -297,6 +281,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 					<label className="field">
 						Otter Boards Distance (m):
 						<input
+							disabled
 							type="number"
 							name="otter_boards_distance"
 							id="otter_boards_distance"
@@ -306,12 +291,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={0.1}
 							value={haul.trawl_characteristics.otter_boards_distance || ""}
-							onChange={handleChangeTrawl}
 						/>
 					</label>
 					<label className="field">
 						Horizontal Aperture (m):
 						<input
+							disabled
 							type="number"
 							name="horizontal_aperture"
 							id="horizontal_aperture"
@@ -321,12 +306,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={0.1}
 							value={haul.trawl_characteristics.horizontal_aperture || ""}
-							onChange={handleChangeTrawl}
 						/>
 					</label>
 					<label className="field">
 						Vertical Aperture (m):
 						<input
+							disabled
 							type="number"
 							name="vertical_aperture"
 							id="vertical_aperture"
@@ -336,7 +321,6 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={0.1}
 							value={haul.trawl_characteristics.vertical_aperture || ""}
-							onChange={handleChangeTrawl}
 						/>
 					</label>
 				</div>
@@ -344,6 +328,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 					<label className="field">
 						Grid (m):
 						<input
+							disabled
 							type="number"
 							name="grid"
 							id="grid"
@@ -353,12 +338,12 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={2}
 							step={1}
 							value={haul.trawl_characteristics.grid || ""}
-							onChange={handleChangeTrawl}
 						/>
 					</label>
 					<label className="field">
 						Track (m):
 						<input
+							disabled
 							type="number"
 							name="track"
 							id="track"
@@ -368,7 +353,6 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={1}
 							value={haul.trawl_characteristics.track || ""}
-							onChange={handleChangeTrawl}
 						/>
 					</label>
 				</div>
@@ -376,10 +360,10 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 					<label className="field__comment">
 						Comment:
 						<textarea
+							disabled
 							name="comment"
 							id="comment"
 							value={haul.trawl_characteristics.comment || ""}
-							onChange={handleChangeTrawl}
 						/>
 					</label>
 				</div>
@@ -390,4 +374,4 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 	return renderContent();
 };
 
-export default TrawlFormEdit;
+export default ComponentsHaulTrawl;

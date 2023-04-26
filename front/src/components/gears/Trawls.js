@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import UiButtonAddTrawl from "./UiButtonAddTrawl";
-import NewTrawl from "./NewTrawl";
+import TrawlFormNew from "../hauls/new/TrawlFormNew";
 import Trawl from "./Trawl";
 /**
  * Component list of trawls.
@@ -151,9 +151,7 @@ class Trawls extends Component {
 			},
 		})
 			.then(() => {
-				const newTrawls = this.state.trawls.filter(
-					(trawl) => trawl.id !== trawl_id
-				);
+				const newTrawls = this.state.trawls.filter((trawl) => trawl.id !== trawl_id);
 
 				this.setState({
 					trawls: newTrawls,
@@ -191,7 +189,7 @@ class Trawls extends Component {
 		} else if (this.state.add === true) {
 			content = (
 				<div>
-					<NewTrawl
+					<TrawlFormNew
 						handleChange={this.handleChange}
 						handleAdd={this.handleAdd}
 						createTrawl={this.createTrawl}

@@ -2,12 +2,12 @@ import React, { Component } from "react";
 
 import update from "immutability-helper";
 
-import ViewCommon from "./view/ViewCommon_novale";
-import ViewMeteorology from "./view/ViewMeteorology";
-import ViewTrawl from "./view/ViewTrawl";
-import ViewHydrography from "./view/ViewHydrography";
+import HaulFormView from "./view/HaulFormView";
+import ViewMeteorology from "./view/MeteorologyFormView";
+import ViewTrawl from "./view/TrawlFormView";
+import ViewHydrography from "./view/HydrographyFormView";
 import MeteorologyFormEdit from "./edit/MeteorologyFormEdit";
-import EditTrawl from "./edit/TrawlFormEdit";
+import TrawlFormEdit from "./edit/TrawlFormEdit";
 import EditHydrography from "./edit/HydrographyFormEdit";
 
 import UiButtonSave from "../ui/UiButtonSave";
@@ -210,7 +210,7 @@ class HaulDetails extends Component {
 						</div>
 
 						<div className="form__row">
-							<EditTrawl haul={this.state.haul} handleChangeTrawl={this.handleChangeTrawl} />
+							<TrawlFormEdit haul={this.state.haul} handleChangeTrawl={this.handleChangeTrawl} />
 						</div>
 
 						<div className="form__row">
@@ -230,7 +230,7 @@ class HaulDetails extends Component {
 			if (this.state.edit === false) {
 				return (
 					<div>
-						<ViewCommon haul={this.state.haul} />
+						<HaulFormView haul={this.state.haul} />
 						<ViewHydrography haul={this.state.haul} />
 						<button type="submit" className="buttonsWrapper__button">
 							Save
