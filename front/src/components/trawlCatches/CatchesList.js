@@ -279,6 +279,7 @@ class CatchesList extends Component {
 		const repeatedCatch = this.state.catches.some(
 			(c) =>
 				//the comparison between c.category and value must be with == instead of ===
+				//TODO: check why
 				(c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category == value)
 		);
 

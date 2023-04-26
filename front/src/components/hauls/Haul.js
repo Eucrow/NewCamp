@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import ViewCommon from "./view/ViewCommon";
-import EditCommonForm from "./edit/EditCommonForm";
+import HaulFormView from "./view/HaulFormView";
+import HaulFormEdit from "./edit/HaulFormEdit";
 import HaulDetails from "./HaulDetails";
 import ComponentsTrawlCatches from "../trawlCatches/TrawlHaulCatches";
 
@@ -17,6 +17,7 @@ class Haul extends Component {
 		this.state = {
 			detail: false, // True to view detail fo the haul, false to not to.
 			edit: false,
+			haul_status: "view", // "view" or "edit"
 		};
 
 		this.handleDetail = this.handleDetail.bind(this);
@@ -57,40 +58,38 @@ class Haul extends Component {
 		if ((this.state.detail === false) & (this.state.edit === false)) {
 			return (
 				<div className="wrapper form__row">
-					<ViewCommon
+					<HaulFormView
 						haul={this.props.haul}
-						edit={this.state.edit}
+						haul_status={this.state.haul_status}
 						handleEdit={this.handleEdit}
 						handleDetail={this.handleDetail}
 					/>
 					<ComponentsTrawlCatches haul_id={this.props.haul.id} />
 				</div>
 			);
-		}
-
-		if ((this.state.detail === false) & (this.state.edit === true)) {
+		} else if ((this.state.detail === false) & (this.state.edit === true)) {
 			return (
 				<div className="wrapper form__row">
-					<EditCommonForm
+					<HaulFormEdit
 						haul={this.props.haul}
 						station_id={this.props.station_id}
 						edit={this.state.edit}
 						handleEdit={this.handleEdit}
 						samplers={this.props.samplers}
 					/>
+					<ComponentsTrawlCatches haul_id={this.props.haul.id} />
 				</div>
 			);
-		}
-
-		if (this.state.detail === true) {
+		} else if (this.state.detail === true) {
 			return (
 				<div className="wrapper form__row">
-					<ViewCommon haul={this.props.haul} />
+					<HaulFormView haul={this.props.haul} />
 					<HaulDetails
 						haul={this.props.haul}
 						handleDetail={this.handleDetail}
 						validateHaulSampler={this.props.validateHaulSampler}
 					/>
+					<ComponentsTrawlCatches haul_id={this.props.haul.id} />
 				</div>
 			);
 		}
