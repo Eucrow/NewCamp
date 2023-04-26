@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import Haul from "./Haul";
-import NewHaul from "./new/NewHaul";
+import HaulHandleNew from "./new/HaulHandleNew";
 import UiButtonAdd from "../ui/UiButtonAdd";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
@@ -71,9 +71,7 @@ class Hauls extends Component {
 		const sampler_exists = this.haulSamplerExists(haul, sampler_id);
 
 		if (sampler_exists === true) {
-			e.target.setCustomValidity(
-				"This combination of haul/sampler already exists."
-			);
+			e.target.setCustomValidity("This combination of haul/sampler already exists.");
 		} else {
 			e.target.setCustomValidity("");
 		}
@@ -117,16 +115,13 @@ class Hauls extends Component {
 			return (
 				<Fragment>
 					{this.renderHauls()}
-					<NewHaul
+					<HaulHandleNew
 						station_id={this.props.station_id}
 						changeAdd={this.changeAdd}
 						createHaul={this.props.createHaul}
 						validateHaulSampler={this.validateHaulSampler}
 					/>
-					<UiButtonCancel
-						handleMethod={this.changeAdd}
-						text={"Cancel"}
-					/>
+					<UiButtonCancel handleMethod={this.changeAdd} text={"Cancel"} />
 				</Fragment>
 			);
 		}
