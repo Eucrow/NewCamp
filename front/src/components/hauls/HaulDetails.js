@@ -13,7 +13,7 @@ import EditHydrography from "./edit/EditHydrography";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
-import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 class HaulDetails extends Component {
 	/**
@@ -38,11 +38,8 @@ class HaulDetails extends Component {
 
 		//TODO: optimize requests: the request only need to return station_id, meteo,
 		// trawl_characteristics and hydrograpy_characteristics
-		this.apiTrawlHaul =
-			"http://127.0.0.1:8000/api/1.0/haul/trawl/" + this.props.haul.id;
-		this.apiHydrographyHaul =
-			"http://127.0.0.1:8000/api/1.0/haul/hydrography/" +
-			this.props.haul.id;
+		this.apiTrawlHaul = "http://127.0.0.1:8000/api/1.0/haul/trawl/" + this.props.haul.id;
+		this.apiHydrographyHaul = "http://127.0.0.1:8000/api/1.0/haul/hydrography/" + this.props.haul.id;
 
 		this.changeIsEdit = this.changeIsEdit.bind(this);
 		this.handleChangeMeteorology = this.handleChangeMeteorology.bind(this);
@@ -178,17 +175,17 @@ class HaulDetails extends Component {
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
-									<UiButtonBooleanHandle
+									<UiButtonStatusHandle
 										buttonText={"Hide detail"}
 										handleMethod={this.props.handleDetail}
-										newBoolean={false}
-									></UiButtonBooleanHandle>
+										newStatus={false}
+									/>
 
-									<UiButtonBooleanHandle
+									<UiButtonStatusHandle
 										buttonText={"Edit"}
 										handleMethod={this.changeIsEdit}
-										newBoolean={true}
-									></UiButtonBooleanHandle>
+										newStatus={true}
+									/>
 								</div>
 							</div>
 						</div>
@@ -208,27 +205,19 @@ class HaulDetails extends Component {
 						<div className="form__row">
 							<EditMeteorology
 								haul={this.state.haul}
-								handleChangeMeteorology={
-									this.handleChangeMeteorology
-								}
+								handleChangeMeteorology={this.handleChangeMeteorology}
 							/>
 						</div>
 
 						<div className="form__row">
-							<EditTrawl
-								haul={this.state.haul}
-								handleChangeTrawl={this.handleChangeTrawl}
-							/>
+							<EditTrawl haul={this.state.haul} handleChangeTrawl={this.handleChangeTrawl} />
 						</div>
 
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<UiButtonSave buttonText="Save Haul" />
-									<UiButtonCancel
-										buttonText="Cancel"
-										handleMethod={this.changeIsEdit}
-									/>
+									<UiButtonCancel buttonText="Cancel" handleMethod={this.changeIsEdit} />
 								</div>
 							</div>
 						</div>
@@ -243,10 +232,7 @@ class HaulDetails extends Component {
 					<div>
 						<ViewCommon haul={this.state.haul} />
 						<ViewHydrography haul={this.state.haul} />
-						<button
-							type="submit"
-							className="buttonsWrapper__button"
-						>
+						<button type="submit" className="buttonsWrapper__button">
 							Save
 						</button>
 						<button
@@ -265,15 +251,9 @@ class HaulDetails extends Component {
 					<div>
 						<EditHydrography
 							haul={this.state.haul}
-							handleChangeHydrography={
-								this.handleChangeHydrography
-							}
+							handleChangeHydrography={this.handleChangeHydrography}
 						/>
-						<input
-							type="submit"
-							value="Save Haul"
-							onClick={this.handleSubmit}
-						/>
+						<input type="submit" value="Save Haul" onClick={this.handleSubmit} />
 						<button
 							onClick={() => {
 								this.changeIsEdit(false);

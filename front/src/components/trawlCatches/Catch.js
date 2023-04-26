@@ -36,13 +36,13 @@ class Catch extends Component {
 
 	editCatchStatus(status) {
 		this.setState({
-			["status_catch"]: status,
+			status_catch: status,
 		});
 	}
 
 	handleViewSexes = (status) => {
 		this.setState({
-			["view_sexes"]: status,
+			view_sexes: status,
 		});
 	};
 

@@ -1,8 +1,9 @@
 import React from "react";
 
 import UiButtonDelete from "../ui/UiButtonDelete";
-import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonCancel from "../ui/UiButtonCancel";
+import UiButtonEditHandle from "../ui/UiButtonEditHandle";
+import UiButtonSexes from "../ui/UiButtonSexes";
+// import UiButtonIconSexes from "../ui/UiButtonIconSexes";
 
 /**
  * Lengths button bar component.
@@ -22,14 +23,7 @@ const CatchButtonBar = ({
 	if (catch_status === "view") {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
-				<button
-					className="buttonsWrapper__button"
-					onClick={() => {
-						editCatchStatus("edit");
-					}}
-				>
-					Edit catch
-				</button>
+				<UiButtonEditHandle buttonText={"Edit catch"} editMethod={editCatchStatus} newStatus={"edit"} />
 
 				<UiButtonDelete
 					id={catch_id}
@@ -41,13 +35,9 @@ const CatchButtonBar = ({
 				/>
 
 				{view_sexes === false ? (
-					<button className="buttonsWrapper__button" onClick={() => handleViewSexes(true)}>
-						View sexes
-					</button>
+					<UiButtonSexes handleMethod={handleViewSexes} newStatus={true} />
 				) : (
-					<button className="buttonsWrapper__button" onClick={() => handleViewSexes(false)}>
-						Hide sexes
-					</button>
+					<UiButtonSexes handleMethod={handleViewSexes} newStatus={false} />
 				)}
 			</div>
 		);

@@ -1,6 +1,6 @@
 import React from "react";
 
-import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
 
@@ -12,23 +12,13 @@ import UiButtonDelete from "../ui/UiButtonDelete";
  * @param {method} handleDetail
  * @param {method} deleteHaul: method used to delete haul.
  */
-const HaulButtonBar = ({
-	haul_id,
-	edit,
-	handleEdit,
-	handleDetail,
-	deleteHaul,
-}) => {
+const HaulButtonBar = ({ haul_id, edit, handleEdit, handleDetail, deleteHaul }) => {
 	var ButtonBar = null;
 
 	if (edit === true) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
-				<UiButtonBooleanHandle
-					buttonText={"Cancel"}
-					handleMethod={handleEdit}
-					newBoolean={false}
-				/>
+				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={handleEdit} newStatus={false} />
 				<UiButtonSave buttonText="Save Haul" />
 			</div>
 		);
@@ -36,11 +26,7 @@ const HaulButtonBar = ({
 	if (edit === false) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
-				<UiButtonBooleanHandle
-					buttonText={"Edit Haul"}
-					handleMethod={handleEdit}
-					newBoolean={true}
-				/>
+				<UiButtonStatusHandle buttonText={"Edit Haul"} handleMethod={handleEdit} newStatus={true} />
 
 				<UiButtonDelete
 					id={haul_id}
@@ -49,11 +35,7 @@ const HaulButtonBar = ({
 					confirmMessage="Are you sure to delete this haul?"
 				/>
 
-				<UiButtonBooleanHandle
-					buttonText={"View Detail"}
-					handleMethod={handleDetail}
-					newBoolean={true}
-				/>
+				<UiButtonStatusHandle buttonText={"View Detail"} handleMethod={handleDetail} newStatus={true} />
 			</div>
 		);
 	}

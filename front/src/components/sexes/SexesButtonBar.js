@@ -20,35 +20,6 @@ const SexesButtonBar = ({ add_sex_status, setAddSexStatus }) => {
 			</div>
 		);
 	}
-	//  else if (add_sex_status === "add") {
-	// 	ButtonBar = (
-	// 		<div className="form__cell buttonsWrapper--center">
-	// 			<button
-	// 				type="button"
-	// 				onClick={(e) => {
-	// 					addSex(
-	// 						e,
-	// 						new_sex,
-	// 						catch_id
-	// 					);
-	// 					handleAddSexButton(false);
-	// 				}}
-	// 			>
-	// 				Save new sex
-	// 			</button>
-	// 			<button
-	// 				className="buttonsWrapper__button"
-	// 				type="button"
-	// 				onClick={() => {
-	// 					handleSexStatus("view");
-	// 				}}
-	// 			>
-	// 				Cancel
-	// 			</button>
-
-	// 		</div>
-	// 	);
-	// }
 
 	return ButtonBar;
 };
