@@ -7,8 +7,6 @@ const ViewMeteorology = ({ haul }) => {
 	 */
 
 	const renderContent = () => {
-		if (haul.meteo === null) return null;
-
 		return (
 			<fieldset className="wrapper form__row">
 				<legend>Meteorology:</legend>

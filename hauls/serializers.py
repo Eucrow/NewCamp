@@ -144,8 +144,7 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
             meteo_datas = validated_data.pop('meteo')
             trawl_characteristics_datas = validated_data.pop('trawl_characteristics')
             # instance.gear must be a Trawl object, so get the trawl of the name:
-            instance.gear = Trawl.objects.get(name=validated_data.pop('gear')['name'])
-
+            instance.gear = Trawl.objects.get(name=self.data['gear'])
             # Second, save the instance validated (this does not have the meteo and trawl_characteristics data)
             for attr, value in validated_data.items():
                 # print(attr, value)

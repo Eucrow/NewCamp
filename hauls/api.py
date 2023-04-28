@@ -74,7 +74,8 @@ class HaulAPI(APIView):
     """
 
     def get(self, request, haul_id):
-        haul = get_object_or_404(Haul, pk=haul_id)
+        # haul = get_object_or_404(Haul, pk=haul_id)
+        haul = Haul.objects.filter(pk=haul_id)
         serializer = HaulSerializer(haul)
         return Response(serializer.data)
 

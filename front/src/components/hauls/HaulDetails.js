@@ -1,6 +1,4 @@
-import React, { Component } from "react";
-
-import update from "immutability-helper";
+import React, { useState, useEffect } from "react";
 
 import HaulFormView from "./view/HaulFormView";
 import ViewMeteorology from "./view/MeteorologyFormView";
@@ -15,7 +13,7 @@ import UiButtonCancel from "../ui/UiButtonCancel";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
-class HaulDetails extends Component {
+const HaulDetails = ({ haul, handleDetail, validateHaulSampler }) => {
 	/**
 	 * View haul detail component.
 	 * @param {object} haul
@@ -23,104 +21,72 @@ class HaulDetails extends Component {
 	 * @param {method} handleDetail
 	 */
 
-	constructor(props) {
-		super(props);
+	// const [thisHaul, setThisHaul] = useState(haul);
 
-		this.state = {
-			haul: {
-				meteo: {},
-				trawl_characteristics: {},
-				hydrography_characteristics: {},
-				sampler: {},
-			},
-			edit: false,
-		};
+	const [thisHaul, setThisHaul] = useState({
+		...haul,
+		meteo: {},
+		trawl_characteristics: {},
+		hydrography_characteristics: {},
+		sampler: {},
+	});
 
-		//TODO: optimize requests: the request only need to return station_id, meteo,
-		// trawl_characteristics and hydrograpy_characteristics
-		this.apiTrawlHaul = "http://127.0.0.1:8000/api/1.0/haul/trawl/" + this.props.haul.id;
-		this.apiHydrographyHaul = "http://127.0.0.1:8000/api/1.0/haul/hydrography/" + this.props.haul.id;
+	const [edit, setEdit] = useState(false);
 
-		this.changeIsEdit = this.changeIsEdit.bind(this);
-		this.handleChangeMeteorology = this.handleChangeMeteorology.bind(this);
-		this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
-		this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+	//TODO: optimize requests: the request only need to return station_id, meteo,
+	// trawl_characteristics and hydrograpy_characteristics
+	const apiTrawlHaul = "http://127.0.0.1:8000/api/1.0/haul/trawl/" + haul.id;
+	const apiHydrographyHaul = "http://127.0.0.1:8000/api/1.0/haul/hydrography/" + haul.id;
 
-		this.renderContent = this.renderContent.bind(this);
-	}
+	const handleChangeMeteorology = (event) => {
+		var name = event.target.name;
+		var value = event.target.value;
 
-	changeIsEdit(edit) {
-		this.setState(() => {
-			return {
-				edit: edit,
-			};
-		});
-	}
-
-	handleChangeMeteorology(event) {
-		const name = event.target.name;
-		const value = event.target.value;
-
-		const newHaulMeteo = update(this.state.haul, {
+		setThisHaul((prevHaul) => ({
+			...prevHaul,
 			meteo: {
-				[name]: { $set: value },
+				...prevHaul.meteo,
+				[name]: value,
 			},
-		});
-
-		this.setState({
-			haul: newHaulMeteo,
-		});
-	}
-
-	handleChangeTrawl(event) {
-		const name = event.target.name;
-		const value = event.target.value;
-
-		const newHaulTrawl = update(this.state.haul, {
+		}));
+	};
+	const handleChangeTrawl = (event) => {
+		var name = event.target.name;
+		var value = event.target.value;
+		setThisHaul((prevHaul) => ({
+			...prevHaul,
 			trawl_characteristics: {
-				[name]: { $set: value },
+				...prevHaul.trawl_characteristics,
+				[name]: value,
 			},
-		});
+		}));
+	};
 
-		this.setState({
-			haul: newHaulTrawl,
-		});
-	}
-
-	handleChangeHydrography(event) {
-		const name = event.target.name;
-		const value = event.target.value;
-
-		const newHaulHydrography = update(this.state.haul, {
+	const handleChangeHydrography = (event) => {
+		var name = event.target.name;
+		var value = event.target.value;
+		setThisHaul((prevHaul) => ({
+			...prevHaul,
 			hydrography_characteristics: {
-				[name]: { $set: value },
+				...prevHaul.hydrography_characteristics,
+				[name]: value,
 			},
-		});
+		}));
+	};
 
-		this.setState({
-			haul: newHaulHydrography,
-		});
-	}
-
-	handleSubmit(event) {
+	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		const apiHaul =
-			this.state.haul.sampler_id === 1
-				? this.apiTrawlHaul
-				: this.state.haul.sampler_id === 2
-				? this.apiHydrographyHaul
-				: null;
+		const apiHaul = haul.sampler_id === 1 ? apiTrawlHaul : haul.sampler_id === 2 ? apiHydrographyHaul : null;
 
-		console.log(JSON.stringify(this.state.haul));
+		// console.log(JSON.stringify(thisHaul));
 
 		fetch(apiHaul, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(this.state.haul),
+			body: JSON.stringify(thisHaul),
 		})
 			.then(() => {
 				this.setState(() => {
@@ -128,18 +94,14 @@ class HaulDetails extends Component {
 				});
 			})
 			.catch((error) => console.log(error));
-	}
+	};
 
-	componentDidMount() {
-		/**
-		 * When the component is mounted, get the sampler_id from props, fetch the complete
-		 * data of the haul and update the state with it.
-		 */
+	useEffect(() => {
 		const apiHaul =
-			parseInt(this.props.haul.sampler_id) === 1
-				? this.apiTrawlHaul
-				: parseInt(this.props.haul.sampler_id) === 2
-				? this.apiHydrographyHaul
+			parseInt(haul.sampler_id) === 1
+				? apiTrawlHaul
+				: parseInt(haul.sampler_id) === 2
+				? apiHydrographyHaul
 				: null;
 
 		// Fetch haul.
@@ -153,39 +115,31 @@ class HaulDetails extends Component {
 				return response.json();
 			})
 			.then((haul) => {
-				this.setState(() => {
-					return {
-						haul,
-					};
-				});
+				setThisHaul(haul);
 			});
-	}
+	}, []);
 
-	renderContent() {
-		if (this.state.haul.sampler_id === 1) {
-			if (this.state.edit === false) {
+	const renderContent = () => {
+		if (haul.sampler_id === 1) {
+			if (edit === false) {
 				return (
 					<form className="form--wide" disabled>
 						<div className="form__row">
-							<ViewMeteorology haul={this.state.haul} />
+							<ViewMeteorology haul={thisHaul} />
 						</div>
 						<div className="form__row">
-							<ViewTrawl haul={this.state.haul} />
+							<ViewTrawl haul={thisHaul} />
 						</div>
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<UiButtonStatusHandle
 										buttonText={"Hide detail"}
-										handleMethod={this.props.handleDetail}
+										handleMethod={handleDetail}
 										newStatus={false}
 									/>
 
-									<UiButtonStatusHandle
-										buttonText={"Edit"}
-										handleMethod={this.changeIsEdit}
-										newStatus={true}
-									/>
+									<UiButtonStatusHandle buttonText={"Edit"} handleMethod={setEdit} newStatus={true} />
 								</div>
 							</div>
 						</div>
@@ -193,31 +147,28 @@ class HaulDetails extends Component {
 				);
 			}
 
-			if (this.state.edit === true) {
+			if (edit === true) {
 				return (
 					<form
 						className="form--wide"
 						onSubmit={(e) => {
-							this.handleSubmit(e);
-							this.changeIsEdit(false);
+							handleSubmit(e);
+							setEdit(false);
 						}}
 					>
 						<div className="form__row">
-							<MeteorologyFormEdit
-								haul={this.state.haul}
-								handleChangeMeteorology={this.handleChangeMeteorology}
-							/>
+							<MeteorologyFormEdit haul={thisHaul} handleChangeMeteorology={handleChangeMeteorology} />
 						</div>
 
 						<div className="form__row">
-							<TrawlFormEdit haul={this.state.haul} handleChangeTrawl={this.handleChangeTrawl} />
+							<TrawlFormEdit haul={thisHaul} handleChangeTrawl={handleChangeTrawl} />
 						</div>
 
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<UiButtonSave buttonText="Save Haul" />
-									<UiButtonCancel buttonText="Cancel" handleMethod={this.changeIsEdit} />
+									<UiButtonCancel buttonText="Cancel" handleMethod={setEdit} />
 								</div>
 							</div>
 						</div>
@@ -226,18 +177,18 @@ class HaulDetails extends Component {
 			}
 		}
 
-		if (this.state.haul.sampler_id === 2) {
-			if (this.state.edit === false) {
+		if (haul.sampler_id === 2) {
+			if (edit === false) {
 				return (
 					<div>
-						<HaulFormView haul={this.state.haul} />
-						<ViewHydrography haul={this.state.haul} />
+						<HaulFormView haul={thisHaul} />
+						<ViewHydrography haul={thisHaul} />
 						<button type="submit" className="buttonsWrapper__button">
 							Save
 						</button>
 						<button
 							onClick={() => {
-								this.props.handleDetail(false);
+								handleDetail(false);
 							}}
 						>
 							Hide detail
@@ -246,17 +197,14 @@ class HaulDetails extends Component {
 				);
 			}
 
-			if (this.state.edit === true) {
+			if (edit === true) {
 				return (
 					<div>
-						<EditHydrography
-							haul={this.state.haul}
-							handleChangeHydrography={this.handleChangeHydrography}
-						/>
-						<input type="submit" value="Save Haul" onClick={this.handleSubmit} />
+						<EditHydrography haul={thisHaul} handleChangeHydrography={handleChangeHydrography} />
+						<input type="submit" value="Save Haul" onClick={handleSubmit} />
 						<button
 							onClick={() => {
-								this.changeIsEdit(false);
+								setEdit(false);
 							}}
 						>
 							Cancel Edition
@@ -267,11 +215,268 @@ class HaulDetails extends Component {
 		}
 
 		return null;
-	}
+	};
 
-	render() {
-		return this.renderContent();
-	}
-}
+	return renderContent();
+};
+
+// class HaulDetails extends Component {
+// 	/**
+// 	 * View haul detail component.
+// 	 * @param {object} haul
+// 	 * @param {method} validateHaulSampler
+// 	 * @param {method} handleDetail
+// 	 */
+
+// 	constructor(props) {
+// 		super(props);
+
+// 		this.state = {
+// 			haul: {
+// 				meteo: {},
+// 				trawl_characteristics: {},
+// 				hydrography_characteristics: {},
+// 				sampler: {},
+// 			},
+// 			edit: false,
+// 		};
+
+// 		//TODO: optimize requests: the request only need to return station_id, meteo,
+// 		// trawl_characteristics and hydrograpy_characteristics
+// 		this.apiTrawlHaul = "http://127.0.0.1:8000/api/1.0/haul/trawl/" + haul.id;
+// 		this.apiHydrographyHaul = "http://127.0.0.1:8000/api/1.0/haul/hydrography/" + haul.id;
+
+// 		setEdit = setEdit.bind(this);
+// 		this.handleChangeMeteorology = this.handleChangeMeteorology.bind(this);
+// 		this.handleChangeTrawl = this.handleChangeTrawl.bind(this);
+// 		this.handleChangeHydrography = this.handleChangeHydrography.bind(this);
+// 		this.handleSubmit = this.handleSubmit.bind(this);
+
+// 		this.renderContent = this.renderContent.bind(this);
+// 	}
+
+// 	changeIsEdit(edit) {
+// 		this.setState(() => {
+// 			return {
+// 				edit: edit,
+// 			};
+// 		});
+// 	}
+
+// 	handleChangeMeteorology(event) {
+// 		const name = event.target.name;
+// 		const value = event.target.value;
+
+// 		const newHaulMeteo = update(haul, {
+// 			meteo: {
+// 				[name]: { $set: value },
+// 			},
+// 		});
+
+// 		this.setState({
+// 			haul: newHaulMeteo,
+// 		});
+// 	}
+
+// 	handleChangeTrawl(event) {
+// 		const name = event.target.name;
+// 		const value = event.target.value;
+
+// 		const newHaulTrawl = update(haul, {
+// 			trawl_characteristics: {
+// 				[name]: { $set: value },
+// 			},
+// 		});
+
+// 		this.setState({
+// 			haul: newHaulTrawl,
+// 		});
+// 	}
+
+// 	handleChangeHydrography(event) {
+// 		const name = event.target.name;
+// 		const value = event.target.value;
+
+// 		const newHaulHydrography = update(haul, {
+// 			hydrography_characteristics: {
+// 				[name]: { $set: value },
+// 			},
+// 		});
+
+// 		this.setState({
+// 			haul: newHaulHydrography,
+// 		});
+// 	}
+
+// 	handleSubmit(event) {
+// 		event.preventDefault();
+
+// 		const apiHaul =
+// 			haul.sampler_id === 1
+// 				? this.apiTrawlHaul
+// 				: haul.sampler_id === 2
+// 				? this.apiHydrographyHaul
+// 				: null;
+
+// 		console.log(JSON.stringify(haul));
+
+// 		fetch(apiHaul, {
+// 			method: "PUT",
+// 			headers: {
+// 				"Content-Type": "application/json",
+// 			},
+// 			body: JSON.stringify(haul),
+// 		})
+// 			.then(() => {
+// 				this.setState(() => {
+// 					return { edit: false };
+// 				});
+// 			})
+// 			.catch((error) => console.log(error));
+// 	}
+
+// 	componentDidMount() {
+// 		/**
+// 		 * When the component is mounted, get the sampler_id from props, fetch the complete
+// 		 * data of the haul and update the state with it.
+// 		 */
+// 		const apiHaul =
+// 			parseInt(haul.sampler_id) === 1
+// 				? this.apiTrawlHaul
+// 				: parseInt(haul.sampler_id) === 2
+// 				? this.apiHydrographyHaul
+// 				: null;
+
+// 		// Fetch haul.
+// 		fetch(apiHaul)
+// 			.then((response) => {
+// 				if (response.status > 400) {
+// 					return this.setState(() => {
+// 						return { placeholder: "Something went wrong!" };
+// 					});
+// 				}
+// 				return response.json();
+// 			})
+// 			.then((haul) => {
+// 				this.setState(() => {
+// 					return {
+// 						haul,
+// 					};
+// 				});
+// 			});
+// 	}
+
+// 	renderContent() {
+// 		if (haul.sampler_id === 1) {
+// 			if (edit === false) {
+// 				return (
+// 					<form className="form--wide" disabled>
+// 						<div className="form__row">
+// 							<ViewMeteorology haul={haul} />
+// 						</div>
+// 						<div className="form__row">
+// 							<ViewTrawl haul={haul} />
+// 						</div>
+// 						<div className="form__row">
+// 							<div className="form__cell form__cell--right">
+// 								<div className="buttonsWrapper">
+// 									<UiButtonStatusHandle
+// 										buttonText={"Hide detail"}
+// 										handleMethod={handleDetail}
+// 										newStatus={false}
+// 									/>
+
+// 									<UiButtonStatusHandle
+// 										buttonText={"Edit"}
+// 										handleMethod={setEdit}
+// 										newStatus={true}
+// 									/>
+// 								</div>
+// 							</div>
+// 						</div>
+// 					</form>
+// 				);
+// 			}
+
+// 			if (edit === true) {
+// 				return (
+// 					<form
+// 						className="form--wide"
+// 						onSubmit={(e) => {
+// 							this.handleSubmit(e);
+// 							setEdit(false);
+// 						}}
+// 					>
+// 						<div className="form__row">
+// 							<MeteorologyFormEdit
+// 								haul={haul}
+// 								handleChangeMeteorology={this.handleChangeMeteorology}
+// 							/>
+// 						</div>
+
+// 						<div className="form__row">
+// 							<TrawlFormEdit haul={haul} handleChangeTrawl={this.handleChangeTrawl} />
+// 						</div>
+
+// 						<div className="form__row">
+// 							<div className="form__cell form__cell--right">
+// 								<div className="buttonsWrapper">
+// 									<UiButtonSave buttonText="Save Haul" />
+// 									<UiButtonCancel buttonText="Cancel" handleMethod={setEdit} />
+// 								</div>
+// 							</div>
+// 						</div>
+// 					</form>
+// 				);
+// 			}
+// 		}
+
+// 		if (haul.sampler_id === 2) {
+// 			if (edit === false) {
+// 				return (
+// 					<div>
+// 						<HaulFormView haul={haul} />
+// 						<ViewHydrography haul={haul} />
+// 						<button type="submit" className="buttonsWrapper__button">
+// 							Save
+// 						</button>
+// 						<button
+// 							onClick={() => {
+// 								handleDetail(false);
+// 							}}
+// 						>
+// 							Hide detail
+// 						</button>
+// 					</div>
+// 				);
+// 			}
+
+// 			if (edit === true) {
+// 				return (
+// 					<div>
+// 						<EditHydrography
+// 							haul={haul}
+// 							handleChangeHydrography={this.handleChangeHydrography}
+// 						/>
+// 						<input type="submit" value="Save Haul" onClick={this.handleSubmit} />
+// 						<button
+// 							onClick={() => {
+// 								setEdit(false);
+// 							}}
+// 						>
+// 							Cancel Edition
+// 						</button>
+// 					</div>
+// 				);
+// 			}
+// 		}
+
+// 		return null;
+// 	}
+
+// 	render() {
+// 		return this.renderContent();
+// 	}
+// }
 
 export default HaulDetails;
