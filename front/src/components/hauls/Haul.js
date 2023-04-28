@@ -13,7 +13,13 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler }) => {
 		if (detail === false && edit === false) {
 			return (
 				<div className="wrapper form__row">
-					<HaulFormView haul={haul} haul_status={haul_status} handleEdit={setEdit} handleDetail={setDetail} />
+					<HaulFormView
+						haul={haul}
+						detail={detail}
+						haul_status={haul_status}
+						handleEdit={setEdit}
+						handleDetail={setDetail}
+					/>
 					<ComponentsTrawlCatches haul_id={haul.id} />
 				</div>
 			);
