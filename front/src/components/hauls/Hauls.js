@@ -6,8 +6,7 @@
 // import UiButtonAdd from "../ui/UiButtonAdd";
 // import UiButtonCancel from "../ui/UiButtonCancel";
 
-import React, { useState, useContext } from "react";
-import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
+import React, { useState } from "react";
 import Haul from "./Haul";
 import HaulHandleNew from "./new/HaulHandleNew";
 import UiButtonAdd from "../ui/UiButtonAdd";
@@ -21,10 +20,7 @@ const Hauls = (props) => {
 	 * @param {object} sampler_id
 	 */
 
-	const selectedSurveyContext = useContext(SelectedSurveyContext);
-
 	const [add, setAdd] = useState(false);
-	const [survey, setSurvey] = useState({});
 
 	/**
 	 * Method to check if a combination of haul / sampler_id already exists in the hauls of this component.

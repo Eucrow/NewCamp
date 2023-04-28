@@ -13,7 +13,7 @@ import UiButtonCancel from "../ui/UiButtonCancel";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
-const HaulDetails = ({ haul, handleDetail, validateHaulSampler }) => {
+const HaulDetails = ({ haul, detail, handleDetail, validateHaulSampler }) => {
 	/**
 	 * View haul detail component.
 	 * @param {object} haul
@@ -97,27 +97,29 @@ const HaulDetails = ({ haul, handleDetail, validateHaulSampler }) => {
 	};
 
 	useEffect(() => {
-		const apiHaul =
-			parseInt(haul.sampler_id) === 1
-				? apiTrawlHaul
-				: parseInt(haul.sampler_id) === 2
-				? apiHydrographyHaul
-				: null;
+		if (detail === true) {
+			const apiHaul =
+				parseInt(haul.sampler_id) === 1
+					? apiTrawlHaul
+					: parseInt(haul.sampler_id) === 2
+					? apiHydrographyHaul
+					: null;
 
-		// Fetch haul.
-		fetch(apiHaul)
-			.then((response) => {
-				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
-					});
-				}
-				return response.json();
-			})
-			.then((haul) => {
-				setThisHaul(haul);
-			});
-	}, []);
+			// Fetch haul.
+			fetch(apiHaul)
+				.then((response) => {
+					if (response.status > 400) {
+						return this.setState(() => {
+							return { placeholder: "Something went wrong!" };
+						});
+					}
+					return response.json();
+				})
+				.then((haul) => {
+					setThisHaul(haul);
+				});
+		}
+	}, [detail, apiHydrographyHaul, apiTrawlHaul, haul.sampler_id]);
 
 	const renderContent = () => {
 		if (haul.sampler_id === 1) {

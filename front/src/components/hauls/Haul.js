@@ -40,7 +40,12 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler }) => {
 			return (
 				<div className="wrapper form__row">
 					<HaulFormView haul={haul} />
-					<HaulDetails haul={haul} handleDetail={setDetail} validateHaulSampler={validateHaulSampler} />
+					<HaulDetails
+						haul={haul}
+						detail={detail}
+						handleDetail={setDetail}
+						validateHaulSampler={validateHaulSampler}
+					/>
 					<ComponentsTrawlCatches haul_id={haul.id} />
 				</div>
 			);
