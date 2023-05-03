@@ -7,21 +7,8 @@ import StationsContext from "../../../contexts/StationsContext";
  * @param {method} handleChangeNestedIds
  * @param {method} validateHaulSampler
  */
-const HaulFormNew = ({ haul, handleChange, validateHaulSampler, haulRef, samplerRef }) => {
-	//create a state for the haul form haul props
-	const [newHaul, setNewHaul] = useState({ ...haul });
-
+const HaulFormNew = ({ newHaul, handleChange, validateHaulSampler, haulRef, samplerRef }) => {
 	const stationsContext = useContext(StationsContext);
-
-	const handleChangeHere = (e) => {
-		const { name, value } = e.target;
-		setNewHaul((prev_state) => {
-			return {
-				...prev_state,
-				[name]: value,
-			};
-		});
-	};
 
 	const renderContent = () => {
 		return (
@@ -40,7 +27,7 @@ const HaulFormNew = ({ haul, handleChange, validateHaulSampler, haulRef, sampler
 						size={2}
 						ref={haulRef}
 						onChange={(e) => {
-							handleChangeHere(e);
+							handleChange(e);
 							validateHaulSampler(e, e.target.value, newHaul.sampler_id);
 						}}
 					/>
@@ -53,8 +40,10 @@ const HaulFormNew = ({ haul, handleChange, validateHaulSampler, haulRef, sampler
 						name="stratum_id"
 						className="select__largeWidth"
 						required
-						value={haul.stratum_id || ""}
-						onChange={handleChange}
+						value={newHaul?.stratum_id || ""}
+						onChange={(e) => {
+							handleChange(e);
+						}}
 					>
 						<option value=""></option>
 						{stationsContext.strata.map((stratum) => {
@@ -74,10 +63,10 @@ const HaulFormNew = ({ haul, handleChange, validateHaulSampler, haulRef, sampler
 						name="sampler_id"
 						className="select__normalWidth"
 						required
-						value={newHaul.sampler_id || ""}
+						value={newHaul?.sampler_id || ""}
 						ref={samplerRef}
 						onChange={(e) => {
-							handleChangeHere(e);
+							handleChange(e);
 							validateHaulSampler(e, newHaul.haul, e.target.value);
 						}}
 					>
@@ -94,7 +83,15 @@ const HaulFormNew = ({ haul, handleChange, validateHaulSampler, haulRef, sampler
 
 				<label className="form__cell">
 					Gear:
-					<select id="gear_id" name="gear" required value={haul.gear || ""} onChange={handleChange}>
+					<select
+						id="gear_id"
+						name="gear"
+						required
+						value={newHaul?.gear || ""}
+						onChange={(e) => {
+							handleChange(e);
+						}}
+					>
 						<option value=""></option>
 						{stationsContext.gears.map((gear) => {
 							return (
@@ -108,7 +105,14 @@ const HaulFormNew = ({ haul, handleChange, validateHaulSampler, haulRef, sampler
 
 				<label className="form__cell">
 					Valid:
-					<input type="checkbox" id="valid" name="valid" onChange={handleChange} />
+					<input
+						type="checkbox"
+						id="valid"
+						name="valid"
+						onChange={(e) => {
+							handleChange(e);
+						}}
+					/>
 				</label>
 			</Fragment>
 		);

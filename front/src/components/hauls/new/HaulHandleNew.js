@@ -17,10 +17,13 @@ import UiButtonSave from "../../ui/UiButtonSave";
 const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler, haulRef, samplerRef }) => {
 	const stationsContext = useContext(StationsContext);
 
-	const [haulCommon, setFormValue] = useState({
-		gear_id: "",
-		station_id: "",
+	const [newHaul, setNewHaul] = useState({
+		station_id: station_id,
+		haul: "",
+		stratum_id: "",
 		sampler_id: "",
+		gear_id: "",
+		valid: "off",
 	});
 
 	const [meteo, setMeteo] = useState({});
@@ -29,8 +32,7 @@ const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler, haulRef, sa
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-
-		setFormValue((prev_state) => {
+		setNewHaul((prev_state) => {
 			return {
 				...prev_state,
 				[name]: value,
@@ -39,17 +41,18 @@ const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler, haulRef, sa
 	};
 
 	const createHaulObject = () => {
-		const newHaul = {
-			haul: haulCommon.haul,
-			gear_id: haulCommon.gear,
-			sampler_id: haulCommon.sampler_id,
-			stratum_id: haulCommon.stratum_id,
-			station_id: station_id,
+		const haul = {
+			haul: newHaul.haul,
+			gear_id: newHaul.gear,
+			sampler_id: newHaul.sampler_id,
+			stratum_id: newHaul.stratum_id,
+			station_id: newHaul.station_id,
+			valid: newHaul.valid,
 			meteo: meteo,
 			trawl_characteristics: trawlCharacteristics,
 		};
 
-		return newHaul;
+		return haul;
 	};
 
 	const handleChangeMeteo = (e) => {
@@ -62,20 +65,6 @@ const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler, haulRef, sa
 			};
 		});
 	};
-
-	// const handleChangeNestedIds = (e) => {
-	// 	const name = e.target.name;
-	// 	const value = e.target.value;
-
-	// 	this.setState({
-	// 		haul: {
-	// 			...this.state.haul,
-	// 			[name]: {
-	// 				id: value,
-	// 			},
-	// 		},
-	// 	});
-	// };
 
 	const handleChangeTrawl = (e) => {
 		const { name, value } = e.target;
@@ -115,7 +104,7 @@ const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler, haulRef, sa
 				}}
 			>
 				<HaulFormNew
-					haul={haulCommon}
+					newHaul={newHaul}
 					handleChange={handleChange}
 					validateHaulSampler={validateHaulSampler}
 					haulRef={haulRef}
@@ -125,7 +114,7 @@ const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler, haulRef, sa
 					handleChangeMeteo={handleChangeMeteo}
 					handleChangeTrawl={handleChangeTrawl}
 					handleChangeHydrography={handleChangeHydrography}
-					sampler_id={haulCommon.sampler_id}
+					sampler_id={newHaul.sampler_id}
 				/>
 				<UiButtonSave buttonText="Save Haul" />
 			</form>
