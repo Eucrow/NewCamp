@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useState } from "react";
 
 import StationsContext from "../../../contexts/StationsContext";
 /**
@@ -7,8 +7,21 @@ import StationsContext from "../../../contexts/StationsContext";
  * @param {method} handleChangeNestedIds
  * @param {method} validateHaulSampler
  */
-const HaulFormNew = ({ haul, handleChange, validateHaulSampler }) => {
+const HaulFormNew = ({ haul, handleChange, validateHaulSampler, haulRef, samplerRef }) => {
+	//create a state for the haul form haul props
+	const [newHaul, setNewHaul] = useState({ ...haul });
+
 	const stationsContext = useContext(StationsContext);
+
+	const handleChangeHere = (e) => {
+		const { name, value } = e.target;
+		setNewHaul((prev_state) => {
+			return {
+				...prev_state,
+				[name]: value,
+			};
+		});
+	};
 
 	const renderContent = () => {
 		return (
@@ -25,9 +38,10 @@ const HaulFormNew = ({ haul, handleChange, validateHaulSampler }) => {
 						max="99"
 						maxLength="2"
 						size={2}
+						ref={haulRef}
 						onChange={(e) => {
-							handleChange(e);
-							validateHaulSampler(e, e.target.value, haul.sampler_id);
+							handleChangeHere(e);
+							validateHaulSampler(e, e.target.value, newHaul.sampler_id);
 						}}
 					/>
 				</label>
@@ -60,10 +74,11 @@ const HaulFormNew = ({ haul, handleChange, validateHaulSampler }) => {
 						name="sampler_id"
 						className="select__normalWidth"
 						required
-						value={haul.sampler_id || ""}
+						value={newHaul.sampler_id || ""}
+						ref={samplerRef}
 						onChange={(e) => {
-							handleChange(e);
-							validateHaulSampler(e, haul.haul, e.target.value);
+							handleChangeHere(e);
+							validateHaulSampler(e, newHaul.haul, e.target.value);
 						}}
 					>
 						<option value=""></option>

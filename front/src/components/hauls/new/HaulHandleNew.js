@@ -14,7 +14,7 @@ import UiButtonSave from "../../ui/UiButtonSave";
  * @param {method} props.validateHaulSampler
  */
 
-const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler }) => {
+const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler, haulRef, samplerRef }) => {
 	const stationsContext = useContext(StationsContext);
 
 	const [haulCommon, setFormValue] = useState({
@@ -114,7 +114,13 @@ const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler }) => {
 					changeAdd(false);
 				}}
 			>
-				<HaulFormNew haul={haulCommon} handleChange={handleChange} validateHaulSampler={validateHaulSampler} />
+				<HaulFormNew
+					haul={haulCommon}
+					handleChange={handleChange}
+					validateHaulSampler={validateHaulSampler}
+					haulRef={haulRef}
+					samplerRef={samplerRef}
+				/>
 				<HandleHaulType
 					handleChangeMeteo={handleChangeMeteo}
 					handleChangeTrawl={handleChangeTrawl}

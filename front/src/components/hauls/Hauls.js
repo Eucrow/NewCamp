@@ -6,21 +6,25 @@
 // import UiButtonAdd from "../ui/UiButtonAdd";
 // import UiButtonCancel from "../ui/UiButtonCancel";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Haul from "./Haul";
 import HaulHandleNew from "./new/HaulHandleNew";
 import UiButtonAdd from "../ui/UiButtonAdd";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
-const Hauls = (props) => {
+const Hauls = ({ hauls, station_id, createHaul }) => {
 	/**
 	 * List of hauls
 	 * @param {object} hauls
-	 * @param {object} station_id
-	 * @param {object} sampler_id
+	 * @param {number} station_id
+	 * @param {method} createHaul
 	 */
 
 	const [add, setAdd] = useState(false);
+
+	// Refs used to validate haul/sampler combination
+	const haulRef = useRef(null);
+	const samplerRef = useRef(null);
 
 	/**
 	 * Method to check if a combination of haul / sampler_id already exists in the hauls of this component.
@@ -29,8 +33,8 @@ const Hauls = (props) => {
 	 * @returns True if exists, false if doesn't.
 	 */
 	const haulSamplerExists = (haul, sampler_id) => {
-		const sampler_exists = Object.keys(props.hauls).map((h) => {
-			if (props.hauls[h]["haul"] === parseInt(haul) && props.hauls[h]["sampler_id"] === parseInt(sampler_id)) {
+		const sampler_exists = Object.keys(hauls).map((h) => {
+			if (hauls[h]["haul"] === parseInt(haul) && hauls[h]["sampler_id"] === parseInt(sampler_id)) {
 				return true;
 			} else {
 				return false;
@@ -50,11 +54,13 @@ const Hauls = (props) => {
 		const sampler_exists = haulSamplerExists(haul, sampler_id);
 
 		if (sampler_exists === true) {
-			e.target.setCustomValidity("This combination of haul/sampler already exists.");
+			haulRef.current.setCustomValidity("This combination of haul/sampler already exists.");
+			samplerRef.current.setCustomValidity("This combination of haul/sampler already exists.");
 		} else {
-			e.target.setCustomValidity("");
+			haulRef.current.setCustomValidity("");
+			samplerRef.current.setCustomValidity("");
 		}
-		return e.target.reportValidity();
+		return haulRef.current.reportValidity();
 	};
 
 	/**
@@ -62,15 +68,15 @@ const Hauls = (props) => {
 	 * @returns {character} List of hauls in html.
 	 */
 	const renderHauls = () => {
-		if (props.hauls) {
+		if (hauls) {
 			return (
 				<div>
-					{props.hauls.map((haul) => {
+					{hauls.map((haul) => {
 						return (
 							<Haul
 								key={haul.id}
 								haul={haul}
-								station_id={props.station_id}
+								station_id={station_id}
 								validateHaulSampler={validateHaulSampler}
 							/>
 						);
@@ -95,10 +101,12 @@ const Hauls = (props) => {
 				<>
 					{renderHauls()}
 					<HaulHandleNew
-						station_id={props.station_id}
+						station_id={station_id}
 						changeAdd={setAdd}
-						createHaul={props.createHaul}
+						createHaul={createHaul}
 						validateHaulSampler={validateHaulSampler}
+						haulRef={haulRef}
+						samplerRef={samplerRef}
 					/>
 					<UiButtonCancel handleMethod={setAdd} text={"Cancel"} />
 				</>
