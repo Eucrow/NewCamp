@@ -55,7 +55,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							name="shooting_date_time"
 							id="shooting_date_time"
 							value={shooting_date_time}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Shooting date and time"
 						/>
 					</div>
@@ -70,7 +72,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={6}
 							step={0.0001}
 							value={haul.trawl_characteristics.shooting_latitude || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Shooting latitude"
 						/>
 					</div>
@@ -85,7 +89,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={7}
 							step={0.0001}
 							value={haul.trawl_characteristics.shooting_longitude || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Shooting longitude"
 						/>
 					</div>
@@ -100,7 +106,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={1}
 							value={haul.trawl_characteristics.shooting_depth || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Shooting depth"
 						/>
 					</div>
@@ -117,7 +125,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							name="hauling_date_time"
 							id="hauling_date_time"
 							value={hauling_date_time}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Hauling date and time"
 						/>
 					</div>
@@ -132,7 +142,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={6}
 							step={0.0001}
 							value={haul.trawl_characteristics.hauling_latitude || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Hauling latitude"
 						/>
 					</div>
@@ -147,7 +159,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={7}
 							step={0.0001}
 							value={haul.trawl_characteristics.hauling_longitude || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Hauling longitude"
 						/>
 					</div>
@@ -162,7 +176,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={1}
 							value={haul.trawl_characteristics.hauling_depth || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Hauling depth"
 						/>
 					</div>
@@ -179,7 +195,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							name="bottom_date_time"
 							id="bottom_date_time"
 							value={bottom_date_time}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Bottom date and time"
 						/>
 					</div>
@@ -194,7 +212,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={6}
 							step={0.0001}
 							value={haul.trawl_characteristics.bottom_latitude || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Bottom latitude"
 						/>
 					</div>
@@ -209,7 +229,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={7}
 							step={0.0001}
 							value={haul.trawl_characteristics.bottom_longitude || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Bottom longitude"
 						/>
 					</div>
@@ -224,7 +246,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={1}
 							value={haul.trawl_characteristics.bottom_depth || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Bottom depth"
 						/>
 					</div>
@@ -244,7 +268,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={3}
 							step={1}
 							value={haul.trawl_characteristics.course || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -259,7 +285,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={0.1}
 							value={haul.trawl_characteristics.velocity || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -274,7 +302,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={1}
 							value={haul.trawl_characteristics.cable || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -289,7 +319,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={3}
 							step={1}
 							value={haul.trawl_characteristics.sweep || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 				</div>
@@ -306,7 +338,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={0.1}
 							value={haul.trawl_characteristics.otter_boards_distance || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -321,7 +355,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={0.1}
 							value={haul.trawl_characteristics.horizontal_aperture || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -336,7 +372,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={0.1}
 							value={haul.trawl_characteristics.vertical_aperture || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 				</div>
@@ -353,7 +391,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={2}
 							step={1}
 							value={haul.trawl_characteristics.grid || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -368,7 +408,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							size={4}
 							step={1}
 							value={haul.trawl_characteristics.track || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 				</div>
@@ -379,7 +421,9 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							name="comment"
 							id="comment"
 							value={haul.trawl_characteristics.comment || ""}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 				</div>

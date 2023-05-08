@@ -17,7 +17,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="latitude"
 					name="latitude"
 					value={haul.hydrography_characteristics.latitude}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="longitude">Longitude: </label>
 				<input
@@ -25,7 +27,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="longitude"
 					name="longitude"
 					value={haul.hydrography_characteristics.longitude}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="date_time">Date time: </label>
 				<input
@@ -33,7 +37,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="date_time"
 					name="date_time"
 					value={haul.hydrography_characteristics.date_time}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="depth_probe">Depth probe: </label>
 				<input
@@ -41,7 +47,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="depth_probe"
 					name="depth_probe"
 					value={haul.hydrography_characteristics.depth_probe}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="cable">Cable: </label>
 				<input
@@ -49,7 +57,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="cable"
 					name="cable"
 					value={haul.hydrography_characteristics.cable}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="depth">Depth: </label>
 				<input
@@ -57,7 +67,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="depth"
 					name="depth"
 					value={haul.hydrography_characteristics.depth}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="temperature_0">Temperature 0: </label>
 				<input
@@ -65,7 +77,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="temperature_0"
 					name="temperature_0"
 					value={haul.hydrography_characteristics.temperature_0}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="salinity_0">Salinity 0: </label>
 				<input
@@ -73,7 +87,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="salinity_0"
 					name="salinity_0"
 					value={haul.hydrography_characteristics.salinity_0}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="sigma_0">Sigma 0: </label>
 				<input
@@ -81,7 +97,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="sigma_0"
 					name="sigma_0"
 					value={haul.hydrography_characteristics.sigma_0}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="temperature_50">Temperature 50: </label>
 				<input
@@ -89,7 +107,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="temperature_50"
 					name="temperature_50"
 					value={haul.hydrography_characteristics.temperature_50}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="salinity_50">Salinity 50: </label>
 				<input
@@ -97,7 +117,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="salinity_50"
 					name="salinity_50"
 					value={haul.hydrography_characteristics.salinity_50}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="sigma_50">Sigma 50: </label>
 				<input
@@ -105,7 +127,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="sigma_50"
 					name="sigma_50"
 					value={haul.hydrography_characteristics.sigma_50}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="temperature_100">Temperature 100: </label>
 				<input
@@ -113,7 +137,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="temperature_100"
 					name="temperature_100"
 					value={haul.hydrography_characteristics.temperature_100}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="salinity_100">Salinity 100: </label>
 				<input
@@ -121,7 +147,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="salinity_100"
 					name="salinity_100"
 					value={haul.hydrography_characteristics.salinity_100}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="sigma_100">Sigma 100: </label>
 				<input
@@ -129,7 +157,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="sigma_100"
 					name="sigma_100"
 					value={haul.hydrography_characteristics.sigma_100}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="temperature">Temperature: </label>
 				<input
@@ -137,7 +167,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="temperature"
 					name="temperature"
 					value={haul.hydrography_characteristics.temperature}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="salinity">Salinity: </label>
 				<input
@@ -145,7 +177,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="salinity"
 					name="salinity"
 					value={haul.hydrography_characteristics.salinity}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="sigma">Sigma: </label>
 				<input
@@ -153,7 +187,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="sigma"
 					name="sigma"
 					value={haul.hydrography_characteristics.sigma}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 				<label htmlFor="comment">Comment: </label>
 				<input
@@ -161,7 +197,9 @@ const EditHydrography = ({ haul, handleChangeHydrography }) => {
 					id="comment"
 					name="comment"
 					value={haul.hydrography_characteristics.comment}
-					onChange={handleChangeHydrography}
+					onChange={(e) => {
+						handleChangeHydrography(e);
+					}}
 				/>
 			</fieldset>
 		);

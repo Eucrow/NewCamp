@@ -1,6 +1,6 @@
 import React from "react";
 
-const MeteorologyFormNew = (handleChangeMeteo) => {
+const MeteorologyFormNew = ({ handleChangeMeteo }) => {
 	/**
 	 * @param handleChangeMeteo
 	 */
@@ -18,7 +18,9 @@ const MeteorologyFormNew = (handleChangeMeteo) => {
 						max={360}
 						maxLength={3}
 						size={3}
-						onChange={handleChangeMeteo}
+						onChange={(e) => {
+							handleChangeMeteo(e);
+						}}
 					/>
 				</label>
 				<label className="form__cell">
@@ -32,7 +34,9 @@ const MeteorologyFormNew = (handleChangeMeteo) => {
 						step={0.1}
 						maxLength={3}
 						size={3}
-						onChange={handleChangeMeteo}
+						onChange={(e) => {
+							handleChangeMeteo(e);
+						}}
 					/>
 				</label>
 				<label className="form__cell">
@@ -45,7 +49,9 @@ const MeteorologyFormNew = (handleChangeMeteo) => {
 						max={9}
 						maxLength={1}
 						size={1}
-						onChange={handleChangeMeteo}
+						onChange={(e) => {
+							handleChangeMeteo(e);
+						}}
 					/>
 				</label>
 			</fieldset>

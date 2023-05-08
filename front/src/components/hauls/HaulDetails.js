@@ -89,9 +89,10 @@ const HaulDetails = ({ haul, detail, handleDetail, validateHaulSampler }) => {
 			body: JSON.stringify(thisHaul),
 		})
 			.then(() => {
-				this.setState(() => {
-					return { edit: false };
-				});
+				// this.setState(() => {
+				// 	return { edit: false };
+				// });
+				setEdit(false);
 			})
 			.catch((error) => console.log(error));
 	};

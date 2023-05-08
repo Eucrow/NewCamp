@@ -22,7 +22,9 @@ const MeteorologyFormEdit = ({ haul, handleChangeMeteorology }) => {
 						maxLength={3}
 						size={3}
 						value={haul.meteo.wind_direction || ""}
-						onChange={handleChangeMeteorology}
+						onChange={(e) => {
+							handleChangeMeteorology(e);
+						}}
 					/>
 				</div>
 				<div className="form__cell">
@@ -37,7 +39,9 @@ const MeteorologyFormEdit = ({ haul, handleChangeMeteorology }) => {
 						maxLength={3}
 						size={3}
 						value={haul.meteo.wind_velocity || ""}
-						onChange={handleChangeMeteorology}
+						onChange={(e) => {
+							handleChangeMeteorology(e);
+						}}
 					/>
 				</div>
 				<div className="form__cell">
@@ -51,7 +55,9 @@ const MeteorologyFormEdit = ({ haul, handleChangeMeteorology }) => {
 						maxLength={1}
 						size={1}
 						value={haul.meteo.sea_state || ""}
-						onChange={handleChangeMeteorology}
+						onChange={(e) => {
+							handleChangeMeteorology(e);
+						}}
 					/>
 				</div>
 			</fieldset>

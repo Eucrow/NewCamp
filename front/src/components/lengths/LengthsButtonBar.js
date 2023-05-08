@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from "react";
+import React, { useContext } from "react";
 
 import LengthsContext from "../../contexts/LengthsContext";
 
@@ -45,10 +45,7 @@ const LengthsButtonBar = () => {
 					className="buttonsWrapper__button"
 					type="button"
 					onClick={(e) => {
-						lengthsContext.saveOrUpdateLengths(
-							e,
-							lengthsContext.lengths
-						);
+						lengthsContext.saveOrUpdateLengths(e, lengthsContext.lengths);
 						lengthsContext.removeZeroTails(lengthsContext.lengths);
 					}}
 				>
