@@ -47,12 +47,11 @@ const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler, haulRef, sa
 
 	const createHaulObject = () => {
 		const haul = {
-			haul: newHaul.haul,
-			gear_id: newHaul.gear,
-			sampler_id: newHaul.sampler_id,
-			sampler: newHaul.sampler,
-			stratum_id: newHaul.stratum_id,
 			station_id: newHaul.station_id,
+			haul: newHaul.haul,
+			stratum_id: newHaul.stratum_id,
+			sampler_id: newHaul.sampler_id,
+			gear_id: newHaul.gear,
 			valid: newHaul.valid,
 			meteo: meteo,
 			trawl_characteristics: trawlCharacteristics,
