@@ -89,9 +89,6 @@ const HaulDetails = ({ haul, detail, handleDetail, validateHaulSampler }) => {
 			body: JSON.stringify(thisHaul),
 		})
 			.then(() => {
-				// this.setState(() => {
-				// 	return { edit: false };
-				// });
 				setEdit(false);
 			})
 			.catch((error) => console.log(error));
@@ -184,7 +181,6 @@ const HaulDetails = ({ haul, detail, handleDetail, validateHaulSampler }) => {
 			if (edit === false) {
 				return (
 					<div>
-						<HaulFormView haul={thisHaul} />
 						<ViewHydrography haul={thisHaul} />
 						<button type="submit" className="buttonsWrapper__button">
 							Save

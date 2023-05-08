@@ -29,27 +29,21 @@ const HaulFormView = ({ haul, detail, handleEdit, handleDetail }) => {
 				<label className="form__cell">
 					Stratum:
 					<select id="stratum_id" name="stratum_id" className="select__largeWidth" disabled>
-						<option key={haul.stratum_id} value={haul.stratum_id}>
-							{haul.stratum}
-						</option>
+						<option value={haul.stratum_id}>{haul.stratum}</option>
 					</select>
 				</label>
 
 				<label className="form__cell">
 					Sampler:
 					<select id="sampler_id" name="sampler" className="select__normalWidth" disabled>
-						<option key={haul.sampler_id} value={haul.sampler_id}>
-							{haul.sampler}
-						</option>
+						<option value={haul.sampler_id}>{haul.sampler}</option>
 					</select>
 				</label>
 
 				<label className="form__cell">
 					Gear:
 					<select id="gear_id" name="gear" className="select__gear" disabled>
-						<option key={haul.gear} value={haul.gear}>
-							{haul.gear}
-						</option>
+						<option value={haul.gear}>{haul.gear}</option>
 					</select>
 				</label>
 

@@ -33,7 +33,6 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler }) => {
 						handleEdit={setEdit}
 						samplers={samplers}
 					/>
-					<TrawlHaulCatches haul_id={haul.id} />
 				</div>
 			);
 		} else if (detail === true) {
@@ -46,7 +45,7 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler }) => {
 						handleDetail={setDetail}
 						validateHaulSampler={validateHaulSampler}
 					/>
-					<TrawlHaulCatches haul_id={haul.id} />
+					{/* {haul.sampler_id === 1 ? <TrawlHaulCatches haul_id={haul.id} /> : null} */}
 				</div>
 			);
 		}
