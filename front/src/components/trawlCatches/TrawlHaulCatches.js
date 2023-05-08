@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import CatchesList from "./CatchesList.js";
 
-class ComponentsTrawlCatches extends Component {
+class TrawlHaulCatches extends Component {
 	/**
 	 * Component show all the catches and related data of a haul
 	 * @param {number} params.haul_id
@@ -28,4 +28,4 @@ class ComponentsTrawlCatches extends Component {
 	}
 }
 
-export default ComponentsTrawlCatches;
+export default TrawlHaulCatches;

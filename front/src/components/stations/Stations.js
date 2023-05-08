@@ -130,6 +130,7 @@ const ComponentsStations = () => {
 	 */
 	const createHaul = (e, haul) => {
 		e.preventDefault();
+		console.log(haul);
 
 		const apiForm = haul.sampler_id === "1" ? apiTrawlForm : haul.sampler_id === "2" ? apiHydrographyForm : null;
 

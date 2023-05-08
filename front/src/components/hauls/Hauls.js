@@ -1,11 +1,3 @@
-// import React, { Component, Fragment } from "react";
-
-// import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
-// import Haul from "./Haul";
-// import HaulHandleNew from "./new/HaulHandleNew";
-// import UiButtonAdd from "../ui/UiButtonAdd";
-// import UiButtonCancel from "../ui/UiButtonCancel";
-
 import React, { useState, useRef } from "react";
 import Haul from "./Haul";
 import HaulHandleNew from "./new/HaulHandleNew";

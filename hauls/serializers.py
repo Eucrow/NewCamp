@@ -183,29 +183,32 @@ class HaulHydrographySerializer(serializers.ModelSerializer):
     """
 
     hydrography_characteristics = HydrographySerializer()
+
+    station = serializers.CharField(source='station.station', read_only=True)
+
+    stratum = serializers.CharField(source='stratum.stratum', read_only=True)
+
+    sampler = serializers.CharField(source='sampler.sampler', read_only=True)
+
+    gear = serializers.IntegerField(source='gear.name', read_only=True)
+
     # station and sampler can't be changed...
-    station = StationSerializer(read_only=True)
-    stratum = StrataSerializer(read_only=True)
-    sampler = SamplerSerializer(read_only=True)
+    # station = StationSerializer(read_only=True)
+    # stratum = StrataSerializer(read_only=True)
+    # sampler = SamplerSerializer(read_only=True)
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'gear', 'valid', 'hydrography_characteristics', 'station', 'stratum', 'sampler', ]
+        fields = ['id', 'haul', 'valid', 'hydrography_characteristics', 'station', 'stratum', 'sampler', 'gear']
 
     # This is a nested serializer, so we have to overwrite the create function
     def create(self, validated_data):
         # Firstly, get the data from the nested parts
         # meteo_data = validated_data.pop('meteo')
         hydrography_characteristics_data = validated_data.pop('hydrography_characteristics')
-        station_data = validated_data.pop('station')
-        stratum_data = validated_data.pop('stratum')
-        sampler_data = validated_data.pop('sampler')
 
         # Secondly, create the station_id and sampler_id from its nested data
         haul_data = validated_data.copy()
-        haul_data['station_id'] = station_data['id']
-        haul_data['stratum_id'] = stratum_data['id']
-        haul_data['sampler_id'] = sampler_data['id']
 
         # Then, save the Haul
         haul = Haul.objects.create(**haul_data)

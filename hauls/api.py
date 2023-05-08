@@ -5,9 +5,14 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 from rest_framework_csv import renderers as r
+
+from gears.models import Trawl
 # from hauls.views import HaulsImport
 from hauls.models import Haul, HaulTrawl, HaulHydrography
 from hauls.serializers import HaulSerializer, HaulGeoJSONSerializer, HaulTrawlSerializer, HaulHydrographySerializer
+from samplers.models import Sampler
+from stations.models import Station
+from strata.models import Stratum
 
 from surveys.models import Survey
 
@@ -158,10 +163,18 @@ class HaulHydrographyAPI(APIView):
 
     def post(self, request):
         serializer = HaulHydrographySerializer(data=request.data)
+
+        station = Station.objects.get(pk=request.data['station_id'])
+        stratum = Stratum.objects.get(pk=request.data['stratum_id'])
+        sampler = Sampler.objects.get(pk=request.data['sampler_id'])
+        # TODO: I'M USING THE TRAWL GEAR --> NEED TO CREATE A HYDROGRAPHY GEAR
+        gear = Trawl.objects.get(pk=request.data['gear_id'])
+
         if serializer.is_valid():
-            serializer.save(station=request.data["station"],
-                            stratum=request.data['stratum'],
-                            sampler=request.data['sampler'])
+            serializer.save(station=station,
+                            stratum=stratum,
+                            sampler=sampler,
+                            gear=gear)
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

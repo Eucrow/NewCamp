@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import HaulFormView from "./view/HaulFormView";
 import HaulFormEdit from "./edit/HaulFormEdit";
 import HaulDetails from "./HaulDetails";
-import ComponentsTrawlCatches from "../trawlCatches/TrawlHaulCatches";
+import TrawlHaulCatches from "../trawlCatches/TrawlHaulCatches";
 
 const Haul = ({ haul, station_id, samplers, validateHaulSampler }) => {
 	const [detail, setDetail] = useState(false);
@@ -20,7 +20,7 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler }) => {
 						handleEdit={setEdit}
 						handleDetail={setDetail}
 					/>
-					<ComponentsTrawlCatches haul_id={haul.id} />
+					{haul.sampler_id === 1 ? <TrawlHaulCatches haul_id={haul.id} /> : null}
 				</div>
 			);
 		} else if (detail === false && edit === true) {
@@ -33,7 +33,7 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler }) => {
 						handleEdit={setEdit}
 						samplers={samplers}
 					/>
-					<ComponentsTrawlCatches haul_id={haul.id} />
+					<TrawlHaulCatches haul_id={haul.id} />
 				</div>
 			);
 		} else if (detail === true) {
@@ -46,7 +46,7 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler }) => {
 						handleDetail={setDetail}
 						validateHaulSampler={validateHaulSampler}
 					/>
-					<ComponentsTrawlCatches haul_id={haul.id} />
+					<TrawlHaulCatches haul_id={haul.id} />
 				</div>
 			);
 		}
