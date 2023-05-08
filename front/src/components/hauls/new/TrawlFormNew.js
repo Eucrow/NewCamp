@@ -1,6 +1,6 @@
 import React from "react";
 
-const TrawlFormNew = (handleChangeTrawl) => {
+const TrawlFormNew = ({ handleChangeTrawl }) => {
 	/**
 	 * @param {method} handleChangeTrawl
 	 */
@@ -37,7 +37,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							type="datetime-local"
 							name="shooting_date_time"
 							id="shooting_date_time"
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Shooting date and time"
 						/>
 					</div>
@@ -51,7 +53,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={6}
 							size={6}
 							step={0.0001}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Shooting latitude"
 						/>
 					</div>
@@ -65,7 +69,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={7}
 							size={7}
 							step={0.0001}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Shooting longitude"
 						/>
 					</div>
@@ -79,7 +85,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Shooting depth"
 						/>
 					</div>
@@ -95,7 +103,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							type="datetime-local"
 							name="hauling_date_time"
 							id="hauling_date_time"
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Hauling date and time"
 						/>
 					</div>
@@ -109,7 +119,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={6}
 							size={6}
 							step={0.0001}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Hauling latitude"
 						/>
 					</div>
@@ -123,7 +135,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={7}
 							size={7}
 							step={0.0001}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Hauling longitude"
 						/>
 					</div>
@@ -137,7 +151,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Hauling depth"
 						/>
 					</div>
@@ -153,7 +169,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							type="datetime-local"
 							name="bottom_date_time"
 							id="bottom_date_time"
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Bottom date and time"
 						/>
 					</div>
@@ -167,7 +185,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={6}
 							size={6}
 							step={0.0001}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Bottom latitude"
 						/>
 					</div>
@@ -181,7 +201,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={7}
 							size={7}
 							step={0.0001}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Bottom longitude"
 						/>
 					</div>
@@ -195,7 +217,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 							aria-label="Bottom depth"
 						/>
 					</div>
@@ -214,7 +238,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={3}
 							size={3}
 							step={1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -228,7 +254,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -242,7 +270,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -256,7 +286,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={3}
 							size={3}
 							step={1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 				</div>
@@ -272,7 +304,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -286,7 +320,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -300,7 +336,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 				</div>
@@ -316,7 +354,9 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={2}
 							size={2}
 							step={1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 					<label className="field">
@@ -330,14 +370,22 @@ const TrawlFormNew = (handleChangeTrawl) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							onChange={handleChangeTrawl}
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
 						/>
 					</label>
 				</div>
 				<div className="form__row">
 					<label className="field__comment">
 						Comment:
-						<textarea name="comment" id="comment" onChange={handleChangeTrawl} />
+						<textarea
+							name="comment"
+							id="comment"
+							onChange={(e) => {
+								handleChangeTrawl(e);
+							}}
+						/>
 					</label>
 				</div>
 			</fieldset>
