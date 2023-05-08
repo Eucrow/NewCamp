@@ -13,15 +13,13 @@ import UiButtonCancel from "../ui/UiButtonCancel";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
-const HaulDetails = ({ haul, detail, handleDetail, validateHaulSampler }) => {
+const HaulDetails = ({ haul, detail, setDetail, validateHaulSampler }) => {
 	/**
 	 * View haul detail component.
 	 * @param {object} haul
 	 * @param {method} validateHaulSampler
-	 * @param {method} handleDetail
+	 * @param {method} setDetail
 	 */
-
-	// const [thisHaul, setThisHaul] = useState(haul);
 
 	const [thisHaul, setThisHaul] = useState({
 		...haul,
@@ -32,6 +30,8 @@ const HaulDetails = ({ haul, detail, handleDetail, validateHaulSampler }) => {
 	});
 
 	const [edit, setEdit] = useState(false);
+
+	const [fecthError, setFetchError] = useState("");
 
 	//TODO: optimize requests: the request only need to return station_id, meteo,
 	// trawl_characteristics and hydrograpy_characteristics
@@ -107,9 +107,7 @@ const HaulDetails = ({ haul, detail, handleDetail, validateHaulSampler }) => {
 			fetch(apiHaul)
 				.then((response) => {
 					if (response.status > 400) {
-						return this.setState(() => {
-							return { placeholder: "Something went wrong!" };
-						});
+						setFetchError("Something went wrong!");
 					}
 					return response.json();
 				})
@@ -120,7 +118,7 @@ const HaulDetails = ({ haul, detail, handleDetail, validateHaulSampler }) => {
 	}, [detail, apiHydrographyHaul, apiTrawlHaul, haul.sampler_id]);
 
 	const renderContent = () => {
-		if (haul.sampler_id === 1) {
+		if (Number(haul.sampler_id) === 1) {
 			if (edit === false) {
 				return (
 					<form className="form--wide" disabled>
@@ -135,7 +133,7 @@ const HaulDetails = ({ haul, detail, handleDetail, validateHaulSampler }) => {
 								<div className="buttonsWrapper">
 									<UiButtonStatusHandle
 										buttonText={"Hide detail"}
-										handleMethod={handleDetail}
+										handleMethod={setDetail}
 										newStatus={false}
 									/>
 
@@ -177,7 +175,7 @@ const HaulDetails = ({ haul, detail, handleDetail, validateHaulSampler }) => {
 			}
 		}
 
-		if (haul.sampler_id === 2) {
+		if (Number(haul.sampler_id) === 2) {
 			if (edit === false) {
 				return (
 					<div>
@@ -187,7 +185,7 @@ const HaulDetails = ({ haul, detail, handleDetail, validateHaulSampler }) => {
 						</button>
 						<button
 							onClick={() => {
-								handleDetail(false);
+								setDetail(false);
 							}}
 						>
 							Hide detail

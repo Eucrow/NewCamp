@@ -1,8 +1,6 @@
 import React, { useState, useRef } from "react";
 import Haul from "./Haul";
-import HaulHandleNew from "./new/HaulHandleNew";
 import UiButtonAdd from "../ui/UiButtonAdd";
-import UiButtonCancel from "../ui/UiButtonCancel";
 
 const Hauls = ({ hauls, station_id, createHaul }) => {
 	/**
@@ -92,15 +90,15 @@ const Hauls = ({ hauls, station_id, createHaul }) => {
 			return (
 				<>
 					{renderHauls()}
-					<HaulHandleNew
+					<Haul
 						station_id={station_id}
-						changeAdd={setAdd}
+						add={add}
+						handleAdd={setAdd}
 						createHaul={createHaul}
 						validateHaulSampler={validateHaulSampler}
 						haulRef={haulRef}
 						samplerRef={samplerRef}
 					/>
-					<UiButtonCancel handleMethod={setAdd} text={"Cancel"} />
 				</>
 			);
 		}

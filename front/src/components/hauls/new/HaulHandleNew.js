@@ -9,6 +9,7 @@ import HydrographyFormNew from "./HydrographyFormNew.js";
 import TrawlFormNew from "./TrawlFormNew.js";
 
 import UiButtonSave from "../../ui/UiButtonSave";
+import UiButtonCancel from "../../ui/UiButtonCancel";
 
 /**
  * New haul component
@@ -17,7 +18,7 @@ import UiButtonSave from "../../ui/UiButtonSave";
  * @param {method} props.validateHaulSampler
  */
 
-const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler, haulRef, samplerRef }) => {
+const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, samplerRef, setDetail }) => {
 	const stationsContext = useContext(StationsContext);
 
 	const [newHaul, setNewHaul] = useState({
@@ -119,7 +120,8 @@ const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler, haulRef, sa
 				onSubmit={(e) => {
 					const haul = createHaulObject();
 					stationsContext.createHaul(e, haul);
-					changeAdd(false);
+					handleAdd(false);
+					setDetail(true);
 				}}
 			>
 				<HaulFormNew
@@ -132,6 +134,8 @@ const HaulHandleNew = ({ station_id, changeAdd, validateHaulSampler, haulRef, sa
 				{renderDetail()}
 
 				<UiButtonSave buttonText="Save Haul" />
+
+				<UiButtonCancel handleMethod={handleAdd} text={"Cancel"} />
 			</form>
 		);
 	};

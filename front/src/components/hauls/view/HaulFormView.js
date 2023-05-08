@@ -4,7 +4,7 @@ import StationsContext from "../../../contexts/StationsContext";
 
 import HaulButtonBar from "../HaulButtonBar";
 
-const HaulFormView = ({ haul, detail, handleEdit, handleDetail }) => {
+const HaulFormView = ({ haul, detail, setEdit, setDetail }) => {
 	const stationsContext = useContext(StationsContext);
 
 	const renderContent = () => {
@@ -55,8 +55,8 @@ const HaulFormView = ({ haul, detail, handleEdit, handleDetail }) => {
 					haul_id={haul.id}
 					edit={false}
 					detail={detail}
-					handleEdit={handleEdit}
-					handleDetail={handleDetail}
+					setEdit={setEdit}
+					setDetail={setDetail}
 					deleteHaul={stationsContext.deleteHaul}
 				/>
 			</form>

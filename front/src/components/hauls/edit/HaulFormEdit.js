@@ -4,7 +4,7 @@ import StationsContext from "../../../contexts/StationsContext";
 
 import HaulButtonBar from "../HaulButtonBar";
 
-const HaulFormEdit = ({ haul, station_id, edit, handleEdit, handleChangeNestedIds }) => {
+const HaulFormEdit = ({ haul, station_id, edit, setEdit, handleChangeNestedIds }) => {
 	/**
 	 * @param {object} haul
 	 * @param {number} station_id
@@ -19,7 +19,7 @@ const HaulFormEdit = ({ haul, station_id, edit, handleEdit, handleChangeNestedId
 
 	const handleSubmit = (e, haul_id, station_id) => {
 		stationsContext.updateHaulCommon(e, haul_id, station_id);
-		handleEdit(false);
+		setEdit(false);
 	};
 
 	const renderContent = () => {
@@ -117,7 +117,7 @@ const HaulFormEdit = ({ haul, station_id, edit, handleEdit, handleChangeNestedId
 				<HaulButtonBar
 					haul_id={haul.id}
 					edit={edit}
-					handleEdit={handleEdit}
+					setEdit={setEdit}
 					deleteHaul={stationsContext.deleteHaul}
 				/>
 			</form>
@@ -148,7 +148,7 @@ const HaulFormEdit = ({ haul, station_id, edit, handleEdit, handleChangeNestedId
 
 // 	handleSubmit(e, haul_id, station_id) {
 // 		stationsContext.updateHaulCommon(e, haul_id, station_id);
-// 		handleEdit(false);
+// 		setEdit(false);
 // 	}
 
 // 	render() {
@@ -251,7 +251,7 @@ const HaulFormEdit = ({ haul, station_id, edit, handleEdit, handleChangeNestedId
 // 				<HaulButtonBar
 // 					haul_id={haul.id}
 // 					edit={edit}
-// 					handleEdit={handleEdit}
+// 					setEdit={setEdit}
 // 					deleteHaul={stationsContext.deleteHaul}
 // 				/>
 // 			</form>

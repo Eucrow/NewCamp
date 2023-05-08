@@ -114,8 +114,8 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'valid', 'meteo', 'trawl_characteristics', 'station_id', 'stratum_id',
-                  'stratum', 'sampler_id', 'sampler', 'gear', 'gear_id']
+        fields = ['id', 'station_id', 'haul', 'stratum_id', 'stratum', 'sampler_id', 'sampler', 'gear', 'gear_id',
+                  'valid', 'meteo', 'trawl_characteristics']
 
     # This is a nested serializer, so we have to overwrite the create function
     def create(self, validated_data):
@@ -199,7 +199,9 @@ class HaulHydrographySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'valid', 'hydrography_characteristics', 'station', 'stratum', 'sampler', 'gear']
+        fields = ['id', 'station', 'station_id', 'haul', 'stratum', 'stratum_id', 'sampler', 'sampler_id', 'gear',
+                  'gear_id', 'valid', 'hydrography_characteristics',
+                  ]
 
     # This is a nested serializer, so we have to overwrite the create function
     def create(self, validated_data):
