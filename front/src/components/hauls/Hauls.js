@@ -23,6 +23,10 @@ const Hauls = ({ hauls, station_id, createHaul }) => {
 	 * @returns True if exists, false if doesn't.
 	 */
 	const haulSamplerExists = (haul, sampler_id) => {
+		if (typeof hauls === "undefined") {
+			return false;
+		}
+
 		const sampler_exists = Object.keys(hauls).map((h) => {
 			if (hauls[h]["haul"] === parseInt(haul) && hauls[h]["sampler_id"] === parseInt(sampler_id)) {
 				return true;
