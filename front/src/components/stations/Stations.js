@@ -325,7 +325,6 @@ const ComponentsStations = () => {
 			return selectedSurveyContext.selectedSurveyId === null
 				? apiStationsPartial
 				: apiStationsPartial + "hauls/" + selectedSurveyContext.selectedSurveyId;
-			//:   apiStationsPartial + selectedSurveyContext.selectedSurveyId;
 		};
 
 		if (selectedSurveyContext.selectedSurveyId !== "") {
