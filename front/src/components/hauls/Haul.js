@@ -9,6 +9,8 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, sample
 	const [detail, setDetail] = useState(false);
 	const [edit, setEdit] = useState(false);
 
+	const [thisHaul, setThisHaul] = useState(haul);
+
 	const renderContent = () => {
 		if (add === true) {
 			return (
@@ -50,7 +52,9 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, sample
 			return (
 				<div className="wrapper form__row">
 					<HaulFormEdit
-						haul={haul}
+						// haul={haul}
+						thisHaul={thisHaul}
+						setThisHaul={setThisHaul}
 						station_id={station_id}
 						edit={edit}
 						setEdit={setEdit}

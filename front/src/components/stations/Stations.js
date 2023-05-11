@@ -158,7 +158,7 @@ const ComponentsStations = () => {
 	};
 
 	/**
-	 * Update haul.
+	 * Update haul in server (using the data stored in state).
 	 * @param {event} e
 	 * @param {number} haul_id
 	 * @param {number} station_id
@@ -170,6 +170,44 @@ const ComponentsStations = () => {
 
 		const station = stations.find((s) => s.id === station_id);
 		const haul = station.hauls.find((h) => h.id === haul_id);
+
+		fetch(apiForm, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(haul),
+		}).catch((error) => console.log(error));
+	};
+
+	/**
+	 * Update common haul in state.
+	 * @param {object} updatedHaul Haul with new values.
+	 * @param {number} station_id Id of station of the haul.
+	 */
+	const updateHaulCommonState = (e, updatedHaul, station_id) => {
+		e.preventDefault();
+		const new_stations = stations.map((station) => {
+			if (station.id === station_id) {
+				const new_hauls = station.hauls.map((haul) => {
+					if (haul.id === updatedHaul.id) {
+						return updatedHaul;
+					} else {
+						return haul;
+					}
+				});
+				station.hauls = new_hauls;
+				return station;
+			} else {
+				return station;
+			}
+		});
+		setStations(new_stations);
+
+		const apiForm = apiHaul + updatedHaul.id;
+
+		const station = stations.find((s) => s.id === station_id);
+		const haul = station.hauls.find((h) => h.id === updatedHaul.id);
 
 		fetch(apiForm, {
 			method: "PUT",
@@ -206,82 +244,6 @@ const ComponentsStations = () => {
 				setStations(new_stations);
 			})
 			.catch((error) => alert(error));
-	};
-
-	/**
-	 * Handle change fields of Common Haul forms.
-	 * @param {event} e
-	 * @param {number} id_haul of haul to change.
-	 */
-	const handleChangeCommonHaul = (e, id_haul) => {
-		const name = e.target.name;
-		const value = e.target.value;
-
-		var new_stations = stations.map((station) => {
-			if (station.hauls.some((haul) => haul.id === id_haul)) {
-				var id_haul_index = station.hauls.findIndex((h) => h.id === id_haul);
-
-				station.hauls[id_haul_index][name] = value;
-			}
-			return station;
-		});
-		setStations(new_stations);
-	};
-
-	const handleChangeCommonValid = (id_haul) => {
-		var new_stations = stations.map((station) => {
-			if (station.hauls.some((haul) => haul.id === id_haul)) {
-				var id_haul_index = station.hauls.findIndex((h) => h.id === id_haul);
-
-				station.hauls[id_haul_index]["valid"] = !station.hauls[id_haul_index]["valid"];
-			}
-			return station;
-		});
-		setStations(new_stations);
-	};
-
-	/**
-	 * Handle change Gear field.
-	 * @param {event} e
-	 * @param {number} id_haul of haul to change.
-	 */
-	const handleChangeGear = (e, id_haul) => {
-		const value = e.target.value;
-
-		var new_stations = stations.map((station) => {
-			if (station.hauls.some((haul) => haul.id === id_haul)) {
-				var id_haul_index = station.hauls.findIndex((h) => h.id === id_haul);
-
-				station.hauls[id_haul_index]["gear_id"] = value;
-				// get stratum name:
-				const gear = gears.find((s) => s.id === parseInt(value));
-				station.hauls[id_haul_index]["gear"] = gear.name;
-			}
-			return station;
-		});
-		setStations(new_stations);
-	};
-
-	/**
-	 * Handle change Stratum field.
-	 * @param {event} e
-	 * @param {number} id_haul of haul to change.
-	 */
-	const handleChangeStratum = (e, id_haul) => {
-		const value = e.target.value;
-
-		var new_stations = stations.map((station) => {
-			if (station.hauls.some((haul) => haul.id === id_haul)) {
-				var id_haul_index = station.hauls.findIndex((h) => h.id === id_haul);
-
-				station.hauls[id_haul_index]["stratum_id"] = value;
-				// get stratum name:
-				const stratum = strata.find((s) => s.id === parseInt(value));
-				station.hauls[id_haul_index]["stratum"] = stratum.stratum;
-			}
-			return station;
-		});
-		setStations(new_stations);
 	};
 
 	// VALIDATIONS
@@ -410,14 +372,11 @@ const ComponentsStations = () => {
 					deleteStation: deleteStation,
 					deleteHaul: deleteHaul,
 					createHaul: createHaul,
+					updateHaulCommonState: updateHaulCommonState,
 					updateHaulCommon: updateHaulCommon,
-					handleChangeGear: handleChangeGear,
 					handleChangeStation: handleChangeStation,
 					editStation: editStation,
 					validateStationNumber: validateStationNumber,
-					handleChangeCommonHaul: handleChangeCommonHaul,
-					handleChangeCommonValid: handleChangeCommonValid,
-					handleChangeStratum: handleChangeStratum,
 					strata: strata,
 					gears: gears,
 					samplers: samplers,
