@@ -1,12 +1,12 @@
-import React, { useContext, useState, Fragment } from "react";
+import React, { useContext, useState /*, Fragment*/ } from "react";
 
 import StationsContext from "../../../contexts/StationsContext";
 
 import HaulFormNew from "./HaulFormNew";
 
-import MeteorologyFormNew from "./MeteorologyFormNew.js";
-import HydrographyFormNew from "./HydrographyFormNew.js";
-import TrawlFormNew from "./TrawlFormNew.js";
+// import MeteorologyFormNew from "./MeteorologyFormNew.js";
+// import HydrographyFormNew from "./HydrographyFormNew.js";
+// import TrawlFormNew from "./TrawlFormNew.js";
 
 import UiButtonSave from "../../ui/UiButtonSave";
 import UiButtonCancel from "../../ui/UiButtonCancel";
@@ -16,6 +16,21 @@ import UiButtonCancel from "../../ui/UiButtonCancel";
  * @param {number} props.station_id
  * @param {method} props.changeAdd
  * @param {method} props.validateHaulSampler
+ */
+
+/**
+ * New haul component.
+ * Originally this component was indented to show the detail of the new haul (meteorology, trawl and hydrography),
+ * but it was decided to not to show directly due to simplificate the process of adding a new haul.
+ * The code commented is the original code.
+ * TODO: take a final decision about this.
+ * @param {number} station_id
+ * @param {method} handleAdd
+ * @param {method} validateHaulSampler
+ * @param {method} haulRef
+ * @param {method} samplerRef
+ * @param {method} setDetail
+ * @returns {JSX.Element}}
  */
 const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, samplerRef, setDetail }) => {
 	const stationsContext = useContext(StationsContext);
@@ -29,11 +44,13 @@ const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, sa
 		valid: "off",
 	});
 
-	const [meteo, setMeteo] = useState({});
+	// const [meteo, setMeteo] = useState({});
+	// const [trawlCharacteristics, setTrawlCharacteristics] = useState({});
+	// const [hydrographyCharacteristics, setHydrographyCharacteristics] = useState({});
 
-	const [trawlCharacteristics, setTrawlCharacteristics] = useState({});
-
-	const [hydrographyCharacteristics, setHydrographyCharacteristics] = useState({});
+	const [meteo] = useState({});
+	const [trawlCharacteristics] = useState({});
+	const [hydrographyCharacteristics] = useState({});
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -61,56 +78,56 @@ const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, sa
 		return haul;
 	};
 
-	const handleChangeMeteo = (e) => {
-		const { name, value } = e.target;
+	// const handleChangeMeteo = (e) => {
+	// 	const { name, value } = e.target;
 
-		setMeteo((prev_state) => {
-			return {
-				...prev_state,
-				[name]: value,
-			};
-		});
-	};
+	// 	setMeteo((prev_state) => {
+	// 		return {
+	// 			...prev_state,
+	// 			[name]: value,
+	// 		};
+	// 	});
+	// };
 
-	const handleChangeTrawl = (e) => {
-		const { name, value } = e.target;
+	// const handleChangeTrawl = (e) => {
+	// 	const { name, value } = e.target;
 
-		setTrawlCharacteristics((prev_state) => {
-			return {
-				...prev_state,
-				[name]: value,
-			};
-		});
-	};
+	// 	setTrawlCharacteristics((prev_state) => {
+	// 		return {
+	// 			...prev_state,
+	// 			[name]: value,
+	// 		};
+	// 	});
+	// };
 
-	const handleChangeHydrography = (e) => {
-		const name = e.target.name;
-		const value = e.target.value;
-		console.log("value in handleChangeHydrography: " + value);
+	// const handleChangeHydrography = (e) => {
+	// 	const name = e.target.name;
+	// 	const value = e.target.value;
+	// 	console.log("value in handleChangeHydrography: " + value);
 
-		setHydrographyCharacteristics((prev_state) => {
-			return {
-				...prev_state,
-				[name]: value,
-			};
-		});
-	};
+	// 	setHydrographyCharacteristics((prev_state) => {
+	// 		return {
+	// 			...prev_state,
+	// 			[name]: value,
+	// 		};
+	// 	});
+	// };
 
-	const renderDetail = () => {
-		if (newHaul.sampler_id === "1") {
-			return (
-				<Fragment>
-					<MeteorologyFormNew handleChangeMeteo={handleChangeMeteo} />
-					<TrawlFormNew handleChangeTrawl={handleChangeTrawl} />
-				</Fragment>
-			);
-		} else if (newHaul.sampler_id === "2") {
-			return <HydrographyFormNew handleChangeHydrography={handleChangeHydrography} />;
-		} else {
-			//TODO: return error message instead of null
-			return null;
-		}
-	};
+	// const renderDetail = () => {
+	// 	if (newHaul.sampler_id === "1") {
+	// 		return (
+	// 			<Fragment>
+	// 				<MeteorologyFormNew handleChangeMeteo={handleChangeMeteo} />
+	// 				<TrawlFormNew handleChangeTrawl={handleChangeTrawl} />
+	// 			</Fragment>
+	// 		);
+	// 	} else if (newHaul.sampler_id === "2") {
+	// 		return <HydrographyFormNew handleChangeHydrography={handleChangeHydrography} />;
+	// 	} else {
+	// 		//TODO: return error message instead of null
+	// 		return null;
+	// 	}
+	// };
 
 	const renderContent = () => {
 		return (
