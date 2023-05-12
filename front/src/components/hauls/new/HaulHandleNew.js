@@ -17,7 +17,6 @@ import UiButtonCancel from "../../ui/UiButtonCancel";
  * @param {method} props.changeAdd
  * @param {method} props.validateHaulSampler
  */
-
 const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, samplerRef, setDetail }) => {
 	const stationsContext = useContext(StationsContext);
 
@@ -131,7 +130,7 @@ const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, sa
 					haulRef={haulRef}
 					samplerRef={samplerRef}
 				/>
-				{renderDetail()}
+				{/* {renderDetail()} */}
 
 				<UiButtonSave buttonText="Save Haul" />
 

@@ -56,7 +56,7 @@ const HaulFormView = ({ haul, detail, setEdit, setDetail }) => {
 					edit={false}
 					detail={detail}
 					setEdit={setEdit}
-					setDetail={setDetail}
+					handleDetail={setDetail}
 					deleteHaul={stationsContext.deleteHaul}
 				/>
 			</form>
