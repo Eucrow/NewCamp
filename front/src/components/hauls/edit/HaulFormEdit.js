@@ -17,10 +17,11 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 
 	const stationsContext = useContext(StationsContext);
 
-	// const [backupHaul, setBackupHaul] = useState(haul);
+	const [backupHaul] = useState(thisHaul);
 
-	const handleSubmit = (e, haul_id, station_id) => {
-		stationsContext.updateHaulCommonState(e, thisHaul, station_id);
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		stationsContext.updateHaulCommonState(thisHaul);
 		setEdit(false);
 	};
 
@@ -78,10 +79,10 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 		});
 	};
 
-	// const cancelEdit = () => {
-	// 	stationsContext.updateHaulCommonState(backupHaul, station_id);
-	// 	setEdit(false);
-	// };
+	const handleCancel = (status) => {
+		stationsContext.updateHaulCommonState(backupHaul);
+		setEdit(status);
+	};
 
 	const renderContent = () => {
 		return (
@@ -181,7 +182,7 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 					edit={edit}
 					setEdit={setEdit}
 					deleteHaul={stationsContext.deleteHaul}
-					// cancelEdit={cancelEdit}
+					handleCancel={handleCancel}
 				/>
 			</form>
 		);

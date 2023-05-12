@@ -12,16 +12,7 @@ import UiButtonDelete from "../ui/UiButtonDelete";
  * @param {method} handleDetail
  * @param {method} deleteHaul: method used to delete haul.
  */
-const HaulButtonBar = ({
-	haul_id,
-	edit,
-	detail,
-	setEdit,
-	handleDetail,
-	deleteHaul,
-	handleEdit,
-	//  cancelEdit
-}) => {
+const HaulButtonBar = ({ haul_id, edit, detail, setEdit, handleDetail, deleteHaul, handleCancel }) => {
 	var ButtonBar = null;
 
 	// The button bar is not showed if the details are showed.
@@ -33,7 +24,7 @@ const HaulButtonBar = ({
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<UiButtonSave buttonText="Save Haul" />
-				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={handleEdit} newStatus={false} />
+				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={handleCancel} newStatus={false} />
 			</div>
 		);
 	}

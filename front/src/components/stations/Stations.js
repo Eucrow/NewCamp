@@ -158,37 +158,13 @@ const ComponentsStations = () => {
 	};
 
 	/**
-	 * Update haul in server (using the data stored in state).
-	 * @param {event} e
-	 * @param {number} haul_id
-	 * @param {number} station_id
-	 */
-	const updateHaulCommon = (e, haul_id, station_id) => {
-		e.preventDefault();
-
-		const apiForm = apiHaul + haul_id;
-
-		const station = stations.find((s) => s.id === station_id);
-		const haul = station.hauls.find((h) => h.id === haul_id);
-
-		fetch(apiForm, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(haul),
-		}).catch((error) => console.log(error));
-	};
-
-	/**
-	 * Update common haul in state.
+	 * Update common information of haul.
 	 * @param {object} updatedHaul Haul with new values.
 	 * @param {number} station_id Id of station of the haul.
 	 */
-	const updateHaulCommonState = (e, updatedHaul, station_id) => {
-		e.preventDefault();
+	const updateHaulCommonState = (updatedHaul) => {
 		const new_stations = stations.map((station) => {
-			if (station.id === station_id) {
+			if (station.station === updatedHaul.station) {
 				const new_hauls = station.hauls.map((haul) => {
 					if (haul.id === updatedHaul.id) {
 						return updatedHaul;
@@ -206,7 +182,7 @@ const ComponentsStations = () => {
 
 		const apiForm = apiHaul + updatedHaul.id;
 
-		const station = stations.find((s) => s.id === station_id);
+		const station = stations.find((s) => s.station === updatedHaul.station);
 		const haul = station.hauls.find((h) => h.id === updatedHaul.id);
 
 		fetch(apiForm, {
@@ -373,7 +349,6 @@ const ComponentsStations = () => {
 					deleteHaul: deleteHaul,
 					createHaul: createHaul,
 					updateHaulCommonState: updateHaulCommonState,
-					updateHaulCommon: updateHaulCommon,
 					handleChangeStation: handleChangeStation,
 					editStation: editStation,
 					validateStationNumber: validateStationNumber,
