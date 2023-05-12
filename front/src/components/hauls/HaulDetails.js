@@ -198,19 +198,25 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		if (Number(haul.sampler_id) === 2) {
 			if (edit === false) {
 				return (
-					<div>
-						<ViewHydrography haul={thisHaul} />
-						<button type="submit" className="buttonsWrapper__button">
-							Save
-						</button>
-						<button
-							onClick={() => {
-								setDetail(false);
-							}}
-						>
-							Hide detail
-						</button>
-					</div>
+					<form className="form--wide" disabled>
+						<div className="form__row">
+							<ViewHydrography haul={thisHaul} />
+						</div>
+
+						<div className="form__row">
+							<div className="form__cell form__cell--right">
+								<div className="buttonsWrapper">
+									<UiButtonStatusHandle
+										buttonText={"Hide detail"}
+										handleMethod={setDetail}
+										newStatus={false}
+									/>
+
+									<UiButtonStatusHandle buttonText={"Edit"} handleMethod={setEdit} newStatus={true} />
+								</div>
+							</div>
+						</div>
+					</form>
 				);
 			}
 
