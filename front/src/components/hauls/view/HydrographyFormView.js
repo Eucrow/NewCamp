@@ -1,6 +1,6 @@
 import React from "react";
 
-const ViewHydrography = ({ haul }) => {
+const HydrographyFormView = ({ haul }) => {
 	/**
 	 * Component of hydrography form of haul.
 	 * @param {object} haul
@@ -91,4 +91,4 @@ const ViewHydrography = ({ haul }) => {
 	return renderContent();
 };
 
-export default ViewHydrography;
+export default HydrographyFormView;

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import ViewMeteorology from "./view/MeteorologyFormView";
-import ViewTrawl from "./view/TrawlFormView";
-import ViewHydrography from "./view/HydrographyFormView";
+import MeteorologyFormView from "./view/MeteorologyFormView";
+import TrawlFormView from "./view/TrawlFormView";
+import HydrographyFormView from "./view/HydrographyFormView";
 import MeteorologyFormEdit from "./edit/MeteorologyFormEdit";
 import TrawlFormEdit from "./edit/TrawlFormEdit";
-import EditHydrography from "./edit/HydrographyFormEdit";
+import HydrographyFormEdit from "./edit/HydrographyFormEdit";
 
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonCancel from "../ui/UiButtonCancel";
@@ -165,10 +165,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				return (
 					<form className="form--wide" disabled>
 						<div className="form__row">
-							<ViewMeteorology haul={meteorology} />
+							<MeteorologyFormView meteorology={meteorology} />
 						</div>
 						<div className="form__row">
-							<ViewTrawl haul={trawl} />
+							<TrawlFormView trawl={trawl} />
 						</div>
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
@@ -178,7 +178,6 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 										handleMethod={setDetail}
 										newStatus={false}
 									/>
-
 									<UiButtonStatusHandle buttonText={"Edit"} handleMethod={setEdit} newStatus={true} />
 								</div>
 							</div>
@@ -197,11 +196,14 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 						}}
 					>
 						<div className="form__row">
-							<MeteorologyFormEdit haul={meteorology} handleChangeMeteorology={handleChangeMeteorology} />
+							<MeteorologyFormEdit
+								meteorology={meteorology}
+								handleChangeMeteorology={handleChangeMeteorology}
+							/>
 						</div>
 
 						<div className="form__row">
-							<TrawlFormEdit haul={trawl} handleChangeTrawl={handleChangeTrawl} />
+							<TrawlFormEdit trawl={trawl} handleChangeTrawl={handleChangeTrawl} />
 						</div>
 
 						<div className="form__row">
@@ -222,7 +224,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				return (
 					<form className="form--wide" disabled>
 						<div className="form__row">
-							<ViewHydrography haul={hydrography} />
+							<HydrographyFormView haul={hydrography} />
 						</div>
 
 						<div className="form__row">
@@ -245,7 +247,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			if (edit === true) {
 				return (
 					<div>
-						<EditHydrography haul={hydrography} handleChangeHydrography={handleChangeHydrography} />
+						<HydrographyFormEdit
+							hydrography={hydrography}
+							handleChangeHydrography={handleChangeHydrography}
+						/>
 						<input type="submit" value="Save Haul" onClick={handleSubmit} />
 						<button
 							onClick={() => {

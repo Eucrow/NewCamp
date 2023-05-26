@@ -1,6 +1,6 @@
 import React from "react";
 
-const ViewMeteorology = ({ haul }) => {
+const MeteorologyFormView = ({ meteorology }) => {
 	/**
 	 * Component of meteorology form of haul.
 	 * @param {object} haul
@@ -21,7 +21,7 @@ const ViewMeteorology = ({ haul }) => {
 						max={360}
 						maxLength={3}
 						size={3}
-						value={haul.wind_direction || ""}
+						value={meteorology.wind_direction || ""}
 					/>
 				</div>
 				<div className="form__cell">
@@ -36,7 +36,7 @@ const ViewMeteorology = ({ haul }) => {
 						step={0.1}
 						maxLength={3}
 						size={3}
-						value={haul.wind_velocity || ""}
+						value={meteorology.wind_velocity || ""}
 					/>
 				</div>
 				<div className="form__cell">
@@ -50,7 +50,7 @@ const ViewMeteorology = ({ haul }) => {
 						max={9}
 						maxLength={1}
 						size={1}
-						value={haul.sea_state || ""}
+						value={meteorology.sea_state || ""}
 					/>
 				</div>
 			</fieldset>
@@ -60,4 +60,4 @@ const ViewMeteorology = ({ haul }) => {
 	return renderContent();
 };
 
-export default ViewMeteorology;
+export default MeteorologyFormView;

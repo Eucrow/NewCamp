@@ -1,24 +1,18 @@
 import React from "react";
 
-const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
+const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
 	/**
 	 * Component of trawl form of haul.
-	 * @param {object} haul
+	 * @param {object} trawl
 	 * @param {function} handleChangeTrawl
 	 */
 
 	const renderContent = () => {
-		// const shooting_date_time = haul.shooting_date_time === null ? "" : haul.shooting_date_time.replace("Z", "");
+		const shooting_date_time = trawl.shooting_date_time ? trawl.shooting_date_time.replace("Z", "") : "";
 
-		// const hauling_date_time = haul.hauling_date_time === null ? "" : haul.hauling_date_time.replace("Z", "");
+		const hauling_date_time = trawl.hauling_date_time ? trawl.hauling_date_time.replace("Z", "") : "";
 
-		// const bottom_date_time = haul.bottom_date_time === null ? "" : haul.bottom_date_time.replace("Z", "");
-
-		const shooting_date_time = haul.shooting_date_time ? haul.shooting_date_time.replace("Z", "") : "";
-
-		const hauling_date_time = haul.hauling_date_time ? haul.hauling_date_time.replace("Z", "") : "";
-
-		const bottom_date_time = haul.bottom_date_time ? haul.bottom_date_time.replace("Z", "") : "";
+		const bottom_date_time = trawl.bottom_date_time ? trawl.bottom_date_time.replace("Z", "") : "";
 
 		return (
 			<fieldset className="wrapper">
@@ -68,7 +62,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={6}
 							size={6}
 							step={0.0001}
-							value={haul.shooting_latitude || ""}
+							value={trawl.shooting_latitude || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -85,7 +79,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={7}
 							size={7}
 							step={0.0001}
-							value={haul.shooting_longitude || ""}
+							value={trawl.shooting_longitude || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -102,7 +96,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							value={haul.shooting_depth || ""}
+							value={trawl.shooting_depth || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -138,7 +132,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={6}
 							size={6}
 							step={0.0001}
-							value={haul.hauling_latitude || ""}
+							value={trawl.hauling_latitude || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -155,7 +149,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={7}
 							size={7}
 							step={0.0001}
-							value={haul.hauling_longitude || ""}
+							value={trawl.hauling_longitude || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -172,7 +166,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							value={haul.hauling_depth || ""}
+							value={trawl.hauling_depth || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -208,7 +202,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={6}
 							size={6}
 							step={0.0001}
-							value={haul.bottom_latitude || ""}
+							value={trawl.bottom_latitude || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -225,7 +219,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={7}
 							size={7}
 							step={0.0001}
-							value={haul.bottom_longitude || ""}
+							value={trawl.bottom_longitude || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -242,7 +236,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							value={haul.bottom_depth || ""}
+							value={trawl.bottom_depth || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -264,7 +258,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={3}
 							size={3}
 							step={1}
-							value={haul.course || ""}
+							value={trawl.course || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -281,7 +275,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							value={haul.velocity || ""}
+							value={trawl.velocity || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -298,7 +292,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							value={haul.cable || ""}
+							value={trawl.cable || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -315,7 +309,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={3}
 							size={3}
 							step={1}
-							value={haul.sweep || ""}
+							value={trawl.sweep || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -334,7 +328,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							value={haul.otter_boards_distance || ""}
+							value={trawl.otter_boards_distance || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -351,7 +345,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							value={haul.horizontal_aperture || ""}
+							value={trawl.horizontal_aperture || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -368,7 +362,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							value={haul.vertical_aperture || ""}
+							value={trawl.vertical_aperture || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -387,7 +381,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={2}
 							size={2}
 							step={1}
-							value={haul.grid || ""}
+							value={trawl.grid || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -404,7 +398,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							value={haul.track || ""}
+							value={trawl.track || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
@@ -417,7 +411,7 @@ const TrawlFormEdit = ({ haul, handleChangeTrawl }) => {
 						<textarea
 							name="comment"
 							id="comment"
-							value={haul.comment || ""}
+							value={trawl.comment || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}
