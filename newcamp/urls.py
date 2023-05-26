@@ -36,7 +36,7 @@ from strata.api import StrataAPI
 from samplers.api import SamplersAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
 from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI, \
-    HaulHydrographyAPI
+    HaulHydrographyAPI, HydrographyAPI, MeteorologyAPI, TrawlAPI
 from catches.api import CatchHaulListAPI, CatchHaulAPI, CatchVerboseAPI
 from samples.api import LengthsAPI, SexDetail, SexAPI, SexLengthsAPI, SampledWeightDetail, SampledWeightCreate
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
@@ -64,6 +64,7 @@ urlpatterns = [
     re_path(r'^api/1.0/species/import$', SpeciesImportAPI.as_view(), name="species_import_api"),
 
     # Trawls API URLS
+    # TODO: change url to gearTrawl or something like that
     re_path(r'^api/1.0/trawl/$', GearTrawlsAPI.as_view(), name="gear_list_create_api"),
     re_path(r'^api/1.0/trawl/basic/$', GearTrawlsBasicAPI.as_view(), name="gear"),
     # re_path(r'^api/1.0/trawl/basic/$', GearTrawlsNamesAPI.as_view(), name="gear_names"),
@@ -107,11 +108,22 @@ urlpatterns = [
     re_path(r'^api/1.0/haul/(?P<haul_id>[0-9]+)$', HaulAPI.as_view(), name="haul_api"),
     re_path(r'^api/1.0/haul/new/$', HaulAPI.as_view(), name="add_haul_api"),
 
-    # Trawl hauls
-    re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="get_trawl_haul_api"),
-    re_path(r'^api/1.0/haul/trawl/new/$', HaulTrawlAPI.as_view(), name="add_trawl_haul_api"),
+    # TODO: I think this is not needed. Check it.
+    # Meteorology API URLs
+    re_path(r'^api/1.0/meteorology/(?P<haul_id>[0-9]+)$', MeteorologyAPI.as_view(),
+            name="get_update_delete_meteorology_api"),
+    re_path(r'^api/1.0/meteorology/$', MeteorologyAPI.as_view(), name="add_meteorology_api"),
 
-    # Hydrography hauls
+    # Trawl hauls
+    # re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="get_trawl_haul_api"),
+    # re_path(r'^api/1.0/haul/trawl/new/$', HaulTrawlAPI.as_view(), name="add_trawl_haul_api"),
+    re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', TrawlAPI.as_view(), name="retrieve_update_delete_trawl_api"),
+    re_path(r'^api/1.0/haul/trawl/$', TrawlAPI.as_view(), name="add_trawl_api"),
+
+    # Hydrography
+    re_path(r'^api/1.0/hydrography/(?P<haul_id>[0-9]+)$', HydrographyAPI.as_view(),
+            name="retrieve_update_hydrography_api"),
+
     re_path(r'^api/1.0/haul/hydrography/(?P<haul_id>[0-9]+)$', HaulHydrographyAPI.as_view(),
             name="get_hydrography_haul_api"),
     re_path(r'^api/1.0/haul/hydrography/new/$', HaulHydrographyAPI.as_view(), name="add_hydrography_haul_api"),

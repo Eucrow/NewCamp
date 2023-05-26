@@ -9,7 +9,7 @@ const TrawlFormNew = ({ handleChangeTrawl }) => {
 		return (
 			<fieldset className="wrapper">
 				<legend>Trawl characteristics:</legend>
-				<div className="characteristicsGrid form__row">
+				<div className="characteristicsGrid characteristicsGrid--trawl form__row">
 					{/* first row */}
 					<div></div>
 					<div></div>

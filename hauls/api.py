@@ -1,15 +1,17 @@
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT, HTTP_200_OK
 from rest_framework.views import APIView
 from rest_framework_csv import renderers as r
 
 from gears.models import Trawl
 # from hauls.views import HaulsImport
-from hauls.models import Haul, HaulTrawl, HaulHydrography
-from hauls.serializers import HaulSerializer, HaulGeoJSONSerializer, HaulTrawlSerializer, HaulHydrographySerializer
+from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
+from hauls.serializers import HaulSerializer, HaulGeoJSONSerializer, HaulTrawlSerializer, HaulHydrographySerializer, \
+    HydrographySerializer, MeteorologySerializer, TrawlSerializer
 from samplers.models import Sampler
 from stations.models import Station
 from strata.models import Stratum
@@ -118,6 +120,42 @@ class HaulMeteorologyAPI(APIView):
         return Response(serializer.data)
 
 
+class MeteorologyAPI(APIView):
+    """Endpoint to manage the Meteorology of a haul."""
+
+    def get(self, request, haul_id):
+        """Retrieve the Meteorology data for a given haul. """
+        meteorology = get_object_or_404(Meteorology, haul_id=haul_id)
+        serializer = MeteorologySerializer(meteorology)
+        return Response(serializer.data)
+
+    def post(self, request):
+        """Create a new Meteorology object."""
+        serializer = MeteorologySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(haul_id=request.data['haul_id'])
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    def put(self, request, haul_id):
+        """Update a Meteorology object with the given haul_id."""
+        meteorology = get_object_or_404(Meteorology, haul_id=haul_id)
+        serializer = MeteorologySerializer(
+            meteorology, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, haul_id, format=None):
+        """Delete the Meteorology data for a given haul."""
+        meteorology = Meteorology.objects.get(haul_id=haul_id)
+        meteorology.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
+
+
 class HaulTrawlAPI(APIView):
     """
     Endpoint to manage the Haul Trawl of a survey.
@@ -144,6 +182,73 @@ class HaulTrawlAPI(APIView):
     def put(self, request, haul_id):
         haul = get_object_or_404(Haul, pk=haul_id)
         serializer = HaulTrawlSerializer(haul, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+
+class TrawlAPI(APIView):
+    """Endpoint to manage the Trawl characteristics of a haul."""
+
+    def get(self, request, haul_id):
+        """Retrieve the Trawl data for a given haul."""
+        trawl = get_object_or_404(HaulTrawl, haul_id=haul_id)
+        serializer = TrawlSerializer(trawl)
+        return Response(serializer.data)
+
+    def post(self, request):
+        """Create a new Trawl object."""
+        serializer = TrawlSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    def put(self, request, haul_id):
+        """Update a Trawl object with the given haul_id."""
+        trawl, created = HaulTrawl.objects.get_or_create(haul_id=haul_id)
+        serializer = TrawlSerializer(trawl, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            status = HTTP_201_CREATED if created else HTTP_200_OK
+            return Response(serializer.data, status=status)
+        else:
+            return Response(serializer.erros, status=HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, haul_id, format=None):
+        """Delete the Trawl data for a given haul."""
+        trawl = HaulTrawl.objects.get(haul_id=haul_id)
+        trawl.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
+
+
+class HydrographyAPI(APIView):
+    """Endpoint to manage the Haul Trawl of a survey."""
+
+    def get(self, request, haul_id):
+        """Retrieve a HaulHydrography object with the given haul_id."""
+        hydrography = get_object_or_404(HaulHydrography, haul_id=haul_id)
+        serializer = HydrographySerializer(hydrography)
+        return Response(serializer.data)
+
+    def post(self, request):
+        """Create a new HaulHydrography object with the given request data."""
+        hydrography = HaulHydrography()
+        serializer = HydrographySerializer(hydrography, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(status=HTTP_400_BAD_REQUEST)
+
+    def put(self, request, haul_id):
+        """Update a HaulHydrography object with the given haul_id."""
+        hydrography = get_object_or_404(HaulHydrography, haul_id=haul_id)
+        serializer = HydrographySerializer(
+            hydrography, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
@@ -181,7 +286,8 @@ class HaulHydrographyAPI(APIView):
 
     def put(self, request, haul_id):
         haul = get_object_or_404(Haul, pk=haul_id)
-        serializer = HaulHydrographySerializer(haul, data=request.data, partial=True)
+        serializer = HaulHydrographySerializer(
+            haul, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)

@@ -1,6 +1,6 @@
 import React from "react";
 
-const MeteorologyFormEdit = ({ haul, handleChangeMeteorology }) => {
+const MeteorologyFormEdit = ({ meteorology, handleChangeMeteorology }) => {
 	/**
 	 * Component of meteorology form of haul.
 	 * @param {object} props.haul
@@ -21,7 +21,7 @@ const MeteorologyFormEdit = ({ haul, handleChangeMeteorology }) => {
 						max={360}
 						maxLength={3}
 						size={3}
-						value={haul.meteo.wind_direction || ""}
+						value={meteorology.wind_direction || ""}
 						onChange={(e) => {
 							handleChangeMeteorology(e);
 						}}
@@ -38,7 +38,7 @@ const MeteorologyFormEdit = ({ haul, handleChangeMeteorology }) => {
 						step={0.1}
 						maxLength={3}
 						size={3}
-						value={haul.meteo.wind_velocity || ""}
+						value={meteorology.wind_velocity || ""}
 						onChange={(e) => {
 							handleChangeMeteorology(e);
 						}}
@@ -54,7 +54,7 @@ const MeteorologyFormEdit = ({ haul, handleChangeMeteorology }) => {
 						max={9}
 						maxLength={1}
 						size={1}
-						value={haul.meteo.sea_state || ""}
+						value={meteorology.sea_state || ""}
 						onChange={(e) => {
 							handleChangeMeteorology(e);
 						}}

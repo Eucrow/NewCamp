@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import HaulFormView from "./view/HaulFormView";
-import ViewMeteorology from "./view/MeteorologyFormView";
-import ViewTrawl from "./view/TrawlFormView";
-import ViewHydrography from "./view/HydrographyFormView";
+import MeteorologyFormView from "./view/MeteorologyFormView";
+import TrawlFormView from "./view/TrawlFormView";
+import HydrographyFormView from "./view/HydrographyFormView";
 import MeteorologyFormEdit from "./edit/MeteorologyFormEdit";
 import TrawlFormEdit from "./edit/TrawlFormEdit";
-import EditHydrography from "./edit/HydrographyFormEdit";
+import HydrographyFormEdit from "./edit/HydrographyFormEdit";
 
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonCancel from "../ui/UiButtonCancel";
@@ -23,76 +22,75 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	 * @param {method} setDetail Method to set the boolean detail.
 	 */
 
-	const [thisHaul, setThisHaul] = useState({
-		...haul,
-		meteo: {},
-		trawl_characteristics: {},
-		hydrography_characteristics: {},
-		sampler: {},
-	});
+	const [meteorology, setMeteorology] = useState({});
+	const [hydrography, setHydrography] = useState({});
+	const [trawl, setTrawl] = useState({});
 
-	const [backupThisHaul, setBackupThisHaul] = useState({
-		...haul,
-		meteo: {},
-		trawl_characteristics: {},
-		hydrography_characteristics: {},
-		sampler: {},
-	});
+	const [backupMeteorology, setBackupMeteorology] = useState({});
+	const [backupHydrography, setBackupHydrography] = useState({});
+	const [backupTrawl, setBackupTrawl] = useState({});
 
 	const [edit, setEdit] = useState(false);
 
 	const [fecthError, setFetchError] = useState("");
 
-	const apiTrawlHaul = "http://127.0.0.1:8000/api/1.0/haul/trawl/" + haul.id;
-	const apiHydrographyHaul = "http://127.0.0.1:8000/api/1.0/haul/hydrography/" + haul.id;
+	const apiHydrographyPartial = "http://127.0.0.1:8000/api/1.0/hydrography/";
+	const apiMeteorologyPartial = "http://127.0.0.1:8000/api/1.0/meteorology/";
+	const apiTrawlPartial = "http://127.0.0.1:8000/api/1.0/haul/trawl/";
 
 	const handleChangeMeteorology = (e) => {
 		var name = e.target.name;
 		var value = e.target.value;
-
-		setThisHaul((prevHaul) => ({
-			...prevHaul,
-			meteo: {
-				...prevHaul.meteo,
-				[name]: value,
-			},
+		setMeteorology((prev) => ({
+			...prev,
+			[name]: value,
 		}));
 	};
+
 	const handleChangeTrawl = (e) => {
 		var name = e.target.name;
 		var value = e.target.value;
-		setThisHaul((prevHaul) => ({
-			...prevHaul,
-			trawl_characteristics: {
-				...prevHaul.trawl_characteristics,
-				[name]: value,
-			},
+		setTrawl((prev) => ({
+			...prev,
+			[name]: value,
 		}));
 	};
 
 	const handleChangeHydrography = (e) => {
 		var name = e.target.name;
 		var value = e.target.value;
-		setThisHaul((prevHaul) => ({
-			...prevHaul,
-			hydrography_characteristics: {
-				...prevHaul.hydrography_characteristics,
-				[name]: value,
-			},
+		setHydrography((prev) => ({
+			...prev,
+			[name]: value,
 		}));
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		const apiHaul = haul.sampler_id === 1 ? apiTrawlHaul : haul.sampler_id === 2 ? apiHydrographyHaul : null;
+		const apiMeteorology = apiMeteorologyPartial + haul.id;
+		fetch(apiMeteorology, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(meteorology),
+		}).catch((error) => console.log(error));
+
+		const apiHaul =
+			haul.sampler_id === 1
+				? apiTrawlPartial + haul.id
+				: haul.sampler_id === 2
+				? apiHydrographyPartial + haul.id
+				: null;
+		console.log(apiHaul);
 
 		fetch(apiHaul, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(thisHaul),
+			body: JSON.stringify(trawl),
 		})
 			.then(() => {
 				setEdit(false);
@@ -101,40 +99,65 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	};
 
 	const handleCancel = (status) => {
-		setThisHaul((prevHaul) => {
-			return {
-				...prevHaul,
-				meteo: backupThisHaul["meteo"],
-				trawl_characteristics: backupThisHaul["trawl_characteristics"],
-				hydrography_characteristics: backupThisHaul["hydrography_characteristics"],
-			};
-		});
+		setTrawl(backupTrawl);
+		setMeteorology(backupMeteorology);
+		setHydrography(backupHydrography);
 		setEdit(status);
 	};
 
 	useEffect(() => {
-		if (detail === true) {
-			const apiHaul =
-				parseInt(haul.sampler_id) === 1
-					? apiTrawlHaul
-					: parseInt(haul.sampler_id) === 2
-					? apiHydrographyHaul
-					: null;
+		const apiMeteorology = apiMeteorologyPartial + haul.id;
+		const apiHydrography = apiHydrographyPartial + haul.id;
+		const apiTrawl = apiTrawlPartial + haul.id;
 
-			// Fetch haul.
-			fetch(apiHaul)
-				.then((response) => {
-					if (response.status > 400) {
-						setFetchError("Something went wrong!");
-					}
-					return response.json();
-				})
-				.then((haul) => {
-					setThisHaul(haul);
-					setBackupThisHaul(haul);
-				});
+		if (detail === true) {
+			if (haul.sampler_id === 1) {
+				// Fetch trawl.
+				fetch(apiTrawl)
+					.then((response) => {
+						if (response.status > 400) {
+							setFetchError("Something went wrong!");
+						}
+						return response.json();
+					})
+					.then((trawl) => {
+						setTrawl(trawl);
+						setBackupTrawl(trawl);
+					})
+					.catch((error) => console.log(error));
+
+				// Fetch meteorology.
+				fetch(apiMeteorology)
+					.then((response) => {
+						if (response.status > 400) {
+							setFetchError("Something went wrong!");
+						}
+						return response.json();
+					})
+					.then((meteorology) => {
+						setMeteorology(meteorology);
+						setBackupMeteorology(meteorology);
+					})
+					.catch((error) => console.log(error));
+			}
+
+			if (haul.sampler_id === 2) {
+				// Fetch hydrography.
+				fetch(apiHydrography)
+					.then((response) => {
+						if (response.status > 400) {
+							setFetchError("Something went wrong!");
+						}
+						return response.json();
+					})
+					.then((hydrography) => {
+						setHydrography(hydrography);
+						setBackupHydrography(hydrography);
+					})
+					.catch((error) => console.log(error));
+			}
 		}
-	}, [detail, apiHydrographyHaul, apiTrawlHaul, haul.sampler_id]);
+	}, [detail, haul.sampler_id, apiHydrographyPartial, haul.id, apiMeteorologyPartial]);
 
 	const renderContent = () => {
 		if (Number(haul.sampler_id) === 1) {
@@ -142,10 +165,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				return (
 					<form className="form--wide" disabled>
 						<div className="form__row">
-							<ViewMeteorology haul={thisHaul} />
+							<MeteorologyFormView meteorology={meteorology} />
 						</div>
 						<div className="form__row">
-							<ViewTrawl haul={thisHaul} />
+							<TrawlFormView trawl={trawl} />
 						</div>
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
@@ -155,7 +178,6 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 										handleMethod={setDetail}
 										newStatus={false}
 									/>
-
 									<UiButtonStatusHandle buttonText={"Edit"} handleMethod={setEdit} newStatus={true} />
 								</div>
 							</div>
@@ -174,18 +196,20 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 						}}
 					>
 						<div className="form__row">
-							<MeteorologyFormEdit haul={thisHaul} handleChangeMeteorology={handleChangeMeteorology} />
+							<MeteorologyFormEdit
+								meteorology={meteorology}
+								handleChangeMeteorology={handleChangeMeteorology}
+							/>
 						</div>
 
 						<div className="form__row">
-							<TrawlFormEdit haul={thisHaul} handleChangeTrawl={handleChangeTrawl} />
+							<TrawlFormEdit trawl={trawl} handleChangeTrawl={handleChangeTrawl} />
 						</div>
 
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<UiButtonSave buttonText="Save Haul" />
-									{/* <UiButtonCancel buttonText="Cancel" handleMethod={setEdit} /> */}
 									<UiButtonCancel buttonText="Cancel" handleMethod={handleCancel} />
 								</div>
 							</div>
@@ -200,7 +224,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				return (
 					<form className="form--wide" disabled>
 						<div className="form__row">
-							<ViewHydrography haul={thisHaul} />
+							<HydrographyFormView haul={hydrography} />
 						</div>
 
 						<div className="form__row">
@@ -223,7 +247,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			if (edit === true) {
 				return (
 					<div>
-						<EditHydrography haul={thisHaul} handleChangeHydrography={handleChangeHydrography} />
+						<HydrographyFormEdit
+							hydrography={hydrography}
+							handleChangeHydrography={handleChangeHydrography}
+						/>
 						<input type="submit" value="Save Haul" onClick={handleSubmit} />
 						<button
 							onClick={() => {

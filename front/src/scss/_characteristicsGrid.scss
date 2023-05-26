@@ -1,13 +1,19 @@
 .characteristicsGrid{
 	display: grid;
     width: 100%;
-    grid-template-columns: repeat(7, auto);
     gap: 10px;
     justify-content: space-around;
     justify-items: left;
     align-items: center;
     padding: 10px;
+}
 
+.characteristicsGrid--trawl{
+    grid-template-columns: repeat(7, auto);
+}
+
+.characteristicsGrid--hydrography{
+    grid-template-columns: repeat(5, auto);
 }
 
 .characteristicsGrid__colName{
