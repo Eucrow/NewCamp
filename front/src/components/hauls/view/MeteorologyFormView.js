@@ -21,7 +21,7 @@ const ViewMeteorology = ({ haul }) => {
 						max={360}
 						maxLength={3}
 						size={3}
-						value={haul.meteo.wind_direction || ""}
+						value={haul.wind_direction || ""}
 					/>
 				</div>
 				<div className="form__cell">
@@ -36,7 +36,7 @@ const ViewMeteorology = ({ haul }) => {
 						step={0.1}
 						maxLength={3}
 						size={3}
-						value={haul.meteo.wind_velocity || ""}
+						value={haul.wind_velocity || ""}
 					/>
 				</div>
 				<div className="form__cell">
@@ -50,7 +50,7 @@ const ViewMeteorology = ({ haul }) => {
 						max={9}
 						maxLength={1}
 						size={1}
-						value={haul.meteo.sea_state || ""}
+						value={haul.sea_state || ""}
 					/>
 				</div>
 			</fieldset>

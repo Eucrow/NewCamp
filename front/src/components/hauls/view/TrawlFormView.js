@@ -10,7 +10,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 		return (
 			<fieldset className="wrapper">
 				<legend>Trawl characteristics:</legend>
-				<div className="characteristicsGrid form__row">
+				<div className="characteristicsGrid characteristicsGrid--trawl form__row">
 					{/* first row */}
 					<div></div>
 					<div></div>
@@ -39,7 +39,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							type="datetime-local"
 							name="shooting_date_time"
 							id="shooting_date_time"
-							value={haul.trawl_characteristics.shooting_date_time || ""}
+							value={haul.shooting_date_time || ""}
 							aria-label="Shooting date and time"
 						/>
 					</div>
@@ -54,7 +54,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={6}
 							size={6}
 							step={0.0001}
-							value={haul.trawl_characteristics.shooting_latitude || ""}
+							value={haul.shooting_latitude || ""}
 							aria-label="Shooting latitude"
 						/>
 					</div>
@@ -69,7 +69,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={7}
 							size={7}
 							step={0.0001}
-							value={haul.trawl_characteristics.shooting_longitude || ""}
+							value={haul.shooting_longitude || ""}
 							aria-label="Shooting longitude"
 						/>
 					</div>
@@ -84,7 +84,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							value={haul.trawl_characteristics.shooting_depth || ""}
+							value={haul.shooting_depth || ""}
 							aria-label="Shooting depth"
 						/>
 					</div>
@@ -101,7 +101,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							type="datetime-local"
 							name="hauling_date_time"
 							id="hauling_date_time"
-							value={haul.trawl_characteristics.hauling_date_time || ""}
+							value={haul.hauling_date_time || ""}
 							aria-label="Hauling date and time"
 						/>
 					</div>
@@ -116,7 +116,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={6}
 							size={6}
 							step={0.0001}
-							value={haul.trawl_characteristics.hauling_latitude || ""}
+							value={haul.hauling_latitude || ""}
 							aria-label="Hauling latitude"
 						/>
 					</div>
@@ -131,7 +131,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={7}
 							size={7}
 							step={0.0001}
-							value={haul.trawl_characteristics.hauling_longitude || ""}
+							value={haul.hauling_longitude || ""}
 							aria-label="Hauling longitude"
 						/>
 					</div>
@@ -146,7 +146,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							value={haul.trawl_characteristics.hauling_depth || ""}
+							value={haul.hauling_depth || ""}
 							aria-label="Hauling depth"
 						/>
 					</div>
@@ -163,7 +163,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							type="datetime-local"
 							name="bottom_date_time"
 							id="bottom_date_time"
-							value={haul.trawl_characteristics.bottom_date_time || ""}
+							value={haul.bottom_date_time || ""}
 							aria-label="Bottom date and time"
 						/>
 					</div>
@@ -178,7 +178,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={6}
 							size={6}
 							step={0.0001}
-							value={haul.trawl_characteristics.bottom_latitude || ""}
+							value={haul.bottom_latitude || ""}
 							aria-label="Bottom latitude"
 						/>
 					</div>
@@ -193,7 +193,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={7}
 							size={7}
 							step={0.0001}
-							value={haul.trawl_characteristics.bottom_longitude || ""}
+							value={haul.bottom_longitude || ""}
 							aria-label="Bottom longitude"
 						/>
 					</div>
@@ -208,7 +208,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							value={haul.trawl_characteristics.bottom_depth || ""}
+							value={haul.bottom_depth || ""}
 							aria-label="Bottom depth"
 						/>
 					</div>
@@ -228,7 +228,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={3}
 							size={3}
 							step={1}
-							value={haul.trawl_characteristics.course || ""}
+							value={haul.course || ""}
 						/>
 					</label>
 					<label className="field">
@@ -243,7 +243,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							value={haul.trawl_characteristics.velocity || ""}
+							value={haul.velocity || ""}
 						/>
 					</label>
 					<label className="field">
@@ -258,7 +258,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							value={haul.trawl_characteristics.cable || ""}
+							value={haul.cable || ""}
 						/>
 					</label>
 					<label className="field">
@@ -273,7 +273,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={3}
 							size={3}
 							step={1}
-							value={haul.trawl_characteristics.sweep || ""}
+							value={haul.sweep || ""}
 						/>
 					</label>
 				</div>
@@ -290,7 +290,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							value={haul.trawl_characteristics.otter_boards_distance || ""}
+							value={haul.otter_boards_distance || ""}
 						/>
 					</label>
 					<label className="field">
@@ -305,7 +305,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							value={haul.trawl_characteristics.horizontal_aperture || ""}
+							value={haul.horizontal_aperture || ""}
 						/>
 					</label>
 					<label className="field">
@@ -320,7 +320,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={4}
 							size={4}
 							step={0.1}
-							value={haul.trawl_characteristics.vertical_aperture || ""}
+							value={haul.vertical_aperture || ""}
 						/>
 					</label>
 				</div>
@@ -337,7 +337,7 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={2}
 							size={2}
 							step={1}
-							value={haul.trawl_characteristics.grid || ""}
+							value={haul.grid || ""}
 						/>
 					</label>
 					<label className="field">
@@ -352,19 +352,14 @@ const ComponentsHaulTrawl = ({ haul }) => {
 							maxLength={4}
 							size={4}
 							step={1}
-							value={haul.trawl_characteristics.track || ""}
+							value={haul.track || ""}
 						/>
 					</label>
 				</div>
 				<div className="form__row">
 					<label className="field__comment">
 						Comment:
-						<textarea
-							disabled
-							name="comment"
-							id="comment"
-							value={haul.trawl_characteristics.comment || ""}
-						/>
+						<textarea disabled name="comment" id="comment" value={haul.comment || ""} />
 					</label>
 				</div>
 			</fieldset>

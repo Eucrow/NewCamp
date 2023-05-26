@@ -21,7 +21,7 @@ const MeteorologyFormEdit = ({ haul, handleChangeMeteorology }) => {
 						max={360}
 						maxLength={3}
 						size={3}
-						value={haul.meteo.wind_direction || ""}
+						value={haul.wind_direction || ""}
 						onChange={(e) => {
 							handleChangeMeteorology(e);
 						}}
@@ -38,7 +38,7 @@ const MeteorologyFormEdit = ({ haul, handleChangeMeteorology }) => {
 						step={0.1}
 						maxLength={3}
 						size={3}
-						value={haul.meteo.wind_velocity || ""}
+						value={haul.wind_velocity || ""}
 						onChange={(e) => {
 							handleChangeMeteorology(e);
 						}}
@@ -54,7 +54,7 @@ const MeteorologyFormEdit = ({ haul, handleChangeMeteorology }) => {
 						max={9}
 						maxLength={1}
 						size={1}
-						value={haul.meteo.sea_state || ""}
+						value={haul.sea_state || ""}
 						onChange={(e) => {
 							handleChangeMeteorology(e);
 						}}

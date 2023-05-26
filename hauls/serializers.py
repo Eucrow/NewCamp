@@ -89,6 +89,13 @@ class HaulMeteorologySerializer(serializers.ModelSerializer):
         fields = ['wind_direction', 'wind_velocity', 'sea_state', ]
 
 
+#TODO: this serializer is equal to HaulMeteorologySerializer. Delete one of them (I think this one is the correct one)
+class MeteorologySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Meteorology
+        fields = ['wind_direction', 'wind_velocity', 'sea_state', ]
+
+
 class TrawlSerializer(serializers.ModelSerializer):
     class Meta:
         model = HaulTrawl
@@ -172,9 +179,10 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
 class HydrographySerializer(serializers.ModelSerializer):
     class Meta:
         model = HaulHydrography
-        fields = ['latitude', 'longitude', 'date_time', 'depth_probe', 'cable', 'depth', 'temperature_0', 'salinity_0',
+        fields = ['id', 'latitude', 'longitude', 'date_time', 'depth_probe', 'cable', 'depth', 'temperature_0',
+                  'salinity_0',
                   'sigma_0', 'temperature_50', 'salinity_50', 'sigma_50', 'temperature_100', 'salinity_100',
-                  'sigma_100', 'temperature', 'salinity', 'sigma', 'comment', ]
+                  'sigma_100', 'temperature', 'salinity', 'sigma', 'comment', 'haul_id']
 
 
 class HaulHydrographySerializer(serializers.ModelSerializer):
