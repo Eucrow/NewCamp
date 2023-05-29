@@ -1,10 +1,40 @@
 import React from "react";
 
+import { convertDecimalToDMCoordinate } from "C:/Users/ieoma/Desktop/NewCamp/front/src/utils/Coordinates";
+
 const TrawlFormView = ({ trawl }) => {
 	/**
 	 * Component of trawl form of haul.
 	 * @param {object} trawl
 	 */
+
+	const [degrees_shooting_latitude, minutes_shooting_latitude] = convertDecimalToDMCoordinate(
+		trawl.shooting_latitude
+	);
+	const [degrees_shooting_longitude, minutes_shooting_longitude] = convertDecimalToDMCoordinate(
+		trawl.shooting_longitude
+	);
+	const [degrees_hauling_latitude, minutes_hauling_latitude] = convertDecimalToDMCoordinate(trawl.hauling_latitude);
+	const [degrees_hauling_longitude, minutes_hauling_longitude] = convertDecimalToDMCoordinate(
+		trawl.hauling_longitude
+	);
+	const [degrees_bottom_latitude, minutes_bottom_latitude] = convertDecimalToDMCoordinate(trawl.bottom_latitude);
+	const [degrees_bottom_longitude, minutes_bottom_longitude] = convertDecimalToDMCoordinate(trawl.bottom_longitude);
+
+	const renderDateTime = (dateTime, id, aria_label) => {
+		if (dateTime) {
+			return (
+				<input
+					disabled
+					type="datetime-local"
+					name={id}
+					id={id}
+					value={trawl.shooting_date_time || ""}
+					aria-label={aria_label}
+				/>
+			);
+		}
+	};
 
 	const renderContent = () => {
 		return (
@@ -13,65 +43,104 @@ const TrawlFormView = ({ trawl }) => {
 				<div className="characteristicsGrid characteristicsGrid--trawl form__row">
 					{/* first row */}
 					<div></div>
-					<div></div>
 					<div className="characteristicsGrid__colName" aria-hidden="true">
 						Date/time:
 					</div>
-					<div className="characteristicsGrid__colName" aria-hidden="true">
+					<div className="characteristicsGrid__colName characteristicsGrid--span2" aria-hidden="true">
 						Latitude:
 					</div>
-					<div className="characteristicsGrid__colName" aria-hidden="true">
+
+					<div className="characteristicsGrid__colName characteristicsGrid--span2" aria-hidden="true">
 						Longitude:
 					</div>
+
 					<div className="characteristicsGrid__colName" aria-hidden="true">
 						Depth (m):
 					</div>
-					<div></div>
 
 					{/* second row */}
-					<div></div>
+
 					<div className="characteristicsGrid__rowName" aria-hidden="true">
 						Shooting:
 					</div>
 					<div className="characteristicsGrid__field">
-						<input
+						{/* <input
 							disabled
 							type="datetime-local"
 							name="shooting_date_time"
 							id="shooting_date_time"
 							value={trawl.shooting_date_time || ""}
 							aria-label="Shooting date and time"
-						/>
+						/> */}
+						{renderDateTime(trawl.shooting_date_time, "shooting_date_time", "Shooting date and time")}
 					</div>
 					<div className="characteristicsGrid__field">
-						<input
+						{/* <input
 							disabled
 							type="number"
-							name="shooting_latitude"
-							id="shooting_latitude"
-							min={0}
+							name="degrees_shooting_latitude"
+							id="degrees_shooting_latitude"
+							min={-90}
 							max={90}
+							maxLength={3}
+							size={3}
+							step={1}
+							value={degrees_shooting_latitude || ""}
+							aria-label="Degrees shooting latitude"
+						/> */}
+						{/* {degrees_shooting_latitude || ""}º {" "} */}
+						{degrees_shooting_latitude ? degrees_shooting_latitude + "º " : ""}
+						{/* </div>
+					<div className="characteristicsGrid__field"> */}
+						{/* <input
+							disabled
+							type="number"
+							name="minutes_shooting_latitude"
+							id="minutes_shooting_latitude"
+							min={0}
+							max={60}
 							maxLength={6}
 							size={6}
-							step={0.0001}
-							value={trawl.shooting_latitude || ""}
-							aria-label="Shooting latitude"
-						/>
+							step={0.001}
+							value={minutes_shooting_latitude || ""}
+							aria-label="Minutes shooting latitude"
+						/> */}
+						{/* {minutes_shooting_latitude || ""}' */}
+						{minutes_shooting_latitude ? minutes_shooting_latitude + "'" : ""}
 					</div>
 					<div className="characteristicsGrid__field">
-						<input
+						{/* <input
 							disabled
 							type="number"
-							name="shooting_longitude"
-							id="shooting_longitude"
+							name="degrees_shooting_longitude"
+							id="degrees_shooting_longitude"
 							min={-180}
 							max={180}
-							maxLength={7}
-							size={7}
+							maxLength={4}
+							size={4}
 							step={0.0001}
-							value={trawl.shooting_longitude || ""}
-							aria-label="Shooting longitude"
-						/>
+							value={degrees_shooting_longitude || ""}
+							aria-label="Degrees shooting longitude"
+						/> */}
+						{/* {degrees_shooting_longitude || ""}º {" "} */}
+						{degrees_shooting_longitude ? degrees_shooting_longitude + "º " : ""}
+						{/* </div>
+					<div className="characteristicsGrid__field"> */}
+						{/* <input
+							disabled
+							type="number"
+							name="minutes_shooting_longitude"
+							id="minutes_shooting_longitude"
+							min={0}
+							max={60}
+							maxLength={6}
+							size={6}
+							step={0.001}
+							value={minutes_shooting_longitude || ""}
+							aria-label="Minutes shooting longitude"
+						/> */}
+						{/* {minutes_shooting_longitude || ""}' */}
+						{minutes_shooting_longitude ? minutes_shooting_longitude + "'" : ""}
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
@@ -88,52 +157,93 @@ const TrawlFormView = ({ trawl }) => {
 							aria-label="Shooting depth"
 						/>
 					</div>
-					<div></div>
+					{/* <div></div> */}
+					{/* </div> */}
 
 					{/* third row */}
-					<div></div>
+					{/* <div className="characteristicsGrid characteristicsGrid--trawl form__row"> */}
+					{/* <div></div> */}
 					<div className="characteristicsGrid__rowName" aria-hidden="true">
 						Hauling:
 					</div>
 					<div className="characteristicsGrid__field">
-						<input
+						{/* <input
 							disabled
 							type="datetime-local"
 							name="hauling_date_time"
 							id="hauling_date_time"
 							value={trawl.hauling_date_time || ""}
 							aria-label="Hauling date and time"
-						/>
+						/> */}
+						{renderDateTime(trawl.hauling_date_time, "hauling_date_time", "Hauling date and time")}
 					</div>
 					<div className="characteristicsGrid__field">
-						<input
+						{/* <input
 							disabled
 							type="number"
-							name="hauling_latitude"
-							id="hauling_latitude"
+							name="degree_hauling_latitude"
+							id="degree_hauling_latitude"
 							min={0}
 							max={90}
 							maxLength={6}
 							size={6}
 							step={0.0001}
-							value={trawl.hauling_latitude || ""}
-							aria-label="Hauling latitude"
-						/>
-					</div>
-					<div className="characteristicsGrid__field">
-						<input
+							value={degrees_hauling_latitude || ""}
+							aria-label="Degrees hauling latitude"
+						/> */}
+						{/* {degrees_hauling_latitude || ""}º {" "} */}
+						{degrees_hauling_latitude ? degrees_hauling_latitude + "º " : ""}
+						{/* </div>
+					<div className="characteristicsGrid__field"> */}
+						{/* <input
 							disabled
 							type="number"
-							name="hauling_longitude"
-							id="hauling_longitude"
+							name="minutes_hauling_latitude"
+							id="minutes_hauling_latitude"
+							min={0}
+							max={90}
+							maxLength={6}
+							size={6}
+							step={0.0001}
+							value={minutes_hauling_latitude || ""}
+							aria-label="Minutes hauling latitude"
+						/> */}
+						{/* {minutes_hauling_latitude || ""}' */}
+						{minutes_hauling_latitude ? minutes_hauling_latitude + "'" : ""}
+					</div>
+					<div className="characteristicsGrid__field">
+						{/* <input
+							disabled
+							type="number"
+							name="degrees_hauling_longitude"
+							id="degrees_hauling_longitude"
 							min={-180}
 							max={180}
 							maxLength={7}
 							size={7}
 							step={0.0001}
-							value={trawl.hauling_longitude || ""}
-							aria-label="Hauling longitude"
-						/>
+							value={degrees_hauling_longitude || ""}
+							aria-label="Degrees Hauling longitude"
+						/> */}
+						{/* {degrees_hauling_longitude || ""}º {" "} */}
+						{degrees_hauling_longitude ? degrees_hauling_longitude + "º " : ""}
+						{/* </div>
+					<div className="characteristicsGrid__field"> */}
+						{/* <input
+							disabled
+							type="number"
+							name="minutes_hauling_longitude"
+							id="minutes_hauling_longitude"
+							min={-180}
+							max={180}
+							maxLength={7}
+							size={7}
+							step={0.0001}
+							value={minutes_hauling_longitude || ""}
+							aria-label="Minutes Hauling longitude"
+						/> */}
+						{/* {minutes_hauling_longitude || ""}' */}
+						{minutes_hauling_longitude ? minutes_hauling_longitude + "'" : ""}
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
@@ -150,52 +260,93 @@ const TrawlFormView = ({ trawl }) => {
 							aria-label="Hauling depth"
 						/>
 					</div>
-					<div></div>
+					{/* <div></div> */}
+					{/* </div> */}
 
 					{/* fourth row */}
-					<div></div>
+					{/* <div className="characteristicsGrid characteristicsGrid--trawl form__row"> */}
+					{/* <div></div> */}
 					<div className="characteristicsGrid__rowName" aria-hidden="true">
 						Bottom:
 					</div>
 					<div className="characteristicsGrid__field">
-						<input
+						{/* <input
 							disabled
 							type="datetime-local"
 							name="bottom_date_time"
 							id="bottom_date_time"
 							value={trawl.bottom_date_time || ""}
 							aria-label="Bottom date and time"
-						/>
+						/> */}
+						{renderDateTime(trawl.bottom_date_time, "bottom_date_time", "Bottom date and time")}
 					</div>
 					<div className="characteristicsGrid__field">
-						<input
+						{/* <input
 							disabled
 							type="number"
-							name="bottom_latitude"
-							id="bottom_latitude"
+							name="degrees_bottom_latitude"
+							id="degrees_bottom_latitude"
 							min={0}
 							max={90}
 							maxLength={6}
 							size={6}
 							step={0.0001}
-							value={trawl.bottom_latitude || ""}
-							aria-label="Bottom latitude"
-						/>
-					</div>
-					<div className="characteristicsGrid__field">
-						<input
+							value={degrees_bottom_latitude || ""}
+							aria-label="Degrees bottom latitude"
+						/> */}
+						{/* {degrees_bottom_latitude || ""}º {" "} */}
+						{degrees_bottom_latitude ? degrees_bottom_latitude + "º " : ""}
+						{/* </div>
+					<div className="characteristicsGrid__field"> */}
+						{/* <input
 							disabled
 							type="number"
-							name="bottom_longitude"
-							id="bottom_longitude"
+							name="minutes_bottom_latitude"
+							id="minutes_bottom_latitude"
+							min={0}
+							max={90}
+							maxLength={6}
+							size={6}
+							step={0.0001}
+							value={minutes_bottom_latitude || ""}
+							aria-label="Minutes bottom latitude"
+						/> */}
+						{/* {minutes_bottom_latitude || ""}' */}
+						{minutes_bottom_latitude ? minutes_bottom_latitude + "'" : ""}
+					</div>
+					<div className="characteristicsGrid__field">
+						{/* <input
+							disabled
+							type="number"
+							name="degrees_bottom_longitude"
+							id="degrees_bottom_longitude"
 							min={-180}
 							max={180}
 							maxLength={7}
 							size={7}
 							step={0.0001}
-							value={trawl.bottom_longitude || ""}
-							aria-label="Bottom longitude"
-						/>
+							value={degrees_bottom_longitude || ""}
+							aria-label="Degrees bottom longitude"
+						/> */}
+						{/* {degrees_bottom_longitude || ""}º {" "} */}
+						{degrees_bottom_longitude ? degrees_bottom_longitude + "º " : ""}
+						{/* </div>
+					<div className="characteristicsGrid__field"> */}
+						{/* <input
+							disabled
+							type="number"
+							name="minutes_bottom_longitude"
+							id="minutes_bottom_longitude"
+							min={-180}
+							max={180}
+							maxLength={7}
+							size={7}
+							step={0.0001}
+							value={minutes_bottom_longitude || ""}
+							aria-label="Minutes bottom longitude"
+						/> */}
+						{/* {minutes_bottom_longitude || ""}' */}
+						{minutes_bottom_longitude ? minutes_bottom_longitude + "'" : ""}
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
@@ -212,7 +363,6 @@ const TrawlFormView = ({ trawl }) => {
 							aria-label="Bottom depth"
 						/>
 					</div>
-					<div></div>
 				</div>
 
 				<div className="form__row">
