@@ -59,7 +59,6 @@ const TrawlFormView = ({ trawl }) => {
 					</div>
 
 					{/* second row */}
-
 					<div className="characteristicsGrid__rowName" aria-hidden="true">
 						Shooting:
 					</div>

@@ -216,7 +216,7 @@ class TrawlAPI(APIView):
             status = HTTP_201_CREATED if created else HTTP_200_OK
             return Response(serializer.data, status=status)
         else:
-            return Response(serializer.erros, status=HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, haul_id, format=None):
         """Delete the Trawl data for a given haul."""

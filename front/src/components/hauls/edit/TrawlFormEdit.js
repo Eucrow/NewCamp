@@ -1,6 +1,16 @@
 import React from "react";
 
-const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
+const TrawlFormEdit = ({
+	trawl,
+	shootingLatitude,
+	shootingLongitude,
+	haulingLatitude,
+	haulingLongitude,
+	bottomLatitude,
+	bottomLongitude,
+	handleChangeTrawl,
+	handleCoordinatesChange,
+}) => {
 	/**
 	 * Component of trawl form of haul.
 	 * @param {object} trawl
@@ -20,7 +30,6 @@ const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
 				<div className="characteristicsGrid characteristicsGrid--trawl form__row">
 					{/* first row */}
 					<div></div>
-					<div></div>
 					<div className="characteristicsGrid__colName" aria-hidden="true">
 						Date/time:
 					</div>
@@ -33,10 +42,8 @@ const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
 					<div className="characteristicsGrid__colName" aria-hidden="true">
 						Depth (m):
 					</div>
-					<div></div>
 
 					{/* second row */}
-					<div></div>
 					<div className="characteristicsGrid__rowName" aria-hidden="true">
 						Shooting:
 					</div>
@@ -52,39 +59,66 @@ const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
 							aria-label="Shooting date and time"
 						/>
 					</div>
+
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
-							name="shooting_latitude"
-							id="shooting_latitude"
-							min={0}
+							name="shooting_latitude_degrees"
+							id="shooting_latitude_degrees"
+							min={-90}
 							max={90}
-							maxLength={6}
-							size={6}
-							step={0.0001}
-							value={trawl.shooting_latitude || ""}
+							value={shootingLatitude["degrees"] || ""}
 							onChange={(e) => {
-								handleChangeTrawl(e);
+								handleCoordinatesChange(e);
 							}}
-							aria-label="Shooting latitude"
+							aria-label="Degrees shooting latitude"
 						/>
+						º{" "}
+						<input
+							type="number"
+							name="shooting_latitude_minutes"
+							id="shooting_latitude_minutes"
+							min={0}
+							max={60}
+							step={0.001}
+							pattern="[0-9]+(\,[0-9]{3})?"
+							value={shootingLatitude["minutes"] || ""}
+							onChange={(e) => {
+								handleCoordinatesChange(e);
+							}}
+							aria-label="Minutes shooting latitude"
+						/>
+						'
 					</div>
+
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
-							name="shooting_longitude"
-							id="shooting_longitude"
-							min={-180}
-							max={180}
-							maxLength={7}
-							size={7}
-							step={0.0001}
-							value={trawl.shooting_longitude || ""}
+							name="shooting_longitude_degrees"
+							id="shooting_longitude_degrees"
+							min={-90}
+							max={90}
+							value={shootingLongitude["degrees"] || ""}
 							onChange={(e) => {
-								handleChangeTrawl(e);
+								handleCoordinatesChange(e);
 							}}
-							aria-label="Shooting longitude"
+							aria-label="Degrees shooting longitude"
 						/>
+						º{" "}
+						<input
+							type="number"
+							name="shooting_longitude_minutes"
+							id="shooting_longitude_minutes"
+							min={0}
+							max={60}
+							step={0.001}
+							value={shootingLongitude["minutes"] || ""}
+							onChange={(e) => {
+								handleCoordinatesChange(e);
+							}}
+							aria-label="Minutes shooting longitude"
+						/>
+						'
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
@@ -93,7 +127,6 @@ const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
 							id="shooting_depth"
 							min={0}
 							max={9999}
-							maxLength={4}
 							size={4}
 							step={1}
 							value={trawl.shooting_depth || ""}
@@ -103,10 +136,8 @@ const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
 							aria-label="Shooting depth"
 						/>
 					</div>
-					<div></div>
 
 					{/* third row */}
-					<div></div>
 					<div className="characteristicsGrid__rowName" aria-hidden="true">
 						Hauling:
 					</div>
@@ -122,39 +153,65 @@ const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
 							aria-label="Hauling date and time"
 						/>
 					</div>
+
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
-							name="hauling_latitude"
-							id="hauling_latitude"
-							min={0}
+							name="hauling_latitude_degrees"
+							id="hauling_latitude_degrees"
+							min={-90}
 							max={90}
-							maxLength={6}
-							size={6}
-							step={0.0001}
-							value={trawl.hauling_latitude || ""}
+							value={haulingLatitude["degrees"] || ""}
 							onChange={(e) => {
-								handleChangeTrawl(e);
+								handleCoordinatesChange(e);
 							}}
-							aria-label="Hauling latitude"
+							aria-label="Degrees hauling latitude"
 						/>
+						º{" "}
+						<input
+							type="number"
+							name="hauling_latitude_minutes"
+							id="hauling_latitude_minutes"
+							min={0}
+							max={60}
+							step={0.001}
+							value={haulingLatitude["minutes"] || ""}
+							onChange={(e) => {
+								handleCoordinatesChange(e);
+							}}
+							aria-label="Minutes hauling latitude"
+						/>
+						'
 					</div>
+
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
-							name="hauling_longitude"
-							id="hauling_longitude"
-							min={-180}
-							max={180}
-							maxLength={7}
-							size={7}
-							step={0.0001}
-							value={trawl.hauling_longitude || ""}
+							name="hauling_longitude_degrees"
+							id="hauling_longitude_degrees"
+							min={-90}
+							max={90}
+							value={haulingLongitude["degrees"] || ""}
 							onChange={(e) => {
-								handleChangeTrawl(e);
+								handleCoordinatesChange(e);
 							}}
-							aria-label="Hauling longitude"
+							aria-label="Degrees hauling longitude"
 						/>
+						º{" "}
+						<input
+							type="number"
+							name="hauling_longitude_minutes"
+							id="hauling_longitude_minutes"
+							min={0}
+							max={60}
+							step={0.001}
+							value={haulingLongitude["minutes"] || ""}
+							onChange={(e) => {
+								handleCoordinatesChange(e);
+							}}
+							aria-label="Minutes hauling longitude"
+						/>
+						'
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
@@ -163,7 +220,6 @@ const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
 							id="hauling_depth"
 							min={0}
 							max={9999}
-							maxLength={4}
 							size={4}
 							step={1}
 							value={trawl.hauling_depth || ""}
@@ -173,10 +229,8 @@ const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
 							aria-label="Hauling depth"
 						/>
 					</div>
-					<div></div>
 
 					{/* fourth row */}
-					<div></div>
 					<div className="characteristicsGrid__rowName" aria-hidden="true">
 						Bottom:
 					</div>
@@ -195,36 +249,61 @@ const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
-							name="bottom_latitude"
-							id="bottom_latitude"
-							min={0}
+							name="bottom_latitude_degrees"
+							id="bottom_latitude_degrees"
+							min={-90}
 							max={90}
-							maxLength={6}
-							size={6}
-							step={0.0001}
-							value={trawl.bottom_latitude || ""}
+							value={bottomLatitude["degrees"] || ""}
 							onChange={(e) => {
-								handleChangeTrawl(e);
+								handleCoordinatesChange(e);
 							}}
-							aria-label="Bottom latitude"
+							aria-label="Degrees bottom latitude"
 						/>
+						º{" "}
+						<input
+							type="number"
+							name="bottom_latitude_minutes"
+							id="bottom_latitude_minutes"
+							min={0}
+							max={60}
+							step={0.001}
+							value={bottomLatitude["minutes"] || ""}
+							onChange={(e) => {
+								handleCoordinatesChange(e);
+							}}
+							aria-label="Minutes bottom latitude"
+						/>
+						'
 					</div>
+
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
-							name="bottom_longitude"
-							id="bottom_longitude"
-							min={-180}
-							max={180}
-							maxLength={7}
-							size={7}
-							step={0.0001}
-							value={trawl.bottom_longitude || ""}
+							name="bottom_longitude_degrees"
+							id="bottom_longitude_degrees"
+							min={-90}
+							max={90}
+							value={bottomLongitude["degrees"] || ""}
 							onChange={(e) => {
-								handleChangeTrawl(e);
+								handleCoordinatesChange(e);
 							}}
-							aria-label="Bottom longitude"
+							aria-label="Degrees bottom longitude"
 						/>
+						º{" "}
+						<input
+							type="number"
+							name="bottom_longitude_minutes"
+							id="bottom_longitude_minutes"
+							min={0}
+							max={60}
+							step={0.001}
+							value={bottomLongitude["minutes"] || ""}
+							onChange={(e) => {
+								handleCoordinatesChange(e);
+							}}
+							aria-label="Minutes bottom longitude"
+						/>
+						'
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
@@ -243,7 +322,6 @@ const TrawlFormEdit = ({ trawl, handleChangeTrawl }) => {
 							aria-label="Bottom depth"
 						/>
 					</div>
-					<div></div>
 				</div>
 
 				<div className="form__row">
