@@ -63,6 +63,8 @@ const TrawlFormEdit = ({
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
+							className="coordinates"
+							style={{ textAlign: "right" }}
 							name="shooting_latitude_degrees"
 							id="shooting_latitude_degrees"
 							min={-90}
@@ -76,6 +78,7 @@ const TrawlFormEdit = ({
 						º{" "}
 						<input
 							type="number"
+							className="coordinates"
 							name="shooting_latitude_minutes"
 							id="shooting_latitude_minutes"
 							min={0}
@@ -94,6 +97,7 @@ const TrawlFormEdit = ({
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
+							className="coordinates"
 							name="shooting_longitude_degrees"
 							id="shooting_longitude_degrees"
 							min={-90}
@@ -107,6 +111,7 @@ const TrawlFormEdit = ({
 						º{" "}
 						<input
 							type="number"
+							className="coordinates"
 							name="shooting_longitude_minutes"
 							id="shooting_longitude_minutes"
 							min={0}
@@ -157,6 +162,7 @@ const TrawlFormEdit = ({
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
+							className="coordinates"
 							name="hauling_latitude_degrees"
 							id="hauling_latitude_degrees"
 							min={-90}
@@ -170,6 +176,7 @@ const TrawlFormEdit = ({
 						º{" "}
 						<input
 							type="number"
+							className="coordinates"
 							name="hauling_latitude_minutes"
 							id="hauling_latitude_minutes"
 							min={0}
@@ -187,6 +194,7 @@ const TrawlFormEdit = ({
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
+							className="coordinates"
 							name="hauling_longitude_degrees"
 							id="hauling_longitude_degrees"
 							min={-90}
@@ -200,6 +208,7 @@ const TrawlFormEdit = ({
 						º{" "}
 						<input
 							type="number"
+							className="coordinates"
 							name="hauling_longitude_minutes"
 							id="hauling_longitude_minutes"
 							min={0}
@@ -249,6 +258,7 @@ const TrawlFormEdit = ({
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
+							className="coordinates"
 							name="bottom_latitude_degrees"
 							id="bottom_latitude_degrees"
 							min={-90}
@@ -262,6 +272,7 @@ const TrawlFormEdit = ({
 						º{" "}
 						<input
 							type="number"
+							className="coordinates"
 							name="bottom_latitude_minutes"
 							id="bottom_latitude_minutes"
 							min={0}
@@ -279,6 +290,7 @@ const TrawlFormEdit = ({
 					<div className="characteristicsGrid__field">
 						<input
 							type="number"
+							className="coordinates"
 							name="bottom_longitude_degrees"
 							id="bottom_longitude_degrees"
 							min={-90}
@@ -292,6 +304,7 @@ const TrawlFormEdit = ({
 						º{" "}
 						<input
 							type="number"
+							className="coordinates"
 							name="bottom_longitude_minutes"
 							id="bottom_longitude_minutes"
 							min={0}

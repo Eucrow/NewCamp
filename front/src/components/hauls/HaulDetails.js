@@ -17,13 +17,13 @@ import UiButtonCancel from "../ui/UiButtonCancel";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
-const useRenderCount = () => {
-	const renderCount = useRef(0);
-	useEffect(() => {
-		renderCount.current += 1;
-	});
-	return renderCount.current;
-};
+// const useRenderCount = () => {
+// 	const renderCount = useRef(0);
+// 	useEffect(() => {
+// 		renderCount.current += 1;
+// 	});
+// 	return renderCount.current;
+// };
 
 const HaulDetails = ({ haul, detail, setDetail }) => {
 	/**
@@ -373,7 +373,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							setEdit(false);
 						}}
 					>
-						<p>Render count: {renderCount}</p>
+						{/* <p>Render count: {renderCount}</p> */}
 						<div className="form__row">
 							<MeteorologyFormEdit
 								meteorology={meteorology}
@@ -456,7 +456,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		return null;
 	};
 
-	const renderCount = useRenderCount();
+	// const renderCount = useRenderCount();
 
 	return renderContent();
 };
