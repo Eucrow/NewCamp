@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
 	convertDecimalToDMCoordinate,
 	convertDMToDecimalCoordinate,
 } from "C:/Users/ieoma/Desktop/NewCamp/front/src/utils/Coordinates";
+import { fixDateTime } from "../../utils/DateTime";
 
 import MeteorologyFormView from "./view/MeteorologyFormView";
 import TrawlFormView from "./view/TrawlFormView";
@@ -313,6 +314,14 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 						return response.json();
 					})
 					.then((trawl) => {
+						// Convert date and time to local time (just removve the Z at the end).
+						const fixed_shooting_date_time = fixDateTime(trawl.shooting_date_time);
+						const fixed_hauling_date_time = fixDateTime(trawl.hauling_date_time);
+						const fixed_bottom_date_time = fixDateTime(trawl.bottom_date_time);
+						trawl.shooting_date_time = fixed_shooting_date_time;
+						trawl.hauling_date_time = fixed_hauling_date_time;
+						trawl.bottom_date_time = fixed_bottom_date_time;
+
 						setTrawl(trawl);
 						setBackupTrawl(trawl);
 					})

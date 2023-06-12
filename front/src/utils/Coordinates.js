@@ -10,7 +10,7 @@ export const convertDecimalToDMCoordinate = (coordinate) => {
 	}
 	const coor = Number(coordinate);
 	const degree = Math.floor(coor);
-	const minutes = ((coor - degree) * 60).toFixed(3);
+	const minutes = Number(((coor - degree) * 60).toFixed(3));
 	return [degree, minutes];
 };
 

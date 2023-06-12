@@ -64,7 +64,6 @@ const TrawlFormEdit = ({
 						<input
 							type="number"
 							className="coordinates"
-							style={{ textAlign: "right" }}
 							name="shooting_latitude_degrees"
 							id="shooting_latitude_degrees"
 							min={-90}
