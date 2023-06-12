@@ -234,6 +234,13 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			trawlCopy["bottom_longitude"] = newCoordinates["bottom_longitude"];
 			// to avoid a infinite loop, we need to update the state of the trawl object completely
 			// so we need to update the state of the trawl object with the deepcopy
+
+			// update the date time fields, must be null if empty, instead of empty string.
+			trawlCopy["shooting_date_time"] =
+				trawlCopy["shooting_date_time"] === "" ? null : trawlCopy["shooting_date_time"];
+			trawlCopy["hauling_date_time"] =
+				trawlCopy["hauling_date_time"] === "" ? null : trawlCopy["hauling_date_time"];
+			trawlCopy["bottom_date_time"] = trawlCopy["bottom_date_time"] === "" ? null : trawlCopy["bottom_date_time"];
 			setTrawl(trawlCopy);
 		}
 

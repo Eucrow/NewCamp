@@ -18,11 +18,11 @@ const TrawlFormEdit = ({
 	 */
 
 	const renderContent = () => {
-		const shooting_date_time = trawl.shooting_date_time ? trawl.shooting_date_time.replace("Z", "") : "";
+		const shooting_date_time = trawl.shooting_date_time;
 
-		const hauling_date_time = trawl.hauling_date_time ? trawl.hauling_date_time.replace("Z", "") : "";
+		const hauling_date_time = trawl.hauling_date_time;
 
-		const bottom_date_time = trawl.bottom_date_time ? trawl.bottom_date_time.replace("Z", "") : "";
+		const bottom_date_time = trawl.bottom_date_time;
 
 		return (
 			<fieldset className="wrapper">
