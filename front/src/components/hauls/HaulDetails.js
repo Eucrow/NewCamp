@@ -50,7 +50,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 	const apiHydrographyPartial = "http://127.0.0.1:8000/api/1.0/hydrography/";
 	const apiMeteorologyPartial = "http://127.0.0.1:8000/api/1.0/meteorology/";
-	const apiTrawlPartial = "http://127.0.0.1:8000/api/1.0/haul/trawl/";
+	const apiTrawlPartial = "http://127.0.0.1:8000/api/1.0/trawl/";
 
 	const [shootingLatitude, setShootingLatitude] = useState({ degrees: 0, minutes: 0 });
 	const [shootingLongitude, setShootingLongitude] = useState({ degrees: 0, minutes: 0 });
@@ -223,6 +223,8 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		// create a deepcopy of the trawl object
 		const trawlCopy = JSON.parse(JSON.stringify(trawl));
 
+		console.log(trawlCopy);
+
 		if (haul.sampler_id === 1) {
 			const newCoordinates = updateCoordinates();
 			// update the coordinates in the deepcopy trawl object
@@ -301,7 +303,9 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				// Fetch meteorology.
 				fetch(apiMeteorology)
 					.then((response) => {
-						if (response.status > 400) {
+						if (response.status === 404) {
+							return {};
+						} else if (response.status > 400) {
 							setFetchError("Something went wrong!");
 						}
 						return response.json();
@@ -315,7 +319,9 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				// Fetch trawl.
 				fetch(apiTrawl)
 					.then((response) => {
-						if (response.status > 400) {
+						if (response.status === 404) {
+							return {};
+						} else if (response.status > 400) {
 							setFetchError("Something went wrong!");
 						}
 						return response.json();

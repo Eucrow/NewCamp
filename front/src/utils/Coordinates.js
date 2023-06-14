@@ -25,5 +25,9 @@ export const convertDMToDecimalCoordinate = (degree, minutes) => {
 	const decimal_minutes = Number(minutes) / 60;
 	const decimal_coordinate = (Number(degree) + decimal_minutes).toFixed(6);
 
-	return decimal_coordinate;
+	if (isNaN(decimal_coordinate)) {
+		return null;
+	} else {
+		return decimal_coordinate;
+	}
 };

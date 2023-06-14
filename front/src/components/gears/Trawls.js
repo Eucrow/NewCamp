@@ -16,7 +16,7 @@ class Trawls extends Component {
 			edit: null, // null to not edit any trawl; trawl_id to edit that trawl_id.
 		};
 
-		this.apiTrawl = "http://127.0.0.1:8000/api/1.0/trawl/";
+		this.apiTrawl = "http://127.0.0.1:8000/api/1.0/gears/trawl/";
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleEdit = this.handleEdit.bind(this);

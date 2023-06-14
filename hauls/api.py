@@ -140,12 +140,14 @@ class MeteorologyAPI(APIView):
 
     def put(self, request, haul_id):
         """Update a Meteorology object with the given haul_id."""
-        meteorology = get_object_or_404(Meteorology, haul_id=haul_id)
+        # meteorology = get_object_or_404(Meteorology, haul_id=haul_id)
+        meteorology, created = Meteorology.objects.get_or_create(haul_id=haul_id)
         serializer = MeteorologySerializer(
             meteorology, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=HTTP_201_CREATED)
+            status = HTTP_201_CREATED if created else HTTP_200_OK
+            return Response(serializer.data, status=status)
         else:
             return Response(status=HTTP_400_BAD_REQUEST)
 

@@ -64,11 +64,10 @@ urlpatterns = [
     re_path(r'^api/1.0/species/import$', SpeciesImportAPI.as_view(), name="species_import_api"),
 
     # Trawls API URLS
-    # TODO: change url to gearTrawl or something like that
-    re_path(r'^api/1.0/trawl/$', GearTrawlsAPI.as_view(), name="gear_list_create_api"),
-    re_path(r'^api/1.0/trawl/basic/$', GearTrawlsBasicAPI.as_view(), name="gear"),
-    # re_path(r'^api/1.0/trawl/basic/$', GearTrawlsNamesAPI.as_view(), name="gear_names"),
-    re_path(r'^api/1.0/trawl/(?P<pk>[0-9]+)$', GearTrawlAPI.as_view(), name="gear_get_update_delete_api"),
+    re_path(r'^api/1.0/gears/trawl/$', GearTrawlsAPI.as_view(), name="gear_list_create_api"),
+    re_path(r'^api/1.0/gears/trawl/basic/$', GearTrawlsBasicAPI.as_view(), name="gear"),
+    # re_path(r'^api/1.0/gears/trawl/basic/$', GearTrawlsNamesAPI.as_view(), name="gear_names"),
+    re_path(r'^api/1.0/gears/trawl/(?P<pk>[0-9]+)$', GearTrawlAPI.as_view(), name="gear_get_update_delete_api"),
 
     # Samplers API URLS
     re_path(r'^api/1.0/samplers/$', SamplersAPI.as_view(), name="samplers_list_api"),
@@ -82,9 +81,9 @@ urlpatterns = [
     #  re_path(r'^api/1.0/surveys/$', SurveysAcronymList.as_view(), name="get_surveys_api"),
     # re_path(r'api/1.0/surveys/new/$', SurveyNewAPI.as_view(), name="add_survey_api"),
 
-    ## Surveys import
+    # Surveys import
     re_path(r'^api/1.0/surveys/import$', SurveysImportAPI.as_view(), name="surveys_import_api"),
-    ## Surveys csv
+    # Surveys csv
     re_path(r'^api/1.0/surveys/csv/(?P<acronym>[N,D][0-9]{2})$', SurveyDetailCsvAPI.as_view(),
             name="get_survey_api_csv"),
     re_path(r'^api/1.0/surveys/csv/all', SurveysListCsvAPI.as_view(), name="get_survey_api_csv"),
@@ -117,8 +116,8 @@ urlpatterns = [
     # Trawl hauls
     # re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(), name="get_trawl_haul_api"),
     # re_path(r'^api/1.0/haul/trawl/new/$', HaulTrawlAPI.as_view(), name="add_trawl_haul_api"),
-    re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', TrawlAPI.as_view(), name="retrieve_update_delete_trawl_api"),
-    re_path(r'^api/1.0/haul/trawl/$', TrawlAPI.as_view(), name="add_trawl_api"),
+    re_path(r'^api/1.0/trawl/(?P<haul_id>[0-9]+)$', TrawlAPI.as_view(), name="retrieve_update_delete_trawl_api"),
+    re_path(r'^api/1.0/trawl/$', TrawlAPI.as_view(), name="add_trawl_api"),
 
     # Hydrography
     re_path(r'^api/1.0/hydrography/(?P<haul_id>[0-9]+)$', HydrographyAPI.as_view(),
