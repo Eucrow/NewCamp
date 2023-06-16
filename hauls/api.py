@@ -101,7 +101,7 @@ class HaulAPI(APIView):
             return Response(status=HTTP_400_BAD_REQUEST)
 
     def post(self, request):
-        serializer = HaulSerializer(data=request.data)
+        serializer = HaulSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)

@@ -33,20 +33,12 @@ class ImportHydrographyesSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-# class HaulSerializer(serializers.ModelSerializer):
-#     """
-#     Serializer of hauls data.
-#     """
-#
-#     class Meta:
-#         model = Haul
-#         fields = ['id', 'haul', 'gear_id', 'valid', 'sampler_id', 'stratum_id', 'station_id']
-
-
-# OLD HAUL SERIALIZER
 class HaulSerializer(serializers.ModelSerializer):
     """
-    Serializer of hauls data.
+    Serializer of hauls data. In this serializer, for the post method, the gear, sampler, stratum and station data
+    are removed because it is not necessary to post them (it is done in the get_fields method) . The id of each of
+    these objects is enough to create a haul. But the response of the get method will include the description fields
+    of these objects (this is done overwriting the to_representation method).
     """
 
     # gear = GearTrawlBasicSerializer(read_only=True)
@@ -67,21 +59,38 @@ class HaulSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'valid', 'gear_id',
-                  'sampler_id', 'stratum_id', 'station_id']
-        # depth = 1
+        fields = ['id', 'haul', 'valid', 'gear_id', 'gear', 'sampler_id', 'sampler', 'stratum_id', 'stratum',
+                  'station_id', 'station']
 
+    def get_fields(self):
+        """
+        Overwrite the get_fields method to remove the gear, sampler, stratum and station data when the POST method
+        :return: dictionary of fields
+        """
+        fields = super().get_fields()
 
-# class HaulSerializer(serializers.ModelSerializer):
-#     """
-#     Serializer of hauls data with sampler.
-#     """
-#     gear = GearTrawlBasicSerializer()
-#
-#     class Meta:
-#         model = Haul
-#         fields = ['id', 'haul', 'gear', 'valid', 'sampler', 'stratum', 'station', ]
-#         depth = 1
+        if self.context['request'].method == 'POST':
+            fields.pop('gear')
+            fields.pop('sampler')
+            fields.pop('stratum')
+            fields.pop('station')
+
+        return fields
+
+    def to_representation(self, instance):
+        """
+        Overwrite the to_representation method to add the gear, sampler, stratum and station data
+        when the POST method is called.
+        """
+        representation = super().to_representation(instance)
+
+        if self.context['request'].method == 'POST':
+            representation['sampler'] = self.validated_data['sampler'].sampler
+            representation['stratum'] = self.validated_data['stratum'].stratum
+            representation['station'] = self.validated_data['station'].station
+            representation['gear'] = self.validated_data['gear'].name
+
+        return representation
 
 
 class HaulMeteorologySerializer(serializers.ModelSerializer):
