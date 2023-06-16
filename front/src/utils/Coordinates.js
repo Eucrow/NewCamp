@@ -5,7 +5,7 @@
  * @returns {array} An array containing the degree and minutes of the converted coordinate.
  */
 export const convertDecimalToDMCoordinate = (coordinate) => {
-	if (coordinate === null) {
+	if (coordinate === null || typeof coordinate === "undefined") {
 		return [null, null];
 	}
 	const coor = Number(coordinate);
@@ -25,7 +25,7 @@ export const convertDMToDecimalCoordinate = (degree, minutes) => {
 	const decimal_minutes = Number(minutes) / 60;
 	const decimal_coordinate = (Number(degree) + decimal_minutes).toFixed(6);
 
-	if (isNaN(decimal_coordinate)) {
+	if (isNaN(decimal_coordinate || typeof decimal_coordinate === undefined)) {
 		return null;
 	} else {
 		return decimal_coordinate;
