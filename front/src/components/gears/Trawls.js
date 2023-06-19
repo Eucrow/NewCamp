@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import UiButtonAddTrawl from "./UiButtonAddTrawl";
-import TrawlFormNew from "../hauls/new/TrawlFormNew";
 import Trawl from "./Trawl";
 /**
  * Component list of trawls.
@@ -189,11 +188,11 @@ class Trawls extends Component {
 		} else if (this.state.add === true) {
 			content = (
 				<div>
-					<TrawlFormNew
+					{/* <TrawlFormNew
 						handleChange={this.handleChange}
 						handleAdd={this.handleAdd}
 						createTrawl={this.createTrawl}
-					/>
+					/> */}
 					{this.state.trawls.map((trawl) => {
 						return (
 							<Trawl
