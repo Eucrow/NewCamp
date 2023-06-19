@@ -35,7 +35,7 @@ const TrawlFormView = ({ trawl }) => {
 				/>
 			);
 		} else {
-			return <input disabled />;
+			return <input disabled type="datetime-local" />;
 		}
 	};
 
