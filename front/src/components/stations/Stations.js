@@ -17,7 +17,7 @@ const ComponentsStations = () => {
 
 	const apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
 
-	const apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/new/";
+	const apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/";
 
 	const apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
 
@@ -25,11 +25,13 @@ const ComponentsStations = () => {
 
 	const apiHaul = "http://127.0.0.1:8000/api/1.0/haul/";
 
+	const apiNewHaul = "http://127.0.0.1:8000/api/1.0/haul/new/";
+
 	const apiSurveyPartial = "http://127.0.0.1:8000/api/1.0/survey/";
 
 	const apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
 
-	const apiGears = "http://127.0.0.1:8000/api/1.0/trawl/basic/";
+	const apiGears = "http://127.0.0.1:8000/api/1.0/gears/trawl/basic/";
 
 	const apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
 
@@ -132,7 +134,9 @@ const ComponentsStations = () => {
 		e.preventDefault();
 		console.log(haul);
 
-		const apiForm = haul.sampler_id === "1" ? apiTrawlForm : haul.sampler_id === "2" ? apiHydrographyForm : null;
+		// const apiForm = haul.sampler_id === "1" ? apiTrawlForm : haul.sampler_id === "2" ? apiHydrographyForm : null;
+
+		const apiForm = haul.sampler_id === "1" ? apiNewHaul : haul.sampler_id === "2" ? apiHydrographyForm : null;
 
 		fetch(apiForm, {
 			method: "POST",

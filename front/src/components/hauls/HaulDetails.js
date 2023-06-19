@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
 
+import {
+	convertDecimalToDMCoordinate,
+	convertDMToDecimalCoordinate,
+} from "C:/Users/ieoma/Desktop/NewCamp/front/src/utils/Coordinates";
+import { fixDateTime } from "../../utils/DateTime";
+
 import MeteorologyFormView from "./view/MeteorologyFormView";
 import TrawlFormView from "./view/TrawlFormView";
 import HydrographyFormView from "./view/HydrographyFormView";
@@ -11,6 +17,14 @@ import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonCancel from "../ui/UiButtonCancel";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+
+// const useRenderCount = () => {
+// 	const renderCount = useRef(0);
+// 	useEffect(() => {
+// 		renderCount.current += 1;
+// 	});
+// 	return renderCount.current;
+// };
 
 const HaulDetails = ({ haul, detail, setDetail }) => {
 	/**
@@ -36,7 +50,45 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 	const apiHydrographyPartial = "http://127.0.0.1:8000/api/1.0/hydrography/";
 	const apiMeteorologyPartial = "http://127.0.0.1:8000/api/1.0/meteorology/";
-	const apiTrawlPartial = "http://127.0.0.1:8000/api/1.0/haul/trawl/";
+	const apiTrawlPartial = "http://127.0.0.1:8000/api/1.0/trawl/";
+
+	const [shootingLatitude, setShootingLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [shootingLongitude, setShootingLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [haulingLatitude, setHaulingLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [haulingLongitude, setHaulingLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [bottomLatitude, setBottomLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [bottomLongitude, setBottomLongitude] = useState({ degrees: 0, minutes: 0 });
+
+	useEffect(() => {
+		// Convert the latitude and longitude values to degrees and minutes when the component is loaded
+		const [degreesShootingLatitude, minutesShootingLatitude] = convertDecimalToDMCoordinate(
+			trawl.shooting_latitude
+		);
+		const [degreesShootingLongitude, minutesShootingLongitude] = convertDecimalToDMCoordinate(
+			trawl.shooting_longitude
+		);
+		const [degreesHaulingLatitude, minutesHaulingLatitude] = convertDecimalToDMCoordinate(trawl.hauling_latitude);
+		const [degreesHaulingLongitude, minutesHaulingLongitude] = convertDecimalToDMCoordinate(
+			trawl.hauling_longitude
+		);
+		const [degreesBottomLatitude, minutesBottomLatitude] = convertDecimalToDMCoordinate(trawl.bottom_latitude);
+		const [degreesBottomLongitude, minutesBottomLongitude] = convertDecimalToDMCoordinate(trawl.bottom_longitude);
+
+		// Store the converted latitude and longitude values in state
+		setShootingLatitude({ degrees: degreesShootingLatitude, minutes: minutesShootingLatitude });
+		setShootingLongitude({ degrees: degreesShootingLongitude, minutes: minutesShootingLongitude });
+		setHaulingLatitude({ degrees: degreesHaulingLatitude, minutes: minutesHaulingLatitude });
+		setHaulingLongitude({ degrees: degreesHaulingLongitude, minutes: minutesHaulingLongitude });
+		setBottomLatitude({ degrees: degreesBottomLatitude, minutes: minutesBottomLatitude });
+		setBottomLongitude({ degrees: degreesBottomLongitude, minutes: minutesBottomLongitude });
+	}, [
+		trawl.bottom_latitude,
+		trawl.bottom_longitude,
+		trawl.hauling_latitude,
+		trawl.hauling_longitude,
+		trawl.shooting_latitude,
+		trawl.shooting_longitude,
+	]);
 
 	const handleChangeMeteorology = (e) => {
 		var name = e.target.name;
@@ -56,6 +108,74 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		}));
 	};
 
+	const handleCoordinatesChange = (e) => {
+		const name = e.target.name;
+		const value = e.target.value;
+
+		// determine which setter function to call based on the name of the input element
+		// this is not the best way to do it, but it works
+		let setter;
+		let units;
+		switch (true) {
+			case name === "shooting_latitude_degrees":
+				setter = setShootingLatitude;
+				units = name.split("_")[2];
+				break;
+			case name === "shooting_longitude_degrees":
+				setter = setShootingLongitude;
+				units = name.split("_")[2];
+				break;
+			case name === "hauling_latitude_degrees":
+				setter = setHaulingLatitude;
+				units = name.split("_")[2];
+				break;
+			case name === "hauling_longitude_degrees":
+				setter = setHaulingLongitude;
+				units = name.split("_")[2];
+				break;
+			case name === "bottom_latitude_degrees":
+				setter = setBottomLatitude;
+				units = name.split("_")[2];
+				break;
+			case name === "bottom_longitude_degrees":
+				setter = setBottomLongitude;
+				units = name.split("_")[2];
+				break;
+			case name === "shooting_latitude_minutes":
+				setter = setShootingLatitude;
+				units = name.split("_")[2];
+				break;
+			case name === "shooting_longitude_minutes":
+				setter = setShootingLongitude;
+				units = name.split("_")[2];
+				break;
+			case name === "hauling_latitude_minutes":
+				setter = setHaulingLatitude;
+				units = name.split("_")[2];
+				break;
+			case name === "hauling_longitude_minutes":
+				setter = setHaulingLongitude;
+				units = name.split("_")[2];
+				break;
+			case name === "bottom_latitude_minutes":
+				setter = setBottomLatitude;
+				units = name.split("_")[2];
+				break;
+			case name === "bottom_longitude_minutes":
+				setter = setBottomLongitude;
+				units = name.split("_")[2];
+				break;
+			default:
+				return;
+		}
+
+		// update the state using the appropriate setter function and element
+		setter((prev) => ({
+			...prev,
+			[units]: value,
+		}));
+	};
+
 	const handleChangeHydrography = (e) => {
 		var name = e.target.name;
 		var value = e.target.value;
@@ -65,8 +185,66 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		}));
 	};
 
+	const updateCoordinates = () => {
+		const shooting_latitude = convertDMToDecimalCoordinate(
+			shootingLatitude["degrees"],
+			shootingLatitude["minutes"]
+		);
+
+		const shooting_longitude = convertDMToDecimalCoordinate(
+			shootingLongitude["degrees"],
+			shootingLongitude["minutes"]
+		);
+
+		const hauling_latitude = convertDMToDecimalCoordinate(haulingLatitude["degrees"], haulingLatitude["minutes"]);
+
+		const hauling_longitude = convertDMToDecimalCoordinate(
+			haulingLongitude["degrees"],
+			haulingLongitude["minutes"]
+		);
+
+		const bottom_latitude = convertDMToDecimalCoordinate(bottomLatitude["degrees"], bottomLatitude["minutes"]);
+
+		const bottom_longitude = convertDMToDecimalCoordinate(bottomLongitude["degrees"], bottomLongitude["minutes"]);
+
+		return {
+			shooting_latitude,
+			shooting_longitude,
+			hauling_latitude,
+			hauling_longitude,
+			bottom_latitude,
+			bottom_longitude,
+		};
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
+		// create a deepcopy of the trawl object
+		const trawlCopy = JSON.parse(JSON.stringify(trawl));
+
+		console.log(trawlCopy);
+
+		if (haul.sampler_id === 1) {
+			const newCoordinates = updateCoordinates();
+			// update the coordinates in the deepcopy trawl object
+			trawlCopy["shooting_latitude"] = newCoordinates["shooting_latitude"];
+			trawlCopy["shooting_longitude"] = newCoordinates["shooting_longitude"];
+			trawlCopy["hauling_latitude"] = newCoordinates["hauling_latitude"];
+			trawlCopy["hauling_longitude"] = newCoordinates["hauling_longitude"];
+			trawlCopy["bottom_latitude"] = newCoordinates["bottom_latitude"];
+			trawlCopy["bottom_longitude"] = newCoordinates["bottom_longitude"];
+			// to avoid a infinite loop, we need to update the state of the trawl object completely
+			// so we need to update the state of the trawl object with the deepcopy
+
+			// update the date time fields, must be null if empty, instead of empty string.
+			trawlCopy["shooting_date_time"] =
+				trawlCopy["shooting_date_time"] === "" ? null : trawlCopy["shooting_date_time"];
+			trawlCopy["hauling_date_time"] =
+				trawlCopy["hauling_date_time"] === "" ? null : trawlCopy["hauling_date_time"];
+			trawlCopy["bottom_date_time"] = trawlCopy["bottom_date_time"] === "" ? null : trawlCopy["bottom_date_time"];
+			setTrawl(trawlCopy);
+		}
 
 		const apiMeteorology = apiMeteorologyPartial + haul.id;
 		fetch(apiMeteorology, {
@@ -90,7 +268,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(trawl),
+			body: JSON.stringify(trawlCopy),
 		})
 			.then(() => {
 				setEdit(false);
@@ -105,6 +283,16 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		setEdit(status);
 	};
 
+	/**
+	 * Fetches data from API endpoints when the `detail` state is set to `true`.
+	 * If the `sampler_id` of the `haul` object is `1`, fetches meteorology and trawl data.
+	 * If the `sampler_id` of the `haul` object is `2`, fetches hydrography data.
+	 * Sets the `fetchError`, `meteorology`, `trawl`, and `hydrography` state variables.
+	 * @param {boolean} detail - Whether to show detailed information about the haul.
+	 * @param {object} haul - The haul object containing information about the haul.
+	 * @param {string} haul.id - The ID of the haul.
+	 * @param {number} haul.sampler_id - The ID of the sampler used for the haul.
+	 */
 	useEffect(() => {
 		const apiMeteorology = apiMeteorologyPartial + haul.id;
 		const apiHydrography = apiHydrographyPartial + haul.id;
@@ -112,24 +300,12 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 		if (detail === true) {
 			if (haul.sampler_id === 1) {
-				// Fetch trawl.
-				fetch(apiTrawl)
-					.then((response) => {
-						if (response.status > 400) {
-							setFetchError("Something went wrong!");
-						}
-						return response.json();
-					})
-					.then((trawl) => {
-						setTrawl(trawl);
-						setBackupTrawl(trawl);
-					})
-					.catch((error) => console.log(error));
-
 				// Fetch meteorology.
 				fetch(apiMeteorology)
 					.then((response) => {
-						if (response.status > 400) {
+						if (response.status === 404) {
+							return {};
+						} else if (response.status > 400) {
 							setFetchError("Something went wrong!");
 						}
 						return response.json();
@@ -137,6 +313,30 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 					.then((meteorology) => {
 						setMeteorology(meteorology);
 						setBackupMeteorology(meteorology);
+					})
+					.catch((error) => console.log(error));
+
+				// Fetch trawl.
+				fetch(apiTrawl)
+					.then((response) => {
+						if (response.status === 404) {
+							return {};
+						} else if (response.status > 400) {
+							setFetchError("Something went wrong!");
+						}
+						return response.json();
+					})
+					.then((trawl) => {
+						// Convert date and time to local time (just removve the Z at the end).
+						const fixed_shooting_date_time = fixDateTime(trawl.shooting_date_time);
+						const fixed_hauling_date_time = fixDateTime(trawl.hauling_date_time);
+						const fixed_bottom_date_time = fixDateTime(trawl.bottom_date_time);
+						trawl.shooting_date_time = fixed_shooting_date_time;
+						trawl.hauling_date_time = fixed_hauling_date_time;
+						trawl.bottom_date_time = fixed_bottom_date_time;
+
+						setTrawl(trawl);
+						setBackupTrawl(trawl);
 					})
 					.catch((error) => console.log(error));
 			}
@@ -195,6 +395,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							setEdit(false);
 						}}
 					>
+						{/* <p>Render count: {renderCount}</p> */}
 						<div className="form__row">
 							<MeteorologyFormEdit
 								meteorology={meteorology}
@@ -203,7 +404,17 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 						</div>
 
 						<div className="form__row">
-							<TrawlFormEdit trawl={trawl} handleChangeTrawl={handleChangeTrawl} />
+							<TrawlFormEdit
+								trawl={trawl}
+								shootingLatitude={shootingLatitude}
+								shootingLongitude={shootingLongitude}
+								haulingLatitude={haulingLatitude}
+								haulingLongitude={haulingLongitude}
+								bottomLatitude={bottomLatitude}
+								bottomLongitude={bottomLongitude}
+								handleChangeTrawl={handleChangeTrawl}
+								handleCoordinatesChange={handleCoordinatesChange}
+							/>
 						</div>
 
 						<div className="form__row">
@@ -266,6 +477,8 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 		return null;
 	};
+
+	// const renderCount = useRenderCount();
 
 	return renderContent();
 };
