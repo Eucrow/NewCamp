@@ -52,6 +52,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	const apiMeteorologyPartial = "http://127.0.0.1:8000/api/1.0/meteorology/";
 	const apiTrawlPartial = "http://127.0.0.1:8000/api/1.0/trawl/";
 
+	// TRAWL
 	const [shootingLatitude, setShootingLatitude] = useState({ degrees: 0, minutes: 0 });
 	const [shootingLongitude, setShootingLongitude] = useState({ degrees: 0, minutes: 0 });
 	const [haulingLatitude, setHaulingLatitude] = useState({ degrees: 0, minutes: 0 });
@@ -66,7 +67,15 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	const [backupBottomLatitude, setBackupBottomLatitude] = useState({ degrees: 0, minutes: 0 });
 	const [backupBottomLongitude, setBackupBottomLongitude] = useState({ degrees: 0, minutes: 0 });
 
+	// HTYDROGRAPHY
+	const [latitude, setLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [longitude, setLongitude] = useState({ degrees: 0, minutes: 0 });
+
+	const [backupLatitude, setBackupLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [backuplongitude, setBackupLongitude] = useState({ degrees: 0, minutes: 0 });
+
 	useEffect(() => {
+		// TRAWL
 		// Convert the latitude and longitude values to degrees and minutes when the component is loaded
 		const [degreesShootingLatitude, minutesShootingLatitude] = convertDecimalToDMCoordinate(
 			trawl.shooting_latitude
@@ -96,6 +105,19 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		setBackupHaulingLongitude({ degrees: degreesHaulingLongitude, minutes: minutesHaulingLongitude });
 		setBackupBottomLatitude({ degrees: degreesBottomLatitude, minutes: minutesBottomLatitude });
 		setBackupBottomLongitude({ degrees: degreesBottomLongitude, minutes: minutesBottomLongitude });
+
+		// HYDROGRAPHY
+		// Convert the latitude and longitude values to degrees and minutes when the component is loaded
+		const [degreesLatitude, minutesLatitude] = convertDecimalToDMCoordinate(hydrography.latitude);
+		const [degreesLongitude, minutesLongitude] = convertDecimalToDMCoordinate(hydrography.longitude);
+
+		// Store the converted latitude and longitude values in state
+		setLatitude({ degrees: degreesLatitude, minutes: minutesLatitude });
+		setLongitude({ degrees: degreesLongitude, minutes: minutesLongitude });
+
+		// Store the converted latitude and longitude values in backup state
+		setBackupLatitude({ degrees: degreesLatitude, minutes: minutesLatitude });
+		setBackupLongitude({ degrees: degreesLongitude, minutes: minutesLongitude });
 	}, [
 		trawl.bottom_latitude,
 		trawl.bottom_longitude,
@@ -103,6 +125,8 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		trawl.hauling_longitude,
 		trawl.shooting_latitude,
 		trawl.shooting_longitude,
+		hydrography.latitude,
+		hydrography.longitude,
 	]);
 
 	const handleChangeMeteorology = (e) => {
@@ -132,53 +156,39 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		let setter;
 		let units;
 		switch (true) {
-			case name === "shooting_latitude_degrees":
+			// TRAWL
+			case name === "shooting_latitude_degrees" || name === "shooting_latitude_minutes":
 				setter = setShootingLatitude;
 				units = name.split("_")[2];
 				break;
-			case name === "shooting_longitude_degrees":
+			case name === "shooting_longitude_degrees" || name === "shooting_longitude_minutes":
 				setter = setShootingLongitude;
 				units = name.split("_")[2];
 				break;
-			case name === "hauling_latitude_degrees":
+			case name === "hauling_latitude_degrees" || name === "hauling_latitude_minutes":
 				setter = setHaulingLatitude;
 				units = name.split("_")[2];
 				break;
-			case name === "hauling_longitude_degrees":
+			case name === "hauling_longitude_degrees" || name === "hauling_longitude_minutes":
 				setter = setHaulingLongitude;
 				units = name.split("_")[2];
 				break;
-			case name === "bottom_latitude_degrees":
+			case name === "bottom_latitude_degrees" || name === "bottom_latitude_minutes":
 				setter = setBottomLatitude;
 				units = name.split("_")[2];
 				break;
-			case name === "bottom_longitude_degrees":
+			case name === "bottom_longitude_degrees" || name === "bottom_longitude_minutes":
 				setter = setBottomLongitude;
 				units = name.split("_")[2];
 				break;
-			case name === "shooting_latitude_minutes":
-				setter = setShootingLatitude;
-				units = name.split("_")[2];
+			// HYDROGRAPHY
+			case name === "latitude_degrees" || name === "latitude_minutes":
+				setter = setLatitude;
+				units = name.split("_")[1];
 				break;
-			case name === "shooting_longitude_minutes":
-				setter = setShootingLongitude;
-				units = name.split("_")[2];
-				break;
-			case name === "hauling_latitude_minutes":
-				setter = setHaulingLatitude;
-				units = name.split("_")[2];
-				break;
-			case name === "hauling_longitude_minutes":
-				setter = setHaulingLongitude;
-				units = name.split("_")[2];
-				break;
-			case name === "bottom_latitude_minutes":
-				setter = setBottomLatitude;
-				units = name.split("_")[2];
-				break;
-			case name === "bottom_longitude_minutes":
-				setter = setBottomLongitude;
-				units = name.split("_")[2];
+			case name === "longitude_degrees" || name === "longitude_minutes":
+				setter = setLongitude;
+				units = name.split("_")[1];
 				break;
 			default:
 				return;
@@ -491,6 +501,9 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 						<HydrographyFormEdit
 							hydrography={hydrography}
 							handleChangeHydrography={handleChangeHydrography}
+							latitude={latitude}
+							longitude={longitude}
+							handleCoordinatesChange={handleCoordinatesChange}
 						/>
 						<input type="submit" value="Save Haul" onClick={handleSubmit} />
 						<button
