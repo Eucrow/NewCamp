@@ -59,6 +59,13 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	const [bottomLatitude, setBottomLatitude] = useState({ degrees: 0, minutes: 0 });
 	const [bottomLongitude, setBottomLongitude] = useState({ degrees: 0, minutes: 0 });
 
+	const [backupShootingLatitude, setBackupShootingLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupShootingLongitude, setBackupShootingLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupHaulingLatitude, setBackupHaulingLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupHaulingLongitude, setBackupHaulingLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupBottomLatitude, setBackupBottomLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupBottomLongitude, setBackupBottomLongitude] = useState({ degrees: 0, minutes: 0 });
+
 	useEffect(() => {
 		// Convert the latitude and longitude values to degrees and minutes when the component is loaded
 		const [degreesShootingLatitude, minutesShootingLatitude] = convertDecimalToDMCoordinate(
@@ -81,6 +88,14 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		setHaulingLongitude({ degrees: degreesHaulingLongitude, minutes: minutesHaulingLongitude });
 		setBottomLatitude({ degrees: degreesBottomLatitude, minutes: minutesBottomLatitude });
 		setBottomLongitude({ degrees: degreesBottomLongitude, minutes: minutesBottomLongitude });
+
+		// Store the converted latitude and longitude values in backup state
+		setBackupShootingLatitude({ degrees: degreesShootingLatitude, minutes: minutesShootingLatitude });
+		setBackupShootingLongitude({ degrees: degreesShootingLongitude, minutes: minutesShootingLongitude });
+		setBackupHaulingLatitude({ degrees: degreesHaulingLatitude, minutes: minutesHaulingLatitude });
+		setBackupHaulingLongitude({ degrees: degreesHaulingLongitude, minutes: minutesHaulingLongitude });
+		setBackupBottomLatitude({ degrees: degreesBottomLatitude, minutes: minutesBottomLatitude });
+		setBackupBottomLongitude({ degrees: degreesBottomLongitude, minutes: minutesBottomLongitude });
 	}, [
 		trawl.bottom_latitude,
 		trawl.bottom_longitude,
@@ -276,8 +291,23 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			.catch((error) => console.log(error));
 	};
 
+	/**
+	 * Restores the coordinates to their original values.
+	 * This is used when the user clicks the `Cancel` button.
+	 * @returns {void}
+	 */
+	const restoreCoordinates = () => {
+		setShootingLatitude(backupShootingLatitude);
+		setShootingLongitude(backupShootingLongitude);
+		setHaulingLatitude(backupHaulingLatitude);
+		setHaulingLongitude(backupHaulingLongitude);
+		setBottomLatitude(backupBottomLatitude);
+		setBottomLongitude(backupBottomLongitude);
+	};
+
 	const handleCancel = (status) => {
 		setTrawl(backupTrawl);
+		restoreCoordinates();
 		setMeteorology(backupMeteorology);
 		setHydrography(backupHydrography);
 		setEdit(status);
