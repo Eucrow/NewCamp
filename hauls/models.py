@@ -98,9 +98,12 @@ class HaulHydrography(models.Model):
     longitude = models.DecimalField(
         max_digits=10, decimal_places=4, null=True, blank=True)
     date_time = models.DateTimeField(null=True, blank=True)
-    depth_probe = models.PositiveIntegerField(null=True, blank=True)
-    cable = models.PositiveIntegerField(null=True, blank=True)
-    depth = models.PositiveIntegerField(null=True, blank=True)
+    depth_probe = models.PositiveIntegerField(null=True, blank=True, validators=[
+                                              MinValueValidator(0), MaxValueValidator(999)])
+    cable = models.PositiveIntegerField(null=True, blank=True, validators=[
+        MinValueValidator(0), MaxValueValidator(999)])
+    depth = models.PositiveIntegerField(null=True, blank=True, validators=[
+        MinValueValidator(0), MaxValueValidator(999)])
     temperature_0 = models.DecimalField(
         max_digits=5, decimal_places=3, null=True, blank=True)
     salinity_0 = models.DecimalField(
