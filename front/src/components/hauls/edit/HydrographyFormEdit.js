@@ -17,6 +17,7 @@ const HydrographyFormEdit = ({
 		return (
 			<fieldset className="wrapper">
 				<legend>Hydrography characteristics</legend>
+
 				<div className="form__row">
 					<label className="field">
 						Date time:
@@ -28,7 +29,7 @@ const HydrographyFormEdit = ({
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
-						/>{" "}
+						/>
 					</label>
 
 					<div className="field">
@@ -98,7 +99,6 @@ const HydrographyFormEdit = ({
 						/>
 						'
 					</div>
-
 					<div className="form__row">
 						<label className="field">
 							Depth probe (m):
@@ -106,30 +106,42 @@ const HydrographyFormEdit = ({
 								type="text"
 								id="depth_probe"
 								name="depth_probe"
+								min={0}
+								max={999}
+								maxLength={3}
+								size={3}
 								value={hydrography.depth_probe || ""}
 								onChange={(e) => {
 									handleChangeHydrography(e);
 								}}
 							/>
 						</label>
-						<label htmlFor="cable">
+						<label className="field">
 							Cable (m):
 							<input
 								type="text"
 								id="cable"
 								name="cable"
+								min={0}
+								max={999}
+								maxLength={3}
+								size={3}
 								value={hydrography.cable || ""}
 								onChange={(e) => {
 									handleChangeHydrography(e);
 								}}
 							/>
 						</label>
-						<label htmlFor="depth">
+						<label className="field">
 							Depth (m):
 							<input
 								type="text"
 								id="depth"
 								name="depth"
+								min={0}
+								max={999}
+								maxLength={3}
+								size={3}
 								value={hydrography.depth || ""}
 								onChange={(e) => {
 									handleChangeHydrography(e);
@@ -141,7 +153,6 @@ const HydrographyFormEdit = ({
 
 				<div className="characteristicsGrid characteristicsGrid--hydrography form__row">
 					{/* first row */}
-					<div></div>
 					<div></div>
 					<div className="characteristicsGrid__colName" aria-hidden="true">
 						temperature (ºC)
@@ -155,143 +166,204 @@ const HydrographyFormEdit = ({
 					{/* <div></div> */}
 
 					{/* second row */}
-					<div></div>
 					<div className="characteristicsGrid__rowName" aria-hidden="true">
 						0 m.
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="temperature_0"
 							name="temperature_0"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.temperature_0 || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
+							aria-label="ºC temperature at 0 m."
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="salinity_0"
 							name="salinity_0"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.salinity_0 || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
+							aria-label="??? salinity at 0 m."
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="sigma_0"
 							name="sigma_0"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.sigma_0 || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
+							aria-label="??? sigma at 0 m."
 						/>
 					</div>
 
 					{/*third row*/}
-					<div></div>
 					<div className="characteristicsGrid__rowName" aria-hidden="true">
 						50 m.
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="temperature_50"
 							name="temperature_50"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.temperature_50 || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
+							aria-label="ºC temperature at 50 m."
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="salinity_50"
 							name="salinity_50"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.salinity_50 || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
+							aria-label="??? salinity at 50 m."
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="sigma_50"
 							name="sigma_50"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.sigma_50 || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
+							aria-label="??? sigma at 50 m."
 						/>
 					</div>
 
 					{/*fourth row*/}
-					<div></div>
 					<div className="characteristicsGrid__rowName" aria-hidden="true">
 						100 m.
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="temperature_100"
 							name="temperature_100"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.temperature_100 || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
+							aria-label="ºC temperature at 100 m."
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="salinity_100"
 							name="salinity_100"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.salinity_100 || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
+							aria-label="??? salinity at 100 m."
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="sigma_100"
 							name="sigma_100"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.sigma_100 || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
+							aria-label="??? sigma at 100 m."
 						/>
 					</div>
 
 					{/*fifth row*/}
-					<div></div>
 					<div className="characteristicsGrid__rowName" aria-hidden="true">
 						Bottom
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="temperature"
 							name="temperature"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.temperature || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
+							aria-label="ºC temperature at bottom depth."
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="salinity"
 							name="salinity"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.salinity || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
@@ -300,9 +372,14 @@ const HydrographyFormEdit = ({
 					</div>
 					<div className="characteristicsGrid__field">
 						<input
-							type="text"
+							type="number"
 							id="sigma"
 							name="sigma"
+							min={0}
+							max={99.999}
+							maxLength={6}
+							size={6}
+							step={0.001}
 							value={hydrography.sigma || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);
@@ -321,7 +398,7 @@ const HydrographyFormEdit = ({
 								handleChangeHydrography(e);
 							}}
 						/>
-					</label>{" "}
+					</label>
 				</div>
 			</fieldset>
 		);

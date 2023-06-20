@@ -475,7 +475,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				return (
 					<form className="form--wide" disabled>
 						<div className="form__row">
-							<HydrographyFormView haul={hydrography} />
+							<HydrographyFormView hydrography={hydrography} latitude={latitude} longitude={longitude} />
 						</div>
 
 						<div className="form__row">
