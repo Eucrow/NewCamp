@@ -23,8 +23,8 @@ const HydrographyFormEdit = ({
 						Date time:
 						<input
 							type="datetime-local"
-							name="hydrography_date_time"
-							id="hydrography_date_time"
+							name="date_time"
+							id="date_time"
 							value={hydrography.date_time || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);

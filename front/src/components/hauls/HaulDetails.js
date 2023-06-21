@@ -156,6 +156,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		}));
 	};
 
+	useEffect(() => {
+		console.log(hydrography);
+	}, [hydrography]);
+
 	const handleCoordinatesChange = (e) => {
 		const name = e.target.name;
 		const value = e.target.value;
@@ -427,6 +431,8 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 						return response.json();
 					})
 					.then((hydrography) => {
+						const fixed_date_time = fixDateTime(hydrography.date_time);
+						hydrography.date_time = fixed_date_time;
 						setHydrography(hydrography);
 						setBackupHydrography(hydrography);
 					})
