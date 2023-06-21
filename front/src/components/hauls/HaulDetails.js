@@ -211,6 +211,8 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	};
 
 	const updateCoordinates = () => {
+		// TODO: I'm doing this with coordinates or trawl and hydrography. Should be done separately.
+		// TRAWL
 		const shooting_latitude = convertDMToDecimalCoordinate(
 			shootingLatitude["degrees"],
 			shootingLatitude["minutes"]
@@ -232,6 +234,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 		const bottom_longitude = convertDMToDecimalCoordinate(bottomLongitude["degrees"], bottomLongitude["minutes"]);
 
+		// HYDROGRAPHY
+		const latitude_hydro = convertDMToDecimalCoordinate(latitude["degrees"], latitude["minutes"]);
+		const longitude_hydro = convertDMToDecimalCoordinate(longitude["degrees"], longitude["minutes"]);
+
 		return {
 			shooting_latitude,
 			shooting_longitude,
@@ -239,19 +245,18 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			hauling_longitude,
 			bottom_latitude,
 			bottom_longitude,
+			latitude_hydro,
+			longitude_hydro,
 		};
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		// create a deepcopy of the trawl object
-		const trawlCopy = JSON.parse(JSON.stringify(trawl));
-
-		// create a deepcopy of the hyfrogaphy object
-		const hydrographyCopy = JSON.parse(JSON.stringify(hydrography));
-
 		if (haul.sampler_id === 1) {
+			// create a deepcopy of the trawl object
+			const trawlCopy = JSON.parse(JSON.stringify(trawl));
+
 			const newCoordinates = updateCoordinates();
 			// update the coordinates in the deepcopy trawl object
 			trawlCopy["shooting_latitude"] = newCoordinates["shooting_latitude"];
@@ -270,32 +275,9 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				trawlCopy["hauling_date_time"] === "" ? null : trawlCopy["hauling_date_time"];
 			trawlCopy["bottom_date_time"] = trawlCopy["bottom_date_time"] === "" ? null : trawlCopy["bottom_date_time"];
 			setTrawl(trawlCopy);
-		}
 
-		if (haul.sampler_id === 2) {
-			const newCoordinates = updateCoordinates();
-			// update the coordinates in the deepcopy trawl object
-			hydrographyCopy["latitude"] = newCoordinates["latitude"];
-			hydrographyCopy["longitude"] = newCoordinates["longitude"];
-			// to avoid a infinite loop, we need to update the state of the trawl object completely
-			// so we need to update the state of the trawl object with the deepcopy
-
-			// update the date time fields, must be null if empty, instead of empty string.
-			hydrographyCopy["date_time"] = hydrographyCopy["date_time"] === "" ? null : hydrographyCopy["date_time"];
-			setTrawl(hydrographyCopy);
-		}
-
-		const apiMeteorology = apiMeteorologyPartial + haul.id;
-		fetch(apiMeteorology, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(meteorology),
-		}).catch((error) => console.log(error));
-
-		if (haul.sampler_id === 1) {
 			const apiTrawl = apiTrawlPartial + haul.id;
+
 			fetch(apiTrawl, {
 				method: "PUT",
 				headers: {
@@ -310,7 +292,23 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		}
 
 		if (haul.sampler_id === 2) {
+			// create a deepcopy of the hyfrogaphy object
+			const hydrographyCopy = JSON.parse(JSON.stringify(hydrography));
+
+			const newCoordinates = updateCoordinates();
+
+			// update the coordinates in the deepcopy trawl object
+			hydrographyCopy["latitude"] = newCoordinates["latitude_hydro"];
+			hydrographyCopy["longitude"] = newCoordinates["longitude_hydro"];
+			// to avoid a infinite loop, we need to update the state of the trawl object completely
+			// so we need to update the state of the trawl object with the deepcopy
+
+			// update the date time fields, must be null if empty, instead of empty string.
+			hydrographyCopy["date_time"] = hydrographyCopy["date_time"] === "" ? null : hydrographyCopy["date_time"];
+			setHydrography(hydrographyCopy);
+
 			const apiHydrography = apiHydrographyPartial + haul.id;
+
 			fetch(apiHydrography, {
 				method: "PUT",
 				headers: {
@@ -324,25 +322,14 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				.catch((error) => console.log(error));
 		}
 
-		// const apiHaul =
-		// 	haul.sampler_id === 1
-		// 		? apiTrawlPartial + haul.id
-		// 		: haul.sampler_id === 2
-		// 		? apiHydrographyPartial + haul.id
-		// 		: null;
-		// console.log(apiHaul);
-
-		// fetch(apiHaul, {
-		// 	method: "PUT",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-		// 	body: JSON.stringify(trawlCopy),
-		// })
-		// 	.then(() => {
-		// 		setEdit(false);
-		// 	})
-		// 	.catch((error) => console.log(error));
+		const apiMeteorology = apiMeteorologyPartial + haul.id;
+		fetch(apiMeteorology, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(meteorology),
+		}).catch((error) => console.log(error));
 	};
 
 	/**
@@ -546,7 +533,13 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 			if (edit === true) {
 				return (
-					<div>
+					<form
+						className="form--wide"
+						onSubmit={(e) => {
+							handleSubmit(e);
+							setEdit(false);
+						}}
+					>
 						<HydrographyFormEdit
 							hydrography={hydrography}
 							handleChangeHydrography={handleChangeHydrography}
@@ -554,9 +547,9 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							longitude={longitude}
 							handleCoordinatesChange={handleCoordinatesChange}
 						/>
-						<input type="submit" value="Save Haul" onClick={handleSubmit} />
+						<UiButtonSave buttonText="Save Haul" />
 						<UiButtonCancel buttonText="Cancel" handleMethod={handleCancel} />
-					</div>
+					</form>
 				);
 			}
 		}
