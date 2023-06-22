@@ -29,7 +29,7 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 const HaulDetails = ({ haul, detail, setDetail }) => {
 	/**
 	 * Component to show the details of a haul. It is possible to edit the haul.
-	 * When the component is loaded, the data of the haul is fetched from the API and stored in the state and
+	 * When the component is loaded, the data of the haul is fetched from the API, stored in the state and
 	 * stored in the backup state. This one is used to recovery the original data if the user cancel the changes.
 	 * @param {object} haul The haul object.
 	 * @param {boolean} detail Boolean to show the details of the haul.
@@ -72,7 +72,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	const [longitude, setLongitude] = useState({ degrees: 0, minutes: 0 });
 
 	const [backupLatitude, setBackupLatitude] = useState({ degrees: 0, minutes: 0 });
-	const [backuplongitude, setBackupLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupLongitude, setBackupLongitude] = useState({ degrees: 0, minutes: 0 });
 
 	useEffect(() => {
 		// TRAWL
@@ -342,12 +342,17 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	 * @returns {void}
 	 */
 	const restoreCoordinates = () => {
+		//TRAWL
 		setShootingLatitude(backupShootingLatitude);
 		setShootingLongitude(backupShootingLongitude);
 		setHaulingLatitude(backupHaulingLatitude);
 		setHaulingLongitude(backupHaulingLongitude);
 		setBottomLatitude(backupBottomLatitude);
 		setBottomLongitude(backupBottomLongitude);
+
+		//HYDROGRAPHY
+		setLatitude(backupLatitude);
+		setLongitude(backupLongitude);
 	};
 
 	/**
@@ -515,7 +520,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		if (Number(haul.sampler_id) === 2) {
 			if (edit === false) {
 				return (
-					<form className="form--wide" disabled>
+					<form className="form--wide noSpinner" disabled>
 						<div className="form__row">
 							<HydrographyFormView hydrography={hydrography} latitude={latitude} longitude={longitude} />
 						</div>
@@ -540,21 +545,27 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			if (edit === true) {
 				return (
 					<form
-						className="form--wide"
+						className="form--wide noSpinner"
 						onSubmit={(e) => {
 							handleSubmit(e);
 							setEdit(false);
 						}}
 					>
-						<HydrographyFormEdit
-							hydrography={hydrography}
-							handleChangeHydrography={handleChangeHydrography}
-							latitude={latitude}
-							longitude={longitude}
-							handleCoordinatesChange={handleCoordinatesChange}
-						/>
-						<UiButtonSave buttonText="Save Haul" />
-						<UiButtonCancel buttonText="Cancel" handleMethod={handleCancel} />
+						<div className="form__row">
+							<HydrographyFormEdit
+								hydrography={hydrography}
+								handleChangeHydrography={handleChangeHydrography}
+								latitude={latitude}
+								longitude={longitude}
+								handleCoordinatesChange={handleCoordinatesChange}
+							/>
+						</div>
+						<div className="form__row">
+							<div className="form__cell form__cell--right">
+								<UiButtonSave buttonText="Save Haul" />
+								<UiButtonCancel buttonText="Cancel" handleMethod={handleCancel} />
+							</div>
+						</div>
 					</form>
 				);
 			}

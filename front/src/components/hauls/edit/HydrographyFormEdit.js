@@ -103,7 +103,7 @@ const HydrographyFormEdit = ({
 						<label className="field">
 							Depth probe (m):
 							<input
-								type="text"
+								type="number"
 								id="depth_probe"
 								name="depth_probe"
 								min={0}
@@ -119,7 +119,7 @@ const HydrographyFormEdit = ({
 						<label className="field">
 							Cable (m):
 							<input
-								type="text"
+								type="number"
 								id="cable"
 								name="cable"
 								min={0}
@@ -135,7 +135,7 @@ const HydrographyFormEdit = ({
 						<label className="field">
 							Depth (m):
 							<input
-								type="text"
+								type="number"
 								id="depth"
 								name="depth"
 								min={0}
@@ -158,10 +158,10 @@ const HydrographyFormEdit = ({
 						temperature (ºC)
 					</div>
 					<div className="characteristicsGrid__colName" aria-hidden="true">
-						salinity (???)
+						salinity (&permil;)
 					</div>
 					<div className="characteristicsGrid__colName" aria-hidden="true">
-						sigma (???)
+						density (&sigma;t)
 					</div>
 					{/* <div></div> */}
 
@@ -200,7 +200,7 @@ const HydrographyFormEdit = ({
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
-							aria-label="??? salinity at 0 m."
+							aria-label="&permil; salinity at 0 m."
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
@@ -217,7 +217,7 @@ const HydrographyFormEdit = ({
 							onChange={(e) => {
 								handleChangeHydrography(e);
 							}}
-							aria-label="??? sigma at 0 m."
+							aria-label="&sigma;t sigma at 0 m."
 						/>
 					</div>
 
