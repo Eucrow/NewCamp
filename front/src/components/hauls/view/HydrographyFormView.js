@@ -17,12 +17,9 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 						<input
 							type="datetime-local"
 							disabled
-							name="hydrography_date_time"
-							id="hydrography_date_time"
+							name="date_time"
+							id="date_time"
 							value={hydrography.date_time || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 						/>
 					</label>
 
@@ -37,9 +34,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							min={-90}
 							max={90}
 							value={latitude["degrees"] || ""}
-							// onChange={(e) => {
-							// 	handleCoordinatesChange(e);
-							// }}
 							aria-label="Degrees latitude"
 						/>
 						º{" "}
@@ -54,9 +48,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							step={0.001}
 							pattern="[0-9]+(\,[0-9]{3})?"
 							value={latitude["minutes"] || ""}
-							// onChange={(e) => {
-							// 	handleCoordinatesChange(e);
-							// }}
 							aria-label="Minutes latitude"
 						/>
 						'
@@ -73,9 +64,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							min={-90}
 							max={90}
 							value={longitude["degrees"] || ""}
-							// onChange={(e) => {
-							// 	handleCoordinatesChange(e);
-							// }}
 							aria-label="Degrees longitude"
 						/>
 						º{" "}
@@ -90,9 +78,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							step={0.001}
 							pattern="[0-9]+(\,[0-9]{3})?"
 							value={longitude["minutes"] || ""}
-							// onChange={(e) => {
-							// 	handleCoordinatesChange(e);
-							// }}
 							aria-label="Minutes longitude"
 						/>
 						'
@@ -110,9 +95,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 								maxLength={3}
 								size={3}
 								value={hydrography.depth_probe || ""}
-								// onChange={(e) => {
-								// 	handleChangeHydrography(e);
-								// }}
 							/>
 						</label>
 						<label className="field">
@@ -127,9 +109,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 								maxLength={3}
 								size={3}
 								value={hydrography.cable || ""}
-								// onChange={(e) => {
-								// 	handleChangeHydrography(e);
-								// }}
 							/>
 						</label>
 						<label className="field">
@@ -144,9 +123,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 								maxLength={3}
 								size={3}
 								value={hydrography.depth || ""}
-								// onChange={(e) => {
-								// 	handleChangeHydrography(e);
-								// }}
 							/>
 						</label>
 					</div>
@@ -159,10 +135,10 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 						temperature (ºC)
 					</div>
 					<div className="characteristicsGrid__colName" aria-hidden="true">
-						salinity (???)
+						salinity (&permil;)
 					</div>
 					<div className="characteristicsGrid__colName" aria-hidden="true">
-						sigma (???)
+						density (&sigma;t)
 					</div>
 					{/* <div></div> */}
 
@@ -182,9 +158,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.temperature_0 || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 							aria-label="ºC temperature at 0 m."
 						/>
 					</div>
@@ -200,9 +173,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.salinity_0 || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 							aria-label="??? salinity at 0 m."
 						/>
 					</div>
@@ -218,9 +188,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.sigma_0 || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 							aria-label="??? sigma at 0 m."
 						/>
 					</div>
@@ -241,9 +208,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.temperature_50 || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 							aria-label="ºC temperature at 50 m."
 						/>
 					</div>
@@ -259,9 +223,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.salinity_50 || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 							aria-label="??? salinity at 50 m."
 						/>
 					</div>
@@ -277,9 +238,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.sigma_50 || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 							aria-label="??? sigma at 50 m."
 						/>
 					</div>
@@ -300,9 +258,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.temperature_100 || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 							aria-label="ºC temperature at 100 m."
 						/>
 					</div>
@@ -318,9 +273,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.salinity_100 || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 							aria-label="??? salinity at 100 m."
 						/>
 					</div>
@@ -336,9 +288,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.sigma_100 || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 							aria-label="??? sigma at 100 m."
 						/>
 					</div>
@@ -359,9 +308,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.temperature || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 							aria-label="ºC temperature at bottom depth."
 						/>
 					</div>
@@ -377,9 +323,6 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.salinity || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 						/>
 					</div>
 					<div className="characteristicsGrid__field">
@@ -394,24 +337,13 @@ const HydrographyFormView = ({ hydrography, latitude, longitude }) => {
 							size={6}
 							step={0.001}
 							value={hydrography.sigma || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
 						/>
 					</div>
 				</div>
 				<div className="form__row">
 					<label className="field__comment">
 						Comment:
-						<textarea
-							disabled
-							id="comment"
-							name="comment"
-							value={hydrography.comment || ""}
-							// onChange={(e) => {
-							// 	handleChangeHydrography(e);
-							// }}
-						/>
+						<textarea disabled id="comment" name="comment" value={hydrography.comment || ""} />
 					</label>
 				</div>
 			</fieldset>

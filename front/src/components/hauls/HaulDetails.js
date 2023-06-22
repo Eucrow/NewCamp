@@ -29,7 +29,7 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 const HaulDetails = ({ haul, detail, setDetail }) => {
 	/**
 	 * Component to show the details of a haul. It is possible to edit the haul.
-	 * When the component is loaded, the data of the haul is fetched from the API and stored in the state and
+	 * When the component is loaded, the data of the haul is fetched from the API, stored in the state and
 	 * stored in the backup state. This one is used to recovery the original data if the user cancel the changes.
 	 * @param {object} haul The haul object.
 	 * @param {boolean} detail Boolean to show the details of the haul.
@@ -72,7 +72,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	const [longitude, setLongitude] = useState({ degrees: 0, minutes: 0 });
 
 	const [backupLatitude, setBackupLatitude] = useState({ degrees: 0, minutes: 0 });
-	const [backuplongitude, setBackupLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupLongitude, setBackupLongitude] = useState({ degrees: 0, minutes: 0 });
 
 	useEffect(() => {
 		// TRAWL
@@ -147,6 +147,19 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		}));
 	};
 
+	const handleChangeHydrography = (e) => {
+		var name = e.target.name;
+		var value = e.target.value;
+		setHydrography((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+	};
+
+	useEffect(() => {
+		console.log(hydrography);
+	}, [hydrography]);
+
 	const handleCoordinatesChange = (e) => {
 		const name = e.target.name;
 		const value = e.target.value;
@@ -201,16 +214,9 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		}));
 	};
 
-	const handleChangeHydrography = (e) => {
-		var name = e.target.name;
-		var value = e.target.value;
-		setHydrography((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-	};
-
 	const updateCoordinates = () => {
+		// TODO: I'm doing this with coordinates or trawl and hydrography. Should be done separately.
+		// TRAWL
 		const shooting_latitude = convertDMToDecimalCoordinate(
 			shootingLatitude["degrees"],
 			shootingLatitude["minutes"]
@@ -232,6 +238,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 		const bottom_longitude = convertDMToDecimalCoordinate(bottomLongitude["degrees"], bottomLongitude["minutes"]);
 
+		// HYDROGRAPHY
+		const latitude_hydro = convertDMToDecimalCoordinate(latitude["degrees"], latitude["minutes"]);
+		const longitude_hydro = convertDMToDecimalCoordinate(longitude["degrees"], longitude["minutes"]);
+
 		return {
 			shooting_latitude,
 			shooting_longitude,
@@ -239,18 +249,18 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			hauling_longitude,
 			bottom_latitude,
 			bottom_longitude,
+			latitude_hydro,
+			longitude_hydro,
 		};
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		// create a deepcopy of the trawl object
-		const trawlCopy = JSON.parse(JSON.stringify(trawl));
-
-		console.log(trawlCopy);
-
 		if (haul.sampler_id === 1) {
+			// create a deepcopy of the trawl object
+			const trawlCopy = JSON.parse(JSON.stringify(trawl));
+
 			const newCoordinates = updateCoordinates();
 			// update the coordinates in the deepcopy trawl object
 			trawlCopy["shooting_latitude"] = newCoordinates["shooting_latitude"];
@@ -269,6 +279,51 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				trawlCopy["hauling_date_time"] === "" ? null : trawlCopy["hauling_date_time"];
 			trawlCopy["bottom_date_time"] = trawlCopy["bottom_date_time"] === "" ? null : trawlCopy["bottom_date_time"];
 			setTrawl(trawlCopy);
+
+			const apiTrawl = apiTrawlPartial + haul.id;
+
+			fetch(apiTrawl, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(trawlCopy),
+			})
+				.then(() => {
+					setEdit(false);
+				})
+				.catch((error) => console.log(error));
+		}
+
+		if (haul.sampler_id === 2) {
+			// create a deepcopy of the hyfrogaphy object
+			const hydrographyCopy = JSON.parse(JSON.stringify(hydrography));
+
+			const newCoordinates = updateCoordinates();
+
+			// update the coordinates in the deepcopy trawl object
+			hydrographyCopy["latitude"] = newCoordinates["latitude_hydro"];
+			hydrographyCopy["longitude"] = newCoordinates["longitude_hydro"];
+			// to avoid a infinite loop, we need to update the state of the trawl object completely
+			// so we need to update the state of the trawl object with the deepcopy
+
+			// update the date time fields, must be null if empty, instead of empty string.
+			hydrographyCopy["date_time"] = hydrographyCopy["date_time"] === "" ? null : hydrographyCopy["date_time"];
+			setHydrography(hydrographyCopy);
+
+			const apiHydrography = apiHydrographyPartial + haul.id;
+
+			fetch(apiHydrography, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(hydrographyCopy),
+			})
+				.then(() => {
+					setEdit(false);
+				})
+				.catch((error) => console.log(error));
 		}
 
 		const apiMeteorology = apiMeteorologyPartial + haul.id;
@@ -279,26 +334,6 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			},
 			body: JSON.stringify(meteorology),
 		}).catch((error) => console.log(error));
-
-		const apiHaul =
-			haul.sampler_id === 1
-				? apiTrawlPartial + haul.id
-				: haul.sampler_id === 2
-				? apiHydrographyPartial + haul.id
-				: null;
-		console.log(apiHaul);
-
-		fetch(apiHaul, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(trawlCopy),
-		})
-			.then(() => {
-				setEdit(false);
-			})
-			.catch((error) => console.log(error));
 	};
 
 	/**
@@ -307,19 +342,29 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	 * @returns {void}
 	 */
 	const restoreCoordinates = () => {
+		//TRAWL
 		setShootingLatitude(backupShootingLatitude);
 		setShootingLongitude(backupShootingLongitude);
 		setHaulingLatitude(backupHaulingLatitude);
 		setHaulingLongitude(backupHaulingLongitude);
 		setBottomLatitude(backupBottomLatitude);
 		setBottomLongitude(backupBottomLongitude);
+
+		//HYDROGRAPHY
+		setLatitude(backupLatitude);
+		setLongitude(backupLongitude);
 	};
 
+	/**
+	 * Manage the cancel button.
+	 * @param {boolean} status - Whether the user is editing the haul.
+	 * @returns {void}
+	 */
 	const handleCancel = (status) => {
 		setTrawl(backupTrawl);
-		restoreCoordinates();
 		setMeteorology(backupMeteorology);
 		setHydrography(backupHydrography);
+		restoreCoordinates();
 		setEdit(status);
 	};
 
@@ -391,6 +436,8 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 						return response.json();
 					})
 					.then((hydrography) => {
+						const fixed_date_time = fixDateTime(hydrography.date_time);
+						hydrography.date_time = fixed_date_time;
 						setHydrography(hydrography);
 						setBackupHydrography(hydrography);
 					})
@@ -473,7 +520,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		if (Number(haul.sampler_id) === 2) {
 			if (edit === false) {
 				return (
-					<form className="form--wide" disabled>
+					<form className="form--wide noSpinner" disabled>
 						<div className="form__row">
 							<HydrographyFormView hydrography={hydrography} latitude={latitude} longitude={longitude} />
 						</div>
@@ -497,23 +544,29 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 			if (edit === true) {
 				return (
-					<div>
-						<HydrographyFormEdit
-							hydrography={hydrography}
-							handleChangeHydrography={handleChangeHydrography}
-							latitude={latitude}
-							longitude={longitude}
-							handleCoordinatesChange={handleCoordinatesChange}
-						/>
-						<input type="submit" value="Save Haul" onClick={handleSubmit} />
-						<button
-							onClick={() => {
-								setEdit(false);
-							}}
-						>
-							Cancel Edition
-						</button>
-					</div>
+					<form
+						className="form--wide noSpinner"
+						onSubmit={(e) => {
+							handleSubmit(e);
+							setEdit(false);
+						}}
+					>
+						<div className="form__row">
+							<HydrographyFormEdit
+								hydrography={hydrography}
+								handleChangeHydrography={handleChangeHydrography}
+								latitude={latitude}
+								longitude={longitude}
+								handleCoordinatesChange={handleCoordinatesChange}
+							/>
+						</div>
+						<div className="form__row">
+							<div className="form__cell form__cell--right">
+								<UiButtonSave buttonText="Save Haul" />
+								<UiButtonCancel buttonText="Cancel" handleMethod={handleCancel} />
+							</div>
+						</div>
+					</form>
 				);
 			}
 		}
