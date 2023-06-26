@@ -14,8 +14,6 @@ import ComponentsStations from "./components/stations/Stations.js";
 
 // import ComponentsHauls from "./components/hauls/Hauls.js";
 
-import ComponentsTrawlCatches from "./components/trawlCatches/TrawlHaulCatches.js";
-
 import Species from "./components/species/Species";
 import Ships from "./components/ships/Ships";
 import Gears from "./components/gears/Trawls";
@@ -25,8 +23,7 @@ export default function App() {
 	// const value = { surveySelector, setSurvey };
 
 	const [selectedSurvey, setSelectedSurvey] = useState(() => {
-		const survey_description =
-			window.localStorage.getItem("survey_description");
+		const survey_description = window.localStorage.getItem("survey_description");
 
 		return survey_description !== null ? survey_description : "";
 	});
@@ -49,15 +46,9 @@ export default function App() {
 			<Router>
 				<nav className="headNav" aria-label="nCamp">
 					<h1 className="headNav__selectedSurvey">
-						{selectedSurvey !== ""
-							? selectedSurvey
-							: "not survey selected"}
+						{selectedSurvey !== "" ? selectedSurvey : "not survey selected"}
 					</h1>
-					<ul
-						className="headNav__wrapper"
-						role="menubar"
-						aria-label="nCamp"
-					>
+					<ul className="headNav__wrapper" role="menubar" aria-label="nCamp">
 						<li className="headNav__item" role="none">
 							<Link to="/SurveySelect" role="menuitem">
 								Select Survey
@@ -114,12 +105,6 @@ export default function App() {
 				{/* TODO: CONSIDER IF THE NEXT PATH IS USEFULL */}
 				{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
 				<Route path="/Hauls" exact component={ComponentsHauls} /> */}
-
-				<Route
-					path="/Catches/haul/:haul_id"
-					exact
-					component={ComponentsTrawlCatches}
-				/>
 
 				{/* <Route path="/Weights" component={Weights} /> */}
 				{/* <Route path="/Samples" component={Samples} /> */}
@@ -185,12 +170,10 @@ const Home = () => (
 
 const FakeText = () => (
 	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-		veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-		commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-		velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-		occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-		mollit anim id est laborum.
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+		laborum.
 	</p>
 );

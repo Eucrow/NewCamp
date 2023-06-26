@@ -3,6 +3,7 @@ import HaulFormView from "./view/HaulFormView";
 import HaulFormEdit from "./edit/HaulFormEdit";
 import HaulDetails from "./HaulDetails";
 import HaulHandleNew from "./new/HaulHandleNew";
+import CatchesList from "../trawlCatches/CatchesList";
 
 const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, samplerRef, createHaul, add, handleAdd }) => {
 	const [detail, setDetail] = useState(false);
@@ -37,16 +38,26 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, sample
 						setDetail={setDetail}
 						validateHaulSampler={validateHaulSampler}
 					/>
+					<CatchesList haul_id={haul["id"]} />
 				</div>
 			);
 		}
 
 		if (edit === false) {
-			return (
-				<div className="wrapper form__row">
-					<HaulFormView haul={haul} detail={detail} setEdit={setEdit} setDetail={setDetail} />
-				</div>
-			);
+			if (haul.sampler_id === 1) {
+				return (
+					<div className="wrapper form__row">
+						<HaulFormView haul={haul} detail={detail} setEdit={setEdit} setDetail={setDetail} />
+						<CatchesList haul_id={haul["id"]} />
+					</div>
+				);
+			} else {
+				return (
+					<div className="wrapper form__row">
+						<HaulFormView haul={haul} detail={detail} setEdit={setEdit} setDetail={setDetail} />
+					</div>
+				);
+			}
 		} else if (edit === true) {
 			return (
 				<div className="wrapper form__row">

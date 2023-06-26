@@ -473,7 +473,7 @@ class CatchesList extends Component {
 	render() {
 		if (this.state.catches.length === 0) {
 			return (
-				<Fragment>
+				<div className="wrapper form__row form--wide catchesList">
 					<div className="form__row form--wide">There aren't catches yet</div>
 					<div className="form__row form--wide">
 						<Catch
@@ -483,11 +483,12 @@ class CatchesList extends Component {
 							existsCatch={this.existsCatch}
 						/>
 					</div>
-				</Fragment>
+				</div>
 			);
 		} else {
 			return (
-				<div className="wrapper form__row form--wide catchesList">
+				<fieldset className="wrapper form__row form--wide catchesList">
+					<legend>Biometric sampling</legend>
 					<div className="form__row">
 						<Catch
 							status_catch="add"
@@ -517,7 +518,7 @@ class CatchesList extends Component {
 							/>
 						);
 					})}
-				</div>
+				</fieldset>
 				// 	</tbody>
 				// </table>
 			);
