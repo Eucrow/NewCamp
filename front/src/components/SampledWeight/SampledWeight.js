@@ -1,27 +1,23 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import NewSampledWeight from "./NewSampledWeight";
 import EditSampledWeight from "./EditSampledWeight";
 import ViewSampledWeight from "./ViewSampledWeight";
 
 const SampledWeight = (props) => {
-	const [status_sampled_weight, set_status_sampled_weight] = useState("view");
-
-	const handleStatusSampledWeight = (status) => {
-		set_status_sampled_weight(status);
-	};
+	const [statusSampledWeight, setStatusSampledWeight] = useState("view");
 
 	const renderContent = () => {
-		if (status_sampled_weight === "add") {
+		if (statusSampledWeight === "add") {
 			return (
 				<NewSampledWeight
 					catch_id={props.catch_id}
 					createSampledWeight={props.createSampledWeight}
-					handleStatusSampledWeight={handleStatusSampledWeight}
+					setStatusSampledWeight={setStatusSampledWeight}
 				/>
 			);
 		}
 
-		if (status_sampled_weight === "edit") {
+		if (statusSampledWeight === "edit") {
 			return (
 				<EditSampledWeight
 					sampled_weight_id={props.sampled_weight_id}
@@ -29,17 +25,17 @@ const SampledWeight = (props) => {
 					catch_id={props.catch_id}
 					handleChangeSampledWeight={props.handleChangeSampledWeight}
 					updateSampledWeight={props.updateSampledWeight}
-					handleStatusSampledWeight={handleStatusSampledWeight}
+					setStatusSampledWeight={setStatusSampledWeight}
 				/>
 			);
 		}
 
-		if (status_sampled_weight === "view") {
+		if (statusSampledWeight === "view") {
 			return (
 				<ViewSampledWeight
 					sampled_weight={props.sampled_weight}
 					sampled_weight_id={props.sampled_weight_id}
-					handleStatusSampledWeight={handleStatusSampledWeight}
+					setStatusSampledWeight={setStatusSampledWeight}
 					handleChangeSampledWeight={props.handleChangeSampledWeight}
 					deleteSampledWeight={props.deleteSampledWeight}
 				/>
