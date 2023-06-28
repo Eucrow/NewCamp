@@ -27,9 +27,6 @@ class CatchesList extends Component {
 		this.apiSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/";
 		this.apiCreateSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/new";
 
-		// this.handleChangeSampledWeight = this.handleChangeSampledWeight.bind(this);
-		// this.updateSampledWeight = this.updateSampledWeight.bind(this);
-		// this.deleteSampledWeight = this.deleteSampledWeight.bind(this);
 		this.handleChangeGroup = this.handleChangeGroup.bind(this);
 		this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
 		this.handleChangeCategory = this.handleChangeCategory.bind(this);
@@ -39,135 +36,6 @@ class CatchesList extends Component {
 		this.deleteCatch = this.deleteCatch.bind(this);
 		this.createCatch = this.createCatch.bind(this);
 	}
-
-	// handleChangeSampledWeight = (ids) => (evt) => {
-	// 	/**
-	// 	 * Method to manage sampled weight field change.
-	// 	 */
-
-	// 	const value = evt.target.value;
-
-	// 	const newCatches = this.state.catches.map((c) => {
-	// 		if (ids === c.sampled_weight_id) {
-	// 			c.sampled_weight = value;
-	// 		}
-	// 		return c;
-	// 	});
-
-	// 	this.setState(() => {
-	// 		return {
-	// 			catches: newCatches,
-	// 		};
-	// 	});
-	// };
-
-	// createSampledWeight = (e, newSampledWeight, idc) => {
-	// 	/**
-	// 	 * Handle new sampled weight form.
-	// 	 * Fetch the new sampled weight and update the catches state.
-	// 	 */
-
-	// 	e.preventDefault();
-
-	// 	var data = {
-	// 		catch_id: idc,
-	// 		sampled_weight: newSampledWeight,
-	// 	};
-
-	// 	fetch(this.apiCreateSampledWeight, {
-	// 		method: "POST",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 		body: JSON.stringify(data),
-	// 	})
-	// 		.then((response) => {
-	// 			if (response.status > 400) {
-	// 				return this.setState(() => {
-	// 					return { placeholder: "Something went wrong!" };
-	// 				});
-	// 			}
-	// 			return response.json();
-	// 		})
-	// 		.then(() => {
-	// 			const newCatches = this.state.catches.map((c) => {
-	// 				if (idc === c.id) {
-	// 					c.sampled_weight = newSampledWeight;
-	// 				}
-	// 				return c;
-	// 			});
-
-	// 			this.setState(() => {
-	// 				return {
-	// 					catches: newCatches,
-	// 				};
-	// 			});
-	// 		})
-	// 		.catch((error) => console.log("Error"));
-	// };
-
-	// updateSampledWeight = (e, ids) => {
-	// 	/**
-	// 	 * Update sampled weight in database.
-	// 	 */
-
-	// 	e.preventDefault();
-
-	// 	const api = this.apiSampledWeight + ids;
-
-	// 	// get Sampled Weigth from state
-	// 	const sampledWeight = this.state.catches.find((c) => {
-	// 		return c.sampled_weight_id === ids;
-	// 	}).sampled_weight;
-
-	// 	const request = { sampled_weight: sampledWeight };
-
-	// 	// fetch to database
-	// 	fetch(api, {
-	// 		method: "PUT",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 			Accept: "application/json",
-	// 		},
-	// 		body: JSON.stringify(request),
-	// 	})
-	// 		.then((response) => response.json())
-	// 		.catch((error) => console.log(error));
-	// };
-
-	// deleteSampledWeightFromState = (ids) => {
-	// 	const newCatches = this.state.catches.map((c) => {
-	// 		if (c.sampled_weight_id === ids) {
-	// 			delete c.sampled_weight_id;
-	// 			delete c.sampled_weight;
-	// 			return c;
-	// 		}
-
-	// 		return c;
-	// 	});
-
-	// 	this.setState(() => {
-	// 		return {
-	// 			catches: newCatches,
-	// 		};
-	// 	});
-	// };
-
-	// deleteSampledWeight = (e, ids) => {
-	// 	/**
-	// 	 * Method to delete a sampled weight.
-	// 	 */
-	// 	const api = this.apiSampledWeight + ids;
-	// 	fetch(api, {
-	// 		method: "DELETE",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 			Accept: "application/json",
-	// 		},
-	// 	})
-	// 		.then(() => this.deleteSampledWeightFromState(ids))
-	// 		.catch((error) => alert(error));
-	// };
 
 	deleteCatch = (idx) => {
 		/**
@@ -534,8 +402,6 @@ class CatchesList extends Component {
 						);
 					})}
 				</fieldset>
-				// 	</tbody>
-				// </table>
 			);
 		}
 	}

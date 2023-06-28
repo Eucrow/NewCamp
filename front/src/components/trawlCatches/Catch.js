@@ -69,14 +69,7 @@ class Catch extends Component {
 		} else if (this.state.status_catch === "view") {
 			return (
 				<div className="form__row form--wide catch">
-					<ComponentCategory
-						status_catch={this.state.status_catch}
-						this_catch={this.props.this_catch}
-						// handleChangeSampledWeight={this.props.handleChangeSampledWeight}
-						// updateSampledWeight={this.props.updateSampledWeight}
-						// createSampledWeight={this.props.createSampledWeight}
-						// deleteSampledWeight={this.props.deleteSampledWeight}
-					/>
+					<ComponentCategory status_catch={this.state.status_catch} this_catch={this.props.this_catch} />
 					<CatchButtonBar
 						catch_id={this.props.this_catch.id}
 						catch_status={this.state.status_catch}
@@ -112,7 +105,6 @@ class Catch extends Component {
 						handleChangeCategory={this.props.handleChangeCategory}
 						handleChangeWeight={this.props.handleChangeWeight}
 						handleChangeSampledWeight={this.props.handleChangeSampledWeight}
-						// deleteSampledWeight={this.props.deleteSampledWeight}
 					/>
 
 					<CatchButtonBar
