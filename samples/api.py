@@ -11,26 +11,26 @@ from samples.serializers import LenghtSerializer, SampleWeightSerializer, Length
     SexSerializer
 
 
-class SampledWeightCreate(APIView):
-    """
-    Endpoint to create a new sampled weight of a catch.
-    """
+# class SampledWeightCreate(APIView):
+#     """
+#     Endpoint to create a new sampled weight of a catch.
+#     """
 
-    def post(self, request):
-        serializer = SampleWeightSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(catch_id=request.data["catch_id"])
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+#     def post(self, request):
+#         serializer = SampleWeightSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save(catch_id=request.data["catch_id"])
+#             return Response(serializer.data, status=HTTP_201_CREATED)
+#         else:
+#             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
-class SampledWeightDetail(generics.RetrieveUpdateDestroyAPIView):
-    """
-    Endpoint to retrieve, update and destroy sampled weight of a catch.
-    """
-    queryset = SampledWeight.objects.all()
-    serializer_class = SampleWeightSerializer
+# class SampledWeightDetail(generics.RetrieveUpdateDestroyAPIView):
+#     """
+#     Endpoint to retrieve, update and destroy sampled weight of a catch.
+#     """
+#     queryset = SampledWeight.objects.all()
+#     serializer_class = SampleWeightSerializer
 
 
 # TODO: SexDetail and SexAPI have a method to update sex. Find what I'm use in react and delete the other one.

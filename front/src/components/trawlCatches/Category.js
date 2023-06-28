@@ -161,9 +161,24 @@ class ComponentCategory extends Component {
 								id="weight"
 								name="weight"
 								min="1"
-								max="99000000"
+								max="99999999"
 								disabled
 								value={this.props.this_catch.weight}
+							/>
+						</label>
+
+						<label className="form__cell">
+							Sampled weight(g.):
+							<input
+								disabled
+								style={{ width: 8 + "ch" }}
+								type="number"
+								className="input__noSpinner"
+								id="sampled_weight"
+								name="sampled_weight"
+								min="1"
+								max="99999999"
+								value={this.props.this_catch.sampled_weight}
 							/>
 						</label>
 
@@ -176,7 +191,7 @@ class ComponentCategory extends Component {
 						Save catch
 					</button> */}
 					</form>
-					<SampledWeight
+					{/* <SampledWeight
 						sampled_weight_id={sampled_weight_id}
 						sampled_weight={sampled_weight}
 						catch_id={this.props.this_catch.id}
@@ -184,7 +199,7 @@ class ComponentCategory extends Component {
 						updateSampledWeight={this.props.updateSampledWeight}
 						createSampledWeight={this.props.createSampledWeight}
 						deleteSampledWeight={this.props.deleteSampledWeight}
-					/>
+					/> */}
 				</Fragment>
 			);
 		} else if (this.props.status_catch === "edit") {
@@ -260,6 +275,20 @@ class ComponentCategory extends Component {
 							max="99999999"
 							value={this.props.this_catch.weight}
 							onChange={this.props.handleChangeWeight(this.props.this_catch.id)}
+						/>
+					</label>
+					<label className="form__cell">
+						Sampled weight(g.):
+						<input
+							style={{ width: 8 + "ch" }}
+							type="number"
+							className="input__noSpinner"
+							id="sampled_weight"
+							name="sampled_weight"
+							min="1"
+							max="99999999"
+							value={this.props.this_catch.sampled_weight}
+							onChange={this.props.handleChangeSampledWeight(this.props.this_catch.id)}
 						/>
 					</label>
 				</form>

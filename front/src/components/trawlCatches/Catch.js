@@ -72,10 +72,10 @@ class Catch extends Component {
 					<ComponentCategory
 						status_catch={this.state.status_catch}
 						this_catch={this.props.this_catch}
-						handleChangeSampledWeight={this.props.handleChangeSampledWeight}
-						updateSampledWeight={this.props.updateSampledWeight}
-						createSampledWeight={this.props.createSampledWeight}
-						deleteSampledWeight={this.props.deleteSampledWeight}
+						// handleChangeSampledWeight={this.props.handleChangeSampledWeight}
+						// updateSampledWeight={this.props.updateSampledWeight}
+						// createSampledWeight={this.props.createSampledWeight}
+						// deleteSampledWeight={this.props.deleteSampledWeight}
 					/>
 					<CatchButtonBar
 						catch_id={this.props.this_catch.id}
@@ -111,7 +111,8 @@ class Catch extends Component {
 						handleChangeSpecies={this.props.handleChangeSpecies}
 						handleChangeCategory={this.props.handleChangeCategory}
 						handleChangeWeight={this.props.handleChangeWeight}
-						deleteSampledWeight={this.props.deleteSampledWeight}
+						handleChangeSampledWeight={this.props.handleChangeSampledWeight}
+						// deleteSampledWeight={this.props.deleteSampledWeight}
 					/>
 
 					<CatchButtonBar
