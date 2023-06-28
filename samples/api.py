@@ -98,7 +98,8 @@ class LengthsAPI(APIView):
     def put(self, request, sex_id):
         lengths = Length.objects.filter(sex_id=sex_id)
         # The LengthSerializer is prepared to allow update and create multiple objects, so many=True is explicit
-        serializer = LenghtSerializer(lengths, data=request.data, partial=True, many=True)
+        serializer = LenghtSerializer(
+            lengths, data=request.data, partial=True, many=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
