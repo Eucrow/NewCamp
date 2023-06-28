@@ -66,16 +66,6 @@ class CatchHaulAPI(APIView):
         serializer = CatchSerializer(catch)
         return Response(serializer.data)
 
-    # def post(self, request):
-    #     serializer = CatchSerializer(data=request.data, partial=True)
-    #     if serializer.is_valid():
-    #         serializer.save(haul_id=request.data["haul_id"],
-    #                         sp_id=request.data["sp_id"],
-    #                         category=request.data['category'])
-    #         return Response(serializer.data, status=HTTP_201_CREATED)
-    #     else:
-    #         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
     def post(self, request):
         catch_serializer = CatchSerializer(data=request.data, partial=True)
         sample_weight_serializer = SampleWeightSerializer(
@@ -115,17 +105,6 @@ class CatchHaulAPI(APIView):
             return Response(response_data, status=HTTP_201_CREATED)
         else:
             return Response({'errors': catch_serializer.errors + sample_weight_serializer.errors}, status=HTTP_400_BAD_REQUEST)
-
-    # def put(self, request):
-    #     catch = Catch.objects.get(id=request.data["id"])
-    #     serializer = CatchSerializer(catch, data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save(haul_id=request.data["haul_id"],
-    #                         sp_id=request.data["sp_id"],
-    #                         category=request.data['category'])
-    #         return Response(serializer.data, status=HTTP_201_CREATED)
-    #     else:
-    #         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
         catch = Catch.objects.get(id=request.data["id"])
