@@ -10,8 +10,11 @@ const EditSampledWeight = (props) => {
 		>
 			<input
 				type="number"
+				className="input__noSpinner"
 				id="sampled_weight"
 				name="sampled_weight"
+				min="1"
+				max="99999999"
 				value={props.sampled_weight}
 				onChange={props.handleChangeSampledWeight(props.sampled_weight_id)}
 			/>

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import NewSampledWeight from "./NewSampledWeight";
 import EditSampledWeight from "./EditSampledWeight";
+import ViewSampledWeight from "./ViewSampledWeight";
 
 const SampledWeight = (props) => {
 	const [status_sampled_weight, set_status_sampled_weight] = useState("view");
@@ -34,37 +35,15 @@ const SampledWeight = (props) => {
 		}
 
 		if (status_sampled_weight === "view") {
-			if (props.sampled_weight === null) {
-				return (
-					<button
-						onClick={() => {
-							handleStatusSampledWeight("add");
-						}}
-					>
-						Add sampled weight
-					</button>
-				);
-			} else {
-				return (
-					<div>
-						{props.sampled_weight}
-						<button
-							onClick={() => {
-								handleStatusSampledWeight("edit");
-							}}
-						>
-							Edit sampled weight
-						</button>
-						<button
-							onClick={(e) => {
-								props.deleteSampledWeight(e, props.sampled_weight_id);
-							}}
-						>
-							Delete sampled weight
-						</button>
-					</div>
-				);
-			}
+			return (
+				<ViewSampledWeight
+					sampled_weight={props.sampled_weight}
+					sampled_weight_id={props.sampled_weight_id}
+					handleStatusSampledWeight={handleStatusSampledWeight}
+					handleChangeSampledWeight={props.handleChangeSampledWeight}
+					deleteSampledWeight={props.deleteSampledWeight}
+				/>
+			);
 		}
 	};
 
