@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from catches.models import Catch
 
 from catches.serializers import CatchSerializer, CatchesVerboseSerializer
+from samples.serializers import SampleWeightSerializer
 
 
 class CatchHaulListAPI(APIView):
@@ -59,19 +60,39 @@ class CatchHaulAPI(APIView):
 
     def get(self, request, haul_id, sp_id, category):
         # catch = Catch.objects.get(category_id = category_id)
-        catch = get_object_or_404(Catch, haul_id=haul_id, sp_id=sp_id, category=category)
+        catch = get_object_or_404(
+            Catch, haul_id=haul_id, sp_id=sp_id, category=category)
         serializer = CatchSerializer(catch)
         return Response(serializer.data)
 
+    # def post(self, request):
+    #     serializer = CatchSerializer(data=request.data, partial=True)
+    #     if serializer.is_valid():
+    #         serializer.save(haul_id=request.data["haul_id"],
+    #                         sp_id=request.data["sp_id"],
+    #                         category=request.data['category'])
+    #         return Response(serializer.data, status=HTTP_201_CREATED)
+    #     else:
+    #         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
     def post(self, request):
-        serializer = CatchSerializer(data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save(haul_id=request.data["haul_id"],
-                            sp_id=request.data["sp_id"],
-                            category=request.data['category'])
-            return Response(serializer.data, status=HTTP_201_CREATED)
+        catch_serializer = CatchSerializer(data=request.data, partial=True)
+        sample_weight_serializer = SampleWeightSerializer(
+            data=request.data, partial=True)
+
+        if catch_serializer.is_valid() and sample_weight_serializer.is_valid():
+            catch_serializer.save(haul_id=request.data["haul_id"],
+                                  sp_id=request.data["sp_id"],
+                                  category=request.data['category'])
+            sample_weight_serializer.save(catch_id=catch_serializer.data["id"],
+                                          sampled_weight=request.data["sampled_weight"])
+            response_data = {}
+            response_data.update(catch_serializer.data)
+            response_data.update(sample_weight_serializer.data)
+
+            return Response(response_data, status=HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+            return Response({'errors': catch_serializer.errors + sample_weight_serializer.errors}, status=HTTP_400_BAD_REQUEST)
 
     def put(self, request):
         catch = Catch.objects.get(id=request.data["id"])

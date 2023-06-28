@@ -17,8 +17,8 @@ class CatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        # fields = ['id', 'weight', 'sp', 'sp_code', 'sp_name', 'group', 'category', 'haul_id']
-        fields = ['id', 'weight', 'sp_code', 'sp_name', 'group', 'category', 'haul_id']
+        fields = ['id', 'weight', 'sp_code',
+                  'sp_name', 'group', 'category', 'haul_id']
 
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
@@ -56,7 +56,8 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
         # instance is the model object. Create the custom json format by accessing instance attributes normally and
         # return it
 
-        data = super(CatchesVerboseSerializer, self).to_representation(instance)
+        data = super(CatchesVerboseSerializer,
+                     self).to_representation(instance)
 
         # change representation of sp
         data['sp_id'] = instance.sp.id
