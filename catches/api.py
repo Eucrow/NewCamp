@@ -60,7 +60,6 @@ class CatchHaulAPI(APIView):
     """
 
     def get(self, request, haul_id, sp_id, category):
-        # catch = Catch.objects.get(category_id = category_id)
         catch = get_object_or_404(
             Catch, haul_id=haul_id, sp_id=sp_id, category=category)
         serializer = CatchSerializer(catch)
