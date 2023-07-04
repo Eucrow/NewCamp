@@ -22,7 +22,7 @@ class CatchesList extends Component {
 		this.apiCreateCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
 		// TODO: change the apiSpecies api to only return the id, sp_name, group and sp_code variables.
 		this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
-		this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
+		// this.apiCategoriesSpecies = "http://127.0.0.1:8000/api/1.0/species/category/";
 		this.apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch"; //no / in end of the path // To edit and remove catches
 		this.apiSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/";
 		this.apiCreateSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/new";
@@ -94,7 +94,7 @@ class CatchesList extends Component {
 		const sp_code = val[1];
 		const sp_name = val[2];
 
-		const apiCategoriesSpecies = this.apiCategoriesSpecies + sp;
+		// const apiCategoriesSpecies = this.apiCategoriesSpecies + sp;
 
 		const newCatches = this.state.catches.map((c) => {
 			if (idx !== c.id) return c;
@@ -106,29 +106,35 @@ class CatchesList extends Component {
 			};
 		});
 
-		fetch(apiCategoriesSpecies)
-			.then((response) => {
-				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
-					});
-				}
-				return response.json();
-			})
-			.then((categories) => {
-				this.setState(() => {
-					return {
-						categories: categories,
-					};
-				});
-			})
-			.then(() => {
-				this.setState(() => {
-					return {
-						catches: newCatches,
-					};
-				});
-			});
+		this.setState(() => {
+			return {
+				catches: newCatches,
+			};
+		});
+
+		// fetch(apiCategoriesSpecies)
+		// 	.then((response) => {
+		// 		if (response.status > 400) {
+		// 			return this.setState(() => {
+		// 				return { placeholder: "Something went wrong!" };
+		// 			});
+		// 		}
+		// 		return response.json();
+		// 	})
+		// 	.then((categories) => {
+		// 		this.setState(() => {
+		// 			return {
+		// 				categories: categories,
+		// 			};
+		// 		});
+		// 	})
+		// 	.then(() => {
+		// 		this.setState(() => {
+		// 			return {
+		// 				catches: newCatches,
+		// 			};
+		// 		});
+		// 	});
 	};
 
 	handleChangeCategory = (idx) => (evt) => {
@@ -236,10 +242,10 @@ class CatchesList extends Component {
 		});
 
 		const request = {
-			id: updatedCatch.id,
 			catch_id: updatedCatch.id,
 			haul_id: updatedCatch.haul,
-			sp_id: updatedCatch.sp_id,
+			sp_code: updatedCatch.sp_code,
+			group: updatedCatch.group,
 			category: updatedCatch.category,
 			weight: updatedCatch.weight,
 			sampled_weight: updatedCatch.sampled_weight,

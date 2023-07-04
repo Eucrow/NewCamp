@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 class ComponentCategory extends Component {
 	/**
@@ -20,6 +20,7 @@ class ComponentCategory extends Component {
 			sp_id: "",
 			category: "",
 			weight: "",
+			sampled_weight: "",
 		};
 	}
 

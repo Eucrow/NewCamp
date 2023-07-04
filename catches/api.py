@@ -8,6 +8,7 @@ from catches.models import Catch
 from catches.serializers import CatchSerializer, CatchesVerboseSerializer
 from samples.models import SampledWeight
 from samples.serializers import SampleWeightSerializer
+from species.models import Sp
 
 
 class CatchHaulListAPI(APIView):
@@ -93,6 +94,10 @@ class CatchHaulAPI(APIView):
 
         catch_serializer = CatchSerializer(catch, data=request.data)
 
+        # Update the sp_id if the sp_code or group has been changed.
+        sp_id = Sp.objects.get(sp_code=request.data["sp_code"], group=request.data["group"]).id
+        catch.sp_id = sp_id
+
         # If the sampled weight has been changed to empty, delete the sampled weight object.
         if request.data["sampled_weight"] == "":
             sampledWeightObject = SampledWeight.objects.get(
@@ -102,9 +107,11 @@ class CatchHaulAPI(APIView):
                 catch_serializer.save()
                 return Response(catch_serializer.data, status=HTTP_201_CREATED)
             else:
+                errors = {}
                 errors.update(catch_serializer.errors)
                 return Response(errors, status=HTTP_400_BAD_REQUEST)
         else:
+
             sampled_weight = SampledWeight.objects.get_or_create(
                 catch_id=request.data["catch_id"], sampled_weight=request.data["sampled_weight"])[0]
             sample_weight_serializer = SampleWeightSerializer(
