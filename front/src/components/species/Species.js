@@ -99,9 +99,7 @@ class Species extends Component {
 		}).catch((error) => console.log(error));
 	}
 
-	deleteSp(e, sp_id) {
-		e.preventDefault();
-
+	deleteSp(sp_id) {
 		const api = this.apiSpecies + sp_id;
 
 		fetch(api, {
@@ -109,9 +107,7 @@ class Species extends Component {
 			headers: { "Content-Type": "application/json" },
 		})
 			.then(() => {
-				const NewSpecies = this.state.species.filter(
-					(sp) => sp.id !== sp_id
-				);
+				const NewSpecies = this.state.species.filter((sp) => sp.id !== sp_id);
 
 				this.setState({
 					species: NewSpecies,
@@ -175,10 +171,7 @@ class Species extends Component {
 					</header>
 
 					<div className="wrapper surveysWrapper">
-						<SpeciesButtonBar
-							add={this.state.add}
-							handleAdd={this.handleAdd}
-						/>
+						<SpeciesButtonBar add={this.state.add} handleAdd={this.handleAdd} />
 
 						{this.state.add === true ? <NewSpForm /> : ""}
 

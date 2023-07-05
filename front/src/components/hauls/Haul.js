@@ -1,104 +1,80 @@
-import React, { Component } from "react";
-
-import ViewCommon from "./view/ViewCommon";
-import EditCommonForm from "./edit/EditCommonForm";
+import React, { useState } from "react";
+import HaulFormView from "./view/HaulFormView";
+import HaulFormEdit from "./edit/HaulFormEdit";
 import HaulDetails from "./HaulDetails";
-import ComponentsTrawlCatches from "../trawlCatches/TrawlHaulCatches";
+import HaulHandleNew from "./new/HaulHandleNew";
+import CatchesList from "../trawlCatches/CatchesList";
 
-class Haul extends Component {
-	/**
-	 * Haul component
-	 * @param {object} haul
-	 * @param {number} station_id
-	 * @param {method} validateHaulSampler
-	 */
-	constructor(props) {
-		super(props);
-		this.state = {
-			detail: false, // True to view detail fo the haul, false to not to.
-			edit: false,
-		};
+const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, samplerRef, createHaul, add, handleAdd }) => {
+	const [detail, setDetail] = useState(false);
+	const [edit, setEdit] = useState(false);
 
-		this.handleDetail = this.handleDetail.bind(this);
-		this.handleEdit = this.handleEdit.bind(this);
-		this.UiShowDetailButton = this.UiShowDetailButton.bind(this);
-	}
+	const [thisHaul, setThisHaul] = useState(haul);
 
-	handleDetail(detail) {
-		this.setState(() => {
-			return {
-				detail: detail,
-			};
-		});
-	}
-
-	handleEdit(edit) {
-		this.setState(() => {
-			return {
-				edit: edit,
-			};
-		});
-	}
-
-	UiShowDetailButton() {
-		return (
-			<button
-				className="buttonsWrapper__button"
-				onClick={() => {
-					this.handleDetail(true);
-				}}
-			>
-				Show detail
-			</button>
-		);
-	}
-
-	renderContent() {
-		if ((this.state.detail === false) & (this.state.edit === false)) {
+	const renderContent = () => {
+		if (add === true) {
 			return (
-				<div className="wrapper form__row">
-					<ViewCommon
-						haul={this.props.haul}
-						edit={this.state.edit}
-						handleEdit={this.handleEdit}
-						handleDetail={this.handleDetail}
+				<>
+					<HaulHandleNew
+						station_id={station_id}
+						handleAdd={handleAdd}
+						createHaul={createHaul}
+						validateHaulSampler={validateHaulSampler}
+						haulRef={haulRef}
+						samplerRef={samplerRef}
+						setDetail={setDetail}
 					/>
-					<ComponentsTrawlCatches haul_id={this.props.haul.id} />
-				</div>
+				</>
 			);
 		}
 
-		if ((this.state.detail === false) & (this.state.edit === true)) {
+		if (detail === true) {
 			return (
 				<div className="wrapper form__row">
-					<EditCommonForm
-						haul={this.props.haul}
-						station_id={this.props.station_id}
-						edit={this.state.edit}
-						handleEdit={this.handleEdit}
-						samplers={this.props.samplers}
-					/>
-				</div>
-			);
-		}
-
-		if (this.state.detail === true) {
-			return (
-				<div className="wrapper form__row">
-					<ViewCommon haul={this.props.haul} />
+					<HaulFormView haul={haul} />
 					<HaulDetails
-						haul={this.props.haul}
-						handleDetail={this.handleDetail}
-						validateHaulSampler={this.props.validateHaulSampler}
+						haul={haul}
+						detail={detail}
+						setDetail={setDetail}
+						validateHaulSampler={validateHaulSampler}
+					/>
+					<CatchesList haul_id={haul["id"]} />
+				</div>
+			);
+		}
+
+		if (edit === false) {
+			if (haul.sampler_id === 1) {
+				return (
+					<div className="wrapper form__row">
+						<HaulFormView haul={haul} detail={detail} setEdit={setEdit} setDetail={setDetail} />
+						<CatchesList haul_id={haul["id"]} />
+					</div>
+				);
+			} else {
+				return (
+					<div className="wrapper form__row">
+						<HaulFormView haul={haul} detail={detail} setEdit={setEdit} setDetail={setDetail} />
+					</div>
+				);
+			}
+		} else if (edit === true) {
+			return (
+				<div className="wrapper form__row">
+					<HaulFormEdit
+						thisHaul={thisHaul}
+						setThisHaul={setThisHaul}
+						station_id={station_id}
+						edit={edit}
+						setEdit={setEdit}
+						samplers={samplers}
 					/>
 				</div>
 			);
 		}
-	}
+	};
 
-	render() {
-		return this.renderContent();
-	}
-}
+	return renderContent();
+};
 
 export default Haul;

@@ -1,6 +1,6 @@
 import React from "react";
 
-import UiButtonBooleanHandle from "../ui/UiButtonBooleanHandle";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
 
@@ -8,39 +8,31 @@ import UiButtonDelete from "../ui/UiButtonDelete";
  * Component haul button bar.
  * @param {numerics} haul_id
  * @param {boolean} edit
- * @param {method} handleEdit
+ * @param {method} setEdit
  * @param {method} handleDetail
  * @param {method} deleteHaul: method used to delete haul.
  */
-const HaulButtonBar = ({
-	haul_id,
-	edit,
-	handleEdit,
-	handleDetail,
-	deleteHaul,
-}) => {
+const HaulButtonBar = ({ haul_id, edit, detail, setEdit, handleDetail, deleteHaul, handleCancel }) => {
 	var ButtonBar = null;
+
+	// The button bar is not showed if the details are showed.
+	if (detail === true) {
+		return ButtonBar;
+	}
 
 	if (edit === true) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
-				<UiButtonBooleanHandle
-					buttonText={"Cancel"}
-					handleMethod={handleEdit}
-					newBoolean={false}
-				/>
 				<UiButtonSave buttonText="Save Haul" />
+				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={handleCancel} newStatus={false} />
 			</div>
 		);
 	}
-	if (edit === false) {
+
+	if (edit === false && detail === false) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
-				<UiButtonBooleanHandle
-					buttonText={"Edit Haul"}
-					handleMethod={handleEdit}
-					newBoolean={true}
-				/>
+				<UiButtonStatusHandle buttonText={"Edit Haul"} handleMethod={setEdit} newStatus={true} />
 
 				<UiButtonDelete
 					id={haul_id}
@@ -49,11 +41,7 @@ const HaulButtonBar = ({
 					confirmMessage="Are you sure to delete this haul?"
 				/>
 
-				<UiButtonBooleanHandle
-					buttonText={"View Detail"}
-					handleMethod={handleDetail}
-					newBoolean={true}
-				/>
+				<UiButtonStatusHandle buttonText={"View Detail"} handleMethod={handleDetail} newStatus={true} />
 			</div>
 		);
 	}

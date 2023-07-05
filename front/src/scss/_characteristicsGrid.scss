@@ -1,13 +1,21 @@
+
 .characteristicsGrid{
 	display: grid;
     width: 100%;
-    grid-template-columns: repeat(7, auto);
     gap: 10px;
     justify-content: space-around;
     justify-items: left;
     align-items: center;
     padding: 10px;
+}
 
+.characteristicsGrid--trawl{
+    grid-template-columns: repeat(5, minmax(auto, 1fr));
+    // grid-template-rows: repeat(4, 1fr);
+}
+
+.characteristicsGrid--hydrography{
+    grid-template-columns: repeat(4, minmax(auto, 1fr));
 }
 
 .characteristicsGrid__colName{
@@ -16,10 +24,11 @@
 }
 
 .characteristicsGrid__rowName{
-    text-align: right;
+    text-align: left;
     justify-self: right;
 }
 
 .characteristicsGrid__field{
     justify-self: center;
 }
+

@@ -1,8 +1,10 @@
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 
 from catches.models import Catch
 from samples.models import Sex, Length, SampledWeight
 from samples.serializers import SampleWeightSerializer, SexSerializer, LengthSerializer2
+# from sexes.serializers import SexesExistsSerializer
 # from species.serializers import CategorySerializer
 from species.models import Sp
 from species.serializers import SpSimpleSerializer
@@ -15,8 +17,7 @@ class CatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        # fields = ['id', 'weight', 'sp', 'sp_code', 'sp_name', 'group', 'category', 'haul_id']
-        fields = ['id', 'weight', 'sp_code', 'sp_name', 'group', 'category', 'haul_id']
+        fields = ['id', 'haul_id', 'group', 'sp_code', 'weight', 'sp_name', 'category']
 
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
@@ -28,12 +29,24 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
     # 'samples' must be the related_name of a one to one field on SampleWeight model.
     samples = SampleWeightSerializer(required=True)
 
-    # 'sexes' must be the related_name of a foreing key field on the Sex model.
-    sexes = SexSerializer(many=True)
+    # 'sexes' must be the related_name of a foreign key field on the Sex model.
+    # sexes = SexSerializer(many=True)
+
+    # Field to return if the catch has sexes or not
+    # TODO: I think this is not required.
+    def catch_has_sexes(self, instance):
+        if instance.sexes.count() > 0:
+            return True
+        else:
+            return False
+
+    has_sexes = SerializerMethodField(method_name="catch_has_sexes")
 
     class Meta:
         model = Catch
-        fields = ['id', 'weight', 'category', 'haul', 'haul_id', 'sp', 'samples', 'sexes', ]
+        fields = ['id', 'weight', 'category', 'haul', 'haul_id', 'sp', 'samples', 'has_sexes'
+                  # , 'sexes'
+                  ]
 
     # Override the to_representation method, which format the output of the serializer
     # Example of use to_representation. In this case, the category model is related by a foreing key with the species model.
@@ -42,18 +55,21 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
         # instance is the model object. Create the custom json format by accessing instance attributes normally and
         # return it
 
-        data = super(CatchesVerboseSerializer, self).to_representation(instance)
+        data = super(CatchesVerboseSerializer,
+                     self).to_representation(instance)
 
         # change representation of sp
         data['sp_id'] = instance.sp.id
         data['group'] = instance.sp.group
         data['sp_code'] = instance.sp.sp_code
         data['sp_name'] = instance.sp.sp_name
+        data['unit'] = instance.sp.unit
+        data['increment'] = instance.sp.increment
 
         data.pop('sp')
 
         # change representation of sampled weight
-        if (hasattr(instance, 'samples')):
+        if hasattr(instance, 'samples'):
             data['sampled_weight'] = instance.samples.sampled_weight
             data['sampled_weight_id'] = instance.samples.id
 

@@ -6,7 +6,7 @@ import React from "react";
  */
 const UiButtonSave = ({ buttonText }) => {
 	const renderedButton = (
-		<button type="submit" className="buttonsWrapper__button">
+		<button className="buttonsWrapper__button" type="submit">
 			{buttonText}
 		</button>
 	);

@@ -33,20 +33,12 @@ class ImportHydrographyesSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-# class HaulSerializer(serializers.ModelSerializer):
-#     """
-#     Serializer of hauls data.
-#     """
-#
-#     class Meta:
-#         model = Haul
-#         fields = ['id', 'haul', 'gear_id', 'valid', 'sampler_id', 'stratum_id', 'station_id']
-
-
-# OLD HAUL SERIALIZER
 class HaulSerializer(serializers.ModelSerializer):
     """
-    Serializer of hauls data.
+    Serializer of hauls data. In this serializer, for the post method, the gear, sampler, stratum and station data
+    are removed because it is not necessary to post them (it is done in the get_fields method) . The id of each of
+    these objects is enough to create a haul. But the response of the get method will include the description fields
+    of these objects (this is done overwriting the to_representation method).
     """
 
     # gear = GearTrawlBasicSerializer(read_only=True)
@@ -67,23 +59,48 @@ class HaulSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'valid', 'gear_id', 'sampler_id', 'stratum_id', 'station_id']
-        # depth = 1
+        fields = ['id', 'haul', 'valid', 'gear_id', 'gear', 'sampler_id', 'sampler', 'stratum_id', 'stratum',
+                  'station_id', 'station']
 
+    def get_fields(self):
+        """
+        Overwrite the get_fields method to remove the gear, sampler, stratum and station data when the POST method
+        :return: dictionary of fields
+        """
+        fields = super().get_fields()
 
-# class HaulSerializer(serializers.ModelSerializer):
-#     """
-#     Serializer of hauls data with sampler.
-#     """
-#     gear = GearTrawlBasicSerializer()
-#
-#     class Meta:
-#         model = Haul
-#         fields = ['id', 'haul', 'gear', 'valid', 'sampler', 'stratum', 'station', ]
-#         depth = 1
+        if self.context['request'].method == 'POST':
+            fields.pop('gear')
+            fields.pop('sampler')
+            fields.pop('stratum')
+            fields.pop('station')
+
+        return fields
+
+    def to_representation(self, instance):
+        """
+        Overwrite the to_representation method to add the gear, sampler, stratum and station data
+        when the POST method is called.
+        """
+        representation = super().to_representation(instance)
+
+        if self.context['request'].method == 'POST':
+            representation['sampler'] = self.validated_data['sampler'].sampler
+            representation['stratum'] = self.validated_data['stratum'].stratum
+            representation['station'] = self.validated_data['station'].station
+            representation['gear'] = self.validated_data['gear'].name
+
+        return representation
 
 
 class HaulMeteorologySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Meteorology
+        fields = ['wind_direction', 'wind_velocity', 'sea_state', ]
+
+
+# TODO: this serializer is equal to HaulMeteorologySerializer. Delete one of them (I think this one is the correct one)
+class MeteorologySerializer(serializers.ModelSerializer):
     class Meta:
         model = Meteorology
         fields = ['wind_direction', 'wind_velocity', 'sea_state', ]
@@ -114,14 +131,15 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'valid', 'meteo', 'trawl_characteristics', 'station_id', 'stratum_id',
-                  'stratum', 'sampler_id', 'sampler', 'gear', 'gear_id']
+        fields = ['id', 'station_id', 'haul', 'stratum_id', 'stratum', 'sampler_id', 'sampler', 'gear', 'gear_id',
+                  'valid', 'meteo', 'trawl_characteristics']
 
     # This is a nested serializer, so we have to overwrite the create function
     def create(self, validated_data):
         # First, get the data from the nested parts
         meteo_data = validated_data.pop('meteo')
-        trawl_characteristics_data = validated_data.pop('trawl_characteristics')
+        trawl_characteristics_data = validated_data.pop(
+            'trawl_characteristics')
 
         # Second, create the new haul with its nested data:
         haul_data = validated_data.copy()
@@ -142,10 +160,10 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
             # First, get the data from validated_data (pop() remove the data from the original dict and return its
             # value)
             meteo_datas = validated_data.pop('meteo')
-            trawl_characteristics_datas = validated_data.pop('trawl_characteristics')
+            trawl_characteristics_datas = validated_data.pop(
+                'trawl_characteristics')
             # instance.gear must be a Trawl object, so get the trawl of the name:
-            instance.gear = Trawl.objects.get(name=validated_data.pop('gear')['name'])
-
+            instance.gear = Trawl.objects.get(name=self.data['gear'])
             # Second, save the instance validated (this does not have the meteo and trawl_characteristics data)
             for attr, value in validated_data.items():
                 # print(attr, value)
@@ -173,9 +191,10 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
 class HydrographySerializer(serializers.ModelSerializer):
     class Meta:
         model = HaulHydrography
-        fields = ['latitude', 'longitude', 'date_time', 'depth_probe', 'cable', 'depth', 'temperature_0', 'salinity_0',
+        fields = ['id', 'latitude', 'longitude', 'date_time', 'depth_probe', 'cable', 'depth', 'temperature_0',
+                  'salinity_0',
                   'sigma_0', 'temperature_50', 'salinity_50', 'sigma_50', 'temperature_100', 'salinity_100',
-                  'sigma_100', 'temperature', 'salinity', 'sigma', 'comment', ]
+                  'sigma_100', 'temperature', 'salinity', 'sigma', 'comment', 'haul_id']
 
 
 class HaulHydrographySerializer(serializers.ModelSerializer):
@@ -184,36 +203,43 @@ class HaulHydrographySerializer(serializers.ModelSerializer):
     """
 
     hydrography_characteristics = HydrographySerializer()
+
+    station = serializers.CharField(source='station.station', read_only=True)
+
+    stratum = serializers.CharField(source='stratum.stratum', read_only=True)
+
+    sampler = serializers.CharField(source='sampler.sampler', read_only=True)
+
+    gear = serializers.IntegerField(source='gear.name', read_only=True)
+
     # station and sampler can't be changed...
-    station = StationSerializer(read_only=True)
-    stratum = StrataSerializer(read_only=True)
-    sampler = SamplerSerializer(read_only=True)
+    # station = StationSerializer(read_only=True)
+    # stratum = StrataSerializer(read_only=True)
+    # sampler = SamplerSerializer(read_only=True)
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'gear', 'valid', 'hydrography_characteristics', 'station', 'stratum', 'sampler', ]
+        fields = ['id', 'station', 'station_id', 'haul', 'stratum', 'stratum_id', 'sampler', 'sampler_id', 'gear',
+                  'gear_id', 'valid', 'hydrography_characteristics',
+                  ]
 
     # This is a nested serializer, so we have to overwrite the create function
     def create(self, validated_data):
         # Firstly, get the data from the nested parts
         # meteo_data = validated_data.pop('meteo')
-        hydrography_characteristics_data = validated_data.pop('hydrography_characteristics')
-        station_data = validated_data.pop('station')
-        stratum_data = validated_data.pop('stratum')
-        sampler_data = validated_data.pop('sampler')
+        hydrography_characteristics_data = validated_data.pop(
+            'hydrography_characteristics')
 
         # Secondly, create the station_id and sampler_id from its nested data
         haul_data = validated_data.copy()
-        haul_data['station_id'] = station_data['id']
-        haul_data['stratum_id'] = stratum_data['id']
-        haul_data['sampler_id'] = sampler_data['id']
 
         # Then, save the Haul
         haul = Haul.objects.create(**haul_data)
 
         # Then, save the nested parts in its own models
         # Meteorology.objects.create(haul=haul, **meteo_data)
-        HaulHydrography.objects.create(haul=haul, **hydrography_characteristics_data)
+        HaulHydrography.objects.create(
+            haul=haul, **hydrography_characteristics_data)
 
         # And finally, return the haul
         return haul
@@ -222,7 +248,8 @@ class HaulHydrographySerializer(serializers.ModelSerializer):
 
         if validated_data:
             # First, get the data from validated_data (pop() remove the data from the original dict)
-            hydrography_characteristics_datas = validated_data.pop('hydrography_characteristics')
+            hydrography_characteristics_datas = validated_data.pop(
+                'hydrography_characteristics')
 
             # Second, save the instance validated (this does not have the hydrography_characteristics data)
             for attr, value in validated_data.items():
@@ -245,8 +272,10 @@ class HaulStationSerializer(serializers.ModelSerializer):
     """
     Serializer of haul with information of station and sampler
     """
-    station = serializers.IntegerField(read_only=True, source="station.station")
-    sampler = serializers.IntegerField(read_only=True, source="sampler.sampler")
+    station = serializers.IntegerField(
+        read_only=True, source="station.station")
+    sampler = serializers.IntegerField(
+        read_only=True, source="sampler.sampler")
 
     class Meta:
         model = Haul

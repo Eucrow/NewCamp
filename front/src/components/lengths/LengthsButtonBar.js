@@ -1,54 +1,61 @@
-import React from "react";
+import React, { useContext } from "react";
 
-// import UiButtonAdd from "../ui/UiButtonAdd";
+import LengthsContext from "../../contexts/LengthsContext";
 
 /**
- * Component of Surveys bar.
- * @param {boolean} add true to show "Add" button.
- * @param {method} handleAdd Method to handle the 'add' parameter.
+ * Lengths button bar component.
  */
-const LengthsButtonBar = ({
-	updatedLengths,
-	status_lengths,
-	handleShowLengths,
-	handleEditLengths,
-	handleHideLengths,
-	saveOrUpdateLengths,
-	handleCancelLengths,
-	recoverLengths,
-}) => {
+const LengthsButtonBar = () => {
 	var ButtonBar = null;
 
-	if (status_lengths === "hide") {
+	const lengthsContext = useContext(LengthsContext);
+
+	if (lengthsContext.lengths_status === "hide") {
 		ButtonBar = (
-			<div className="form__cell buttonsWrapper">
-				<button onClick={handleShowLengths}>Show lengths</button>
-			</div>
-		);
-	} else if (status_lengths === "view") {
-		ButtonBar = (
-			<div className="form__cell buttonsWrapper">
-				<button onClick={handleEditLengths}>Edit lengths</button>
-				<button onClick={handleHideLengths}>Hide lengths</button>
-			</div>
-		);
-	} else if (status_lengths === "edit") {
-		ButtonBar = (
-			<div className="form__cell buttonsWrapper">
-				{/* <button type="button" onClick={handleAddLength}>
-					Add length
-				</button> */}
+			<div className="form__cell buttonsWrapper--center">
 				<button
+					className="buttonsWrapper__button"
+					type="button"
+					onclick={() => {
+						lengthsContext.setLengthsStatus("view");
+					}}
+				>
+					Show lengths
+				</button>
+			</div>
+		);
+	} else if (lengthsContext.lengths_status === "view") {
+		ButtonBar = (
+			<div className="form__cell buttonsWrapper--center">
+				<button
+					className="buttonsWrapper__button"
+					type="button"
+					onClick={() => {
+						lengthsContext.setLengthsStatus("edit");
+					}}
+				>
+					Edit lengths
+				</button>
+			</div>
+		);
+	} else if (lengthsContext.lengths_status === "edit") {
+		ButtonBar = (
+			<div className="form__cell buttonsWrapper--center">
+				<button
+					className="buttonsWrapper__button"
+					type="button"
 					onClick={(e) => {
-						saveOrUpdateLengths(e, updatedLengths);
+						lengthsContext.saveOrUpdateLengths(e, lengthsContext.lengths);
+						lengthsContext.removeZeroTails(lengthsContext.lengths);
 					}}
 				>
 					Save
 				</button>
 				<button
+					className="buttonsWrapper__button"
+					type="button"
 					onClick={() => {
-						recoverLengths();
-						handleCancelLengths();
+						lengthsContext.setLengthsStatus("view");
 					}}
 				>
 					Cancel

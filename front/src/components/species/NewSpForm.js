@@ -168,12 +168,7 @@ class NewSpForm extends Component {
 					<legend>Measurement</legend>
 					<span className="field">
 						<label htmlFor="unit">Measure unit:</label>
-						<select
-							id="unit"
-							name="unit"
-							required
-							onChange={(e) => this.handleChange(e)}
-						>
+						<select id="unit" name="unit" required onChange={(e) => this.handleChange(e)}>
 							<option selected></option>
 							<option value="1">mm</option>
 							<option value="2">cm</option>

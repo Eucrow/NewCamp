@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'gears',
     # 'frontend',
     'conn_r',
+    'sexes',
 ]
 
 MIDDLEWARE = [
