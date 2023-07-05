@@ -1,6 +1,4 @@
-import React, { Component, Fragment } from "react";
-
-import SampledWeight from "../sampledWeight/SampledWeight";
+import React, { Component } from "react";
 
 class ComponentCategory extends Component {
 	/**
@@ -22,6 +20,7 @@ class ComponentCategory extends Component {
 			sp_id: "",
 			category: "",
 			weight: "",
+			sampled_weight: "",
 		};
 	}
 
@@ -113,79 +112,74 @@ class ComponentCategory extends Component {
 				: null;
 
 			return (
-				<Fragment>
-					<form>
-						<label className="form__cell">
-							Group:
-							<input
-								style={{ width: 5 + "ch" }}
-								type="number"
-								id="group"
-								name="group"
-								min="1"
-								max="5"
-								disabled
-								value={this.props.this_catch.group}
-							/>
-						</label>
-						<label className="form__cell">
-							Species:
-							<select style={{ width: 30 + "ch" }} id="sp_code" name="sp_code" disabled>
-								<option
-									key={this.props.this_catch.sp_id}
-									// value={this.props.this_catch.sp_id}
-								>
-									{/* {this.props.species.find((s) => s.)} */}
-									{this.props.this_catch.sp_name}
-								</option>
-							</select>
-						</label>
-						<label className="form__cell">
-							Category:
-							<input
-								style={{ width: 4 + "ch" }}
-								type="number"
-								id="category"
-								name="category"
-								min="1"
-								max="99"
-								disabled
-								value={this.props.this_catch.category}
-							/>
-						</label>
-						<label className="form__cell">
-							Weight(g.):
-							<input
-								style={{ width: 8 + "ch" }}
-								type="number"
-								id="weight"
-								name="weight"
-								min="1"
-								max="99000000"
-								disabled
-								value={this.props.this_catch.weight}
-							/>
-						</label>
+				<form>
+					<label className="form__cell">
+						Group:
+						<input
+							style={{ width: 5 + "ch" }}
+							type="number"
+							id="group"
+							name="group"
+							min="1"
+							max="5"
+							disabled
+							value={this.props.this_catch.group}
+						/>
+					</label>
+					<label className="form__cell">
+						Species:
+						<select style={{ width: 30 + "ch" }} id="sp_code" name="sp_code" disabled>
+							<option
+								key={this.props.this_catch.sp_id}
+								// value={this.props.this_catch.sp_id}
+							>
+								{/* {this.props.species.find((s) => s.)} */}
+								{this.props.this_catch.sp_name}
+							</option>
+						</select>
+					</label>
+					<label className="form__cell">
+						Category:
+						<input
+							style={{ width: 4 + "ch" }}
+							type="number"
+							id="category"
+							name="category"
+							min="1"
+							max="99"
+							disabled
+							value={this.props.this_catch.category}
+						/>
+					</label>
+					<label className="form__cell">
+						Weight(g.):
+						<input
+							style={{ width: 8 + "ch" }}
+							type="number"
+							id="weight"
+							name="weight"
+							min="1"
+							max="99999999"
+							disabled
+							value={this.props.this_catch.weight}
+						/>
+					</label>
 
-						{/* <button
-						value="Save catch"
-						onClick={(e) => {
-							this.props.createCatch(e, this.state);
-						}}
-					>
-						Save catch
-					</button> */}
-					</form>
-					<SampledWeight
-						sampled_weight_id={sampled_weight_id}
-						sampled_weight={sampled_weight}
-						catch_id={this.props.this_catch.id}
-						handleChangeSampledWeight={this.props.handleChangeSampledWeight}
-						updateSampledWeight={this.props.updateSampledWeight}
-						createSampledWeight={this.props.createSampledWeight}
-						deleteSampledWeight={this.props.deleteSampledWeight}
-					/>
-				</Fragment>
+					<label className="form__cell">
+						Sampled weight(g.):
+						<input
+							disabled
+							style={{ width: 8 + "ch" }}
+							type="number"
+							className="input__noSpinner"
+							id="sampled_weight"
+							name="sampled_weight"
+							min="1"
+							max="99999999"
+							value={this.props.this_catch.sampled_weight}
+						/>
+					</label>
+				</form>
 			);
 		} else if (this.props.status_catch === "edit") {
 			return (
@@ -260,6 +254,20 @@ class ComponentCategory extends Component {
 							max="99999999"
 							value={this.props.this_catch.weight}
 							onChange={this.props.handleChangeWeight(this.props.this_catch.id)}
+						/>
+					</label>
+					<label className="form__cell">
+						Sampled weight(g.):
+						<input
+							style={{ width: 8 + "ch" }}
+							type="number"
+							className="input__noSpinner"
+							id="sampled_weight"
+							name="sampled_weight"
+							min="1"
+							max="99999999"
+							value={this.props.this_catch.sampled_weight}
+							onChange={this.props.handleChangeSampledWeight(this.props.this_catch.id)}
 						/>
 					</label>
 				</form>
