@@ -28,7 +28,7 @@ SECRET_KEY = '1!xp89z^$1+7@4j#s*t94eh(3r0u77f=srdbbi==g*x0_=*sez'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['newcampdemo.azurewebsites.net',
+ALLOWED_HOSTS = ['newcampdemo0723.azurewebsites.net',
                  '127.0.0.1', ]
 
 # Application definition
@@ -136,8 +136,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# The next line must be uncommented when the distribution version is generated: (I don't know if the rest of the time is mandatory)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
 
 # determines if the library will use database transactions on data import, just to be on the safe side.
 IMPORT_EXPORT_USE_TRANSACTIONS = True
