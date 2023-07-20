@@ -37,6 +37,9 @@ front/debug.log
 /front/src/components/test.js
 
 
+#### pyinstaller
+/dist
+
 #### electron-forge
 /out
 
