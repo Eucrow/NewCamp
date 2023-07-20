@@ -4,7 +4,8 @@ import "./index.scss";
 
 import SelectedSurveyContext from "./contexts/SelectedSuveryContext";
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Route, Link } from "react-router-dom";
 
 import ComponentsSurveys from "./components/surveys/Surveys.js";
 

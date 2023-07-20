@@ -17,8 +17,8 @@ from django.urls import path, re_path, include
 from django.contrib import admin
 
 # this is for compile the static files:
-# from django.conf import settings
-# from django.conf.urls.static import static
+from django.conf import settings
+from django.conf.urls.static import static
 
 from djgeojson.views import GeoJSONLayerView
 
@@ -214,6 +214,6 @@ urlpatterns = [
     # Frontend
     # path('', include('frontend.urls')),
 
-] \
-    # this is for compile the static files:
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# this is for compile the static files:
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
