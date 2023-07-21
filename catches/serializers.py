@@ -17,91 +17,24 @@ class CatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        fields = ['id', 'haul_id', 'group', 'sp_code', 'weight', 'sp_name', 'category']
+        fields = ['id', 'haul_id', 'group', 'sp_code',
+                  'weight', 'sp_name', 'category']
 
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
-    # category = CategorySerializer()
-    sp = SpSimpleSerializer()
-    # species_name = serializers.RelatedField(source='species.Sp.name', read_only=True)
-    # specie_sp_name = serializers.CharField(source='species.Sp.name')
-
-    # 'samples' must be the related_name of a one to one field on SampleWeight model.
-    samples = SampleWeightSerializer(required=True)
-
-    # 'sexes' must be the related_name of a foreign key field on the Sex model.
-    # sexes = SexSerializer(many=True)
-
-    # Field to return if the catch has sexes or not
-    # TODO: I think this is not required.
-    def catch_has_sexes(self, instance):
-        if instance.sexes.count() > 0:
-            return True
-        else:
-            return False
-
-    has_sexes = SerializerMethodField(method_name="catch_has_sexes")
+    group = serializers.CharField(source='sp.group')
+    sp_code = serializers.CharField(source='sp.sp_code')
+    sp_name = serializers.CharField(source='sp.sp_name')
+    unit = serializers.CharField(source='sp.unit')
+    increment = serializers.FloatField(source='sp.increment')
+    sampled_weight = serializers.FloatField(
+        source='samples.sampled_weight', required=False)
 
     class Meta:
         model = Catch
-        fields = ['id', 'weight', 'category', 'haul', 'haul_id', 'sp', 'samples', 'has_sexes'
-                  # , 'sexes'
-                  ]
+        fields = ['id', 'weight', 'category', 'haul', 'haul_id', 'group', 'sp_code',
+                  'sp_name', 'unit', 'increment', 'sampled_weight']
 
-    # Override the to_representation method, which format the output of the serializer
-    # Example of use to_representation. In this case, the category model is related by a foreing key with the species model.
-    # To avoid the nested serializer of species inside category, modify the to_representation model as this:
-    def to_representation(self, instance):
-        # instance is the model object. Create the custom json format by accessing instance attributes normally and
-        # return it
-
-        data = super(CatchesVerboseSerializer,
-                     self).to_representation(instance)
-
-        # change representation of sp
-        data['sp_id'] = instance.sp.id
-        data['group'] = instance.sp.group
-        data['sp_code'] = instance.sp.sp_code
-        data['sp_name'] = instance.sp.sp_name
-        data['unit'] = instance.sp.unit
-        data['increment'] = instance.sp.increment
-
-        data.pop('sp')
-
-        # change representation of sampled weight
-        if hasattr(instance, 'samples'):
-            data['sampled_weight'] = instance.samples.sampled_weight
-            data['sampled_weight_id'] = instance.samples.id
-
-        data.pop('samples')
-
-        data.update()
-
-        return data
-
-    # def create(self, validated_data):
-
-    # Override the update method to allow update of weight and sexes. Useless because Doesn't have any sense
-    # to have the hability to update those data but doesn't update sampled weight and lengths.
-    # I leave it here as an example:
-    # def update(self, instance, validated_data):
-    #
-    #     sexes_data = validated_data.pop('sexes')
-    #     sexes = (instance.sexes).all()
-    #     sexes = list(sexes)
-    #
-    #     for sex_data in sexes_data:
-    #         sex = sexes.pop(0)
-    #         sex.sex =sex_data.get('sex', sex.sex)
-    #         sex.save()
-    #
-    #     instance.weight = validated_data.get('weight', instance)
-    #     instance.category = validated_data.get('category', instance)
-    #     instance.haul = validated_data.get('haul', instance)
-    #
-    #     instance.save()
-    #
-    #     return instance
 
 
 class SexCatchSerializer(serializers.ModelSerializer):

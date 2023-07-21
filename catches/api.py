@@ -67,27 +67,28 @@ class CatchHaulAPI(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        response_data = {}
         catch_serializer = CatchSerializer(data=request.data, partial=True)
         sample_weight_serializer = SampleWeightSerializer(
             data=request.data, partial=True)
 
-        if catch_serializer.is_valid() and sample_weight_serializer.is_valid():
+        if catch_serializer.is_valid():
             catch_serializer.save(haul_id=request.data["haul_id"],
                                   sp_id=request.data["sp_id"],
-                                  category=request.data['category'])
-            sample_weight_serializer.save(catch_id=catch_serializer.data["id"],
-                                          sampled_weight=request.data["sampled_weight"])
-            response_data = {}
+                                  category=request.data["category"])
             response_data.update(catch_serializer.data)
-            response_data.update(sample_weight_serializer.data)
-
-            return Response(response_data, status=HTTP_201_CREATED)
         else:
-            errors = {}
-            errors.update(catch_serializer.errors)
-            errors.update(sample_weight_serializer.errors)
+            return Response(catch_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
-            return Response(errors, status=HTTP_400_BAD_REQUEST)
+        if "sampled_weight" in request.data:
+            if sample_weight_serializer.is_valid() & (request.data["sampled_weight"] != ""):
+                sample_weight_serializer.save(catch_id=catch_serializer.data["id"],
+                                              sampled_weight=request.data["sampled_weight"])
+                response_data.update(sample_weight_serializer.data)
+        else:
+            return Response(sample_weight_serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+        return Response(response_data, status=HTTP_201_CREATED)
 
     def put(self, request):
         catch = Catch.objects.get(id=request.data["catch_id"])
