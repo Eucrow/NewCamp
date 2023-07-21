@@ -69,7 +69,7 @@ class HaulSerializer(serializers.ModelSerializer):
         """
         fields = super().get_fields()
 
-        if self.context['request'].method == 'POST':
+        if self.context['request'].method == 'POST' or self.context['request'].method == 'PUT':
             fields.pop('gear')
             fields.pop('sampler')
             fields.pop('stratum')

@@ -33,7 +33,7 @@ class HaulListAPI(ListAPIView):
 
     def get(self, request, survey_id):
         hauls = Haul.objects.filter(station__survey__pk=survey_id)
-        serializer = HaulSerializer(hauls, many=True)
+        serializer = HaulSerializer(hauls, many=True, context={'request': request})
         return Response(serializer.data)
 
 
@@ -81,9 +81,8 @@ class HaulAPI(APIView):
     """
 
     def get(self, request, haul_id):
-        # haul = get_object_or_404(Haul, pk=haul_id)
-        haul = Haul.objects.filter(pk=haul_id)
-        serializer = HaulSerializer(haul)
+        haul = get_object_or_404(Haul, pk=haul_id)
+        serializer = HaulSerializer(haul, context={'request': request})
         return Response(serializer.data)
 
     def delete(self, request, haul_id, format=None):
@@ -93,7 +92,8 @@ class HaulAPI(APIView):
 
     def put(self, request, haul_id):
         haul = get_object_or_404(Haul, pk=haul_id)
-        serializer = HaulSerializer(haul, data=request.data, partial=True)
+        serializer = HaulSerializer(
+            haul, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
@@ -101,7 +101,8 @@ class HaulAPI(APIView):
             return Response(status=HTTP_400_BAD_REQUEST)
 
     def post(self, request):
-        serializer = HaulSerializer(data=request.data, context={'request': request})
+        serializer = HaulSerializer(
+            data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
@@ -141,7 +142,8 @@ class MeteorologyAPI(APIView):
     def put(self, request, haul_id):
         """Update a Meteorology object with the given haul_id."""
         # meteorology = get_object_or_404(Meteorology, haul_id=haul_id)
-        meteorology, created = Meteorology.objects.get_or_create(haul_id=haul_id)
+        meteorology, created = Meteorology.objects.get_or_create(
+            haul_id=haul_id)
         serializer = MeteorologySerializer(
             meteorology, data=request.data, partial=True)
         if serializer.is_valid():
