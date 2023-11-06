@@ -28,19 +28,14 @@ front/debug.log
 # PyInstaller
 /static
 /manage.spec
-
-# files to make my test
-/front/src/components/test.js
-
-
-#### pyinstaller
 /dist
+/build
 
 #### electron-forge
 /out
 
-#### electron
-/build
+# files to make my test
+/front/src/components/test.js
 
 ####
 # node files, from https://github.com/github/gitignore/blob/main/Node.gitignore 
