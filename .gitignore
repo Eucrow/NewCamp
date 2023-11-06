@@ -8,13 +8,9 @@
 *.sqlite3
 */migrations/*
 
-/frontend/node_modules
-/frontend/dist
-/frontend/static
 
 /front/node_modules
-/frontend/dist
-/frontend/static
+/front/build
 
 # npm
 npm-debug.log
@@ -42,6 +38,9 @@ front/debug.log
 
 #### electron-forge
 /out
+
+#### electron
+/build
 
 ####
 # node files, from https://github.com/github/gitignore/blob/main/Node.gitignore 
