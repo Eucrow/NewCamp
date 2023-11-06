@@ -8,13 +8,9 @@
 *.sqlite3
 */migrations/*
 
-/frontend/node_modules
-/frontend/dist
-/frontend/static
 
 /front/node_modules
-/frontend/dist
-/frontend/static
+/front/build
 
 # npm
 npm-debug.log
@@ -32,16 +28,14 @@ front/debug.log
 # PyInstaller
 /static
 /manage.spec
-
-# files to make my test
-/front/src/components/test.js
-
-
-#### pyinstaller
 /dist
+/build
 
 #### electron-forge
 /out
+
+# files to make my test
+/front/src/components/test.js
 
 ####
 # node files, from https://github.com/github/gitignore/blob/main/Node.gitignore 
