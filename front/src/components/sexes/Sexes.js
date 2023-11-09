@@ -82,6 +82,28 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 			.catch((error) => alert(error));
 	};
 
+	const updateSex = (sex_id, updatedSex) => {
+		const api = apiSex + sex_id;
+
+		const newSexData = {
+			id: sex_id,
+			sex: updatedSex,
+		};
+
+		fetch(api, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(newSexData),
+		})
+			.then((response) => response.json())
+			.then((updatedSex) => {
+				setSexes(sexes.map((sex) => (sex.id === sex_id ? updatedSex : sex)));
+			})
+			.catch((error) => console.log("Error"));
+	};
+
 	var content = (
 		<Fragment>
 			{view_sexes === true ? (
@@ -97,6 +119,7 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 								increment={increment}
 								deleteSex={deleteSex}
 								sexesBackup={sexesBackup}
+								updateSex={updateSex}
 							/>
 						);
 					})}
