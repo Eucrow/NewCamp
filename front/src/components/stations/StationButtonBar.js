@@ -3,8 +3,9 @@ import React, { useContext } from "react";
 import StationsContext from "../../contexts/StationsContext";
 
 import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonCancel from "../ui/UiButtonCancel";
 import UiButtonDelete from "../ui/UiButtonDelete";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+import UiButtonIconEdit from "../ui/UiButtonIconEdit";
 
 const StationButtonBar = ({ station_id, handleEdit, edit }) => {
 	const stationsContext = useContext(StationsContext);
@@ -15,7 +16,7 @@ const StationButtonBar = ({ station_id, handleEdit, edit }) => {
 			<div className="station__cell station__cell--right">
 				<div className="buttonsWrapper">
 					<UiButtonSave buttonText={"Save Station"} />
-					<UiButtonCancel handleMethod={handleEdit} />
+					<UiButtonStatusHandle handleMethod={handleEdit} buttonText={"Cancel"} newStatus={false} />
 				</div>
 			</div>
 		);
@@ -25,15 +26,9 @@ const StationButtonBar = ({ station_id, handleEdit, edit }) => {
 		ButtonBar = (
 			<div className="station__cell station__cell--right">
 				<div className="buttonsWrapper">
-					<button
-						type="button"
-						className="buttonsWrapper__button"
-						onClick={(e) => {
-							handleEdit(true);
-						}}
-					>
-						Edit Station
-					</button>
+					<UiButtonStatusHandle handleMethod={handleEdit} buttonText={"Edit sex"} newStatus={true}>
+						<UiButtonIconEdit />
+					</UiButtonStatusHandle>
 					<UiButtonDelete
 						id={station_id}
 						deleteMethod={stationsContext.deleteStation}

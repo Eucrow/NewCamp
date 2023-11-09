@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as EditIcon } from "../../icons/pen-to-square-regular.svg";
+import { ReactComponent as EditIcon } from "../../icons/edit.svg";
 
 /**
  * Generic delete button.

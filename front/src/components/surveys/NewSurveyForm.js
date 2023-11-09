@@ -3,7 +3,7 @@ import React, { useState, useContext } from "react";
 import SurveysContext from "../../contexts/SuverysContext";
 
 import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonCancel from "../ui/UiButtonCancel";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
  * Survey component
@@ -81,10 +81,7 @@ const NewSurveyForm = () => {
 							name="start_date"
 							onChange={(e) => {
 								handleChange(e);
-								surveysContext.validateStartDate(
-									e,
-									survey.end_date
-								);
+								surveysContext.validateStartDate(e, survey.end_date);
 							}}
 						/>
 					</span>
@@ -96,10 +93,7 @@ const NewSurveyForm = () => {
 							name="end_date"
 							onChange={(e) => {
 								handleChange(e);
-								surveysContext.validateEndDate(
-									e,
-									survey.start_date
-								);
+								surveysContext.validateEndDate(e, survey.start_date);
 							}}
 						/>
 					</span>
@@ -107,17 +101,10 @@ const NewSurveyForm = () => {
 				<div className="form__row">
 					<span className="field">
 						<label htmlFor="ship">Ship:</label>
-						<input
-							type="text"
-							id="ship"
-							name="ship"
-							onChange={handleChange}
-						/>
+						<input type="text" id="ship" name="ship" onChange={handleChange} />
 					</span>
 					<span className="field">
-						<label htmlFor="hauls_duration">
-							Hauls duration (minutes):
-						</label>
+						<label htmlFor="hauls_duration">Hauls duration (minutes):</label>
 						<input
 							type="number"
 							id="hauls_duration"
@@ -130,12 +117,7 @@ const NewSurveyForm = () => {
 					</span>
 					<span className="field">
 						<label htmlFor="stratification">Stratification:</label>
-						<select
-							id="stratification"
-							name="stratification"
-							required
-							onChange={handleChange}
-						>
+						<select id="stratification" name="stratification" required onChange={handleChange}>
 							<option />
 							{surveysContext.stratifications.map((st, idx) => {
 								return (
@@ -178,9 +160,7 @@ const NewSurveyForm = () => {
 						/>
 					</span>
 					<span className="field">
-						<label htmlFor="origin_x">
-							Origin longitude (degrees):
-						</label>
+						<label htmlFor="origin_x">Origin longitude (degrees):</label>
 						<input
 							type="number"
 							id="origin_x"
@@ -194,9 +174,7 @@ const NewSurveyForm = () => {
 						/>
 					</span>
 					<span className="field">
-						<label htmlFor="origin_y">
-							Origin latitude (degrees):
-						</label>
+						<label htmlFor="origin_y">Origin latitude (degrees):</label>
 						<input
 							type="number"
 							id="origin_y"
@@ -227,8 +205,10 @@ const NewSurveyForm = () => {
 				<div className="form__row">
 					<div className="survey__cell survey__cell--right buttonsWrapper">
 						<UiButtonSave buttonText={"Save Survey"} />
-						<UiButtonCancel
+						<UiButtonStatusHandle
+							buttonText="Cancel"
 							handleMethod={surveysContext.handleAdd}
+							newStatus={false}
 						/>
 					</div>
 				</div>

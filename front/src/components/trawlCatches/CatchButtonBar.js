@@ -1,9 +1,9 @@
 import React from "react";
 
 import UiButtonDelete from "../ui/UiButtonDelete";
-import UiButtonEditHandle from "../ui/UiButtonEditHandle";
 import UiButtonSexes from "../ui/UiButtonSexes";
-// import UiButtonIconSexes from "../ui/UiButtonIconSexes";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+import UiButtonIconEdit from "../ui/UiButtonIconEdit";
 
 /**
  * Lengths button bar component.
@@ -23,7 +23,9 @@ const CatchButtonBar = ({
 	if (catch_status === "view") {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
-				<UiButtonEditHandle buttonText={"Edit catch"} editMethod={editCatchStatus} newStatus={"edit"} />
+				<UiButtonStatusHandle handleMethod={editCatchStatus} buttonText={"Edit catch"} newStatus={"edit"}>
+					<UiButtonIconEdit />
+				</UiButtonStatusHandle>
 
 				<UiButtonDelete
 					id={catch_id}

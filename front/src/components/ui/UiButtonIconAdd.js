@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as AddIcon } from "../../icons/plus-solid.svg";
+import { ReactComponent as AddIcon } from "../../icons/add.svg";
 
 /**
  * Generic delete button.

@@ -4,7 +4,7 @@ import ShipsContext from "../../contexts/ShipsContext";
 
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
-import UiButtonCancel from "../ui/UiButtonCancel";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
  * Button bar of ship component.
@@ -21,7 +21,7 @@ const ShipButtonBar = (props) => {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<UiButtonSave buttonText={"Save Ship"} />
-				<UiButtonCancel handleMethod={shipsContext.handleAdd} />
+				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={props.handleEdit} newStatus={false} />
 			</div>
 		);
 	}
@@ -31,7 +31,7 @@ const ShipButtonBar = (props) => {
 			<div className="form__cell form__cell--right">
 				<div className="buttonsWrapper">
 					<UiButtonSave buttonText={"Save Ship"} />
-					<UiButtonCancel handleMethod={props.handleEdit} />
+					<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={props.handleEdit} newStatus={false} />
 				</div>
 			</div>
 		);

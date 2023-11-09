@@ -16,10 +16,10 @@ class Ship extends Component {
 		this.handleEdit = this.handleEdit.bind(this);
 	}
 
-	handleEdit(edit) {
+	handleEdit(status) {
 		this.setState(() => {
 			return {
-				edit: edit,
+				edit: status,
 			};
 		});
 	}
@@ -28,21 +28,9 @@ class Ship extends Component {
 		let content = "";
 
 		if (this.state.edit === true) {
-			content = (
-				<ViewEditShipForm
-					props={this.props}
-					edit={true}
-					handleEdit={this.handleEdit}
-				/>
-			);
+			content = <ViewEditShipForm props={this.props} edit={true} handleEdit={this.handleEdit} />;
 		} else {
-			content = (
-				<ViewEditShipForm
-					props={this.props}
-					edit={false}
-					handleEdit={this.handleEdit}
-				/>
-			);
+			content = <ViewEditShipForm props={this.props} edit={false} handleEdit={this.handleEdit} />;
 		}
 
 		return content;

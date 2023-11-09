@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as DeleteIcon } from "../../icons/trash-can.svg";
+import { ReactComponent as DeleteIcon } from "../../icons/delete.svg";
 
 /**
  * Generic delete button.

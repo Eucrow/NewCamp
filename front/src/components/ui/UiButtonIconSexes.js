@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as SexesIcon } from "../../icons/mars-and-venus-solid.svg";
+import { ReactComponent as SexesIcon } from "../../icons/sexes.svg";
 
 /**
  * Generic delete button.

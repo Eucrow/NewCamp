@@ -4,7 +4,7 @@ import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import StationsContext from "../../contexts/StationsContext";
 
 import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonCancel from "../ui/UiButtonCancel";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
  * New station form component
@@ -73,7 +73,7 @@ const NewStationForm = (props) => {
 			<div className="form__row">
 				<div className="survey__cell survey__cell--right buttonsWrapper">
 					<UiButtonSave buttonText={"Save Station"} />
-					<UiButtonCancel handleMethod={props.handleAdd} />
+					<UiButtonStatusHandle buttonText="Cancel" handleMethod={props.handleAdd} newStatus={false} />
 				</div>
 			</div>
 		</form>
