@@ -1,6 +1,6 @@
 import React from "react";
 
-import UiButtonIconSexes from "./UiButtonIconSexes";
+import UiIconSexes from "./UiIconSexes";
 
 /**
  * Component of button to delete
@@ -18,7 +18,7 @@ const UiButtonSexes = ({ children, handleMethod, newStatus }) => {
 				handleMethod(newStatus);
 			}}
 		>
-			<UiButtonIconSexes />
+			<UiIconSexes />
 		</button>
 	);
 	return renderedButton;

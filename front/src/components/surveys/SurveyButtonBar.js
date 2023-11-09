@@ -2,7 +2,7 @@ import React from "react";
 
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
-import UiButtonCancel from "../ui/UiButtonCancel";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
  * Button bar of survey component.
@@ -20,7 +20,7 @@ const SurveyButtonBar = ({ props, edit, handleEdit, deleteSurvey }) => {
 		ButtonBar = (
 			<div className="form__cell form__cell--right buttonsWrapper">
 				<UiButtonSave buttonText={"Save Survey"} />
-				<UiButtonCancel handleMethod={handleEdit} />
+				<UiButtonStatusHandle handleMethod={handleEdit} buttonText={"Cancel"} newStatus={false} />
 			</div>
 		);
 	}

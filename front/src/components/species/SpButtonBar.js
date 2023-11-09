@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 
 import SpeciesContext from "../../contexts/SpeciesContext";
 
-import UiButtonCancel from "../ui/UiButtonCancel";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
  * Button bar of Sp component.
@@ -22,7 +22,7 @@ const SpButtonBar = (props) => {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<UiButtonSave buttonText={"Save Species"} />
-				<UiButtonCancel handleMethod={speciesContext.handleAdd} />
+				<UiButtonStatusHandle buttonText="Cancel" handleMethod={speciesContext.handleAdd} newStatus={false} />
 			</div>
 		);
 	}
@@ -31,7 +31,7 @@ const SpButtonBar = (props) => {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<UiButtonSave buttonText={"Save Species"} />
-				<UiButtonCancel handleMethod={props.handleEdit} />
+				<UiButtonStatusHandle buttonText="Cancel" handleMethod={props.handleEdit} newStatus={false} />
 			</div>
 		);
 	}

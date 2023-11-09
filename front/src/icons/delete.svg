@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(1,0,0,1,-100,-100)">
+        <g id="delete" transform="matrix(1,0,0,1,100,100)">
+            <rect x="0" y="0" width="64" height="64" style="fill:none;"/>
+            <g transform="matrix(1,0,0,1,-92,0)">
+                <path d="M122,20L122,50" style="fill:none;stroke:black;stroke-width:4px;"/>
+            </g>
+            <g transform="matrix(1.05882,0,0,1.02326,-100.353,-1.34884)">
+                <path d="M108,16.955L108,57.023L142,57.023L142,16.955" style="fill:white;"/>
+            </g>
+            <g transform="matrix(1,0,0,1,-92,-1)">
+                <path d="M136.5,8L112,8L107,17L141.5,17L136.5,8Z" style="fill:white;"/>
+            </g>
+            <g transform="matrix(1,0,0,1,-92,-92)">
+                <path d="M105.235,105L100,105C98.344,105 97,106.344 97,108C97,109.656 98.344,111 100,111L103,111L103,149C103,150.657 104.343,152 106,152L142,152C143.657,152 145,150.657 145,149L145,111L148,111C149.656,111 151,109.656 151,108C151,106.344 149.656,105 148,105L143.265,105L139.122,97.543C138.593,96.591 137.59,96 136.5,96L112,96C110.91,96 109.907,96.591 109.378,97.543L105.235,105ZM139,111L109,111L109,146C109,146 139,146 139,146L139,111ZM134.735,102L136.401,105C136.401,105 112.099,105 112.099,105C112.099,105 113.765,102 113.765,102L134.735,102Z"/>
+            </g>
+            <g transform="matrix(1,0,0,1,-96,0)">
+                <path d="M119,24L119,48C119,49.656 120.344,51 122,51C123.656,51 125,49.656 125,48L125,24C125,22.344 123.656,21 122,21C120.344,21 119,22.344 119,24Z"/>
+            </g>
+            <g transform="matrix(1,0,0,1,-84,0)">
+                <path d="M119,24L119,48C119,49.656 120.344,51 122,51C123.656,51 125,49.656 125,48L125,24C125,22.344 123.656,21 122,21C120.344,21 119,22.344 119,24Z"/>
+            </g>
+        </g>
+    </g>
+</svg>

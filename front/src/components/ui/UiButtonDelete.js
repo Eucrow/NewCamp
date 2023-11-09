@@ -1,6 +1,6 @@
 import React from "react";
 
-import UiButtonIconDelete from "./UiButtonIconDelete";
+import UiIconDelete from "./UiIconDelete";
 /**
  * Component of button to delete
  * @param {number} id id of the element to delete.
@@ -20,7 +20,7 @@ const UiButtonDelete = ({ id, deleteMethod, buttonText, confirmMessage }) => {
 				}
 			}}
 		>
-			<UiButtonIconDelete />
+			<UiIconDelete />
 		</button>
 	);
 

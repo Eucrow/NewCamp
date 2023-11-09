@@ -14,9 +14,10 @@ import TrawlFormEdit from "./edit/TrawlFormEdit";
 import HydrographyFormEdit from "./edit/HydrographyFormEdit";
 
 import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonCancel from "../ui/UiButtonCancel";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+import UiIconDetailHide from "../ui/UiIconDetailHide";
+import UiIconEdit from "../ui/UiIconEdit";
 
 // const useRenderCount = () => {
 // 	const renderCount = useRef(0);
@@ -464,8 +465,12 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 										buttonText={"Hide detail"}
 										handleMethod={setDetail}
 										newStatus={false}
-									/>
-									<UiButtonStatusHandle buttonText={"Edit"} handleMethod={setEdit} newStatus={true} />
+									>
+										<UiIconDetailHide />
+									</UiButtonStatusHandle>
+									<UiButtonStatusHandle buttonText={"Edit"} handleMethod={setEdit} newStatus={true}>
+										<UiIconEdit />
+									</UiButtonStatusHandle>
 								</div>
 							</div>
 						</div>
@@ -508,7 +513,11 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<UiButtonSave buttonText="Save Haul" />
-									<UiButtonCancel buttonText="Cancel" handleMethod={handleCancel} />
+									<UiButtonStatusHandle
+										buttonText={"Cancel"}
+										handleMethod={handleCancel}
+										newStatus={false}
+									/>
 								</div>
 							</div>
 						</div>
@@ -563,7 +572,11 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
 								<UiButtonSave buttonText="Save Haul" />
-								<UiButtonCancel buttonText="Cancel" handleMethod={handleCancel} />
+								<UiButtonStatusHandle
+									buttonText={"Cancel"}
+									handleMethod={handleCancel}
+									newStatus={false}
+								/>
 							</div>
 						</div>
 					</form>

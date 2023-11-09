@@ -3,6 +3,8 @@ import React from "react";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
+import UiIconDetailShow from "../ui/UiIconDetailShow";
+import UiIconEdit from "../ui/UiIconEdit";
 
 /**
  * Component haul button bar.
@@ -32,7 +34,9 @@ const HaulButtonBar = ({ haul_id, edit, detail, setEdit, handleDetail, deleteHau
 	if (edit === false && detail === false) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
-				<UiButtonStatusHandle buttonText={"Edit Haul"} handleMethod={setEdit} newStatus={true} />
+				<UiButtonStatusHandle handleMethod={setEdit} buttonText={"Edit sex"} newStatus={true}>
+					<UiIconEdit />
+				</UiButtonStatusHandle>
 
 				<UiButtonDelete
 					id={haul_id}
@@ -41,7 +45,9 @@ const HaulButtonBar = ({ haul_id, edit, detail, setEdit, handleDetail, deleteHau
 					confirmMessage="Are you sure to delete this haul?"
 				/>
 
-				<UiButtonStatusHandle buttonText={"View Detail"} handleMethod={handleDetail} newStatus={true} />
+				<UiButtonStatusHandle buttonText={"View haul details"} handleMethod={handleDetail} newStatus={true}>
+					<UiIconDetailShow />
+				</UiButtonStatusHandle>
 			</div>
 		);
 	}

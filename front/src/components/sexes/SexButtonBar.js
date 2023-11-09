@@ -2,7 +2,8 @@ import React from "react";
 
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonCancel from "../ui/UiButtonCancel";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+import UiIconEdit from "../ui/UiIconEdit";
 
 /**
  * Lengths button bar component.
@@ -23,16 +24,9 @@ const SexButtonBar = ({
 	if (sex_status === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={(e) => {
-						e.preventDefault();
-						setSexStatus("edit");
-					}}
-				>
-					Edit sex
-				</button>
+				<UiButtonStatusHandle handleMethod={setSexStatus} buttonText={"Edit sex"} newStatus={"edit"}>
+					<UiIconEdit />
+				</UiButtonStatusHandle>
 				<UiButtonDelete
 					id={sex_id}
 					deleteMethod={deleteSex}
@@ -83,7 +77,7 @@ const SexButtonBar = ({
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<UiButtonSave buttonText={"Save sex"} />
-				<UiButtonCancel handleMethod={setAddSexStatus} />
+				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={setAddSexStatus} newStatus={false} />
 			</div>
 		);
 	}
