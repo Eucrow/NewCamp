@@ -25,6 +25,7 @@ const Sex = ({
 	addSex,
 	setAddSexStatus,
 	sexesBackup,
+	updateSex,
 }) => {
 	const [newSex, setNewSex] = useState("");
 	const [lengthsStatus, setLengthsStatus] = useState("hide");
@@ -34,8 +35,6 @@ const Sex = ({
 	useEffect(() => {
 		setNewSex(sex);
 	}, [sex]);
-
-	const apiSex = "http://127.0.0.1:8000/api/1.0/sexes/";
 
 	const handleCancelEditSex = (e) => {
 		setSexStatus("view");
@@ -71,26 +70,6 @@ const Sex = ({
 			e.target.setCustomValidity("");
 			setValidSex(true);
 		}
-	};
-
-	/**
-	 * Save the sex stored in state to database.
-	 */
-	const updateSex = () => {
-		const newSexData = {
-			id: sex_id,
-			sex: newSex,
-		};
-
-		fetch(apiSex, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(newSexData),
-		})
-			.then((response) => response.json())
-			.catch((error) => console.log("Error"));
 	};
 
 	var content = null;
@@ -133,7 +112,7 @@ const Sex = ({
 			<form
 				className="form__row form--wide buttonsWrapper"
 				onSubmit={(e) => {
-					updateSex();
+					updateSex(sex_id, newSex);
 					setSexStatus("view");
 				}}
 			>

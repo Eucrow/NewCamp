@@ -31,11 +31,6 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 	}, [apiSexes, view_sexes]);
 
 	const addSex = (evt, sex, catch_id) => {
-		/**
-		 * Handle new sex form.
-		 * Fetch the new sex and update the catches state.
-		 */
-
 		evt.preventDefault();
 
 		var data = {
@@ -64,14 +59,17 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 	};
 
 	const deleteSex = (sex_id) => {
-		const api = apiSex + sex_id;
+		var data = {
+			id: sex_id,
+		};
 
-		fetch(api, {
+		fetch(apiSex, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
 				Accept: "application/json",
 			},
+			body: JSON.stringify(data),
 		})
 			.then(() => {
 				const newSexes = sexes.filter((s) => {
@@ -80,6 +78,26 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 				setSexes(newSexes);
 			})
 			.catch((error) => alert(error));
+	};
+
+	const updateSex = (sex_id, updatedSex) => {
+		const newSexData = {
+			id: sex_id,
+			sex: updatedSex,
+		};
+
+		fetch(apiSex, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(newSexData),
+		})
+			.then((response) => response.json())
+			.then((updatedSex) => {
+				setSexes(sexes.map((sex) => (sex.id === sex_id ? updatedSex : sex)));
+			})
+			.catch((error) => console.log("Error"));
 	};
 
 	var content = (
@@ -97,6 +115,7 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 								increment={increment}
 								deleteSex={deleteSex}
 								sexesBackup={sexesBackup}
+								updateSex={updateSex}
 							/>
 						);
 					})}
