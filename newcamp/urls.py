@@ -202,6 +202,7 @@ urlpatterns = [
                   #     name="lengths_import"),
 
                   # Sex and Lengths API URLs
+                  # TODO: This may not be needed. Check it.
                   re_path(r'^api/1.0/sex/lengths/$', SexLengthsAPI.as_view(),
                           name="create_sex_lenghts_api"),
                   # Import Data

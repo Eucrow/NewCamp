@@ -5,10 +5,9 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
 from catches.serializers import SexCatchSerializer
-from samples.models import Length, Sex, SampledWeight
+from samples.models import Length, SampledWeight
 
-from samples.serializers import LenghtSerializer, SampleWeightSerializer, LengthSerializer2, \
-    SexSerializer
+from samples.serializers import LenghtSerializer, SampleWeightSerializer, LengthSerializer2
 
 
 # class SampledWeightCreate(APIView):
@@ -89,6 +88,7 @@ class LengthsAPI(APIView):
 #         length.delete()
 #         return Response(status=HTTP_204_NO_CONTENT)
 
+# TODO: This may not be needed. Check it.
 class SexLengthsAPI(APIView):
     """
     Create a new sex with its lengths.

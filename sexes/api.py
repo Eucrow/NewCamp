@@ -1,12 +1,9 @@
-from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 
-from catches.models import Catch
 from samples.models import Sex
-from samples.serializers import SexSerializer
-from sexes.serializers import SexesSerializer
+from sexes.serializers import SexesSerializer, SexSerializer
 
 
 class SexesAPI(APIView):
