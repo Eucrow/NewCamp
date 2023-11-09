@@ -16,8 +16,8 @@ import HydrographyFormEdit from "./edit/HydrographyFormEdit";
 import UiButtonSave from "../ui/UiButtonSave";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
-import UiButtonIconDetailHide from "../ui/UiButtonIconDetailHide";
-import UiButtonIconEdit from "../ui/UiButtonIconEdit";
+import UiIconDetailHide from "../ui/UiIconDetailHide";
+import UiIconEdit from "../ui/UiIconEdit";
 
 // const useRenderCount = () => {
 // 	const renderCount = useRef(0);
@@ -466,10 +466,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 										handleMethod={setDetail}
 										newStatus={false}
 									>
-										<UiButtonIconDetailHide />
+										<UiIconDetailHide />
 									</UiButtonStatusHandle>
 									<UiButtonStatusHandle buttonText={"Edit"} handleMethod={setEdit} newStatus={true}>
-										<UiButtonIconEdit />
+										<UiIconEdit />
 									</UiButtonStatusHandle>
 								</div>
 							</div>

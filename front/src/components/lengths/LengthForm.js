@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef } from "react";
 
 import LengthsContext from "../../contexts/LengthsContext";
 
-import UiButtonIconAdd from "../ui/UiButtonIconAdd";
-import UiButtonIconDelete from "../ui/UiButtonIconDelete";
+import UiIconAdd from "../ui/UiIconAdd";
+import UiIconDelete from "../ui/UiIconDelete";
 
 const LengthForm = ({ l, idx }) => {
 	useEffect(() => {
@@ -82,7 +82,7 @@ const LengthForm = ({ l, idx }) => {
 								lengthsContext.addLength(l.length, idx);
 							}}
 						>
-							<UiButtonIconAdd />
+							<UiIconAdd />
 						</button>
 					</div>
 
@@ -95,7 +95,7 @@ const LengthForm = ({ l, idx }) => {
 								lengthsContext.deleteLength(idx);
 							}}
 						>
-							<UiButtonIconDelete />
+							<UiIconDelete />
 						</button>
 					</div>
 				</div>

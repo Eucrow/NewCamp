@@ -4,9 +4,9 @@ import { ReactComponent as AddIcon } from "../../icons/add.svg";
 /**
  * Generic delete button.
  */
-const UiButtonIconAdd = () => {
+const UiIconAdd = () => {
 	const renderedButton = <AddIcon />;
 	return renderedButton;
 };
 
-export default UiButtonIconAdd;
+export default UiIconAdd;

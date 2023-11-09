@@ -4,9 +4,9 @@ import { ReactComponent as DeleteIcon } from "../../icons/delete.svg";
 /**
  * Generic delete button.
  */
-const UiButtonIconDelete = () => {
+const UiIconDelete = () => {
 	const renderedButton = <DeleteIcon />;
 	return renderedButton;
 };
 
-export default UiButtonIconDelete;
+export default UiIconDelete;

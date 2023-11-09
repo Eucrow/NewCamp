@@ -3,7 +3,7 @@ import React from "react";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
-import UiButtonIconEdit from "../ui/UiButtonIconEdit";
+import UiIconEdit from "../ui/UiIconEdit";
 
 /**
  * Lengths button bar component.
@@ -25,7 +25,7 @@ const SexButtonBar = ({
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<UiButtonStatusHandle handleMethod={setSexStatus} buttonText={"Edit sex"} newStatus={"edit"}>
-					<UiButtonIconEdit />
+					<UiIconEdit />
 				</UiButtonStatusHandle>
 				<UiButtonDelete
 					id={sex_id}

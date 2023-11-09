@@ -4,9 +4,9 @@ import { ReactComponent as EditIcon } from "../../icons/edit.svg";
 /**
  * Generic delete button.
  */
-const UiButtonIconEdit = () => {
+const UiIconEdit = () => {
 	const renderedButton = <EditIcon />;
 	return renderedButton;
 };
 
-export default UiButtonIconEdit;
+export default UiIconEdit;

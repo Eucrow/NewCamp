@@ -4,9 +4,9 @@ import { ReactComponent as DetailIcon } from "../../icons/detail_hide.svg";
 /**
  * Generic delete button.
  */
-const UiButtonIconDetailHide = () => {
+const UiDetailHide = () => {
 	const renderedButton = <DetailIcon />;
 	return renderedButton;
 };
 
-export default UiButtonIconDetailHide;
+export default UiDetailHide;

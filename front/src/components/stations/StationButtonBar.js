@@ -5,7 +5,7 @@ import StationsContext from "../../contexts/StationsContext";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
-import UiButtonIconEdit from "../ui/UiButtonIconEdit";
+import UiIconEdit from "../ui/UiIconEdit";
 
 const StationButtonBar = ({ station_id, handleEdit, edit }) => {
 	const stationsContext = useContext(StationsContext);
@@ -27,7 +27,7 @@ const StationButtonBar = ({ station_id, handleEdit, edit }) => {
 			<div className="station__cell station__cell--right">
 				<div className="buttonsWrapper">
 					<UiButtonStatusHandle handleMethod={handleEdit} buttonText={"Edit sex"} newStatus={true}>
-						<UiButtonIconEdit />
+						<UiIconEdit />
 					</UiButtonStatusHandle>
 					<UiButtonDelete
 						id={station_id}
