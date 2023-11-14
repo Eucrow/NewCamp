@@ -17,7 +17,6 @@ class Catch extends Component {
 	 * @param {method} props.handleCancelEditCatch: manage cancellation of catch edition.
 	 * @param {method} props.updateCatch: update catch in database.
 	 * @param {method} props.deleteCatch: delete catch of database.
-	 * @param {method} props.addSex: handle the new sex form.
 	 */
 
 	constructor(props) {
@@ -79,19 +78,12 @@ class Catch extends Component {
 						deleteCatch={this.props.deleteCatch}
 						handleViewSexes={this.handleViewSexes}
 					/>
-					<div className="form__row sexesWrapper">
-						<Sexes
-							catch_id={this.props.this_catch.id}
-							has_sexes={this.props.this_catch.has_sexes}
-							unit={this.props.this_catch.unit}
-							increment={this.props.this_catch.increment}
-							editCatchStatus={this.editCatchStatus}
-							addSex={this.props.addSex}
-							deleteSex={this.props.deleteSex}
-							handleViewSexes={this.handleViewSexes}
-							view_sexes={this.state.view_sexes}
-						/>
-					</div>
+					<Sexes
+						catch_id={this.props.this_catch.id}
+						unit={this.props.this_catch.unit}
+						increment={this.props.this_catch.increment}
+						view_sexes={this.state.view_sexes}
+					/>
 				</div>
 			);
 		} else if (this.state.status_catch === "edit") {

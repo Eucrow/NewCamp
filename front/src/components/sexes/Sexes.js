@@ -103,7 +103,7 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 	var content = (
 		<Fragment>
 			{view_sexes === true ? (
-				<Fragment>
+				<div className="form__row sexesWrapper">
 					{sexes.map((s) => {
 						return (
 							<Sex
@@ -131,7 +131,7 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 					) : (
 						<SexesButtonBar add_sex_status={"view"} setAddSexStatus={setAddSexStatus} />
 					)}
-				</Fragment>
+				</div>
 			) : null}
 		</Fragment>
 	);

@@ -183,7 +183,7 @@ class ComponentCategory extends Component {
 			);
 		} else if (this.props.status_catch === "edit") {
 			return (
-				<form>
+				<form className="form__cell form__cell__catches--left">
 					<input type="hidden" id="haul_id" name="haul_id" value={this.props.this_catch.haul_id} />
 					<label className="form__cell">
 						Group:
