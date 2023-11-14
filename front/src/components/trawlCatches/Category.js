@@ -112,7 +112,7 @@ class ComponentCategory extends Component {
 				: null;
 
 			return (
-				<form>
+				<form className="form__cell form__cell__catches--left">
 					<label className="form__cell">
 						Group:
 						<input

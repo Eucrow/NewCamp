@@ -68,6 +68,7 @@ input:invalid {
 	align-items: center;
 	padding-right: 10px;
 	min-height: 2rem;
+    flex-wrap: wrap;
 
 	&:last-child {
 		padding-right: 0px;

@@ -71,6 +71,7 @@ class Catch extends Component {
 				<div className="form__row form--wide catch">
 					<ComponentCategory status_catch={this.state.status_catch} this_catch={this.props.this_catch} />
 					<CatchButtonBar
+						className="form__cell__catches--left"
 						catch_id={this.props.this_catch.id}
 						catch_status={this.state.status_catch}
 						view_sexes={this.state.view_sexes}
