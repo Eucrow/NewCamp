@@ -271,17 +271,16 @@ class CatchesList extends Component {
 
 		const apiCatch = this.apiCatch + haul_id + "/" + sp_id + "/" + category;
 
-		return fetch(apiCatch)
-			.then((response) => {
-				if (response.status === 200) {
-					return true;
-				} else {
-					return false;
-				}
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
+		return fetch(apiCatch).then((response) => {
+			if (response.status === 200) {
+				return true;
+			} else {
+				return false;
+			}
+		});
+		// .catch(function (error) {
+		// 	console.log(error);
+		// });
 	};
 
 	createCatch = (e, new_catch) => {

@@ -107,12 +107,6 @@ const Category = ({
 								category: category,
 								weight: weight,
 							});
-							// this.setState({
-							// 	group: "",
-							// 	sp_id: "",
-							// 	category: "",
-							// 	weight: "",
-							// });
 						}}
 					>
 						Add catch
