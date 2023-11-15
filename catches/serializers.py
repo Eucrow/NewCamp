@@ -23,6 +23,7 @@ class CatchSerializer(serializers.ModelSerializer):
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
     group = serializers.CharField(source='sp.group')
+    sp_id = serializers.IntegerField(source='sp.id')
     sp_code = serializers.CharField(source='sp.sp_code')
     sp_name = serializers.CharField(source='sp.sp_name')
     unit = serializers.CharField(source='sp.unit')
@@ -32,7 +33,7 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        fields = ['id', 'weight', 'category', 'haul', 'haul_id', 'group', 'sp_code',
+        fields = ['id', 'weight', 'category', 'haul', 'haul_id', 'group', 'sp_id', 'sp_code',
                   'sp_name', 'unit', 'increment', 'sampled_weight']
 
 

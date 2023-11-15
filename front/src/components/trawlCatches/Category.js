@@ -1,6 +1,18 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-class ComponentCategory extends Component {
+// class ComponentCategory extends Component {
+const Category = ({
+	status_catch,
+	this_catch,
+	species,
+	createCatch,
+	existsCatch,
+	handleChangeGroup,
+	handleChangeSpecies,
+	handleChangeCategory,
+	handleChangeWeight,
+	handleChangeSampledWeight,
+}) => {
 	/**
 	 * Category Component
 	 * @param {string} props.status_catch: state of Catch component: "", "view" or "edit".
@@ -10,35 +22,32 @@ class ComponentCategory extends Component {
 	 * @param {method} props.handleChangeSpecies: managing of species field.
 	 * @param {method} props.handleChangeCategory: managing of category field.
 	 * @param {method} props.handleChangeWeight: managing of weight field.
+	 * @param {method} props.handleChangeSampledWeight: managing of sampled_weight field.
+	 * @param {method} props.createCatch: create catch in database.
+	 * @param {method} props.existsCatch: check if catch exists in database.
 	 */
 
-	constructor(props) {
-		super(props);
+	const [group, setGroup] = useState("");
+	const [sp_id, setSp_id] = useState("");
+	const [category, setCategory] = useState("");
+	const [weight, setWeight] = useState("");
+	const [sampled_weight, setSampled_weight] = useState("");
 
-		this.state = {
-			group: "",
-			sp_id: "",
-			category: "",
-			weight: "",
-			sampled_weight: "",
-		};
-	}
-
-	renderContent = () => {
-		if (this.props.status_catch === "add") {
+	const renderContent = () => {
+		if (status_catch === "add") {
 			return (
 				<form>
 					<label className="form__cell">
 						Group:
 						<input
-							value={this.state.group}
+							value={group}
 							style={{ width: 5 + "ch" }}
 							type="number"
 							id="group"
 							name="group"
 							min="1"
 							max="5"
-							onChange={(e) => this.setState({ group: e.target.value })}
+							onChange={(e) => setGroup(e.target.value)}
 						/>
 					</label>
 					<label className="form__cell">
@@ -47,11 +56,11 @@ class ComponentCategory extends Component {
 							style={{ width: 30 + "ch" }}
 							id="sp_code"
 							name="sp_code"
-							onChange={(e) => this.setState({ sp_id: e.target.value })}
+							onChange={(e) => setSp_id(e.target.value)}
 						>
 							<option>Select species...</option>
-							{this.props.species.map((s) => {
-								if (s.group === parseInt(this.state.group)) {
+							{species.map((s) => {
+								if (s.group === parseInt(group)) {
 									return (
 										<option value={s.id} key={s.id}>
 											{s.sp_code}-{s.sp_name}
@@ -66,50 +75,53 @@ class ComponentCategory extends Component {
 					<label className="form__cell">
 						Category:
 						<input
-							value={this.state.category}
+							value={category}
 							style={{ width: 4 + "ch" }}
 							type="number"
 							id="category"
 							name="category"
 							min="1"
 							max="99"
-							onChange={(e) => this.setState({ category: e.target.value })}
+							onChange={(e) => setCategory(e.target.value)}
 						/>
 					</label>
 					<label className="form__cell">
 						Weight(g.):
 						<input
-							value={this.state.weight}
+							value={weight}
 							style={{ width: 8 + "ch" }}
 							type="number"
 							id="weight"
 							name="weight"
 							min="1"
 							max="99999999"
-							onChange={(e) => this.setState({ weight: e.target.value })}
+							onChange={(e) => setWeight(e.target.value)}
 						/>
 					</label>
 					<button
 						className="buttonsWrapper__button"
 						onClick={(e) => {
-							this.props.createCatch(e, this.state);
-							this.setState({
-								group: "",
-								sp_id: "",
-								category: "",
-								weight: "",
+							createCatch(e, {
+								group: group,
+								sp_id: sp_id,
+								category: category,
+								weight: weight,
 							});
+							// this.setState({
+							// 	group: "",
+							// 	sp_id: "",
+							// 	category: "",
+							// 	weight: "",
+							// });
 						}}
 					>
 						Add catch
 					</button>
 				</form>
 			);
-		} else if (this.props.status_catch === "view" || this.props.status_catch === "") {
-			const sampled_weight = this.props.this_catch.sampled_weight ? this.props.this_catch.sampled_weight : null;
-			const sampled_weight_id = this.props.this_catch.sampled_weight_id
-				? this.props.this_catch.sampled_weight_id
-				: null;
+		} else if (status_catch === "view" || status_catch === "") {
+			const sampled_weight = this_catch.sampled_weight ? this_catch.sampled_weight : null;
+			const sampled_weight_id = this_catch.sampled_weight_id ? this_catch.sampled_weight_id : null;
 
 			return (
 				<form className="form__cell form__cell__catches--left">
@@ -123,18 +135,18 @@ class ComponentCategory extends Component {
 							min="1"
 							max="5"
 							disabled
-							value={this.props.this_catch.group}
+							value={this_catch.group}
 						/>
 					</label>
 					<label className="form__cell">
 						Species:
 						<select style={{ width: 30 + "ch" }} id="sp_code" name="sp_code" disabled>
 							<option
-								key={this.props.this_catch.sp_id}
-								// value={this.props.this_catch.sp_id}
+								key={this_catch.sp_id}
+								// value={this_catch.sp_id}
 							>
-								{/* {this.props.species.find((s) => s.)} */}
-								{this.props.this_catch.sp_name}
+								{/* {species.find((s) => s.)} */}
+								{this_catch.sp_name}
 							</option>
 						</select>
 					</label>
@@ -148,7 +160,7 @@ class ComponentCategory extends Component {
 							min="1"
 							max="99"
 							disabled
-							value={this.props.this_catch.category}
+							value={this_catch.category}
 						/>
 					</label>
 					<label className="form__cell">
@@ -161,7 +173,7 @@ class ComponentCategory extends Component {
 							min="1"
 							max="99999999"
 							disabled
-							value={this.props.this_catch.weight}
+							value={this_catch.weight}
 						/>
 					</label>
 
@@ -176,15 +188,15 @@ class ComponentCategory extends Component {
 							name="sampled_weight"
 							min="1"
 							max="99999999"
-							value={this.props.this_catch.sampled_weight}
+							value={this_catch.sampled_weight || ""}
 						/>
 					</label>
 				</form>
 			);
-		} else if (this.props.status_catch === "edit") {
+		} else if (status_catch === "edit") {
 			return (
 				<form className="form__cell form__cell__catches--left">
-					<input type="hidden" id="haul_id" name="haul_id" value={this.props.this_catch.haul_id} />
+					<input type="hidden" id="haul_id" name="haul_id" value={this_catch.haul_id} />
 					<label className="form__cell">
 						Group:
 						<input
@@ -194,8 +206,8 @@ class ComponentCategory extends Component {
 							name="group"
 							min="1"
 							max="5"
-							value={this.props.this_catch.group}
-							onChange={this.props.handleChangeGroup(this.props.this_catch.id)}
+							value={this_catch.group}
+							onChange={handleChangeGroup(this_catch.id)}
 						/>
 					</label>
 					<label className="form__cell">
@@ -204,30 +216,19 @@ class ComponentCategory extends Component {
 							style={{ width: 30 + "ch" }}
 							id="sp_code"
 							name="sp_code"
-							value={
-								this.props.this_catch.sp_id +
-								"--" +
-								this.props.this_catch.sp_code +
-								"--" +
-								this.props.this_catch.sp_name
-							}
-							onChange={this.props.handleChangeSpecies(this.props.this_catch.id)}
+							value={this_catch.sp_id + "--" + this_catch.sp_code + "--" + this_catch.sp_name}
+							onChange={handleChangeSpecies(this_catch.id)}
 						>
-							<option>Select species...</option>
-							{this.props.species.map((s) => {
-								if (s.group === parseInt(this.props.this_catch.group)) {
-									return (
-										<option
-											key={s.id + "--" + s.sp_code + "--" + s.sp_name}
-											value={s.id + "--" + s.sp_code + "--" + s.sp_name}
-										>
-											{s.sp_code}-{s.sp_name}
-										</option>
-									);
-								} else {
-									return null;
-								}
-							})}
+							{species
+								.filter((s) => s.group === parseInt(this_catch.group))
+								.map((s) => (
+									<option
+										key={s.id + "--" + s.sp_code + "--" + s.sp_name}
+										value={s.id + "--" + s.sp_code + "--" + s.sp_name}
+									>
+										{s.sp_code}-{s.sp_name}
+									</option>
+								))}
 						</select>
 					</label>
 					<label className="form__cell">
@@ -239,8 +240,8 @@ class ComponentCategory extends Component {
 							name="category"
 							min="1"
 							max="99"
-							value={this.props.this_catch.category}
-							onChange={this.props.handleChangeCategory(this.props.this_catch.id)}
+							value={this_catch.category}
+							onChange={handleChangeCategory(this_catch.id)}
 						/>
 					</label>
 					<label className="form__cell">
@@ -252,8 +253,8 @@ class ComponentCategory extends Component {
 							name="weight"
 							min="1"
 							max="99999999"
-							value={this.props.this_catch.weight}
-							onChange={this.props.handleChangeWeight(this.props.this_catch.id)}
+							value={this_catch.weight}
+							onChange={handleChangeWeight(this_catch.id)}
 						/>
 					</label>
 					<label className="form__cell">
@@ -266,8 +267,8 @@ class ComponentCategory extends Component {
 							name="sampled_weight"
 							min="1"
 							max="99999999"
-							value={this.props.this_catch.sampled_weight}
-							onChange={this.props.handleChangeSampledWeight(this.props.this_catch.id)}
+							value={this_catch.sampled_weight}
+							onChange={handleChangeSampledWeight(this_catch.id)}
 						/>
 					</label>
 				</form>
@@ -275,9 +276,7 @@ class ComponentCategory extends Component {
 		}
 	};
 
-	render() {
-		return this.renderContent();
-	}
-}
+	return renderContent();
+};
 
-export default ComponentCategory;
+export default Category;
