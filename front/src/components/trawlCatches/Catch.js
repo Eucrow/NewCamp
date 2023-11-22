@@ -33,35 +33,9 @@ const Catch = ({
 	 * @param {method} props.deleteCatch: delete catch of database.
 	 */
 
-	// constructor(props) {
-	// 	super(props);
-	// 	this.state = {
-	// 		// status_catch: "", // State of Catch component: "", "add", "view" or "edit".
-	// 		status_catch: this.props.status_catch || "view",
-	// 		view_sexes: false,
-	// 	};
-
-	// 	this.original_catch = "";
-
-	// 	this.editCatchStatus = this.editCatchStatus.bind(this);
-	// 	this.handleCancel = this.handleCancel.bind(this);
-	// }
-
-	// editCatchStatus(status) {
-	// 	this.setState({
-	// 		status_catch: status,
-	// 	});
-	// }
-
 	const [status_catch, setStatus_catch] = useState("view");
 	const [view_sexes, setView_sexes] = useState(false);
 	const [original_catch, setOriginal_catch] = useState(this_catch || "");
-
-	// handleViewSexes = (status) => {
-	// 	this.setState({
-	// 		view_sexes: status,
-	// 	});
-	// };
 
 	//TODO: test if is possible to avoid this method
 	const handleCancel = () => {
@@ -132,10 +106,6 @@ const Catch = ({
 	};
 
 	return renderContent();
-
-	// render() {
-	// 	return this.renderContent();
-	// }
 };
 
 export default Catch;
