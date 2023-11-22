@@ -8,7 +8,6 @@ const Category = ({
 	species,
 	// editCatchStatus,
 	createCatch,
-	existsCatch,
 	handleChangeGroup,
 	handleChangeSpecies,
 	handleChangeCategory,
@@ -27,7 +26,6 @@ const Category = ({
 	 * @param {method} props.handleChangeWeight: managing of weight field.
 	 * @param {method} props.handleChangeSampledWeight: managing of sampled_weight field.
 	 * @param {method} props.createCatch: create catch in database.
-	 * @param {method} props.existsCatch: check if catch exists in database.
 	 */
 
 	const [group, setGroup] = useState("");
@@ -101,33 +99,18 @@ const Category = ({
 							onChange={(e) => setWeight(e.target.value)}
 						/>
 					</label>
-					{/* NO, ESTO NO ESTÁ BIEN: ESTO DEBERÍA SER EL BOTÓN DE GUARDAR */}
 					<CatchesButtonBar
 						createCatch={createCatch}
 						group={group}
 						sp_id={sp_id}
 						category={category}
 						weight={weight}
-						// editCatchStatus={editCatchStatus}
 					/>
-					{/* <button
-						className="buttonsWrapper__button"
-						onClick={(e) => {
-							createCatch(e, {
-								group: group,
-								sp_id: sp_id,
-								category: category,
-								weight: weight,
-							});
-						}}
-					>
-						Add catch
-					</button> */}
 				</form>
 			);
 		} else if (status_catch === "view" || status_catch === "") {
-			const sampled_weight = this_catch.sampled_weight ? this_catch.sampled_weight : null;
-			const sampled_weight_id = this_catch.sampled_weight_id ? this_catch.sampled_weight_id : null;
+			// const sampled_weight = this_catch.sampled_weight ? this_catch.sampled_weight : null;
+			// const sampled_weight_id = this_catch.sampled_weight_id ? this_catch.sampled_weight_id : null;
 
 			return (
 				<form className="form__cell form__cell__catches--left">

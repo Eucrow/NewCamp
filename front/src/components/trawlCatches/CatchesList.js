@@ -371,12 +371,7 @@ class CatchesList extends Component {
 				<div className="wrapper form__row form--wide catchesList">
 					<div className="form__row form--wide">There aren't catches yet</div>
 					<div className="form__row form--wide">
-						<Catch
-							status_catch="add"
-							species={this.state.species}
-							createCatch={this.createCatch}
-							existsCatch={this.existsCatch}
-						/>
+						{/* <Catch status_catch="add" species={this.state.species} createCatch={this.createCatch} /> */}
 					</div>
 				</div>
 			);
@@ -386,12 +381,7 @@ class CatchesList extends Component {
 					<legend>Biometric sampling</legend>
 					<CatchesButtonBar catch_status="add" handleChangeAdd={this.handleChangeAdd} />
 					{this.state.add === true ? (
-						<Catch
-							status_catch="add"
-							species={this.state.species}
-							createCatch={this.createCatch}
-							existsCatch={this.existsCatch}
-						/>
+						<Catch status_catch="add" species={this.state.species} createCatch={this.createCatch} />
 					) : null}
 					{this.state.catches.map((c) => {
 						return (
