@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CatchesButtonBar from "./CatchesButtonBar";
 
 // class ComponentCategory extends Component {
-const Category = ({
+const CatchForm = ({
 	status_catch,
 	this_catch,
 	species,
@@ -268,4 +268,4 @@ const Category = ({
 	return renderContent();
 };
 
-export default Category;
+export default CatchForm;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import Sexes from "../sexes/Sexes.js";
-import Category from "./Category.js";
+import CatchForm from "./CatchForm.js";
 import CatchButtonBar from "./CatchButtonBar.js";
 
 // class Catch extends Component {
@@ -76,7 +76,7 @@ const Catch = ({
 		if (status_catch === "add") {
 			return (
 				<div className="form__row form--wide">
-					<Category
+					<CatchForm
 						status_catch={status_catch}
 						species={species}
 						createCatch={createCatch} //is this needed?
@@ -86,7 +86,7 @@ const Catch = ({
 		} else if (status_catch === "view") {
 			return (
 				<div className="form__row form--wide catch">
-					<Category status_catch={status_catch} this_catch={this_catch} />
+					<CatchForm status_catch={status_catch} this_catch={this_catch} />
 					<CatchButtonBar
 						className="form__cell__catches--left"
 						catch_id={this_catch.id}
@@ -107,7 +107,7 @@ const Catch = ({
 		} else if (status_catch === "edit") {
 			return (
 				<div className="form__row">
-					<Category
+					<CatchForm
 						status_catch={status_catch}
 						this_catch={this_catch}
 						species={species}
