@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import Catch from "./Catch.js";
+import CatchesButtonBar from "./CatchesButtonBar.js";
 
 class CatchesList extends Component {
 	/**
@@ -15,6 +16,7 @@ class CatchesList extends Component {
 			species: [],
 			loaded: false,
 			placeholder: "Loading",
+			add: false,
 		};
 
 		this.apiCatches = "http://127.0.0.1:8000/api/1.0/catches/";
@@ -27,6 +29,7 @@ class CatchesList extends Component {
 		this.apiSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/";
 		this.apiCreateSampledWeight = "http://127.0.0.1:8000/api/1.0/sampled_weight/new";
 
+		this.handleChangeAdd = this.handleChangeAdd.bind(this);
 		this.handleChangeGroup = this.handleChangeGroup.bind(this);
 		this.handleChangeSpecies = this.handleChangeSpecies.bind(this);
 		this.handleChangeCategory = this.handleChangeCategory.bind(this);
@@ -60,6 +63,12 @@ class CatchesList extends Component {
 				});
 			})
 			.catch((error) => alert(error));
+	};
+
+	handleChangeAdd = () => {
+		this.setState({
+			add: !this.state.add,
+		});
 	};
 
 	handleChangeGroup = (idx) => (evt) => {
@@ -278,9 +287,6 @@ class CatchesList extends Component {
 				return false;
 			}
 		});
-		// .catch(function (error) {
-		// 	console.log(error);
-		// });
 	};
 
 	createCatch = (e, new_catch) => {
@@ -311,6 +317,7 @@ class CatchesList extends Component {
 							return {
 								catches: new_catches,
 								status_catch: "add",
+								add: false,
 							};
 						});
 					})
@@ -377,14 +384,15 @@ class CatchesList extends Component {
 			return (
 				<fieldset className="wrapper form__row form--wide catchesList">
 					<legend>Biometric sampling</legend>
-					<div className="form__row">
+					<CatchesButtonBar catch_status="add" handleChangeAdd={this.handleChangeAdd} />
+					{this.state.add === true ? (
 						<Catch
 							status_catch="add"
 							species={this.state.species}
 							createCatch={this.createCatch}
 							existsCatch={this.existsCatch}
 						/>
-					</div>
+					) : null}
 					{this.state.catches.map((c) => {
 						return (
 							<Catch

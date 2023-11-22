@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import CatchesButtonBar from "./CatchesButtonBar";
 
 // class ComponentCategory extends Component {
 const Category = ({
 	status_catch,
 	this_catch,
 	species,
+	// editCatchStatus,
 	createCatch,
 	existsCatch,
 	handleChangeGroup,
@@ -18,6 +20,7 @@ const Category = ({
 	 * @param {string} props.status_catch: state of Catch component: "", "view" or "edit".
 	 * @param {object} props.this_catch: catch managed by this component
 	 * @param {object} props.species: species list.
+	 * @param {method} props.editCatchStatus: manage status_catch state.
 	 * @param {method} props.handleChangeGroup: managing of group field.
 	 * @param {method} props.handleChangeSpecies: managing of species field.
 	 * @param {method} props.handleChangeCategory: managing of category field.
@@ -98,7 +101,16 @@ const Category = ({
 							onChange={(e) => setWeight(e.target.value)}
 						/>
 					</label>
-					<button
+					{/* NO, ESTO NO ESTÁ BIEN: ESTO DEBERÍA SER EL BOTÓN DE GUARDAR */}
+					<CatchesButtonBar
+						createCatch={createCatch}
+						group={group}
+						sp_id={sp_id}
+						category={category}
+						weight={weight}
+						// editCatchStatus={editCatchStatus}
+					/>
+					{/* <button
 						className="buttonsWrapper__button"
 						onClick={(e) => {
 							createCatch(e, {
@@ -110,7 +122,7 @@ const Category = ({
 						}}
 					>
 						Add catch
-					</button>
+					</button> */}
 				</form>
 			);
 		} else if (status_catch === "view" || status_catch === "") {
