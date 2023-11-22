@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import CatchesButtonBar from "./CatchesButtonBar";
+import React, { useEffect, useState } from "react";
+import CatchButtonBar from "./CatchButtonBar";
 
 // class ComponentCategory extends Component {
 const CatchForm = ({
-	status_catch,
+	catch_status,
 	this_catch,
 	species,
 	// editCatchStatus,
@@ -16,10 +16,10 @@ const CatchForm = ({
 }) => {
 	/**
 	 * Category Component
-	 * @param {string} props.status_catch: state of Catch component: "", "view" or "edit".
+	 * @param {string} props.catch_status: state of Catch component: "", "view" or "edit".
 	 * @param {object} props.this_catch: catch managed by this component
 	 * @param {object} props.species: species list.
-	 * @param {method} props.editCatchStatus: manage status_catch state.
+	 * @param {method} props.editCatchStatus: manage catch_status state.
 	 * @param {method} props.handleChangeGroup: managing of group field.
 	 * @param {method} props.handleChangeSpecies: managing of species field.
 	 * @param {method} props.handleChangeCategory: managing of category field.
@@ -33,9 +33,14 @@ const CatchForm = ({
 	const [category, setCategory] = useState("");
 	const [weight, setWeight] = useState("");
 	const [sampled_weight, setSampled_weight] = useState("");
+	const [new_catch, setNew_catch] = useState({ group, sp_id, category, weight });
+
+	useEffect(() => {
+		setNew_catch({ group, sp_id, category, weight });
+	}, [group, sp_id, category, weight]);
 
 	const renderContent = () => {
-		if (status_catch === "add") {
+		if (catch_status === "add") {
 			return (
 				<form>
 					<label className="form__cell">
@@ -99,16 +104,10 @@ const CatchForm = ({
 							onChange={(e) => setWeight(e.target.value)}
 						/>
 					</label>
-					<CatchesButtonBar
-						createCatch={createCatch}
-						group={group}
-						sp_id={sp_id}
-						category={category}
-						weight={weight}
-					/>
+					<CatchButtonBar catch_status={"add"} new_catch={new_catch} createCatch={createCatch} />
 				</form>
 			);
-		} else if (status_catch === "view" || status_catch === "") {
+		} else if (catch_status === "view" || catch_status === "") {
 			// const sampled_weight = this_catch.sampled_weight ? this_catch.sampled_weight : null;
 			// const sampled_weight_id = this_catch.sampled_weight_id ? this_catch.sampled_weight_id : null;
 
@@ -182,7 +181,7 @@ const CatchForm = ({
 					</label>
 				</form>
 			);
-		} else if (status_catch === "edit") {
+		} else if (catch_status === "edit") {
 			return (
 				<form className="form__cell form__cell__catches--left">
 					<input type="hidden" id="haul_id" name="haul_id" value={this_catch.haul_id} />

@@ -7,6 +7,7 @@ import CatchButtonBar from "./CatchButtonBar.js";
 // class Catch extends Component {
 const Catch = ({
 	this_catch,
+	this_catch_status,
 	species,
 	deleteSex,
 	handleChangeGroup,
@@ -33,7 +34,7 @@ const Catch = ({
 	 * @param {method} props.deleteCatch: delete catch of database.
 	 */
 
-	const [status_catch, setStatus_catch] = useState("view");
+	const [catch_status, setCatch_status] = useState(this_catch_status || "view");
 	const [view_sexes, setView_sexes] = useState(false);
 	const [original_catch, setOriginal_catch] = useState(this_catch || "");
 
@@ -47,26 +48,26 @@ const Catch = ({
 	// }
 
 	const renderContent = () => {
-		if (status_catch === "add") {
+		if (catch_status === "add") {
 			return (
 				<div className="form__row form--wide">
 					<CatchForm
-						status_catch={status_catch}
+						catch_status={catch_status}
 						species={species}
 						createCatch={createCatch} //is this needed?
 					/>
 				</div>
 			);
-		} else if (status_catch === "view") {
+		} else if (catch_status === "view") {
 			return (
 				<div className="form__row form--wide catch">
-					<CatchForm status_catch={status_catch} this_catch={this_catch} />
+					<CatchForm catch_status={catch_status} this_catch={this_catch} />
 					<CatchButtonBar
 						className="form__cell__catches--left"
 						catch_id={this_catch.id}
-						catch_status={status_catch}
+						catch_status={catch_status}
 						view_sexes={view_sexes}
-						editCatchStatus={setStatus_catch}
+						editCatchStatus={setCatch_status}
 						deleteCatch={deleteCatch}
 						handleViewSexes={setView_sexes}
 					/>
@@ -78,11 +79,11 @@ const Catch = ({
 					/>
 				</div>
 			);
-		} else if (status_catch === "edit") {
+		} else if (catch_status === "edit") {
 			return (
 				<div className="form__row">
 					<CatchForm
-						status_catch={status_catch}
+						catch_status={catch_status}
 						this_catch={this_catch}
 						species={species}
 						handleChangeGroup={handleChangeGroup}
@@ -94,9 +95,9 @@ const Catch = ({
 
 					<CatchButtonBar
 						catch_id={this_catch.id}
-						catch_status={status_catch}
+						catch_status={catch_status}
 						view_sexes={view_sexes}
-						editCatchStatus={setStatus_catch}
+						editCatchStatus={setCatch_status}
 						updateCatch={updateCatch}
 						handleCancel={handleCancel}
 					/>

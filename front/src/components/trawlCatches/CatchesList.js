@@ -379,9 +379,9 @@ class CatchesList extends Component {
 			return (
 				<fieldset className="wrapper form__row form--wide catchesList">
 					<legend>Biometric sampling</legend>
-					<CatchesButtonBar catch_status="add" handleChangeAdd={this.handleChangeAdd} />
+					<CatchesButtonBar add={this.state.add} handleChangeAdd={this.handleChangeAdd} />
 					{this.state.add === true ? (
-						<Catch status_catch="add" species={this.state.species} createCatch={this.createCatch} />
+						<Catch this_catch_status="add" species={this.state.species} createCatch={this.createCatch} />
 					) : null}
 					{this.state.catches.map((c) => {
 						return (

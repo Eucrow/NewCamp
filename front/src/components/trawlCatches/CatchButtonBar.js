@@ -11,8 +11,10 @@ import UiIconEdit from "../ui/UiIconEdit";
 const CatchButtonBar = ({
 	catch_id,
 	catch_status,
+	new_catch,
 	view_sexes,
 	editCatchStatus,
+	createCatch,
 	deleteCatch,
 	handleViewSexes,
 	updateCatch,
@@ -43,7 +45,9 @@ const CatchButtonBar = ({
 				)}
 			</div>
 		);
-	} else if (catch_status === "edit") {
+	}
+
+	if (catch_status === "edit") {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<button
@@ -62,6 +66,26 @@ const CatchButtonBar = ({
 					}}
 				>
 					Cancel
+				</button>
+			</div>
+		);
+	}
+
+	if (catch_status === "add") {
+		ButtonBar = (
+			<div className="form__cell form__cell--right">
+				<button
+					onClick={(e) => {
+						// createCatch(e, {
+						// 	group: group,
+						// 	sp_id: sp_id,
+						// 	category: category,
+						// 	weight: weight,
+						// });
+						createCatch(e, new_catch);
+					}}
+				>
+					Save
 				</button>
 			</div>
 		);
