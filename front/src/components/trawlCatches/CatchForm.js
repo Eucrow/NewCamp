@@ -122,7 +122,7 @@ const CatchForm = ({
 			// const sampled_weight_id = this_catch.sampled_weight_id ? this_catch.sampled_weight_id : null;
 
 			return (
-				<form className="form__cell form__cell__catches--left">
+				<form className="form__cell">
 					<label className="form__cell">
 						Group:
 						<input
@@ -190,7 +190,7 @@ const CatchForm = ({
 						/>
 					</label>
 					<CatchButtonBar
-						className="form__cell__catches--left"
+						className=""
 						catch_id={this_catch.id}
 						catch_status={catch_status}
 						view_sexes={view_sexes}
@@ -203,7 +203,7 @@ const CatchForm = ({
 		} else if (catch_status === "edit") {
 			return (
 				<form
-					className="form__cell form__cell__catches--left"
+					className="form__cell"
 					onSubmit={(e) => {
 						updateCatch(catch_id);
 						editCatchStatus("view");
