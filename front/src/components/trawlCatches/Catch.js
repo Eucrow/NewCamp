@@ -2,14 +2,12 @@ import React, { useState } from "react";
 
 import Sexes from "../sexes/Sexes.js";
 import CatchForm from "./CatchForm.js";
-import CatchButtonBar from "./CatchButtonBar.js";
 
 // class Catch extends Component {
 const Catch = ({
 	this_catch,
 	this_catch_status,
 	species,
-	deleteSex,
 	handleChangeGroup,
 	handleChangeSpecies,
 	handleChangeCategory,
@@ -43,10 +41,6 @@ const Catch = ({
 		handleCancelEditCatch(this_catch.id, original_catch);
 	};
 
-	// componentDidMount() {
-	// 	this.original_catch = this.props.this_catch;
-	// }
-
 	const renderContent = () => {
 		if (catch_status === "add") {
 			return (
@@ -61,15 +55,14 @@ const Catch = ({
 		} else if (catch_status === "view") {
 			return (
 				<div className="form__row form--wide catch">
-					<CatchForm catch_status={catch_status} this_catch={this_catch} />
-					<CatchButtonBar
-						className="form__cell__catches--left"
-						catch_id={this_catch.id}
+					<CatchForm
 						catch_status={catch_status}
-						view_sexes={view_sexes}
-						editCatchStatus={setCatch_status}
+						this_catch={this_catch}
 						deleteCatch={deleteCatch}
 						handleViewSexes={setView_sexes}
+						catch_id={this_catch.id}
+						view_sexes={view_sexes}
+						editCatchStatus={setCatch_status}
 					/>
 					<Sexes
 						catch_id={this_catch.id}
@@ -91,14 +84,10 @@ const Catch = ({
 						handleChangeCategory={handleChangeCategory}
 						handleChangeWeight={handleChangeWeight}
 						handleChangeSampledWeight={handleChangeSampledWeight}
-					/>
-
-					<CatchButtonBar
-						catch_id={this_catch.id}
-						catch_status={catch_status}
-						view_sexes={view_sexes}
-						editCatchStatus={setCatch_status}
 						updateCatch={updateCatch}
+						editCatchStatus={setCatch_status}
+						catch_id={this_catch.id}
+						view_sexes={view_sexes}
 						handleCancel={handleCancel}
 					/>
 				</div>

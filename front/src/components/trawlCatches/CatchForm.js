@@ -6,13 +6,19 @@ const CatchForm = ({
 	catch_status,
 	this_catch,
 	species,
-	// editCatchStatus,
 	createCatch,
 	handleChangeGroup,
 	handleChangeSpecies,
 	handleChangeCategory,
 	handleChangeWeight,
 	handleChangeSampledWeight,
+	updateCatch,
+	editCatchStatus,
+	catch_id,
+	view_sexes,
+	handleCancel,
+	deleteCatch,
+	handleViewSexes,
 }) => {
 	/**
 	 * Category Component
@@ -42,7 +48,11 @@ const CatchForm = ({
 	const renderContent = () => {
 		if (catch_status === "add") {
 			return (
-				<form>
+				<form
+					onSubmit={(e) => {
+						createCatch(e, new_catch);
+					}}
+				>
 					<label className="form__cell">
 						Group:
 						<input
@@ -104,7 +114,7 @@ const CatchForm = ({
 							onChange={(e) => setWeight(e.target.value)}
 						/>
 					</label>
-					<CatchButtonBar catch_status={"add"} new_catch={new_catch} createCatch={createCatch} />
+					<CatchButtonBar catch_status={"add"} />
 				</form>
 			);
 		} else if (catch_status === "view" || catch_status === "") {
@@ -179,11 +189,26 @@ const CatchForm = ({
 							value={this_catch.sampled_weight || ""}
 						/>
 					</label>
+					<CatchButtonBar
+						className="form__cell__catches--left"
+						catch_id={this_catch.id}
+						catch_status={catch_status}
+						view_sexes={view_sexes}
+						editCatchStatus={editCatchStatus}
+						deleteCatch={deleteCatch}
+						handleViewSexes={handleViewSexes}
+					/>
 				</form>
 			);
 		} else if (catch_status === "edit") {
 			return (
-				<form className="form__cell form__cell__catches--left">
+				<form
+					className="form__cell form__cell__catches--left"
+					onSubmit={(e) => {
+						updateCatch(catch_id);
+						editCatchStatus("view");
+					}}
+				>
 					<input type="hidden" id="haul_id" name="haul_id" value={this_catch.haul_id} />
 					<label className="form__cell">
 						Group:
@@ -259,6 +284,11 @@ const CatchForm = ({
 							onChange={handleChangeSampledWeight(this_catch.id)}
 						/>
 					</label>
+					<CatchButtonBar
+						catch_status={catch_status}
+						editCatchStatus={editCatchStatus}
+						handleCancel={handleCancel}
+					/>
 				</form>
 			);
 		}

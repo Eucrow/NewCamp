@@ -4,23 +4,29 @@ import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSexes from "../ui/UiButtonSexes";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiIconEdit from "../ui/UiIconEdit";
+import UiButtonSave from "../ui/UiButtonSave";
 
 /**
- * Lengths button bar component.
+ * Catch button bar component.
  */
 const CatchButtonBar = ({
 	catch_id,
 	catch_status,
-	new_catch,
 	view_sexes,
 	editCatchStatus,
-	createCatch,
 	deleteCatch,
 	handleViewSexes,
-	updateCatch,
 	handleCancel,
 }) => {
 	var ButtonBar = null;
+
+	if (catch_status === "add") {
+		ButtonBar = (
+			<div className="form__cell form__cell--right">
+				<UiButtonSave buttonText={"Save"} />
+			</div>
+		);
+	}
 
 	if (catch_status === "view") {
 		ButtonBar = (
@@ -50,14 +56,7 @@ const CatchButtonBar = ({
 	if (catch_status === "edit") {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
-				<button
-					onClick={() => {
-						updateCatch(catch_id);
-						editCatchStatus("view");
-					}}
-				>
-					Save
-				</button>
+				<UiButtonSave buttonText={"Save"} />
 
 				<button
 					onClick={() => {
@@ -66,26 +65,6 @@ const CatchButtonBar = ({
 					}}
 				>
 					Cancel
-				</button>
-			</div>
-		);
-	}
-
-	if (catch_status === "add") {
-		ButtonBar = (
-			<div className="form__cell form__cell--right">
-				<button
-					onClick={(e) => {
-						// createCatch(e, {
-						// 	group: group,
-						// 	sp_id: sp_id,
-						// 	category: category,
-						// 	weight: weight,
-						// });
-						createCatch(e, new_catch);
-					}}
-				>
-					Save
 				</button>
 			</div>
 		);
