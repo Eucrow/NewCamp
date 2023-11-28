@@ -27,6 +27,7 @@ const CatchButtonBar = ({
 				<UiButtonSave buttonText={"Save"} />
 				<button
 					onClick={(e) => {
+						e.preventDefault();
 						handleChangeAdd();
 					}}
 				>
