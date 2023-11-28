@@ -34,9 +34,8 @@ const Catch = ({
 
 	const [catch_status, setCatch_status] = useState(this_catch_status || "view");
 	const [view_sexes, setView_sexes] = useState(false);
-	const [original_catch, setOriginal_catch] = useState(this_catch || "");
+	const [original_catch] = useState(this_catch || "");
 
-	//TODO: test if is possible to avoid this method
 	const handleCancel = () => {
 		handleCancelEditCatch(this_catch.id, original_catch);
 	};
