@@ -1,6 +1,28 @@
 import React, { useEffect, useState } from "react";
 import CatchButtonBar from "./CatchButtonBar";
 
+/**
+ * CatchForm is a functional component that represents a form for managing catch data.
+ *
+ * @component
+ * @param {string} catch_status - The current status of the catch: "", "view" or "edit".
+ * @param {object} this_catch - The catch object that is currently being managed by this component.
+ * @param {object} species - An object containing species data.
+ * @param {function} createCatch - A function to create a new catch in the database.
+ * @param {function} handleChangeGroup - A function to handle changes to the group field.
+ * @param {function} handleChangeSpecies - A function to handle changes to the species field.
+ * @param {function} handleChangeCategory - A function to handle changes to the category field.
+ * @param {function} handleChangeWeight - A function to handle changes to the weight field.
+ * @param {function} handleChangeSampledWeight - A function to handle changes to the sampled_weight field.
+ * @param {function} updateCatch - A function to update the catch in the database.
+ * @param {function} editCatchStatus - A function to manage the catch_status state.
+ * @param {string} catch_id - The id of the catch.
+ * @param {boolean} view_sexes - A boolean to manage the view of sexes.
+ * @param {function} handleCancel - A function to handle cancel action.
+ * @param {function} deleteCatch - A function to delete the catch from the database.
+ * @param {function} handleViewSexes - A function to handle the view of sexes.
+ * @param {function} handleChangeAdd - A function to handle changes to the add field.
+ */
 const CatchForm = ({
 	catch_status,
 	this_catch,
@@ -20,20 +42,6 @@ const CatchForm = ({
 	handleViewSexes,
 	handleChangeAdd,
 }) => {
-	/**
-	 * Category Component
-	 * @param {string} props.catch_status: state of Catch component: "", "view" or "edit".
-	 * @param {object} props.this_catch: catch managed by this component
-	 * @param {object} props.species: species list.
-	 * @param {method} props.editCatchStatus: manage catch_status state.
-	 * @param {method} props.handleChangeGroup: managing of group field.
-	 * @param {method} props.handleChangeSpecies: managing of species field.
-	 * @param {method} props.handleChangeCategory: managing of category field.
-	 * @param {method} props.handleChangeWeight: managing of weight field.
-	 * @param {method} props.handleChangeSampledWeight: managing of sampled_weight field.
-	 * @param {method} props.createCatch: create catch in database.
-	 */
-
 	const [group, setGroup] = useState("");
 	const [sp_id, setSp_id] = useState("");
 	const [category, setCategory] = useState("");
@@ -42,8 +50,8 @@ const CatchForm = ({
 	const [new_catch, setNew_catch] = useState({ group, sp_id, category, weight });
 
 	useEffect(() => {
-		setNew_catch({ group, sp_id, category, weight });
-	}, [group, sp_id, category, weight]);
+		setNew_catch({ group, sp_id, category, weight, sampled_weight });
+	}, [group, sp_id, category, weight, sampled_weight]);
 
 	const renderContent = () => {
 		if (catch_status === "add") {
@@ -114,13 +122,22 @@ const CatchForm = ({
 							onChange={(e) => setWeight(e.target.value)}
 						/>
 					</label>
+					<label className="form__cell">
+						Sampled weight(g.):
+						<input
+							style={{ width: 8 + "ch" }}
+							type="number"
+							id="sampled_weight"
+							name="sampled_weight"
+							min="1"
+							max="99999999"
+							onChange={(e) => setSampled_weight(e.target.value)}
+						/>
+					</label>
 					<CatchButtonBar catch_status={"add"} handleChangeAdd={handleChangeAdd} />
 				</form>
 			);
 		} else if (catch_status === "view" || catch_status === "") {
-			// const sampled_weight = this_catch.sampled_weight ? this_catch.sampled_weight : null;
-			// const sampled_weight_id = this_catch.sampled_weight_id ? this_catch.sampled_weight_id : null;
-
 			return (
 				<form className="form__cell">
 					<label className="form__cell">
@@ -139,13 +156,7 @@ const CatchForm = ({
 					<label className="form__cell">
 						Species:
 						<select style={{ width: 30 + "ch" }} id="sp_code" name="sp_code" disabled>
-							<option
-								key={this_catch.sp_id}
-								// value={this_catch.sp_id}
-							>
-								{/* {species.find((s) => s.)} */}
-								{this_catch.sp_name}
-							</option>
+							<option key={this_catch.sp_id}>{this_catch.sp_name}</option>
 						</select>
 					</label>
 					<label className="form__cell">

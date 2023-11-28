@@ -139,10 +139,7 @@ class CatchesList extends Component {
 
 		// Secondly, check if exists another catch whith the same species and category
 		const repeatedCatch = this.state.catches.some(
-			(c) =>
-				//the comparison between c.category and value must be with == instead of ===
-				//TODO: check why
-				(c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category === parseInt(value))
+			(c) => (c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category === parseInt(value))
 		);
 
 		// And finally save the state or thrown an alert.
