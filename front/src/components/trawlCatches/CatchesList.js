@@ -120,30 +120,6 @@ class CatchesList extends Component {
 				catches: newCatches,
 			};
 		});
-
-		// fetch(apiCategoriesSpecies)
-		// 	.then((response) => {
-		// 		if (response.status > 400) {
-		// 			return this.setState(() => {
-		// 				return { placeholder: "Something went wrong!" };
-		// 			});
-		// 		}
-		// 		return response.json();
-		// 	})
-		// 	.then((categories) => {
-		// 		this.setState(() => {
-		// 			return {
-		// 				categories: categories,
-		// 			};
-		// 		});
-		// 	})
-		// 	.then(() => {
-		// 		this.setState(() => {
-		// 			return {
-		// 				catches: newCatches,
-		// 			};
-		// 		});
-		// 	});
 	};
 
 	handleChangeCategory = (idx) => (evt) => {
@@ -381,7 +357,12 @@ class CatchesList extends Component {
 					<legend>Biometric sampling</legend>
 					<CatchesButtonBar add={this.state.add} handleChangeAdd={this.handleChangeAdd} />
 					{this.state.add === true ? (
-						<Catch this_catch_status="add" species={this.state.species} createCatch={this.createCatch} />
+						<Catch
+							this_catch_status="add"
+							species={this.state.species}
+							createCatch={this.createCatch}
+							handleChangeAdd={this.handleChangeAdd}
+						/>
 					) : null}
 					{this.state.catches.map((c) => {
 						return (

@@ -9,11 +9,7 @@ const CatchesButtonBar = ({ add, handleChangeAdd }) => {
 	var ButtonBar = null;
 
 	if (add === false) {
-		ButtonBar = (
-			<UiButtonStatusHandle handleMethod={handleChangeAdd} buttonText={"Add catch"} newStatus={false}>
-				Add catch
-			</UiButtonStatusHandle>
-		);
+		ButtonBar = <UiButtonStatusHandle handleMethod={handleChangeAdd} buttonText={"Add catch"} newStatus={false} />;
 	}
 
 	return ButtonBar;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CatchButtonBar from "./CatchButtonBar";
 
-// class ComponentCategory extends Component {
 const CatchForm = ({
 	catch_status,
 	this_catch,
@@ -19,6 +18,7 @@ const CatchForm = ({
 	handleCancel,
 	deleteCatch,
 	handleViewSexes,
+	handleChangeAdd,
 }) => {
 	/**
 	 * Category Component
@@ -114,7 +114,7 @@ const CatchForm = ({
 							onChange={(e) => setWeight(e.target.value)}
 						/>
 					</label>
-					<CatchButtonBar catch_status={"add"} />
+					<CatchButtonBar catch_status={"add"} handleChangeAdd={handleChangeAdd} />
 				</form>
 			);
 		} else if (catch_status === "view" || catch_status === "") {

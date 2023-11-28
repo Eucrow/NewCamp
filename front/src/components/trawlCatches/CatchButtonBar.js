@@ -17,6 +17,7 @@ const CatchButtonBar = ({
 	deleteCatch,
 	handleViewSexes,
 	handleCancel,
+	handleChangeAdd,
 }) => {
 	var ButtonBar = null;
 
@@ -24,6 +25,13 @@ const CatchButtonBar = ({
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<UiButtonSave buttonText={"Save"} />
+				<button
+					onClick={(e) => {
+						handleChangeAdd();
+					}}
+				>
+					Cancel
+				</button>
 			</div>
 		);
 	}

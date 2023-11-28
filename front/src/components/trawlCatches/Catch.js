@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Sexes from "../sexes/Sexes.js";
 import CatchForm from "./CatchForm.js";
 
-// class Catch extends Component {
 const Catch = ({
 	this_catch,
 	this_catch_status,
@@ -14,6 +13,7 @@ const Catch = ({
 	handleChangeWeight,
 	handleCancelEditCatch,
 	handleChangeSampledWeight,
+	handleChangeAdd,
 	createCatch,
 	updateCatch,
 	deleteCatch,
@@ -48,7 +48,9 @@ const Catch = ({
 					<CatchForm
 						catch_status={catch_status}
 						species={species}
-						createCatch={createCatch} //is this needed?
+						createCatch={createCatch}
+						editCatchStatus={setCatch_status}
+						handleChangeAdd={handleChangeAdd}
 					/>
 				</div>
 			);
