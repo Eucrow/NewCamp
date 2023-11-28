@@ -131,7 +131,10 @@ class CatchesList extends Component {
 
 		// Firstly, get the data of catch to modify
 		const thisCatch = this.state.catches.find((c) => {
-			if (c.id === idx) return c;
+			if (c.id === idx) {
+				return c;
+			}
+			return false;
 		});
 
 		// Secondly, check if exists another catch whith the same species and category
@@ -139,7 +142,7 @@ class CatchesList extends Component {
 			(c) =>
 				//the comparison between c.category and value must be with == instead of ===
 				//TODO: check why
-				(c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category == value)
+				(c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category === parseInt(value))
 		);
 
 		// And finally save the state or thrown an alert.
