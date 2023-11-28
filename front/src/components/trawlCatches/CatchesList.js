@@ -342,52 +342,41 @@ class CatchesList extends Component {
 	}
 
 	render() {
-		if (this.state.catches.length === 0) {
-			return (
-				<div className="wrapper form__row form--wide catchesList">
-					<div className="form__row form--wide">There aren't catches yet</div>
-					<div className="form__row form--wide">
-						{/* <Catch status_catch="add" species={this.state.species} createCatch={this.createCatch} /> */}
-					</div>
-				</div>
-			);
-		} else {
-			return (
-				<fieldset className="wrapper form__row form--wide catchesList">
-					<legend>Biometric sampling</legend>
-					<CatchesButtonBar add={this.state.add} handleChangeAdd={this.handleChangeAdd} />
-					{this.state.add === true ? (
+		return (
+			<fieldset className="wrapper form__row form--wide catchesList">
+				<legend>Biometric sampling</legend>
+				<CatchesButtonBar add={this.state.add} handleChangeAdd={this.handleChangeAdd} />
+				{this.state.add === true ? (
+					<Catch
+						this_catch_status="add"
+						species={this.state.species}
+						createCatch={this.createCatch}
+						handleChangeAdd={this.handleChangeAdd}
+					/>
+				) : null}
+				{this.state.catches.map((c) => {
+					return (
 						<Catch
-							this_catch_status="add"
+							key={c.id}
+							this_catch={c}
 							species={this.state.species}
-							createCatch={this.createCatch}
-							handleChangeAdd={this.handleChangeAdd}
+							handleChangeSampledWeight={this.handleChangeSampledWeight}
+							updateSampledWeight={this.updateSampledWeight}
+							handleChangeGroup={this.handleChangeGroup}
+							handleChangeSpecies={this.handleChangeSpecies}
+							handleChangeCategory={this.handleChangeCategory}
+							handleChangeWeight={this.handleChangeWeight}
+							handleCancelChangeWeight={this.handleCancelChangeWeight}
+							handleCancelEditCatch={this.handleCancelEditCatch}
+							updateCatch={this.updateCatch}
+							deleteCatch={this.deleteCatch}
+							createSampledWeight={this.createSampledWeight}
+							deleteSampledWeight={this.deleteSampledWeight}
 						/>
-					) : null}
-					{this.state.catches.map((c) => {
-						return (
-							<Catch
-								key={c.id}
-								this_catch={c}
-								species={this.state.species}
-								handleChangeSampledWeight={this.handleChangeSampledWeight}
-								updateSampledWeight={this.updateSampledWeight}
-								handleChangeGroup={this.handleChangeGroup}
-								handleChangeSpecies={this.handleChangeSpecies}
-								handleChangeCategory={this.handleChangeCategory}
-								handleChangeWeight={this.handleChangeWeight}
-								handleCancelChangeWeight={this.handleCancelChangeWeight}
-								handleCancelEditCatch={this.handleCancelEditCatch}
-								updateCatch={this.updateCatch}
-								deleteCatch={this.deleteCatch}
-								createSampledWeight={this.createSampledWeight}
-								deleteSampledWeight={this.deleteSampledWeight}
-							/>
-						);
-					})}
-				</fieldset>
-			);
-		}
+					);
+				})}
+			</fieldset>
+		);
 	}
 }
 
