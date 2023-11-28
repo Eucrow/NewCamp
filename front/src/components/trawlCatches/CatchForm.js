@@ -22,6 +22,7 @@ import CatchButtonBar from "./CatchButtonBar";
  * @param {function} deleteCatch - A function to delete the catch from the database.
  * @param {function} handleViewSexes - A function to handle the view of sexes.
  * @param {function} handleChangeAdd - A function to handle changes to the add field.
+ * @returns {JSX.Element} The rendered Catch component.
  */
 const CatchForm = ({
 	catch_status,

@@ -3,12 +3,11 @@ import React, { Component } from "react";
 import Catch from "./Catch.js";
 import CatchesButtonBar from "./CatchesButtonBar.js";
 
+/**
+ * Represents a component that prints all the catches of the haul.
+ * @component
+ */
 class CatchesList extends Component {
-	/**
-	 * Component to print all the caches of the haul.
-	 * @param {number} props.haul_id: id of haul.
-	 */
-
 	constructor(props) {
 		super(props);
 		this.state = {

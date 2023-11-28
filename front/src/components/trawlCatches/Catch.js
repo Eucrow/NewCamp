@@ -3,6 +3,24 @@ import React, { useState } from "react";
 import Sexes from "../sexes/Sexes.js";
 import CatchForm from "./CatchForm.js";
 
+/**
+ * Catch component.
+ * @param {object} props - The component props.
+ * @param {object} props.this_catch - The catch managed by this component.
+ * @param {string} props.this_catch_status - The status of the catch.
+ * @param {object[]} props.species - The list of species.
+ * @param {function} props.handleChangeGroup - The function to handle group changes.
+ * @param {function} props.handleChangeSpecies - The function to handle species changes.
+ * @param {function} props.handleChangeCategory - The function to handle category changes.
+ * @param {function} props.handleChangeWeight - The function to handle weight changes.
+ * @param {function} props.handleCancelEditCatch - The function to handle cancellation of catch edition.
+ * @param {function} props.handleChangeSampledWeight - The function to handle sampled weight changes.
+ * @param {function} props.handleChangeAdd - The function to handle adding a catch.
+ * @param {function} props.createCatch - The function to create a catch.
+ * @param {function} props.updateCatch - The function to update a catch.
+ * @param {function} props.deleteCatch - The function to delete a catch.
+ * @returns {JSX.Element} The rendered Catch component.
+ */
 const Catch = ({
 	this_catch,
 	this_catch_status,
@@ -18,20 +36,6 @@ const Catch = ({
 	updateCatch,
 	deleteCatch,
 }) => {
-	/**
-	 * Catch form.
-	 * @param {object} props.this_catch: catch managed by this component.
-	 * @param {object} props.species: species list.
-	 * @param {method} props.deleteSex: delete sex of database.
-	 * @param {method} props.handleChangeGroup: manage group state and field.
-	 * @param {method} props.handleChangeSpecies: manage pecies state and field.
-	 * @param {method} props.handleChangeCategory: manage ategory state and field.
-	 * @param {method} props.handleChangeWeight: manage weight state and field.
-	 * @param {method} props.handleCancelEditCatch: manage cancellation of catch edition.
-	 * @param {method} props.updateCatch: update catch in database.
-	 * @param {method} props.deleteCatch: delete catch of database.
-	 */
-
 	const [catch_status, setCatch_status] = useState(this_catch_status || "view");
 	const [view_sexes, setView_sexes] = useState(false);
 	const [original_catch] = useState(this_catch || "");
