@@ -11,7 +11,7 @@ import LengthsRangeForm from "./LengthsRangeForm.js";
  * @param {string} lengths Posible values: "view", "edit", "hide".
  * @returns
  */
-const ComponentLengths = ({ sexId, lengths_status, unit, increment, setLengthsStatus }) => {
+const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsStatus }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -47,7 +47,7 @@ const ComponentLengths = ({ sexId, lengths_status, unit, increment, setLengthsSt
 	// 	handleShowLengths();
 
 	// 	setMeasureUnit(unit);
-	// }, [lengths_status]);
+	// }, [lengthsStatus]);
 
 	useEffect(() => {
 		handleShowLengths();
@@ -78,7 +78,7 @@ const ComponentLengths = ({ sexId, lengths_status, unit, increment, setLengthsSt
 			filledLengths = transformUnitsFromMm(filledLengths);
 			setBackupLengths(filledLengths);
 			setLengths(filledLengths);
-			setLengthsStatus(lengths_status);
+			setLengthsStatus(lengthsStatus);
 
 			// a deep copy is mandatory because the data to be modified is nested:
 			let newLengths = JSON.parse(JSON.stringify(filledLengths));
@@ -431,19 +431,19 @@ const ComponentLengths = ({ sexId, lengths_status, unit, increment, setLengthsSt
 	// render content
 	const renderContent = () => {
 		const partialContent = () => {
-			if (lengths_status === "hide") {
+			if (lengthsStatus === "hide") {
 				return null;
-			} else if (lengths_status === "view" && lengths.length !== 0) {
-				return <LengthsForm lengths_status={lengths_status} />;
-			} else if (lengths_status === "view" && lengths.length === 0) {
+			} else if (lengthsStatus === "view" && lengths.length !== 0) {
+				return <LengthsForm lengthsStatus={lengthsStatus} />;
+			} else if (lengthsStatus === "view" && lengths.length === 0) {
 				return (
 					<Fragment>
 						<LengthsRangeForm createRangeLengths={createRangeLengths} />
 						<LengthsButtonBar />
 					</Fragment>
 				);
-			} else if (lengths_status === "edit") {
-				return <LengthsForm lengths_status={lengths_status} />;
+			} else if (lengthsStatus === "edit") {
+				return <LengthsForm lengthsStatus={lengthsStatus} />;
 			}
 		};
 
@@ -452,7 +452,7 @@ const ComponentLengths = ({ sexId, lengths_status, unit, increment, setLengthsSt
 				value={{
 					lengths: lengths,
 					measureUnit: measureUnit,
-					lengths_status: lengths_status,
+					lengthsStatus: lengthsStatus,
 					setLengthsStatus: setLengthsStatus,
 					saveOrUpdateLengths: saveOrUpdateLengths,
 					removeZeroTails: removeZeroTails,

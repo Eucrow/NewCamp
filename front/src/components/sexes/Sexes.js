@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 
 import Sex from "./Sex.js";
 import SexesButtonBar from "./SexesButtonBar";
+
 /**
  * Sexes component.
  * @param {array} sexes Sexes of catch. If doesn't exist, it will be an empty array.
@@ -12,7 +13,7 @@ import SexesButtonBar from "./SexesButtonBar";
  * @returns JSX of sexes component.
  */
 const Sexes = ({ catchId, unit, increment, viewSexes }) => {
-	var [addSexStatus, setAddSexStatus] = useState(false);
+	var [addSex, setAddSex] = useState(false);
 
 	var [sexes, setSexes] = useState([]);
 
@@ -30,7 +31,7 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 		}
 	}, [apiSexes, viewSexes]);
 
-	const addSex = (evt, sex, catchId) => {
+	const createSex = (evt, sex, catchId) => {
 		evt.preventDefault();
 
 		var data = {
@@ -120,16 +121,16 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 						);
 					})}
 
-					{addSexStatus === true ? (
+					{addSex === true ? (
 						<Sex
 							catchId={catchId}
-							sex_status={"add"}
-							addSex={addSex}
-							setAddSexStatus={setAddSexStatus}
+							thisSexStatus={"add"}
+							createSex={createSex}
+							setAddSex={setAddSex}
 							sexesBackup={sexesBackup}
 						/>
 					) : (
-						<SexesButtonBar add_sex_status={"view"} setAddSexStatus={setAddSexStatus} />
+						<SexesButtonBar sexStatus={"view"} setAddSex={setAddSex} />
 					)}
 				</div>
 			) : null}
