@@ -9,7 +9,7 @@ import UiIconEdit from "../ui/UiIconEdit";
  * Lengths button bar component.
  */
 const SexButtonBar = ({
-	sex_id,
+	sexId,
 	sex_status,
 	setSexStatus,
 	deleteSex,
@@ -28,7 +28,7 @@ const SexButtonBar = ({
 					<UiIconEdit />
 				</UiButtonStatusHandle>
 				<UiButtonDelete
-					id={sex_id}
+					id={sexId}
 					deleteMethod={deleteSex}
 					buttonText={"Delete sex"}
 					confirmMessage={"Are you sure to remove this sex?"}

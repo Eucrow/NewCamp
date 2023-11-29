@@ -6,8 +6,8 @@ import CatchForm from "./CatchForm.js";
 /**
  * Catch component.
  * @param {object} props - The component props.
- * @param {object} props.this_catch - The catch managed by this component.
- * @param {string} props.this_catch_status - The status of the catch.
+ * @param {object} props.thisCatch - The catch managed by this component.
+ * @param {string} props.thisCatchStatus - The status of the catch.
  * @param {object[]} props.species - The list of species.
  * @param {function} props.handleChangeGroup - The function to handle group changes.
  * @param {function} props.handleChangeSpecies - The function to handle species changes.
@@ -22,8 +22,8 @@ import CatchForm from "./CatchForm.js";
  * @returns {JSX.Element} The rendered Catch component.
  */
 const Catch = ({
-	this_catch,
-	this_catch_status,
+	thisCatch,
+	thisCatchStatus,
 	species,
 	handleChangeGroup,
 	handleChangeSpecies,
@@ -36,53 +36,53 @@ const Catch = ({
 	updateCatch,
 	deleteCatch,
 }) => {
-	const [catch_status, setCatch_status] = useState(this_catch_status || "view");
-	const [view_sexes, setView_sexes] = useState(false);
-	const [original_catch] = useState(this_catch || "");
+	const [catchStatus, setCatchStatus] = useState(thisCatchStatus || "view");
+	const [viewSexes, setViewSexes] = useState(false);
+	const [backupCatch] = useState(thisCatch || "");
 
 	const handleCancel = () => {
-		handleCancelEditCatch(this_catch.id, original_catch);
+		handleCancelEditCatch(thisCatch.id, backupCatch);
 	};
 
 	const renderContent = () => {
-		if (catch_status === "add") {
+		if (catchStatus === "add") {
 			return (
 				<div className="form__row form--wide">
 					<CatchForm
-						catch_status={catch_status}
+						catchStatus={catchStatus}
 						species={species}
 						createCatch={createCatch}
-						editCatchStatus={setCatch_status}
+						editCatchStatus={setCatchStatus}
 						handleChangeAdd={handleChangeAdd}
 					/>
 				</div>
 			);
-		} else if (catch_status === "view") {
+		} else if (catchStatus === "view") {
 			return (
 				<div className="form__row form--wide catch">
 					<CatchForm
-						catch_status={catch_status}
-						this_catch={this_catch}
+						catchStatus={catchStatus}
+						thisCatch={thisCatch}
 						deleteCatch={deleteCatch}
-						handleViewSexes={setView_sexes}
-						catch_id={this_catch.id}
-						view_sexes={view_sexes}
-						editCatchStatus={setCatch_status}
+						handleViewSexes={setViewSexes}
+						catchId={thisCatch.id}
+						viewSexes={viewSexes}
+						editCatchStatus={setCatchStatus}
 					/>
 					<Sexes
-						catch_id={this_catch.id}
-						unit={this_catch.unit}
-						increment={this_catch.increment}
-						view_sexes={view_sexes}
+						catchId={thisCatch.id}
+						unit={thisCatch.unit}
+						increment={thisCatch.increment}
+						viewSexes={viewSexes}
 					/>
 				</div>
 			);
-		} else if (catch_status === "edit") {
+		} else if (catchStatus === "edit") {
 			return (
 				<div className="form__row">
 					<CatchForm
-						catch_status={catch_status}
-						this_catch={this_catch}
+						catchStatus={catchStatus}
+						thisCatch={thisCatch}
 						species={species}
 						handleChangeGroup={handleChangeGroup}
 						handleChangeSpecies={handleChangeSpecies}
@@ -90,9 +90,9 @@ const Catch = ({
 						handleChangeWeight={handleChangeWeight}
 						handleChangeSampledWeight={handleChangeSampledWeight}
 						updateCatch={updateCatch}
-						editCatchStatus={setCatch_status}
-						catch_id={this_catch.id}
-						view_sexes={view_sexes}
+						editCatchStatus={setCatchStatus}
+						catchId={thisCatch.id}
+						viewSexes={viewSexes}
 						handleCancel={handleCancel}
 					/>
 				</div>

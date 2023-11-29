@@ -5,8 +5,8 @@ import CatchButtonBar from "./CatchButtonBar";
  * CatchForm is a functional component that represents a form for managing catch data.
  *
  * @component
- * @param {string} catch_status - The current status of the catch: "", "view" or "edit".
- * @param {object} this_catch - The catch object that is currently being managed by this component.
+ * @param {string} catchStatus - The current status of the catch: "", "view" or "edit".
+ * @param {object} thisCatch - The catch object that is currently being managed by this component.
  * @param {object} species - An object containing species data.
  * @param {function} createCatch - A function to create a new catch in the database.
  * @param {function} handleChangeGroup - A function to handle changes to the group field.
@@ -15,9 +15,9 @@ import CatchButtonBar from "./CatchButtonBar";
  * @param {function} handleChangeWeight - A function to handle changes to the weight field.
  * @param {function} handleChangeSampledWeight - A function to handle changes to the sampled_weight field.
  * @param {function} updateCatch - A function to update the catch in the database.
- * @param {function} editCatchStatus - A function to manage the catch_status state.
- * @param {string} catch_id - The id of the catch.
- * @param {boolean} view_sexes - A boolean to manage the view of sexes.
+ * @param {function} editCatchStatus - A function to manage the catchStatus state.
+ * @param {string} catchId - The id of the catch.
+ * @param {boolean} viewSexes - A boolean to manage the view of sexes.
  * @param {function} handleCancel - A function to handle cancel action.
  * @param {function} deleteCatch - A function to delete the catch from the database.
  * @param {function} handleViewSexes - A function to handle the view of sexes.
@@ -25,8 +25,8 @@ import CatchButtonBar from "./CatchButtonBar";
  * @returns {JSX.Element} The rendered Catch component.
  */
 const CatchForm = ({
-	catch_status,
-	this_catch,
+	catchStatus,
+	thisCatch,
 	species,
 	createCatch,
 	handleChangeGroup,
@@ -36,8 +36,8 @@ const CatchForm = ({
 	handleChangeSampledWeight,
 	updateCatch,
 	editCatchStatus,
-	catch_id,
-	view_sexes,
+	catchId,
+	viewSexes,
 	handleCancel,
 	deleteCatch,
 	handleViewSexes,
@@ -55,7 +55,7 @@ const CatchForm = ({
 	}, [group, sp_id, category, weight, sampled_weight]);
 
 	const renderContent = () => {
-		if (catch_status === "add") {
+		if (catchStatus === "add") {
 			return (
 				<form
 					onSubmit={(e) => {
@@ -135,10 +135,10 @@ const CatchForm = ({
 							onChange={(e) => setSampled_weight(e.target.value)}
 						/>
 					</label>
-					<CatchButtonBar catch_status={"add"} handleChangeAdd={handleChangeAdd} />
+					<CatchButtonBar catchStatus={"add"} handleChangeAdd={handleChangeAdd} />
 				</form>
 			);
-		} else if (catch_status === "view" || catch_status === "") {
+		} else if (catchStatus === "view" || catchStatus === "") {
 			return (
 				<form className="form__cell">
 					<label className="form__cell">
@@ -151,13 +151,13 @@ const CatchForm = ({
 							min="1"
 							max="5"
 							disabled
-							value={this_catch.group}
+							value={thisCatch.group}
 						/>
 					</label>
 					<label className="form__cell">
 						Species:
 						<select style={{ width: 30 + "ch" }} id="sp_code" name="sp_code" disabled>
-							<option key={this_catch.sp_id}>{this_catch.sp_name}</option>
+							<option key={thisCatch.sp_id}>{thisCatch.sp_name}</option>
 						</select>
 					</label>
 					<label className="form__cell">
@@ -170,7 +170,7 @@ const CatchForm = ({
 							min="1"
 							max="99"
 							disabled
-							value={this_catch.category}
+							value={thisCatch.category}
 						/>
 					</label>
 					<label className="form__cell">
@@ -183,7 +183,7 @@ const CatchForm = ({
 							min="1"
 							max="99999999"
 							disabled
-							value={this_catch.weight}
+							value={thisCatch.weight}
 						/>
 					</label>
 
@@ -198,30 +198,30 @@ const CatchForm = ({
 							name="sampled_weight"
 							min="1"
 							max="99999999"
-							value={this_catch.sampled_weight || ""}
+							value={thisCatch.sampled_weight || ""}
 						/>
 					</label>
 					<CatchButtonBar
 						className=""
-						catch_id={this_catch.id}
-						catch_status={catch_status}
-						view_sexes={view_sexes}
+						catchId={thisCatch.id}
+						catchStatus={catchStatus}
+						viewSexes={viewSexes}
 						editCatchStatus={editCatchStatus}
 						deleteCatch={deleteCatch}
 						handleViewSexes={handleViewSexes}
 					/>
 				</form>
 			);
-		} else if (catch_status === "edit") {
+		} else if (catchStatus === "edit") {
 			return (
 				<form
 					className="form__cell"
 					onSubmit={(e) => {
-						updateCatch(catch_id);
+						updateCatch(catchId);
 						editCatchStatus("view");
 					}}
 				>
-					<input type="hidden" id="haul_id" name="haul_id" value={this_catch.haul_id} />
+					<input type="hidden" id="haul_id" name="haul_id" value={thisCatch.haul_id} />
 					<label className="form__cell">
 						Group:
 						<input
@@ -231,8 +231,8 @@ const CatchForm = ({
 							name="group"
 							min="1"
 							max="5"
-							value={this_catch.group}
-							onChange={handleChangeGroup(this_catch.id)}
+							value={thisCatch.group}
+							onChange={handleChangeGroup(thisCatch.id)}
 						/>
 					</label>
 					<label className="form__cell">
@@ -241,11 +241,11 @@ const CatchForm = ({
 							style={{ width: 30 + "ch" }}
 							id="sp_code"
 							name="sp_code"
-							value={this_catch.sp_id + "--" + this_catch.sp_code + "--" + this_catch.sp_name}
-							onChange={handleChangeSpecies(this_catch.id)}
+							value={thisCatch.sp_id + "--" + thisCatch.sp_code + "--" + thisCatch.sp_name}
+							onChange={handleChangeSpecies(thisCatch.id)}
 						>
 							{species
-								.filter((s) => s.group === parseInt(this_catch.group))
+								.filter((s) => s.group === parseInt(thisCatch.group))
 								.map((s) => (
 									<option
 										key={s.id + "--" + s.sp_code + "--" + s.sp_name}
@@ -265,8 +265,8 @@ const CatchForm = ({
 							name="category"
 							min="1"
 							max="99"
-							value={this_catch.category}
-							onChange={handleChangeCategory(this_catch.id)}
+							value={thisCatch.category}
+							onChange={handleChangeCategory(thisCatch.id)}
 						/>
 					</label>
 					<label className="form__cell">
@@ -278,8 +278,8 @@ const CatchForm = ({
 							name="weight"
 							min="1"
 							max="99999999"
-							value={this_catch.weight}
-							onChange={handleChangeWeight(this_catch.id)}
+							value={thisCatch.weight}
+							onChange={handleChangeWeight(thisCatch.id)}
 						/>
 					</label>
 					<label className="form__cell">
@@ -292,12 +292,12 @@ const CatchForm = ({
 							name="sampled_weight"
 							min="1"
 							max="99999999"
-							value={this_catch.sampled_weight}
-							onChange={handleChangeSampledWeight(this_catch.id)}
+							value={thisCatch.sampled_weight}
+							onChange={handleChangeSampledWeight(thisCatch.id)}
 						/>
 					</label>
 					<CatchButtonBar
-						catch_status={catch_status}
+						catchStatus={catchStatus}
 						editCatchStatus={editCatchStatus}
 						handleCancel={handleCancel}
 					/>

@@ -5,36 +5,36 @@ import SexesButtonBar from "./SexesButtonBar";
 /**
  * Sexes component.
  * @param {array} sexes Sexes of catch. If doesn't exist, it will be an empty array.
- * @param {numeric} catch_id Id of catch.
+ * @param {numeric} catchId Id of catch.
  * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is milimeters.
  * @param {numeric} increment Increment of measurement unit.
  * @param {boolean} view_sexes Show or hide this Sexes component.
  * @returns JSX of sexes component.
  */
-const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
+const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 	var [addSexStatus, setAddSexStatus] = useState(false);
 
 	var [sexes, setSexes] = useState([]);
 
-	const apiSexes = "http://127.0.0.1:8000/api/1.0/sexes/" + catch_id;
+	const apiSexes = "http://127.0.0.1:8000/api/1.0/sexes/" + catchId;
 	const apiSex = "http://127.0.0.1:8000/api/1.0/sex/";
 
 	const sexesBackup = sexes;
 
 	useEffect(() => {
-		if (view_sexes === true) {
+		if (viewSexes === true) {
 			fetch(apiSexes)
 				.then((res) => res.json())
 				.then((res) => setSexes(res))
 				.catch((error) => alert(error));
 		}
-	}, [apiSexes, view_sexes]);
+	}, [apiSexes, viewSexes]);
 
-	const addSex = (evt, sex, catch_id) => {
+	const addSex = (evt, sex, catchId) => {
 		evt.preventDefault();
 
 		var data = {
-			catch_id: catch_id,
+			catch_id: catchId,
 			sex: sex,
 		};
 
@@ -58,9 +58,9 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 			.catch((error) => console.log("Error"));
 	};
 
-	const deleteSex = (sex_id) => {
+	const deleteSex = (sexId) => {
 		var data = {
-			id: sex_id,
+			id: sexId,
 		};
 
 		fetch(apiSex, {
@@ -73,16 +73,16 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 		})
 			.then(() => {
 				const newSexes = sexes.filter((s) => {
-					if (sex_id !== s.id) return s;
+					if (sexId !== s.id) return s;
 				});
 				setSexes(newSexes);
 			})
 			.catch((error) => alert(error));
 	};
 
-	const updateSex = (sex_id, updatedSex) => {
+	const updateSex = (sexId, updatedSex) => {
 		const newSexData = {
-			id: sex_id,
+			id: sexId,
 			sex: updatedSex,
 		};
 
@@ -95,22 +95,22 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 		})
 			.then((response) => response.json())
 			.then((updatedSex) => {
-				setSexes(sexes.map((sex) => (sex.id === sex_id ? updatedSex : sex)));
+				setSexes(sexes.map((sex) => (sex.id === sexId ? updatedSex : sex)));
 			})
 			.catch((error) => console.log("Error"));
 	};
 
 	var content = (
 		<Fragment>
-			{view_sexes === true ? (
+			{viewSexes === true ? (
 				<div className="form__row sexesWrapper">
 					{sexes.map((s) => {
 						return (
 							<Sex
 								key={s.id}
-								sex_id={s.id}
+								sexId={s.id}
 								sex={s.sex}
-								catch_id={catch_id}
+								catchId={catchId}
 								unit={unit}
 								increment={increment}
 								deleteSex={deleteSex}
@@ -122,7 +122,7 @@ const Sexes = ({ catch_id, unit, increment, view_sexes }) => {
 
 					{addSexStatus === true ? (
 						<Sex
-							catch_id={catch_id}
+							catchId={catchId}
 							sex_status={"add"}
 							addSex={addSex}
 							setAddSexStatus={setAddSexStatus}

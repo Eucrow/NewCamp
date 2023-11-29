@@ -10,9 +10,9 @@ import UiButtonSave from "../ui/UiButtonSave";
  * Catch button bar component.
  */
 const CatchButtonBar = ({
-	catch_id,
-	catch_status,
-	view_sexes,
+	catchId,
+	catchStatus,
+	viewSexes,
 	editCatchStatus,
 	deleteCatch,
 	handleViewSexes,
@@ -21,7 +21,7 @@ const CatchButtonBar = ({
 }) => {
 	var ButtonBar = null;
 
-	if (catch_status === "add") {
+	if (catchStatus === "add") {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<UiButtonSave buttonText={"Save"} />
@@ -37,7 +37,7 @@ const CatchButtonBar = ({
 		);
 	}
 
-	if (catch_status === "view") {
+	if (catchStatus === "view") {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<UiButtonStatusHandle handleMethod={editCatchStatus} buttonText={"Edit catch"} newStatus={"edit"}>
@@ -45,7 +45,7 @@ const CatchButtonBar = ({
 				</UiButtonStatusHandle>
 
 				<UiButtonDelete
-					id={catch_id}
+					id={catchId}
 					deleteMethod={deleteCatch}
 					buttonText={"Delete Catch"}
 					confirmMessage={
@@ -53,7 +53,7 @@ const CatchButtonBar = ({
 					}
 				/>
 
-				{view_sexes === false ? (
+				{viewSexes === false ? (
 					<UiButtonSexes handleMethod={handleViewSexes} newStatus={true} />
 				) : (
 					<UiButtonSexes handleMethod={handleViewSexes} newStatus={false} />
@@ -62,7 +62,7 @@ const CatchButtonBar = ({
 		);
 	}
 
-	if (catch_status === "edit") {
+	if (catchStatus === "edit") {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<UiButtonSave buttonText={"Save"} />

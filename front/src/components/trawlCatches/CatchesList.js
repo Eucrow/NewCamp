@@ -156,21 +156,21 @@ const CatchesList = ({ haul_id }) => {
 	/**
 	 * Manage cancellation of catch edition.
 	 * @param {number} idx haul id.
-	 * @param {object} old_state catch state previous to the edition.
+	 * @param {object} backupCatch catch state previous to the edition.
 	 */
-	const handleCancelEditCatch = (idx, old_state) => {
+	const handleCancelEditCatch = (idx, backupCatch) => {
 		const newCatches = catches.map((c) => {
 			if (c.id !== idx) return c;
 			return {
 				...c,
-				id: old_state.id,
-				group: old_state.group,
-				weight: old_state.weight,
-				sampled_weight: old_state.sampled_weight,
-				category: old_state.category,
-				sp_code: old_state.sp_code,
-				sp_id: old_state.sp_id,
-				sp_name: old_state.sp_name,
+				id: backupCatch.id,
+				group: backupCatch.group,
+				weight: backupCatch.weight,
+				sampled_weight: backupCatch.sampled_weight,
+				category: backupCatch.category,
+				sp_code: backupCatch.sp_code,
+				sp_id: backupCatch.sp_id,
+				sp_name: backupCatch.sp_name,
 			};
 		});
 
@@ -187,7 +187,7 @@ const CatchesList = ({ haul_id }) => {
 		});
 
 		const request = {
-			catch_id: updatedCatch.id,
+			catchId: updatedCatch.id,
 			haul_id: updatedCatch.haul,
 			sp_code: updatedCatch.sp_code,
 			group: updatedCatch.group,
@@ -209,13 +209,13 @@ const CatchesList = ({ haul_id }) => {
 
 	/**
 	 * Method to check if a catch with a specific haul_id, sp_id, and category exists in the list of catches.
-	 * @param {number} haul_id - The id of the haul to check.
-	 * @param {number} sp_id - The id of the species to check.
+	 * @param {number} haulId - The id of the haul to check.
+	 * @param {number} spId - The id of the species to check.
 	 * @param {string} category - The category of the catch to check.
 	 * @returns {boolean} Returns true if the catch exists, false otherwise.
 	 */
-	const existsCatch = (haul_id, sp_id, category) => {
-		const thisApiCatch = apiCatch + haul_id + "/" + sp_id + "/" + category;
+	const existsCatch = (haulId, spId, category) => {
+		const thisApiCatch = apiCatch + haulId + "/" + spId + "/" + category;
 
 		return fetch(thisApiCatch).then((response) => {
 			if (response.status === 200) {
@@ -230,15 +230,15 @@ const CatchesList = ({ haul_id }) => {
 	 * Method to create a new catch.
 	 * If the catch already exists, it alerts the user.
 	 * @param {Event} e - The form submission event.
-	 * @param {Object} new_catch - The new catch to be created.
+	 * @param {Object} newCatch - The new catch to be created.
 	 */
-	const createCatch = (e, new_catch) => {
+	const createCatch = (e, newCatch) => {
 		e.preventDefault();
 
 		// add haul id to data request:
-		new_catch["haul_id"] = haul_id;
+		newCatch["haul_id"] = haul_id;
 
-		existsCatch(new_catch.haul_id, new_catch.sp_id, new_catch.category).then((response) => {
+		existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category).then((response) => {
 			if (response === true) {
 				alert("Catch already exists");
 			} else {
@@ -247,12 +247,12 @@ const CatchesList = ({ haul_id }) => {
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify(new_catch),
+					body: JSON.stringify(newCatch),
 				})
 					.then((response) => response.json())
 					.then((c) => {
-						const new_catches = [...catches, c];
-						setCatches(new_catches);
+						const newCatches = [...catches, c];
+						setCatches(newCatches);
 						setAdd(false);
 					})
 					.catch((error) => console.log(error));
@@ -292,18 +292,13 @@ const CatchesList = ({ haul_id }) => {
 				<legend>Biometric sampling</legend>
 				<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
 				{add === true ? (
-					<Catch
-						this_catch_status="add"
-						species={species}
-						createCatch={createCatch}
-						handleChangeAdd={setAdd}
-					/>
+					<Catch thisCatchStatus="add" species={species} createCatch={createCatch} handleChangeAdd={setAdd} />
 				) : null}
 				{catches.map((c) => {
 					return (
 						<Catch
 							key={c.id}
-							this_catch={c}
+							thisCatch={c}
 							species={species}
 							handleChangeSampledWeight={handleChangeSampledWeight}
 							handleChangeGroup={handleChangeGroup}

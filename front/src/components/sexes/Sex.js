@@ -5,23 +5,23 @@ import ComponentLengths from "../lengths/Lengths.js";
 /**
  * Sex component.
  * @param {string} sex_status "view", "edit" or "add".
- * @param {number} sex_id Id of sex.
+ * @param {number} sexId Id of sex.
  * @param {string} sex Sex.
  * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is milimeters.
  * @param {numeric} increment Increment of measurement unit.
- * @param {numeric} catch_id Id of catch.
+ * @param {numeric} catchId Id of catch.
  * @param {method} addSex Method to add sex.
  * @param {method} handleAddSexStatus Method to handle sex status.
  * @returns JSX of sex component.
  */
 const Sex = ({
 	sex_status,
-	sex_id,
+	sexId,
 	sex,
 	deleteSex,
 	unit,
 	increment,
-	catch_id,
+	catchId,
 	addSex,
 	setAddSexStatus,
 	sexesBackup,
@@ -80,7 +80,7 @@ const Sex = ({
 				<form className="form__row form--wide buttonsWrapper">
 					<label className="form__cell sexes__sex">
 						Sex:
-						<select id={sex_id} name={sex_id} disabled>
+						<select id={sexId} name={sexId} disabled>
 							<option value={newSex} key={newSex}>
 								{getSexText(newSex)}
 							</option>
@@ -88,7 +88,7 @@ const Sex = ({
 					</label>
 					<div className="form__cell buttonsWrapper">
 						<SexButtonBar
-							sex_id={sex_id}
+							sexId={sexId}
 							sex_status={sexStatus}
 							setSexStatus={setSexStatus}
 							updateSex={updateSex}
@@ -99,7 +99,7 @@ const Sex = ({
 					</div>
 				</form>
 				<ComponentLengths
-					sex_id={sex_id}
+					sexId={sexId}
 					lengths_status={lengthsStatus}
 					unit={unit}
 					increment={increment}
@@ -112,7 +112,7 @@ const Sex = ({
 			<form
 				className="form__row form--wide buttonsWrapper"
 				onSubmit={(e) => {
-					updateSex(sex_id, newSex);
+					updateSex(sexId, newSex);
 					setSexStatus("view");
 				}}
 			>
@@ -123,8 +123,8 @@ const Sex = ({
 							setNewSex(e.target.value);
 							validateSex(e);
 						}}
-						id={sex_id}
-						name={sex_id}
+						id={sexId}
+						name={sexId}
 						value={newSex}
 					>
 						<option value="3">Undetermined</option>
@@ -134,7 +134,7 @@ const Sex = ({
 				</label>
 				<div className="form__cell buttonsWrapper">
 					<SexButtonBar
-						sex_id={sex_id}
+						sexId={sexId}
 						sex_status={"edit"}
 						setSexStatus={setSexStatus}
 						updateSex={updateSex}
@@ -154,7 +154,7 @@ const Sex = ({
 			<form
 				className="form__row form--wide buttonsWrapper"
 				onSubmit={(e) => {
-					addSex(e, newSex, catch_id);
+					addSex(e, newSex, catchId);
 					setAddSexStatus(false);
 				}}
 			>
@@ -176,7 +176,7 @@ const Sex = ({
 				<SexButtonBar
 					sex_status={"add"}
 					newSex={newSex}
-					catch_id={catch_id}
+					catchId={catchId}
 					addSex={addSex}
 					setAddSexStatus={setAddSexStatus}
 					updateSex={updateSex}
