@@ -7,7 +7,7 @@ import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiIconEdit from "../ui/UiIconEdit";
 
-const StationButtonBar = ({ station_id, handleEdit, edit }) => {
+const StationButtonBar = ({ stationId, handleEdit, edit }) => {
 	const stationsContext = useContext(StationsContext);
 	var ButtonBar = "";
 
@@ -30,7 +30,7 @@ const StationButtonBar = ({ station_id, handleEdit, edit }) => {
 						<UiIconEdit />
 					</UiButtonStatusHandle>
 					<UiButtonDelete
-						id={station_id}
+						id={stationId}
 						deleteMethod={stationsContext.deleteStation}
 						buttonText={"Delete Station"}
 						confirmMessage={

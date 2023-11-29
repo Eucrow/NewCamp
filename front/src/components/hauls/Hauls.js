@@ -2,11 +2,11 @@ import React, { useState, useRef } from "react";
 import Haul from "./Haul";
 import UiButtonAdd from "../ui/UiButtonAdd";
 
-const Hauls = ({ hauls, station_id, createHaul }) => {
+const Hauls = ({ hauls, stationId, createHaul }) => {
 	/**
 	 * List of hauls
 	 * @param {object} hauls
-	 * @param {number} station_id
+	 * @param {number} stationId
 	 * @param {method} createHaul
 	 */
 
@@ -19,16 +19,16 @@ const Hauls = ({ hauls, station_id, createHaul }) => {
 	/**
 	 * Method to check if a combination of haul / sampler_id already exists in the hauls of this component.
 	 * @param {string} haul haul to check if alreay exists.
-	 * @param {string} sampler_id sampler_id to check if alreay exists.
+	 * @param {string} samplerId samplerId to check if alreay exists.
 	 * @returns True if exists, false if doesn't.
 	 */
-	const haulSamplerExists = (haul, sampler_id) => {
+	const haulSamplerExists = (haul, samplerId) => {
 		if (typeof hauls === "undefined") {
 			return false;
 		}
 
 		const sampler_exists = Object.keys(hauls).map((h) => {
-			if (hauls[h]["haul"] === parseInt(haul) && hauls[h]["sampler_id"] === parseInt(sampler_id)) {
+			if (hauls[h]["haul"] === parseInt(haul) && hauls[h]["sampler_id"] === parseInt(samplerId)) {
 				return true;
 			} else {
 				return false;
@@ -44,8 +44,8 @@ const Hauls = ({ hauls, station_id, createHaul }) => {
 	 * @param {string} haul haul to check if is valid.
 	 * @returns Throw reportValidity, showing an error when the validation is not passed.
 	 */
-	const validateHaulSampler = (e, haul, sampler_id) => {
-		const sampler_exists = haulSamplerExists(haul, sampler_id);
+	const validateHaulSampler = (e, haul, samplerId) => {
+		const sampler_exists = haulSamplerExists(haul, samplerId);
 
 		if (sampler_exists === true) {
 			haulRef.current.setCustomValidity("This combination of haul/sampler already exists.");
@@ -70,7 +70,7 @@ const Hauls = ({ hauls, station_id, createHaul }) => {
 							<Haul
 								key={haul.id}
 								haul={haul}
-								station_id={station_id}
+								stationId={stationId}
 								validateHaulSampler={validateHaulSampler}
 							/>
 						);
@@ -95,7 +95,7 @@ const Hauls = ({ hauls, station_id, createHaul }) => {
 				<>
 					{renderHauls()}
 					<Haul
-						station_id={station_id}
+						stationId={stationId}
 						add={add}
 						handleAdd={setAdd}
 						createHaul={createHaul}

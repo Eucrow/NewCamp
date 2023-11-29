@@ -46,18 +46,12 @@ const ViewEditStationForm = ({ station, handleEdit, edit }) => {
 						rows={1}
 						size={1000}
 						value={station.comment || ""}
-						onChange={(e) =>
-							stationsContext.handleChangeStation(e, station.id)
-						}
+						onChange={(e) => stationsContext.handleChangeStation(e, station.id)}
 					/>
 				</div>
 
 				<div className="form__cell form__cell--right">
-					<StationButtonBar
-						station_id={station.id}
-						handleEdit={handleEdit}
-						edit={edit}
-					/>
+					<StationButtonBar stationId={station.id} handleEdit={handleEdit} edit={edit} />
 				</div>
 			</div>
 		</form>
