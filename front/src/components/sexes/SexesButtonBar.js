@@ -3,16 +3,16 @@ import React from "react";
 /**
  * Lengths button bar component.
  */
-const SexesButtonBar = ({ add_sex_status, setAddSexStatus }) => {
+const SexesButtonBar = ({ sexStatus, setAddSex }) => {
 	var ButtonBar = null;
 
-	if (add_sex_status === "view") {
+	if (sexStatus === "view") {
 		ButtonBar = (
 			<div className="buttonsWrapper">
 				<button
 					className="buttonsWrapper__button"
 					onClick={() => {
-						setAddSexStatus(true);
+						setAddSex(true);
 					}}
 				>
 					Add sex

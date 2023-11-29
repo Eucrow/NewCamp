@@ -7,17 +7,11 @@ import LengthsRangeForm from "./LengthsRangeForm.js";
 
 /**
  * Lengths component.
- * @param {number} sex_id
+ * @param {number} sexId
  * @param {string} lengths Posible values: "view", "edit", "hide".
  * @returns
  */
-const ComponentLengths = ({
-	sex_id,
-	lengths_status,
-	unit,
-	increment,
-	setLengthsStatus,
-}) => {
+const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsStatus }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -53,7 +47,7 @@ const ComponentLengths = ({
 	// 	handleShowLengths();
 
 	// 	setMeasureUnit(unit);
-	// }, [lengths_status]);
+	// }, [lengthsStatus]);
 
 	useEffect(() => {
 		handleShowLengths();
@@ -62,11 +56,11 @@ const ComponentLengths = ({
 	}, []);
 
 	/**
-	 * Get all lengths of a sex_id from database.
+	 * Get all lengths of a sexId from database.
 	 * @returns JSON with lengths.
 	 */
 	const getLengths = async () => {
-		const api = apiLengths + sex_id;
+		const api = apiLengths + sexId;
 
 		const response = await fetch(api);
 		if (response.status > 400) {
@@ -84,7 +78,7 @@ const ComponentLengths = ({
 			filledLengths = transformUnitsFromMm(filledLengths);
 			setBackupLengths(filledLengths);
 			setLengths(filledLengths);
-			setLengthsStatus(lengths_status);
+			setLengthsStatus(lengthsStatus);
 
 			// a deep copy is mandatory because the data to be modified is nested:
 			let newLengths = JSON.parse(JSON.stringify(filledLengths));
@@ -96,11 +90,11 @@ const ComponentLengths = ({
 	};
 
 	/**
-	 * Delete all lengths of a sex_id in database. The sex_id variable is taken from parent component via props.
+	 * Delete all lengths of a sexId in database. The sexId variable is taken from parent component via props.
 	 * @returns JSON
 	 */
 	const deleteLengths = async () => {
-		const api = apiLengths + sex_id;
+		const api = apiLengths + sexId;
 
 		const response = await fetch(api, {
 			method: "DELETE",
@@ -185,9 +179,7 @@ const ComponentLengths = ({
 	 * @param {array of objec} lengths to remove zero number individuals.
 	 */
 	const removeZeroNumberIndividuals = (lengths) => {
-		var newLengths = lengths.filter(
-			(e) => e.number_individuals !== 0 && e.number_individuals !== ""
-		);
+		var newLengths = lengths.filter((e) => e.number_individuals !== 0 && e.number_individuals !== "");
 		return newLengths;
 	};
 
@@ -217,9 +209,7 @@ const ComponentLengths = ({
 				newLengths.shift();
 			}
 
-			while (
-				newLengths[newLengths.length - 1]["number_individuals"] === 0
-			) {
+			while (newLengths[newLengths.length - 1]["number_individuals"] === 0) {
 				newLengths.pop();
 			}
 
@@ -266,12 +256,12 @@ const ComponentLengths = ({
 	};
 
 	/**
-	 * Save lengths of a sex_id in database. The sex_id variable is taken from parent component via props.
+	 * Save lengths of a sexId in database. The sexId variable is taken from parent component via props.
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
 	 * @return JSON response or error.
 	 */
 	const saveLengths = async (lengths) => {
-		const api = apiLengths + sex_id;
+		const api = apiLengths + sexId;
 
 		try {
 			const response = await fetch(api, {
@@ -314,9 +304,7 @@ const ComponentLengths = ({
 					lengths = transformUnitsToMm(lengths);
 					if (Object.keys(lengthts_in_database).length === 0) {
 						// if there are not lengths already saved, save the new lengths:
-						saveLengths(lengths).catch((error) =>
-							console.log(error)
-						);
+						saveLengths(lengths).catch((error) => console.log(error));
 						setBackupLengths(lengths);
 					} else {
 						// if there are lengths, first delete it, and then save the updated lengths.
@@ -443,21 +431,19 @@ const ComponentLengths = ({
 	// render content
 	const renderContent = () => {
 		const partialContent = () => {
-			if (lengths_status === "hide") {
+			if (lengthsStatus === "hide") {
 				return null;
-			} else if (lengths_status === "view" && lengths.length !== 0) {
-				return <LengthsForm lengths_status={lengths_status} />;
-			} else if (lengths_status === "view" && lengths.length === 0) {
+			} else if (lengthsStatus === "view" && lengths.length !== 0) {
+				return <LengthsForm lengthsStatus={lengthsStatus} />;
+			} else if (lengthsStatus === "view" && lengths.length === 0) {
 				return (
 					<Fragment>
-						<LengthsRangeForm
-							createRangeLengths={createRangeLengths}
-						/>
+						<LengthsRangeForm createRangeLengths={createRangeLengths} />
 						<LengthsButtonBar />
 					</Fragment>
 				);
-			} else if (lengths_status === "edit") {
-				return <LengthsForm lengths_status={lengths_status} />;
+			} else if (lengthsStatus === "edit") {
+				return <LengthsForm lengthsStatus={lengthsStatus} />;
 			}
 		};
 
@@ -466,7 +452,7 @@ const ComponentLengths = ({
 				value={{
 					lengths: lengths,
 					measureUnit: measureUnit,
-					lengths_status: lengths_status,
+					lengthsStatus: lengthsStatus,
 					setLengthsStatus: setLengthsStatus,
 					saveOrUpdateLengths: saveOrUpdateLengths,
 					removeZeroTails: removeZeroTails,

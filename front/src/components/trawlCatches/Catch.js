@@ -1,129 +1,106 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
 import Sexes from "../sexes/Sexes.js";
-import ComponentCategory from "./Category.js";
-import CatchButtonBar from "./CatchButtonBar.js";
+import CatchForm from "./CatchForm.js";
 
-class Catch extends Component {
-	/**
-	 * Catch form.
-	 * @param {object} props.this_catch: catch managed by this component.
-	 * @param {object} props.species: species list.
-	 * @param {method} props.deleteSex: delete sex of database.
-	 * @param {method} props.handleChangeGroup: manage group state and field.
-	 * @param {method} props.handleChangeSpecies: manage pecies state and field.
-	 * @param {method} props.handleChangeCategory: manage ategory state and field.
-	 * @param {method} props.handleChangeWeight: manage weight state and field.
-	 * @param {method} props.handleCancelEditCatch: manage cancellation of catch edition.
-	 * @param {method} props.updateCatch: update catch in database.
-	 * @param {method} props.deleteCatch: delete catch of database.
-	 * @param {method} props.addSex: handle the new sex form.
-	 */
+/**
+ * Catch component.
+ * @param {object} props - The component props.
+ * @param {object} props.thisCatch - The catch managed by this component.
+ * @param {string} props.thisCatchStatus - The status of the catch.
+ * @param {object[]} props.species - The list of species.
+ * @param {function} props.handleChangeGroup - The function to handle group changes.
+ * @param {function} props.handleChangeSpecies - The function to handle species changes.
+ * @param {function} props.handleChangeCategory - The function to handle category changes.
+ * @param {function} props.handleChangeWeight - The function to handle weight changes.
+ * @param {function} props.handleCancelEditCatch - The function to handle cancellation of catch edition.
+ * @param {function} props.handleChangeSampledWeight - The function to handle sampled weight changes.
+ * @param {function} props.handleChangeAdd - The function to handle adding a catch.
+ * @param {function} props.createCatch - The function to create a catch.
+ * @param {function} props.updateCatch - The function to update a catch.
+ * @param {function} props.deleteCatch - The function to delete a catch.
+ * @returns {JSX.Element} The rendered Catch component.
+ */
+const Catch = ({
+	thisCatch,
+	thisCatchStatus,
+	species,
+	handleChangeGroup,
+	handleChangeSpecies,
+	handleChangeCategory,
+	handleChangeWeight,
+	handleCancelEditCatch,
+	handleChangeSampledWeight,
+	handleChangeAdd,
+	createCatch,
+	updateCatch,
+	deleteCatch,
+}) => {
+	const [catchStatus, setCatchStatus] = useState(thisCatchStatus || "view");
+	const [viewSexes, setViewSexes] = useState(false);
+	const [backupCatch] = useState(thisCatch || "");
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			// status_catch: "", // State of Catch component: "", "add", "view" or "edit".
-			status_catch: this.props.status_catch || "view",
-			view_sexes: false,
-		};
-
-		this.original_catch = "";
-
-		this.editCatchStatus = this.editCatchStatus.bind(this);
-		this.handleCancel = this.handleCancel.bind(this);
-	}
-
-	editCatchStatus(status) {
-		this.setState({
-			status_catch: status,
-		});
-	}
-
-	handleViewSexes = (status) => {
-		this.setState({
-			view_sexes: status,
-		});
+	const handleCancel = () => {
+		handleCancelEditCatch(thisCatch.id, backupCatch);
 	};
 
-	handleCancel = () => {
-		this.props.handleCancelEditCatch(this.props.this_catch.id, this.original_catch);
-	};
-
-	componentDidMount() {
-		this.original_catch = this.props.this_catch;
-	}
-
-	renderContent = () => {
-		if (this.state.status_catch === "add") {
+	const renderContent = () => {
+		if (catchStatus === "add") {
 			return (
 				<div className="form__row form--wide">
-					<ComponentCategory
-						status_catch={this.state.status_catch}
-						species={this.props.species}
-						createCatch={this.props.createCatch}
-						existsCatch={this.props.existsCatch}
+					<CatchForm
+						catchStatus={catchStatus}
+						species={species}
+						createCatch={createCatch}
+						editCatchStatus={setCatchStatus}
+						handleChangeAdd={handleChangeAdd}
 					/>
 				</div>
 			);
-		} else if (this.state.status_catch === "view") {
+		} else if (catchStatus === "view") {
 			return (
 				<div className="form__row form--wide catch">
-					<ComponentCategory status_catch={this.state.status_catch} this_catch={this.props.this_catch} />
-					<CatchButtonBar
-						className="form__cell__catches--left"
-						catch_id={this.props.this_catch.id}
-						catch_status={this.state.status_catch}
-						view_sexes={this.state.view_sexes}
-						editCatchStatus={this.editCatchStatus}
-						deleteCatch={this.props.deleteCatch}
-						handleViewSexes={this.handleViewSexes}
+					<CatchForm
+						catchStatus={catchStatus}
+						thisCatch={thisCatch}
+						deleteCatch={deleteCatch}
+						handleViewSexes={setViewSexes}
+						catchId={thisCatch.id}
+						viewSexes={viewSexes}
+						editCatchStatus={setCatchStatus}
 					/>
-					<div className="form__row sexesWrapper">
-						<Sexes
-							catch_id={this.props.this_catch.id}
-							has_sexes={this.props.this_catch.has_sexes}
-							unit={this.props.this_catch.unit}
-							increment={this.props.this_catch.increment}
-							editCatchStatus={this.editCatchStatus}
-							addSex={this.props.addSex}
-							deleteSex={this.props.deleteSex}
-							handleViewSexes={this.handleViewSexes}
-							view_sexes={this.state.view_sexes}
-						/>
-					</div>
+					<Sexes
+						catchId={thisCatch.id}
+						unit={thisCatch.unit}
+						increment={thisCatch.increment}
+						viewSexes={viewSexes}
+					/>
 				</div>
 			);
-		} else if (this.state.status_catch === "edit") {
+		} else if (catchStatus === "edit") {
 			return (
 				<div className="form__row">
-					<ComponentCategory
-						status_catch={this.state.status_catch}
-						this_catch={this.props.this_catch}
-						species={this.props.species}
-						handleChangeGroup={this.props.handleChangeGroup}
-						handleChangeSpecies={this.props.handleChangeSpecies}
-						handleChangeCategory={this.props.handleChangeCategory}
-						handleChangeWeight={this.props.handleChangeWeight}
-						handleChangeSampledWeight={this.props.handleChangeSampledWeight}
-					/>
-
-					<CatchButtonBar
-						catch_id={this.props.this_catch.id}
-						catch_status={this.state.status_catch}
-						view_sexes={this.state.view_sexes}
-						editCatchStatus={this.editCatchStatus}
-						updateCatch={this.props.updateCatch}
-						handleCancel={this.handleCancel}
+					<CatchForm
+						catchStatus={catchStatus}
+						thisCatch={thisCatch}
+						species={species}
+						handleChangeGroup={handleChangeGroup}
+						handleChangeSpecies={handleChangeSpecies}
+						handleChangeCategory={handleChangeCategory}
+						handleChangeWeight={handleChangeWeight}
+						handleChangeSampledWeight={handleChangeSampledWeight}
+						updateCatch={updateCatch}
+						editCatchStatus={setCatchStatus}
+						catchId={thisCatch.id}
+						viewSexes={viewSexes}
+						handleCancel={handleCancel}
 					/>
 				</div>
 			);
 		}
 	};
 
-	render() {
-		return this.renderContent();
-	}
-}
+	return renderContent();
+};
 
 export default Catch;
