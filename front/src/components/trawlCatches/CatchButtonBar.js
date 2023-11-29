@@ -28,7 +28,7 @@ const CatchButtonBar = ({
 				<button
 					onClick={(e) => {
 						e.preventDefault();
-						handleChangeAdd();
+						handleChangeAdd(false);
 					}}
 				>
 					Cancel
