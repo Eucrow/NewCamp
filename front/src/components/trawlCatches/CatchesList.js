@@ -43,11 +43,8 @@ const CatchesList = ({ haul_id }) => {
 	};
 
 	/**
-	 * Method to manage the group field. When it is changed, get the species of the group.
-	 * Then, update the state.
-	 *
+	 * Method to manage the group field.
 	 * @param {number} idx - The index of the catch.
-	 * @returns {Function} The handleChangeGroup function.
 	 */
 	const handleChangeGroup = (idx) => (evt) => {
 		const value = evt.target.value;
@@ -61,11 +58,8 @@ const CatchesList = ({ haul_id }) => {
 	};
 
 	/**
-	 * Method to manage the species field. When it is changed, it splits the value into species, species code, and species name.
-	 * Then, it updates the state with the new species information.
-	 *
+	 * Method to manage the species field.
 	 * @param {number} idx - The index of the catch.
-	 * @returns {Function} The handleChangeSpecies function which takes an event as an argument.
 	 */
 	const handleChangeSpecies = (idx) => (evt) => {
 		const value = evt.target.value;
@@ -88,10 +82,8 @@ const CatchesList = ({ haul_id }) => {
 	};
 
 	/**
-	 * Method to manage the category field. When it is changed, it updates the state with the new category information.
-	 *
+	 * Method to manage the category field.
 	 * @param {number} idx - The index of the catch.
-	 * @returns {Function} The handleChangeCategory function which takes an event as an argument.
 	 */
 	const handleChangeCategory = (idx) => (evt) => {
 		const value = evt.target.value;
@@ -125,6 +117,10 @@ const CatchesList = ({ haul_id }) => {
 		}
 	};
 
+	/**
+	 * Method to manage the weight field.
+	 * @param {number} idx - The index of the catch.
+	 */
 	const handleChangeWeight = (idx) => (evt) => {
 		const value = evt.target.value;
 
@@ -139,6 +135,10 @@ const CatchesList = ({ haul_id }) => {
 		setCatches(newCatches);
 	};
 
+	/**
+	 * Method to manage the sampled weight field.
+	 * @param {number} idx - The index of the catch.
+	 */
 	const handleChangeSampledWeight = (idx) => (evt) => {
 		const value = evt.target.value;
 
@@ -177,11 +177,11 @@ const CatchesList = ({ haul_id }) => {
 		setCatches(newCatches);
 	};
 
+	/**
+	 * Method to update a catch in the database.
+	 * @param {number} idx - The index of the catch to update.
+	 */
 	const updateCatch = (idx) => {
-		/**
-		 * Update catch in database.
-		 */
-
 		const updatedCatch = catches.find(function (c) {
 			return idx === c.id;
 		});
@@ -207,13 +207,14 @@ const CatchesList = ({ haul_id }) => {
 			.catch((error) => alert(error));
 	};
 
+	/**
+	 * Method to check if a catch with a specific haul_id, sp_id, and category exists in the list of catches.
+	 * @param {number} haul_id - The id of the haul to check.
+	 * @param {number} sp_id - The id of the species to check.
+	 * @param {string} category - The category of the catch to check.
+	 * @returns {boolean} Returns true if the catch exists, false otherwise.
+	 */
 	const existsCatch = (haul_id, sp_id, category) => {
-		/**
-		 * Method to check if a catch exists in database.
-		 * @param {number} haul_id: id of haul.
-		 * @param {number} category_id: id of category.
-		 */
-
 		const thisApiCatch = apiCatch + haul_id + "/" + sp_id + "/" + category;
 
 		return fetch(thisApiCatch).then((response) => {
@@ -225,11 +226,13 @@ const CatchesList = ({ haul_id }) => {
 		});
 	};
 
+	/**
+	 * Method to create a new catch.
+	 * If the catch already exists, it alerts the user.
+	 * @param {Event} e - The form submission event.
+	 * @param {Object} new_catch - The new catch to be created.
+	 */
 	const createCatch = (e, new_catch) => {
-		/**
-		 * Save catch to database.
-		 */
-
 		e.preventDefault();
 
 		// add haul id to data request:
