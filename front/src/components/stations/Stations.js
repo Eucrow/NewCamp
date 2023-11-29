@@ -6,7 +6,7 @@ import StationsButtonBar from "./StationsButtonBar";
 import Station from "./Station";
 import NewStationForm from "./NewStationForm";
 
-const ComponentsStations = () => {
+const Stations = () => {
 	const [add, setAdd] = useState(false);
 	const [stations, setStations] = useState([]);
 	const [strata, setStrata] = useState([]);
@@ -61,14 +61,14 @@ const ComponentsStations = () => {
 	/**
 	 * Edit station.
 	 * @param {event} e
-	 * @param {number} station_id
+	 * @param {number} stationId
 	 */
-	const editStation = (e, station_id) => {
+	const editStation = (e, stationId) => {
 		e.preventDefault();
 
-		const api = apiStation + station_id;
+		const api = apiStation + stationId;
 
-		const updated_station = stations.filter((station) => station.id === station_id);
+		const updated_station = stations.filter((station) => station.id === stationId);
 
 		fetch(api, {
 			method: "PUT",
@@ -386,4 +386,4 @@ const ComponentsStations = () => {
 	return renderContent();
 };
 
-export default ComponentsStations;
+export default Stations;

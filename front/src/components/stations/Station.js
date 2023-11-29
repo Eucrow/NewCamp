@@ -1,62 +1,28 @@
-import React, { Component } from "react";
-
-import stationsContext from "../../contexts/StationsContext.js";
+import React, { useState } from "react";
 
 import ViewStation from "./ViewStation.js";
 import EditStation from "./EditStation.js";
 
-/**
- *
- * @param {Array} station
- */
-class Station extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			edit: false,
-		};
+const Station = ({ station }) => {
+	const [editStation, setEditStation] = useState(false);
 
-		this.handleEdit = this.handleEdit.bind(this);
-	}
-
-	static contextType = stationsContext;
-	/**
-	 * Handle edit state.
-	 * @param {boolean} edit
-	 */
-	handleEdit(edit) {
-		this.setState(() => {
-			return {
-				edit: edit,
-			};
-		});
-	}
-
-	renderContent() {
-		if (this.state.edit === false) {
+	const renderContent = () => {
+		if (editStation === false) {
 			return (
 				<div className="wrapper">
-					<ViewStation
-						station={this.props.station}
-						handleEdit={this.handleEdit}
-					/>
+					<ViewStation station={station} handleEdit={setEditStation} />
 				</div>
 			);
-		} else if (this.state.edit === true) {
+		} else if (editStation === true) {
 			return (
 				<div className="wrapper">
-					<EditStation
-						station={this.props.station}
-						handleEdit={this.handleEdit}
-					/>
+					<EditStation station={station} handleEdit={setEditStation} />
 				</div>
 			);
 		}
-	}
+	};
 
-	render() {
-		return this.renderContent();
-	}
-}
+	return renderContent();
+};
 
 export default Station;

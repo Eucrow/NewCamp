@@ -11,7 +11,7 @@ import ComponentsSurveys from "./components/surveys/Surveys.js";
 
 import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
 
-import ComponentsStations from "./components/stations/Stations.js";
+import Stations from "./components/stations/Stations.js";
 
 // import ComponentsHauls from "./components/hauls/Hauls.js";
 
@@ -101,7 +101,7 @@ export default function App() {
 
 				<Route path="/Surveys" exact component={ComponentsSurveys} />
 
-				<Route path="/Stations" exact component={ComponentsStations} />
+				<Route path="/Stations" exact component={Stations} />
 
 				{/* TODO: CONSIDER IF THE NEXT PATH IS USEFULL */}
 				{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
