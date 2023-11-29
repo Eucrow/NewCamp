@@ -287,7 +287,6 @@ const CatchForm = ({
 						<input
 							style={{ width: 8 + "ch" }}
 							type="number"
-							className="input__noSpinner"
 							id="sampled_weight"
 							name="sampled_weight"
 							min="1"

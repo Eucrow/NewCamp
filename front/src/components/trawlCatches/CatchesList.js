@@ -187,7 +187,7 @@ const CatchesList = ({ haul_id }) => {
 		});
 
 		const request = {
-			catchId: updatedCatch.id,
+			catch_id: updatedCatch.id,
 			haul_id: updatedCatch.haul,
 			sp_code: updatedCatch.sp_code,
 			group: updatedCatch.group,
