@@ -5,7 +5,7 @@ import HaulDetails from "./HaulDetails";
 import HaulHandleNew from "./new/HaulHandleNew";
 import CatchesList from "../trawlCatches/CatchesList";
 
-const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, samplerRef, createHaul, add, handleAdd }) => {
+const Haul = ({ haul, stationId, samplers, validateHaulSampler, haulRef, samplerRef, createHaul, add, handleAdd }) => {
 	const [detail, setDetail] = useState(false);
 	const [edit, setEdit] = useState(false);
 
@@ -16,7 +16,7 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, sample
 			return (
 				<>
 					<HaulHandleNew
-						station_id={station_id}
+						station_id={stationId}
 						handleAdd={handleAdd}
 						createHaul={createHaul}
 						validateHaulSampler={validateHaulSampler}
@@ -64,7 +64,7 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, sample
 					<HaulFormEdit
 						thisHaul={thisHaul}
 						setThisHaul={setThisHaul}
-						station_id={station_id}
+						station_id={stationId}
 						edit={edit}
 						setEdit={setEdit}
 						samplers={samplers}
