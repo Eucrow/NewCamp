@@ -21,7 +21,7 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		stationsContext.updateHaulCommonState(thisHaul);
+		stationsContext.updateHaulCommon(thisHaul);
 		setEdit(false);
 	};
 
@@ -33,6 +33,12 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 				[name]: value,
 			};
 		});
+	};
+
+	const handleCancel = (status) => {
+		stationsContext.restoreHaulCommon(backupHaul.id);
+		setThisHaul(backupHaul);
+		setEdit(status);
 	};
 
 	/**
@@ -77,11 +83,6 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 				valid: value,
 			};
 		});
-	};
-
-	const handleCancel = (status) => {
-		stationsContext.updateHaulCommonState(backupHaul);
-		setEdit(status);
 	};
 
 	const renderContent = () => {

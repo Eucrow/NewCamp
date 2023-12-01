@@ -109,7 +109,7 @@ const Stations = () => {
 	/**
 	 * Handle change fields of Station forms.
 	 * @param {event} e
-	 * @param {number} station_id
+	 * @param {number} stationId - The ID of the station to be changed.
 	 */
 	const handleChangeStation = (e, stationId) => {
 		e.preventDefault();
@@ -131,9 +131,9 @@ const Stations = () => {
 	};
 
 	/**
-	 * Create new haul
+	 * Creates the common properties of a haul and sends to the server.
 	 * @param {event} e
-	 * @param {object} haul
+	 * @param {object} updatedHaul - The updated haul object.
 	 */
 	const createHaul = (e, haul) => {
 		e.preventDefault();
@@ -167,11 +167,10 @@ const Stations = () => {
 	};
 
 	/**
-	 * Update common information of haul.
-	 * @param {object} updatedHaul Haul with new values.
-	 * @param {number} station_id Id of station of the haul.
+	 * Updates the common properties of a haul and sends the updated haul to the server.
+	 * @param {object} updatedHaul - The updated haul object.
 	 */
-	const updateHaulCommonState = (updatedHaul) => {
+	const updateHaulCommon = (updatedHaul) => {
 		const newStations = stations.map((station) => {
 			if (station.station === updatedHaul.station) {
 				const new_hauls = station.hauls.map((haul) => {
@@ -201,6 +200,32 @@ const Stations = () => {
 			},
 			body: JSON.stringify(haul),
 		}).catch((error) => console.log(error));
+	};
+
+	/**
+	 * Restores the haul of a station to its original state.
+	 * @param {number} haulId - The ID of the haul to be restored.
+	 */
+	const restoreHaulCommon = (haulId) => {
+		const backupHaul = stationsBackup.find((station) => station.hauls.some((h) => h.id === haulId));
+
+		const newStations = stations.map((station) => {
+			if (station.station === backupHaul.station) {
+				const newHauls = station.hauls.map((haul) => {
+					if (haul.id === backupHaul.id) {
+						return backupHaul;
+					} else {
+						return haul;
+					}
+				});
+				station.hauls = newHauls;
+				return station;
+			} else {
+				return station;
+			}
+		});
+
+		setStations(newStations);
 	};
 
 	/**
@@ -351,7 +376,7 @@ const Stations = () => {
 					deleteStation: deleteStation,
 					deleteHaul: deleteHaul,
 					createHaul: createHaul,
-					updateHaulCommonState: updateHaulCommonState,
+					updateHaulCommon: updateHaulCommon,
 					handleChangeStation: handleChangeStation,
 					updateStation: updateStation,
 					validateStationNumber: validateStationNumber,
@@ -359,6 +384,7 @@ const Stations = () => {
 					gears: gears,
 					samplers: samplers,
 					restoreStations: restoreStations,
+					restoreHaulCommon: restoreHaulCommon,
 				}}
 			>
 				<main>
