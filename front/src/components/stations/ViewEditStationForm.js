@@ -10,7 +10,7 @@ const ViewEditStationForm = ({ station, handleEdit, edit }) => {
 	const stationsContext = useContext(StationsContext);
 
 	const handleSubmit = (e) => {
-		stationsContext.editStation(e, station.id);
+		stationsContext.updateStation(e, station.id);
 		handleEdit(false);
 	};
 
