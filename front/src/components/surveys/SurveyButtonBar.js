@@ -6,14 +6,14 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
  * Button bar of survey component.
- * @param {object} props survey object.
+ * @param {object} survey survey object.
  * @param {boolean} edit variable to indicate if the element is edited or not.
  * @param {method} handleEdit method to handle de 'edit' boolean variable.
  * @param {method} deleteSurvey method to delete survey.
  */
 
 // TODO: test if instead of receive props, receive only survey.id
-const SurveyButtonBar = ({ props, edit, handleEdit, deleteSurvey }) => {
+const SurveyButtonBar = ({ survey, edit, handleEdit, deleteSurvey }) => {
 	var ButtonBar = "";
 
 	if (edit === true) {
@@ -38,7 +38,7 @@ const SurveyButtonBar = ({ props, edit, handleEdit, deleteSurvey }) => {
 					Edit Survey
 				</button>
 				<UiButtonDelete
-					id={props.survey.id}
+					id={survey.id}
 					deleteMethod={deleteSurvey}
 					buttonText="Delete Survey"
 					confirmMessage="Delete the survey?"

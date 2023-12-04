@@ -6,17 +6,17 @@ import SurveyButtonBar from "./SurveyButtonBar";
 
 /**
  * ViewEditSurveyForm component
- * @param {object} props survey object.
+ * @param {object} survey survey object.
  * @param {boolean} edit variable to indicate if the element is edited or not.
  * @param {method} handleEdit method to handle de 'edit' boolean variable.
  */
-const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
+const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 	const surveysContext = useContext(SurveysContext);
 	const is_disabled = edit === true ? false : true;
 
 	const handleSubmit = (e) => {
-		surveysContext.updateSurvey(e, props.survey.id);
-		props.handleEdit(false);
+		surveysContext.updateSurvey(e, survey.id);
+		handleEdit(false);
 	};
 
 	const renderedSurvey = (
@@ -33,10 +33,8 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						required
 						autoFocus
 						pattern="^[a-zA-Z0-9\s]{1,30}$"
-						value={props.survey.description || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						value={survey.description || ""}
+						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 					/>
 				</span>
 				<span className="field">
@@ -48,11 +46,9 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						disabled={is_disabled}
 						required
 						size={3}
-						pattern="^[\w|\d]{3}$"
-						value={props.survey.acronym || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						pattern="^[\w\d]{3}$"
+						value={survey.acronym || ""}
+						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 					/>
 				</span>
 			</div>
@@ -64,13 +60,10 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						id="start_date"
 						name="start_date"
 						disabled={is_disabled}
-						value={props.survey.start_date || ""}
+						value={survey.start_date || ""}
 						onChange={(e) => {
-							surveysContext.handleChange(e, props.survey.id);
-							surveysContext.validateStartDate(
-								e,
-								props.survey.end_date
-							);
+							surveysContext.handleChange(e, survey.id);
+							surveysContext.validateStartDate(e, survey.end_date);
 						}}
 					/>
 				</span>
@@ -81,13 +74,10 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						id="end_date"
 						name="end_date"
 						disabled={is_disabled}
-						value={props.survey.end_date || ""}
+						value={survey.end_date || ""}
 						onChange={(e) => {
-							surveysContext.handleChange(e, props.survey.id);
-							surveysContext.validateEndDate(
-								e,
-								props.survey.start_date
-							);
+							surveysContext.handleChange(e, survey.id);
+							surveysContext.validateEndDate(e, survey.start_date);
 						}}
 					/>
 				</span>
@@ -100,16 +90,12 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						id="ship"
 						name="ship"
 						disabled={is_disabled}
-						value={props.survey.ship || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						value={survey.ship || ""}
+						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="hauls_duration">
-						Hauls duration (minutes):
-					</label>
+					<label htmlFor="hauls_duration">Hauls duration (minutes):</label>
 					<input
 						type="number"
 						id="hauls_duration"
@@ -117,10 +103,8 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						min="0"
 						size={4}
 						disabled={is_disabled}
-						value={props.survey.hauls_duration || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						value={survey.hauls_duration || ""}
+						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onKeyDown={surveysContext.preventNegativeE}
 					/>
 				</span>
@@ -131,10 +115,8 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						name="stratification"
 						disabled={is_disabled}
 						required
-						value={props.survey.stratification || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						value={survey.stratification || ""}
+						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 					>
 						<option />
 						{surveysContext.stratifications.map((st, idx) => {
@@ -160,10 +142,8 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						size={3}
 						maxLength={3}
 						disabled={is_disabled}
-						value={props.survey.width_x || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						value={survey.width_x || ""}
+						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onKeyDown={surveysContext.preventNegativeE}
 					/>
 				</span>
@@ -178,17 +158,13 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						maxLength={3}
 						size={3}
 						disabled={is_disabled}
-						value={props.survey.width_y || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						value={survey.width_y || ""}
+						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onKeyDown={surveysContext.preventNegativeE}
 					/>
 				</span>
 				<span className="field">
-					<label htmlFor="origin_x">
-						Origin longitude (degrees):
-					</label>
+					<label htmlFor="origin_x">Origin longitude (degrees):</label>
 					<input
 						type="number"
 						id="origin_x"
@@ -198,10 +174,8 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						step={0.001}
 						size={8}
 						disabled={is_disabled}
-						value={props.survey.origin_x || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						value={survey.origin_x || ""}
+						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onInput={surveysContext.forceReportValidity}
 					/>
 				</span>
@@ -216,10 +190,8 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						step={0.001}
 						size={7}
 						disabled={is_disabled}
-						value={props.survey.origin_y || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						value={survey.origin_y || ""}
+						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onInput={surveysContext.forceReportValidity}
 					/>
 				</span>
@@ -235,16 +207,14 @@ const ViewEditSurveyForm = ({ props, edit, handleEdit }) => {
 						rows="2"
 						maxLength={1000}
 						disabled={is_disabled}
-						value={props.survey.comment || ""}
-						onChange={(e) =>
-							surveysContext.handleChange(e, props.survey.id)
-						}
+						value={survey.comment || ""}
+						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 					/>
 				</span>
 			</div>
 			<div className="form__row">
 				<SurveyButtonBar
-					props={props}
+					survey={survey}
 					edit={edit}
 					handleEdit={handleEdit}
 					deleteSurvey={surveysContext.deleteSurvey}

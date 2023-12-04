@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
 import ViewEditSurveyForm from "./ViewEditSurveyForm";
 
@@ -6,51 +6,22 @@ import ViewEditSurveyForm from "./ViewEditSurveyForm";
  * Survey component. Manage component logic.
  * @param {object} props survey object
  */
-class Survey extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			edit: false,
-		};
+const Survey = ({ survey }) => {
+	const [edit, setEdit] = useState(false);
 
-		this.handleEdit = this.handleEdit.bind(this);
-	}
-
-	handleEdit(edit) {
-		this.setState(() => {
-			return {
-				edit: edit,
-			};
-		});
-	}
-
-	renderContent() {
+	const renderContent = () => {
 		let content = "";
 
-		if (this.state.edit === true) {
-			content = (
-				<ViewEditSurveyForm
-					props={this.props}
-					edit={true}
-					handleEdit={this.handleEdit}
-				/>
-			);
+		if (edit === true) {
+			content = <ViewEditSurveyForm survey={survey} edit={true} handleEdit={setEdit} />;
 		} else {
-			content = (
-				<ViewEditSurveyForm
-					props={this.props}
-					edit={false}
-					handleEdit={this.handleEdit}
-				/>
-			);
+			content = <ViewEditSurveyForm survey={survey} edit={false} handleEdit={setEdit} />;
 		}
 
 		return content;
-	}
+	};
 
-	render() {
-		return this.renderContent();
-	}
-}
+	return renderContent();
+};
 
 export default Survey;
