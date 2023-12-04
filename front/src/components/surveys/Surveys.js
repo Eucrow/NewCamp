@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import SurveysContext from "../../contexts/SuverysContext";
+import SurveysContext from "../../contexts/SurveysContext";
 
 import SurveysButtonBar from "./SurveysButtonBar";
 import Survey from "./Survey";
@@ -12,6 +12,7 @@ import NewSurveyForm from "./NewSurveyForm";
  */
 const Surveys = () => {
 	const [surveys, setSurveys] = useState([]);
+	const [surveysBackup, setSurveysBackup] = useState([]);
 	const [stratifications, setStratifications] = useState([]);
 	const [add, setAdd] = useState(false);
 
@@ -21,16 +22,16 @@ const Surveys = () => {
 	/**
 	 * Manage change in fields of a previous created survey.
 	 * @param {event} e - Event.
-	 * @param {numeric} survey_id - Identification number of the survey which fields are managed.
+	 * @param {numeric} surveyId - Identification number of the survey which fields are managed.
 	 */
-	const handleChange = (e, survey_id) => {
+	const handleChange = (e, surveyId) => {
 		const name = e.target.name;
 		const value = e.target.value;
 
 		e.preventDefault();
 		const newSurveys = surveys.map((survey) => {
-			if (survey.id === survey_id) {
-				var newSurvey = survey;
+			if (survey.id === surveyId) {
+				var newSurvey = { ...survey };
 				newSurvey[name] = value;
 				return newSurvey;
 			} else {
@@ -87,13 +88,23 @@ const Surveys = () => {
 			body: JSON.stringify(updatedSurvey[0]),
 		})
 			.then((response) => {
-				if (response.status === 200) {
-					//TODO: something should be here!!
-				} else {
-					alert("Something is wrong.");
+				if (response.status > 400) {
+					alert("something were wrong updating the survey!!");
 				}
+				return response.json();
 			})
 			.catch((error) => console.log(error));
+	};
+
+	/**
+	 * Restores the survey to its original state.
+	 * @param {number} surveyId - The ID of the haul to be restored.
+	 */
+
+	const handleCancelEditSurvey = (e) => {
+		// e.preventDefault();
+		// setAdd(false);
+		setSurveys(surveysBackup);
 	};
 
 	/**
@@ -188,26 +199,6 @@ const Surveys = () => {
 		e.target.reportValidity();
 	};
 
-	// componentDidMount() {
-	// 	this.getStratifications();
-
-	// 	fetch(this.apiSurvey)
-	// 		.then((response) => {
-	// 			if (response.status > 400) {
-	// 				return this.setState(() => {
-	// 					return { placeholder: "Something went wrong!" };
-	// 				});
-	// 			}
-	// 			return response.json();
-	// 		})
-	// 		.then((surveys) => {
-	// 			this.setState(() => {
-	// 				return { surveys };
-	// 			});
-	// 		})
-	// 		.catch((error) => console.log(error));
-	// }
-
 	useEffect(() => {
 		getStratifications();
 
@@ -222,6 +213,7 @@ const Surveys = () => {
 			})
 			.then((surveys) => {
 				setSurveys(surveys);
+				setSurveysBackup(surveys);
 			})
 			.catch((error) => console.log(error));
 	}, []);
@@ -246,6 +238,7 @@ const Surveys = () => {
 					validateStartDate: validateStartDate,
 					validateEndDate: validateEndDate,
 					forceReportValidity: forceReportValidity,
+					handleCancelEditSurvey: handleCancelEditSurvey,
 				}}
 			>
 				<main>

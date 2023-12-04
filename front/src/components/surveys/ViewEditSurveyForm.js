@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import SurveysContext from "../../contexts/SuverysContext";
+import SurveysContext from "../../contexts/SurveysContext";
 
 import SurveyButtonBar from "./SurveyButtonBar";
 

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 
-import SurveysContext from "../../contexts/SuverysContext";
+import SurveysContext from "../../contexts/SurveysContext";
 
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
