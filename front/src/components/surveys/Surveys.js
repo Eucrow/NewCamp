@@ -50,7 +50,7 @@ const Surveys = () => {
 	const createSurvey = (e, survey) => {
 		e.preventDefault();
 
-		fetch(this.apiSurvey, {
+		fetch(apiSurvey, {
 			method: "POST",
 			headers: {
 				"Content-type": "Application/json",
@@ -136,9 +136,7 @@ const Surveys = () => {
 		return fetch(apiStratification)
 			.then((response) => {
 				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
-					});
+					alert("something were wrong getting the stratifications!!");
 				}
 				return response.json();
 			})
@@ -205,9 +203,7 @@ const Surveys = () => {
 		fetch(apiSurvey)
 			.then((response) => {
 				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
-					});
+					alert("something were wrong getting the surveys!!");
 				}
 				return response.json();
 			})

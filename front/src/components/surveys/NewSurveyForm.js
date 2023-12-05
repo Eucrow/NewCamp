@@ -38,7 +38,7 @@ const NewSurveyForm = () => {
 	 */
 	const handleSubmit = (e) => {
 		surveysContext.createSurvey(e, survey);
-		surveysContext.handleAdd(false);
+		surveysContext.setAdd(false);
 	};
 
 	const renderContent = () => {
