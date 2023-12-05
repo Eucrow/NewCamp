@@ -247,7 +247,7 @@ const Surveys = () => {
 					</header>
 
 					<div className="wrapper surveysWrapper">
-						<SurveysButtonBar add={add} setAdd={setAdd} />
+						<SurveysButtonBar add={add} handleAdd={setAdd} />
 						{add === true ? <NewSurveyForm /> : ""}
 
 						{surveys.map((survey) => {
