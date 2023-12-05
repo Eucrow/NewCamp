@@ -207,7 +207,7 @@ const NewSurveyForm = () => {
 						<UiButtonSave buttonText={"Save Survey"} />
 						<UiButtonStatusHandle
 							buttonText="Cancel"
-							handleMethod={surveysContext.handleAdd}
+							handleMethod={surveysContext.setAdd}
 							newStatus={false}
 						/>
 					</div>
