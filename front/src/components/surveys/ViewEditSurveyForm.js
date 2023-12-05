@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 
 import SurveysContext from "../../contexts/SurveysContext";
 
@@ -13,10 +13,25 @@ import SurveyButtonBar from "./SurveyButtonBar";
 const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 	const surveysContext = useContext(SurveysContext);
 	const is_disabled = edit === true ? false : true;
+	const inputRef = useRef();
 
 	const handleSubmit = (e) => {
 		surveysContext.updateSurvey(e, survey.id);
 		handleEdit(false);
+		// 3. Here we blur the input field, which is no longer focused.
+		if (inputRef.current) {
+			inputRef.current.blur();
+		}
+	};
+
+	// 1. This callback is called to set focus and select content of the input field.
+	const callbackRef = (element) => {
+		if (element) {
+			element.focus();
+			element.select();
+			// 2. Here we create a ref to the input field, which is focused and selected.
+			inputRef.current = element;
+		}
 	};
 
 	const renderedSurvey = (
@@ -31,10 +46,10 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						disabled={is_disabled}
 						className="survey_description"
 						required
-						autoFocus
 						pattern="^[a-zA-Z0-9\s]{1,30}$"
 						value={survey.description || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
+						ref={callbackRef}
 					/>
 				</span>
 				<span className="field">
