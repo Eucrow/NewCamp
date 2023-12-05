@@ -35,25 +35,24 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 	};
 
 	const renderedSurvey = (
-		<form className="wrapper" onSubmit={handleSubmit}>
+		<form className="wrapper form__row form__wide" onSubmit={handleSubmit}>
 			<div className="form__row">
-				<span className="field">
-					<label htmlFor="description">Description:</label>
+				<label className="form__cell">
+					Description:
 					<input
 						type="text"
 						id="description"
 						name="description"
 						disabled={is_disabled}
-						className="survey_description"
 						required
 						pattern="^[a-zA-Z0-9\s]{1,30}$"
 						value={survey.description || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						ref={callbackRef}
 					/>
-				</span>
-				<span className="field">
-					<label htmlFor="acronym">Acronym:</label>
+				</label>
+				<label className="form__cell">
+					Acronym:
 					<input
 						type="text"
 						id="acronym"
@@ -65,11 +64,11 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						value={survey.acronym || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 					/>
-				</span>
+				</label>
 			</div>
 			<div className="form__row">
-				<span className="field">
-					<label htmlFor="start_date">Start date:</label>
+				<label className="form__cell">
+					Start date:
 					<input
 						type="date"
 						id="start_date"
@@ -81,9 +80,9 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 							surveysContext.validateStartDate(e, survey.end_date);
 						}}
 					/>
-				</span>
-				<span className="field">
-					<label htmlFor="end_date">End date:</label>
+				</label>
+				<label className="form__cell">
+					End date:
 					<input
 						type="date"
 						id="end_date"
@@ -95,11 +94,11 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 							surveysContext.validateEndDate(e, survey.start_date);
 						}}
 					/>
-				</span>
+				</label>
 			</div>
 			<div className="form__row">
-				<span className="field">
-					<label htmlFor="ship">Ship:</label>
+				<label className="form__cell">
+					Ship:
 					<input
 						type="text"
 						id="ship"
@@ -108,9 +107,9 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						value={survey.ship || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 					/>
-				</span>
-				<span className="field">
-					<label htmlFor="hauls_duration">Hauls duration (minutes):</label>
+				</label>
+				<label className="form__cell">
+					Hauls duration (minutes):
 					<input
 						type="number"
 						id="hauls_duration"
@@ -122,9 +121,9 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onKeyDown={surveysContext.preventNegativeE}
 					/>
-				</span>
-				<span className="field">
-					<label htmlFor="stratification">Stratification:</label>
+				</label>
+				<label className="form__cell">
+					Stratification:
 					<select
 						id="stratification"
 						name="stratification"
@@ -142,12 +141,12 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 							);
 						})}
 					</select>
-				</span>
+				</label>
 			</div>
 			<fieldset className="wrapper form__row">
 				<legend>Grid</legend>
-				<span className="field">
-					<label htmlFor="width_x">Width (miles):</label>
+				<label className="form__cell">
+					Width (miles):
 					<input
 						type="number"
 						id="width_x"
@@ -161,9 +160,9 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onKeyDown={surveysContext.preventNegativeE}
 					/>
-				</span>
-				<span className="field">
-					<label htmlFor="width_y">Height (miles):</label>
+				</label>
+				<label className="form__cell">
+					Height (miles):
 					<input
 						type="number"
 						id="width_y"
@@ -177,9 +176,9 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onKeyDown={surveysContext.preventNegativeE}
 					/>
-				</span>
-				<span className="field">
-					<label htmlFor="origin_x">Origin longitude (degrees):</label>
+				</label>
+				<label className="form__cell">
+					Origin longitude (degrees):
 					<input
 						type="number"
 						id="origin_x"
@@ -193,9 +192,9 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onInput={surveysContext.forceReportValidity}
 					/>
-				</span>
-				<span className="field">
-					<label htmlFor="origin_y">Origin latitude (degrees):</label>
+				</label>
+				<label className="form__cell">
+					Origin latitude (degrees):
 					<input
 						type="number"
 						id="origin_y"
@@ -209,12 +208,12 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onInput={surveysContext.forceReportValidity}
 					/>
-				</span>
+				</label>
 			</fieldset>
 
 			<div className="form__row">
-				<span className="field__comment">
-					<label htmlFor="comment">Comment:</label>
+				<label className="form__cell">
+					Comment:
 					<textarea
 						id="comment"
 						name="comment"
@@ -225,7 +224,7 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						value={survey.comment || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 					/>
-				</span>
+				</label>
 			</div>
 			<div className="form__row">
 				<SurveyButtonBar
