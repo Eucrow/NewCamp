@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-import ViewEditSurveyForm from "./ViewEditSurveyForm";
+import EditSurveyForm from "./EditSurveyForm";
+import ViewSurveyForm from "./ViewSurveyForm";
 
 /**
  * Survey component. Manage component logic.
@@ -9,19 +10,11 @@ import ViewEditSurveyForm from "./ViewEditSurveyForm";
 const Survey = ({ survey }) => {
 	const [edit, setEdit] = useState(false);
 
-	const renderContent = () => {
-		let content = "";
-
-		if (edit === true) {
-			content = <ViewEditSurveyForm survey={survey} edit={true} handleEdit={setEdit} />;
-		} else {
-			content = <ViewEditSurveyForm survey={survey} edit={false} handleEdit={setEdit} />;
-		}
-
-		return content;
-	};
-
-	return renderContent();
+	return edit === true ? (
+		<EditSurveyForm survey={survey} handleEdit={setEdit} />
+	) : (
+		<ViewSurveyForm survey={survey} handleEdit={setEdit} />
+	);
 };
 
 export default Survey;

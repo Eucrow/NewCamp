@@ -4,7 +4,7 @@ import SurveysContext from "../../contexts/SurveysContext";
 
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
-import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+// import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
  * Button bar of survey component.
@@ -15,7 +15,7 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
  */
 
 // TODO: test if instead of receive props, receive only survey.id
-const SurveyButtonBar = ({ survey, edit, handleEdit, deleteSurvey }) => {
+const SurveyButtonBar = ({ survey, edit, handleEdit }) => {
 	const surveysContext = useContext(SurveysContext);
 	var ButtonBar = "";
 
@@ -53,7 +53,7 @@ const SurveyButtonBar = ({ survey, edit, handleEdit, deleteSurvey }) => {
 				</button>
 				<UiButtonDelete
 					id={survey.id}
-					deleteMethod={deleteSurvey}
+					deleteMethod={surveysContext.deleteSurvey}
 					buttonText="Delete Survey"
 					confirmMessage="Delete the survey?"
 				/>

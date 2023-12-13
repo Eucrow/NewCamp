@@ -31,7 +31,7 @@ const Surveys = () => {
 		e.preventDefault();
 		const newSurveys = surveys.map((survey) => {
 			if (survey.id === surveyId) {
-				var newSurvey = { ...survey };
+				let newSurvey = { ...survey };
 				newSurvey[name] = value;
 				return newSurvey;
 			} else {
@@ -40,6 +40,24 @@ const Surveys = () => {
 		});
 
 		setSurveys(newSurveys);
+	};
+
+	/**
+	 * Get all surveys from database.
+	 */
+	const getSurveys = () => {
+		fetch(apiSurvey)
+			.then((response) => {
+				if (response.status > 400) {
+					alert("something were wrong getting the surveys!!");
+				}
+				return response.json();
+			})
+			.then((surveys) => {
+				setSurveys(surveys);
+				setSurveysBackup(surveys);
+			})
+			.catch((error) => console.log(error));
 	};
 
 	/**
@@ -102,8 +120,6 @@ const Surveys = () => {
 	 */
 
 	const handleCancelEditSurvey = (e) => {
-		// e.preventDefault();
-		// setAdd(false);
 		setSurveys(surveysBackup);
 	};
 
@@ -199,19 +215,7 @@ const Surveys = () => {
 
 	useEffect(() => {
 		getStratifications();
-
-		fetch(apiSurvey)
-			.then((response) => {
-				if (response.status > 400) {
-					alert("something were wrong getting the surveys!!");
-				}
-				return response.json();
-			})
-			.then((surveys) => {
-				setSurveys(surveys);
-				setSurveysBackup(surveys);
-			})
-			.catch((error) => console.log(error));
+		getSurveys();
 	}, []);
 
 	/**

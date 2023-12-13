@@ -192,15 +192,17 @@ const NewSurveyForm = () => {
 					</label>
 				</fieldset>
 				<div className="form__row">
-					<label className="form__cell">Comment:</label>
-					<textarea
-						id="comment"
-						name="comment"
-						className="comment field__comment"
-						rows="2"
-						maxLength={1000}
-						onChange={handleChange}
-					/>
+					<label className="form__cell form__cell--wide">
+						Comment:
+						<textarea
+							id="comment"
+							name="comment"
+							className="comment field__comment"
+							rows="2"
+							maxLength={1000}
+							onChange={handleChange}
+						/>
+					</label>
 				</div>
 				<div className="form__row">
 					<div className="survey__cell survey__cell--right buttonsWrapper">

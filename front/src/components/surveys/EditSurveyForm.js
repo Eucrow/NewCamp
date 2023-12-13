@@ -1,37 +1,21 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext } from "react";
 
 import SurveysContext from "../../contexts/SurveysContext";
 
 import SurveyButtonBar from "./SurveyButtonBar";
 
 /**
- * ViewEditSurveyForm component
+ * EditSurveyForm component
  * @param {object} survey survey object.
  * @param {boolean} edit variable to indicate if the element is edited or not.
  * @param {method} handleEdit method to handle de 'edit' boolean variable.
  */
-const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
+const EditSurveyForm = ({ survey, handleEdit }) => {
 	const surveysContext = useContext(SurveysContext);
-	const is_disabled = edit === true ? false : true;
-	const inputRef = useRef();
 
 	const handleSubmit = (e) => {
 		surveysContext.updateSurvey(e, survey.id);
 		handleEdit(false);
-		// 3. Here we blur the input field, which is no longer focused.
-		if (inputRef.current) {
-			inputRef.current.blur();
-		}
-	};
-
-	// 1. This callback is called to set focus and select content of the input field.
-	const callbackRef = (element) => {
-		if (element) {
-			element.focus();
-			element.select();
-			// 2. Here we create a ref to the input field, which is focused and selected.
-			inputRef.current = element;
-		}
 	};
 
 	const renderedSurvey = (
@@ -43,12 +27,11 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						type="text"
 						id="description"
 						name="description"
-						disabled={is_disabled}
 						required
+						autoFocus
 						pattern="^[a-zA-Z0-9\s]{1,30}$"
 						value={survey.description || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
-						ref={callbackRef}
 					/>
 				</label>
 				<label className="form__cell">
@@ -57,7 +40,6 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						type="text"
 						id="acronym"
 						name="acronym"
-						disabled={is_disabled}
 						required
 						size={3}
 						pattern="^[\w\d]{3}$"
@@ -73,7 +55,6 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						type="date"
 						id="start_date"
 						name="start_date"
-						disabled={is_disabled}
 						value={survey.start_date || ""}
 						onChange={(e) => {
 							surveysContext.handleChange(e, survey.id);
@@ -87,7 +68,6 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						type="date"
 						id="end_date"
 						name="end_date"
-						disabled={is_disabled}
 						value={survey.end_date || ""}
 						onChange={(e) => {
 							surveysContext.handleChange(e, survey.id);
@@ -103,7 +83,6 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						type="text"
 						id="ship"
 						name="ship"
-						disabled={is_disabled}
 						value={survey.ship || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 					/>
@@ -116,7 +95,6 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						name="hauls_duration"
 						min="0"
 						size={4}
-						disabled={is_disabled}
 						value={survey.hauls_duration || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onKeyDown={surveysContext.preventNegativeE}
@@ -127,7 +105,6 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 					<select
 						id="stratification"
 						name="stratification"
-						disabled={is_disabled}
 						required
 						value={survey.stratification || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
@@ -155,7 +132,6 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						max="999"
 						size={3}
 						maxLength={3}
-						disabled={is_disabled}
 						value={survey.width_x || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onKeyDown={surveysContext.preventNegativeE}
@@ -171,7 +147,6 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						max="999"
 						maxLength={3}
 						size={3}
-						disabled={is_disabled}
 						value={survey.width_y || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onKeyDown={surveysContext.preventNegativeE}
@@ -187,7 +162,6 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						max="180"
 						step={0.001}
 						size={8}
-						disabled={is_disabled}
 						value={survey.origin_x || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onInput={surveysContext.forceReportValidity}
@@ -203,7 +177,6 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 						max="90"
 						step={0.001}
 						size={7}
-						disabled={is_disabled}
 						value={survey.origin_y || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 						onInput={surveysContext.forceReportValidity}
@@ -212,15 +185,14 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 			</fieldset>
 
 			<div className="form__row">
-				<label className="form__cell">
+				<label className="form__cell form__cell--wide">
 					Comment:
 					<textarea
 						id="comment"
 						name="comment"
-						className="comment"
+						className="comment field__comment"
 						rows="2"
 						maxLength={1000}
-						disabled={is_disabled}
 						value={survey.comment || ""}
 						onChange={(e) => surveysContext.handleChange(e, survey.id)}
 					/>
@@ -229,7 +201,7 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 			<div className="form__row">
 				<SurveyButtonBar
 					survey={survey}
-					edit={edit}
+					edit={true}
 					handleEdit={handleEdit}
 					deleteSurvey={surveysContext.deleteSurvey}
 				/>
@@ -240,4 +212,4 @@ const ViewEditSurveyForm = ({ survey, edit, handleEdit }) => {
 	return renderedSurvey;
 };
 
-export default ViewEditSurveyForm;
+export default EditSurveyForm;

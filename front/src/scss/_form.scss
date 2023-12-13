@@ -81,6 +81,10 @@ input:invalid {
 	margin-left: auto;
 }
 
+.form__cell--wide{
+    width: 100%;
+}
+
 // a div thia a class field to maintain together a label with an input
 .field {
 	white-space: nowrap;
