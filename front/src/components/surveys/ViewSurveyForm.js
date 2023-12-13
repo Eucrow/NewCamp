@@ -1,9 +1,7 @@
 // Originally, the ViewSurveyForm and EditSurveyForm components were one component.
 // But due to problems with controlling the focus of the inputs, it was decided to separate them.
 
-import React, { useContext } from "react";
-
-import SurveysContext from "../../contexts/SurveysContext";
+import React from "react";
 
 import SurveyButtonBar from "./SurveyButtonBar";
 
@@ -13,8 +11,6 @@ import SurveyButtonBar from "./SurveyButtonBar";
  * @param {method} handleEdit method to handle de 'edit' boolean variable.
  */
 const ViewSurveyForm = ({ survey, handleEdit }) => {
-	const surveysContext = useContext(SurveysContext);
-
 	const renderedSurvey = (
 		<form className="wrapper form__row form__wide">
 			<div className="form__row">
@@ -74,14 +70,7 @@ const ViewSurveyForm = ({ survey, handleEdit }) => {
 						value={survey.stratification || ""}
 						disabled={true}
 					>
-						<option />
-						{surveysContext.stratifications.map((st, idx) => {
-							return (
-								<option value={st.id} key={idx}>
-									{st.stratification}
-								</option>
-							);
-						})}
+						<option>{survey.stratification}</option>
 					</select>
 				</label>
 			</div>

@@ -42,6 +42,27 @@ const Surveys = () => {
 		setSurveys(newSurveys);
 	};
 
+	const handleChangeStratification = (e, surveyId) => {
+		const value = e.target.value;
+		e.preventDefault();
+
+		const stratification = stratifications.find((st) => {
+			return st.id === Number(e.target.value);
+		});
+
+		const newSurveys = surveys.map((survey) => {
+			if (survey.id === surveyId) {
+				let newSurvey = { ...survey };
+				newSurvey["stratification_id"] = value;
+				newSurvey["stratification"] = stratification.stratification;
+				return newSurvey;
+			} else {
+				return survey;
+			}
+		});
+		setSurveys(newSurveys);
+	};
+
 	/**
 	 * Get all surveys from database.
 	 */
@@ -229,6 +250,7 @@ const Surveys = () => {
 			<SurveysContext.Provider
 				value={{
 					handleChange: handleChange,
+					handleChangeStratification: handleChangeStratification,
 					setAdd: setAdd,
 					createSurvey: createSurvey,
 					updateSurvey: updateSurvey,

@@ -119,7 +119,7 @@ const NewSurveyForm = () => {
 
 					<label className="form__cell">
 						Stratification:
-						<select id="stratification" name="stratification" required onChange={handleChange}>
+						<select id="stratification_id" name="stratification_id" required onChange={handleChange}>
 							<option />
 							{surveysContext.stratifications.map((st, idx) => {
 								return (

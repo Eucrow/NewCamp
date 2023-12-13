@@ -103,11 +103,11 @@ const EditSurveyForm = ({ survey, handleEdit }) => {
 				<label className="form__cell">
 					Stratification:
 					<select
-						id="stratification"
-						name="stratification"
+						id="stratification_id"
+						name="stratification_id"
 						required
-						value={survey.stratification || ""}
-						onChange={(e) => surveysContext.handleChange(e, survey.id)}
+						value={survey.stratification_id || ""}
+						onChange={(e) => surveysContext.handleChangeStratification(e, survey.id)}
 					>
 						<option />
 						{surveysContext.stratifications.map((st, idx) => {
