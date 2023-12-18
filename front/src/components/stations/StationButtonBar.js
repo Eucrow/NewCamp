@@ -3,10 +3,11 @@ import React, { useContext } from "react";
 import StationsContext from "../../contexts/StationsContext";
 
 import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonCancel from "../ui/UiButtonCancel";
 import UiButtonDelete from "../ui/UiButtonDelete";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+import UiIconEdit from "../ui/UiIconEdit";
 
-const StationButtonBar = ({ station_id, handleEdit, edit }) => {
+const StationButtonBar = ({ stationId, handleEdit, edit, add }) => {
 	const stationsContext = useContext(StationsContext);
 	var ButtonBar = "";
 
@@ -15,7 +16,17 @@ const StationButtonBar = ({ station_id, handleEdit, edit }) => {
 			<div className="station__cell station__cell--right">
 				<div className="buttonsWrapper">
 					<UiButtonSave buttonText={"Save Station"} />
-					<UiButtonCancel handleMethod={handleEdit} />
+					<button
+						className="buttonsWrapper__button"
+						type="button"
+						onClick={(e) => {
+							e.preventDefault();
+							stationsContext.restoreStations(stationId);
+							handleEdit(false);
+						}}
+					>
+						Cancel
+					</button>
 				</div>
 			</div>
 		);
@@ -25,17 +36,11 @@ const StationButtonBar = ({ station_id, handleEdit, edit }) => {
 		ButtonBar = (
 			<div className="station__cell station__cell--right">
 				<div className="buttonsWrapper">
-					<button
-						type="button"
-						className="buttonsWrapper__button"
-						onClick={(e) => {
-							handleEdit(true);
-						}}
-					>
-						Edit Station
-					</button>
+					<UiButtonStatusHandle handleMethod={handleEdit} buttonText={"Edit sex"} newStatus={true}>
+						<UiIconEdit />
+					</UiButtonStatusHandle>
 					<UiButtonDelete
-						id={station_id}
+						id={stationId}
 						deleteMethod={stationsContext.deleteStation}
 						buttonText={"Delete Station"}
 						confirmMessage={
@@ -43,6 +48,15 @@ const StationButtonBar = ({ station_id, handleEdit, edit }) => {
 						}
 					/>
 				</div>
+			</div>
+		);
+	}
+
+	if (add === true) {
+		ButtonBar = (
+			<div className="survey__cell survey__cell--right buttonsWrapper">
+				<UiButtonSave buttonText={"Save Station"} />
+				<UiButtonStatusHandle buttonText="Cancel" handleMethod={stationsContext.setAdd} newStatus={false} />
 			</div>
 		);
 	}

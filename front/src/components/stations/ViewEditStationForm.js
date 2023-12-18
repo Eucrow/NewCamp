@@ -10,7 +10,7 @@ const ViewEditStationForm = ({ station, handleEdit, edit }) => {
 	const stationsContext = useContext(StationsContext);
 
 	const handleSubmit = (e) => {
-		stationsContext.editStation(e, station.id);
+		stationsContext.updateStation(e, station.id);
 		handleEdit(false);
 	};
 
@@ -20,6 +20,9 @@ const ViewEditStationForm = ({ station, handleEdit, edit }) => {
 				<div className="form__cell">
 					<label htmlFor="station">Station:</label>
 					<input
+						id="station"
+						name="station"
+						autoFocus
 						type="number"
 						min="0"
 						max="9999"
@@ -27,8 +30,6 @@ const ViewEditStationForm = ({ station, handleEdit, edit }) => {
 						size={4}
 						disabled={is_disabled}
 						className="station_number"
-						id="station"
-						name="station"
 						value={station.station || ""}
 						onChange={(e) => {
 							stationsContext.handleChangeStation(e, station.id);
@@ -46,18 +47,12 @@ const ViewEditStationForm = ({ station, handleEdit, edit }) => {
 						rows={1}
 						size={1000}
 						value={station.comment || ""}
-						onChange={(e) =>
-							stationsContext.handleChangeStation(e, station.id)
-						}
+						onChange={(e) => stationsContext.handleChangeStation(e, station.id)}
 					/>
 				</div>
 
 				<div className="form__cell form__cell--right">
-					<StationButtonBar
-						station_id={station.id}
-						handleEdit={handleEdit}
-						edit={edit}
-					/>
+					<StationButtonBar stationId={station.id} handleEdit={handleEdit} edit={edit} />
 				</div>
 			</div>
 		</form>

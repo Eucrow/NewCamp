@@ -44,7 +44,7 @@ class NewTrawl extends Component {
 			>
 				<div>
 					<label htmlFor="name">Name:</label>
-					<input type="number" id="name" name="name" onChange={(e) => this.handleChange(e)} />
+					<input type="number" id="name" name="name" autoFocus onChange={(e) => this.handleChange(e)} />
 					--
 					<label htmlFor="trawl_type">Trawl type:</label>
 					<input type="text" id="trawl_type" name="trawl_type" onChange={(e) => this.handleChange(e)} /> --

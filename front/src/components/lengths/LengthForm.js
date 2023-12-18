@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef } from "react";
 
 import LengthsContext from "../../contexts/LengthsContext";
 
-import UiButtonIconAdd from "../ui/UiButtonIconAdd";
-import UiButtonIconDelete from "../ui/UiButtonIconDelete";
+import UiIconAdd from "../ui/UiIconAdd";
+import UiIconDelete from "../ui/UiIconDelete";
 
 const LengthForm = ({ l, idx }) => {
 	useEffect(() => {
@@ -19,7 +19,7 @@ const LengthForm = ({ l, idx }) => {
 	let lengthRef = useRef(null);
 
 	const renderContent = () => {
-		if (lengthsContext.lengths_status === "view") {
+		if (lengthsContext.lengthsStatus === "view") {
 			return (
 				<div className="formLengths__row" key={l.length}>
 					<div className="formLengths__cell">
@@ -45,13 +45,14 @@ const LengthForm = ({ l, idx }) => {
 					</div>
 				</div>
 			);
-		} else if (lengthsContext.lengths_status === "edit") {
+		} else if (lengthsContext.lengthsStatus === "edit") {
 			return (
 				<div className="formLengths__row" key={idx}>
 					<div className="formLengths__cell">
 						<input
 							type="number"
 							name="length"
+							autoFocus
 							min="0"
 							max="9999"
 							ref={lengthRef}
@@ -82,7 +83,7 @@ const LengthForm = ({ l, idx }) => {
 								lengthsContext.addLength(l.length, idx);
 							}}
 						>
-							<UiButtonIconAdd />
+							<UiIconAdd />
 						</button>
 					</div>
 
@@ -95,7 +96,7 @@ const LengthForm = ({ l, idx }) => {
 								lengthsContext.deleteLength(idx);
 							}}
 						>
-							<UiButtonIconDelete />
+							<UiIconDelete />
 						</button>
 					</div>
 				</div>

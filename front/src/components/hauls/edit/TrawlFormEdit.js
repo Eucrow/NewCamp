@@ -52,6 +52,7 @@ const TrawlFormEdit = ({
 							type="datetime-local"
 							name="shooting_date_time"
 							id="shooting_date_time"
+							autoFocus
 							value={shooting_date_time}
 							onChange={(e) => {
 								handleChangeTrawl(e);

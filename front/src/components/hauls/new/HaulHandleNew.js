@@ -5,7 +5,7 @@ import StationsContext from "../../../contexts/StationsContext";
 import HaulFormNew from "./HaulFormNew";
 
 import UiButtonSave from "../../ui/UiButtonSave";
-import UiButtonCancel from "../../ui/UiButtonCancel";
+import UiButtonStatusHandle from "../../ui/UiButtonStatusHandle";
 
 /**
  * New haul component
@@ -16,10 +16,6 @@ import UiButtonCancel from "../../ui/UiButtonCancel";
 
 /**
  * New haul component.
- * Originally this component was indented to show the detail of the new haul (meteorology, trawl and hydrography),
- * but it was decided to not to show directly due to simplificate the process of adding a new haul.
- * The code commented is the original code.
- * TODO: take a final decision about this.
  * @param {number} station_id
  * @param {method} handleAdd
  * @param {method} validateHaulSampler
@@ -56,7 +52,7 @@ const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, sa
 
 	const createHaulObject = () => {
 		const haul = {
-			station_id: newHaul.station_id,
+			station_id: station_id,
 			haul: newHaul.haul,
 			stratum_id: newHaul.stratum_id,
 			sampler_id: newHaul.sampler_id,
@@ -91,7 +87,7 @@ const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, sa
 
 				<UiButtonSave buttonText="Save Haul" />
 
-				<UiButtonCancel handleMethod={handleAdd} text={"Cancel"} />
+				<UiButtonStatusHandle handleMethod={handleAdd} buttonText={"Cancel"} newStatus={false} />
 			</form>
 		);
 	};

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from samples.models import Length, SampledWeight, Sex
+from samples.models import Length, SampledWeight
 
 
 class SampleWeightSerializer(serializers.ModelSerializer):
@@ -13,10 +13,10 @@ class SampleWeightSerializer(serializers.ModelSerializer):
         fields = ['id', 'sampled_weight', 'catch_id', ]
 
 
-class SexSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Sex
-        fields = ['id', 'sex', 'catch_id', ]
+# class SexSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Sex
+#         fields = ['id', 'sex', 'catch_id', ]
 
 
 class LengthListSerializer(serializers.ListSerializer):
@@ -37,7 +37,7 @@ class LengthListSerializer(serializers.ListSerializer):
         for length_id, data in data_mapping.items():
             # Get the instance length we want to update
             length = lengths_mapping.get(length_id, None)
-            # If the previous code return None, is becasue doesn't exists in
+            # If the previous code return None, is because doesn't exist in
             # databse, so we create it:
             if length is None:
                 ret.append(self.child.create(data))

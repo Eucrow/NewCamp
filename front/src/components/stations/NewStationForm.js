@@ -3,8 +3,7 @@ import React, { useContext, useState } from "react";
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import StationsContext from "../../contexts/StationsContext";
 
-import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonCancel from "../ui/UiButtonCancel";
+import StatitionButtonBar from "./StationButtonBar";
 
 /**
  * New station form component
@@ -49,7 +48,7 @@ const NewStationForm = (props) => {
 						maxLength="4"
 						size={4}
 						className="station_number"
-						autoFocus={true}
+						autoFocus
 						id="station"
 						name="station"
 						onChange={(e) => {
@@ -66,15 +65,14 @@ const NewStationForm = (props) => {
 						name="comment"
 						rows={1}
 						size={1000}
+						maxLength={1000}
 						onChange={(e) => handleChange(e)}
 					/>
 				</div>
-			</div>
-			<div className="form__row">
-				<div className="survey__cell survey__cell--right buttonsWrapper">
-					<UiButtonSave buttonText={"Save Station"} />
-					<UiButtonCancel handleMethod={props.handleAdd} />
-				</div>
+				{/* </div> */}
+				{/* <div className="form__row"> */}
+				<StatitionButtonBar handleEdit={props.handleAdd} add={true} />
+				{/* </div> */}
 			</div>
 		</form>
 	);

@@ -1,14 +1,15 @@
 button {
 	white-space: nowrap;
-	min-height: 2rem;
+	// min-height: 2em;
+    height: 1.8rem;
 	background-color: var(--button-background-color);
 
-	border-radius: 11px;
-	padding: 0.5rem 1rem;
+	border-radius: 5px;
+	padding: 0.25em 0.5em;
 	border-style: none;
 
 	font-family: var(--normal-font);
-	font-weight: bold;
+	font-weight: 600;
 	line-height: 100%;
 
 	&:hover,

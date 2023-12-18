@@ -10,7 +10,7 @@ const LengthsButtonBar = () => {
 
 	const lengthsContext = useContext(LengthsContext);
 
-	if (lengthsContext.lengths_status === "hide") {
+	if (lengthsContext.lengthsStatus === "hide") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<button
@@ -24,7 +24,7 @@ const LengthsButtonBar = () => {
 				</button>
 			</div>
 		);
-	} else if (lengthsContext.lengths_status === "view") {
+	} else if (lengthsContext.lengthsStatus === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<button
@@ -38,7 +38,7 @@ const LengthsButtonBar = () => {
 				</button>
 			</div>
 		);
-	} else if (lengthsContext.lengths_status === "edit") {
+	} else if (lengthsContext.lengthsStatus === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<button

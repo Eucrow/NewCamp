@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 
-import SurveysContext from "../../contexts/SuverysContext";
+import SurveysContext from "../../contexts/SurveysContext";
 
 import SurveysButtonBar from "./SurveysButtonBar";
 import Survey from "./Survey";
@@ -10,47 +10,28 @@ import NewSurveyForm from "./NewSurveyForm";
  * Component list of surveys.
  * List of all the surveys stored in database.
  */
-class Surveys extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			surveys: [],
-			stratifications: [],
-			add: false, // true to add new survey; false to not to.
-		};
+const Surveys = () => {
+	const [surveys, setSurveys] = useState([]);
+	const [surveysBackup, setSurveysBackup] = useState([]);
+	const [stratifications, setStratifications] = useState([]);
+	const [add, setAdd] = useState(false);
 
-		this.apiSurvey = "http://127.0.0.1:8000/api/1.0/survey/";
-		this.apiStratification = "http://127.0.0.1:8000/api/1.0/stratifications/";
-
-		this.handleChange = this.handleChange.bind(this);
-		this.handleAdd = this.handleAdd.bind(this);
-		this.createSurvey = this.createSurvey.bind(this);
-		this.updateSurvey = this.updateSurvey.bind(this);
-		this.deleteSurvey = this.deleteSurvey.bind(this);
-
-		this.getStratifications = this.getStratifications.bind(this);
-
-		this.preventNegativeE = this.preventNegativeE.bind(this);
-		this.validateStartDate = this.validateStartDate.bind(this);
-		this.validateEndDate = this.validateEndDate.bind(this);
-		this.forceReportValidity = this.forceReportValidity.bind(this);
-
-		this.renderContent = this.renderContent.bind(this);
-	}
+	const apiSurvey = "http://127.0.0.1:8000/api/1.0/survey/";
+	const apiStratification = "http://127.0.0.1:8000/api/1.0/stratifications/";
 
 	/**
 	 * Manage change in fields of a previous created survey.
 	 * @param {event} e - Event.
-	 * @param {numeric} survey_id - Identification number of the survey which fields are managed.
+	 * @param {numeric} surveyId - Identification number of the survey which fields are managed.
 	 */
-	handleChange(e, survey_id) {
+	const handleChange = (e, surveyId) => {
 		const name = e.target.name;
 		const value = e.target.value;
 
 		e.preventDefault();
-		const newSurveys = this.state.surveys.map((survey) => {
-			if (survey.id === survey_id) {
-				var newSurvey = survey;
+		const newSurveys = surveys.map((survey) => {
+			if (survey.id === surveyId) {
+				let newSurvey = { ...survey };
 				newSurvey[name] = value;
 				return newSurvey;
 			} else {
@@ -58,34 +39,54 @@ class Surveys extends Component {
 			}
 		});
 
-		this.setState(() => {
-			return {
-				surveys: newSurveys,
-			};
+		setSurveys(newSurveys);
+	};
+
+	const handleChangeStratification = (e, surveyId) => {
+		const value = e.target.value;
+		e.preventDefault();
+
+		const stratification = stratifications.find((st) => {
+			return st.id === Number(e.target.value);
 		});
-	}
+
+		const newSurveys = surveys.map((survey) => {
+			if (survey.id === surveyId) {
+				let newSurvey = { ...survey };
+				newSurvey["stratification_id"] = value;
+				newSurvey["stratification"] = stratification.stratification;
+				return newSurvey;
+			} else {
+				return survey;
+			}
+		});
+		setSurveys(newSurveys);
+	};
 
 	/**
-	 * Manage change of 'add' state.
-	 * @param {boolean} status true to show the "Add Survey" button.
+	 * Get all surveys from database.
 	 */
-	handleAdd(status) {
-		this.setState(() => {
-			return {
-				add: status,
-			};
-		});
-	}
+	const getSurveys = () => {
+		fetch(apiSurvey)
+			.then((response) => {
+				if (response.status > 400) {
+					alert("something were wrong getting the surveys!!");
+				}
+				return response.json();
+			})
+			.then((surveys) => {
+				setSurveys(surveys);
+				setSurveysBackup(surveys);
+			})
+			.catch((error) => console.log(error));
+	};
 
 	/**
 	 * Create survey in database and update the state.
-	 * @param {event} e - Event
 	 * @param {object} survey - Survey object to create.
 	 */
-	createSurvey(e, survey) {
-		e.preventDefault();
-
-		fetch(this.apiSurvey, {
+	const createSurvey = (survey) => {
+		fetch(apiSurvey, {
 			method: "POST",
 			headers: {
 				"Content-type": "Application/json",
@@ -97,26 +98,22 @@ class Surveys extends Component {
 				return response.json();
 			})
 			.then((survey) => {
-				const newSurveys = [...this.state.surveys, survey];
+				const newSurveys = [...surveys, survey];
 
-				this.setState({
-					surveys: newSurveys,
-				});
+				setSurveys(newSurveys);
 			})
 			.catch((error) => alert(error));
-	}
+	};
 
 	/**
 	 * Update survey from database and state.
-	 * @param {event} e - Event.
-	 * @param {numeric} survey_id - Survey identificator of survey to update.
+	 * @param {numeric} surveyId - Survey identificator of survey to update.
 	 */
-	updateSurvey(e, survey_id) {
-		e.preventDefault();
-		const api = this.apiSurvey + survey_id;
+	const updateSurvey = (surveyId) => {
+		const api = apiSurvey + surveyId;
 
-		const updatedSurvey = this.state.surveys.filter((survey) => {
-			return survey.id === survey_id;
+		const updatedSurvey = surveys.filter((survey) => {
+			return survey.id === surveyId;
 		});
 
 		fetch(api, {
@@ -125,22 +122,29 @@ class Surveys extends Component {
 			body: JSON.stringify(updatedSurvey[0]),
 		})
 			.then((response) => {
-				if (response.status === 200) {
-					//TODO: something should be here!!
-				} else {
-					alert("Something is wrong.");
+				if (response.status > 400) {
+					alert("something were wrong updating the survey!!");
 				}
+				return response.json();
 			})
 			.catch((error) => console.log(error));
-	}
+	};
+
+	/**
+	 * Restores the survey to its original state.
+	 * @param {number} surveyId - The ID of the haul to be restored.
+	 */
+
+	const handleCancelEditSurvey = () => {
+		setSurveys(surveysBackup);
+	};
 
 	/**
 	 * Delete survey from database and state.
-	 * @param {event} e Event.
-	 * @param {numeric} survey_id Survey identificator of survey to delete.
+	 * @param {numeric} surveyId Survey identificator of survey to delete.
 	 */
-	deleteSurvey(survey_id) {
-		const api = this.apiSurvey + survey_id;
+	const deleteSurvey = (surveyId) => {
+		const api = apiSurvey + surveyId;
 
 		fetch(api, {
 			method: "DELETE",
@@ -150,55 +154,46 @@ class Surveys extends Component {
 			},
 		})
 			.then(() => {
-				const newSurveys = this.state.surveys.filter((survey) => survey.id !== survey_id);
-
-				this.setState({
-					surveys: newSurveys,
-				});
+				const newSurveys = surveys.filter((survey) => survey.id !== surveyId);
+				setSurveys(newSurveys);
 			})
 			.catch((error) => alert(error));
-	}
+	};
 
 	/**
 	 * Get all stratifications.
 	 */
-	getStratifications() {
-		return fetch(this.apiStratification)
+	const getStratifications = () => {
+		return fetch(apiStratification)
 			.then((response) => {
 				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
-					});
+					alert("something were wrong getting the stratifications!!");
 				}
 				return response.json();
 			})
 			.then((stratifications) => {
-				this.setState(() => {
-					return {
-						stratifications: stratifications,
-					};
-				});
+				setStratifications(stratifications);
 			})
 			.catch((error) => console.log(error));
-	}
+	};
 
 	// VALIDATIONS
 	/**
 	 * Prevent 'e' and '-' in numeric input
 	 * @param {e} onKeyDown event
 	 */
-	preventNegativeE(e) {
+	const preventNegativeE = (e) => {
 		if (e.key === "e" || e.key === "-") {
 			e.preventDefault();
 		}
-	}
+	};
 
 	/**
 	 * Validate start date with end date
 	 * @param {event} e onChange event
 	 * @returns In case of error in date, show report validity.
 	 */
-	validateStartDate(e, end_date) {
+	const validateStartDate = (e, end_date) => {
 		e.target.setCustomValidity("");
 
 		if (typeof end_date != "undefined" && e.target.value > end_date) {
@@ -206,7 +201,7 @@ class Surveys extends Component {
 		}
 
 		return e.target.reportValidity();
-	}
+	};
 
 	/**
 	 * Validate end date with start date
@@ -214,7 +209,7 @@ class Surveys extends Component {
 	 * @param {start_date} date Start date to compare with.
 	 * @returns In case of error in date, show report validity.
 	 */
-	validateEndDate(e, start_date) {
+	const validateEndDate = (e, start_date) => {
 		e.target.setCustomValidity("");
 
 		if (typeof start_date != "undefined" && start_date > e.target.value) {
@@ -222,37 +217,45 @@ class Surveys extends Component {
 		}
 
 		return e.target.reportValidity();
-	}
+	};
 
 	/**
 	 * Force reportValidity() of an element.
 	 * Used with onInput event to show the validation messages in real time instead of show it when the form is submitted.
 	 * @param {e} e onInput event.
 	 */
-	forceReportValidity(e) {
+	const forceReportValidity = (e) => {
 		e.target.reportValidity();
-	}
+	};
+
+	useEffect(() => {
+		getStratifications();
+		getSurveys();
+	}, []);
 
 	/**
 	 * Create content to render.
 	 * @private
 	 */
-	renderContent() {
+	const renderContent = () => {
 		let content;
 
 		content = (
 			<SurveysContext.Provider
 				value={{
-					handleChange: this.handleChange,
-					handleAdd: this.handleAdd,
-					createSurvey: this.createSurvey,
-					updateSurvey: this.updateSurvey,
-					deleteSurvey: this.deleteSurvey,
-					stratifications: this.state.stratifications,
-					preventNegativeE: this.preventNegativeE,
-					validateStartDate: this.validateStartDate,
-					validateEndDate: this.validateEndDate,
-					forceReportValidity: this.forceReportValidity,
+					handleChange: handleChange,
+					handleChangeStratification: handleChangeStratification,
+					add: add,
+					setAdd: setAdd,
+					createSurvey: createSurvey,
+					updateSurvey: updateSurvey,
+					deleteSurvey: deleteSurvey,
+					stratifications: stratifications,
+					preventNegativeE: preventNegativeE,
+					validateStartDate: validateStartDate,
+					validateEndDate: validateEndDate,
+					forceReportValidity: forceReportValidity,
+					handleCancelEditSurvey: handleCancelEditSurvey,
 				}}
 			>
 				<main>
@@ -261,10 +264,10 @@ class Surveys extends Component {
 					</header>
 
 					<div className="wrapper surveysWrapper">
-						<SurveysButtonBar add={this.state.add} handleAdd={this.handleAdd} />
-						{this.state.add === true ? <NewSurveyForm /> : ""}
+						<SurveysButtonBar add={add} handleAdd={setAdd} />
+						{add === true ? <NewSurveyForm /> : ""}
 
-						{this.state.surveys.map((survey) => {
+						{surveys.map((survey) => {
 							return <Survey key={survey.id} survey={survey} />;
 						})}
 					</div>
@@ -273,31 +276,9 @@ class Surveys extends Component {
 		);
 
 		return content;
-	}
+	};
 
-	componentDidMount() {
-		this.getStratifications();
-
-		fetch(this.apiSurvey)
-			.then((response) => {
-				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
-					});
-				}
-				return response.json();
-			})
-			.then((surveys) => {
-				this.setState(() => {
-					return { surveys };
-				});
-			})
-			.catch((error) => console.log(error));
-	}
-
-	render() {
-		return this.renderContent();
-	}
-}
+	return renderContent();
+};
 
 export default Surveys;

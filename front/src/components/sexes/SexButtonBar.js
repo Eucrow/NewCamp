@@ -2,44 +2,38 @@ import React from "react";
 
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonCancel from "../ui/UiButtonCancel";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+import UiIconEdit from "../ui/UiIconEdit";
 
 /**
  * Lengths button bar component.
  */
 const SexButtonBar = ({
-	sex_id,
-	sex_status,
+	sexId,
+	sexStatus,
 	setSexStatus,
 	deleteSex,
-	lengths_status,
+	lengthsStatus,
 	setLengthsStatus,
-	setAddSexStatus,
+	setAddSex,
 	saveSexButtonStatus,
 	handleCancelEditSex,
 }) => {
 	var ButtonBar = null;
 
-	if (sex_status === "view") {
+	if (sexStatus === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={(e) => {
-						e.preventDefault();
-						setSexStatus("edit");
-					}}
-				>
-					Edit sex
-				</button>
+				<UiButtonStatusHandle handleMethod={setSexStatus} buttonText={"Edit sex"} newStatus={"edit"}>
+					<UiIconEdit />
+				</UiButtonStatusHandle>
 				<UiButtonDelete
-					id={sex_id}
+					id={sexId}
 					deleteMethod={deleteSex}
 					buttonText={"Delete sex"}
 					confirmMessage={"Are you sure to remove this sex?"}
 				/>
-				{lengths_status === "view" ? (
+				{lengthsStatus === "view" ? (
 					<button
 						className="buttonsWrapper__button"
 						type="button"
@@ -62,7 +56,7 @@ const SexButtonBar = ({
 				)}
 			</div>
 		);
-	} else if (sex_status === "edit") {
+	} else if (sexStatus === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<button className="buttonsWrapper__button" type="submit" disabled={!saveSexButtonStatus}>
@@ -79,11 +73,11 @@ const SexButtonBar = ({
 				</button>
 			</div>
 		);
-	} else if (sex_status === "add") {
+	} else if (sexStatus === "add") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<UiButtonSave buttonText={"Save sex"} />
-				<UiButtonCancel handleMethod={setAddSexStatus} />
+				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={setAddSex} newStatus={false} />
 			</div>
 		);
 	}

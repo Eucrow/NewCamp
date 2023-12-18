@@ -3,9 +3,9 @@ import HaulFormView from "./view/HaulFormView";
 import HaulFormEdit from "./edit/HaulFormEdit";
 import HaulDetails from "./HaulDetails";
 import HaulHandleNew from "./new/HaulHandleNew";
-import CatchesList from "../trawlCatches/CatchesList";
+import Catches from "../trawlCatches/Catches";
 
-const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, samplerRef, createHaul, add, handleAdd }) => {
+const Haul = ({ haul, stationId, samplers, validateHaulSampler, haulRef, samplerRef, createHaul, add, handleAdd }) => {
 	const [detail, setDetail] = useState(false);
 	const [edit, setEdit] = useState(false);
 
@@ -16,7 +16,7 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, sample
 			return (
 				<>
 					<HaulHandleNew
-						station_id={station_id}
+						station_id={stationId}
 						handleAdd={handleAdd}
 						createHaul={createHaul}
 						validateHaulSampler={validateHaulSampler}
@@ -38,7 +38,7 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, sample
 						setDetail={setDetail}
 						validateHaulSampler={validateHaulSampler}
 					/>
-					<CatchesList haul_id={haul["id"]} />
+					<Catches haul_id={haul["id"]} />
 				</div>
 			);
 		}
@@ -48,7 +48,7 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, sample
 				return (
 					<div className="wrapper form__row">
 						<HaulFormView haul={haul} detail={detail} setEdit={setEdit} setDetail={setDetail} />
-						<CatchesList haul_id={haul["id"]} />
+						<Catches haul_id={haul["id"]} />
 					</div>
 				);
 			} else {
@@ -64,7 +64,7 @@ const Haul = ({ haul, station_id, samplers, validateHaulSampler, haulRef, sample
 					<HaulFormEdit
 						thisHaul={thisHaul}
 						setThisHaul={setThisHaul}
-						station_id={station_id}
+						station_id={stationId}
 						edit={edit}
 						setEdit={setEdit}
 						samplers={samplers}

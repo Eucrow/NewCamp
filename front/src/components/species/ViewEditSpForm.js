@@ -37,11 +37,10 @@ const ViewEditSpForm = (props) => {
 						size={50}
 						pattern="^[a-zA-Z\s]{1,50}$"
 						required
+						autoFocus
 						disabled={is_disabled}
 						value={props.sp.sp_name}
-						onChange={(e) =>
-							speciesContext.handleChange(e, props.sp.id)
-						}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 					/>
 				</span>
 
@@ -55,9 +54,7 @@ const ViewEditSpForm = (props) => {
 						pattern="^[a-zA-Z\s]{1,50}$"
 						disabled={is_disabled}
 						value={props.sp.spanish_name}
-						onChange={(e) =>
-							speciesContext.handleChange(e, props.sp.id)
-						}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 					/>
 				</span>
 				<span className="field">
@@ -73,9 +70,7 @@ const ViewEditSpForm = (props) => {
 						step={1}
 						disabled={is_disabled}
 						value={props.sp.APHIA}
-						onChange={(e) =>
-							speciesContext.handleChange(e, props.sp.id)
-						}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
@@ -96,9 +91,7 @@ const ViewEditSpForm = (props) => {
 						step={0.000001}
 						disabled={is_disabled}
 						value={props.sp.a_param}
-						onChange={(e) =>
-							speciesContext.handleChange(e, props.sp.id)
-						}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
@@ -115,9 +108,7 @@ const ViewEditSpForm = (props) => {
 						step={0.000001}
 						disabled={is_disabled}
 						value={props.sp.b_param}
-						onChange={(e) =>
-							speciesContext.handleChange(e, props.sp.id)
-						}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
@@ -132,9 +123,7 @@ const ViewEditSpForm = (props) => {
 						required
 						disabled={is_disabled}
 						value={props.sp.unit}
-						onChange={(e) =>
-							speciesContext.handleChange(e, props.sp.id)
-						}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 					>
 						<option selected></option>
 						<option value="1">cm</option>
@@ -156,9 +145,7 @@ const ViewEditSpForm = (props) => {
 						step={1}
 						disabled={is_disabled}
 						value={props.sp.increment}
-						onChange={(e) =>
-							speciesContext.handleChange(e, props.sp.id)
-						}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>

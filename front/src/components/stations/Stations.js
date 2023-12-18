@@ -6,39 +6,29 @@ import StationsButtonBar from "./StationsButtonBar";
 import Station from "./Station";
 import NewStationForm from "./NewStationForm";
 
-const ComponentsStations = () => {
+const Stations = () => {
 	const [add, setAdd] = useState(false);
 	const [stations, setStations] = useState([]);
 	const [strata, setStrata] = useState([]);
 	const [gears, setGears] = useState([]);
 	const [samplers, setSamplers] = useState([]);
+	const [stationsBackup, setStationsBackup] = useState([stations]);
 
 	const selectedSurveyContext = useContext(SelectedSurveyContext);
-
 	const apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
-
-	const apiTrawlForm = "http://127.0.0.1:8000/api/1.0/haul/trawl/";
-
 	const apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
-
 	const apiStation = "http://127.0.0.1:8000/api/1.0/station/";
-
 	const apiHaul = "http://127.0.0.1:8000/api/1.0/haul/";
-
 	const apiNewHaul = "http://127.0.0.1:8000/api/1.0/haul/new/";
-
 	const apiSurveyPartial = "http://127.0.0.1:8000/api/1.0/survey/";
-
 	const apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
-
 	const apiGears = "http://127.0.0.1:8000/api/1.0/gears/trawl/basic/";
-
 	const apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
 
 	/**
 	 * Create station.
 	 * @param {event} e
-	 * @param {object} station
+	 * @param {object} station - The station to be created.
 	 */
 	const createStation = (e, station) => {
 		e.preventDefault();
@@ -52,8 +42,8 @@ const ComponentsStations = () => {
 		})
 			.then((response) => response.json())
 			.then((s) => {
-				const new_stations = [...stations, s];
-				setStations(new_stations);
+				const newStations = [...stations, s];
+				setStations(newStations);
 			})
 			.catch((error) => console.log(error));
 	};
@@ -61,14 +51,14 @@ const ComponentsStations = () => {
 	/**
 	 * Edit station.
 	 * @param {event} e
-	 * @param {number} station_id
+	 * @param {number} stationId - The ID of the station to be edited.
 	 */
-	const editStation = (e, station_id) => {
+	const updateStation = (e, stationId) => {
 		e.preventDefault();
 
-		const api = apiStation + station_id;
+		const api = apiStation + stationId;
 
-		const updated_station = stations.filter((station) => station.id === station_id);
+		const updated_station = stations.filter((station) => station.id === stationId);
 
 		fetch(api, {
 			method: "PUT",
@@ -80,12 +70,27 @@ const ComponentsStations = () => {
 	};
 
 	/**
+	 * Restores the stations to their original state.
+	 * @param {number} stationId - The ID of the station to be restored.
+	 */
+	const restoreStations = (stationId) => {
+		const newStations = stationsBackup.map((station) => {
+			if (station.id === stationId) {
+				return station;
+			} else {
+				return station;
+			}
+		});
+		setStations(newStations);
+	};
+
+	/**
 	 * Delete station.
 	 * @param {event} e
-	 * @param {number} station_id
+	 * @param {number} stationId - The ID of the station to be deleted.
 	 */
-	const deleteStation = (station_id) => {
-		const api = apiStation + station_id;
+	const deleteStation = (stationId) => {
+		const api = apiStation + stationId;
 
 		fetch(api, {
 			method: "DELETE",
@@ -95,8 +100,8 @@ const ComponentsStations = () => {
 			},
 		})
 			.then(() => {
-				const new_stations = stations.filter((station) => station.id !== station_id);
-				setStations(new_stations);
+				const newStations = stations.filter((station) => station.id !== stationId);
+				setStations(newStations);
 			})
 			.catch((error) => alert(error));
 	};
@@ -104,15 +109,15 @@ const ComponentsStations = () => {
 	/**
 	 * Handle change fields of Station forms.
 	 * @param {event} e
-	 * @param {number} station_id
+	 * @param {number} stationId - The ID of the station to be changed.
 	 */
-	const handleChangeStation = (e, station_id) => {
+	const handleChangeStation = (e, stationId) => {
 		e.preventDefault();
 		const name = e.target.name;
 		const value = e.target.value;
 
-		const new_stations = stations.map((station) => {
-			if (station.id === station_id) {
+		const newStations = stations.map((station) => {
+			if (station.id === stationId) {
 				const updated_station = {
 					...station,
 					[name]: value,
@@ -122,13 +127,13 @@ const ComponentsStations = () => {
 
 			return station;
 		});
-		setStations(new_stations);
+		setStations(newStations);
 	};
 
 	/**
-	 * Create new haul
+	 * Creates the common properties of a haul and sends to the server.
 	 * @param {event} e
-	 * @param {object} haul
+	 * @param {object} updatedHaul - The updated haul object.
 	 */
 	const createHaul = (e, haul) => {
 		e.preventDefault();
@@ -147,7 +152,7 @@ const ComponentsStations = () => {
 		})
 			.then((response) => response.json())
 			.then((h) => {
-				const new_stations = stations.map((station) => {
+				const newStations = stations.map((station) => {
 					if (station.id === parseInt(haul.station_id)) {
 						station.hauls ? (station.hauls = [...station.hauls, h]) : (station.hauls = [h]);
 						return station;
@@ -156,18 +161,17 @@ const ComponentsStations = () => {
 					}
 				});
 
-				setStations(new_stations);
+				setStations(newStations);
 			})
 			.catch((error) => console.log(error));
 	};
 
 	/**
-	 * Update common information of haul.
-	 * @param {object} updatedHaul Haul with new values.
-	 * @param {number} station_id Id of station of the haul.
+	 * Updates the common properties of a haul and sends the updated haul to the server.
+	 * @param {object} updatedHaul - The updated haul object.
 	 */
-	const updateHaulCommonState = (updatedHaul) => {
-		const new_stations = stations.map((station) => {
+	const updateHaulCommon = (updatedHaul) => {
+		const newStations = stations.map((station) => {
 			if (station.station === updatedHaul.station) {
 				const new_hauls = station.hauls.map((haul) => {
 					if (haul.id === updatedHaul.id) {
@@ -182,7 +186,7 @@ const ComponentsStations = () => {
 				return station;
 			}
 		});
-		setStations(new_stations);
+		setStations(newStations);
 
 		const apiForm = apiHaul + updatedHaul.id;
 
@@ -199,8 +203,33 @@ const ComponentsStations = () => {
 	};
 
 	/**
+	 * Restores the haul of a station to its original state.
+	 * @param {number} haulId - The ID of the haul to be restored.
+	 */
+	const restoreHaulCommon = (haulId) => {
+		const backupHaul = stationsBackup.find((station) => station.hauls.some((h) => h.id === haulId));
+
+		const newStations = stations.map((station) => {
+			if (station.station === backupHaul.station) {
+				const newHauls = station.hauls.map((haul) => {
+					if (haul.id === backupHaul.id) {
+						return backupHaul;
+					} else {
+						return haul;
+					}
+				});
+				station.hauls = newHauls;
+				return station;
+			} else {
+				return station;
+			}
+		});
+
+		setStations(newStations);
+	};
+
+	/**
 	 * Detele haul.
-	 * @param {event} e
 	 * @param {number} id_haul
 	 */
 	const deleteHaul = (id_haul) => {
@@ -214,14 +243,14 @@ const ComponentsStations = () => {
 			},
 		})
 			.then(() => {
-				var new_stations = stations.map((station) => {
+				var newStations = stations.map((station) => {
 					if (station.hauls.some((h) => h.id === id_haul)) {
 						var new_hauls = station.hauls.filter((haul) => haul.id !== id_haul);
 						station.hauls = new_hauls;
 					}
 					return station;
 				});
-				setStations(new_stations);
+				setStations(newStations);
 			})
 			.catch((error) => alert(error));
 	};
@@ -255,9 +284,6 @@ const ComponentsStations = () => {
 		return e.target.reportValidity();
 	};
 
-	/**
-	 * When the component is rendered, get stations
-	 */
 	useEffect(() => {
 		/**
 		 * Build url api of all the stations of a survey, using apiHauls and SelectedSurveyContext
@@ -281,11 +307,11 @@ const ComponentsStations = () => {
 					return response.json();
 				})
 				.then((survey) => {
-					const apiStrata = apiStrataPartial + survey.stratification;
+					const apiStrata = apiStrataPartial + survey.stratification_id;
 					fetch(apiStrata)
 						.then((response) => {
 							if (response.status > 400) {
-								alert("something were wrong!!");
+								alert("something were wrong fetching the strata!!");
 							}
 							return response.json();
 						})
@@ -300,21 +326,20 @@ const ComponentsStations = () => {
 			fetch(APIStations)
 				.then((response) => {
 					if (response.status > 400) {
-						alert("something were wrong fetching the Stations!!");
+						alert("something were wrong fetching the stations!!");
 					}
 					return response.json();
 				})
 				.then((stations) => {
 					setStations(stations);
+					setStationsBackup(stations);
 				});
 
 			// Fetch gears
 			fetch(apiGears)
 				.then((response) => {
 					if (response.status > 400) {
-						return this.setState(() => {
-							return { placeholder: "Something went wrong!" };
-						});
+						alert("something were wrong fetching the gears !!");
 					}
 					return response.json();
 				})
@@ -326,9 +351,7 @@ const ComponentsStations = () => {
 			fetch(apiSamplers)
 				.then((response) => {
 					if (response.status > 400) {
-						return this.setState(() => {
-							return { placeholder: "Something went wrong!" };
-						});
+						alert("something were wrong fecthing the samplers!!");
 					}
 					return response.json();
 				})
@@ -352,13 +375,16 @@ const ComponentsStations = () => {
 					deleteStation: deleteStation,
 					deleteHaul: deleteHaul,
 					createHaul: createHaul,
-					updateHaulCommonState: updateHaulCommonState,
+					updateHaulCommon: updateHaulCommon,
 					handleChangeStation: handleChangeStation,
-					editStation: editStation,
+					updateStation: updateStation,
 					validateStationNumber: validateStationNumber,
 					strata: strata,
 					gears: gears,
 					samplers: samplers,
+					restoreStations: restoreStations,
+					restoreHaulCommon: restoreHaulCommon,
+					setAdd: setAdd,
 				}}
 			>
 				<main>
@@ -386,4 +412,4 @@ const ComponentsStations = () => {
 	return renderContent();
 };
 
-export default ComponentsStations;
+export default Stations;

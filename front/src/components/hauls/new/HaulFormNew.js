@@ -20,6 +20,7 @@ const HaulFormNew = ({ newHaul, handleChange, validateHaulSampler, haulRef, samp
 						id="haul"
 						name="haul"
 						className="input__noSpinner"
+						autoFocus
 						required
 						min="1"
 						max="99"

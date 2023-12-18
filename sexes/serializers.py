@@ -11,3 +11,9 @@ class SexesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sex
         fields = ['id', 'sex', 'catch', ]
+
+
+class SexSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sex
+        fields = ['id', 'sex', 'catch_id', ]

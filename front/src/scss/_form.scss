@@ -56,7 +56,7 @@ input:invalid {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: flex-start;
-	// align-items: baseline;
+	align-items: center;
 	min-height: 2rem;
 	padding: 1px 0px 1px 0px;
 	width:100%
@@ -68,6 +68,7 @@ input:invalid {
 	align-items: center;
 	padding-right: 10px;
 	min-height: 2rem;
+    flex-wrap: wrap;
 
 	&:last-child {
 		padding-right: 0px;
@@ -78,6 +79,10 @@ input:invalid {
 // cell aligned to the right
 .form__cell--right {
 	margin-left: auto;
+}
+
+.form__cell--wide{
+    width: 100%;
 }
 
 // a div thia a class field to maintain together a label with an input
