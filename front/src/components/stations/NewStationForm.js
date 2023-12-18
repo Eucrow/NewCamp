@@ -3,8 +3,7 @@ import React, { useContext, useState } from "react";
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import StationsContext from "../../contexts/StationsContext";
 
-import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+import StatitionButtonBar from "./StationButtonBar";
 
 /**
  * New station form component
@@ -66,15 +65,14 @@ const NewStationForm = (props) => {
 						name="comment"
 						rows={1}
 						size={1000}
+						maxLength={1000}
 						onChange={(e) => handleChange(e)}
 					/>
 				</div>
-			</div>
-			<div className="form__row">
-				<div className="survey__cell survey__cell--right buttonsWrapper">
-					<UiButtonSave buttonText={"Save Station"} />
-					<UiButtonStatusHandle buttonText="Cancel" handleMethod={props.handleAdd} newStatus={false} />
-				</div>
+				{/* </div> */}
+				{/* <div className="form__row"> */}
+				<StatitionButtonBar handleEdit={props.handleAdd} add={true} />
+				{/* </div> */}
 			</div>
 		</form>
 	);

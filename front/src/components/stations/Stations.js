@@ -384,6 +384,7 @@ const Stations = () => {
 					samplers: samplers,
 					restoreStations: restoreStations,
 					restoreHaulCommon: restoreHaulCommon,
+					setAdd: setAdd,
 				}}
 			>
 				<main>

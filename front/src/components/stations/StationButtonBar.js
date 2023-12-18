@@ -7,7 +7,7 @@ import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiIconEdit from "../ui/UiIconEdit";
 
-const StationButtonBar = ({ stationId, handleEdit, edit }) => {
+const StationButtonBar = ({ stationId, handleEdit, edit, add }) => {
 	const stationsContext = useContext(StationsContext);
 	var ButtonBar = "";
 
@@ -48,6 +48,15 @@ const StationButtonBar = ({ stationId, handleEdit, edit }) => {
 						}
 					/>
 				</div>
+			</div>
+		);
+	}
+
+	if (add === true) {
+		ButtonBar = (
+			<div className="survey__cell survey__cell--right buttonsWrapper">
+				<UiButtonSave buttonText={"Save Station"} />
+				<UiButtonStatusHandle buttonText="Cancel" handleMethod={stationsContext.setAdd} newStatus={false} />
 			</div>
 		);
 	}
