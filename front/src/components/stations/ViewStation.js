@@ -13,15 +13,8 @@ class ViewStation extends Component {
 	render() {
 		return (
 			<Fragment>
-				<ViewEditStationForm
-					station={this.props.station}
-					handleEdit={this.props.handleEdit}
-					edit={false}
-				/>
-				<Hauls
-					hauls={this.props.station.hauls}
-					station_id={this.props.station.id}
-				/>
+				<ViewEditStationForm station={this.props.station} handleEdit={this.props.handleEdit} edit={false} />
+				<Hauls hauls={this.props.station.hauls} stationId={this.props.station.id} />
 			</Fragment>
 		);
 	}

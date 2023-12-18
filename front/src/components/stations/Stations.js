@@ -230,7 +230,6 @@ const Stations = () => {
 
 	/**
 	 * Detele haul.
-	 * @param {event} e
 	 * @param {number} id_haul
 	 */
 	const deleteHaul = (id_haul) => {
@@ -308,7 +307,7 @@ const Stations = () => {
 					return response.json();
 				})
 				.then((survey) => {
-					const apiStrata = apiStrataPartial + survey.stratification;
+					const apiStrata = apiStrataPartial + survey.stratification_id;
 					fetch(apiStrata)
 						.then((response) => {
 							if (response.status > 400) {

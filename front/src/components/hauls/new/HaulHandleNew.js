@@ -52,7 +52,7 @@ const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, sa
 
 	const createHaulObject = () => {
 		const haul = {
-			station_id: newHaul.station_id,
+			station_id: station_id,
 			haul: newHaul.haul,
 			stratum_id: newHaul.stratum_id,
 			sampler_id: newHaul.sampler_id,
