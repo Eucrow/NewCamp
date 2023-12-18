@@ -49,7 +49,7 @@ const NewStationForm = (props) => {
 						maxLength="4"
 						size={4}
 						className="station_number"
-						autoFocus={true}
+						autoFocus
 						id="station"
 						name="station"
 						onChange={(e) => {

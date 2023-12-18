@@ -52,6 +52,7 @@ const LengthForm = ({ l, idx }) => {
 						<input
 							type="number"
 							name="length"
+							autoFocus
 							min="0"
 							max="9999"
 							ref={lengthRef}

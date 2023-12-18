@@ -59,7 +59,8 @@ const CatchForm = ({
 			return (
 				<form
 					onSubmit={(e) => {
-						createCatch(e, new_catch);
+						e.preventDefault();
+						createCatch(new_catch);
 					}}
 				>
 					<label className="form__cell">
@@ -67,6 +68,7 @@ const CatchForm = ({
 						<input
 							value={group}
 							style={{ width: 5 + "ch" }}
+							autoFocus
 							type="number"
 							id="group"
 							name="group"
@@ -217,6 +219,7 @@ const CatchForm = ({
 				<form
 					className="form__cell"
 					onSubmit={(e) => {
+						e.preventDefault();
 						updateCatch(catchId);
 						editCatchStatus("view");
 					}}
@@ -229,6 +232,7 @@ const CatchForm = ({
 							type="number"
 							id="group"
 							name="group"
+							autoFocus
 							min="1"
 							max="5"
 							value={thisCatch.group}

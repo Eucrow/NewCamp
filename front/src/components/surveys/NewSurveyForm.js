@@ -2,8 +2,6 @@ import React, { useState, useContext } from "react";
 
 import SurveysContext from "../../contexts/SurveysContext";
 
-// import UiButtonSave from "../ui/UiButtonSave";
-// import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import SurveyButtonBar from "./SurveyButtonBar";
 
 /**
@@ -12,7 +10,20 @@ import SurveyButtonBar from "./SurveyButtonBar";
 const NewSurveyForm = () => {
 	const surveysContext = useContext(SurveysContext);
 
-	const [survey, setSurvey] = useState({});
+	const [survey, setSurvey] = useState({
+		// description: "",
+		// acronym: "",
+		// start_date: "",
+		// end_date: "",
+		// ship: "",
+		// hauls_duration: "",
+		// stratification_id: "",
+		// width_x: "",
+		// width_y: "",
+		// origin_x: "",
+		// origin_y: "",
+		// comment: "",
+	});
 
 	const formRef = React.createRef();
 

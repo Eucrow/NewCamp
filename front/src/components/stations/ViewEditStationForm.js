@@ -20,6 +20,9 @@ const ViewEditStationForm = ({ station, handleEdit, edit }) => {
 				<div className="form__cell">
 					<label htmlFor="station">Station:</label>
 					<input
+						id="station"
+						name="station"
+						autoFocus
 						type="number"
 						min="0"
 						max="9999"
@@ -27,8 +30,6 @@ const ViewEditStationForm = ({ station, handleEdit, edit }) => {
 						size={4}
 						disabled={is_disabled}
 						className="station_number"
-						id="station"
-						name="station"
 						value={station.station || ""}
 						onChange={(e) => {
 							stationsContext.handleChangeStation(e, station.id);

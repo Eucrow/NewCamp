@@ -25,6 +25,7 @@ const HydrographyFormEdit = ({
 							type="datetime-local"
 							name="date_time"
 							id="date_time"
+							autoFocus
 							value={hydrography.date_time || ""}
 							onChange={(e) => {
 								handleChangeHydrography(e);

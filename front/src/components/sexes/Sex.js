@@ -123,6 +123,7 @@ const Sex = ({
 							validateSex(e);
 						}}
 						id={sexId}
+						autoFocus
 						name={sexId}
 						value={thisSex}
 					>
@@ -157,6 +158,7 @@ const Sex = ({
 				<label className="form__cell sexes__sex">
 					Sex:
 					<select
+						autoFocus
 						onChange={(e) => {
 							setThisSex(e.target.value);
 							validateSex(e);

@@ -28,6 +28,7 @@ const LengthsRangeForm = ({ createRangeLengths }) => {
 						type="number"
 						id="minimum"
 						name="minimum"
+						autoFocus
 						min="0"
 						max="9999"
 						value={minimumRange}

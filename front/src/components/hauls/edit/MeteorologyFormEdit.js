@@ -17,6 +17,7 @@ const MeteorologyFormEdit = ({ meteorology, handleChangeMeteorology }) => {
 						type="number"
 						name="wind_direction"
 						id="wind_direction"
+						autoFocus
 						min={0}
 						max={360}
 						maxLength={3}

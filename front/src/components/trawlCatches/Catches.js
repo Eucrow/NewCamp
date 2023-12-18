@@ -6,9 +6,9 @@ import CatchesButtonBar from "./CatchesButtonBar.js";
 /**
  * Renders a list of catches for a specific haul.
  * @param {number}haul_id - The id of the haul.
- * @returns {JSX.Element} The CatchesList component.
+ * @returns {JSX.Element} The Catches component.
  */
-const CatchesList = ({ haul_id }) => {
+const Catches = ({ haul_id }) => {
 	const [catches, setCatches] = useState([]);
 	const [species, setSpecies] = useState([]);
 	const [, setPlaceholder] = useState("Loading");
@@ -229,12 +229,9 @@ const CatchesList = ({ haul_id }) => {
 	/**
 	 * Method to create a new catch.
 	 * If the catch already exists, it alerts the user.
-	 * @param {Event} e - The form submission event.
 	 * @param {Object} newCatch - The new catch to be created.
 	 */
-	const createCatch = (e, newCatch) => {
-		e.preventDefault();
-
+	const createCatch = (newCatch) => {
 		// add haul id to data request:
 		newCatch["haul_id"] = haul_id;
 
@@ -318,4 +315,4 @@ const CatchesList = ({ haul_id }) => {
 	return renderContent();
 };
 
-export default CatchesList;
+export default Catches;

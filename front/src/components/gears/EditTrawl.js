@@ -25,6 +25,7 @@ class EditTrawl extends Component {
 						type="number"
 						id="name"
 						name="name"
+						autoFocus
 						value={this.props.trawl.name || ""}
 						onChange={(e) => this.props.handleChange(e, this.props.trawl.id)}
 					/>

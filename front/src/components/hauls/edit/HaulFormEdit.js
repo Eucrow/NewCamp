@@ -94,6 +94,7 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 						type="number"
 						name="haul"
 						id="haul"
+						autoFocus
 						className="input__noSpinner"
 						min="1"
 						max="99"
