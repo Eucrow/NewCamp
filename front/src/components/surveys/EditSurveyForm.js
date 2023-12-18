@@ -14,12 +14,13 @@ const EditSurveyForm = ({ survey, handleEdit }) => {
 	const surveysContext = useContext(SurveysContext);
 
 	const handleSubmit = (e) => {
-		surveysContext.updateSurvey(e, survey.id);
+		e.preventDefault();
+		surveysContext.updateSurvey(survey.id);
 		handleEdit(false);
 	};
 
 	const renderedSurvey = (
-		<form className="wrapper form__row form__wide" onSubmit={handleSubmit}>
+		<form className="wrapper form__row" onSubmit={handleSubmit}>
 			<div className="form__row">
 				<label className="form__cell">
 					Description:

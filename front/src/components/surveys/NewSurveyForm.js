@@ -2,8 +2,9 @@ import React, { useState, useContext } from "react";
 
 import SurveysContext from "../../contexts/SurveysContext";
 
-import UiButtonSave from "../ui/UiButtonSave";
-import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+// import UiButtonSave from "../ui/UiButtonSave";
+// import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+import SurveyButtonBar from "./SurveyButtonBar";
 
 /**
  * Survey component
@@ -37,13 +38,14 @@ const NewSurveyForm = () => {
 	 * @param {event} e - onSubmit event.
 	 */
 	const handleSubmit = (e) => {
-		surveysContext.createSurvey(e, survey);
+		e.preventDefault();
+		surveysContext.createSurvey(survey);
 		surveysContext.setAdd(false);
 	};
 
 	const renderContent = () => {
 		const content = (
-			<form className="wrapper" ref={formRef} onSubmit={handleSubmit}>
+			<form className="wrapper from__row" ref={formRef} onSubmit={handleSubmit}>
 				<div className="form__row">
 					<label className="form__cell">
 						Description:
@@ -205,14 +207,7 @@ const NewSurveyForm = () => {
 					</label>
 				</div>
 				<div className="form__row">
-					<div className="survey__cell survey__cell--right buttonsWrapper">
-						<UiButtonSave buttonText={"Save Survey"} />
-						<UiButtonStatusHandle
-							buttonText="Cancel"
-							handleMethod={surveysContext.setAdd}
-							newStatus={false}
-						/>
-					</div>
+					<SurveyButtonBar add={surveysContext.add} />
 				</div>
 			</form>
 		);

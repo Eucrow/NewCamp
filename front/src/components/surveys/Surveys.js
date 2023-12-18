@@ -83,12 +83,9 @@ const Surveys = () => {
 
 	/**
 	 * Create survey in database and update the state.
-	 * @param {event} e - Event
 	 * @param {object} survey - Survey object to create.
 	 */
-	const createSurvey = (e, survey) => {
-		e.preventDefault();
-
+	const createSurvey = (survey) => {
 		fetch(apiSurvey, {
 			method: "POST",
 			headers: {
@@ -110,11 +107,9 @@ const Surveys = () => {
 
 	/**
 	 * Update survey from database and state.
-	 * @param {event} e - Event.
 	 * @param {numeric} surveyId - Survey identificator of survey to update.
 	 */
-	const updateSurvey = (e, surveyId) => {
-		e.preventDefault();
+	const updateSurvey = (surveyId) => {
 		const api = apiSurvey + surveyId;
 
 		const updatedSurvey = surveys.filter((survey) => {
@@ -140,13 +135,12 @@ const Surveys = () => {
 	 * @param {number} surveyId - The ID of the haul to be restored.
 	 */
 
-	const handleCancelEditSurvey = (e) => {
+	const handleCancelEditSurvey = () => {
 		setSurveys(surveysBackup);
 	};
 
 	/**
 	 * Delete survey from database and state.
-	 * @param {event} e Event.
 	 * @param {numeric} surveyId Survey identificator of survey to delete.
 	 */
 	const deleteSurvey = (surveyId) => {
@@ -251,6 +245,7 @@ const Surveys = () => {
 				value={{
 					handleChange: handleChange,
 					handleChangeStratification: handleChangeStratification,
+					add: add,
 					setAdd: setAdd,
 					createSurvey: createSurvey,
 					updateSurvey: updateSurvey,

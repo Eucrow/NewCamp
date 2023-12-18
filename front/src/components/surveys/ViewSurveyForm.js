@@ -12,7 +12,7 @@ import SurveyButtonBar from "./SurveyButtonBar";
  */
 const ViewSurveyForm = ({ survey, handleEdit }) => {
 	const renderedSurvey = (
-		<form className="wrapper form__row form__wide">
+		<form className="wrapper form__row">
 			<div className="form__row">
 				<label className="form__cell">
 					Description:
