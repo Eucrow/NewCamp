@@ -108,9 +108,9 @@ const HydrographyFormEdit = ({
 								id="depth_probe"
 								name="depth_probe"
 								min={0}
-								max={999}
-								maxLength={3}
-								size={3}
+								max={9999}
+								maxLength={4}
+								size={4}
 								value={hydrography.depth_probe || ""}
 								onChange={(e) => {
 									handleChangeHydrography(e);
@@ -124,9 +124,9 @@ const HydrographyFormEdit = ({
 								id="cable"
 								name="cable"
 								min={0}
-								max={999}
-								maxLength={3}
-								size={3}
+								max={9999}
+								maxLength={4}
+								size={4}
 								value={hydrography.cable || ""}
 								onChange={(e) => {
 									handleChangeHydrography(e);
@@ -140,9 +140,9 @@ const HydrographyFormEdit = ({
 								id="depth"
 								name="depth"
 								min={0}
-								max={999}
-								maxLength={3}
-								size={3}
+								max={9999}
+								maxLength={4}
+								size={4}
 								value={hydrography.depth || ""}
 								onChange={(e) => {
 									handleChangeHydrography(e);

@@ -10,8 +10,9 @@ from sqlalchemy import create_engine
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 
-from datetime import datetime, date
+from datetime import datetime
 
 from rest_framework.status import HTTP_201_CREATED, HTTP_409_CONFLICT
 
@@ -134,8 +135,10 @@ def get_sp_id(row):
     :param row: Row of the apply function
     :return: Species id.
     """
-    sp_id = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP']).id
-    return sp_id
+    try:
+        return Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP']).id
+    except ObjectDoesNotExist:
+        raise ValueError("Sp object with group {} and sp_code {} does not exist".format(row['GRUPO'], row['ESP']))
 
 
 # def get_category_id(row):
@@ -390,12 +393,6 @@ class SurveysImport:
 
     def __init__(self, request):
         self.request = request
-        self.sectors_col_names = [1, 2, 3, 4, 5]
-        self.sectors_names = ["MIÑO-FINISTERRE", "FINISTERRE-ESTA", "ESTACA-PEÑAS", "PEÑAS-AJO", "AJO-BIDASOA"]
-        # dept_col_names "D" and "E" doesn't have data so the depths_names of them are "without depth 1" and "without
-        # depth 2"
-        self.depth_col_names = ["A", "B", "C", "D", "E"]
-        self.depths_names = ["70-120", "120-200", "200-500", "without depth 1", "without depth 2"]
 
     def import_surveys_csv(self):
         """
@@ -406,7 +403,9 @@ class SurveysImport:
         file_object.seek(0)
         survey_file = csv.DictReader(io.StringIO(file_object.read().decode('utf-8')), delimiter=';')
 
-        self.stratification_name = get_type_survey(file_object.name) + "-sector-profundidad"
+        stratification_name = get_type_survey(file_object.name) + "-sector-profundidad"
+
+        stratification_id = Stratification.objects.get(stratification=stratification_name).id
 
         surveys_added = []
         message = []
@@ -417,12 +416,6 @@ class SurveysImport:
                 return HttpResponse(
                     '<p>The survey ' + str(row['CLAV']) + ' already exists in newCamp.</p>',
                     status=300)
-
-            stratification_object, created = Stratification.objects.get_or_create(
-                stratification=self.stratification_name,
-                comment="<p>In Demersales surveys, the stratification is a combination of geographic sector and " \
-                        "depth.</p> "
-            )
 
             # save survey model
             tmp = Survey()
@@ -436,29 +429,88 @@ class SurveysImport:
             tmp.hauls_duration = row['DURLAN']
             # tmp.area_sampled = row['AREBAR']
             # tmp.unit_sample = row['UNISUP']
-            if tmp.start_date != None: tmp.start_date = datetime.strptime(fix_year_date(row['COMI']), '%d/%m/%y').date()
-            if tmp.end_date != None: tmp.end_date = datetime.strptime(fix_year_date(row['FINA']), '%d/%m/%y').date()
-            tmp.stratification_id = stratification_object.id
+            if tmp.start_date is not None: tmp.start_date = datetime.strptime(fix_year_date(row['COMI']),
+                                                                              '%d/%m/%y').date()
+            if tmp.end_date is not None: tmp.end_date = datetime.strptime(fix_year_date(row['FINA']), '%d/%m/%y').date()
+            tmp.stratification_id = stratification_id
 
             tmp.save()
 
-            # add stratum data
-            for s in self.sectors_col_names:
-                for d in self.depth_col_names:
+            surveys_added.append(row['CLAV'])
 
-                    area_col = "C" + str(s) + d
-                    # print(area_col)
+        message.append("<p>The survey " + ', '.join(surveys_added) + ' has been saved.</p>')
+        return HttpResponse(message, status=HTTP_201_CREATED)
 
-                    depth_index = self.depth_col_names.index(d)
-                    name_stratification = self.sectors_names[s - 1] + "-" + self.depths_names[depth_index]
-                    # print(name_stratification)
 
-                    area = row[area_col]
+def create_stratification(stratification_name):
+    """
+    This function creates a new Stratification object if it does not already exist.
 
-                    # some depth-sector doesn't have info (columns C1D, C1E...)
-                    if not empty(area):
+    Parameters:
+    stratification_name (str): The name of the stratification to be created.
 
-                        stratum_object, created = Stratum.objects.get_or_create(
+    Returns:
+    HttpResponse: An HTTP response indicating the success or failure of the operation.
+    """
+    message = []
+    if not Stratification.objects.filter(stratification=stratification_name).exists():
+        stratification_object = Stratification.objects.create(
+            stratification=stratification_name,
+            comment="In Demersales surveys, the stratification is a combination of geographic sector and depth."
+        )
+        message.append("<p>The stratification " + stratification_name + " has been created.</p>")
+    else:
+        message.append("<p>The stratification " + stratification_name + " already exists.</p>")
+
+    return HttpResponse(message, status=HTTP_201_CREATED)
+
+
+def create_stratum(request):
+    """
+    This function is used to create stratum instances based on the data provided in the request.
+    It reads the data from the request, formats it, and then creates new Stratum objects in the database.
+
+    Parameters:
+    request (HttpRequest): The request object containing the data for creating the stratum.
+
+    Returns:
+    HttpResponse: An HTTP response indicating the success or failure of the operation.
+    """
+    file_object = request.FILES['camp']
+    file_object.seek(0)
+    survey_file = csv.DictReader(io.StringIO(file_object.read().decode('utf-8')), delimiter=';')
+
+    sectors_col_names = [1, 2, 3, 4, 5]
+    sectors_names = ["MIÑO-FINISTERRE", "FINISTERRE-ESTA", "ESTACA-PEÑAS", "PEÑAS-AJO", "AJO-BIDASOA"]
+    # dept_col_names "D" and "E" doesn't have data so its depths_names are "without depth 1" and "without
+    # depth 2"
+    depth_col_names = ["A", "B", "C", "D", "E"]
+    depths_names = ["70-120", "120-200", "200-500", "without depth 1", "without depth 2"]
+
+    stratification = get_type_survey(request.FILES['camp'].name) + "-sector-profundidad"
+    stratification_object = Stratification.objects.get(stratification=stratification)
+
+    message = []
+
+    for row in survey_file:
+
+        for s in sectors_col_names:
+            for d in depth_col_names:
+
+                area_col = "C" + str(s) + d
+
+                depth_index = depth_col_names.index(d)
+                name_stratification = sectors_names[s - 1] + "-" + depths_names[depth_index]
+
+                area = row[area_col]
+
+                # some depth-sector doesn't have info (columns C1D, C1E...)
+                if not empty(area):
+
+                    if Stratum.objects.filter(stratum=name_stratification).exists():
+                        message.append("<p>The stratum " + name_stratification + " already exists.</p>")
+                    else:
+                        Stratum.objects.create(
                             stratum=name_stratification,
                             area=row[area_col],
                             comment="<p>In Demersales surveys, the stratification is a combination of geographic sector and " \
@@ -466,13 +518,10 @@ class SurveysImport:
                             stratification_id=stratification_object.id
                         )
 
-                    else:
-                        message.append("<p>There aren't areas of stratification " + area_col + ".</p>")
+                else:
+                    message.append("<p>There aren't areas of stratification " + area_col + ".</p>")
 
-            surveys_added.append(row['CLAV'])
-
-        message.append("<p>The survey " + ', '.join(surveys_added) + ' has been saved.</p>')
-        return HttpResponse(message, status=HTTP_201_CREATED)
+    return HttpResponse(message, status=HTTP_201_CREATED)
 
 
 class HaulsImport:
@@ -491,6 +540,7 @@ class HaulsImport:
         self.sampler_object = get_sampler_object_and_create(sampler_name="ARRASTRE")
         self.stratification_name = get_type_survey(self.request.FILES['camp'].name) + "-sector-profundidad"
         self.stratification_object = Stratification.objects.get(stratification=self.stratification_name)
+
         self.fields_haul = {
             "haul": "LANCE",
             # "gear": "ARTE",
@@ -1028,7 +1078,7 @@ class HydrographiesImport:
         elif row["ESWE"] == "E":
             tmp["longitude"] = longitude
 
-        datetime_text = row["FECHA"] + " " + str(row["HORA"])
+        datetime_text = str(row["FECHA"]) + " " + str(row["HORA"])
         tmp["date_time"] = datetime.strptime(datetime_text, '%d/%m/%Y %H.%M')
 
         # to_round = ["temperature_0", "salinity_0", "temperature_50", "salinity_50", "temperature_100",
@@ -1103,16 +1153,23 @@ class OldCampImport:
     The files required are CAMPXXx.csv, LANCEXXX.csv, FAUNAXXX.csv, NTALLXXX.csv and HIDROXXX.csv
     """
 
-    def __init__(self):
+    def __init__(self, request):
         self.sectors_col_names = [1, 2, 3, 4, 5]
         self.sectors_names = ["MIÑO-FINISTERRE", "FINISTERRE-ESTA", "ESTACA-PEÑAS", "PEÑAS-AJO", "AJO-BIDASOA"]
         # dept_col_names "D" and "E" doesn't have data so the depths_names of them are "without depth 1" and "without
         # depth 2"
         self.depth_col_names = ["A", "B", "C", "D", "E"]
         self.depths_names = ["70-120", "120-200", "200-500", "without depth 1", "without depth 2"]
-        self.request = self.request
+        self.stratification_name = get_type_survey(request.FILES['camp'].name) + "-sector-profundidad"
+        self.request = request
 
     def import_complete(self):
+        stratification_name = get_type_survey(self.request.FILES['camp'].name) + "-sector-profundidad"
+
+        stratification = create_stratification(stratification_name)
+
+        stratum = create_stratum(self.request)
+
         survey = SurveysImport(self.request)
         survey_import = survey.import_surveys_csv()
 
@@ -1129,14 +1186,21 @@ class OldCampImport:
         faunas = FaunasImport(self.request)
         faunas_import = faunas.import_faunas_csv()
 
-        hydro = HydrographiesImport(self.request)
-        hydrography_import = hydro.import_hydrographies_csv()
+        return HttpResponse([stratification.content,
+                             stratum.content,
+                             survey_import.content,
+                             hauls_import.content,
+                             ntall_import.content,
+                             faunas_import.content])
 
-        response = [survey_import.content, hauls_import.content, faunas_import.content, ntall_import.content,
-                    hydrography_import.content]
-        # response = [survey_import.content, hauls_import.content, ]
-
-        return HttpResponse(response)
+        # hydro = HydrographiesImport(self.request)
+        # hydrography_import = hydro.import_hydrographies_csv()
+        #
+        # response = [survey_import.content, hauls_import.content, faunas_import.content, ntall_import.content,
+        #             hydrography_import.content]
+        # # response = [survey_import.content, hauls_import.content, ]
+        #
+        # return HttpResponse(response)
 
     def import_species(self):
         species = SpeciesImport(self.request)

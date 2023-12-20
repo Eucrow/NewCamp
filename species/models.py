@@ -16,6 +16,7 @@ class Sp(models.Model):
     unit = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(1)], null=True, blank=True)
     increment = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9)], null=True, blank=True)
     APHIA = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(999999)], null=True, blank=True)
+    comment = models.CharField(max_length=1000, null=True, blank=True)
 
     class Meta:
         constraints = [
