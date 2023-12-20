@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import SpsContext from "../../contexts/SpsContext";
+import SpeciesContext from "../../contexts/SpeciesContext";
 
 import SpButtonBar from "./SpButtonBar";
 
@@ -19,7 +19,7 @@ class NewSpForm extends Component {
 		this.handleChangeGroupSpCode = this.handleChangeGroupSpCode.bind(this);
 	}
 
-	static contextType = SpsContext;
+	static contextType = SpeciesContext;
 
 	handleChange(e) {
 		const name = e.target.name;

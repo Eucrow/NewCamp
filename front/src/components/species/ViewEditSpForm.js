@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import SpsContext from "../../contexts/SpsContext";
+import SpeciesContext from "../../contexts/SpeciesContext";
 
 import SpButtonBar from "./SpButtonBar";
 
@@ -13,12 +13,12 @@ import SpButtonBar from "./SpButtonBar";
  */
 
 const ViewEditSpForm = (props) => {
-	const spsContext = useContext(SpsContext);
+	const speciesContext = useContext(SpeciesContext);
 
 	const is_disabled = props.edit === true ? false : true;
 
 	const handleSubmit = (e) => {
-		spsContext.handleUpdateSp(e, props.sp.id);
+		speciesContext.handleUpdateSp(e, props.sp.id);
 		props.handleEdit(false);
 	};
 
@@ -41,7 +41,7 @@ const ViewEditSpForm = (props) => {
 						autoFocus
 						disabled={is_disabled}
 						value={props.sp.sp_name}
-						onChange={(e) => spsContext.handleChange(e, props.sp.id)}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 					/>
 				</span>
 
@@ -55,7 +55,7 @@ const ViewEditSpForm = (props) => {
 						pattern="^[a-zA-Z\s]{1,50}$"
 						disabled={is_disabled}
 						value={props.sp.spanish_name}
-						onChange={(e) => spsContext.handleChange(e, props.sp.id)}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 					/>
 				</span>
 				<span className="field">
@@ -71,8 +71,8 @@ const ViewEditSpForm = (props) => {
 						step={1}
 						disabled={is_disabled}
 						value={props.sp.APHIA}
-						onChange={(e) => spsContext.handleChange(e, props.sp.id)}
-						onKeyDown={spsContext.preventNegativeE}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
+						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
 			</div>
@@ -92,8 +92,8 @@ const ViewEditSpForm = (props) => {
 						step={0.000001}
 						disabled={is_disabled}
 						value={props.sp.a_param}
-						onChange={(e) => spsContext.handleChange(e, props.sp.id)}
-						onKeyDown={spsContext.preventNegativeE}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
+						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
 				<span className="field">
@@ -109,8 +109,8 @@ const ViewEditSpForm = (props) => {
 						step={0.000001}
 						disabled={is_disabled}
 						value={props.sp.b_param}
-						onChange={(e) => spsContext.handleChange(e, props.sp.id)}
-						onKeyDown={spsContext.preventNegativeE}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
+						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
 			</fieldset>
@@ -124,7 +124,7 @@ const ViewEditSpForm = (props) => {
 						required
 						disabled={is_disabled}
 						value={props.sp.unit}
-						onChange={(e) => spsContext.handleChange(e, props.sp.id)}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 					>
 						<option selected></option>
 						<option value="1">cm</option>
@@ -146,8 +146,8 @@ const ViewEditSpForm = (props) => {
 						step={1}
 						disabled={is_disabled}
 						value={props.sp.increment}
-						onChange={(e) => spsContext.handleChange(e, props.sp.id)}
-						onKeyDown={spsContext.preventNegativeE}
+						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
+						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
 			</fieldset>

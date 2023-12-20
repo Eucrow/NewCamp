@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import "./index.scss";
 
 import SelectedSurveyContext from "./contexts/SelectedSuveryContext";
-import SpeciesContext from "./contexts/SpeciesContext";
+import GlobalContext from "./contexts/GlobalContext.js";
 
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { HashRouter as Router, Route, Link } from "react-router-dom";
@@ -55,7 +55,7 @@ export default function App() {
 				setSelectedSurveyId,
 			}}
 		>
-			<SpeciesContext.Provider value={{ species, setSpecies, apiSpecies }}>
+			<GlobalContext.Provider value={{ species, setSpecies, apiSpecies }}>
 				<Router>
 					<nav className="headNav" aria-label="nCamp">
 						<h1 className="headNav__selectedSurvey">
@@ -127,7 +127,7 @@ export default function App() {
 
 					<Route path="/Trawls" component={Gears} />
 				</Router>
-			</SpeciesContext.Provider>
+			</GlobalContext.Provider>
 		</SelectedSurveyContext.Provider>
 	);
 }

@@ -1,14 +1,14 @@
 import React, { useState, useContext } from "react";
 
+import GlobalContext from "../../contexts/GlobalContext";
 import SpeciesContext from "../../contexts/SpeciesContext";
-import SpsContext from "../../contexts/SpsContext";
 
 import Sp from "./Sp";
 import NewSpForm from "./NewSpForm";
 import SpeciesButtonBar from "./SpeciesButtonBar";
 
 const Species = () => {
-	const speciesContext = useContext(SpeciesContext);
+	const globalContext = useContext(GlobalContext);
 
 	const [add, setAdd] = useState(false);
 
@@ -18,7 +18,7 @@ const Species = () => {
 	 * @returns {numeric} Code unused in the list of species.
 	 */
 	const getEmptySpCode = (group) => {
-		const sps = speciesContext.species.filter((sp) => sp.group === group);
+		const sps = globalContext.species.filter((sp) => sp.group === group);
 
 		const codes = sps.map((sp) => sp.sp_code);
 
@@ -36,7 +36,7 @@ const Species = () => {
 		const name = e.target.name;
 		const value = e.target.value;
 
-		speciesContext.setSpecies((prevState) => {
+		globalContext.setSpecies((prevState) => {
 			const sps = prevState.map((sp) => {
 				if (sp.id === sp_id) {
 					return { ...sp, [name]: value };
@@ -51,12 +51,12 @@ const Species = () => {
 	const handleUpdateSp = (e, sp_id) => {
 		e.preventDefault();
 
-		const api = speciesContext.apiSpecies + sp_id;
+		const api = globalContext.apiSpecies + sp_id;
 
 		fetch(api, {
 			method: "PUT",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(speciesContext.species[0]),
+			body: JSON.stringify(globalContext.species[0]),
 		})
 			.then((response) => response.json())
 			.then((data) => console.log(data))
@@ -64,16 +64,16 @@ const Species = () => {
 	};
 
 	const deleteSp = (sp_id) => {
-		const api = speciesContext.apiSpecies + sp_id;
+		const api = globalContext.apiSpecies + sp_id;
 
-		const updatedSpecies = speciesContext.species.filter((sp) => sp.id !== sp_id);
+		const updatedSpecies = globalContext.species.filter((sp) => sp.id !== sp_id);
 
 		fetch(api, {
 			method: "DELETE",
 			headers: { "Content-Type": "application/json" },
 		})
 			.then(() => {
-				speciesContext.setSpecies(updatedSpecies);
+				globalContext.setSpecies(updatedSpecies);
 			})
 			.catch((error) => alert(error));
 	};
@@ -91,8 +91,8 @@ const Species = () => {
 		})
 			.then((response) => response.json())
 			.then((c) => {
-				const new_species = [...speciesContext.species, c];
-				speciesContext.setSpecies(new_species);
+				const new_species = [...globalContext.species, c];
+				globalContext.setSpecies(new_species);
 			})
 			.catch((error) => console.log(error));
 	};
@@ -112,7 +112,7 @@ const Species = () => {
 		var content = "";
 
 		content = (
-			<SpsContext.Provider
+			<SpeciesContext.Provider
 				value={{
 					handleChange: handleChange,
 					handleUpdateSp: handleUpdateSp,
@@ -133,12 +133,12 @@ const Species = () => {
 
 						{add === true ? <NewSpForm /> : ""}
 
-						{speciesContext.species.map((sp) => {
+						{globalContext.species.map((sp) => {
 							return <Sp key={sp.id} sp={sp} />;
 						})}
 					</div>
 				</main>
-			</SpsContext.Provider>
+			</SpeciesContext.Provider>
 		);
 
 		return content;
