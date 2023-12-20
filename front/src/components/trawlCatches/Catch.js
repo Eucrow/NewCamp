@@ -8,7 +8,6 @@ import CatchForm from "./CatchForm.js";
  * @param {object} props - The component props.
  * @param {object} props.thisCatch - The catch managed by this component.
  * @param {string} props.thisCatchStatus - The status of the catch.
- * @param {object[]} props.species - The list of species.
  * @param {function} props.handleChangeGroup - The function to handle group changes.
  * @param {function} props.handleChangeSpecies - The function to handle species changes.
  * @param {function} props.handleChangeCategory - The function to handle category changes.
@@ -24,7 +23,6 @@ import CatchForm from "./CatchForm.js";
 const Catch = ({
 	thisCatch,
 	thisCatchStatus,
-	species,
 	handleChangeGroup,
 	handleChangeSpecies,
 	handleChangeCategory,
@@ -50,7 +48,6 @@ const Catch = ({
 				<div className="form__row form--wide">
 					<CatchForm
 						catchStatus={catchStatus}
-						species={species}
 						createCatch={createCatch}
 						editCatchStatus={setCatchStatus}
 						handleChangeAdd={handleChangeAdd}
@@ -83,7 +80,6 @@ const Catch = ({
 					<CatchForm
 						catchStatus={catchStatus}
 						thisCatch={thisCatch}
-						species={species}
 						handleChangeGroup={handleChangeGroup}
 						handleChangeSpecies={handleChangeSpecies}
 						handleChangeCategory={handleChangeCategory}

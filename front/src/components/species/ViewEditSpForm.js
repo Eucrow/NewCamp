@@ -14,6 +14,7 @@ import SpButtonBar from "./SpButtonBar";
 
 const ViewEditSpForm = (props) => {
 	const speciesContext = useContext(SpeciesContext);
+
 	const is_disabled = props.edit === true ? false : true;
 
 	const handleSubmit = (e) => {
