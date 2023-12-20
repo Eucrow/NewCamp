@@ -10,15 +10,12 @@ import CatchesButtonBar from "./CatchesButtonBar.js";
  */
 const Catches = ({ haul_id }) => {
 	const [catches, setCatches] = useState([]);
-	const [species, setSpecies] = useState([]);
 	const [, setPlaceholder] = useState("Loading");
 	const [add, setAdd] = useState(false);
 
 	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/";
 	const apiCatch = "http://127.0.0.1:8000/api/1.0/catch/";
 	const apiCreateCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
-	// TODO: change the apiSpecies api to only return the id, sp_name, group and sp_code variables.
-	const apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
 	const apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch";
 
 	const deleteCatch = (idx) => {
@@ -270,17 +267,6 @@ const Catches = ({ haul_id }) => {
 			.then((catches) => {
 				setCatches(catches);
 			});
-
-		fetch(apiSpecies)
-			.then((response) => {
-				if (response.status > 400) {
-					setPlaceholder("Something went wrong!");
-				}
-				return response.json();
-			})
-			.then((species) => {
-				setSpecies(species);
-			});
 	}, [haul_id]);
 
 	const renderContent = () => {
@@ -289,14 +275,13 @@ const Catches = ({ haul_id }) => {
 				<legend>Biometric sampling</legend>
 				<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
 				{add === true ? (
-					<Catch thisCatchStatus="add" species={species} createCatch={createCatch} handleChangeAdd={setAdd} />
+					<Catch thisCatchStatus="add" createCatch={createCatch} handleChangeAdd={setAdd} />
 				) : null}
 				{catches.map((c) => {
 					return (
 						<Catch
 							key={c.id}
 							thisCatch={c}
-							species={species}
 							handleChangeSampledWeight={handleChangeSampledWeight}
 							handleChangeGroup={handleChangeGroup}
 							handleChangeSpecies={handleChangeSpecies}

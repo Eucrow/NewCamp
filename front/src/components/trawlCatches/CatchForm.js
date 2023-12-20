@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import CatchButtonBar from "./CatchButtonBar";
+import SpeciesContext from "../../contexts/SpeciesContext";
 
 /**
  * CatchForm is a functional component that represents a form for managing catch data.
@@ -27,7 +28,6 @@ import CatchButtonBar from "./CatchButtonBar";
 const CatchForm = ({
 	catchStatus,
 	thisCatch,
-	species,
 	createCatch,
 	handleChangeGroup,
 	handleChangeSpecies,
@@ -49,6 +49,7 @@ const CatchForm = ({
 	const [weight, setWeight] = useState("");
 	const [sampled_weight, setSampled_weight] = useState("");
 	const [new_catch, setNew_catch] = useState({ group, sp_id, category, weight });
+	const speciesContext = useContext(SpeciesContext);
 
 	useEffect(() => {
 		setNew_catch({ group, sp_id, category, weight, sampled_weight });
@@ -86,7 +87,7 @@ const CatchForm = ({
 							onChange={(e) => setSp_id(e.target.value)}
 						>
 							<option>Select species...</option>
-							{species.map((s) => {
+							{speciesContext.species.map((s) => {
 								if (s.group === parseInt(group)) {
 									return (
 										<option value={s.id} key={s.id}>
@@ -248,7 +249,7 @@ const CatchForm = ({
 							value={thisCatch.sp_id + "--" + thisCatch.sp_code + "--" + thisCatch.sp_name}
 							onChange={handleChangeSpecies(thisCatch.id)}
 						>
-							{species
+							{speciesContext.species
 								.filter((s) => s.group === parseInt(thisCatch.group))
 								.map((s) => (
 									<option
