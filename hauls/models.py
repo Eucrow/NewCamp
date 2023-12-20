@@ -45,7 +45,8 @@ class HaulTrawl(models.Model):
     shooting_date_time = models.DateTimeField(null=True, blank=True)
     shooting_latitude = models.DecimalField(validators=[MinValueValidator(-90), MaxValueValidator(90)], max_digits=9,
                                             decimal_places=6, null=True, blank=True)
-    shooting_longitude = models.DecimalField(validators=[MinValueValidator(-180), MaxValueValidator(180)], max_digits=10,
+    shooting_longitude = models.DecimalField(validators=[MinValueValidator(-180), MaxValueValidator(180)],
+                                             max_digits=10,
                                              decimal_places=6, null=True, blank=True)
     shooting_depth = models.PositiveIntegerField(
         validators=[MaxValueValidator(9999)], null=True, blank=True)
@@ -99,11 +100,11 @@ class HaulHydrography(models.Model):
 
     date_time = models.DateTimeField(null=True, blank=True)
     depth_probe = models.PositiveIntegerField(null=True, blank=True, validators=[
-        MinValueValidator(0), MaxValueValidator(999)])
+        MinValueValidator(0), MaxValueValidator(9999)])
     cable = models.PositiveIntegerField(null=True, blank=True, validators=[
-        MinValueValidator(0), MaxValueValidator(999)])
+        MinValueValidator(0), MaxValueValidator(9999)])
     depth = models.PositiveIntegerField(null=True, blank=True, validators=[
-        MinValueValidator(0), MaxValueValidator(999)])
+        MinValueValidator(0), MaxValueValidator(9999)])
     temperature_0 = models.DecimalField(
         max_digits=5, decimal_places=3, null=True, blank=True)
     salinity_0 = models.DecimalField(

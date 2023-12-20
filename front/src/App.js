@@ -1,8 +1,9 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import "./index.scss";
 
 import SelectedSurveyContext from "./contexts/SelectedSuveryContext";
+import GlobalContext from "./contexts/GlobalContext.js";
 
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { HashRouter as Router, Route, Link } from "react-router-dom";
@@ -35,6 +36,16 @@ export default function App() {
 		return survey_id !== null ? survey_id : "";
 	});
 
+	const apiSpecies = "http://127.0.0.1:8000/api/1.0/species/";
+
+	const [species, setSpecies] = useState([]);
+
+	useEffect(() => {
+		fetch(apiSpecies)
+			.then((response) => response.json())
+			.then((data) => setSpecies(data));
+	}, []);
+
 	return (
 		<SelectedSurveyContext.Provider
 			value={{
@@ -44,77 +55,79 @@ export default function App() {
 				setSelectedSurveyId,
 			}}
 		>
-			<Router>
-				<nav className="headNav" aria-label="nCamp">
-					<h1 className="headNav__selectedSurvey">
-						{selectedSurvey !== "" ? selectedSurvey : "not survey selected"}
-					</h1>
-					<ul className="headNav__wrapper" role="menubar" aria-label="nCamp">
-						<li className="headNav__item" role="none">
-							<Link to="/SurveySelect" role="menuitem">
-								Select Survey
-							</Link>
-						</li>
-						<li className="headNav__item" role="none">
-							<Link to="/Stations" role="menuitem">
-								Stations
-							</Link>
-						</li>
-						<li className="headNav__item" role="none">
-							<Link to="/Species" role="menuitem">
-								Species
-							</Link>
-						</li>
-						<li className="headNav__item" role="none">
-							<Link to="/Ships" role="menuitem">
-								Ships
-							</Link>
-						</li>
-						<li className="headNav__item" role="none">
-							<Link to="/Surveys" role="menuitem">
-								Surveys
-							</Link>
-						</li>
-					</ul>
-					{/* <Link to="/">Home</Link>- -*/}
-					{/* <Link to="/Strata">Strata</Link>-
+			<GlobalContext.Provider value={{ species, setSpecies, apiSpecies }}>
+				<Router>
+					<nav className="headNav" aria-label="nCamp">
+						<h1 className="headNav__selectedSurvey">
+							{selectedSurvey !== "" ? selectedSurvey : "not survey selected"}
+						</h1>
+						<ul className="headNav__wrapper" role="menubar" aria-label="nCamp">
+							<li className="headNav__item" role="none">
+								<Link to="/SurveySelect" role="menuitem">
+									Select Survey
+								</Link>
+							</li>
+							<li className="headNav__item" role="none">
+								<Link to="/Stations" role="menuitem">
+									Stations
+								</Link>
+							</li>
+							<li className="headNav__item" role="none">
+								<Link to="/Species" role="menuitem">
+									Species
+								</Link>
+							</li>
+							<li className="headNav__item" role="none">
+								<Link to="/Ships" role="menuitem">
+									Ships
+								</Link>
+							</li>
+							<li className="headNav__item" role="none">
+								<Link to="/Surveys" role="menuitem">
+									Surveys
+								</Link>
+							</li>
+						</ul>
+						{/* <Link to="/">Home</Link>- -*/}
+						{/* <Link to="/Strata">Strata</Link>-
 						- -- --
 						<Link to="/Trawls">Trawls</Link> */}
-				</nav>
-				{/* <main>
+					</nav>
+					{/* <main>
 					
 				</main> */}
 
-				<Route path="/" exact component={Home} />
+					<Route path="/" exact component={Home} />
 
-				<Route
-					path="/SurveySelect"
-					exact
-					render={(props) => (
-						<ComponentsSurveySelect
-							{...props}
-							selectedSurvey={selectedSurvey}
-							setSelectedSurvey={setSelectedSurvey}
-						/>
-					)}
-				/>
+					<Route
+						path="/SurveySelect"
+						exact
+						render={(props) => (
+							<ComponentsSurveySelect
+								{...props}
+								selectedSurvey={selectedSurvey}
+								setSelectedSurvey={setSelectedSurvey}
+							/>
+						)}
+					/>
 
-				<Route path="/Surveys" exact component={ComponentsSurveys} />
+					<Route path="/Surveys" exact component={ComponentsSurveys} />
 
-				<Route path="/Stations" exact component={Stations} />
+					<Route path="/Stations" exact component={Stations} />
 
-				{/* TODO: CONSIDER IF THE NEXT PATH IS USEFULL */}
-				{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
+					{/* TODO: CONSIDER IF THE NEXT PATH IS USEFULL */}
+					{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
 				<Route path="/Hauls" exact component={ComponentsHauls} /> */}
 
-				{/* <Route path="/Weights" component={Weights} /> */}
-				{/* <Route path="/Samples" component={Samples} /> */}
-				<Route path="/Species" component={Species} />
+					{/* <Route path="/Weights" component={Weights} /> */}
+					{/* <Route path="/Samples" component={Samples} /> */}
+					<Route path="/Species" component={Species} />
 
-				<Route path="/Ships" component={Ships} />
+					<Route path="/Ships" component={Ships} />
 
-				<Route path="/Trawls" component={Gears} />
-			</Router>
+					<Route path="/Trawls" component={Gears} />
+				</Router>
+			</GlobalContext.Provider>
 		</SelectedSurveyContext.Provider>
 	);
 }
