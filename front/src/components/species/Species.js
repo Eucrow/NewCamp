@@ -84,7 +84,7 @@ const Species = () => {
 	const createSp = (e, new_sp) => {
 		e.preventDefault();
 
-		fetch(this.apiSpecies, {
+		fetch(globalContext.apiSpecies, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(new_sp),

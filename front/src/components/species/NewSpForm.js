@@ -1,58 +1,46 @@
-import React, { Component } from "react";
+import React, { useContext, useState } from "react";
 
 import SpeciesContext from "../../contexts/SpeciesContext";
 
 import SpButtonBar from "./SpButtonBar";
 
-/**
- * NewSp form.
- */
+const NewSpForm = () => {
+	const [sp, setSp] = useState({});
 
-class NewSpForm extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			sp: {},
-		};
+	const speciesContext = useContext(SpeciesContext);
 
-		this.handleChange = this.handleChange.bind(this);
-		this.handleChangeGroupSpCode = this.handleChangeGroupSpCode.bind(this);
-	}
+	const handleChange = (e) => {
+		const { name, value } = e.target;
 
-	static contextType = SpeciesContext;
-
-	handleChange(e) {
-		const name = e.target.name;
-		const value = e.target.value;
-
-		this.setState({
-			sp: {
-				...this.state.sp,
+		setSp((prev) => {
+			return {
+				...prev,
 				[name]: value,
-			},
+			};
 		});
-	}
+	};
 
-	handleChangeGroupSpCode(e) {
-		let freeSpCode = this.context.getEmptySpCode(Number(e.target.value));
+	const handleChangeGroupSpCode = (e) => {
+		let freeSpCode = speciesContext.getEmptySpCode(Number(e.target.value));
 
-		this.handleChange(e);
-		this.setState({
-			sp: {
-				...this.state.sp,
-				[e.target.name]: e.target.value,
+		const { name, value } = e.target;
+
+		setSp((prev) => {
+			return {
+				...prev,
+				[name]: value,
 				sp_code: freeSpCode,
-			},
+			};
 		});
-	}
+	};
 
-	renderContent() {
+	const renderContent = () => {
 		const content = (
 			<form
 				className="wrapper"
 				onSubmit={(e) => {
-					this.context.createSp(e, this.state.sp);
-					this.context.handleAdd(false);
+					speciesContext.createSp(e, sp);
+					speciesContext.handleAdd(false);
 				}}
 			>
 				<div className="form__row">
@@ -63,11 +51,12 @@ class NewSpForm extends Component {
 							id="group"
 							required
 							autoFocus
+							defaultValue={""}
 							onChange={(e) => {
-								this.handleChangeGroupSpCode(e);
+								handleChangeGroupSpCode(e);
 							}}
 						>
-							<option value="" selected></option>
+							<option value=""></option>
 							<option value="1">1</option>
 							<option value="2">2</option>
 							<option value="3">3</option>
@@ -78,14 +67,7 @@ class NewSpForm extends Component {
 					</span>
 					<span className="field">
 						<label htmlFor="sp_code">Species code:</label>
-						<input
-							type="text"
-							id="sp_code"
-							name="sp_code"
-							disabled
-							size={3}
-							value={this.state.sp.sp_code || null}
-						/>
+						<input type="text" id="sp_code" name="sp_code" disabled size={3} value={sp.sp_code || ""} />
 						(species code will be generated automatically)
 					</span>
 				</div>
@@ -99,7 +81,7 @@ class NewSpForm extends Component {
 							size={50}
 							pattern="^[a-zA-Z\s]{1,50}$"
 							required
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => handleChange(e)}
 						/>
 					</span>
 
@@ -111,7 +93,7 @@ class NewSpForm extends Component {
 							name="spanish_name"
 							size={50}
 							pattern="^[a-zA-Z\s]{1,50}$"
-							onChange={(e) => this.handleChange(e)}
+							onChange={(e) => handleChange(e)}
 						/>
 					</span>
 					<span className="field">
@@ -126,8 +108,8 @@ class NewSpForm extends Component {
 							size={6}
 							step={1}
 							pattern="^[0-9]{1,6}$"
-							onChange={(e) => this.handleChange(e)}
-							onKeyDown={this.context.preventNegativeE}
+							onChange={(e) => handleChange(e)}
+							onKeyDown={speciesContext.preventNegativeE}
 						/>
 					</span>
 				</div>
@@ -145,8 +127,8 @@ class NewSpForm extends Component {
 							max="9.999999"
 							size={8}
 							step={0.000001}
-							onChange={(e) => this.handleChange(e)}
-							onKeyDown={this.context.preventNegativeE}
+							onChange={(e) => handleChange(e)}
+							onKeyDown={speciesContext.preventNegativeE}
 						/>
 					</span>
 					<span className="field">
@@ -160,8 +142,8 @@ class NewSpForm extends Component {
 							max="9.999999"
 							size={8}
 							step={0.000001}
-							onChange={(e) => this.handleChange(e)}
-							onKeyDown={this.context.preventNegativeE}
+							onChange={(e) => handleChange(e)}
+							onKeyDown={speciesContext.preventNegativeE}
 						/>
 					</span>
 				</fieldset>
@@ -169,8 +151,8 @@ class NewSpForm extends Component {
 					<legend>Measurement</legend>
 					<span className="field">
 						<label htmlFor="unit">Measure unit:</label>
-						<select id="unit" name="unit" required onChange={(e) => this.handleChange(e)}>
-							<option selected></option>
+						<select id="unit" name="unit" required defaultValue={""} onChange={(e) => handleChange(e)}>
+							<option value=""></option>
 							<option value="1">mm</option>
 							<option value="2">cm</option>
 						</select>
@@ -188,28 +170,20 @@ class NewSpForm extends Component {
 							max="9"
 							size={1}
 							step={1}
-							onChange={(e) => this.handleChange(e)}
-							onKeyDown={this.context.preventNegativeE}
+							onChange={(e) => handleChange(e)}
+							onKeyDown={speciesContext.preventNegativeE}
 						/>
 					</span>
 				</fieldset>
 				<div className="form__row">
-					<SpButtonBar
-						// edit={this.props.edit}
-						add={true}
-						// changeDetail={this.props.changeDetail}
-						handleEdit={this.props.handleEdit}
-						changeAdd={this.props.changeAdd}
-					/>
+					<SpButtonBar add={true} />
 				</div>
 			</form>
 		);
 		return content;
-	}
+	};
 
-	render() {
-		return this.renderContent();
-	}
-}
+	return renderContent();
+};
 
 export default NewSpForm;
