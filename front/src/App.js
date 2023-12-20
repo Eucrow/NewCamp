@@ -55,7 +55,7 @@ export default function App() {
 				setSelectedSurveyId,
 			}}
 		>
-			<SpeciesContext.Provider value={{ species, setSpecies }}>
+			<SpeciesContext.Provider value={{ species, setSpecies, apiSpecies }}>
 				<Router>
 					<nav className="headNav" aria-label="nCamp">
 						<h1 className="headNav__selectedSurvey">

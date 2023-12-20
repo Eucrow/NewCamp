@@ -41,15 +41,9 @@ class Sp extends Component {
 			return (
 				<div key={this.props.sp.id} className="wrapper">
 					<div className="form__row">
-						<span className="field">
-							Group: {this.props.sp.group}
-						</span>
-						<span className="field">
-							Code: {this.props.sp.sp_code}
-						</span>
-						<span className="field">
-							Scientific Name: {this.props.sp.sp_name}
-						</span>
+						<span className="field">Group: {this.props.sp.group}</span>
+						<span className="field">Code: {this.props.sp.sp_code}</span>
+						<span className="field">Scientific Name: {this.props.sp.sp_name}</span>
 
 						<span className="form__cell form__cell--right">
 							<button
@@ -65,13 +59,7 @@ class Sp extends Component {
 			);
 		} else if (this.state.detail === true) {
 			if (this.state.edit === true) {
-				return (
-					<ViewEditSpForm
-						sp={this.props.sp}
-						edit={true}
-						handleEdit={this.handleEdit}
-					/>
-				);
+				return <ViewEditSpForm sp={this.props.sp} edit={true} handleEdit={this.handleEdit} />;
 			} else {
 				return (
 					<div>

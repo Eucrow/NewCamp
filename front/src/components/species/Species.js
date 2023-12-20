@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import SpeciesContext from "../../contexts/SpeciesContext";
+import SpsContext from "../../contexts/SpsContext";
 
 import Sp from "./Sp";
 import NewSpForm from "./NewSpForm";
@@ -14,11 +15,10 @@ class Species extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			species: [],
 			add: false,
 		};
 
-		this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species/";
+		// this.apiSpecies = "http://127.0.0.1:8000/api/1.0/species/";
 
 		this.renderContent = this.renderContent.bind(this);
 		this.handleChange = this.handleChange.bind(this);
@@ -31,6 +31,8 @@ class Species extends Component {
 		this.getEmptySpCode = this.getEmptySpCode.bind(this);
 		this.preventNegativeE = this.preventNegativeE.bind(this);
 	}
+
+	static contextType = SpeciesContext;
 
 	/**
 	 * Get the first code unused of a group of the list of species.
@@ -52,24 +54,19 @@ class Species extends Component {
 	}
 
 	handleChange(e, sp_id) {
+		e.preventDefault();
 		const name = e.target.name;
 		const value = e.target.value;
 
-		e.preventDefault();
-		const newSpecies = this.state.species.map((sp) => {
-			if (sp.id === sp_id) {
-				var newSp = sp;
-				newSp[name] = value;
-				return newSp;
-			} else {
-				return sp;
-			}
-		});
-
-		this.setState(() => {
-			return {
-				species: newSpecies,
-			};
+		this.context.setSpecies((prevState) => {
+			const sps = prevState.map((sp) => {
+				if (sp.id === sp_id) {
+					return { ...sp, [name]: value };
+				} else {
+					return sp;
+				}
+			});
+			return sps;
 		});
 	}
 
@@ -80,38 +77,33 @@ class Species extends Component {
 			};
 		});
 	}
-	/**
-	 * Update species database
-	 */
+
 	handleUpdateSp(e, sp_id) {
 		e.preventDefault();
 
-		const api = this.apiSpecies + sp_id;
-
-		const updatedSp = this.state.species.filter((sp) => {
-			return sp.id === sp_id;
-		});
+		const api = this.context.apiSpecies + sp_id;
 
 		fetch(api, {
 			method: "PUT",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(updatedSp[0]),
-		}).catch((error) => console.log(error));
+			body: JSON.stringify(this.context.species[0]),
+		})
+			.then((response) => response.json())
+			.then((data) => console.log(data))
+			.catch((error) => console.log(error));
 	}
 
 	deleteSp(sp_id) {
-		const api = this.apiSpecies + sp_id;
+		const api = this.context.apiSpecies + sp_id;
+
+		const updatedSpecies = this.context.species.filter((sp) => sp.id !== sp_id);
 
 		fetch(api, {
 			method: "DELETE",
 			headers: { "Content-Type": "application/json" },
 		})
 			.then(() => {
-				const NewSpecies = this.state.species.filter((sp) => sp.id !== sp_id);
-
-				this.setState({
-					species: NewSpecies,
-				});
+				this.context.setSpecies(updatedSpecies);
 			})
 			.catch((error) => alert(error));
 	}
@@ -154,7 +146,7 @@ class Species extends Component {
 		var content = "";
 
 		content = (
-			<SpeciesContext.Provider
+			<SpsContext.Provider
 				value={{
 					handleChange: this.handleChange,
 					handleUpdateSp: this.handleUpdateSp,
@@ -175,12 +167,13 @@ class Species extends Component {
 
 						{this.state.add === true ? <NewSpForm /> : ""}
 
-						{this.state.species.map((sp) => {
+						{/* {this.state.species.map((sp) => { */}
+						{this.context.species.map((sp) => {
 							return <Sp key={sp.id} sp={sp} />;
 						})}
 					</div>
 				</main>
-			</SpeciesContext.Provider>
+			</SpsContext.Provider>
 		);
 
 		return content;

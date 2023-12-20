@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import SpeciesContext from "../../contexts/SpeciesContext";
+import SpsContext from "../../contexts/SpsContext";
 
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
@@ -14,7 +14,7 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
  */
 
 const SpButtonBar = (props) => {
-	const speciesContext = useContext(SpeciesContext);
+	const spsContext = useContext(SpsContext);
 
 	var ButtonBar = "";
 
@@ -22,7 +22,7 @@ const SpButtonBar = (props) => {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
 				<UiButtonSave buttonText={"Save Species"} />
-				<UiButtonStatusHandle buttonText="Cancel" handleMethod={speciesContext.handleAdd} newStatus={false} />
+				<UiButtonStatusHandle buttonText="Cancel" handleMethod={spsContext.handleAdd} newStatus={false} />
 			</div>
 		);
 	}
@@ -50,7 +50,7 @@ const SpButtonBar = (props) => {
 				</button>
 				<UiButtonDelete
 					id={props.sp_id}
-					deleteMethod={speciesContext.deleteSp}
+					deleteMethod={spsContext.deleteSp}
 					buttonText="Delete Species"
 					confirmMessage="Delete this species? All the samples of this species on ALL the surveys will be removed!! Are you sure?"
 				/>
