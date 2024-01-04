@@ -13,7 +13,7 @@ const Catches = ({ haul_id }) => {
 	const [, setPlaceholder] = useState("Loading");
 	const [add, setAdd] = useState(false);
 
-	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/";
+	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;
 	const apiCatch = "http://127.0.0.1:8000/api/1.0/catch/";
 	const apiCreateCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
 	const apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch";
@@ -255,19 +255,19 @@ const Catches = ({ haul_id }) => {
 	};
 
 	useEffect(() => {
-		const thisApiCatches = apiCatches + haul_id;
-
-		fetch(thisApiCatches)
-			.then((response) => {
-				if (response.status > 400) {
-					setPlaceholder("Something went wrong!");
+		const fetchCatches = async () => {
+			try {
+				const data = await fetch(apiCatches);
+				if (!data.ok) {
+					throw new Error("Something went wrong! " + data.status + " " + data.statusText);
 				}
-				return response.json();
-			})
-			.then((catches) => {
-				setCatches(catches);
-			});
-	}, [haul_id]);
+				setCatches(await data.json());
+			} catch (error) {
+				console.error("Error fetching data: ", error);
+			}
+		};
+		fetchCatches();
+	}, [apiCatches]);
 
 	const renderContent = () => {
 		return (
