@@ -10,100 +10,206 @@ import StationsContext from "../../contexts/StationsContext";
 
 const Haul = ({ haul, stationId, samplers, validateHaulSampler, haulRef, samplerRef, createHaul, add, handleAdd }) => {
 	const stationsContext = useContext(StationsContext);
-	const [biometric, setBiometric] = useState(false);
+	const [catchesMode, setCatchesMode] = useState(false);
 	const [detail, setDetail] = useState(false);
 	const [edit, setEdit] = useState(false);
 
 	const [thisHaul, setThisHaul] = useState(haul);
 
-	const renderContent = () => {
-		if (add === true) {
-			return (
-				<>
-					<HaulHandleNew
-						station_id={stationId}
-						handleAdd={handleAdd}
-						createHaul={createHaul}
-						validateHaulSampler={validateHaulSampler}
-						haulRef={haulRef}
-						samplerRef={samplerRef}
-						setDetail={setDetail}
-					/>
-				</>
-			);
-		}
+	const haulConfig = {
+		defaultMode: (
+			<div className="wrapper form__row">
+				{/* <> */}
+				<HaulFormView
+					haul={haul}
+					detail={detail}
+					setEdit={setEdit}
+					setDetail={setDetail}
+					setCatchesMode={setCatchesMode}
+				/>
 
-		if (detail === true) {
-			return (
-				<div className="wrapper form__row">
-					<HaulFormView haul={haul} />
-					<HaulDetails
-						haul={haul}
-						detail={detail}
-						setDetail={setDetail}
-						validateHaulSampler={validateHaulSampler}
-					/>
-					<Catches haul_id={haul["id"]} />
-				</div>
-			);
-		}
+				{/* <HaulButtonBar
+					haul_id={haul.id}
+					edit={false}
+					detail={detail}
+					setEdit={setEdit}
+					handleDetail={setDetail}
+					deleteHaul={stationsContext.deleteHaul}
+					catches={catches}
+					setCatches={setCatches}
+				/> */}
+			</div>
+		),
+		addMode: (
+			<>
+				<HaulHandleNew
+					station_id={stationId}
+					handleAdd={handleAdd}
+					createHaul={createHaul}
+					validateHaulSampler={validateHaulSampler}
+					haulRef={haulRef}
+					samplerRef={samplerRef}
+					setDetail={setDetail}
+				/>
+			</>
+		),
+		editMode: (
+			<div className="wrapper form__row">
+				<HaulFormEdit
+					thisHaul={thisHaul}
+					setThisHaul={setThisHaul}
+					station_id={stationId}
+					edit={edit}
+					setEdit={setEdit}
+					samplers={samplers}
+				/>
+			</div>
+		),
+		detailMode: (
+			<div className="wrapper form__row">
+				<HaulFormView haul={haul} />
+				<HaulDetails
+					haul={haul}
+					detail={detail}
+					setDetail={setDetail}
+					validateHaulSampler={validateHaulSampler}
+				/>
+			</div>
+		),
+		catchesMode: (
+			<div className="wrapper form__row">
+				<HaulFormView
+					haul={haul}
+					detail={detail}
+					setDetail={setDetail}
+					setEdit={setEdit}
+					catchesMode={catchesMode}
+					setCatchesMode={setCatchesMode}
+					haul_id={haul.id}
+					edit={false}
+					deleteHaul={stationsContext.deleteHaul}
+				/>
+				{/* <HaulButtonBar
+					haul_id={haul.id}
+					edit={false}
+					detail={detail}
+					setDetail={setDetail}
+					setEdit={setEdit}
+					deleteHaul={stationsContext.deleteHaul}
+					catchesMode={catchesMode}
+					setCatchesMode={setCatchesMode}
+				/> */}
 
-		if (edit === false) {
-			if ((haul.sampler_id === 1) & (biometric === false)) {
-				return (
-					<div className="wrapper form__row">
-						<HaulFormView haul={haul} detail={detail} setEdit={setEdit} setDetail={setDetail} />
-
-						<HaulButtonBar
-							haul_id={haul.id}
-							edit={false}
-							detail={detail}
-							setEdit={setEdit}
-							handleDetail={setDetail}
-							deleteHaul={stationsContext.deleteHaul}
-							biometric={biometric}
-							setBiometric={setBiometric}
-						/>
-
-						{/* <Catches haul_id={haul["id"]} /> */}
-					</div>
-				);
-			} else if (haul.sampler_id === 1 && biometric === true) {
-				return (
-					<div className="wrapper form__row">
-						<HaulFormView haul={haul} detail={detail} setDetail={setDetail} setEdit={setEdit} />
-						<HaulButtonBar
-							haul_id={haul.id}
-							edit={false}
-							detail={detail}
-							handleDetail={setDetail}
-							setEdit={setEdit}
-							deleteHaul={stationsContext.deleteHaul}
-							biometric={biometric}
-							setBiometric={setBiometric}
-						/>
-
-						<Catches haul_id={haul["id"]} />
-					</div>
-				);
-			}
-		} else if (edit === true) {
-			return (
-				<div className="wrapper form__row">
-					<HaulFormEdit
-						thisHaul={thisHaul}
-						setThisHaul={setThisHaul}
-						station_id={stationId}
-						edit={edit}
-						setEdit={setEdit}
-						samplers={samplers}
-					/>
-				</div>
-			);
-		}
+				<Catches haul_id={haul["id"]} />
+			</div>
+		),
 	};
 
-	return renderContent();
+	let currentMode;
+
+	if (add === true) {
+		currentMode = "addMode";
+	} else if (detail === true) {
+		currentMode = "detailMode";
+	} else if (haul.sampler_id === 1 && catchesMode === true) {
+		currentMode = "catchesMode";
+	} else if (edit === true) {
+		currentMode = "editMode";
+	} else {
+		currentMode = "defaultMode";
+	}
+
+	// const renderContent = () => {
+	// 	// if (add === true) {
+	// 	// 	return (
+	// 	// 		<>
+	// 	// 			<HaulHandleNew
+	// 	// 				station_id={stationId}
+	// 	// 				handleAdd={handleAdd}
+	// 	// 				createHaul={createHaul}
+	// 	// 				validateHaulSampler={validateHaulSampler}
+	// 	// 				haulRef={haulRef}
+	// 	// 				samplerRef={samplerRef}
+	// 	// 				setDetail={setDetail}
+	// 	// 			/>
+	// 	// 		</>
+	// 	// 	);
+	// 	// }
+
+	// 	// if (detail === true) {
+	// 	// 	return (
+	// 	// 		<div className="wrapper form__row">
+	// 	// 			<HaulFormView haul={haul} />
+	// 	// 			<HaulDetails
+	// 	// 				haul={haul}
+	// 	// 				detail={detail}
+	// 	// 				setDetail={setDetail}
+	// 	// 				validateHaulSampler={validateHaulSampler}
+	// 	// 			/>
+	// 	// 			<Catches haul_id={haul["id"]} />
+	// 	// 		</div>
+	// 	// 	);
+	// 	// }
+
+	// 	if (edit === false) {
+	// 		if ((haul.sampler_id === 1) & (catches === false)) {
+	// 			// return (
+	// 			// 	<div className="wrapper form__row">
+	// 			// 		<HaulFormView haul={haul} detail={detail} setEdit={setEdit} setDetail={setDetail} />
+
+	// 			// 		<HaulButtonBar
+	// 			// 			haul_id={haul.id}
+	// 			// 			edit={false}
+	// 			// 			detail={detail}
+	// 			// 			setEdit={setEdit}
+	// 			// 			handleDetail={setDetail}
+	// 			// 			deleteHaul={stationsContext.deleteHaul}
+	// 			// 			catches={catches}
+	// 			// 			setCatches={setCatches}
+	// 			// 		/>
+
+	// 			// 		{/* <Catches haul_id={haul["id"]} /> */}
+	// 			// 	</div>
+	// 			// );
+	// 		} else if (haul.sampler_id === 1 && catches === true) {
+	// 			return (
+	// 				// <div className="wrapper form__row">
+	// 				// 	<HaulFormView haul={haul} detail={detail} setDetail={setDetail} setEdit={setEdit} />
+	// 				// 	<HaulButtonBar
+	// 				// 		haul_id={haul.id}
+	// 				// 		edit={false}
+	// 				// 		detail={detail}
+	// 				// 		handleDetail={setDetail}
+	// 				// 		setEdit={setEdit}
+	// 				// 		deleteHaul={stationsContext.deleteHaul}
+	// 				// 		catches={catches}
+	// 				// 		setCatches={setCatches}
+	// 				// 	/>
+
+	// 				// 	<Catches haul_id={haul["id"]} />
+	// 				// </div>
+	// 			);
+	// 		}
+	// 	} else if (edit === true) {
+	// 		return (
+	// 			// <div className="wrapper form__row">
+	// 			// 	<HaulFormEdit
+	// 			// 		thisHaul={thisHaul}
+	// 			// 		setThisHaul={setThisHaul}
+	// 			// 		station_id={stationId}
+	// 			// 		edit={edit}
+	// 			// 		setEdit={setEdit}
+	// 			// 		samplers={samplers}
+	// 			// 	/>
+	// 			// </div>
+	// 		);
+	// 	}
+	// };
+
+	const haulContent = haulConfig[currentMode];
+
+	// return renderContent();
+	return haulContent;
 };
 
 export default Haul;

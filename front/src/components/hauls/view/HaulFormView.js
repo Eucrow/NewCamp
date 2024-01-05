@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 
-const HaulFormView = ({ haul, detail, setEdit, setDetail }) => {
+import HaulButtonBar from "../HaulButtonBar";
+
+import StationsContext from "../../../contexts/StationsContext";
+
+const HaulFormView = ({ haul, detail, setEdit, setDetail, catchesMode, setCatchesMode }) => {
+	const stationsContext = useContext(StationsContext);
+
 	const renderContent = () => {
 		return (
 			<form className="form__row form--wide">
@@ -45,6 +51,17 @@ const HaulFormView = ({ haul, detail, setEdit, setDetail }) => {
 					Valid:
 					<input type="checkbox" name="valid" id="valid" disabled defaultChecked={haul.valid} />
 				</label>
+
+				<HaulButtonBar
+					haul_id={haul.id}
+					edit={false}
+					detail={detail}
+					setEdit={setEdit}
+					setDetail={setDetail}
+					deleteHaul={stationsContext.deleteHaul}
+					catchesMode={catchesMode}
+					setCatchesMode={setCatchesMode}
+				/>
 			</form>
 		);
 	};

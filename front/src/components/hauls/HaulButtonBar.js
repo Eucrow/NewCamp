@@ -5,7 +5,7 @@ import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiIconDetailShow from "../ui/UiIconDetailShow";
 import UiIconEdit from "../ui/UiIconEdit";
-import UiIconBiometrics from "../ui/UiIconBiometrics";
+import UiIconBiometrics from "../ui/UiIconCatches";
 
 /**
  * Component haul button bar.
@@ -20,74 +20,140 @@ const HaulButtonBar = ({
 	edit,
 	detail,
 	setEdit,
-	handleDetail,
+	setDetail,
 	deleteHaul,
 	handleCancel,
-	biometric,
-	setBiometric,
+	catchesMode,
+	setCatchesMode,
 }) => {
-	var ButtonBar = null;
+	// var ButtonBar = null;
 
-	// The button bar is not showed if the details are showed.
-	if (detail === true) {
-		return ButtonBar;
-	}
+	const buttonBarConfig = {
+		defaultMode: (
+			<div className="form__cell form__cell--right">
+				<UiButtonStatusHandle handleMethod={setEdit} buttonText={"Edit haul"} newStatus={true}>
+					<UiIconEdit />
+				</UiButtonStatusHandle>
 
-	if (edit === true) {
-		ButtonBar = (
+				<UiButtonDelete
+					id={haul_id}
+					deleteMethod={deleteHaul}
+					buttonText="Delete haul"
+					confirmMessage="Are you sure to delete this haul?"
+				/>
+
+				<UiButtonStatusHandle buttonText={"View haul details"} handleMethod={setDetail} newStatus={true}>
+					<UiIconDetailShow />
+				</UiButtonStatusHandle>
+
+				<UiButtonStatusHandle buttonText={"View catchess"} handleMethod={setCatchesMode} newStatus={true}>
+					<UiIconBiometrics />
+				</UiButtonStatusHandle>
+			</div>
+		),
+
+		editHaulMode: (
 			<div className="form__cell form__cell--right">
 				<UiButtonSave buttonText="Save Haul" />
 				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={handleCancel} newStatus={false} />
 			</div>
-		);
-	}
+		),
 
-	if (edit === false && detail === false && biometric === false) {
-		ButtonBar = (
+		catchesMode: (
 			<div className="form__cell form__cell--right">
-				<UiButtonStatusHandle handleMethod={setEdit} buttonText={"Edit haul"} newStatus={true}>
+				{/* <UiButtonStatusHandle handleMethod={setEdit} buttonText={"Edit haul"} newStatus={true}>
 					<UiIconEdit />
-				</UiButtonStatusHandle>
-
+				</UiButtonStatusHandle> */}
+				{/* 
 				<UiButtonDelete
 					id={haul_id}
 					deleteMethod={deleteHaul}
 					buttonText="Delete haul"
 					confirmMessage="Are you sure to delete this haul?"
-				/>
+				/> */}
 
-				<UiButtonStatusHandle buttonText={"View haul details"} handleMethod={handleDetail} newStatus={true}>
+				{/* <UiButtonStatusHandle buttonText={"View haul details"} handleMethod={handleDetail} newStatus={true}>
 					<UiIconDetailShow />
-				</UiButtonStatusHandle>
-				<UiButtonStatusHandle buttonText={"View biometrics"} handleMethod={setBiometric} newStatus={true}>
+				</UiButtonStatusHandle> */}
+
+				<UiButtonStatusHandle buttonText={"Hide catchess"} handleMethod={setCatchesMode} newStatus={false}>
 					<UiIconBiometrics />
 				</UiButtonStatusHandle>
 			</div>
-		);
-	} else if (edit === false && detail === false && biometric === true) {
-		ButtonBar = (
-			<div className="form__cell form__cell--right">
-				<UiButtonStatusHandle handleMethod={setEdit} buttonText={"Edit haul"} newStatus={true}>
-					<UiIconEdit />
-				</UiButtonStatusHandle>
+		),
+	};
 
-				<UiButtonDelete
-					id={haul_id}
-					deleteMethod={deleteHaul}
-					buttonText="Delete haul"
-					confirmMessage="Are you sure to delete this haul?"
-				/>
+	// // The button bar is not showed if the details are showed.
+	// if (detail === true) {
+	// 	return ButtonBar;
+	// }
 
-				<UiButtonStatusHandle buttonText={"View haul details"} handleMethod={handleDetail} newStatus={true}>
-					<UiIconDetailShow />
-				</UiButtonStatusHandle>
+	// if (edit === true) {
+	// 	ButtonBar = (
+	// 		<div className="form__cell form__cell--right">
+	// 			<UiButtonSave buttonText="Save Haul" />
+	// 			<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={handleCancel} newStatus={false} />
+	// 		</div>
+	// 	);
+	// }
 
-				<UiButtonStatusHandle buttonText={"Hide biometrics"} handleMethod={setBiometric} newStatus={false}>
-					<UiIconBiometrics />
-				</UiButtonStatusHandle>
-			</div>
-		);
+	// if (edit === false && detail === false && catches === false) {
+	// 	ButtonBar = (
+	// 		<div className="form__cell form__cell--right">
+	// 			<UiButtonStatusHandle handleMethod={setEdit} buttonText={"Edit haul"} newStatus={true}>
+	// 				<UiIconEdit />
+	// 			</UiButtonStatusHandle>
+
+	// 			<UiButtonDelete
+	// 				id={haul_id}
+	// 				deleteMethod={deleteHaul}
+	// 				buttonText="Delete haul"
+	// 				confirmMessage="Are you sure to delete this haul?"
+	// 			/>
+
+	// 			<UiButtonStatusHandle buttonText={"View haul details"} handleMethod={handleDetail} newStatus={true}>
+	// 				<UiIconDetailShow />
+	// 			</UiButtonStatusHandle>
+	// 			<UiButtonStatusHandle buttonText={"View catchess"} handleMethod={setCatches} newStatus={true}>
+	// 				<UiIconBiometrics />
+	// 			</UiButtonStatusHandle>
+	// 		</div>
+	// 	);
+	// } else if (edit === false && detail === false && catches === true) {
+	// 	ButtonBar = (
+	// 		<div className="form__cell form__cell--right">
+	// 			<UiButtonStatusHandle handleMethod={setEdit} buttonText={"Edit haul"} newStatus={true}>
+	// 				<UiIconEdit />
+	// 			</UiButtonStatusHandle>
+
+	// 			<UiButtonDelete
+	// 				id={haul_id}
+	// 				deleteMethod={deleteHaul}
+	// 				buttonText="Delete haul"
+	// 				confirmMessage="Are you sure to delete this haul?"
+	// 			/>
+
+	// 			<UiButtonStatusHandle buttonText={"View haul details"} handleMethod={handleDetail} newStatus={true}>
+	// 				<UiIconDetailShow />
+	// 			</UiButtonStatusHandle>
+
+	// 			<UiButtonStatusHandle buttonText={"Hide catchess"} handleMethod={setCatches} newStatus={false}>
+	// 				<UiIconBiometrics />
+	// 			</UiButtonStatusHandle>
+	// 		</div>
+	// 	);
+	// }
+
+	let currentMode;
+	if (edit === true) {
+		currentMode = "editHaulMode";
+	} else if (catchesMode === true) {
+		currentMode = "catchesMode";
+	} else {
+		currentMode = "defaultMode";
 	}
+
+	const ButtonBar = buttonBarConfig[currentMode];
 
 	return ButtonBar;
 };
