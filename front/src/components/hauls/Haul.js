@@ -54,7 +54,7 @@ const Haul = ({ haul, stationId, samplers, validateHaulSampler, haulRef, sampler
 		),
 		detailMode: (
 			<div className="wrapper form__row">
-				<HaulFormView haul={haul} />
+				<HaulFormView haul={haul} detail={detail} setDetail={setDetail} />
 				<HaulDetails
 					haul={haul}
 					detail={detail}

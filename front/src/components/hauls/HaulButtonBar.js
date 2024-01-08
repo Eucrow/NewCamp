@@ -4,6 +4,7 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiIconDetailShow from "../ui/UiIconDetailShow";
+import UiIconDetailHide from "../ui/UiIconDetailHide";
 import UiIconEdit from "../ui/UiIconEdit";
 import UiIconBiometrics from "../ui/UiIconCatches";
 
@@ -26,6 +27,7 @@ const HaulButtonBar = ({
 	haul_id,
 	edit,
 	setEdit,
+	detail,
 	setDetail,
 	deleteHaul,
 	handleCancel,
@@ -47,13 +49,20 @@ const HaulButtonBar = ({
 				/>
 
 				<UiButtonStatusHandle buttonText={"View haul details"} handleMethod={setDetail} newStatus={true}>
-					<UiIconDetailShow />
+					{/* <UiIconDetailShow /> */}
 				</UiButtonStatusHandle>
 
-				<UiButtonStatusHandle buttonText={"View catchess"} handleMethod={setCatchesMode} newStatus={true}>
-					<UiIconBiometrics />
+				<UiButtonStatusHandle buttonText={"View catches"} handleMethod={setCatchesMode} newStatus={true}>
+					{/* <UiIconBiometrics /> */}
 				</UiButtonStatusHandle>
 			</div>
+		),
+
+		detailMode: (
+			// <UiButtonStatusHandle buttonText={"Hide haul details"} handleMethod={setDetail} newStatus={false}>
+			// 	<UiIconDetailHide />
+			// </UiButtonStatusHandle>
+			<></>
 		),
 
 		editHaulMode: (
@@ -65,8 +74,8 @@ const HaulButtonBar = ({
 
 		catchesMode: (
 			<div className="form__cell form__cell--right">
-				<UiButtonStatusHandle buttonText={"Hide catchess"} handleMethod={setCatchesMode} newStatus={false}>
-					<UiIconBiometrics />
+				<UiButtonStatusHandle buttonText={"Hide catches"} handleMethod={setCatchesMode} newStatus={false}>
+					{/* <UiIconBiometrics /> */}
 				</UiButtonStatusHandle>
 			</div>
 		),
@@ -75,6 +84,8 @@ const HaulButtonBar = ({
 	let currentMode;
 	if (edit === true) {
 		currentMode = "editHaulMode";
+	} else if (detail === true) {
+		currentMode = "detailMode";
 	} else if (catchesMode === true) {
 		currentMode = "catchesMode";
 	} else {

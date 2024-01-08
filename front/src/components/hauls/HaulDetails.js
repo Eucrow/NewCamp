@@ -462,14 +462,18 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<UiButtonStatusHandle
-										buttonText={"Hide detail"}
+										buttonText={"Hide haul details"}
 										handleMethod={setDetail}
 										newStatus={false}
 									>
-										<UiIconDetailHide />
+										{/* <UiIconDetailHide /> */}
 									</UiButtonStatusHandle>
-									<UiButtonStatusHandle buttonText={"Edit"} handleMethod={setEdit} newStatus={true}>
-										<UiIconEdit />
+									<UiButtonStatusHandle
+										buttonText={"Edit haul details"}
+										handleMethod={setEdit}
+										newStatus={true}
+									>
+										{/* <UiIconEdit /> */}
 									</UiButtonStatusHandle>
 								</div>
 							</div>
@@ -512,7 +516,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
-									<UiButtonSave buttonText="Save Haul" />
+									<UiButtonSave buttonText="Save" />
 									<UiButtonStatusHandle
 										buttonText={"Cancel"}
 										handleMethod={handleCancel}
