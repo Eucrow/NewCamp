@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 
-import StationsContext from "../../../contexts/StationsContext";
-
 import HaulButtonBar from "../HaulButtonBar";
 
-const HaulFormView = ({ haul, detail, setEdit, setDetail }) => {
+import StationsContext from "../../../contexts/StationsContext";
+
+const HaulFormView = ({ haul, detail, setEdit, setDetail, catchesMode, setCatchesMode }) => {
 	const stationsContext = useContext(StationsContext);
 
 	const renderContent = () => {
@@ -51,13 +51,16 @@ const HaulFormView = ({ haul, detail, setEdit, setDetail }) => {
 					Valid:
 					<input type="checkbox" name="valid" id="valid" disabled defaultChecked={haul.valid} />
 				</label>
+
 				<HaulButtonBar
 					haul_id={haul.id}
 					edit={false}
 					detail={detail}
 					setEdit={setEdit}
-					handleDetail={setDetail}
+					setDetail={setDetail}
 					deleteHaul={stationsContext.deleteHaul}
+					catchesMode={catchesMode}
+					setCatchesMode={setCatchesMode}
 				/>
 			</form>
 		);
