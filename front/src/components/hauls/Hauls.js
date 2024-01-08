@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import Haul from "./Haul";
-import UiButtonAdd from "../ui/UiButtonAdd";
+// import UiButtonAdd from "../ui/UiButtonAdd";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 const Hauls = ({ hauls, stationId, createHaul }) => {
 	/**
@@ -10,7 +11,7 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 	 * @param {method} createHaul
 	 */
 
-	const [add, setAdd] = useState(false);
+	const [addHaul, setAddHaul] = useState(false);
 
 	// Refs used to validate haul/sampler combination
 	const haulRef = useRef(null);
@@ -83,21 +84,25 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 	};
 
 	const renderContent = () => {
-		if (add === false) {
+		if (addHaul === false) {
 			return (
 				<>
 					{renderHauls()}
-					<UiButtonAdd handleAdd={setAdd} text={"Add haul"} />
+					<UiButtonStatusHandle
+						buttonText={"Add haul"}
+						handleMethod={setAddHaul}
+						newStatus={true}
+					></UiButtonStatusHandle>
 				</>
 			);
-		} else if (add === true) {
+		} else if (addHaul === true) {
 			return (
 				<>
 					{renderHauls()}
 					<Haul
 						stationId={stationId}
-						add={add}
-						handleAdd={setAdd}
+						addHaul={addHaul}
+						handleAddHaul={setAddHaul}
 						createHaul={createHaul}
 						validateHaulSampler={validateHaulSampler}
 						haulRef={haulRef}

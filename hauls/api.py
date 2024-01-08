@@ -199,6 +199,7 @@ class TrawlAPI(APIView):
     def get(self, request, haul_id):
         """Retrieve the Trawl data for a given haul."""
         trawl = get_object_or_404(HaulTrawl, haul_id=haul_id)
+        # trawl = HaulTrawl.objects.get(haul_id=haul_id)
         serializer = TrawlSerializer(trawl)
         return Response(serializer.data)
 
