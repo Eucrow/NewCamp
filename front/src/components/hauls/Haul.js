@@ -44,12 +44,7 @@ const Haul = ({
 			return (
 				<div className="wrapper form__row">
 					<HaulFormView haul={haul} detail={detail} setDetail={setDetail} />
-					<HaulDetails
-						haul={haul}
-						detail={detail}
-						setDetail={setDetail}
-						validateHaulSampler={validateHaulSampler}
-					/>
+					<HaulDetails haul={haul} detail={detail} setDetail={setDetail} />
 				</div>
 			);
 		} else if (haul.sampler_id === 1 && catchesMode === true) {
