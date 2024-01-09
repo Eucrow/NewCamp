@@ -272,7 +272,7 @@ const Catches = ({ haul_id }) => {
 	const renderContent = () => {
 		return (
 			<fieldset className="wrapper form__row form--wide catchesList">
-				<legend>Biometric sampling</legend>
+				<legend>Fauna list</legend>
 				<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
 				{add === true ? (
 					<Catch thisCatchStatus="add" createCatch={createCatch} handleChangeAdd={setAdd} />

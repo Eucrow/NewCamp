@@ -25,6 +25,7 @@ import UiIconBiometrics from "../ui/UiIconCatches";
  */
 const HaulButtonBar = ({
 	haul_id,
+	sampler_id,
 	edit,
 	setEdit,
 	detail,
@@ -34,27 +35,34 @@ const HaulButtonBar = ({
 	catchesMode,
 	setCatchesMode,
 }) => {
+	const samplerButton = () => {
+		if (sampler_id === 1) {
+			return (
+				<UiButtonStatusHandle buttonText={"View fauna list"} handleMethod={setCatchesMode} newStatus={true}>
+					{/* <UiIconBiometrics /> */}
+				</UiButtonStatusHandle>
+			);
+		} else {
+			return null;
+		}
+	};
+
 	const buttonBarConfig = {
 		defaultMode: (
 			<div className="form__cell form__cell--right">
 				<UiButtonStatusHandle handleMethod={setEdit} buttonText={"Edit haul"} newStatus={true}>
 					<UiIconEdit />
 				</UiButtonStatusHandle>
-
 				<UiButtonDelete
 					id={haul_id}
 					deleteMethod={deleteHaul}
 					buttonText="Delete haul"
 					confirmMessage="Are you sure to delete this haul?"
 				/>
-
 				<UiButtonStatusHandle buttonText={"View haul details"} handleMethod={setDetail} newStatus={true}>
 					{/* <UiIconDetailShow /> */}
 				</UiButtonStatusHandle>
-
-				<UiButtonStatusHandle buttonText={"View catches"} handleMethod={setCatchesMode} newStatus={true}>
-					{/* <UiIconBiometrics /> */}
-				</UiButtonStatusHandle>
+				{samplerButton()}
 			</div>
 		),
 
@@ -74,7 +82,7 @@ const HaulButtonBar = ({
 
 		catchesMode: (
 			<div className="form__cell form__cell--right">
-				<UiButtonStatusHandle buttonText={"Hide catches"} handleMethod={setCatchesMode} newStatus={false}>
+				<UiButtonStatusHandle buttonText={"Hide fauna list"} handleMethod={setCatchesMode} newStatus={false}>
 					{/* <UiIconBiometrics /> */}
 				</UiButtonStatusHandle>
 			</div>

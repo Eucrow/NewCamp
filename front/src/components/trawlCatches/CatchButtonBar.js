@@ -40,14 +40,14 @@ const CatchButtonBar = ({
 	if (catchStatus === "view") {
 		ButtonBar = (
 			<div className="form__cell form__cell--right">
-				<UiButtonStatusHandle handleMethod={editCatchStatus} buttonText={"Edit catch"} newStatus={"edit"}>
+				<UiButtonStatusHandle handleMethod={editCatchStatus} buttonText={"Edit species"} newStatus={"edit"}>
 					<UiIconEdit />
 				</UiButtonStatusHandle>
 
 				<UiButtonDelete
 					id={catchId}
 					deleteMethod={deleteCatch}
-					buttonText={"Delete Catch"}
+					buttonText={"Delete species"}
 					confirmMessage={
 						"Are you sure to delete this catch? This delete the catch and its sexes and lengths."
 					}
