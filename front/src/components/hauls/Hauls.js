@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Fragment } from "react";
 import Haul from "./Haul";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
@@ -64,7 +64,7 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 	const renderHauls = () => {
 		if (hauls) {
 			return (
-				<div>
+				<Fragment>
 					{hauls.map((haul) => {
 						return (
 							<Haul
@@ -75,7 +75,7 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 							/>
 						);
 					})}
-				</div>
+				</Fragment>
 			);
 		}
 	};
@@ -83,18 +83,18 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 	const renderContent = () => {
 		if (addHaul === false) {
 			return (
-				<>
+				<Fragment>
 					{renderHauls()}
 					<UiButtonStatusHandle
 						buttonText={"Add haul"}
 						handleMethod={setAddHaul}
 						newStatus={true}
 					></UiButtonStatusHandle>
-				</>
+				</Fragment>
 			);
 		} else if (addHaul === true) {
 			return (
-				<>
+				<Fragment>
 					{renderHauls()}
 					<Haul
 						stationId={stationId}
@@ -105,7 +105,7 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 						haulRef={haulRef}
 						samplerRef={samplerRef}
 					/>
-				</>
+				</Fragment>
 			);
 		}
 	};
