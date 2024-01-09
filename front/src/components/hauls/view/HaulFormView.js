@@ -54,6 +54,7 @@ const HaulFormView = ({ haul, detail, setEdit, setDetail, catchesMode, setCatche
 
 				<HaulButtonBar
 					haul_id={haul.id}
+					sampler_id={haul.sampler_id}
 					edit={false}
 					detail={detail}
 					setEdit={setEdit}
