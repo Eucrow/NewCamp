@@ -10,7 +10,6 @@ import CatchesButtonBar from "./CatchesButtonBar.js";
  */
 const Catches = ({ haul_id }) => {
 	const [catches, setCatches] = useState([]);
-	const [, setPlaceholder] = useState("Loading");
 	const [add, setAdd] = useState(false);
 
 	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;

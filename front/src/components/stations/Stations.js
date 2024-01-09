@@ -42,7 +42,8 @@ const Stations = () => {
 		})
 			.then((response) => response.json())
 			.then((s) => {
-				const newStations = [...stations, s];
+				const newStations = [s, ...stations];
+				// newStations.sort((a, b) => a.station - b.station);
 				setStations(newStations);
 			})
 			.catch((error) => console.log(error));

@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import Haul from "./Haul";
-// import UiButtonAdd from "../ui/UiButtonAdd";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 const Hauls = ({ hauls, stationId, createHaul }) => {
@@ -78,8 +77,6 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 					})}
 				</div>
 			);
-		} else {
-			return "there are not hauls";
 		}
 	};
 

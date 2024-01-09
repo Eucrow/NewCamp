@@ -21,7 +21,7 @@ class StationsBySurveyAPI(ListAPIView):
 
     def get_queryset(self):
         survey_id = self.kwargs['survey_id']
-        return Station.objects.filter(survey_id=survey_id)
+        return Station.objects.filter(survey_id=survey_id).order_by('station')
 
 
 class StationAPI(APIView):
@@ -61,7 +61,7 @@ class StationsHaulsAPI(APIView):
 
     def get(self, request, survey_id):
         # stations = get_list_or_404(Station, survey_id=survey_id)
-        stations = Station.objects.filter(survey__pk=survey_id)
+        stations = Station.objects.filter(survey__pk=survey_id).order_by('station')
         serializer = StationsHaulsSerializer(stations, many=True)
 
         return Response(serializer.data)
