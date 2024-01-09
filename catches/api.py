@@ -86,8 +86,6 @@ class CatchHaulAPI(APIView):
                 sample_weight_serializer.save(catch_id=catch_serializer.data["id"],
                                               sampled_weight=request.data["sampled_weight"])
                 response_data.update(sample_weight_serializer.data)
-            else:
-                return Response(sample_weight_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         return Response(response_data, status=HTTP_201_CREATED)
 
