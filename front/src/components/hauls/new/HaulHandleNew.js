@@ -69,7 +69,6 @@ const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, sa
 	const renderContent = () => {
 		return (
 			<form
-				className="wrapper"
 				onSubmit={(e) => {
 					const haul = createHaulObject();
 					stationsContext.createHaul(e, haul);
