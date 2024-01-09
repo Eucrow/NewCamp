@@ -244,7 +244,7 @@ const Catches = ({ haul_id }) => {
 				})
 					.then((response) => response.json())
 					.then((c) => {
-						const newCatches = [...catches, c];
+						const newCatches = [c, ...catches];
 						setCatches(newCatches);
 						setAdd(false);
 					})
