@@ -296,7 +296,7 @@ const CatchForm = ({
 							name="sampled_weight"
 							min="1"
 							max="99999999"
-							value={thisCatch.sampled_weight}
+							value={thisCatch.sampled_weight || ""}
 							onChange={handleChangeSampledWeight(thisCatch.id)}
 						/>
 					</label>
