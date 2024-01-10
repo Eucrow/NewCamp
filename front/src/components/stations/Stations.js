@@ -360,7 +360,7 @@ const Stations = () => {
 					setSamplers(samplers);
 				});
 		}
-	}, []);
+	}, [selectedSurveyContext.selectedSurveyId]);
 
 	const renderContent = () => {
 		var content = "";
