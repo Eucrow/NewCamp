@@ -23,7 +23,7 @@ const CatchButtonBar = ({
 
 	if (catchStatus === "add") {
 		ButtonBar = (
-			<div className="form__cell form__cell--right">
+			<div className="catches__table__buttonBar">
 				<UiButtonSave buttonText={"Save"} />
 				<button
 					onClick={(e) => {
@@ -39,7 +39,7 @@ const CatchButtonBar = ({
 
 	if (catchStatus === "view") {
 		ButtonBar = (
-			<div className="form__cell form__cell--right">
+			<div className="catches__table__buttonBar">
 				<UiButtonStatusHandle handleMethod={editCatchStatus} buttonText={"Edit species"} newStatus={"edit"}>
 					<UiIconEdit />
 				</UiButtonStatusHandle>
@@ -64,7 +64,7 @@ const CatchButtonBar = ({
 
 	if (catchStatus === "edit") {
 		ButtonBar = (
-			<div className="form__cell form__cell--right">
+			<div className="catches__table__buttonBar">
 				<UiButtonSave buttonText={"Save"} />
 
 				<button
