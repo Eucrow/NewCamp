@@ -75,12 +75,14 @@ const CatchForm = ({
 						min="1"
 						max="5"
 						onChange={(e) => setGroup(e.target.value)}
+						aria-label="Group"
 					/>
 					<select
 						className="catches__table__cell catches__table--species"
 						id="sp_code"
 						name="sp_code"
 						onChange={(e) => setSp_id(e.target.value)}
+						aria-label="Species"
 					>
 						<option>Select species...</option>
 						{globalContext.species.map((s) => {
@@ -104,6 +106,7 @@ const CatchForm = ({
 						min="1"
 						max="99"
 						onChange={(e) => setCategory(e.target.value)}
+						aria-label="Category"
 					/>
 					<input
 						value={weight}
@@ -114,6 +117,7 @@ const CatchForm = ({
 						min="1"
 						max="99999999"
 						onChange={(e) => setWeight(e.target.value)}
+						aria-label="Weight"
 					/>
 					<input
 						className="catches__table__cell catches__table--sampledWeight"
@@ -123,6 +127,7 @@ const CatchForm = ({
 						min="1"
 						max="99999999"
 						onChange={(e) => setSampled_weight(e.target.value)}
+						aria-label="Sampled weight"
 					/>
 					<CatchButtonBar catchStatus={"add"} handleChangeAdd={handleChangeAdd} />
 				</form>
@@ -139,12 +144,14 @@ const CatchForm = ({
 						max="5"
 						disabled
 						value={thisCatch.group}
+						aria-label="Group"
 					/>
 					<select
 						className="catches__table__cell catches__table--species"
 						id="sp_code"
 						name="sp_code"
 						disabled
+						aria-label="Species"
 					>
 						<option key={thisCatch.sp_id}>{thisCatch.sp_name}</option>
 					</select>
@@ -157,6 +164,7 @@ const CatchForm = ({
 						max="99"
 						disabled
 						value={thisCatch.category}
+						aria-label="Category"
 					/>
 					<input
 						className="catches__table__cell catches__table--weight"
@@ -167,6 +175,7 @@ const CatchForm = ({
 						max="99999999"
 						disabled
 						value={thisCatch.weight}
+						aria-label="Weight"
 					/>
 					<input
 						className="catches__table__cell catches__table--sampledWeight input__noSpinner"
@@ -177,6 +186,7 @@ const CatchForm = ({
 						min="1"
 						max="99999999"
 						value={thisCatch.sampled_weight || ""}
+						aria-label="Sampled weight"
 					/>
 					<CatchButtonBar
 						className=""
@@ -210,6 +220,7 @@ const CatchForm = ({
 						max="5"
 						value={thisCatch.group}
 						onChange={handleChangeGroup(thisCatch.id)}
+						aria-label="Group"
 					/>
 					<select
 						className="catches__table__cell catches__table--species"
@@ -217,6 +228,7 @@ const CatchForm = ({
 						name="sp_code"
 						value={thisCatch.sp_id + "--" + thisCatch.sp_code + "--" + thisCatch.sp_name}
 						onChange={handleChangeSpecies(thisCatch.id)}
+						aria-label="Species"
 					>
 						{globalContext.species
 							.filter((s) => s.group === parseInt(thisCatch.group))
@@ -238,6 +250,7 @@ const CatchForm = ({
 						max="99"
 						value={thisCatch.category}
 						onChange={handleChangeCategory(thisCatch.id)}
+						aria-label="Category"
 					/>
 					<input
 						className="catches__table__cell catches__table--weight"
@@ -248,6 +261,7 @@ const CatchForm = ({
 						max="99999999"
 						value={thisCatch.weight}
 						onChange={handleChangeWeight(thisCatch.id)}
+						aria-label="Weight"
 					/>
 					<input
 						className="catches__table__cell catches__table--sampledWeight"
@@ -258,6 +272,7 @@ const CatchForm = ({
 						max="99999999"
 						value={thisCatch.sampled_weight || ""}
 						onChange={handleChangeSampledWeight(thisCatch.id)}
+						aria-label="Sampled weight"
 					/>
 					<CatchButtonBar
 						catchStatus={catchStatus}
