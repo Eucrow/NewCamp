@@ -59,93 +59,77 @@ const CatchForm = ({
 		if (catchStatus === "add") {
 			return (
 				<form
+					className="catches__table__row"
 					onSubmit={(e) => {
 						e.preventDefault();
 						createCatch(new_catch);
 					}}
 				>
-					<label className="catches__table__cell">
-						Group:
-						<input
-							value={group}
-							style={{ width: 5 + "ch" }}
-							autoFocus
-							type="number"
-							id="group"
-							name="group"
-							min="1"
-							max="5"
-							onChange={(e) => setGroup(e.target.value)}
-						/>
-					</label>
-					<label className="catches__table__cell">
-						Species:
-						<select
-							style={{ width: 30 + "ch" }}
-							id="sp_code"
-							name="sp_code"
-							onChange={(e) => setSp_id(e.target.value)}
-						>
-							<option>Select species...</option>
-							{globalContext.species.map((s) => {
-								if (s.group === parseInt(group)) {
-									return (
-										<option value={s.id} key={s.id}>
-											{s.sp_code}-{s.sp_name}
-										</option>
-									);
-								} else {
-									return null;
-								}
-							})}
-						</select>
-					</label>
-					<label className="catches__table__cell">
-						Category:
-						<input
-							value={category}
-							style={{ width: 4 + "ch" }}
-							type="number"
-							id="category"
-							name="category"
-							min="1"
-							max="99"
-							onChange={(e) => setCategory(e.target.value)}
-						/>
-					</label>
-					<label className="catches__table__cell">
-						Weight(g.):
-						<input
-							value={weight}
-							style={{ width: 8 + "ch" }}
-							type="number"
-							id="weight"
-							name="weight"
-							min="1"
-							max="99999999"
-							onChange={(e) => setWeight(e.target.value)}
-						/>
-					</label>
-					<label className="catches__table__cell">
-						Sampled weight(g.):
-						<input
-							style={{ width: 8 + "ch" }}
-							type="number"
-							id="sampled_weight"
-							name="sampled_weight"
-							min="1"
-							max="99999999"
-							onChange={(e) => setSampled_weight(e.target.value)}
-						/>
-					</label>
+					<input
+						value={group}
+						className="catches__table__cell catches__table--group"
+						autoFocus
+						type="number"
+						id="group"
+						name="group"
+						min="1"
+						max="5"
+						onChange={(e) => setGroup(e.target.value)}
+					/>
+					<select
+						className="catches__table__cell catches__table--species"
+						id="sp_code"
+						name="sp_code"
+						onChange={(e) => setSp_id(e.target.value)}
+					>
+						<option>Select species...</option>
+						{globalContext.species.map((s) => {
+							if (s.group === parseInt(group)) {
+								return (
+									<option value={s.id} key={s.id}>
+										{s.sp_code}-{s.sp_name}
+									</option>
+								);
+							} else {
+								return null;
+							}
+						})}
+					</select>
+					<input
+						value={category}
+						className="catches__table__cell catches__table--category"
+						type="number"
+						id="category"
+						name="category"
+						min="1"
+						max="99"
+						onChange={(e) => setCategory(e.target.value)}
+					/>
+					<input
+						value={weight}
+						className="catches__table__cell catches__table--weight"
+						type="number"
+						id="weight"
+						name="weight"
+						min="1"
+						max="99999999"
+						onChange={(e) => setWeight(e.target.value)}
+					/>
+					<input
+						className="catches__table__cell catches__table--sampledWeight"
+						type="number"
+						id="sampled_weight"
+						name="sampled_weight"
+						min="1"
+						max="99999999"
+						onChange={(e) => setSampled_weight(e.target.value)}
+					/>
 					<CatchButtonBar catchStatus={"add"} handleChangeAdd={handleChangeAdd} />
 				</form>
 			);
 		} else if (catchStatus === "view" || catchStatus === "") {
 			return (
 				<form className="catches__table__row">
-					{/* <label className="catches__table__cell">
-						Group: */}
 					<input
 						className="catches__table__cell catches__table--group"
 						type="number"
@@ -156,9 +140,6 @@ const CatchForm = ({
 						disabled
 						value={thisCatch.group}
 					/>
-					{/* </label> */}
-					{/* <label className="catches__table__cell"> */}
-					{/* Species: */}
 					<select
 						className="catches__table__cell catches__table--species"
 						id="sp_code"
@@ -167,9 +148,6 @@ const CatchForm = ({
 					>
 						<option key={thisCatch.sp_id}>{thisCatch.sp_name}</option>
 					</select>
-					{/* </label> */}
-					{/* <label className="catches__table__cell"> */}
-					{/* Category: */}
 					<input
 						className="catches__table__cell catches__table--category"
 						type="number"
@@ -180,9 +158,6 @@ const CatchForm = ({
 						disabled
 						value={thisCatch.category}
 					/>
-					{/* </label> */}
-					{/* <label className="catches__table__cell"> */}
-					{/* Weight(g.): */}
 					<input
 						className="catches__table__cell catches__table--weight"
 						type="number"
@@ -193,10 +168,6 @@ const CatchForm = ({
 						disabled
 						value={thisCatch.weight}
 					/>
-					{/* </label> */}
-
-					{/* <label className="catches__table__cell"> */}
-					{/* Sampled weight(g.): */}
 					<input
 						className="catches__table__cell catches__table--sampledWeight input__noSpinner"
 						disabled
@@ -207,7 +178,6 @@ const CatchForm = ({
 						max="99999999"
 						value={thisCatch.sampled_weight || ""}
 					/>
-					{/* </label> */}
 					<CatchButtonBar
 						className=""
 						catchId={thisCatch.id}
@@ -230,10 +200,7 @@ const CatchForm = ({
 					}}
 				>
 					<input type="hidden" id="haul_id" name="haul_id" value={thisCatch.haul_id} />
-					{/* <label className="catches__table__cell"> */}
-					{/* Group: */}
 					<input
-						// style={{ width: 5 + "ch" }}
 						className="catches__table__cell catches__table--group"
 						type="number"
 						id="group"
@@ -244,11 +211,7 @@ const CatchForm = ({
 						value={thisCatch.group}
 						onChange={handleChangeGroup(thisCatch.id)}
 					/>
-					{/* </label> */}
-					{/* <label className="catches__table__cell"> */}
-					{/* Species: */}
 					<select
-						// style={{ width: 30 + "ch" }}
 						className="catches__table__cell catches__table--species"
 						id="sp_code"
 						name="sp_code"
@@ -266,11 +229,7 @@ const CatchForm = ({
 								</option>
 							))}
 					</select>
-					{/* </label> */}
-					{/* <label className="catches__table__cell"> */}
-					{/* Category: */}
 					<input
-						// style={{ width: 4 + "ch" }}
 						className="catches__table__cell catches__table--category"
 						type="number"
 						id="category"
@@ -280,11 +239,7 @@ const CatchForm = ({
 						value={thisCatch.category}
 						onChange={handleChangeCategory(thisCatch.id)}
 					/>
-					{/* </label> */}
-					{/* <label className="catches__table__cell"> */}
-					{/* Weight(g.): */}
 					<input
-						// style={{ width: 8 + "ch" }}
 						className="catches__table__cell catches__table--weight"
 						type="number"
 						id="weight"
@@ -294,11 +249,7 @@ const CatchForm = ({
 						value={thisCatch.weight}
 						onChange={handleChangeWeight(thisCatch.id)}
 					/>
-					{/* </label> */}
-					{/* <label className="catches__table__cell"> */}
-					{/* Sampled weight(g.): */}
 					<input
-						// style={{ width: 8 + "ch" }}
 						className="catches__table__cell catches__table--sampledWeight"
 						type="number"
 						id="sampled_weight"
@@ -308,7 +259,6 @@ const CatchForm = ({
 						value={thisCatch.sampled_weight || ""}
 						onChange={handleChangeSampledWeight(thisCatch.id)}
 					/>
-					{/* </label> */}
 					<CatchButtonBar
 						catchStatus={catchStatus}
 						editCatchStatus={editCatchStatus}

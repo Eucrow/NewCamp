@@ -274,9 +274,6 @@ const Catches = ({ haul_id }) => {
 				<legend>Fauna list</legend>
 
 				<div className="catches__table">
-					{add === true ? (
-						<Catch thisCatchStatus="add" createCatch={createCatch} handleChangeAdd={setAdd} />
-					) : null}
 					{
 						<div className="catches__table__row catches__table__header">
 							<div className="catches__table__cell catches__table__header--group">Group</div>
@@ -291,6 +288,9 @@ const Catches = ({ haul_id }) => {
 							</div>
 						</div>
 					}
+					{add === true ? (
+						<Catch thisCatchStatus="add" createCatch={createCatch} handleChangeAdd={setAdd} />
+					) : null}
 					{catches.map((c) => {
 						return (
 							<Catch
