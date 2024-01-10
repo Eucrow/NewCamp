@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 
 import Sexes from "../sexes/Sexes.js";
 import CatchForm from "./CatchForm.js";
@@ -56,7 +56,7 @@ const Catch = ({
 			);
 		} else if (catchStatus === "view") {
 			return (
-				<div className="form__row form--wide catch">
+				<Fragment>
 					<CatchForm
 						catchStatus={catchStatus}
 						thisCatch={thisCatch}
@@ -72,26 +72,24 @@ const Catch = ({
 						increment={thisCatch.increment}
 						viewSexes={viewSexes}
 					/>
-				</div>
+				</Fragment>
 			);
 		} else if (catchStatus === "edit") {
 			return (
-				<div className="form__row">
-					<CatchForm
-						catchStatus={catchStatus}
-						thisCatch={thisCatch}
-						handleChangeGroup={handleChangeGroup}
-						handleChangeSpecies={handleChangeSpecies}
-						handleChangeCategory={handleChangeCategory}
-						handleChangeWeight={handleChangeWeight}
-						handleChangeSampledWeight={handleChangeSampledWeight}
-						updateCatch={updateCatch}
-						editCatchStatus={setCatchStatus}
-						catchId={thisCatch.id}
-						viewSexes={viewSexes}
-						handleCancel={handleCancel}
-					/>
-				</div>
+				<CatchForm
+					catchStatus={catchStatus}
+					thisCatch={thisCatch}
+					handleChangeGroup={handleChangeGroup}
+					handleChangeSpecies={handleChangeSpecies}
+					handleChangeCategory={handleChangeCategory}
+					handleChangeWeight={handleChangeWeight}
+					handleChangeSampledWeight={handleChangeSampledWeight}
+					updateCatch={updateCatch}
+					editCatchStatus={setCatchStatus}
+					catchId={thisCatch.id}
+					viewSexes={viewSexes}
+					handleCancel={handleCancel}
+				/>
 			);
 		}
 	};

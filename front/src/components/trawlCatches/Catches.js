@@ -270,28 +270,44 @@ const Catches = ({ haul_id }) => {
 
 	const renderContent = () => {
 		return (
-			<fieldset className="wrapper form__row form--wide catchesList">
+			<fieldset className="wrapper catchesList">
 				<legend>Fauna list</legend>
-				<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
-				{add === true ? (
-					<Catch thisCatchStatus="add" createCatch={createCatch} handleChangeAdd={setAdd} />
-				) : null}
-				{catches.map((c) => {
-					return (
-						<Catch
-							key={c.id}
-							thisCatch={c}
-							handleChangeSampledWeight={handleChangeSampledWeight}
-							handleChangeGroup={handleChangeGroup}
-							handleChangeSpecies={handleChangeSpecies}
-							handleChangeCategory={handleChangeCategory}
-							handleChangeWeight={handleChangeWeight}
-							handleCancelEditCatch={handleCancelEditCatch}
-							updateCatch={updateCatch}
-							deleteCatch={deleteCatch}
-						/>
-					);
-				})}
+
+				<div className="catches__table">
+					{
+						<div className="catches__table__row catches__table__header">
+							<div className="catches__table__cell catches__table__header--group">Group</div>
+							<div className="catches__table__cell catches__table__header--species">Species</div>
+							<div className="catches__table__cell catches__table__header--category">Category</div>
+							<div className="catches__table__cell catches__table__header--weight">Weight (g.)</div>
+							<div className="catches__table__cell catches__table__header--sampledWeight">
+								Sampled weight (g.)
+							</div>
+							<div className="catches__table__cell catches__table__header__buttonBar">
+								<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
+							</div>
+						</div>
+					}
+					{add === true ? (
+						<Catch thisCatchStatus="add" createCatch={createCatch} handleChangeAdd={setAdd} />
+					) : null}
+					{catches.map((c) => {
+						return (
+							<Catch
+								key={c.id}
+								thisCatch={c}
+								handleChangeSampledWeight={handleChangeSampledWeight}
+								handleChangeGroup={handleChangeGroup}
+								handleChangeSpecies={handleChangeSpecies}
+								handleChangeCategory={handleChangeCategory}
+								handleChangeWeight={handleChangeWeight}
+								handleCancelEditCatch={handleCancelEditCatch}
+								updateCatch={updateCatch}
+								deleteCatch={deleteCatch}
+							/>
+						);
+					})}
+				</div>
 			</fieldset>
 		);
 	};
