@@ -67,7 +67,7 @@ const CatchForm = ({
 				>
 					<input
 						value={group}
-						className="catches__table__cell catches__table--group"
+						className="catches__table__cell catches__table__group"
 						autoFocus
 						type="number"
 						id="group"
@@ -78,7 +78,7 @@ const CatchForm = ({
 						aria-label="Group"
 					/>
 					<select
-						className="catches__table__cell catches__table--species"
+						className="catches__table__cell catches__table__species"
 						id="sp_code"
 						name="sp_code"
 						onChange={(e) => setSp_id(e.target.value)}
@@ -99,7 +99,7 @@ const CatchForm = ({
 					</select>
 					<input
 						value={category}
-						className="catches__table__cell catches__table--category"
+						className="catches__table__cell catches__table__category"
 						type="number"
 						id="category"
 						name="category"
@@ -110,7 +110,7 @@ const CatchForm = ({
 					/>
 					<input
 						value={weight}
-						className="catches__table__cell catches__table--weight"
+						className="catches__table__cell catches__table__weight"
 						type="number"
 						id="weight"
 						name="weight"
@@ -120,7 +120,7 @@ const CatchForm = ({
 						aria-label="Weight"
 					/>
 					<input
-						className="catches__table__cell catches__table--sampledWeight"
+						className="catches__table__cell catches__table__sampledWeight"
 						type="number"
 						id="sampled_weight"
 						name="sampled_weight"
@@ -136,7 +136,7 @@ const CatchForm = ({
 			return (
 				<form className="catches__table__row">
 					<input
-						className="catches__table__cell catches__table--group"
+						className="catches__table__cell catches__table__group"
 						type="number"
 						id="group"
 						name="group"
@@ -147,7 +147,7 @@ const CatchForm = ({
 						aria-label="Group"
 					/>
 					<select
-						className="catches__table__cell catches__table--species"
+						className="catches__table__cell catches__table__species"
 						id="sp_code"
 						name="sp_code"
 						disabled
@@ -156,7 +156,7 @@ const CatchForm = ({
 						<option key={thisCatch.sp_id}>{thisCatch.sp_name}</option>
 					</select>
 					<input
-						className="catches__table__cell catches__table--category"
+						className="catches__table__cell catches__table__category"
 						type="number"
 						id="category"
 						name="category"
@@ -167,7 +167,7 @@ const CatchForm = ({
 						aria-label="Category"
 					/>
 					<input
-						className="catches__table__cell catches__table--weight"
+						className="catches__table__cell catches__table__weight"
 						type="number"
 						id="weight"
 						name="weight"
@@ -178,7 +178,7 @@ const CatchForm = ({
 						aria-label="Weight"
 					/>
 					<input
-						className="catches__table__cell catches__table--sampledWeight input__noSpinner"
+						className="catches__table__cell catches__table__sampledWeight input__noSpinner"
 						disabled
 						type="number"
 						id="sampled_weight"
@@ -211,7 +211,7 @@ const CatchForm = ({
 				>
 					<input type="hidden" id="haul_id" name="haul_id" value={thisCatch.haul_id} />
 					<input
-						className="catches__table__cell catches__table--group"
+						className="catches__table__cell catches__table__group"
 						type="number"
 						id="group"
 						name="group"
@@ -223,7 +223,7 @@ const CatchForm = ({
 						aria-label="Group"
 					/>
 					<select
-						className="catches__table__cell catches__table--species"
+						className="catches__table__cell catches__table__species"
 						id="sp_code"
 						name="sp_code"
 						value={thisCatch.sp_id + "--" + thisCatch.sp_code + "--" + thisCatch.sp_name}
@@ -242,7 +242,7 @@ const CatchForm = ({
 							))}
 					</select>
 					<input
-						className="catches__table__cell catches__table--category"
+						className="catches__table__cell catches__table__category"
 						type="number"
 						id="category"
 						name="category"
@@ -253,7 +253,7 @@ const CatchForm = ({
 						aria-label="Category"
 					/>
 					<input
-						className="catches__table__cell catches__table--weight"
+						className="catches__table__cell catches__table__weight"
 						type="number"
 						id="weight"
 						name="weight"
@@ -264,7 +264,7 @@ const CatchForm = ({
 						aria-label="Weight"
 					/>
 					<input
-						className="catches__table__cell catches__table--sampledWeight"
+						className="catches__table__cell catches__table__sampledWeight"
 						type="number"
 						id="sampled_weight"
 						name="sampled_weight"

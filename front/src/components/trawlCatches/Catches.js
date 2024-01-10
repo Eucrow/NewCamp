@@ -276,14 +276,14 @@ const Catches = ({ haul_id }) => {
 				<div className="catches__table">
 					{
 						<div className="catches__table__row catches__table__header">
-							<div className="catches__table__cell catches__table__header--group">Group</div>
-							<div className="catches__table__cell catches__table__header--species">Species</div>
-							<div className="catches__table__cell catches__table__header--category">Category</div>
-							<div className="catches__table__cell catches__table__header--weight">Weight (g.)</div>
-							<div className="catches__table__cell catches__table__header--sampledWeight">
+							<div className="catches__table__cell catches__table__group">Group</div>
+							<div className="catches__table__cell catches__table__species">Species</div>
+							<div className="catches__table__cell catches__table__category">Category</div>
+							<div className="catches__table__cell catches__table__weight">Weight (g.)</div>
+							<div className="catches__table__cell catches__table__sampledWeight">
 								Sampled weight (g.)
 							</div>
-							<div className="catches__table__cell catches__table__header__buttonBar">
+							<div className="catches__table__cell catches__table__buttonBar">
 								<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
 							</div>
 						</div>
