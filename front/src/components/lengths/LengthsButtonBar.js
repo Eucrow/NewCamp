@@ -37,6 +37,7 @@ const LengthsButtonBar = () => {
 				<button
 					className="buttonsWrapper__button"
 					type="button"
+					disabled={!lengthsContext.validLengths}
 					onClick={(e) => {
 						lengthsContext.saveOrUpdateLengths(e, lengthsContext.lengths);
 						lengthsContext.removeZeroTails(lengthsContext.lengths);

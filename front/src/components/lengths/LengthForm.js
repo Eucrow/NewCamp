@@ -15,8 +15,10 @@ const LengthForm = ({ l, idx }) => {
 	useEffect(() => {
 		if (l.is_valid === false) {
 			lengthRef.current.setCustomValidity("This length already exists.");
+			lengthsContext.setValidLengths(false);
 		} else {
 			lengthRef.current.setCustomValidity("");
+			lengthsContext.setValidLengths(true);
 		}
 	}, [l]);
 

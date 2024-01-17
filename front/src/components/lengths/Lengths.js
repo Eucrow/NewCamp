@@ -28,6 +28,8 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 
 	const [responseError, setResponseError] = useState("none");
 
+	const [validLengths, setValidLengths] = useState(true);
+
 	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/" + sexId;
 
 	const getUnit = (u) => {
@@ -179,7 +181,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	};
 
 	/**
-	 * Remove useless elements of lengths array.
+	 * Remove useless elements of lengths array and maintain only lenght and number of individuals.
 	 * @param {array} lengths to clean.
 	 */
 	const removeUselessElementsLengths = (lengths) => {
@@ -274,10 +276,9 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	};
 
 	/**
-	 * Save or Update lengths. Check if exists duplicated lengths in the array. If already exists
-	 * lengths for this sex, delete it first and save the new lengths. This is done in that way
-	 * because we stored all the lenghts of a category at the same time and not one by one in real time.
-	 * TODO: make the length validation in the form, and not here.
+	 * Save or Update lengths. If already exists lengths for this sex, delete it all first and save the new lengths.
+	 * This is done in that way because we stored all the lenghts of a category at the same time and not one by one in
+	 * real time.
 	 * @param {event} e
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
 	 */
@@ -286,51 +287,36 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 
 		orderLengths();
 
-		// Firstly, check if exists duplicated lengths
-		// TODO: check this in validation form
-		if (checkForLengthsDuplicated(lengths) === true) {
-			setResponseError("Duplicated lengths!");
-		} else {
-			getLengths()
-				.then((lengthts_in_database) => {
-					lengths = removeZeroNumberIndividuals(lengths);
-					lengths = removeUselessElementsLengths(lengths);
-					lengths = transformUnitsToMm(lengths);
-					if (Object.keys(lengthts_in_database).length === 0) {
-						// if there are not lengths already saved, save the new lengths:
-						saveLengths(lengths).catch((error) => console.log(error));
-						setBackupLengths(lengths);
-					} else {
-						// if there are lengths, first delete it, and then save the updated lengths.
-						deleteLengths()
-							.then(() => {
-								saveLengths(lengths);
-								setBackupLengths(lengths);
-							})
-							.catch((error) => console.log(error));
-					}
-				})
+		getLengths()
+			.then((lengthts_in_database) => {
+				lengths = removeZeroNumberIndividuals(lengths);
+				lengths = removeUselessElementsLengths(lengths);
+				lengths = transformUnitsToMm(lengths);
+				if (Object.keys(lengthts_in_database).length === 0) {
+					// if there are not lengths already saved, save the new lengths:
+					saveLengths(lengths)
+						.then((lengths) => {
+							setLengths(fillLengths(lengths));
+						})
+						.catch((error) => console.log(error));
+					setBackupLengths(lengths);
+				} else {
+					// if there are lengths, first delete it, and then save the updated lengths.
+					deleteLengths()
+						.then(() => {
+							saveLengths(lengths).then((lengths) => {
+								setLengths(fillLengths(lengths));
+							});
+							setBackupLengths(lengths);
+						})
+						.catch((error) => console.log(error));
+				}
+			})
 
-				.then(() => {
-					setLengthsStatus("view");
-				})
-				.catch((error) => console.log("Error"));
-		}
-	};
-
-	/**
-	 * Check if the lengths array contains duplicated lengths.
-	 * @param {array} lengths Array of dictionaries with lengths to save or update.
-	 * @returns True if there are duplicates.
-	 */
-	const checkForLengthsDuplicated = (lengths) => {
-		var vals = [];
-
-		for (var i = 0; i < lengths.length; i++) {
-			vals.push(lengths[i].length);
-		}
-
-		return new Set(vals).size !== lengths.length;
+			.then(() => {
+				setLengthsStatus("view");
+			})
+			.catch((error) => console.log("Error"));
 	};
 
 	/**
@@ -463,6 +449,8 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 					deleteLength: deleteLength,
 					addLength: addLength,
 					handleShowLengths: handleShowLengths,
+					validLengths: validLengths,
+					setValidLengths: setValidLengths,
 				}}
 			>
 				<Fragment>{partialContent()}</Fragment>
