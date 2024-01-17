@@ -4,13 +4,17 @@ import LengthsContext from "../../contexts/LengthsContext";
 import LengthsForm from "./LengthsForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
-import UiIconDelete from "../ui/UiIconDelete.js";
 
 /**
- * Lengths component.
- * @param {number} sexId
- * @param {string} lengths Posible values: "view", "edit", "hide".
- * @returns
+ * Manages and displays lengths data.
+ * @component
+ * @param {number} sexId The ID of the sex for which lengths data should be fetched.
+ * @param {string} lengthsStatus The current status of lengths data. Possible values are "view", "edit", and "hide".
+ * @param {number} unit The unit of measurement for the lengths. 1 represents cm, 2 represents mm.
+ * @param {number} increment The increment value for lengths.
+ * @param {Function} setLengthsStatus A function to set the lengthsStatus.
+ *
+ * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
 const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsStatus }) => {
 	const [backupLengths, setBackupLengths] = useState([
@@ -24,7 +28,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 
 	const [responseError, setResponseError] = useState("none");
 
-	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
+	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/" + sexId;
 
 	const getUnit = (u) => {
 		if (Number(u) === 1) {
@@ -44,12 +48,6 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 		}
 	}, [responseError]);
 
-	// useEffect(() => {
-	// 	handleShowLengths();
-
-	// 	setMeasureUnit(unit);
-	// }, [lengthsStatus]);
-
 	useEffect(() => {
 		handleShowLengths();
 
@@ -61,9 +59,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	 * @returns JSON with lengths.
 	 */
 	const getLengths = async () => {
-		const api = apiLengths + sexId;
-
-		const response = await fetch(api);
+		const response = await fetch(apiLengths);
 		if (response.status > 400) {
 			setResponseError("Something went wrong! (getLengths)");
 		}
@@ -95,9 +91,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	 * @returns JSON
 	 */
 	const deleteLengths = async () => {
-		const api = apiLengths + sexId;
-
-		const response = await fetch(api, {
+		const response = await fetch(apiLengths, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
@@ -262,10 +256,8 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	 * @return JSON response or error.
 	 */
 	const saveLengths = async (lengths) => {
-		const api = apiLengths + sexId;
-
 		try {
-			const response = await fetch(api, {
+			const response = await fetch(apiLengths, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

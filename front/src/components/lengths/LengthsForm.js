@@ -5,7 +5,10 @@ import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsContext from "../../contexts/LengthsContext";
 
 /**
- * Lengths form.
+ * Renders a form for displaying and editing lengths data.
+ * @component
+ *
+ * @returns {JSX.Element} A JSX element that renders the lengths form.
  */
 const LengthsForm = () => {
 	const lengthsContext = useContext(LengthsContext);
