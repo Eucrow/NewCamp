@@ -73,9 +73,7 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			body: JSON.stringify(data),
 		})
 			.then(() => {
-				const newSexes = sexes.filter((s) => {
-					if (sexId !== s.id) return s;
-				});
+				const newSexes = sexes.filter((s) => sexId !== s.id);
 				setSexes(newSexes);
 			})
 			.catch((error) => alert(error));

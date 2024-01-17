@@ -87,11 +87,12 @@ export default function App() {
 									Surveys
 								</Link>
 							</li>
+							<li className="headNav__item" role="none">
+								<Link to="/Trawls">Trawls</Link>
+							</li>
 						</ul>
 						{/* <Link to="/">Home</Link>- -*/}
-						{/* <Link to="/Strata">Strata</Link>-
-						- -- --
-						<Link to="/Trawls">Trawls</Link> */}
+						{/* <Link to="/Strata">Strata</Link> */}
 					</nav>
 					{/* <main>
 					

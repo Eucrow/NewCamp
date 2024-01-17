@@ -3,10 +3,10 @@ import React from "react";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
-import UiIconDetailShow from "../ui/UiIconDetailShow";
-import UiIconDetailHide from "../ui/UiIconDetailHide";
+// import UiIconDetailShow from "../ui/UiIconDetailShow";
+// import UiIconDetailHide from "../ui/UiIconDetailHide";
 import UiIconEdit from "../ui/UiIconEdit";
-import UiIconBiometrics from "../ui/UiIconCatches";
+// import UiIconBiometrics from "../ui/UiIconCatches";
 
 /**
  * HaulButtonBar component.

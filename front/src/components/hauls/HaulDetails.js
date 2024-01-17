@@ -16,8 +16,8 @@ import HydrographyFormEdit from "./edit/HydrographyFormEdit";
 import UiButtonSave from "../ui/UiButtonSave";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
-import UiIconDetailHide from "../ui/UiIconDetailHide";
-import UiIconEdit from "../ui/UiIconEdit";
+// import UiIconDetailHide from "../ui/UiIconDetailHide";
+// import UiIconEdit from "../ui/UiIconEdit";
 
 // const useRenderCount = () => {
 // 	const renderCount = useRef(0);
@@ -47,7 +47,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 	const [edit, setEdit] = useState(false);
 
-	const [fecthError, setFetchError] = useState("");
+	const [, setFetchError] = useState("");
 
 	const apiHydrographyPartial = "http://127.0.0.1:8000/api/1.0/hydrography/";
 	const apiMeteorologyPartial = "http://127.0.0.1:8000/api/1.0/meteorology/";

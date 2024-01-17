@@ -114,7 +114,7 @@ class Ships extends Component {
 			body: JSON.stringify(updatedShip[0]),
 		})
 			.then((response) => {
-				if (response.status == 200) {
+				if (response.status === 200) {
 					this.handleEdit(null);
 				} else {
 					alert("Something is wrong.");
