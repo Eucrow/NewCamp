@@ -52,6 +52,7 @@ const LengthForm = ({ l, idx }) => {
 						<input
 							type="number"
 							name="length"
+							step={lengthsContext.increment}
 							autoFocus
 							min="0"
 							max="9999"

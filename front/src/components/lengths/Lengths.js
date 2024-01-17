@@ -460,6 +460,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 				value={{
 					lengths: lengths,
 					measureUnit: measureUnit,
+					increment: increment,
 					lengthsStatus: lengthsStatus,
 					setLengthsStatus: setLengthsStatus,
 					saveOrUpdateLengths: saveOrUpdateLengths,
