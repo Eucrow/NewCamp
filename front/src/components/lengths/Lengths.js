@@ -6,7 +6,7 @@ import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
 
 /**
- * Manages and displays lengths data.
+ * Manages and displays lengths data of a sex.
  * @component
  * @param {number} sexId The ID of the sex for which lengths data should be fetched.
  * @param {string} lengthsStatus The current status of lengths data. Possible values are "view", "edit", and "hide".
@@ -275,7 +275,8 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 
 	/**
 	 * Save or Update lengths. Check if exists duplicated lengths in the array. If already exists
-	 * lengths for this sex, delete it first and save the new lengths.
+	 * lengths for this sex, delete it first and save the new lengths. This is done in that way
+	 * because we stored all the lenghts of a category at the same time and not one by one in real time.
 	 * TODO: make the length validation in the form, and not here.
 	 * @param {event} e
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
@@ -458,10 +459,10 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 					saveOrUpdateLengths: saveOrUpdateLengths,
 					removeZeroTails: removeZeroTails,
 					editLength: editLength,
+					cancelEditLengths: cancelEditLengths,
 					deleteLength: deleteLength,
 					addLength: addLength,
 					handleShowLengths: handleShowLengths,
-					cancelEditLengths: cancelEditLengths,
 				}}
 			>
 				<Fragment>{partialContent()}</Fragment>

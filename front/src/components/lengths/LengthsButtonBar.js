@@ -44,11 +44,13 @@ const LengthsButtonBar = () => {
 				>
 					Save
 				</button>
-				<UiButtonStatusHandle
-					buttonText={"Cancel"}
-					handleMethod={lengthsContext.setLengthsStatus}
-					newStatus={"view"}
-				/>
+				<button
+					onClick={() => {
+						lengthsContext.cancelEditLengths();
+					}}
+				>
+					Cancel
+				</button>
 			</div>
 		);
 	}
