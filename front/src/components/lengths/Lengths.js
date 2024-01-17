@@ -4,6 +4,7 @@ import LengthsContext from "../../contexts/LengthsContext";
 import LengthsForm from "./LengthsForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
+import UiIconDelete from "../ui/UiIconDelete.js";
 
 /**
  * Lengths component.
@@ -26,9 +27,9 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
 
 	const getUnit = (u) => {
-		if (u === 1) {
+		if (Number(u) === 1) {
 			return "cm";
-		} else if (u === 2) {
+		} else if (Number(u) === 2) {
 			return "mm";
 		} else {
 			return "no unit";
@@ -144,9 +145,9 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 
 		var newLenghts = [];
 
-		// to calculate the increment in lengths, in case the unit is cm
+		// to calculate the increment in lengths, in case the unit is cm (unit=1)
 		// simply multiply the increment by 10... TODO: Try to do it in a more global way.
-		var totalIncrement = 1;
+		var totalIncrement = increment;
 
 		if (unit === 1) {
 			totalIncrement = 10 * Number(increment);
@@ -347,7 +348,11 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	const createRangeLengths = (minLength, maxLength) => {
 		var newLengths = [];
 
-		for (var l = minLength; l <= maxLength; l++) {
+		if (Number(minLength) === 1) {
+			minLength = 0;
+		}
+
+		for (var l = Number(minLength); l <= Number(maxLength); l += Number(increment)) {
 			newLengths.push({
 				length: l,
 				number_individuals: "",
@@ -409,7 +414,10 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	 */
 	const addLength = (l, index) => {
 		let newLengths = [...lengths];
-		let newLength = Number(l) + 1;
+
+		// let newLength = Number(l) + 1;
+		let newLength = Number(l) + Number(increment);
+
 		newLengths.splice(index + 1, 0, {
 			length: newLength,
 			number_individuals: 0,
@@ -452,6 +460,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 				value={{
 					lengths: lengths,
 					measureUnit: measureUnit,
+					increment: increment,
 					lengthsStatus: lengthsStatus,
 					setLengthsStatus: setLengthsStatus,
 					saveOrUpdateLengths: saveOrUpdateLengths,

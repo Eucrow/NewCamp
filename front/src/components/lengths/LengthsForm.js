@@ -15,12 +15,8 @@ const LengthsForm = () => {
 			<form className="lengthsWrapper">
 				<div className="formLenghts__table">
 					<div className="formLengths__row ">
-						<div className="formLengths__cell formLengths__cell--header">
-							{lengthsContext.measureUnit}
-						</div>
-						<div className="formLengths__cell formLengths__cell--header">
-							number
-						</div>
+						<div className="formLengths__cell formLengths__cell--header">{lengthsContext.measureUnit}</div>
+						<div className="formLengths__cell formLengths__cell--header">number</div>
 						<div
 							className="formLengths__cell formLengths__cell--header formLengths--hidden"
 							aria-hidden="true"
@@ -35,7 +31,7 @@ const LengthsForm = () => {
 						</div>
 					</div>
 					{lengthsContext.lengths.map((l, idx) => {
-						return <LengthForm l={l} idx={idx} key={idx} />;
+						return <LengthForm l={l} idx={idx} key={idx} increment={lengthsContext.increment} />;
 					})}
 				</div>
 				<LengthsButtonBar />
