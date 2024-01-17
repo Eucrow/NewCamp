@@ -27,9 +27,9 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
 
 	const getUnit = (u) => {
-		if (u === 1) {
+		if (Number(u) === 1) {
 			return "cm";
-		} else if (u === 2) {
+		} else if (Number(u) === 2) {
 			return "mm";
 		} else {
 			return "no unit";
@@ -147,7 +147,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 
 		// to calculate the increment in lengths, in case the unit is cm (unit=1)
 		// simply multiply the increment by 10... TODO: Try to do it in a more global way.
-		var totalIncrement = 1;
+		var totalIncrement = increment;
 
 		if (unit === 1) {
 			totalIncrement = 10 * Number(increment);
