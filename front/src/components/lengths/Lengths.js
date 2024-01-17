@@ -4,6 +4,7 @@ import LengthsContext from "../../contexts/LengthsContext";
 import LengthsForm from "./LengthsForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
+import UiIconDelete from "../ui/UiIconDelete.js";
 
 /**
  * Lengths component.
@@ -347,7 +348,11 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	const createRangeLengths = (minLength, maxLength) => {
 		var newLengths = [];
 
-		for (var l = minLength; l <= maxLength; l++) {
+		if (Number(minLength) === 1) {
+			minLength = 0;
+		}
+
+		for (var l = Number(minLength); l <= Number(maxLength); l += Number(increment)) {
 			newLengths.push({
 				length: l,
 				number_individuals: "",
