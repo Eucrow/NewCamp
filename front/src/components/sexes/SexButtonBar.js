@@ -4,6 +4,8 @@ import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiIconEdit from "../ui/UiIconEdit";
+import UiIconDetailShow from "../ui/UiIconDetailShow";
+import UiIconDetailHide from "../ui/UiIconDetailHide";
 
 /**
  * Lengths button bar component.
@@ -34,25 +36,21 @@ const SexButtonBar = ({
 					confirmMessage={"Are you sure to remove this sex?"}
 				/>
 				{lengthsStatus === "view" ? (
-					<button
-						className="buttonsWrapper__button"
-						type="button"
-						onClick={() => {
-							setLengthsStatus("hide");
-						}}
+					<UiButtonStatusHandle
+						handleMethod={setLengthsStatus}
+						buttonText={"Hide Lengths"}
+						newStatus={"hide"}
 					>
-						Hide Lengths
-					</button>
+						<UiIconDetailHide />
+					</UiButtonStatusHandle>
 				) : (
-					<button
-						className="buttonsWrapper__button"
-						type="button"
-						onClick={() => {
-							setLengthsStatus("view");
-						}}
+					<UiButtonStatusHandle
+						handleMethod={setLengthsStatus}
+						buttonText={"Show Lengths"}
+						newStatus={"view"}
 					>
-						Show Lengths
-					</button>
+						<UiIconDetailShow />
+					</UiButtonStatusHandle>
 				)}
 			</div>
 		);

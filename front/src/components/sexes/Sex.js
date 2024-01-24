@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import SexButtonBar from "./SexButtonBar.js";
 import ComponentLengths from "../lengths/Lengths.js";
 
@@ -75,9 +75,9 @@ const Sex = ({
 
 	if (sexStatus === "view") {
 		content = (
-			<Fragment>
-				<form className="form__row form--wide buttonsWrapper">
-					<label className="form__cell sexes__sex">
+			<div className="sexWrapper">
+				<form>
+					<label className="form__cell">
 						Sex:
 						<select id={sexId} name={sexId} disabled>
 							<option value={thisSex} key={thisSex}>
@@ -85,7 +85,7 @@ const Sex = ({
 							</option>
 						</select>
 					</label>
-					<div className="form__cell buttonsWrapper">
+					<div className="form__cell ">
 						<SexButtonBar
 							sexId={sexId}
 							sexStatus={sexStatus}
@@ -104,75 +104,79 @@ const Sex = ({
 					increment={increment}
 					setLengthsStatus={setLengthsStatus}
 				/>
-			</Fragment>
+			</div>
 		);
 	} else if (sexStatus === "edit") {
 		content = (
-			<form
-				className="form__row form--wide buttonsWrapper"
-				onSubmit={(e) => {
-					updateSex(sexId, thisSex);
-					setSexStatus("view");
-				}}
-			>
-				<label className="form__cell sexes__sex">
-					Sex:
-					<select
-						onChange={(e) => {
-							setThisSex(e.target.value);
-							validateSex(e);
-						}}
-						id={sexId}
-						autoFocus
-						name={sexId}
-						value={thisSex}
-					>
-						<option value="3">Undetermined</option>
-						<option value="1">Male</option>
-						<option value="2">Female</option>
-					</select>
-				</label>
-				<div className="form__cell buttonsWrapper">
-					<SexButtonBar
-						sexId={sexId}
-						sexStatus={"edit"}
-						setSexStatus={setSexStatus}
-						deleteSex={deleteSex}
-						lengthsStatus={lengthsStatus}
-						setLengthsStatus={setLengthsStatus}
-						saveSexButtonStatus={validSex}
-						handleCancelEditSex={handleCancelEditSex}
-					/>
-				</div>
-			</form>
+			<div className="sexWrapper">
+				<form
+					className="buttonsWrapper"
+					onSubmit={(e) => {
+						updateSex(sexId, thisSex);
+						setSexStatus("view");
+					}}
+				>
+					<label className="form__cell">
+						Sex:
+						<select
+							onChange={(e) => {
+								setThisSex(e.target.value);
+								validateSex(e);
+							}}
+							id={sexId}
+							autoFocus
+							name={sexId}
+							value={thisSex}
+						>
+							<option value="3">Undetermined</option>
+							<option value="1">Male</option>
+							<option value="2">Female</option>
+						</select>
+					</label>
+					<div className="form__cell buttonsWrapper">
+						<SexButtonBar
+							sexId={sexId}
+							sexStatus={"edit"}
+							setSexStatus={setSexStatus}
+							deleteSex={deleteSex}
+							lengthsStatus={lengthsStatus}
+							setLengthsStatus={setLengthsStatus}
+							saveSexButtonStatus={validSex}
+							handleCancelEditSex={handleCancelEditSex}
+						/>
+					</div>
+				</form>
+			</div>
 		);
 	} else if (sexStatus === "add") {
 		content = (
-			<form
-				className="form__row form--wide buttonsWrapper"
-				onSubmit={(e) => {
-					createSex(e, thisSex, catchId);
-					setAddSex(false);
-				}}
-			>
-				<label className="form__cell sexes__sex">
-					Sex:
-					<select
-						autoFocus
-						onChange={(e) => {
-							setThisSex(e.target.value);
-							validateSex(e);
-						}}
-					>
-						<option></option>
-						<option value="3">Undetermined</option>
-						<option value="1">Male</option>
-						<option value="2">Female</option>
-					</select>
-				</label>
+			<div className="sexWrapper">
+				<form
+					className="form__row"
+					onSubmit={(e) => {
+						createSex(e, thisSex, catchId);
+						setAddSex(false);
+					}}
+				>
+					<label className="form__cell">
+						Sex:
+						<select
+							autoFocus
+							onChange={(e) => {
+								setThisSex(e.target.value);
+								validateSex(e);
+							}}
+						>
+							<option></option>
+							<option value="3">Undetermined</option>
+							<option value="1">Male</option>
+							<option value="2">Female</option>
+						</select>
+					</label>
 
-				<SexButtonBar sexStatus={"add"} setSexStatus={setSexStatus} setAddSex={setAddSex} />
-			</form>
+					<SexButtonBar sexStatus={"add"} setSexStatus={setSexStatus} setAddSex={setAddSex} />
+				</form>
+			</div>
 		);
 	}
 

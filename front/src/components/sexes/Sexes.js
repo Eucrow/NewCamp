@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Sex from "./Sex.js";
 import SexesButtonBar from "./SexesButtonBar";
@@ -99,42 +99,41 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			.catch((error) => console.log("Error"));
 	};
 
-	var content = (
-		<Fragment>
-			{viewSexes === true ? (
-				<div className="form__row sexesWrapper">
-					{sexes.map((s) => {
-						return (
-							<Sex
-								key={s.id}
-								sexId={s.id}
-								sex={s.sex}
-								catchId={catchId}
-								unit={unit}
-								increment={increment}
-								deleteSex={deleteSex}
-								sexesBackup={sexesBackup}
-								updateSex={updateSex}
-							/>
-						);
-					})}
-
-					{addSex === true ? (
-						<Sex
-							catchId={catchId}
-							thisSexStatus={"add"}
-							createSex={createSex}
-							setAddSex={setAddSex}
-							sexesBackup={sexesBackup}
-						/>
-					) : (
-						<SexesButtonBar sexStatus={"view"} setAddSex={setAddSex} />
-					)}
-				</div>
-			) : null}
-		</Fragment>
+	const renderSex = (s) => (
+		<Sex
+			key={s.id}
+			sexId={s.id}
+			sex={s.sex}
+			catchId={catchId}
+			unit={unit}
+			increment={increment}
+			deleteSex={deleteSex}
+			sexesBackup={sexesBackup}
+			updateSex={updateSex}
+		/>
 	);
 
+	const renderSexesButtonBar = () => {
+		return sexes.length >= 0 && sexes.length < 3 && <SexesButtonBar sexStatus={"view"} setAddSex={setAddSex} />;
+	};
+
+	var content = viewSexes && (
+		<div className="sexesWrapper">
+			{sexes.map(renderSex)}
+
+			{addSex ? (
+				<Sex
+					catchId={catchId}
+					thisSexStatus={"add"}
+					createSex={createSex}
+					setAddSex={setAddSex}
+					sexesBackup={sexesBackup}
+				/>
+			) : (
+				renderSexesButtonBar()
+			)}
+		</div>
+	);
 	return content;
 };
 
