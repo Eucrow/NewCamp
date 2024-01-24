@@ -27,7 +27,7 @@ const Sex = ({
 	updateSex,
 }) => {
 	const [thisSex, setThisSex] = useState(sex);
-	const [lengthsStatus, setLengthsStatus] = useState("hide");
+	const [lengthsStatus, setLengthsStatus] = useState("view");
 	const [sexStatus, setSexStatus] = useState(thisSexStatus || "view");
 	const [validSex, setValidSex] = useState(true);
 
