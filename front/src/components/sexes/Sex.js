@@ -73,6 +73,9 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 				</div>
 				<ComponentLengths
 					sexId={sexId}
+					sex={sex}
+					createSex={createSex}
+					catchId={catchId}
 					lengthsStatus={lengthsStatus}
 					unit={unit}
 					increment={increment}
@@ -86,13 +89,14 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 				<form
 					className="form__row"
 					onSubmit={(e) => {
-						createSex(e, thisSex, catchId);
+						// createSex(e, thisSex, catchId);
+						// createSex(e, sex, catchId);
 						setAddSex(false);
 					}}
 				>
 					<label className="form__cell">
-						Sex:
-						<select
+						Sex: {sexesAvailable[sex]}
+						{/* <select
 							autoFocus
 							onChange={(e) => {
 								setThisSex(e.target.value);
@@ -103,7 +107,7 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 							<option value="3">Undetermined</option>
 							<option value="1">Male</option>
 							<option value="2">Female</option>
-						</select>
+						</select> */}
 					</label>
 
 					<SexButtonBar sexStatus={"add"} setSexStatus={setSexStatus} setAddSex={setAddSex} />
@@ -113,7 +117,7 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 	} else {
 		content = (
 			<div className="sexWrapper">
-				<SexButtonBar setSexStatus={setSexStatus} />
+				<SexButtonBar setSexStatus={setSexStatus} sexesAvailable={sexesAvailable} sex={sex} />
 			</div>
 		);
 	}

@@ -95,27 +95,6 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			.catch((error) => console.log("Error"));
 	};
 
-	const renderSex = (sex) => {
-		// if (sex === undefined) {
-		// 	return <Sex catchId={catchId} createSex={createSex} sexesBackup={sexesBackup} />;
-		// } else {
-		return (
-			<Sex
-				key={sex.id}
-				thisSexStatus={"view"}
-				sexId={sex.id}
-				sex={sex.sex}
-				catchId={catchId}
-				unit={unit}
-				increment={increment}
-				deleteSex={deleteSex}
-				sexesBackup={sexesBackup}
-				updateSex={updateSex}
-			/>
-		);
-		// }
-	};
-
 	const renderSexes = (sexes) => {
 		if (sexes.length !== 0) {
 			let content = [];
@@ -127,12 +106,23 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			for (let i = 1; i <= 3; i++) {
 				var sex = sexes.find((s) => s.sex === i);
 				if (sex === undefined) {
-					sex = {
-						id: i - 1,
-						sex: i,
-					};
+					content.push(<Sex sex={i} catchId={catchId} createSex={createSex} sexesBackup={sexesBackup} />);
+				} else {
+					content.push(
+						<Sex
+							key={sex.id}
+							thisSexStatus={"view"}
+							sexId={sex.id}
+							sex={sex.sex}
+							catchId={catchId}
+							unit={unit}
+							increment={increment}
+							deleteSex={deleteSex}
+							sexesBackup={sexesBackup}
+							updateSex={updateSex}
+						/>
+					);
 				}
-				content.push(renderSex(sex));
 			}
 
 			return content;

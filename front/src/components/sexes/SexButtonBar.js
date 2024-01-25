@@ -19,6 +19,8 @@ const SexButtonBar = ({
 	setLengthsStatus,
 	setAddSex,
 	saveSexButtonStatus,
+	sexesAvailable,
+	sex,
 }) => {
 	var ButtonBar = null;
 
@@ -66,8 +68,13 @@ const SexButtonBar = ({
 						setSexStatus("add");
 					}}
 				>
-					Add sex
+					Add {sexesAvailable[sex]}
 				</button>
+				{/* <UiButtonStatusHandle
+					buttonText={"Add " + sexesAvailable.sex}
+					handleMethod={setSexStatus}
+					newStatus={"add"}
+				/> */}
 			</div>
 		);
 	}
