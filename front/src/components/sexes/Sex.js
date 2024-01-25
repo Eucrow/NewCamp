@@ -32,11 +32,6 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 		setSexStatus(thisSexStatus);
 	}, [sex, thisSexStatus]);
 
-	const handleCancelEditSex = (e) => {
-		setSexStatus("view");
-		setThisSex(sex);
-	};
-
 	/**
 	 * Validate if a sex already exists in the catch. In case it exists, thrown an error and
 	 * set validSex variable to false and viceversa.
@@ -62,15 +57,8 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 	if (sexStatus === "view") {
 		content = (
 			<div className="sexWrapper">
-				<form>
-					<label className="form__cell">
-						Sex:
-						<select id={sexId} name={sexId} disabled>
-							<option value={thisSex} key={thisSex}>
-								{sexesAvailable[thisSex]}
-							</option>
-						</select>
-					</label>
+				<div>
+					<div className="form__cell">{sexesAvailable[thisSex]}</div>
 					<div className="form__cell ">
 						<SexButtonBar
 							sexId={sexId}
@@ -82,7 +70,7 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 							setLengthsStatus={setLengthsStatus}
 						/>
 					</div>
-				</form>
+				</div>
 				<ComponentLengths
 					sexId={sexId}
 					lengthsStatus={lengthsStatus}
@@ -90,47 +78,6 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 					increment={increment}
 					setLengthsStatus={setLengthsStatus}
 				/>
-			</div>
-		);
-	} else if (sexStatus === "edit") {
-		content = (
-			<div className="sexWrapper">
-				<form
-					onSubmit={(e) => {
-						updateSex(sexId, thisSex);
-						setSexStatus("view");
-					}}
-				>
-					<label className="form__cell">
-						Sex:
-						<select
-							onChange={(e) => {
-								setThisSex(e.target.value);
-								validateSex(e);
-							}}
-							id={sexId}
-							autoFocus
-							name={sexId}
-							value={thisSex}
-						>
-							<option value="3">Undetermined</option>
-							<option value="1">Male</option>
-							<option value="2">Female</option>
-						</select>
-					</label>
-					<div className="form__cell buttonsWrapper">
-						<SexButtonBar
-							sexId={sexId}
-							sexStatus={"edit"}
-							setSexStatus={setSexStatus}
-							deleteSex={deleteSex}
-							lengthsStatus={lengthsStatus}
-							setLengthsStatus={setLengthsStatus}
-							saveSexButtonStatus={validSex}
-							handleCancelEditSex={handleCancelEditSex}
-						/>
-					</div>
-				</form>
 			</div>
 		);
 	} else if (sexStatus === "add") {

@@ -19,16 +19,12 @@ const SexButtonBar = ({
 	setLengthsStatus,
 	setAddSex,
 	saveSexButtonStatus,
-	handleCancelEditSex,
 }) => {
 	var ButtonBar = null;
 
 	if (sexStatus === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
-				<UiButtonStatusHandle handleMethod={setSexStatus} buttonText={"Edit sex"} newStatus={"edit"}>
-					<UiIconEdit />
-				</UiButtonStatusHandle>
 				<UiButtonDelete
 					id={sexId}
 					deleteMethod={deleteSex}
@@ -52,23 +48,6 @@ const SexButtonBar = ({
 						<UiIconDetailShow />
 					</UiButtonStatusHandle>
 				)}
-			</div>
-		);
-	} else if (sexStatus === "edit") {
-		ButtonBar = (
-			<div className="form__cell buttonsWrapper--center">
-				<button className="buttonsWrapper__button" type="submit" disabled={!saveSexButtonStatus}>
-					Save sex
-				</button>
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={() => {
-						handleCancelEditSex();
-					}}
-				>
-					Cancel
-				</button>
 			</div>
 		);
 	} else if (sexStatus === "add") {
