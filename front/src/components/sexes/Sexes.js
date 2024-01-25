@@ -99,49 +99,38 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			.catch((error) => console.log("Error"));
 	};
 
-	const renderSex = (s) => (
-		<Sex
-			key={s.id}
-			thisSexStatus={"view"}
-			sexId={s.id}
-			sex={s.sex}
-			catchId={catchId}
-			unit={unit}
-			increment={increment}
-			deleteSex={deleteSex}
-			sexesBackup={sexesBackup}
-			updateSex={updateSex}
-		/>
-	);
-
-	// const orderSexes = (sexes) => {
-	// 	const orderedSexes = sexes.sort(function (a, b) {
-	// 		if (a.sex < b.sex) {
-	// 			return -1;
-	// 		}
-	// 		if (a.sex > b.sex) {
-	// 			return 1;
-	// 		}
-	// 		return 0;
-	// 	});
-
-	// 	return orderedSexes;
-	// };
+	const renderSex = (sex) => {
+		if (sex === undefined) {
+			return <Sex catchId={catchId} createSex={createSex} sexesBackup={sexesBackup} />;
+		} else {
+			return (
+				<Sex
+					key={sex.id}
+					thisSexStatus={"view"}
+					sexId={sex.id}
+					sex={sex.sex}
+					catchId={catchId}
+					unit={unit}
+					increment={increment}
+					deleteSex={deleteSex}
+					sexesBackup={sexesBackup}
+					updateSex={updateSex}
+				/>
+			);
+		}
+	};
 
 	const renderSexes = (sexes) => {
-		// const orderedSexes = orderSexes(sexes);
-
 		if (sexes.length !== 0) {
 			let content = [];
 
-			for (var i = 1; i <= 3; i++) {
-				// if (orderedSexes[i] === undefined) {
+			// Using 'let' instead of 'var' to declare 'i' to ensure each function created in the loop
+			// gets its own 'i', with the value 'i' had at the time the function was created.
+			// This prevents potential bugs where all functions share the same 'i',
+			// which would have its final value, not the value it had when the function was created.
+			for (let i = 1; i <= 3; i++) {
 				const sex = sexes.find((s) => s.sex === i);
-				if (sex === undefined) {
-					content.push(<Sex catchId={catchId} key={i} createSex={createSex} sexesBackup={sexesBackup} />);
-				} else {
-					content.push(renderSex(sex));
-				}
+				content.push(renderSex(sex));
 			}
 
 			return content;
