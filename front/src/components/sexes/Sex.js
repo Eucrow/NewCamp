@@ -13,42 +13,28 @@ import ComponentLengths from "../lengths/Lengths.js";
  * @param {method} handleAddSexStatus Method to handle sex status.
  * @returns JSX of sex component.
  */
-const Sex = ({
-	thisSexStatus,
-	sexId,
-	sex,
-	deleteSex,
-	unit,
-	increment,
-	catchId,
-	createSex,
-	setAddSex,
-	sexesBackup,
-	updateSex,
-}) => {
+const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, createSex, sexesBackup, updateSex }) => {
 	const [thisSex, setThisSex] = useState(sex);
 	const [lengthsStatus, setLengthsStatus] = useState("view");
-	const [sexStatus, setSexStatus] = useState(thisSexStatus || "view");
+	const [sexStatus, setSexStatus] = useState(thisSexStatus);
 	const [validSex, setValidSex] = useState(true);
+
+	const [addSex, setAddSex] = useState(false);
+
+	const sexesAvailable = {
+		1: "Male",
+		2: "Female",
+		3: "Undetermined",
+	};
 
 	useEffect(() => {
 		setThisSex(sex);
-	}, [sex]);
+		setSexStatus(thisSexStatus);
+	}, [sex, thisSexStatus]);
 
 	const handleCancelEditSex = (e) => {
 		setSexStatus("view");
 		setThisSex(sex);
-	};
-
-	const getSexText = (sex) => {
-		switch (sex) {
-			case 1:
-				return "Male";
-			case 2:
-				return "Female";
-			default:
-				return "Undetermined";
-		}
 	};
 
 	/**
@@ -81,7 +67,7 @@ const Sex = ({
 						Sex:
 						<select id={sexId} name={sexId} disabled>
 							<option value={thisSex} key={thisSex}>
-								{getSexText(thisSex)}
+								{sexesAvailable[thisSex]}
 							</option>
 						</select>
 					</label>
@@ -110,7 +96,6 @@ const Sex = ({
 		content = (
 			<div className="sexWrapper">
 				<form
-					className="buttonsWrapper"
 					onSubmit={(e) => {
 						updateSex(sexId, thisSex);
 						setSexStatus("view");
@@ -178,8 +163,13 @@ const Sex = ({
 				</form>
 			</div>
 		);
+	} else {
+		content = (
+			<div className="sexWrapper">
+				<SexButtonBar sexStatus={"empty"} setSexStatus={setSexStatus} />
+			</div>
+		);
 	}
-
 	return content;
 };
 

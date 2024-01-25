@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import Sex from "./Sex.js";
-import SexesButtonBar from "./SexesButtonBar";
+// import SexesButtonBar from "./SexesButtonBar";
 
 /**
  * Sexes component.
@@ -13,7 +13,7 @@ import SexesButtonBar from "./SexesButtonBar";
  * @returns JSX of sexes component.
  */
 const Sexes = ({ catchId, unit, increment, viewSexes }) => {
-	var [addSex, setAddSex] = useState(false);
+	// var [addSex, setAddSex] = useState(false);
 
 	var [sexes, setSexes] = useState([]);
 
@@ -102,6 +102,7 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 	const renderSex = (s) => (
 		<Sex
 			key={s.id}
+			thisSexStatus={"view"}
 			sexId={s.id}
 			sex={s.sex}
 			catchId={catchId}
@@ -113,27 +114,43 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 		/>
 	);
 
-	const renderSexesButtonBar = () => {
-		return sexes.length >= 0 && sexes.length < 3 && <SexesButtonBar sexStatus={"view"} setAddSex={setAddSex} />;
+	// const orderSexes = (sexes) => {
+	// 	const orderedSexes = sexes.sort(function (a, b) {
+	// 		if (a.sex < b.sex) {
+	// 			return -1;
+	// 		}
+	// 		if (a.sex > b.sex) {
+	// 			return 1;
+	// 		}
+	// 		return 0;
+	// 	});
+
+	// 	return orderedSexes;
+	// };
+
+	const renderSexes = (sexes) => {
+		// const orderedSexes = orderSexes(sexes);
+
+		if (sexes.length !== 0) {
+			let content = [];
+
+			for (var i = 1; i <= 3; i++) {
+				// if (orderedSexes[i] === undefined) {
+				const sex = sexes.find((s) => s.sex === i);
+				if (sex === undefined) {
+					content.push(<Sex catchId={catchId} key={i} createSex={createSex} sexesBackup={sexesBackup} />);
+				} else {
+					content.push(renderSex(sex));
+				}
+			}
+
+			return content;
+		} else {
+			return null;
+		}
 	};
 
-	var content = viewSexes && (
-		<div className="sexesWrapper">
-			{sexes.map(renderSex)}
-
-			{addSex ? (
-				<Sex
-					catchId={catchId}
-					thisSexStatus={"add"}
-					createSex={createSex}
-					setAddSex={setAddSex}
-					sexesBackup={sexesBackup}
-				/>
-			) : (
-				renderSexesButtonBar()
-			)}
-		</div>
-	);
+	var content = viewSexes && <div className="sexesWrapper">{renderSexes(sexes)}</div>;
 	return content;
 };
 
