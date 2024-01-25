@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
 
 import Sex from "./Sex.js";
-// import SexesButtonBar from "./SexesButtonBar";
 
 /**
  * Sexes component.
- * @param {array} sexes Sexes of catch. If doesn't exist, it will be an empty array.
  * @param {numeric} catchId Id of catch.
  * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is milimeters.
  * @param {numeric} increment Increment of measurement unit.
- * @param {boolean} view_sexes Show or hide this Sexes component.
- * @returns JSX of sexes component.
+ * @param {boolean} viewSexes Show or hide this Sexes component.
+ * @returns JSX of sexes component. The componet show three columns, one by sex: male, female and undetermined.
  */
 const Sexes = ({ catchId, unit, increment, viewSexes }) => {
-	// var [addSex, setAddSex] = useState(false);
-
 	var [sexes, setSexes] = useState([]);
 
 	const apiSexes = "http://127.0.0.1:8000/api/1.0/sexes/" + catchId;
@@ -100,24 +96,24 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 	};
 
 	const renderSex = (sex) => {
-		if (sex === undefined) {
-			return <Sex catchId={catchId} createSex={createSex} sexesBackup={sexesBackup} />;
-		} else {
-			return (
-				<Sex
-					key={sex.id}
-					thisSexStatus={"view"}
-					sexId={sex.id}
-					sex={sex.sex}
-					catchId={catchId}
-					unit={unit}
-					increment={increment}
-					deleteSex={deleteSex}
-					sexesBackup={sexesBackup}
-					updateSex={updateSex}
-				/>
-			);
-		}
+		// if (sex === undefined) {
+		// 	return <Sex catchId={catchId} createSex={createSex} sexesBackup={sexesBackup} />;
+		// } else {
+		return (
+			<Sex
+				key={sex.id}
+				thisSexStatus={"view"}
+				sexId={sex.id}
+				sex={sex.sex}
+				catchId={catchId}
+				unit={unit}
+				increment={increment}
+				deleteSex={deleteSex}
+				sexesBackup={sexesBackup}
+				updateSex={updateSex}
+			/>
+		);
+		// }
 	};
 
 	const renderSexes = (sexes) => {
@@ -129,7 +125,13 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			// This prevents potential bugs where all functions share the same 'i',
 			// which would have its final value, not the value it had when the function was created.
 			for (let i = 1; i <= 3; i++) {
-				const sex = sexes.find((s) => s.sex === i);
+				var sex = sexes.find((s) => s.sex === i);
+				if (sex === undefined) {
+					sex = {
+						id: i - 1,
+						sex: i,
+					};
+				}
 				content.push(renderSex(sex));
 			}
 

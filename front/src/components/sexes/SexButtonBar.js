@@ -78,7 +78,7 @@ const SexButtonBar = ({
 				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={setAddSex} newStatus={false} />
 			</div>
 		);
-	} else if (sexStatus === "empty") {
+	} else {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<button

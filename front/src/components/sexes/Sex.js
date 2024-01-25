@@ -166,7 +166,7 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 	} else {
 		content = (
 			<div className="sexWrapper">
-				<SexButtonBar sexStatus={"empty"} setSexStatus={setSexStatus} />
+				<SexButtonBar setSexStatus={setSexStatus} />
 			</div>
 		);
 	}
