@@ -16,7 +16,7 @@ import LengthsRangeForm from "./LengthsRangeForm.js";
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsStatus }) => {
+const ComponentLengths = ({ sexId, sex, createSex, catchId, lengthsStatus, unit, increment, setLengthsStatus }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -286,6 +286,8 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 		e.preventDefault();
 
 		orderLengths();
+
+		createSex(e, sex, catchId);
 
 		getLengths()
 			.then((lengthts_in_database) => {
