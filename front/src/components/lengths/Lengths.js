@@ -95,8 +95,7 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
 	};
 
 	const getSexExists = async (sex) => {
-		const s = Number(sex) - 1;
-		const api = apiSexExists + catchId + "/" + s;
+		const api = apiSexExists + catchId + "/" + sex;
 
 		const response = await fetch(api);
 		if (response.status > 400) {
@@ -436,32 +435,32 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
 		setLengthsStatus("view");
 	};
 
+	const partialContent = () => {
+		if (lengthsStatus === "hide") {
+			return null;
+		} else if (lengthsStatus === "view" && lengths.length !== 0) {
+			return <LengthsForm />;
+		} else if (lengthsStatus === "view" && lengths.length === 0) {
+			return (
+				<Fragment>
+					<LengthsRangeForm createRangeLengths={createRangeLengths} />
+					<LengthsButtonBar />
+				</Fragment>
+			);
+		} else if (lengthsStatus === "edit") {
+			return <LengthsForm />;
+		} else if (lengthsStatus === "add") {
+			return (
+				<Fragment>
+					<LengthsRangeForm createRangeLengths={createRangeLengths} />
+					<LengthsButtonBar />
+				</Fragment>
+			);
+		}
+	};
+
 	// render content
 	const renderContent = () => {
-		const partialContent = () => {
-			if (lengthsStatus === "hide") {
-				return null;
-			} else if (lengthsStatus === "view" && lengths.length !== 0) {
-				return <LengthsForm lengthsStatus={lengthsStatus} />;
-			} else if (lengthsStatus === "view" && lengths.length === 0) {
-				return (
-					<Fragment>
-						<LengthsRangeForm createRangeLengths={createRangeLengths} />
-						<LengthsButtonBar />
-					</Fragment>
-				);
-			} else if (lengthsStatus === "edit") {
-				return <LengthsForm lengthsStatus={lengthsStatus} />;
-			} else if (lengthsStatus === "add") {
-				return (
-					<Fragment>
-						<LengthsRangeForm createRangeLengths={createRangeLengths} setLengthsStatus={setLengthsStatus} />
-						<LengthsButtonBar />
-					</Fragment>
-				);
-			}
-		};
-
 		return (
 			<LengthsContext.Provider
 				value={{

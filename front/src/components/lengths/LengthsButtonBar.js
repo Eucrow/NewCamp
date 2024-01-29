@@ -34,15 +34,7 @@ const LengthsButtonBar = () => {
 	} else if (lengthsContext.lengthsStatus === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					disabled={!lengthsContext.validLengths}
-					onClick={(e) => {
-						lengthsContext.saveOrUpdateLengths(e, lengthsContext.lengths);
-						lengthsContext.removeZeroTails(lengthsContext.lengths);
-					}}
-				>
+				<button className="buttonsWrapper__button" type="submit" disabled={!lengthsContext.validLengths}>
 					Save
 				</button>
 				<button
