@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SexButtonBar from "./SexButtonBar.js";
-import ComponentLengths from "../lengths/Lengths.js";
+import Lengths from "../lengths/Lengths.js";
 
 /**
  * Sex component.
@@ -48,7 +48,7 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 						/>
 					</div>
 				</div>
-				<ComponentLengths
+				<Lengths
 					sexId={sexId}
 					sex={sex}
 					createSex={createSex}
@@ -61,7 +61,7 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 	} else if (sexStatus === "add") {
 		content = (
 			<div className="sexWrapper">
-				<ComponentLengths
+				<Lengths
 					sexId={sexId}
 					sex={sex}
 					createSex={createSex}

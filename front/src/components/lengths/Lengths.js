@@ -18,7 +18,7 @@ import Sex from "../sexes/Sex.js";
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const ComponentLengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
+const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -489,4 +489,4 @@ const ComponentLengths = ({ sexId, sex, catchId, unit, increment, createSex }) =
 	return renderContent();
 };
 
-export default ComponentLengths;
+export default Lengths;
