@@ -436,17 +436,10 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
 	};
 
 	const partialContent = () => {
-		if (lengthsStatus === "hide") {
-			return null;
-		} else if (lengthsStatus === "view" && lengths.length !== 0) {
+		if (lengthsStatus === "view" && lengths.length !== 0) {
 			return <LengthsForm />;
 		} else if (lengthsStatus === "view" && lengths.length === 0) {
-			return (
-				<Fragment>
-					<LengthsRangeForm createRangeLengths={createRangeLengths} />
-					<LengthsButtonBar />
-				</Fragment>
-			);
+			return <LengthsRangeForm createRangeLengths={createRangeLengths} />;
 		} else if (lengthsStatus === "edit") {
 			return <LengthsForm />;
 		} else if (lengthsStatus === "add") {

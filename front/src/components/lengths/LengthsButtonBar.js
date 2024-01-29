@@ -11,17 +11,7 @@ const LengthsButtonBar = () => {
 
 	const lengthsContext = useContext(LengthsContext);
 
-	if (lengthsContext.lengthsStatus === "hide") {
-		ButtonBar = (
-			<div className="form__cell buttonsWrapper--center">
-				<UiButtonStatusHandle
-					buttonText={"Show Lengths"}
-					handleMethod={lengthsContext.setLengthsStatus}
-					newStatus={"view"}
-				/>
-			</div>
-		);
-	} else if (lengthsContext.lengthsStatus === "view") {
+	if (lengthsContext.lengthsStatus === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<UiButtonStatusHandle
@@ -32,6 +22,21 @@ const LengthsButtonBar = () => {
 			</div>
 		);
 	} else if (lengthsContext.lengthsStatus === "edit") {
+		ButtonBar = (
+			<div className="form__cell buttonsWrapper--center">
+				<button className="buttonsWrapper__button" type="submit" disabled={!lengthsContext.validLengths}>
+					Save
+				</button>
+				<button
+					onClick={() => {
+						lengthsContext.cancelEditLengths();
+					}}
+				>
+					Cancel
+				</button>
+			</div>
+		);
+	} else if (lengthsContext.lengthsStatus === "new") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<button className="buttonsWrapper__button" type="submit" disabled={!lengthsContext.validLengths}>

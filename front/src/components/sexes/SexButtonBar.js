@@ -31,7 +31,7 @@ const SexButtonBar = ({
 					buttonText={"Delete sex"}
 					confirmMessage={"Are you sure to remove this sex?"}
 				/>
-				{lengthsStatus === "view" ? (
+				{/* {lengthsStatus === "view" ? (
 					<UiButtonStatusHandle
 						handleMethod={setLengthsStatus}
 						buttonText={"Hide Lengths"}
@@ -47,7 +47,7 @@ const SexButtonBar = ({
 					>
 						<UiIconDetailShow />
 					</UiButtonStatusHandle>
-				)}
+				)} */}
 			</div>
 		);
 	} else if (sexStatus === "add") {
