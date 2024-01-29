@@ -4,19 +4,21 @@ import LengthsContext from "../../contexts/LengthsContext";
 import LengthsForm from "./LengthsForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
+import Sex from "../sexes/Sex.js";
 
 /**
  * Manages and displays lengths data of a sex.
  * @component
  * @param {number} sexId The ID of the sex for which lengths data should be fetched.
- * @param {string} lengthsStatus The current status of lengths data. Possible values are "view", "edit", and "hide".
+ * @param {number} sex Sex.
+ * @param {number} catchId The ID of the catch for which lengths data should be fetched.
  * @param {number} unit The unit of measurement for the lengths. 1 represents cm, 2 represents mm.
  * @param {number} increment The increment value for lengths.
- * @param {Function} setLengthsStatus A function to set the lengthsStatus.
+ * @param {Function} createSex A function to create a sex.
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const ComponentLengths = ({ sexId, sex, createSex, catchId, lengthsStatus, unit, increment, setLengthsStatus }) => {
+const ComponentLengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -26,11 +28,14 @@ const ComponentLengths = ({ sexId, sex, createSex, catchId, lengthsStatus, unit,
 
 	const [lengths, setLengths] = useState([]);
 
+	const [lengthsStatus, setLengthsStatus] = useState("view");
+
 	const [responseError, setResponseError] = useState("none");
 
 	const [validLengths, setValidLengths] = useState(true);
 
 	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/" + sexId;
+	const apiSexExists = "http://127.0.0.1:8000/api/1.0/sexes/exists/";
 
 	const getUnit = (u) => {
 		if (Number(u) === 1) {
@@ -51,8 +56,9 @@ const ComponentLengths = ({ sexId, sex, createSex, catchId, lengthsStatus, unit,
 	}, [responseError]);
 
 	useEffect(() => {
-		handleShowLengths();
-
+		if (sexId !== undefined) {
+			handleShowLengths();
+		}
 		setMeasureUnit(unit);
 	}, []);
 
@@ -86,6 +92,17 @@ const ComponentLengths = ({ sexId, sex, createSex, catchId, lengthsStatus, unit,
 			});
 			setLengths(newLengths);
 		});
+	};
+
+	const getSexExists = async (sex) => {
+		const s = Number(sex) - 1;
+		const api = apiSexExists + catchId + "/" + s;
+
+		const response = await fetch(api);
+		if (response.status > 400) {
+			setResponseError("Something went wrong! (getExistsLengths)");
+		}
+		return response.json();
 	};
 
 	/**
@@ -285,9 +302,11 @@ const ComponentLengths = ({ sexId, sex, createSex, catchId, lengthsStatus, unit,
 	const saveOrUpdateLengths = (e, lengths) => {
 		e.preventDefault();
 
-		orderLengths();
+		if (getSexExists(sex) === false) {
+			createSex(catchId, sex);
+		}
 
-		createSex(e, sex, catchId);
+		orderLengths();
 
 		getLengths()
 			.then((lengthts_in_database) => {
@@ -433,6 +452,13 @@ const ComponentLengths = ({ sexId, sex, createSex, catchId, lengthsStatus, unit,
 				);
 			} else if (lengthsStatus === "edit") {
 				return <LengthsForm lengthsStatus={lengthsStatus} />;
+			} else if (lengthsStatus === "add") {
+				return (
+					<Fragment>
+						<LengthsRangeForm createRangeLengths={createRangeLengths} setLengthsStatus={setLengthsStatus} />
+						<LengthsButtonBar />
+					</Fragment>
+				);
 			}
 		};
 

@@ -4,22 +4,21 @@ import ComponentLengths from "../lengths/Lengths.js";
 
 /**
  * Sex component.
- * @param {string} sexStatus "view", "edit" or "add".
+ * @param {string} thisSexStatus "view", "edit" or "add".
  * @param {number} sexId Id of sex.
  * @param {string} sex Sex.
  * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is milimeters.
  * @param {numeric} increment Increment of measurement unit.
  * @param {numeric} catchId Id of catch.
- * @param {method} handleAddSexStatus Method to handle sex status.
+ * @param {Function} createSex Function to create sex.
+ * @param {Function} updateSex Function to update sex.
+ * @param {Function} deleteSex Function to delete sex.
  * @returns JSX of sex component.
  */
-const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, createSex, sexesBackup, updateSex }) => {
+const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, updateSex, deleteSex }) => {
 	const [thisSex, setThisSex] = useState(sex);
-	const [lengthsStatus, setLengthsStatus] = useState("view");
-	const [sexStatus, setSexStatus] = useState(thisSexStatus);
-	const [validSex, setValidSex] = useState(true);
 
-	const [addSex, setAddSex] = useState(false);
+	const [sexStatus, setSexStatus] = useState(thisSexStatus);
 
 	const sexesAvailable = {
 		1: "Male",
@@ -31,26 +30,6 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 		setThisSex(sex);
 		setSexStatus(thisSexStatus);
 	}, [sex, thisSexStatus]);
-
-	/**
-	 * Validate if a sex already exists in the catch. In case it exists, thrown an error and
-	 * set validSex variable to false and viceversa.
-	 * @param {event}
-	 */
-	const validateSex = (e) => {
-		const sexesBackupClean = sexesBackup.filter((s) => {
-			return s.sex !== sex;
-		});
-
-		if (sexesBackupClean.some((p) => p.sex === Number(e.target.value))) {
-			e.target.setCustomValidity("The sex already exists.");
-			setValidSex(false);
-			return e.target.reportValidity();
-		} else {
-			e.target.setCustomValidity("");
-			setValidSex(true);
-		}
-	};
 
 	var content = null;
 
@@ -66,8 +45,6 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 							setSexStatus={setSexStatus}
 							updateSex={updateSex}
 							deleteSex={deleteSex}
-							lengthsStatus={lengthsStatus}
-							setLengthsStatus={setLengthsStatus}
 						/>
 					</div>
 				</div>
@@ -76,42 +53,22 @@ const Sex = ({ thisSexStatus, sexId, sex, deleteSex, unit, increment, catchId, c
 					sex={sex}
 					createSex={createSex}
 					catchId={catchId}
-					lengthsStatus={lengthsStatus}
 					unit={unit}
 					increment={increment}
-					setLengthsStatus={setLengthsStatus}
 				/>
 			</div>
 		);
 	} else if (sexStatus === "add") {
 		content = (
 			<div className="sexWrapper">
-				<form
-					className="form__row"
-					onSubmit={(e) => {
-						// createSex(e, thisSex, catchId);
-						// createSex(e, sex, catchId);
-						setAddSex(false);
-					}}
-				>
-					<label className="form__cell">
-						Sex: {sexesAvailable[sex]}
-						{/* <select
-							autoFocus
-							onChange={(e) => {
-								setThisSex(e.target.value);
-								validateSex(e);
-							}}
-						>
-							<option></option>
-							<option value="3">Undetermined</option>
-							<option value="1">Male</option>
-							<option value="2">Female</option>
-						</select> */}
-					</label>
-
-					<SexButtonBar sexStatus={"add"} setSexStatus={setSexStatus} setAddSex={setAddSex} />
-				</form>
+				<ComponentLengths
+					sexId={sexId}
+					sex={sex}
+					createSex={createSex}
+					catchId={catchId}
+					unit={unit}
+					increment={increment}
+				/>
 			</div>
 		);
 	} else {

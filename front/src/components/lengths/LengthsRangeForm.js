@@ -3,8 +3,8 @@ import { useState } from "react";
 
 /**
  * Form to create a range of lenghts.
- * @param {method} createRAngeLengths: method to add lengths to state in parent component.
- * @returns Lenghts range form.
+ * @param {Function} createRAngeLengths Function to add lengths to state in parent component.
+ * @returns {JSX.Element} A JSX element that renders the lengths range form.
  */
 const LengthsRangeForm = ({ createRangeLengths }) => {
 	const [minimumRange, setMinimumRange] = useState("");

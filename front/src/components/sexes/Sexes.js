@@ -106,11 +106,21 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			for (let i = 1; i <= 3; i++) {
 				var sex = sexes.find((s) => s.sex === i);
 				if (sex === undefined) {
-					content.push(<Sex sex={i} catchId={catchId} createSex={createSex} sexesBackup={sexesBackup} />);
+					content.push(
+						<Sex
+							key={i}
+							sex={i}
+							catchId={catchId}
+							unit={unit}
+							increment={increment}
+							createSex={createSex}
+							sexesBackup={sexesBackup}
+						/>
+					);
 				} else {
 					content.push(
 						<Sex
-							key={sex.id}
+							key={i}
 							thisSexStatus={"view"}
 							sexId={sex.id}
 							sex={sex.sex}

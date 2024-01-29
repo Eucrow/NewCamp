@@ -3,7 +3,6 @@ import React from "react";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
-import UiIconEdit from "../ui/UiIconEdit";
 import UiIconDetailShow from "../ui/UiIconDetailShow";
 import UiIconDetailHide from "../ui/UiIconDetailHide";
 
@@ -12,15 +11,14 @@ import UiIconDetailHide from "../ui/UiIconDetailHide";
  */
 const SexButtonBar = ({
 	sexId,
+	sex,
+	sexesAvailable,
 	sexStatus,
 	setSexStatus,
 	deleteSex,
 	lengthsStatus,
 	setLengthsStatus,
 	setAddSex,
-	saveSexButtonStatus,
-	sexesAvailable,
-	sex,
 }) => {
 	var ButtonBar = null;
 
@@ -70,11 +68,6 @@ const SexButtonBar = ({
 				>
 					Add {sexesAvailable[sex]}
 				</button>
-				{/* <UiButtonStatusHandle
-					buttonText={"Add " + sexesAvailable.sex}
-					handleMethod={setSexStatus}
-					newStatus={"add"}
-				/> */}
 			</div>
 		);
 	}
