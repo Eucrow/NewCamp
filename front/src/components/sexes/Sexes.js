@@ -107,50 +107,51 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 	};
 
 	const renderSexes = (sexes) => {
-		if (sexes.length !== 0) {
-			let content = [];
+		// if (sexes.length !== 0) {
+		let content = [];
 
-			// Using 'let' instead of 'var' to declare 'i' to ensure each function created in the loop
-			// gets its own 'i', with the value 'i' had at the time the function was created.
-			// This prevents potential bugs where all functions share the same 'i',
-			// which would have its final value, not the value it had when the function was created.
-			for (let i = 1; i <= 3; i++) {
-				var sex = sexes.find((s) => s.sex === i);
-				if (sex === undefined) {
-					content.push(
-						<Sex
-							key={i}
-							thisSexStatus={"empty"}
-							sex={i}
-							catchId={catchId}
-							unit={unit}
-							increment={increment}
-							createSex={createSex}
-							sexesBackup={sexesBackup}
-						/>
-					);
-				} else {
-					content.push(
-						<Sex
-							key={i}
-							thisSexStatus={"view"}
-							sexId={sex.id}
-							sex={sex.sex}
-							catchId={catchId}
-							unit={unit}
-							increment={increment}
-							deleteSex={deleteSex}
-							sexesBackup={sexesBackup}
-							updateSex={updateSex}
-						/>
-					);
-				}
+		// Using 'let' instead of 'var' to declare 'i' to ensure each function created in the loop
+		// gets its own 'i', with the value 'i' had at the time the function was created.
+		// This prevents potential bugs where all functions share the same 'i',
+		// which would have its final value, not the value it had when the function was created.
+		for (let i = 1; i <= 3; i++) {
+			var sex = sexes.find((s) => s.sex === i);
+			if (sex === undefined) {
+				content.push(
+					<Sex
+						key={i}
+						thisSexStatus={"empty"}
+						sex={i}
+						catchId={catchId}
+						unit={unit}
+						increment={increment}
+						createSex={createSex}
+						deleteSex={deleteSex}
+						sexesBackup={sexesBackup}
+					/>
+				);
+			} else {
+				content.push(
+					<Sex
+						key={i}
+						thisSexStatus={"view"}
+						sexId={sex.id}
+						sex={sex.sex}
+						catchId={catchId}
+						unit={unit}
+						increment={increment}
+						deleteSex={deleteSex}
+						sexesBackup={sexesBackup}
+						updateSex={updateSex}
+					/>
+				);
 			}
-
-			return content;
-		} else {
-			return null;
 		}
+
+		return content;
+		// } else {
+		// 	return null;
+		// }
 	};
 
 	var content = viewSexes && <div className="sexesWrapper">{renderSexes(sexes)}</div>;

@@ -67,6 +67,7 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 					sex={sex}
 					sexStatus={"add"}
 					createSex={createSex}
+					deleteSex={deleteSex}
 					catchId={catchId}
 					unit={unit}
 					increment={increment}

@@ -17,7 +17,7 @@ import LengthsRangeForm from "./LengthsRangeForm.js";
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex }) => {
+const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex, deleteSex }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -94,7 +94,7 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex })
 		});
 	};
 
-	const getSexExists = async (sex) => {
+	const sexExists = async (sex, catchId) => {
 		const api = apiSexExists + catchId + "/" + sex;
 
 		const response = await fetch(api);
@@ -306,6 +306,9 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex })
 	 */
 	const saveSexAndLengths = (e, sex, lengths) => {
 		e.preventDefault();
+
+		// if(sexExists(sex, catchId) === true) {
+		//     deleteSex()
 
 		if (sexId === undefined) {
 			createSex(e, sex, catchId).then((s) => {
