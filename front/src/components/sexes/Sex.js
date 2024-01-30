@@ -51,6 +51,7 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 				<Lengths
 					sexId={sexId}
 					sex={sex}
+					sexStatus={"view"}
 					createSex={createSex}
 					catchId={catchId}
 					unit={unit}
@@ -64,6 +65,7 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 				<Lengths
 					sexId={sexId}
 					sex={sex}
+					sexStatus={"add"}
 					createSex={createSex}
 					catchId={catchId}
 					unit={unit}
@@ -71,7 +73,7 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 				/>
 			</div>
 		);
-	} else {
+	} else if (sexStatus === "empty") {
 		content = (
 			<div className="sexWrapper">
 				<SexButtonBar setSexStatus={setSexStatus} sexesAvailable={sexesAvailable} sex={sex} />

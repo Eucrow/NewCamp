@@ -4,7 +4,6 @@ import LengthsContext from "../../contexts/LengthsContext";
 import LengthsForm from "./LengthsForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
-import Sex from "../sexes/Sex.js";
 
 /**
  * Manages and displays lengths data of a sex.
@@ -18,7 +17,7 @@ import Sex from "../sexes/Sex.js";
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
+const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -28,7 +27,8 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
 
 	const [lengths, setLengths] = useState([]);
 
-	const [lengthsStatus, setLengthsStatus] = useState("view");
+	// const [lengthsStatus, setLengthsStatus] = useState("view");
+	const [lengthsStatus, setLengthsStatus] = useState(sexStatus);
 
 	const [responseError, setResponseError] = useState("none");
 
@@ -436,19 +436,28 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
 	};
 
 	const partialContent = () => {
-		if (lengthsStatus === "view" && lengths.length !== 0) {
-			return <LengthsForm />;
-		} else if (lengthsStatus === "view" && lengths.length === 0) {
-			return <LengthsRangeForm createRangeLengths={createRangeLengths} />;
-		} else if (lengthsStatus === "edit") {
-			return <LengthsForm />;
-		} else if (lengthsStatus === "add") {
+		// if (lengthsStatus === "view" && lengths.length !== 0) {
+		// 	return <LengthsForm />;
+		// } else if (lengthsStatus === "edit") {
+		// 	return <LengthsForm />;
+		// } else if (lengthsStatus === "add") {
+		// 	return (
+		// 		<Fragment>
+		// 			<LengthsRangeForm createRangeLengths={createRangeLengths} />
+		// 			<LengthsButtonBar />
+		// 		</Fragment>
+		// 	);
+		// }
+
+		if (lengthsStatus === "add") {
 			return (
 				<Fragment>
 					<LengthsRangeForm createRangeLengths={createRangeLengths} />
 					<LengthsButtonBar />
 				</Fragment>
 			);
+		} else {
+			return <LengthsForm />;
 		}
 	};
 

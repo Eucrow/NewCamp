@@ -109,6 +109,7 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 					content.push(
 						<Sex
 							key={i}
+							thisSexStatus={"empty"}
 							sex={i}
 							catchId={catchId}
 							unit={unit}
