@@ -27,14 +27,13 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex })
 
 	const [lengths, setLengths] = useState([]);
 
-	// const [lengthsStatus, setLengthsStatus] = useState("view");
 	const [lengthsStatus, setLengthsStatus] = useState(sexStatus);
 
 	const [responseError, setResponseError] = useState("none");
 
 	const [validLengths, setValidLengths] = useState(true);
 
-	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/" + sexId;
+	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
 	const apiSexExists = "http://127.0.0.1:8000/api/1.0/sexes/exists/";
 
 	const getUnit = (u) => {
@@ -60,14 +59,15 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex })
 			handleShowLengths();
 		}
 		setMeasureUnit(unit);
-	}, []);
+	}, [sexId, unit]);
 
 	/**
 	 * Get all lengths of a sexId from database.
 	 * @returns JSON with lengths.
 	 */
 	const getLengths = async () => {
-		const response = await fetch(apiLengths);
+		const api = apiLengths + sexId;
+		const response = await fetch(api);
 		if (response.status > 400) {
 			setResponseError("Something went wrong! (getLengths)");
 		}
@@ -109,7 +109,8 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex })
 	 * @returns JSON
 	 */
 	const deleteLengths = async () => {
-		const response = await fetch(apiLengths, {
+		const api = apiLengths + sexId;
+		const response = await fetch(api, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
@@ -273,9 +274,10 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex })
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
 	 * @return JSON response or error.
 	 */
-	const saveLengths = async (lengths) => {
+	const saveLengths = async (lengths, sexIdentification) => {
+		const api = apiLengths + sexIdentification;
 		try {
-			const response = await fetch(apiLengths, {
+			const response = await fetch(api, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -292,51 +294,38 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex })
 	};
 
 	/**
-	 * Save or Update lengths. If already exists lengths for this sex, delete it all first and save the new lengths.
-	 * This is done in that way because we stored all the lenghts of a category at the same time and not one by one in
-	 * real time.
-	 * @param {event} e
-	 * @param {array} lengths Array of dictionaries with lengths to save or update.
+	 * Handles the form submission event to save a sex and its associated lengths.
+	 * If the sexId is undefined, it creates a new sex and saves the lengths.
+	 * If the sexId is defined, it deletes the existing lengths and saves the new lengths.
+	 *
+	 * @param {Event} e - The event object, typically from a form submission.
+	 * @param {string} sex - The sex to be saved.
+	 * @param {Array} lengths - The lengths to be saved.
+	 * @returns {undefined} This function does not have a return value.
+	 * @throws {Error} If there's an error during the fetch requests, the error is logged to the console.
 	 */
-	const saveOrUpdateLengths = (e, lengths) => {
+	const saveSexAndLengths = (e, sex, lengths) => {
 		e.preventDefault();
 
-		if (getSexExists(sex) === false) {
-			createSex(catchId, sex);
+		if (sexId === undefined) {
+			createSex(e, sex, catchId).then((s) => {
+				saveLengths(lengths, s.id)
+					.then((lengths) => {
+						setLengths(fillLengths(lengths));
+						setLengthsStatus("view");
+					})
+					.catch((error) => console.log(error));
+			});
+		} else {
+			deleteLengths().then(() => {
+				saveLengths(lengths, sexId)
+					.then((lengths) => {
+						setLengths(fillLengths(lengths));
+						setLengthsStatus("view");
+					})
+					.catch((error) => console.log(error));
+			});
 		}
-
-		orderLengths();
-
-		getLengths()
-			.then((lengthts_in_database) => {
-				lengths = removeZeroNumberIndividuals(lengths);
-				lengths = removeUselessElementsLengths(lengths);
-				lengths = transformUnitsToMm(lengths);
-				if (Object.keys(lengthts_in_database).length === 0) {
-					// if there are not lengths already saved, save the new lengths:
-					saveLengths(lengths)
-						.then((lengths) => {
-							setLengths(fillLengths(lengths));
-						})
-						.catch((error) => console.log(error));
-					setBackupLengths(lengths);
-				} else {
-					// if there are lengths, first delete it, and then save the updated lengths.
-					deleteLengths()
-						.then(() => {
-							saveLengths(lengths).then((lengths) => {
-								setLengths(fillLengths(lengths));
-							});
-							setBackupLengths(lengths);
-						})
-						.catch((error) => console.log(error));
-				}
-			})
-
-			.then(() => {
-				setLengthsStatus("view");
-			})
-			.catch((error) => console.log("Error"));
 	};
 
 	/**
@@ -436,19 +425,6 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex })
 	};
 
 	const partialContent = () => {
-		// if (lengthsStatus === "view" && lengths.length !== 0) {
-		// 	return <LengthsForm />;
-		// } else if (lengthsStatus === "edit") {
-		// 	return <LengthsForm />;
-		// } else if (lengthsStatus === "add") {
-		// 	return (
-		// 		<Fragment>
-		// 			<LengthsRangeForm createRangeLengths={createRangeLengths} />
-		// 			<LengthsButtonBar />
-		// 		</Fragment>
-		// 	);
-		// }
-
 		if (lengthsStatus === "add") {
 			return (
 				<Fragment>
@@ -471,7 +447,6 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex })
 					increment: increment,
 					lengthsStatus: lengthsStatus,
 					setLengthsStatus: setLengthsStatus,
-					saveOrUpdateLengths: saveOrUpdateLengths,
 					removeZeroTails: removeZeroTails,
 					editLength: editLength,
 					cancelEditLengths: cancelEditLengths,
@@ -480,6 +455,8 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, sexStatus, createSex })
 					handleShowLengths: handleShowLengths,
 					validLengths: validLengths,
 					setValidLengths: setValidLengths,
+					saveSexAndLengths: saveSexAndLengths,
+					sex: sex,
 				}}
 			>
 				<Fragment>{partialContent()}</Fragment>

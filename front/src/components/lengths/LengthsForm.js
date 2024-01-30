@@ -49,7 +49,7 @@ const LengthsForm = () => {
 				<form
 					className="lengthsWrapper"
 					onSubmit={(e) => {
-						lengthsContext.saveOrUpdateLengths(e, lengthsContext.lengths);
+						lengthsContext.saveSexAndLengths(e, lengthsContext.sex, lengthsContext.lengths);
 						lengthsContext.removeZeroTails(lengthsContext.lengths);
 					}}
 				>

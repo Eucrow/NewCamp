@@ -27,6 +27,16 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 		}
 	}, [apiSexes, viewSexes]);
 
+	/**
+	 * Sends a POST request to create a new sex.
+	 *
+	 * @param {Event} evt - The event object, typically from a form submission.
+	 * @param {string} sex - The sex to be created.
+	 * @param {string} catchId - The ID associated with the sex.
+	 * @returns {Promise} A Promise that resolves to the newly created sex.
+	 * If the response status is greater than 400, an alert is shown and the Promise is rejected.
+	 * If the request is successful, the new sex is added to the state and the Promise resolves to the new sex.
+	 */
 	const createSex = (evt, sex, catchId) => {
 		evt.preventDefault();
 
@@ -35,7 +45,7 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			sex: sex,
 		};
 
-		fetch(apiSex, {
+		return fetch(apiSex, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -51,6 +61,7 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			.then((newSex) => {
 				const newSexes = sexes.concat(newSex);
 				setSexes(newSexes);
+				return newSex;
 			})
 			.catch((error) => console.log("Error"));
 	};
@@ -60,7 +71,7 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			id: sexId,
 		};
 
-		fetch(apiSex, {
+		return fetch(apiSex, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
