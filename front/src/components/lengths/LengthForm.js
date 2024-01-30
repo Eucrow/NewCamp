@@ -29,7 +29,6 @@ const LengthForm = ({ l, idx }) => {
 	let lengthRef = useRef(null);
 
 	const renderContent = () => {
-		// if (lengthsContext.lengthsStatus === "view") {
 		if (sexContext.sexStatus === "view") {
 			return (
 				<div className="formLengths__row" key={l.length}>
@@ -56,7 +55,6 @@ const LengthForm = ({ l, idx }) => {
 					</div>
 				</div>
 			);
-			// } else if (lengthsContext.lengthsStatus === "edit") {
 		} else if (sexContext.sexStatus === "edit") {
 			return (
 				<div className="formLengths__row" key={idx}>
