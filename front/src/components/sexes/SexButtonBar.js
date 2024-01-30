@@ -1,28 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
-import UiIconDetailShow from "../ui/UiIconDetailShow";
-import UiIconDetailHide from "../ui/UiIconDetailHide";
+import SexContext from "../../contexts/SexContext";
 
-/**
- * Lengths button bar component.
- */
-const SexButtonBar = ({
-	sexId,
-	sex,
-	sexesAvailable,
-	sexStatus,
-	setSexStatus,
-	deleteSex,
-	lengthsStatus,
-	setLengthsStatus,
-	setAddSex,
-}) => {
+const SexButtonBar = ({ sexId, deleteSex, setAddSex }) => {
+	const sexContext = useContext(SexContext);
 	var ButtonBar = null;
 
-	if (sexStatus === "view") {
+	if (sexContext.sexStatus === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<UiButtonDelete
@@ -31,26 +18,9 @@ const SexButtonBar = ({
 					buttonText={"Delete sex"}
 					confirmMessage={"Are you sure to remove this sex?"}
 				/>
-				{/* {lengthsStatus === "view" ? (
-					<UiButtonStatusHandle
-						handleMethod={setLengthsStatus}
-						buttonText={"Hide Lengths"}
-						newStatus={"hide"}
-					>
-						<UiIconDetailHide />
-					</UiButtonStatusHandle>
-				) : (
-					<UiButtonStatusHandle
-						handleMethod={setLengthsStatus}
-						buttonText={"Show Lengths"}
-						newStatus={"view"}
-					>
-						<UiIconDetailShow />
-					</UiButtonStatusHandle>
-				)} */}
 			</div>
 		);
-	} else if (sexStatus === "add") {
+	} else if (sexContext.sexStatus === "add") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<UiButtonSave buttonText={"Save sex"} />
@@ -63,10 +33,10 @@ const SexButtonBar = ({
 				<button
 					className="buttonsWrapper__button"
 					onClick={() => {
-						setSexStatus("add");
+						sexContext.setSexStatus("add");
 					}}
 				>
-					Add {sexesAvailable[sex]}
+					Add {sexContext.sexesAvailable[sexContext.sex]}
 				</button>
 			</div>
 		);

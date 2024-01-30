@@ -3,6 +3,7 @@ import LengthForm from "./LengthForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 
 import LengthsContext from "../../contexts/LengthsContext";
+import SexContext from "../../contexts/SexContext.js";
 
 /**
  * Renders a form for displaying and editing lengths data.
@@ -12,9 +13,10 @@ import LengthsContext from "../../contexts/LengthsContext";
  */
 const LengthsForm = () => {
 	const lengthsContext = useContext(LengthsContext);
+	const sexContext = useContext(SexContext);
 
 	const renderContent = () => {
-		if (lengthsContext.lengthsStatus === "view") {
+		if (sexContext.sexStatus === "view") {
 			//TODO: Add the aria property aria labels to avoid the screen readers read the form as a form.
 			return (
 				<form className="lengthsWrapper">
@@ -44,7 +46,7 @@ const LengthsForm = () => {
 					<LengthsButtonBar />
 				</form>
 			);
-		} else if (lengthsContext.lengthsStatus === "edit") {
+		} else if (sexContext.sexStatus === "edit") {
 			return (
 				<form
 					className="lengthsWrapper"

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SexButtonBar from "./SexButtonBar.js";
 import Lengths from "../lengths/Lengths.js";
-import SexContext from "../../contexts/SexContext.js";
 
 /**
  * Sex component.
@@ -40,12 +39,19 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 				<div>
 					<div className="form__cell">{sexesAvailable[thisSex]}</div>
 					<div className="form__cell ">
-						<SexButtonBar sexId={sexId} deleteSex={deleteSex} />
+						<SexButtonBar
+							sexId={sexId}
+							sexStatus={sexStatus}
+							setSexStatus={setSexStatus}
+							updateSex={updateSex}
+							deleteSex={deleteSex}
+						/>
 					</div>
 				</div>
 				<Lengths
 					sexId={sexId}
 					sex={sex}
+					sexStatus={"view"}
 					createSex={createSex}
 					catchId={catchId}
 					unit={unit}
@@ -59,20 +65,7 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 				<Lengths
 					sexId={sexId}
 					sex={sex}
-					createSex={createSex}
-					deleteSex={deleteSex}
-					catchId={catchId}
-					unit={unit}
-					increment={increment}
-				/>
-			</div>
-		);
-	} else if (sexStatus === "edit") {
-		content = (
-			<div className="sexWrapper">
-				<Lengths
-					sexId={sexId}
-					sex={sex}
+					sexStatus={"add"}
 					createSex={createSex}
 					deleteSex={deleteSex}
 					catchId={catchId}
@@ -84,27 +77,11 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 	} else if (sexStatus === "empty") {
 		content = (
 			<div className="sexWrapper">
-				<SexButtonBar />
+				<SexButtonBar setSexStatus={setSexStatus} sexesAvailable={sexesAvailable} sex={sex} />
 			</div>
 		);
 	}
-
-	const renderContent = () => {
-		return (
-			<SexContext.Provider
-				value={{
-					sex: sex,
-					sexStatus: sexStatus,
-					setSexStatus: setSexStatus,
-					sexesAvailable: sexesAvailable,
-				}}
-			>
-				{content}
-			</SexContext.Provider>
-		);
-	};
-
-	return renderContent();
+	return content;
 };
 
 export default Sex;

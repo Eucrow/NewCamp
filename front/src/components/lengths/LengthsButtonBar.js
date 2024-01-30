@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 
 import LengthsContext from "../../contexts/LengthsContext";
+import SexContext from "../../contexts/SexContext";
+
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
@@ -10,18 +12,19 @@ const LengthsButtonBar = () => {
 	var ButtonBar = null;
 
 	const lengthsContext = useContext(LengthsContext);
+	const sexContext = useContext(SexContext);
 
-	if (lengthsContext.lengthsStatus === "view") {
+	if (sexContext.sexStatus === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<UiButtonStatusHandle
 					buttonText={"Edit Lengths"}
-					handleMethod={lengthsContext.setLengthsStatus}
+					handleMethod={sexContext.setSexStatus}
 					newStatus={"edit"}
 				/>
 			</div>
 		);
-	} else if (lengthsContext.lengthsStatus === "edit") {
+	} else if (sexContext.sexStatus === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<button className="buttonsWrapper__button" type="submit" disabled={!lengthsContext.validLengths}>
@@ -36,7 +39,7 @@ const LengthsButtonBar = () => {
 				</button>
 			</div>
 		);
-	} else if (lengthsContext.lengthsStatus === "new") {
+	} else if (sexContext.sexStatus === "new") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<button className="buttonsWrapper__button" type="submit" disabled={!lengthsContext.validLengths}>
