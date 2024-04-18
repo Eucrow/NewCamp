@@ -68,8 +68,6 @@ const Catch = ({
 					/>
 					{viewSexes && (
 						<Sexes
-							// HAY QUE CAMBIAR ESTE thisCatch.catch_id POR thisCatch.catch_id
-							// y en la respuesta del servidor cambiar el id por sampled_weight_id, creo
 							catchId={thisCatch.catch_id}
 							unit={thisCatch.unit}
 							increment={thisCatch.increment}

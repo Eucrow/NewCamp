@@ -340,9 +340,9 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 	const createRangeLengths = (minLength, maxLength) => {
 		var newLengths = [];
 
-		if (Number(minLength) === 1) {
-			minLength = 0;
-		}
+		// if (Number(minLength) === 1) {
+		// 	minLength = 0;
+		// }
 
 		for (var l = Number(minLength); l <= Number(maxLength); l += Number(increment)) {
 			newLengths.push({

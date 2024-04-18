@@ -68,7 +68,8 @@ class CatchHaulAPI(APIView):
 
     def post(self, request):
         response_data = {}
-        catch_serializer = CatchSerializer(data=request.data, partial=True)
+        # catch_serializer = CatchSerializer(data=request.data, partial=True)
+        catch_serializer = CatchesVerboseSerializer(data=request.data, partial=True)
         sample_weight_serializer = SampleWeightSerializer(
             data=request.data, partial=True)
 
@@ -83,7 +84,7 @@ class CatchHaulAPI(APIView):
         if "sampled_weight" in request.data:
             if sample_weight_serializer.is_valid() & (request.data["sampled_weight"] != "") & (
                     request.data["sampled_weight"] is not None):
-                sample_weight_serializer.save(catch_id=catch_serializer.data["id"],
+                sample_weight_serializer.save(catch_id=catch_serializer.data["catch_id"],
                                               sampled_weight=request.data["sampled_weight"])
                 response_data.update(sample_weight_serializer.data)
 
