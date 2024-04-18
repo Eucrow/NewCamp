@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import LengthForm from "./LengthForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
+import LengthsRangeForm from "./LengthsRangeForm.js";
 
 import LengthsContext from "../../contexts/LengthsContext";
 import SexContext from "../../contexts/SexContext.js";
@@ -20,7 +21,7 @@ const LengthsForm = () => {
 			//TODO: Add the aria property aria labels to avoid the screen readers read the form as a form.
 			return (
 				<form className="lengthsWrapper">
-					<div className="formLenghts__table">
+					<div className="formLengths__table">
 						<div className="formLengths__row ">
 							<div className="formLengths__cell formLengths__cell--header">
 								{lengthsContext.measureUnit}
@@ -52,10 +53,10 @@ const LengthsForm = () => {
 					className="lengthsWrapper"
 					onSubmit={(e) => {
 						lengthsContext.saveSexAndLengths(e, lengthsContext.sex, lengthsContext.lengths);
-						lengthsContext.removeZeroTails(lengthsContext.lengths);
+						// lengthsContext.removeZeroTailsInState(lengthsContext.lengths);
 					}}
 				>
-					<div className="formLenghts__table">
+					<div className="formLengths__table">
 						<div className="formLengths__row ">
 							<div className="formLengths__cell formLengths__cell--header">
 								{lengthsContext.measureUnit}
@@ -65,13 +66,13 @@ const LengthsForm = () => {
 								className="formLengths__cell formLengths__cell--header formLengths--hidden"
 								aria-hidden="true"
 							>
-								{/* Prevent space for two columns more. Mandatory to show propertly the lines of the first row */}
+								{/* Prevent space for two columns more. Mandatory to show properly the lines of the first row */}
 							</div>
 							<div
 								className="formLengths__cell formLengths__cell--header formLengths--hidden"
 								aria-hidden="true"
 							>
-								{/* Prevent space for two columns more. Mandatory to show propertly the lines of the first row */}
+								{/* Prevent space for two columns more. Mandatory to show properly the lines of the first row */}
 							</div>
 						</div>
 						{lengthsContext.lengths.map((l, idx) => {
@@ -81,6 +82,15 @@ const LengthsForm = () => {
 					<LengthsButtonBar />
 				</form>
 			);
+		} else if (sexContext.sexStatus === "add") {
+			return (
+				<div className="formLengths__table">
+					<LengthsRangeForm />
+					<LengthsButtonBar />
+				</div>
+			);
+		} else if (sexContext.sexStatus === "empty") {
+			return null;
 		}
 	};
 

@@ -1,29 +1,28 @@
-
 .lengthsWrapper {
-    // margin: 0 auto;
-    display: table;
-    padding: 10px 0 15px 10%;
-    width: fit-content;
+	// margin: 0 auto;
+	display: table;
+	padding: 10px 0 15px 10%;
+	width: fit-content;
 }
 
-.formLenghts__table{
-    display: table;
-    padding-bottom: 5px;
+.formLengths__table {
+	display: table;
+	padding-bottom: 5px;
 }
 
 .formLengths__row {
-    display: table-row;
+	display: table-row;
 }
 
 .formLengths__cell {
-    display: table-cell;
-    padding:1px 5px 1px 0px;
-    vertical-align: middle;
+	display: table-cell;
+	padding: 1px 5px 1px 0px;
+	vertical-align: middle;
 }
 
-.formLengths__cell--header{
-    font-size: 0.8em;
-    font-weight: bold;
+.formLengths__cell--header {
+	font-size: 0.8em;
+	font-weight: bold;
 }
 
 // Lines before first lengths row and after the last one.
@@ -31,25 +30,20 @@
 // the use of padding-bottom (and others) in the table-row. This property only can be
 // altered in display:table-cell elements.
 .formLengths__row:last-child > .formLengths__cell,
-.formLengths__row:first-child > .formLengths__cell
-{
-    border-width: 0 0 1px 0 ;
-    border-style: solid;
-    border-color: var(--blue-gradient-3);
-    padding-bottom: 3px
+.formLengths__row:first-child > .formLengths__cell {
+	border-width: 0 0 1px 0;
+	border-style: solid;
+	border-color: var(--blue-gradient-3);
+	padding-bottom: 3px;
 }
 
 .formLengths__row:nth-child(2) > .formLengths__cell {
-    padding-top: 3px;
+	padding-top: 3px;
 }
 
 // Mandatory to show propertly the lines of the first row:
-.formLengths--hidden{
-    width: 0px;
-    padding-right: 0px;
-    padding-left: 0px;
+.formLengths--hidden {
+	width: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
 }
-
-
-
-

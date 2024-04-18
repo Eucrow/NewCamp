@@ -1,9 +1,7 @@
-import React, { Fragment, useEffect, useState, useReducer, useContext } from "react";
+import React, { useEffect, useState, useReducer, useContext } from "react";
 import LengthsContext from "../../contexts/LengthsContext";
 
 import LengthsForm from "./LengthsForm.js";
-import LengthsButtonBar from "./LengthsButtonBar.js";
-import LengthsRangeForm from "./LengthsRangeForm.js";
 import SexContext from "../../contexts/SexContext.js";
 
 /**
@@ -84,7 +82,7 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 			filledLengths = transformUnitsFromMm(filledLengths);
 			setBackupLengths(filledLengths);
 			setLengths(filledLengths);
-			sexContext.setSexStatus(sexContext.sexStatus);
+			sexContext.setSexStatus("view");
 
 			// a deep copy is mandatory because the data to be modified is nested:
 			let newLengths = JSON.parse(JSON.stringify(filledLengths));
@@ -157,7 +155,7 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 		var minimumLength = Math.min(...len);
 		var maximumLength = Math.max(...len);
 
-		var newLenghts = [];
+		var newLengths = [];
 
 		// to calculate the increment in lengths, in case the unit is cm (unit=1)
 		// simply multiply the increment by 10... TODO: Try to do it in a more global way.
@@ -172,13 +170,13 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 			let originalLength = lengths.filter((e) => e.length === i);
 
 			if (originalLength.length !== 0) {
-				newLenghts.push({
+				newLengths.push({
 					id: originalLength[0].id,
 					length: originalLength[0].length,
 					number_individuals: originalLength[0].number_individuals,
 				});
 			} else {
-				newLenghts.push({
+				newLengths.push({
 					id: 0,
 					length: i,
 					number_individuals: 0,
@@ -186,7 +184,7 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 			}
 		}
 
-		return newLenghts;
+		return newLengths;
 	};
 
 	/**
@@ -216,7 +214,7 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 	 * Remove zero tails from lengths array.
 	 * @param {array} lengths to remove zero tails.
 	 */
-	const removeZeroTails = (lengths) => {
+	const removeZeroTailsInState = (lengths) => {
 		if (lengths.length !== 0) {
 			var newLengths = lengths;
 
@@ -308,14 +306,16 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 	const saveSexAndLengths = (e, sex, lengths) => {
 		e.preventDefault();
 
-		// if(sexExists(sex, catchId) === true) {
-		//     deleteSex()
+		lengths = removeUselessElementsLengths(lengths);
+		lengths = removeZeroNumberIndividuals(lengths);
 
 		if (sexId === undefined) {
 			createSex(e, sex, catchId).then((s) => {
 				saveLengths(lengths, s.id)
 					.then((lengths) => {
 						setLengths(fillLengths(lengths));
+					})
+					.then(() => {
 						sexContext.setSexStatus("view");
 					})
 					.catch((error) => console.log(error));
@@ -428,19 +428,6 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 		sexContext.setSexStatus("view");
 	};
 
-	const partialContent = () => {
-		if (sexContext.sexStatus === "add") {
-			return (
-				<Fragment>
-					<LengthsRangeForm createRangeLengths={createRangeLengths} />
-					<LengthsButtonBar />
-				</Fragment>
-			);
-		} else {
-			return <LengthsForm />;
-		}
-	};
-
 	// render content
 	const renderContent = () => {
 		return (
@@ -449,7 +436,7 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 					lengths: lengths,
 					measureUnit: measureUnit,
 					increment: increment,
-					removeZeroTails: removeZeroTails,
+					removeZeroTailsInState: removeZeroTailsInState,
 					editLength: editLength,
 					cancelEditLengths: cancelEditLengths,
 					deleteLength: deleteLength,
@@ -459,9 +446,10 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 					setValidLengths: setValidLengths,
 					saveSexAndLengths: saveSexAndLengths,
 					sex: sex,
+					createRangeLengths: createRangeLengths,
 				}}
 			>
-				<Fragment>{partialContent()}</Fragment>
+				<LengthsForm />
 			</LengthsContext.Provider>
 		);
 	};

@@ -8,7 +8,7 @@ import Sex from "./Sex.js";
  * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is milimeters.
  * @param {numeric} increment Increment of measurement unit.
  * @param {boolean} viewSexes Show or hide this Sexes component.
- * @returns JSX of sexes component. The componet show three columns, one by sex: male, female and undetermined.
+ * @returns JSX of sexes component. The component show three columns, one by sex: male, female and undetermined.
  */
 const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 	var [sexes, setSexes] = useState([]);
@@ -116,42 +116,59 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 		// which would have its final value, not the value it had when the function was created.
 		for (let i = 1; i <= 3; i++) {
 			var sex = sexes.find((s) => s.sex === i);
-			if (sex === undefined) {
-				content.push(
-					<Sex
-						key={i}
-						thisSexStatus={"empty"}
-						sex={i}
-						catchId={catchId}
-						unit={unit}
-						increment={increment}
-						createSex={createSex}
-						deleteSex={deleteSex}
-						sexesBackup={sexesBackup}
-					/>
-				);
-			} else {
-				content.push(
-					<Sex
-						key={i}
-						thisSexStatus={"view"}
-						sexId={sex.id}
-						sex={sex.sex}
-						catchId={catchId}
-						unit={unit}
-						increment={increment}
-						deleteSex={deleteSex}
-						sexesBackup={sexesBackup}
-						updateSex={updateSex}
-					/>
-				);
-			}
+
+			content.push(
+				<Sex
+					key={i}
+					thisSexStatus={sex === undefined ? "empty" : "view"}
+					sex={sex ? sex.sex : i}
+					sexId={sex ? sex.id : undefined}
+					catchId={catchId}
+					unit={unit}
+					increment={increment}
+					createSex={createSex}
+					deleteSex={deleteSex}
+					sexesBackup={sexesBackup}
+					updateSex={updateSex}
+				/>
+			);
 		}
 
-		return content;
-		// } else {
-		// 	return null;
+		// for (let i = 1; i <= 3; i++) {
+		// 	var sex = sexes.find((s) => s.sex === i);
+		// 	if (sex === undefined) {
+		// 		content.push(
+		// 			<Sex
+		// 				key={i}
+		// 				thisSexStatus={"empty"}
+		// 				sex={i}
+		// 				catchId={catchId}
+		// 				unit={unit}
+		// 				increment={increment}
+		// 				createSex={createSex}
+		// 				deleteSex={deleteSex}
+		// 				sexesBackup={sexesBackup}
+		// 			/>
+		// 		);
+		// 	} else {
+		// 		content.push(
+		// 			<Sex
+		// 				key={i}
+		// 				thisSexStatus={"view"}
+		// 				sexId={sex.id}
+		// 				sex={sex.sex}
+		// 				catchId={catchId}
+		// 				unit={unit}
+		// 				increment={increment}
+		// 				deleteSex={deleteSex}
+		// 				sexesBackup={sexesBackup}
+		// 				updateSex={updateSex}
+		// 			/>
+		// 		);
+		// 	}
 		// }
+
+		return content;
 	};
 
 	var content = viewSexes && <div className="sexesWrapper">{renderSexes(sexes)}</div>;

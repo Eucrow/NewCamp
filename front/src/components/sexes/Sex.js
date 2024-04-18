@@ -8,7 +8,7 @@ import SexContext from "../../contexts/SexContext.js";
  * @param {string} thisSexStatus "view", "edit" or "add".
  * @param {number} sexId Id of sex.
  * @param {string} sex Sex.
- * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is milimeters.
+ * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is millimeters.
  * @param {numeric} increment Increment of measurement unit.
  * @param {numeric} catchId Id of catch.
  * @param {Function} createSex Function to create sex.
@@ -30,64 +30,8 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 	useEffect(() => {
 		setThisSex(sex);
 		setSexStatus(thisSexStatus);
+		console.log("dñkfhsdñ");
 	}, [sex, thisSexStatus]);
-
-	var content = null;
-
-	if (sexStatus === "view") {
-		content = (
-			<div className="sexWrapper">
-				<div>
-					<div className="form__cell">{sexesAvailable[thisSex]}</div>
-					<div className="form__cell ">
-						<SexButtonBar sexId={sexId} deleteSex={deleteSex} />
-					</div>
-				</div>
-				<Lengths
-					sexId={sexId}
-					sex={sex}
-					createSex={createSex}
-					catchId={catchId}
-					unit={unit}
-					increment={increment}
-				/>
-			</div>
-		);
-	} else if (sexStatus === "add") {
-		content = (
-			<div className="sexWrapper">
-				<Lengths
-					sexId={sexId}
-					sex={sex}
-					createSex={createSex}
-					deleteSex={deleteSex}
-					catchId={catchId}
-					unit={unit}
-					increment={increment}
-				/>
-			</div>
-		);
-	} else if (sexStatus === "edit") {
-		content = (
-			<div className="sexWrapper">
-				<Lengths
-					sexId={sexId}
-					sex={sex}
-					createSex={createSex}
-					deleteSex={deleteSex}
-					catchId={catchId}
-					unit={unit}
-					increment={increment}
-				/>
-			</div>
-		);
-	} else if (sexStatus === "empty") {
-		content = (
-			<div className="sexWrapper">
-				<SexButtonBar />
-			</div>
-		);
-	}
 
 	const renderContent = () => {
 		return (
@@ -99,7 +43,22 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 					sexesAvailable: sexesAvailable,
 				}}
 			>
-				{content}
+				<div className="sexWrapper">
+					<div>
+						<div className="form__cell">{sexesAvailable[thisSex]}</div>
+						<div className="form__cell ">
+							<SexButtonBar sexId={sexId} deleteSex={deleteSex} />
+						</div>
+					</div>
+					<Lengths
+						sexId={sexId}
+						sex={sex}
+						createSex={createSex}
+						catchId={catchId}
+						unit={unit}
+						increment={increment}
+					/>
+				</div>
 			</SexContext.Provider>
 		);
 	};

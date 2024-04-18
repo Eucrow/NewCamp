@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 
+import LengthsContext from "../../contexts/LengthsContext";
+
 /**
- * Form to create a range of lenghts.
- * @param {Function} createRAngeLengths Function to add lengths to state in parent component.
+ * Form to create a range of lengths.
  * @returns {JSX.Element} A JSX element that renders the lengths range form.
  */
-const LengthsRangeForm = ({ createRangeLengths }) => {
+const LengthsRangeForm = () => {
+	const lengthsContext = useContext(LengthsContext);
+
 	const [minimumRange, setMinimumRange] = useState("");
 
 	const [maximunRange, setMaximumRange] = useState("");
@@ -39,7 +42,7 @@ const LengthsRangeForm = ({ createRangeLengths }) => {
 				</div>
 				<div className="formLengths__row">
 					<label className="formLengths__cell">
-						Maximum lenght:
+						Maximum length:
 						<input
 							type="number"
 							id="maximum"
@@ -57,7 +60,7 @@ const LengthsRangeForm = ({ createRangeLengths }) => {
 							className="buttonsWrapper__button"
 							type="button"
 							onClick={() => {
-								createRangeLengths(minimumRange, maximunRange);
+								lengthsContext.createRangeLengths(minimumRange, maximunRange);
 								setMaximumRange("");
 								setMinimumRange("");
 							}}
