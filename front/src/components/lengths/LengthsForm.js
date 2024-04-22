@@ -16,8 +16,12 @@ const LengthsForm = () => {
 	const lengthsContext = useContext(LengthsContext);
 	const sexContext = useContext(SexContext);
 
+	if (lengthsContext.lengths.length === 0) {
+		lengthsContext.setLengthsStatus("empty");
+	}
+
 	const renderContent = () => {
-		if (sexContext.sexStatus === "view") {
+		if (lengthsContext.lengthsStatus === "view") {
 			//TODO: Add the aria property aria labels to avoid the screen readers read the form as a form.
 			return (
 				<form className="lengthsWrapper">
@@ -31,13 +35,13 @@ const LengthsForm = () => {
 								className="formLengths__cell formLengths__cell--header formLengths--hidden"
 								aria-hidden="true"
 							>
-								{/* Prevent space for two columns more. Mandatory to show propertly the lines of the first row */}
+								{/* Prevent space for two columns more. Mandatory to show properly the lines of the first row */}
 							</div>
 							<div
 								className="formLengths__cell formLengths__cell--header formLengths--hidden"
 								aria-hidden="true"
 							>
-								{/* Prevent space for two columns more. Mandatory to show propertly the lines of the first row */}
+								{/* Prevent space for two columns more. Mandatory to show properly the lines of the first row */}
 							</div>
 						</div>
 						{lengthsContext.lengths.map((l, idx) => {
@@ -47,7 +51,7 @@ const LengthsForm = () => {
 					<LengthsButtonBar />
 				</form>
 			);
-		} else if (sexContext.sexStatus === "edit") {
+		} else if (lengthsContext.lengthsStatus === "edit") {
 			return (
 				<form
 					className="lengthsWrapper"
@@ -82,15 +86,27 @@ const LengthsForm = () => {
 					<LengthsButtonBar />
 				</form>
 			);
-		} else if (sexContext.sexStatus === "add") {
+		} else if (lengthsContext.lengthsStatus === "add") {
 			return (
 				<div className="formLengths__table">
 					<LengthsRangeForm />
 					<LengthsButtonBar />
 				</div>
 			);
-		} else if (sexContext.sexStatus === "empty") {
-			return null;
+		} else if (lengthsContext.lengthsStatus === "empty" && sexContext.sexStatus === "add") {
+			return (
+				<div className="formLengths__table">
+					<LengthsRangeForm />
+					<LengthsButtonBar />
+				</div>
+			);
+		} else if (lengthsContext.lengthsStatus === "empty" && sexContext.sexStatus !== "add") {
+			return (
+				<div className="formLengths__table">
+					<p className="formLengths__cell">There aren't any lengths</p>
+					<LengthsButtonBar />
+				</div>
+			);
 		}
 	};
 

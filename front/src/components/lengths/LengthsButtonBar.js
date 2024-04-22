@@ -14,17 +14,17 @@ const LengthsButtonBar = () => {
 	const lengthsContext = useContext(LengthsContext);
 	const sexContext = useContext(SexContext);
 
-	if (sexContext.sexStatus === "view") {
+	if (lengthsContext.lengthsStatus === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<UiButtonStatusHandle
 					buttonText={"Edit Lengths"}
-					handleMethod={sexContext.setSexStatus}
+					handleMethod={lengthsContext.setLengthsStatus}
 					newStatus={"edit"}
 				/>
 			</div>
 		);
-	} else if (sexContext.sexStatus === "edit") {
+	} else if (lengthsContext.lengthsStatus === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<button className="buttonsWrapper__button" type="submit" disabled={!lengthsContext.validLengths}>
@@ -39,7 +39,7 @@ const LengthsButtonBar = () => {
 				</button>
 			</div>
 		);
-	} else if (sexContext.sexStatus === "new") {
+	} else if (lengthsContext.lengthsStatus === "new") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<button className="buttonsWrapper__button" type="submit" disabled={!lengthsContext.validLengths}>
@@ -51,6 +51,19 @@ const LengthsButtonBar = () => {
 					}}
 				>
 					Cancel
+				</button>
+			</div>
+		);
+	} else if (sexContext.sexStatus === "add") {
+		ButtonBar = (
+			<div className="form__cell buttonsWrapper--center">
+				<button
+					className="buttonsWrapper__button"
+					onClick={() => {
+						lengthsContext.setLengthsStatus("add");
+					}}
+				>
+					Add {sexContext.sexesAvailable[sexContext.sex]}
 				</button>
 			</div>
 		);

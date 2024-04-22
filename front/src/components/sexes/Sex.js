@@ -30,7 +30,7 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 	useEffect(() => {
 		setThisSex(sex);
 		setSexStatus(thisSexStatus);
-		console.log("dñkfhsdñ");
+		console.log("Sex component uploaded ", sex);
 	}, [sex, thisSexStatus]);
 
 	const renderContent = () => {

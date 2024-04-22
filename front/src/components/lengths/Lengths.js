@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useReducer, useContext } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import LengthsContext from "../../contexts/LengthsContext";
 
 import LengthsForm from "./LengthsForm.js";
-import SexContext from "../../contexts/SexContext.js";
 
 /**
  * Manages and displays lengths data of a sex.
@@ -16,9 +15,7 @@ import SexContext from "../../contexts/SexContext.js";
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex }) => {
-	const sexContext = useContext(SexContext);
-
+const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -27,6 +24,8 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 	]);
 
 	const [lengths, setLengths] = useState([]);
+
+	const [lengthsStatus, setLengthsStatus] = useState("view");
 
 	const [responseError, setResponseError] = useState("none");
 
@@ -77,15 +76,15 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 	 * Show lengths.
 	 */
 	const handleShowLengths = () => {
-		getLengths().then((lengths) => {
-			var filledLengths = fillLengths(lengths);
-			filledLengths = transformUnitsFromMm(filledLengths);
-			setBackupLengths(filledLengths);
-			setLengths(filledLengths);
-			sexContext.setSexStatus("view");
+		getLengths().then((lens) => {
+			lens = fillLengths(lens);
+			lens = transformUnitsFromMm(lens);
+			setBackupLengths(lens);
+			setLengths(lens);
+			lens.length > 0 ? setLengthsStatus("view") : setLengthsStatus("add");
 
 			// a deep copy is mandatory because the data to be modified is nested:
-			let newLengths = JSON.parse(JSON.stringify(filledLengths));
+			let newLengths = JSON.parse(JSON.stringify(lens));
 			newLengths.forEach((el) => {
 				el["is_valid"] = true;
 			});
@@ -314,9 +313,12 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 				saveLengths(lengths, s.id)
 					.then((lengths) => {
 						setLengths(fillLengths(lengths));
+						console.log("1", lengths);
 					})
 					.then(() => {
-						sexContext.setSexStatus("view");
+						console.log("2", lengths);
+						// sexContext.setSexStatus("view");
+						setLengthsStatus("view");
 					})
 					.catch((error) => console.log(error));
 			});
@@ -325,7 +327,8 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 				saveLengths(lengths, sexId)
 					.then((lengths) => {
 						setLengths(fillLengths(lengths));
-						sexContext.setSexStatus("view");
+						// sexContext.setSexStatus("view");
+						setLengthsStatus("view");
 					})
 					.catch((error) => console.log(error));
 			});
@@ -352,7 +355,8 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 		}
 
 		setLengths(newLengths);
-		sexContext.setSexStatus("edit");
+		// sexContext.setSexStatus("edit");
+		setLengthsStatus("edit");
 	};
 
 	/**
@@ -425,7 +429,8 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 	 */
 	const cancelEditLengths = () => {
 		setLengths(backupLengths);
-		sexContext.setSexStatus("view");
+		// sexContext.setSexStatus("view");
+		setLengthsStatus("view");
 	};
 
 	// render content
@@ -447,6 +452,8 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex, deleteSex })
 					saveSexAndLengths: saveSexAndLengths,
 					sex: sex,
 					createRangeLengths: createRangeLengths,
+					lengthsStatus: lengthsStatus,
+					setLengthsStatus: setLengthsStatus,
 				}}
 			>
 				<LengthsForm />

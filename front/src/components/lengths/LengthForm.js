@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef } from "react";
 
 import LengthsContext from "../../contexts/LengthsContext";
-import SexContext from "../../contexts/SexContext";
 
 import UiIconAdd from "../ui/UiIconAdd";
 import UiIconDelete from "../ui/UiIconDelete";
@@ -24,12 +23,11 @@ const LengthForm = ({ l, idx }) => {
 	}, [l]);
 
 	const lengthsContext = useContext(LengthsContext);
-	const sexContext = useContext(SexContext);
 
 	let lengthRef = useRef(null);
 
 	const renderContent = () => {
-		if (sexContext.sexStatus === "view") {
+		if (lengthsContext.lengthsStatus === "view") {
 			return (
 				<div className="formLengths__row" key={l.length}>
 					<div className="formLengths__cell">
@@ -55,7 +53,7 @@ const LengthForm = ({ l, idx }) => {
 					</div>
 				</div>
 			);
-		} else if (sexContext.sexStatus === "edit") {
+		} else if (lengthsContext.lengthsStatus === "edit") {
 			return (
 				<div className="formLengths__row" key={idx}>
 					<div className="formLengths__cell">
