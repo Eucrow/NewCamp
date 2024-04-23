@@ -1,26 +1,20 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Sex from "./Sex.js";
-import SexesButtonBar from "./SexesButtonBar";
 
 /**
  * Sexes component.
- * @param {array} sexes Sexes of catch. If doesn't exist, it will be an empty array.
  * @param {numeric} catchId Id of catch.
- * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is milimeters.
+ * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is millimeters.
  * @param {numeric} increment Increment of measurement unit.
- * @param {boolean} view_sexes Show or hide this Sexes component.
- * @returns JSX of sexes component.
+ * @param {boolean} viewSexes Show or hide this Sexes component.
+ * @returns JSX of sexes component. The component show three columns, one by sex: male, female and undetermined.
  */
 const Sexes = ({ catchId, unit, increment, viewSexes }) => {
-	var [addSex, setAddSex] = useState(false);
-
 	var [sexes, setSexes] = useState([]);
 
 	const apiSexes = "http://127.0.0.1:8000/api/1.0/sexes/" + catchId;
 	const apiSex = "http://127.0.0.1:8000/api/1.0/sex/";
-
-	const sexesBackup = sexes;
 
 	useEffect(() => {
 		if (viewSexes === true) {
@@ -31,6 +25,16 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 		}
 	}, [apiSexes, viewSexes]);
 
+	/**
+	 * Sends a POST request to create a new sex.
+	 *
+	 * @param {Event} evt - The event object, typically from a form submission.
+	 * @param {string} sex - The sex to be created.
+	 * @param {string} catchId - The ID associated with the sex.
+	 * @returns {Promise} A Promise that resolves to the newly created sex.
+	 * If the response status is greater than 400, an alert is shown and the Promise is rejected.
+	 * If the request is successful, the new sex is added to the state and the Promise resolves to the new sex.
+	 */
 	const createSex = (evt, sex, catchId) => {
 		evt.preventDefault();
 
@@ -39,7 +43,7 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			sex: sex,
 		};
 
-		fetch(apiSex, {
+		return fetch(apiSex, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -55,6 +59,7 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			.then((newSex) => {
 				const newSexes = sexes.concat(newSex);
 				setSexes(newSexes);
+				return newSex;
 			})
 			.catch((error) => console.log("Error"));
 	};
@@ -64,7 +69,7 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			id: sexId,
 		};
 
-		fetch(apiSex, {
+		return fetch(apiSex, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
@@ -99,42 +104,35 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			.catch((error) => console.log("Error"));
 	};
 
-	var content = (
-		<Fragment>
-			{viewSexes === true ? (
-				<div className="form__row sexesWrapper">
-					{sexes.map((s) => {
-						return (
-							<Sex
-								key={s.id}
-								sexId={s.id}
-								sex={s.sex}
-								catchId={catchId}
-								unit={unit}
-								increment={increment}
-								deleteSex={deleteSex}
-								sexesBackup={sexesBackup}
-								updateSex={updateSex}
-							/>
-						);
-					})}
+	const renderSexes = (sexes) => {
+		// if (sexes.length !== 0) {
+		let content = [];
 
-					{addSex === true ? (
-						<Sex
-							catchId={catchId}
-							thisSexStatus={"add"}
-							createSex={createSex}
-							setAddSex={setAddSex}
-							sexesBackup={sexesBackup}
-						/>
-					) : (
-						<SexesButtonBar sexStatus={"view"} setAddSex={setAddSex} />
-					)}
-				</div>
-			) : null}
-		</Fragment>
-	);
+		// Using 'let' instead of 'var' to declare 'i' to ensure each function created in the loop
+		// gets its own 'i', with the value 'i' had at the time the function was created.
+		// This prevents potential bugs where all functions share the same 'i',
+		// which would have its final value, not the value it had when the function was created.
+		for (let i = 1; i <= 3; i++) {
+			var sex = sexes.find((s) => s.sex === i);
 
+			content.push(
+				<Sex
+					key={i}
+					sex={i}
+					sexId={sex ? sex.id : undefined}
+					catchId={catchId}
+					unit={unit}
+					increment={increment}
+					createSex={createSex}
+					deleteSex={deleteSex}
+				/>
+			);
+		}
+
+		return content;
+	};
+
+	var content = viewSexes && <div className="sexesWrapper">{renderSexes(sexes)}</div>;
 	return content;
 };
 

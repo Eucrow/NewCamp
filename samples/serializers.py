@@ -8,9 +8,12 @@ class SampleWeightSerializer(serializers.ModelSerializer):
     Sample Weights serializer
     """
 
+    # sampled_weight_id = serializers.IntegerField(source='id', read_only=True)
+
     class Meta:
         model = SampledWeight
         fields = ['id', 'sampled_weight', 'catch_id', ]
+        # fields = ['sampled_weight_id', 'sampled_weight', 'catch_id', ]
 
 
 # class SexSerializer(serializers.ModelSerializer):

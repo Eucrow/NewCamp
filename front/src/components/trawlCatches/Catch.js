@@ -39,7 +39,7 @@ const Catch = ({
 	const [backupCatch] = useState(thisCatch || "");
 
 	const handleCancel = () => {
-		handleCancelEditCatch(thisCatch.id, backupCatch);
+		handleCancelEditCatch(thisCatch.catch_id, backupCatch);
 	};
 
 	const renderContent = () => {
@@ -62,16 +62,18 @@ const Catch = ({
 						thisCatch={thisCatch}
 						deleteCatch={deleteCatch}
 						handleViewSexes={setViewSexes}
-						catchId={thisCatch.id}
+						catchId={thisCatch.catch_id}
 						viewSexes={viewSexes}
 						editCatchStatus={setCatchStatus}
 					/>
-					<Sexes
-						catchId={thisCatch.id}
-						unit={thisCatch.unit}
-						increment={thisCatch.increment}
-						viewSexes={viewSexes}
-					/>
+					{viewSexes && (
+						<Sexes
+							catchId={thisCatch.catch_id}
+							unit={thisCatch.unit}
+							increment={thisCatch.increment}
+							viewSexes={viewSexes}
+						/>
+					)}
 				</Fragment>
 			);
 		} else if (catchStatus === "edit") {
@@ -86,7 +88,7 @@ const Catch = ({
 					handleChangeSampledWeight={handleChangeSampledWeight}
 					updateCatch={updateCatch}
 					editCatchStatus={setCatchStatus}
-					catchId={thisCatch.id}
+					catchId={thisCatch.catch_id}
 					viewSexes={viewSexes}
 					handleCancel={handleCancel}
 				/>

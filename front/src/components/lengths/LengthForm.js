@@ -5,12 +5,20 @@ import LengthsContext from "../../contexts/LengthsContext";
 import UiIconAdd from "../ui/UiIconAdd";
 import UiIconDelete from "../ui/UiIconDelete";
 
+/**
+ * Renders a form for displaying and editing one length.
+ * @component
+ *
+ * @returns {JSX.Element} A JSX element that renders the lengths form.
+ */
 const LengthForm = ({ l, idx }) => {
 	useEffect(() => {
 		if (l.is_valid === false) {
 			lengthRef.current.setCustomValidity("This length already exists.");
+			lengthsContext.setValidLengths(false);
 		} else {
 			lengthRef.current.setCustomValidity("");
+			lengthsContext.setValidLengths(true);
 		}
 	}, [l]);
 

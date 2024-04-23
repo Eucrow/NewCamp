@@ -55,3 +55,10 @@ class SexAPI(APIView):
         sex = Sex.objects.get(id=request.data["id"])
         sex.delete()
         return Response(status=HTTP_204_NO_CONTENT)
+
+
+class SexExistsAPI(APIView):
+
+    def get(self, request, catch_id, sex):
+        sex_exists = Sex.objects.filter(catch_id=catch_id, sex=sex).exists()
+        return Response(sex_exists)

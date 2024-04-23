@@ -38,7 +38,7 @@ from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvAp
 from catches.api import CatchHaulListAPI, CatchHaulAPI, CatchVerboseAPI
 from samples.api import LengthsAPI, SexLengthsAPI
 # , SampledWeightDetail, SampledWeightCreate
-from sexes.api import SexAPI, SexesAPI
+from sexes.api import SexAPI, SexesAPI, SexExistsAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 from conn_r.api import GetTrawlHaulsAPIConnR, GetDataStationsAPIConnR
 
@@ -189,7 +189,8 @@ urlpatterns = [
                   path('api/1.0/sex/', SexAPI.as_view(), name="create_sex_api"),
                   # path('api/1.0/sex/<int:pk>', SexDetail.as_view(), name="retrieve_update_destroy_sex_api"),
                   path('api/1.0/sex/<int:pk>', SexAPI.as_view(), name="retrieve_update_destroy_sex_api"),
-
+                  re_path(r'^api/1.0/sexes/exists/(?P<catch_id>[0-9]+)/(?P<sex>[123]+)$', SexExistsAPI.as_view(),
+                          name="sex_exists_api"),
                   # re_path(r'^api/1.0/sex/$', SexAPI.as_view(), name="create_update_sex_api"),
                   # re_path(r'^api/1.0/sexes/exists/(?P<catch_id>[0-9]+)$', SexesExists.as_view(),
                   #     name="exists_sexes_api"),

@@ -1,18 +1,21 @@
-import React, { Fragment, useEffect, useState, useReducer } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import LengthsContext from "../../contexts/LengthsContext";
 
 import LengthsForm from "./LengthsForm.js";
-import LengthsButtonBar from "./LengthsButtonBar.js";
-import LengthsRangeForm from "./LengthsRangeForm.js";
-import UiIconDelete from "../ui/UiIconDelete.js";
 
 /**
- * Lengths component.
- * @param {number} sexId
- * @param {string} lengths Posible values: "view", "edit", "hide".
- * @returns
+ * Manages and displays lengths data of a sex.
+ * @component
+ * @param {number} sexId The ID of the sex for which lengths data should be fetched.
+ * @param {number} sex Sex.
+ * @param {number} catchId The ID of the catch for which lengths data should be fetched.
+ * @param {number} unit The unit of measurement for the lengths. 1 represents cm, 2 represents mm.
+ * @param {number} increment The increment value for lengths.
+ * @param {Function} createSex A function to create a sex.
+ *
+ * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsStatus }) => {
+const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -22,9 +25,14 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 
 	const [lengths, setLengths] = useState([]);
 
+	const [lengthsStatus, setLengthsStatus] = useState(sexId === undefined ? "empty" : "view");
+
 	const [responseError, setResponseError] = useState("none");
 
+	const [validLengths, setValidLengths] = useState(true);
+
 	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
+	const apiSexExists = "http://127.0.0.1:8000/api/1.0/sexes/exists/";
 
 	const getUnit = (u) => {
 		if (Number(u) === 1) {
@@ -44,17 +52,12 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 		}
 	}, [responseError]);
 
-	// useEffect(() => {
-	// 	handleShowLengths();
-
-	// 	setMeasureUnit(unit);
-	// }, [lengthsStatus]);
-
 	useEffect(() => {
-		handleShowLengths();
-
+		if (sexId !== undefined) {
+			handleShowLengths();
+		}
 		setMeasureUnit(unit);
-	}, []);
+	}, [sexId, unit]);
 
 	/**
 	 * Get all lengths of a sexId from database.
@@ -62,7 +65,6 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	 */
 	const getLengths = async () => {
 		const api = apiLengths + sexId;
-
 		const response = await fetch(api);
 		if (response.status > 400) {
 			setResponseError("Something went wrong! (getLengths)");
@@ -74,20 +76,30 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	 * Show lengths.
 	 */
 	const handleShowLengths = () => {
-		getLengths().then((lengths) => {
-			var filledLengths = fillLengths(lengths);
-			filledLengths = transformUnitsFromMm(filledLengths);
-			setBackupLengths(filledLengths);
-			setLengths(filledLengths);
-			setLengthsStatus(lengthsStatus);
+		getLengths().then((lens) => {
+			lens = fillLengths(lens);
+			lens = transformUnitsFromMm(lens);
+			setBackupLengths(lens);
+			setLengths(lens);
+			lens.length > 0 ? setLengthsStatus("view") : setLengthsStatus("add");
 
 			// a deep copy is mandatory because the data to be modified is nested:
-			let newLengths = JSON.parse(JSON.stringify(filledLengths));
+			let newLengths = JSON.parse(JSON.stringify(lens));
 			newLengths.forEach((el) => {
 				el["is_valid"] = true;
 			});
 			setLengths(newLengths);
 		});
+	};
+
+	const sexExists = async (sex, catchId) => {
+		const api = apiSexExists + catchId + "/" + sex;
+
+		const response = await fetch(api);
+		if (response.status > 400) {
+			setResponseError("Something went wrong! (getExistsLengths)");
+		}
+		return response.json();
 	};
 
 	/**
@@ -96,7 +108,6 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	 */
 	const deleteLengths = async () => {
 		const api = apiLengths + sexId;
-
 		const response = await fetch(api, {
 			method: "DELETE",
 			headers: {
@@ -143,7 +154,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 		var minimumLength = Math.min(...len);
 		var maximumLength = Math.max(...len);
 
-		var newLenghts = [];
+		var newLengths = [];
 
 		// to calculate the increment in lengths, in case the unit is cm (unit=1)
 		// simply multiply the increment by 10... TODO: Try to do it in a more global way.
@@ -158,13 +169,13 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 			let originalLength = lengths.filter((e) => e.length === i);
 
 			if (originalLength.length !== 0) {
-				newLenghts.push({
+				newLengths.push({
 					id: originalLength[0].id,
 					length: originalLength[0].length,
 					number_individuals: originalLength[0].number_individuals,
 				});
 			} else {
-				newLenghts.push({
+				newLengths.push({
 					id: 0,
 					length: i,
 					number_individuals: 0,
@@ -172,7 +183,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 			}
 		}
 
-		return newLenghts;
+		return newLengths;
 	};
 
 	/**
@@ -185,7 +196,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	};
 
 	/**
-	 * Remove useless elements of lengths array.
+	 * Remove useless elements of lengths array and maintain only lenght and number of individuals.
 	 * @param {array} lengths to clean.
 	 */
 	const removeUselessElementsLengths = (lengths) => {
@@ -202,7 +213,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	 * Remove zero tails from lengths array.
 	 * @param {array} lengths to remove zero tails.
 	 */
-	const removeZeroTails = (lengths) => {
+	const removeZeroTailsInState = (lengths) => {
 		if (lengths.length !== 0) {
 			var newLengths = lengths;
 
@@ -261,9 +272,8 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
 	 * @return JSON response or error.
 	 */
-	const saveLengths = async (lengths) => {
-		const api = apiLengths + sexId;
-
+	const saveLengths = async (lengths, sexIdentification) => {
+		const api = apiLengths + sexIdentification;
 		try {
 			const response = await fetch(api, {
 				method: "POST",
@@ -282,62 +292,50 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	};
 
 	/**
-	 * Save or Update lengths. Check if exists duplicated lengths in the array. If already exists
-	 * lengths for this sex, delete it first and save the new lengths.
-	 * TODO: make the length validation in the form, and not here.
-	 * @param {event} e
-	 * @param {array} lengths Array of dictionaries with lengths to save or update.
+	 * Handles the form submission event to save a sex and its associated lengths.
+	 * If the sexId is undefined, it creates a new sex and saves the lengths.
+	 * If the sexId is defined, it deletes the existing lengths and saves the new lengths.
+	 *
+	 * @param {Event} e - The event object, typically from a form submission.
+	 * @param {string} sex - The sex to be saved.
+	 * @param {Array} lengths - The lengths to be saved.
+	 * @returns {undefined} This function does not have a return value.
+	 * @throws {Error} If there's an error during the fetch requests, the error is logged to the console.
 	 */
-	const saveOrUpdateLengths = (e, lengths) => {
+	const saveSexAndLengths = (e, sex, lengths) => {
 		e.preventDefault();
 
-		orderLengths();
+		lengths = removeUselessElementsLengths(lengths);
+		lengths = removeZeroNumberIndividuals(lengths);
 
-		// Firstly, check if exists duplicated lengths
-		// TODO: check this in validation form
-		if (checkForLengthsDuplicated(lengths) === true) {
-			setResponseError("Duplicated lengths!");
+		if (sexId === undefined) {
+			createSex(e, sex, catchId).then((s) => {
+				saveLengths(lengths, s.id)
+					.then((lengths) => {
+						setLengths(fillLengths(lengths));
+						console.log("1", lengths);
+					})
+					.then(() => {
+						console.log("2", lengths);
+						// sexContext.setSexStatus("view");
+						setLengthsStatus("view");
+					})
+					.catch((error) => console.log(error));
+			});
 		} else {
-			getLengths()
-				.then((lengthts_in_database) => {
-					lengths = removeZeroNumberIndividuals(lengths);
-					lengths = removeUselessElementsLengths(lengths);
-					lengths = transformUnitsToMm(lengths);
-					if (Object.keys(lengthts_in_database).length === 0) {
-						// if there are not lengths already saved, save the new lengths:
-						saveLengths(lengths).catch((error) => console.log(error));
-						setBackupLengths(lengths);
-					} else {
-						// if there are lengths, first delete it, and then save the updated lengths.
-						deleteLengths()
-							.then(() => {
-								saveLengths(lengths);
-								setBackupLengths(lengths);
-							})
-							.catch((error) => console.log(error));
-					}
-				})
-
-				.then(() => {
-					setLengthsStatus("view");
-				})
-				.catch((error) => console.log("Error"));
+			deleteLengths().then(() => {
+				saveLengths(lengths, sexId)
+					.then((lengths) => {
+						setLengths(fillLengths(lengths));
+						// sexContext.setSexStatus("view");
+						// setLengthsStatus("view");
+					})
+					.then(() => {
+						setLengthsStatus("view");
+					})
+					.catch((error) => console.log(error));
+			});
 		}
-	};
-
-	/**
-	 * Check if the lengths array contains duplicated lengths.
-	 * @param {array} lengths Array of dictionaries with lengths to save or update.
-	 * @returns True if there are duplicates.
-	 */
-	const checkForLengthsDuplicated = (lengths) => {
-		var vals = [];
-
-		for (var i = 0; i < lengths.length; i++) {
-			vals.push(lengths[i].length);
-		}
-
-		return new Set(vals).size !== lengths.length;
 	};
 
 	/**
@@ -348,9 +346,9 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	const createRangeLengths = (minLength, maxLength) => {
 		var newLengths = [];
 
-		if (Number(minLength) === 1) {
-			minLength = 0;
-		}
+		// if (Number(minLength) === 1) {
+		// 	minLength = 0;
+		// }
 
 		for (var l = Number(minLength); l <= Number(maxLength); l += Number(increment)) {
 			newLengths.push({
@@ -360,6 +358,7 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 		}
 
 		setLengths(newLengths);
+		// sexContext.setSexStatus("edit");
 		setLengthsStatus("edit");
 	};
 
@@ -433,46 +432,35 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	 */
 	const cancelEditLengths = () => {
 		setLengths(backupLengths);
+		// sexContext.setSexStatus("view");
 		setLengthsStatus("view");
 	};
 
 	// render content
 	const renderContent = () => {
-		const partialContent = () => {
-			if (lengthsStatus === "hide") {
-				return null;
-			} else if (lengthsStatus === "view" && lengths.length !== 0) {
-				return <LengthsForm lengthsStatus={lengthsStatus} />;
-			} else if (lengthsStatus === "view" && lengths.length === 0) {
-				return (
-					<Fragment>
-						<LengthsRangeForm createRangeLengths={createRangeLengths} />
-						<LengthsButtonBar />
-					</Fragment>
-				);
-			} else if (lengthsStatus === "edit") {
-				return <LengthsForm lengthsStatus={lengthsStatus} />;
-			}
-		};
-
 		return (
 			<LengthsContext.Provider
 				value={{
 					lengths: lengths,
 					measureUnit: measureUnit,
 					increment: increment,
-					lengthsStatus: lengthsStatus,
-					setLengthsStatus: setLengthsStatus,
-					saveOrUpdateLengths: saveOrUpdateLengths,
-					removeZeroTails: removeZeroTails,
+					removeZeroTailsInState: removeZeroTailsInState,
 					editLength: editLength,
+					cancelEditLengths: cancelEditLengths,
 					deleteLength: deleteLength,
 					addLength: addLength,
 					handleShowLengths: handleShowLengths,
-					cancelEditLengths: cancelEditLengths,
+					validLengths: validLengths,
+					setValidLengths: setValidLengths,
+					saveSexAndLengths: saveSexAndLengths,
+					sex: sex,
+					createRangeLengths: createRangeLengths,
+					lengthsStatus: lengthsStatus,
+					setLengthsStatus: setLengthsStatus,
+					sexId: sexId,
 				}}
 			>
-				<Fragment>{partialContent()}</Fragment>
+				<LengthsForm />
 			</LengthsContext.Provider>
 		);
 	};
@@ -480,4 +468,4 @@ const ComponentLengths = ({ sexId, lengthsStatus, unit, increment, setLengthsSta
 	return renderContent();
 };
 
-export default ComponentLengths;
+export default Lengths;

@@ -1,6 +1,9 @@
 import React, { useContext } from "react";
 
 import LengthsContext from "../../contexts/LengthsContext";
+import SexContext from "../../contexts/SexContext";
+
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
  * Lengths button bar component.
@@ -9,53 +12,55 @@ const LengthsButtonBar = () => {
 	var ButtonBar = null;
 
 	const lengthsContext = useContext(LengthsContext);
+	const sexContext = useContext(SexContext);
 
-	if (lengthsContext.lengthsStatus === "hide") {
+	if (lengthsContext.lengthsStatus === "empty") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
 				<button
 					className="buttonsWrapper__button"
-					type="button"
-					onclick={() => {
-						lengthsContext.setLengthsStatus("view");
+					onClick={() => {
+						lengthsContext.setLengthsStatus("add");
 					}}
 				>
-					Show lengths
+					Add {sexContext.sexesAvailable[sexContext.sex]}
 				</button>
 			</div>
 		);
 	} else if (lengthsContext.lengthsStatus === "view") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={() => {
-						lengthsContext.setLengthsStatus("edit");
-					}}
-				>
-					Edit lengths
-				</button>
+				<UiButtonStatusHandle
+					buttonText={"Edit Lengths"}
+					handleMethod={lengthsContext.setLengthsStatus}
+					newStatus={"edit"}
+				/>
 			</div>
 		);
 	} else if (lengthsContext.lengthsStatus === "edit") {
 		ButtonBar = (
 			<div className="form__cell buttonsWrapper--center">
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={(e) => {
-						lengthsContext.saveOrUpdateLengths(e, lengthsContext.lengths);
-						lengthsContext.removeZeroTails(lengthsContext.lengths);
-					}}
-				>
+				<button className="buttonsWrapper__button" type="submit" disabled={!lengthsContext.validLengths}>
 					Save
 				</button>
 				<button
-					className="buttonsWrapper__button"
-					type="button"
 					onClick={() => {
-						lengthsContext.setLengthsStatus("view");
+						lengthsContext.cancelEditLengths();
+					}}
+				>
+					Cancel
+				</button>
+			</div>
+		);
+	} else if (lengthsContext.lengthsStatus === "add") {
+		ButtonBar = (
+			<div className="form__cell buttonsWrapper--center">
+				<button className="buttonsWrapper__button" type="submit" disabled={!lengthsContext.validLengths}>
+					Save
+				</button>
+				<button
+					onClick={() => {
+						lengthsContext.cancelEditLengths();
 					}}
 				>
 					Cancel

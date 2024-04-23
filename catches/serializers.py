@@ -14,26 +14,28 @@ class CatchSerializer(serializers.ModelSerializer):
     sp_name = serializers.CharField(source='sp.sp_name', read_only=True)
     group = serializers.IntegerField(source='sp.group', read_only=True)
     sp_code = serializers.IntegerField(source='sp.sp_code', read_only=True)
+    catch_id = serializers.IntegerField(source='id', read_only=True)
 
     class Meta:
         model = Catch
-        fields = ['id', 'haul_id', 'group', 'sp_code',
+        fields = ['catch_id', 'haul_id', 'group', 'sp_code',
                   'weight', 'sp_name', 'category']
 
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
-    group = serializers.CharField(source='sp.group')
-    sp_id = serializers.IntegerField(source='sp.id')
-    sp_code = serializers.CharField(source='sp.sp_code')
-    sp_name = serializers.CharField(source='sp.sp_name')
-    unit = serializers.CharField(source='sp.unit')
-    increment = serializers.FloatField(source='sp.increment')
+    group = serializers.CharField(source='sp.group', read_only=True)
+    catch_id = serializers.IntegerField(source='id')
+    sp_id = serializers.IntegerField(source='sp.id', read_only=True)
+    sp_code = serializers.CharField(source='sp.sp_code', read_only=True)
+    sp_name = serializers.CharField(source='sp.sp_name', read_only=True)
+    unit = serializers.CharField(source='sp.unit', read_only=True)
+    increment = serializers.FloatField(source='sp.increment', read_only=True)
     sampled_weight = serializers.FloatField(
-        source='samples.sampled_weight', required=False)
+        source='samples.sampled_weight', required=False, read_only=True)
 
     class Meta:
         model = Catch
-        fields = ['id', 'weight', 'category', 'haul', 'haul_id', 'group', 'sp_id', 'sp_code',
+        fields = ['catch_id', 'weight', 'category', 'haul', 'haul_id', 'group', 'sp_id', 'sp_code',
                   'sp_name', 'unit', 'increment', 'sampled_weight']
 
 

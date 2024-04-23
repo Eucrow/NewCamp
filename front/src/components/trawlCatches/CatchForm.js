@@ -190,7 +190,7 @@ const CatchForm = ({
 					/>
 					<CatchButtonBar
 						className=""
-						catchId={thisCatch.id}
+						catchId={thisCatch.catch_id}
 						catchStatus={catchStatus}
 						viewSexes={viewSexes}
 						editCatchStatus={editCatchStatus}
@@ -219,7 +219,7 @@ const CatchForm = ({
 						min="1"
 						max="5"
 						value={thisCatch.group}
-						onChange={handleChangeGroup(thisCatch.id)}
+						onChange={handleChangeGroup(thisCatch.catch_id)}
 						aria-label="Group"
 					/>
 					<select
@@ -227,7 +227,7 @@ const CatchForm = ({
 						id="sp_code"
 						name="sp_code"
 						value={thisCatch.sp_id + "--" + thisCatch.sp_code + "--" + thisCatch.sp_name}
-						onChange={handleChangeSpecies(thisCatch.id)}
+						onChange={handleChangeSpecies(thisCatch.catch_id)}
 						aria-label="Species"
 					>
 						{globalContext.species
@@ -249,7 +249,7 @@ const CatchForm = ({
 						min="1"
 						max="99"
 						value={thisCatch.category}
-						onChange={handleChangeCategory(thisCatch.id)}
+						onChange={handleChangeCategory(thisCatch.catch_id)}
 						aria-label="Category"
 					/>
 					<input
@@ -260,7 +260,7 @@ const CatchForm = ({
 						min="1"
 						max="99999999"
 						value={thisCatch.weight}
-						onChange={handleChangeWeight(thisCatch.id)}
+						onChange={handleChangeWeight(thisCatch.catch_id)}
 						aria-label="Weight"
 					/>
 					<input
@@ -271,7 +271,7 @@ const CatchForm = ({
 						min="1"
 						max="99999999"
 						value={thisCatch.sampled_weight || ""}
-						onChange={handleChangeSampledWeight(thisCatch.id)}
+						onChange={handleChangeSampledWeight(thisCatch.catch_id)}
 						aria-label="Sampled weight"
 					/>
 					<CatchButtonBar

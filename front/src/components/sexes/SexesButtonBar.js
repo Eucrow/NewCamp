@@ -8,15 +8,17 @@ const SexesButtonBar = ({ sexStatus, setAddSex }) => {
 
 	if (sexStatus === "view") {
 		ButtonBar = (
-			<div className="buttonsWrapper">
-				<button
-					className="buttonsWrapper__button"
-					onClick={() => {
-						setAddSex(true);
-					}}
-				>
-					Add sex
-				</button>
+			<div className="sexWrapper">
+				<div className="buttonsWrapper">
+					<button
+						className="buttonsWrapper__button"
+						onClick={() => {
+							setAddSex(true);
+						}}
+					>
+						Add sex
+					</button>
+				</div>
 			</div>
 		);
 	}

@@ -31,7 +31,7 @@ const Catches = ({ haul_id }) => {
 			.then(() => {
 				setCatches(
 					catches.filter((c) => {
-						return idx !== c.id;
+						return idx !== c.catch_id;
 					})
 				);
 			})
@@ -46,7 +46,7 @@ const Catches = ({ haul_id }) => {
 		const value = evt.target.value;
 
 		const newCatches = catches.map((c) => {
-			if (idx !== c.id) return c;
+			if (idx !== c.catch_id) return c;
 			return { ...c, group: value };
 		});
 
@@ -65,7 +65,7 @@ const Catches = ({ haul_id }) => {
 		const sp_name = val[2];
 
 		const newCatches = catches.map((c) => {
-			if (idx !== c.id) return c;
+			if (idx !== c.catch_id) return c;
 			return {
 				...c,
 				sp_id: sp,
@@ -86,7 +86,7 @@ const Catches = ({ haul_id }) => {
 
 		// Firstly, get the data of catch to modify
 		const thisCatch = catches.find((c) => {
-			if (c.id === idx) {
+			if (c.catch_id === idx) {
 				return c;
 			}
 			return false;
@@ -102,7 +102,7 @@ const Catches = ({ haul_id }) => {
 			alert("This category of the species already exists");
 		} else if (repeatedCatch === false) {
 			const newCatches = catches.map((c) => {
-				if (c.id !== idx) return c;
+				if (c.catch_id !== idx) return c;
 				return {
 					...c,
 					category: value,
@@ -121,7 +121,7 @@ const Catches = ({ haul_id }) => {
 		const value = evt.target.value;
 
 		const newCatches = catches.map((c) => {
-			if (c.id !== idx) return c;
+			if (c.catch_id !== idx) return c;
 			return {
 				...c,
 				weight: value,
@@ -139,7 +139,7 @@ const Catches = ({ haul_id }) => {
 		const value = evt.target.value;
 
 		const newCatches = catches.map((c) => {
-			if (c.id !== idx) return c;
+			if (c.catch_id !== idx) return c;
 			return {
 				...c,
 				sampled_weight: value,
@@ -156,10 +156,10 @@ const Catches = ({ haul_id }) => {
 	 */
 	const handleCancelEditCatch = (idx, backupCatch) => {
 		const newCatches = catches.map((c) => {
-			if (c.id !== idx) return c;
+			if (c.catch_id !== idx) return c;
 			return {
 				...c,
-				id: backupCatch.id,
+				id: backupCatch.catch_id,
 				group: backupCatch.group,
 				weight: backupCatch.weight,
 				sampled_weight: backupCatch.sampled_weight,
@@ -179,11 +179,11 @@ const Catches = ({ haul_id }) => {
 	 */
 	const updateCatch = (idx) => {
 		const updatedCatch = catches.find(function (c) {
-			return idx === c.id;
+			return idx === c.catch_id;
 		});
 
 		const request = {
-			catch_id: updatedCatch.id,
+			catch_id: updatedCatch.catch_id,
 			haul_id: updatedCatch.haul,
 			sp_code: updatedCatch.sp_code,
 			group: updatedCatch.group,
@@ -231,8 +231,8 @@ const Catches = ({ haul_id }) => {
 		// add haul id to data request:
 		newCatch["haul_id"] = haul_id;
 
-		existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category).then((response) => {
-			if (response === true) {
+		existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category).then((responseExists) => {
+			if (responseExists === true) {
 				alert("Catch already exists");
 			} else {
 				fetch(apiCreateCatch, {
@@ -294,7 +294,7 @@ const Catches = ({ haul_id }) => {
 					{catches.map((c) => {
 						return (
 							<Catch
-								key={c.id}
+								key={c.catch_id}
 								thisCatch={c}
 								handleChangeSampledWeight={handleChangeSampledWeight}
 								handleChangeGroup={handleChangeGroup}
