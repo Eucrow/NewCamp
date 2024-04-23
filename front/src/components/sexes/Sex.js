@@ -12,14 +12,13 @@ import SexContext from "../../contexts/SexContext.js";
  * @param {numeric} increment Increment of measurement unit.
  * @param {numeric} catchId Id of catch.
  * @param {Function} createSex Function to create sex.
- * @param {Function} updateSex Function to update sex.
  * @param {Function} deleteSex Function to delete sex.
  * @returns JSX of sex component.
  */
-const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, updateSex, deleteSex }) => {
-	const [thisSex, setThisSex] = useState(sex);
+const Sex = ({ sexId, sex, unit, increment, catchId, createSex, deleteSex }) => {
+	// const [thisSex, setThisSex] = useState(sex);
 
-	const [sexStatus, setSexStatus] = useState(thisSexStatus);
+	// const [sexStatus, setSexStatus] = useState("view");
 
 	const sexesAvailable = {
 		1: "Male",
@@ -27,25 +26,24 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 		3: "Undetermined",
 	};
 
-	useEffect(() => {
-		setThisSex(sex);
-		setSexStatus(thisSexStatus);
-		console.log("Sex component uploaded ", sex);
-	}, [sex, thisSexStatus]);
+	// useEffect(() => {
+	// 	setThisSex(sex);
+	// 	console.log("Sex component uploaded ", sex);
+	// }, [sex]);
 
 	const renderContent = () => {
 		return (
 			<SexContext.Provider
 				value={{
 					sex: sex,
-					sexStatus: sexStatus,
-					setSexStatus: setSexStatus,
+					// sexStatus: sexStatus,
+					// setSexStatus: setSexStatus,
 					sexesAvailable: sexesAvailable,
 				}}
 			>
 				<div className="sexWrapper">
 					<div>
-						<div className="form__cell">{sexesAvailable[thisSex]}</div>
+						<div className="form__cell">{sexesAvailable[sex]}</div>
 						<div className="form__cell ">
 							<SexButtonBar sexId={sexId} deleteSex={deleteSex} />
 						</div>
@@ -53,8 +51,8 @@ const Sex = ({ thisSexStatus, sexId, sex, unit, increment, catchId, createSex, u
 					<Lengths
 						sexId={sexId}
 						sex={sex}
-						createSex={createSex}
 						catchId={catchId}
+						createSex={createSex}
 						unit={unit}
 						increment={increment}
 					/>

@@ -4,7 +4,6 @@ import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
 
 import LengthsContext from "../../contexts/LengthsContext";
-import SexContext from "../../contexts/SexContext.js";
 
 /**
  * Renders a form for displaying and editing lengths data.
@@ -14,13 +13,21 @@ import SexContext from "../../contexts/SexContext.js";
  */
 const LengthsForm = () => {
 	const lengthsContext = useContext(LengthsContext);
-	const sexContext = useContext(SexContext);
 
-	if (lengthsContext.lengths.length === 0) {
-		lengthsContext.setLengthsStatus("empty");
-	}
+	// if (lengthsContext.lengths.length === 0) {
+	// 	lengthsContext.setLengthsStatus("empty");
+	// }
 
 	const renderContent = () => {
+		// if (lengthsContext.sexId === undefined && lengthsContext.lengthsStatus !== "add") {
+		// 	return (
+		// 		<div className="formLengths__table">
+		// 			<p className="formLengths__cell">There aren't any lengths</p>
+		// 			<LengthsButtonBar />
+		// 		</div>
+		// 	);
+		// }
+
 		if (lengthsContext.lengthsStatus === "view") {
 			//TODO: Add the aria property aria labels to avoid the screen readers read the form as a form.
 			return (
@@ -57,7 +64,6 @@ const LengthsForm = () => {
 					className="lengthsWrapper"
 					onSubmit={(e) => {
 						lengthsContext.saveSexAndLengths(e, lengthsContext.sex, lengthsContext.lengths);
-						// lengthsContext.removeZeroTailsInState(lengthsContext.lengths);
 					}}
 				>
 					<div className="formLengths__table">
@@ -90,20 +96,12 @@ const LengthsForm = () => {
 			return (
 				<div className="formLengths__table">
 					<LengthsRangeForm />
-					<LengthsButtonBar />
+					{/* <LengthsButtonBar /> */}
 				</div>
 			);
-		} else if (lengthsContext.lengthsStatus === "empty" && sexContext.sexStatus === "add") {
+		} else if (lengthsContext.lengthsStatus === "empty") {
 			return (
 				<div className="formLengths__table">
-					<LengthsRangeForm />
-					<LengthsButtonBar />
-				</div>
-			);
-		} else if (lengthsContext.lengthsStatus === "empty" && sexContext.sexStatus !== "add") {
-			return (
-				<div className="formLengths__table">
-					<p className="formLengths__cell">There aren't any lengths</p>
 					<LengthsButtonBar />
 				</div>
 			);

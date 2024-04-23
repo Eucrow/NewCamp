@@ -15,7 +15,7 @@ import LengthsForm from "./LengthsForm.js";
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
+const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -25,7 +25,7 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
 
 	const [lengths, setLengths] = useState([]);
 
-	const [lengthsStatus, setLengthsStatus] = useState("view");
+	const [lengthsStatus, setLengthsStatus] = useState(sexId === undefined ? "empty" : "view");
 
 	const [responseError, setResponseError] = useState("none");
 
@@ -328,6 +328,9 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
 					.then((lengths) => {
 						setLengths(fillLengths(lengths));
 						// sexContext.setSexStatus("view");
+						// setLengthsStatus("view");
+					})
+					.then(() => {
 						setLengthsStatus("view");
 					})
 					.catch((error) => console.log(error));
@@ -454,6 +457,7 @@ const Lengths = ({ sexId, sex, catchId, unit, increment, createSex }) => {
 					createRangeLengths: createRangeLengths,
 					lengthsStatus: lengthsStatus,
 					setLengthsStatus: setLengthsStatus,
+					sexId: sexId,
 				}}
 			>
 				<LengthsForm />

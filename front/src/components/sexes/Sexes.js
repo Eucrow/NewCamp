@@ -5,7 +5,7 @@ import Sex from "./Sex.js";
 /**
  * Sexes component.
  * @param {numeric} catchId Id of catch.
- * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is milimeters.
+ * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is millimeters.
  * @param {numeric} increment Increment of measurement unit.
  * @param {boolean} viewSexes Show or hide this Sexes component.
  * @returns JSX of sexes component. The component show three columns, one by sex: male, female and undetermined.
@@ -15,8 +15,6 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 
 	const apiSexes = "http://127.0.0.1:8000/api/1.0/sexes/" + catchId;
 	const apiSex = "http://127.0.0.1:8000/api/1.0/sex/";
-
-	const sexesBackup = sexes;
 
 	useEffect(() => {
 		if (viewSexes === true) {
@@ -120,53 +118,16 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 			content.push(
 				<Sex
 					key={i}
-					thisSexStatus={sex === undefined ? "empty" : "view"}
-					sex={sex ? sex.sex : i}
+					sex={i}
 					sexId={sex ? sex.id : undefined}
 					catchId={catchId}
 					unit={unit}
 					increment={increment}
 					createSex={createSex}
 					deleteSex={deleteSex}
-					sexesBackup={sexesBackup}
-					updateSex={updateSex}
 				/>
 			);
 		}
-
-		// for (let i = 1; i <= 3; i++) {
-		// 	var sex = sexes.find((s) => s.sex === i);
-		// 	if (sex === undefined) {
-		// 		content.push(
-		// 			<Sex
-		// 				key={i}
-		// 				thisSexStatus={"empty"}
-		// 				sex={i}
-		// 				catchId={catchId}
-		// 				unit={unit}
-		// 				increment={increment}
-		// 				createSex={createSex}
-		// 				deleteSex={deleteSex}
-		// 				sexesBackup={sexesBackup}
-		// 			/>
-		// 		);
-		// 	} else {
-		// 		content.push(
-		// 			<Sex
-		// 				key={i}
-		// 				thisSexStatus={"view"}
-		// 				sexId={sex.id}
-		// 				sex={sex.sex}
-		// 				catchId={catchId}
-		// 				unit={unit}
-		// 				increment={increment}
-		// 				deleteSex={deleteSex}
-		// 				sexesBackup={sexesBackup}
-		// 				updateSex={updateSex}
-		// 			/>
-		// 		);
-		// 	}
-		// }
 
 		return content;
 	};
