@@ -36,9 +36,8 @@ from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySu
 from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI, \
     HaulHydrographyAPI, HydrographyAPI, MeteorologyAPI, TrawlAPI
 from catches.api import CatchHaulListAPI, CatchHaulAPI, CatchVerboseAPI
-from samples.api import LengthsAPI, SexLengthsAPI, LengthsSexAPI
+from samples.api import LengthsSexAPI
 # , SampledWeightDetail, SampledWeightCreate
-from sexes.api import SexAPI, SexesAPI, SexExistsAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 from conn_r.api import GetTrawlHaulsAPIConnR, GetDataStationsAPIConnR
 
@@ -184,30 +183,13 @@ urlpatterns = [
                   # path('api/1.0/sampled_weight/<int:pk>', SampledWeightDetail.as_view(),
                   #      name="retrieve_update_delete_sampled_weight_api"),
 
-                  # Sexes API URLs
-                  re_path(r'^api/1.0/sexes/(?P<catch_id>[0-9]+)$', SexesAPI.as_view(), name="retrieve_sexes_api"),
-                  path('api/1.0/sex/', SexAPI.as_view(), name="create_sex_api"),
-                  # path('api/1.0/sex/<int:pk>', SexDetail.as_view(), name="retrieve_update_destroy_sex_api"),
-                  path('api/1.0/sex/<int:pk>', SexAPI.as_view(), name="retrieve_update_destroy_sex_api"),
-                  re_path(r'^api/1.0/sexes/exists/(?P<catch_id>[0-9]+)/(?P<sex>[123]+)$', SexExistsAPI.as_view(),
-                          name="sex_exists_api"),
-                  # re_path(r'^api/1.0/sex/$', SexAPI.as_view(), name="create_update_sex_api"),
-                  # re_path(r'^api/1.0/sexes/exists/(?P<catch_id>[0-9]+)$', SexesExists.as_view(),
-                  #     name="exists_sexes_api"),
-
                   # Lengths API URLs
-                  re_path(r'^api/1.0/lengths/(?P<sex_id>[0-9]+)$',
-                          LengthsAPI.as_view(), name="get_lenghts_api"),
                   re_path(r'^api/1.0/lengths/(?P<catch_id>[0-9]+)/(?P<sex>[123]+)$', LengthsSexAPI.as_view(),
                           name="lenghts_sex_api"),
 
                   # re_path(r'^api/1.0/sampled_weights/import$', SampledWeightsImportAPI.as_view(),
                   #     name="lengths_import"),
 
-                  # Sex and Lengths API URLs
-                  # TODO: This may not be needed. Check it.
-                  re_path(r'^api/1.0/sex/lengths/$', SexLengthsAPI.as_view(),
-                          name="create_sex_lenghts_api"),
                   # Import Data
                   re_path(r'^api/1.0/import_hydrography$',
                           ImportOldCampAPIHydrography.as_view(), name="old_camp_import_hydrography"),
