@@ -8,18 +8,9 @@ class SampleWeightSerializer(serializers.ModelSerializer):
     Sample Weights serializer
     """
 
-    # sampled_weight_id = serializers.IntegerField(source='id', read_only=True)
-
     class Meta:
         model = SampledWeight
         fields = ['id', 'sampled_weight', 'catch_id', ]
-        # fields = ['sampled_weight_id', 'sampled_weight', 'catch_id', ]
-
-
-# class SexSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Sex
-#         fields = ['id', 'sex', 'catch_id', ]
 
 
 class LengthListSerializer(serializers.ListSerializer):
@@ -82,3 +73,19 @@ class LengthSerializer2(serializers.ModelSerializer):
     class Meta:
         model = Length
         fields = ['sex_id', 'length', 'number_individuals', ]
+
+
+class LengthSexSerializer(serializers.ModelSerializer):
+    """
+    Lengths serializer by sex
+    """
+
+    sex_id = serializers.IntegerField(source='sex.id')
+    sex = serializers.IntegerField(source='sex.sex')
+    catch_id = serializers.IntegerField(source='sex.catch_id')
+
+    length_id = serializers.IntegerField(source='id')
+
+    class Meta:
+        model = Length
+        fields = ['catch_id', 'sex_id', 'sex', 'length_id', 'length', 'number_individuals', ]

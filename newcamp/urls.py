@@ -36,7 +36,7 @@ from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySu
 from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI, \
     HaulHydrographyAPI, HydrographyAPI, MeteorologyAPI, TrawlAPI
 from catches.api import CatchHaulListAPI, CatchHaulAPI, CatchVerboseAPI
-from samples.api import LengthsAPI, SexLengthsAPI
+from samples.api import LengthsAPI, SexLengthsAPI, LengthsSexAPI
 # , SampledWeightDetail, SampledWeightCreate
 from sexes.api import SexAPI, SexesAPI, SexExistsAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
@@ -198,6 +198,8 @@ urlpatterns = [
                   # Lengths API URLs
                   re_path(r'^api/1.0/lengths/(?P<sex_id>[0-9]+)$',
                           LengthsAPI.as_view(), name="get_lenghts_api"),
+                  re_path(r'^api/1.0/lengths/(?P<catch_id>[0-9]+)/(?P<sex>[123]+)$', LengthsSexAPI.as_view(),
+                          name="lenghts_sex_api"),
 
                   # re_path(r'^api/1.0/sampled_weights/import$', SampledWeightsImportAPI.as_view(),
                   #     name="lengths_import"),

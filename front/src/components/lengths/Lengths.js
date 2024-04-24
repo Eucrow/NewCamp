@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useEffect, useState } from "react";
 import LengthsContext from "../../contexts/LengthsContext";
 
 import LengthsForm from "./LengthsForm.js";
@@ -15,7 +15,7 @@ import LengthsForm from "./LengthsForm.js";
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
+const Lengths = ({ sex, catchId, unit, increment }) => {
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -25,14 +25,13 @@ const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 
 	const [lengths, setLengths] = useState([]);
 
-	const [lengthsStatus, setLengthsStatus] = useState(sexId === undefined ? "empty" : "view");
+	const [lengthsStatus, setLengthsStatus] = useState("view");
 
 	const [responseError, setResponseError] = useState("none");
 
 	const [validLengths, setValidLengths] = useState(true);
 
-	const apiLengths = "http://127.0.0.1:8000/api/1.0/lengths/";
-	const apiSexExists = "http://127.0.0.1:8000/api/1.0/sexes/exists/";
+	const apiLengthsSex = "http://127.0.0.1:8000/api/1.0/lengths/";
 
 	const getUnit = (u) => {
 		if (Number(u) === 1) {
@@ -44,7 +43,7 @@ const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 		}
 	};
 
-	const [measureUnit, setMeasureUnit] = useReducer(getUnit, unit);
+	const [measureUnit, setMeasureUnit] = useState(getUnit(unit));
 
 	useEffect(() => {
 		if (responseError !== "none") {
@@ -53,51 +52,26 @@ const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 	}, [responseError]);
 
 	useEffect(() => {
-		if (sexId !== undefined) {
-			handleShowLengths();
-		}
-		setMeasureUnit(unit);
-	}, [sexId, unit]);
+		getLengths().then((lens) => {
+			lens = fillLengths(lens);
+			lens = transformUnitsFromMm(lens);
+			setBackupLengths(lens);
+			setLengths(lens);
+			if (lens.length === 0) {
+				setLengthsStatus("empty");
+			}
+		});
+	}, []);
 
 	/**
 	 * Get all lengths of a sexId from database.
 	 * @returns JSON with lengths.
 	 */
 	const getLengths = async () => {
-		const api = apiLengths + sexId;
+		const api = apiLengthsSex + catchId + "/" + sex;
 		const response = await fetch(api);
 		if (response.status > 400) {
 			setResponseError("Something went wrong! (getLengths)");
-		}
-		return response.json();
-	};
-
-	/**
-	 * Show lengths.
-	 */
-	const handleShowLengths = () => {
-		getLengths().then((lens) => {
-			lens = fillLengths(lens);
-			lens = transformUnitsFromMm(lens);
-			setBackupLengths(lens);
-			setLengths(lens);
-			lens.length > 0 ? setLengthsStatus("view") : setLengthsStatus("add");
-
-			// a deep copy is mandatory because the data to be modified is nested:
-			let newLengths = JSON.parse(JSON.stringify(lens));
-			newLengths.forEach((el) => {
-				el["is_valid"] = true;
-			});
-			setLengths(newLengths);
-		});
-	};
-
-	const sexExists = async (sex, catchId) => {
-		const api = apiSexExists + catchId + "/" + sex;
-
-		const response = await fetch(api);
-		if (response.status > 400) {
-			setResponseError("Something went wrong! (getExistsLengths)");
 		}
 		return response.json();
 	};
@@ -107,13 +81,16 @@ const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 	 * @returns JSON
 	 */
 	const deleteLengths = async () => {
-		const api = apiLengths + sexId;
+		const api = apiLengthsSex + catchId + "/" + sex;
 		const response = await fetch(api, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
 			},
 		});
+
+		setLengthsStatus("empty");
+
 		if (response.status > 400) {
 			setResponseError("Something went wrong! (deleteLengths())");
 		}
@@ -272,8 +249,8 @@ const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
 	 * @return JSON response or error.
 	 */
-	const saveLengths = async (lengths, sexIdentification) => {
-		const api = apiLengths + sexIdentification;
+	const saveLengths = async (lengths) => {
+		const api = apiLengthsSex + catchId + "/" + sex;
 		try {
 			const response = await fetch(api, {
 				method: "POST",
@@ -308,34 +285,16 @@ const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 		lengths = removeUselessElementsLengths(lengths);
 		lengths = removeZeroNumberIndividuals(lengths);
 
-		if (sexId === undefined) {
-			createSex(e, sex, catchId).then((s) => {
-				saveLengths(lengths, s.id)
-					.then((lengths) => {
-						setLengths(fillLengths(lengths));
-						console.log("1", lengths);
-					})
-					.then(() => {
-						console.log("2", lengths);
-						// sexContext.setSexStatus("view");
-						setLengthsStatus("view");
-					})
-					.catch((error) => console.log(error));
-			});
-		} else {
-			deleteLengths().then(() => {
-				saveLengths(lengths, sexId)
-					.then((lengths) => {
-						setLengths(fillLengths(lengths));
-						// sexContext.setSexStatus("view");
-						// setLengthsStatus("view");
-					})
-					.then(() => {
-						setLengthsStatus("view");
-					})
-					.catch((error) => console.log(error));
-			});
-		}
+		deleteLengths().then(() => {
+			saveLengths(lengths)
+				.then((lengths) => {
+					setLengths(fillLengths(lengths));
+				})
+				.then(() => {
+					setLengthsStatus("view");
+				})
+				.catch((error) => console.log(error));
+		});
 	};
 
 	/**
@@ -346,10 +305,6 @@ const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 	const createRangeLengths = (minLength, maxLength) => {
 		var newLengths = [];
 
-		// if (Number(minLength) === 1) {
-		// 	minLength = 0;
-		// }
-
 		for (var l = Number(minLength); l <= Number(maxLength); l += Number(increment)) {
 			newLengths.push({
 				length: l,
@@ -358,7 +313,6 @@ const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 		}
 
 		setLengths(newLengths);
-		// sexContext.setSexStatus("edit");
 		setLengthsStatus("edit");
 	};
 
@@ -432,7 +386,6 @@ const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 	 */
 	const cancelEditLengths = () => {
 		setLengths(backupLengths);
-		// sexContext.setSexStatus("view");
 		setLengthsStatus("view");
 	};
 
@@ -442,22 +395,20 @@ const Lengths = ({ sexId, sex, catchId, createSex, unit, increment }) => {
 			<LengthsContext.Provider
 				value={{
 					lengths: lengths,
+					sex: sex,
 					measureUnit: measureUnit,
 					increment: increment,
-					removeZeroTailsInState: removeZeroTailsInState,
+					lengthsStatus: lengthsStatus,
+					setLengthsStatus: setLengthsStatus,
+					validLengths: validLengths,
+					setValidLengths: setValidLengths,
+					addLength: addLength,
 					editLength: editLength,
 					cancelEditLengths: cancelEditLengths,
 					deleteLength: deleteLength,
-					addLength: addLength,
-					handleShowLengths: handleShowLengths,
-					validLengths: validLengths,
-					setValidLengths: setValidLengths,
+					deleteLengths: deleteLengths,
 					saveSexAndLengths: saveSexAndLengths,
-					sex: sex,
 					createRangeLengths: createRangeLengths,
-					lengthsStatus: lengthsStatus,
-					setLengthsStatus: setLengthsStatus,
-					sexId: sexId,
 				}}
 			>
 				<LengthsForm />

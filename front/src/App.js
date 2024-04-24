@@ -46,6 +46,12 @@ export default function App() {
 			.then((data) => setSpecies(data));
 	}, []);
 
+	const sexesAvailable = {
+		1: "Male",
+		2: "Female",
+		3: "Undetermined",
+	};
+
 	return (
 		<SelectedSurveyContext.Provider
 			value={{
@@ -55,7 +61,7 @@ export default function App() {
 				setSelectedSurveyId,
 			}}
 		>
-			<GlobalContext.Provider value={{ species, setSpecies, apiSpecies }}>
+			<GlobalContext.Provider value={{ species, setSpecies, apiSpecies, sexesAvailable }}>
 				<Router>
 					<nav className="headNav" aria-label="nCamp">
 						<h1 className="headNav__selectedSurvey">

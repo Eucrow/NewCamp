@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 
-import LengthsContext from "../../contexts/LengthsContext";
-import SexContext from "../../contexts/SexContext";
-
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+import UiButtonDelete from "../ui/UiButtonDelete";
+
+import GlobalContext from "../../contexts/GlobalContext";
+import LengthsContext from "../../contexts/LengthsContext";
 
 /**
  * Lengths button bar component.
@@ -11,8 +12,8 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 const LengthsButtonBar = () => {
 	var ButtonBar = null;
 
+	const globalContext = useContext(GlobalContext);
 	const lengthsContext = useContext(LengthsContext);
-	const sexContext = useContext(SexContext);
 
 	if (lengthsContext.lengthsStatus === "empty") {
 		ButtonBar = (
@@ -23,7 +24,7 @@ const LengthsButtonBar = () => {
 						lengthsContext.setLengthsStatus("add");
 					}}
 				>
-					Add {sexContext.sexesAvailable[sexContext.sex]}
+					Add {globalContext.sexesAvailable[lengthsContext.sex]}
 				</button>
 			</div>
 		);
@@ -34,6 +35,11 @@ const LengthsButtonBar = () => {
 					buttonText={"Edit Lengths"}
 					handleMethod={lengthsContext.setLengthsStatus}
 					newStatus={"edit"}
+				/>
+				<UiButtonDelete
+					deleteMethod={lengthsContext.deleteLengths}
+					buttonText={"Delete lengths"}
+					confirmMessage={"Are you sure to remove all the lengths of this sex?"}
 				/>
 			</div>
 		);
@@ -50,6 +56,7 @@ const LengthsButtonBar = () => {
 				>
 					Cancel
 				</button>
+				<div className="form__cell buttonsWrapper--center"></div>
 			</div>
 		);
 	} else if (lengthsContext.lengthsStatus === "add") {

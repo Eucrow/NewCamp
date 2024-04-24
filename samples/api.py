@@ -5,9 +5,9 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
 from catches.serializers import SexCatchSerializer
-from samples.models import Length, SampledWeight
+from samples.models import Length, SampledWeight, Sex
 
-from samples.serializers import LenghtSerializer, SampleWeightSerializer, LengthSerializer2
+from samples.serializers import LenghtSerializer, SampleWeightSerializer, LengthSerializer2, LengthSexSerializer
 
 
 # class SampledWeightCreate(APIView):
@@ -30,6 +30,44 @@ from samples.serializers import LenghtSerializer, SampleWeightSerializer, Length
 #     """
 #     queryset = SampledWeight.objects.all()
 #     serializer_class = SampleWeightSerializer
+
+
+class LengthsSexAPI(APIView):
+    """
+    Retrieve, create and update lengths with its sex
+    """
+
+    def get(self, request, catch_id, sex):
+        lengths = Length.objects.filter(sex_id__catch_id=catch_id, sex_id__sex=sex)
+        serializer = LengthSexSerializer(lengths, many=True)
+
+        return Response(serializer.data)
+
+    def post(self, request, catch_id, sex):
+        # Create a mew Sex instance
+        sex_instance = Sex.objects.create(catch_id=catch_id, sex=sex)
+
+        # Create a new Length instance for each length in lengths_data
+        # for length_data in lengths_data:
+        for length_data in request.data:
+            Length.objects.create(sex_id=sex_instance.id, **length_data)
+
+        # Retrieve the newly created Length instances
+        lengths = Length.objects.filter(sex_id=sex_instance.id)
+
+        serializer = LengthSexSerializer(lengths, many=True)
+
+        return Response(serializer.data, status=HTTP_201_CREATED)
+
+    def delete(self, request, catch_id, sex):
+        """
+        remove all the lengths of the sex_id
+        """
+        sex_instance = Sex.objects.filter(catch_id=catch_id, sex=sex)
+        sex_instance.delete()
+
+        return Response(status=HTTP_204_NO_CONTENT)
+
 
 class LengthsAPI(APIView):
     """
@@ -64,7 +102,7 @@ class LengthsAPI(APIView):
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
-            return Response(status=HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, sex_id):
         """
@@ -76,17 +114,6 @@ class LengthsAPI(APIView):
 
     # TODO: manage errors, what to do with them?
 
-
-# The next class is not necesary because we update the complete lenghts
-# class LengthAPI(APIView):
-#     """
-#     Endpoint to manage species lengths individually
-#     """
-#
-#     def delete(self, request, length_id):
-#         length = Length.objects.get(pk=length_id)
-#         length.delete()
-#         return Response(status=HTTP_204_NO_CONTENT)
 
 # TODO: This may not be needed. Check it.
 class SexLengthsAPI(APIView):
