@@ -3,7 +3,7 @@ from rest_framework.fields import SerializerMethodField
 
 from catches.models import Catch
 from samples.models import Sex, Length, SampledWeight
-from samples.serializers import SampleWeightSerializer, LengthSerializer2
+from samples.serializers import SampleWeightSerializer, LengthSerializer
 # from sexes.serializers import SexesExistsSerializer
 # from species.serializers import CategorySerializer
 from species.models import Sp
@@ -40,7 +40,7 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
 
 
 class SexCatchSerializer(serializers.ModelSerializer):
-    lengths = LengthSerializer2(many=True)
+    lengths = LengthSerializer(many=True)
 
     class Meta:
         model = Sex

@@ -14,20 +14,7 @@ import LengthsContext from "../../contexts/LengthsContext";
 const LengthsForm = () => {
 	const lengthsContext = useContext(LengthsContext);
 
-	// if (lengthsContext.lengths.length === 0) {
-	// 	lengthsContext.setLengthsStatus("empty");
-	// }
-
 	const renderContent = () => {
-		// if (lengthsContext.sexId === undefined && lengthsContext.lengthsStatus !== "add") {
-		// 	return (
-		// 		<div className="formLengths__table">
-		// 			<p className="formLengths__cell">There aren't any lengths</p>
-		// 			<LengthsButtonBar />
-		// 		</div>
-		// 	);
-		// }
-
 		if (lengthsContext.lengthsStatus === "view") {
 			//TODO: Add the aria property aria labels to avoid the screen readers read the form as a form.
 			return (
@@ -96,7 +83,6 @@ const LengthsForm = () => {
 			return (
 				<div className="formLengths__table">
 					<LengthsRangeForm />
-					{/* <LengthsButtonBar /> */}
 				</div>
 			);
 		} else if (lengthsContext.lengthsStatus === "empty") {
