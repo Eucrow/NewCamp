@@ -92,7 +92,7 @@ const Catches = ({ haul_id }) => {
 			return false;
 		});
 
-		// Secondly, check if exists another catch whith the same species and category
+		// Secondly, check if exists another catch whit the same species and category
 		const repeatedCatch = catches.some(
 			(c) => (c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category === parseInt(value))
 		);

@@ -54,7 +54,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	useEffect(() => {
 		getLengths().then((lens) => {
 			lens = fillLengths(lens);
-			lens = transformUnitsFromMm(lens);
+			// lens = transformUnitsFromMm(lens);
 			setBackupLengths(lens);
 			setLengths(lens);
 			if (lens.length === 0) {
@@ -65,6 +65,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 
 	/**
 	 * Get all lengths of a sexId from database.
+	 * When the lengths are fetched, they are transformed to the unit of measurement specified in the unit prop.
 	 * @returns JSON with lengths.
 	 */
 	const getLengths = async () => {
@@ -73,7 +74,11 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 		if (response.status > 400) {
 			setResponseError("Something went wrong! (getLengths)");
 		}
-		return response.json();
+		const data = await response.json();
+
+		const updatedData = transformUnitsFromMm(data);
+
+		return updatedData;
 	};
 
 	/**
@@ -207,13 +212,13 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	};
 
 	/**
-	 * Transform units to milimeters.
+	 * Transform units to millimeters.
 	 * @param {array} lengths to transform.
 	 */
 	const transformUnitsToMm = (lengths) => {
 		var newLengths = lengths;
 
-		if (unit === 1) {
+		if (Number(unit) === 1) {
 			newLengths = newLengths.map((l) => {
 				return {
 					length: l.length * 10,
@@ -232,7 +237,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	const transformUnitsFromMm = (lengths) => {
 		var newLengths = lengths;
 
-		if (unit === 1) {
+		if (Number(unit) === 1) {
 			newLengths = newLengths.map((l) => {
 				return {
 					length: l.length / 10,
@@ -245,12 +250,17 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	};
 
 	/**
-	 * Save lengths of a sexId in database. The sexId variable is taken from parent component via props.
+	 * Save lengths database.
+	 * Before saving the lengths, the units are transformed to millimeters, and the response
+	 * is transformed back to the unit of measurement specified in the unit prop.
 	 * @param {array} lengths Array of dictionaries with lengths to save or update.
 	 * @return JSON response or error.
 	 */
 	const saveLengths = async (lengths) => {
 		const api = apiLengthsSex + catchId + "/" + sex;
+
+		lengths = transformUnitsToMm(lengths);
+
 		try {
 			const response = await fetch(api, {
 				method: "POST",
@@ -262,7 +272,9 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 			if (response.status > 400) {
 				setResponseError("Something went wrong! (saveLengths())");
 			}
-			return await response.json();
+			let data = await response.json();
+			data = transformUnitsFromMm(data);
+			return data;
 		} catch (error) {
 			return console.log(error);
 		}
@@ -279,7 +291,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	 * @returns {undefined} This function does not have a return value.
 	 * @throws {Error} If there's an error during the fetch requests, the error is logged to the console.
 	 */
-	const saveSexAndLengths = (e, sex, lengths) => {
+	const saveSexAndLengths = (e, lengths) => {
 		e.preventDefault();
 
 		lengths = removeUselessElementsLengths(lengths);
@@ -299,7 +311,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 
 	/**
 	 * Create length range.
-	 * @param {number} minLength Minimun length.
+	 * @param {number} minLength Minimum length.
 	 * @param {number} maxLength Maximum length.
 	 */
 	const createRangeLengths = (minLength, maxLength) => {
@@ -317,7 +329,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	};
 
 	/**
-	 * Get a lengths array and update the property "is_valid" propertly:
+	 * Get a lengths array and update the property "is_valid" properly:
 	 * set to "false" in all the repeated lengths and "true" where doesn't.
 	 * @param {array of objects} lengthsToValidate Lengths to validate.
 	 * @returns Array with lengths with "is_valid" property updated.
@@ -368,7 +380,6 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	const addLength = (l, index) => {
 		let newLengths = [...lengths];
 
-		// let newLength = Number(l) + 1;
 		let newLength = Number(l) + Number(increment);
 
 		newLengths.splice(index + 1, 0, {
