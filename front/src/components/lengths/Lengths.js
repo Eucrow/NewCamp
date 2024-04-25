@@ -6,16 +6,29 @@ import LengthsForm from "./LengthsForm.js";
 /**
  * Manages and displays lengths data of a sex.
  * @component
- * @param {number} sexId The ID of the sex for which lengths data should be fetched.
  * @param {number} sex Sex.
  * @param {number} catchId The ID of the catch for which lengths data should be fetched.
  * @param {number} unit The unit of measurement for the lengths. 1 represents cm, 2 represents mm.
  * @param {number} increment The increment value for lengths.
- * @param {Function} createSex A function to create a sex.
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
 const Lengths = ({ sex, catchId, unit, increment }) => {
+	/**
+	 * `lengths` state holds the current lengths data displayed in the UI. This data can be edited,
+	 * added to, or removed from by the user based on the interaction mode determined by `lengthsStatus`.
+	 * Changes to `lengths` directly affect what the user sees and interacts with.
+	 */
+	const [lengths, setLengths] = useState([]);
+
+	/**
+	 * `backupLengths` is used as a temporary storage to hold the original lengths data before any user
+	 * modifications.
+	 * This allows for a "cancel" functionality where changes made to the `lengths` data can be discarded,
+	 * reverting to the original data stored in `backupLengths`.
+	 * It's essentially a snapshot of `lengths` at a specific point, fetched from the server
+	 * before any edits.
+	 */
 	const [backupLengths, setBackupLengths] = useState([
 		{
 			length: "",
@@ -23,11 +36,19 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 		},
 	]);
 
-	const [lengths, setLengths] = useState([]);
-
+	/**
+	 * The `lengthsStatus` state is used to manage the current display mode of the lengths data.
+	 * It determines the interaction level available to the user and the visual presentation of the data.
+	 * Possible values are:
+	 * - "view": The default state, where lengths data is displayed for viewing only.
+	 * - "edit": Enables editing capabilities for the lengths data.
+	 * - "add": Enables adding new lengths.
+	 * - "empty": Indicates that no lengths data is currently available or fetched.
+	 * This state helps in conditionally rendering the component's UI and controlling user interactions.
+	 */
 	const [lengthsStatus, setLengthsStatus] = useState("view");
 
-	const [responseError, setResponseError] = useState("none");
+	const [responseError, setResponseError] = useState(null);
 
 	const [validLengths, setValidLengths] = useState(true);
 
@@ -46,7 +67,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	const [measureUnit, setMeasureUnit] = useState(getUnit(unit));
 
 	useEffect(() => {
-		if (responseError !== "none") {
+		if (responseError !== null) {
 			alert(responseError);
 		}
 	}, [responseError]);
@@ -54,7 +75,6 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	useEffect(() => {
 		getLengths().then((lens) => {
 			lens = fillLengths(lens);
-			// lens = transformUnitsFromMm(lens);
 			setBackupLengths(lens);
 			setLengths(lens);
 			if (lens.length === 0) {
@@ -192,26 +212,6 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	};
 
 	/**
-	 * Remove zero tails from lengths array.
-	 * @param {array} lengths to remove zero tails.
-	 */
-	const removeZeroTailsInState = (lengths) => {
-		if (lengths.length !== 0) {
-			var newLengths = lengths;
-
-			while (newLengths[0]["number_individuals"] === 0) {
-				newLengths.shift();
-			}
-
-			while (newLengths[newLengths.length - 1]["number_individuals"] === 0) {
-				newLengths.pop();
-			}
-
-			setLengths(newLengths);
-		}
-	};
-
-	/**
 	 * Transform units to millimeters.
 	 * @param {array} lengths to transform.
 	 */
@@ -317,7 +317,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	const createRangeLengths = (minLength, maxLength) => {
 		var newLengths = [];
 
-		for (var l = Number(minLength); l <= Number(maxLength); l += Number(increment)) {
+		for (var l = Number(minLength); l <= Number(maxLength); l += increment) {
 			newLengths.push({
 				length: l,
 				number_individuals: "",

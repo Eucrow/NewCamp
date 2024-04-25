@@ -12,7 +12,9 @@ const LengthsRangeForm = () => {
 
 	const [minimumRange, setMinimumRange] = useState("");
 
-	const [maximunRange, setMaximumRange] = useState("");
+	const [maximumRange, setMaximumRange] = useState("");
+
+	// const unitStep = Number(lengthsContext.increment) === 5 && lengthsContext.measureUnit === "mm" ? 0.5 : 1;
 
 	const handleMinimumRange = (e) => {
 		setMinimumRange(e.target.value);
@@ -32,6 +34,7 @@ const LengthsRangeForm = () => {
 							type="number"
 							id="minimum"
 							name="minimum"
+							step={lengthsContext.increment}
 							autoFocus
 							min="0"
 							max="9999"
@@ -47,9 +50,10 @@ const LengthsRangeForm = () => {
 							type="number"
 							id="maximum"
 							name="maximum"
+							step={lengthsContext.increment}
 							min="0"
 							max="9999"
-							value={maximunRange}
+							value={maximumRange}
 							onChange={(e) => handleMaximumRange(e)}
 						/>
 					</label>
@@ -60,7 +64,7 @@ const LengthsRangeForm = () => {
 							className="buttonsWrapper__button"
 							type="button"
 							onClick={() => {
-								lengthsContext.createRangeLengths(minimumRange, maximunRange);
+								lengthsContext.createRangeLengths(minimumRange, maximumRange);
 								setMaximumRange("");
 								setMinimumRange("");
 							}}
