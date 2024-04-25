@@ -50,7 +50,7 @@ const LengthsForm = () => {
 				<form
 					className="lengthsWrapper"
 					onSubmit={(e) => {
-						lengthsContext.saveSexAndLengths(e, lengthsContext.sex, lengthsContext.lengths);
+						lengthsContext.saveSexAndLengths(e, lengthsContext.lengths);
 					}}
 				>
 					<div className="formLengths__table">
