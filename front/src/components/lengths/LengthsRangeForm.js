@@ -15,8 +15,6 @@ const LengthsRangeForm = () => {
 
 	const [maximumRange, setMaximumRange] = useState("");
 
-	// const unitStep = Number(lengthsContext.increment) === 5 && lengthsContext.measureUnit === "mm" ? 0.5 : 1;
-
 	const handleMinimumRange = (e) => {
 		setMinimumRange(e.target.value);
 	};
@@ -28,9 +26,9 @@ const LengthsRangeForm = () => {
 	return (
 		<form className="lengthsWrapper">
 			<div className="formLengths__table">
-				<div className="formLengths__row">
-					<label className="formLengths__cell">
-						Minimum length:
+				<div>
+					<label className="formLengths__cell formLengths__cell--header">
+						Minimum length ({lengthsContext.measureUnit}):
 						<input
 							type="number"
 							id="minimum"
@@ -44,9 +42,9 @@ const LengthsRangeForm = () => {
 						/>
 					</label>
 				</div>
-				<div className="formLengths__row">
-					<label className="formLengths__cell">
-						Maximum length:
+				<div>
+					<label className="formLengths__cell formLengths__cell--header">
+						Maximum length ({lengthsContext.measureUnit}):
 						<input
 							type="number"
 							id="maximum"
@@ -59,27 +57,23 @@ const LengthsRangeForm = () => {
 						/>
 					</label>
 				</div>
-				<div className="formLengths__row">
-					<div className="formLengths__cell">
-						<button
-							className="buttonsWrapper__button"
-							type="button"
-							onClick={() => {
-								lengthsContext.createRangeLengths(minimumRange, maximumRange);
-								setMaximumRange("");
-								setMinimumRange("");
-							}}
-						>
-							Add lengths range
-						</button>
-					</div>
-					<div className="formLengths__cell">
-						<UiButtonStatusHandle
-							buttonText={"Cancel"}
-							handleMethod={lengthsContext.cancelEditLengths}
-							newStatus={"empty"}
-						/>
-					</div>
+				<div className="form__cell buttonsWrapper--center">
+					<button
+						className="buttonsWrapper__button"
+						type="button"
+						onClick={() => {
+							lengthsContext.createRangeLengths(minimumRange, maximumRange);
+							setMaximumRange("");
+							setMinimumRange("");
+						}}
+					>
+						Create range
+					</button>
+					<UiButtonStatusHandle
+						buttonText={"Cancel"}
+						handleMethod={lengthsContext.cancelEditLengths}
+						newStatus={"empty"}
+					/>
 				</div>
 			</div>
 		</form>
