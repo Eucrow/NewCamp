@@ -3,7 +3,6 @@ import React, { useContext } from "react";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiButtonDelete from "../ui/UiButtonDelete";
 
-import GlobalContext from "../../contexts/GlobalContext";
 import LengthsContext from "../../contexts/LengthsContext";
 
 /**
@@ -12,7 +11,6 @@ import LengthsContext from "../../contexts/LengthsContext";
 const LengthsButtonBar = () => {
 	var ButtonBar = null;
 
-	const globalContext = useContext(GlobalContext);
 	const lengthsContext = useContext(LengthsContext);
 
 	if (lengthsContext.lengthsStatus === "empty") {
@@ -24,7 +22,7 @@ const LengthsButtonBar = () => {
 						lengthsContext.setLengthsStatus("add");
 					}}
 				>
-					Add {globalContext.sexesAvailable[lengthsContext.sex]}
+					Add lengths
 				</button>
 			</div>
 		);
