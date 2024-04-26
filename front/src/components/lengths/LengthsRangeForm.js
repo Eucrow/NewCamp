@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useState } from "react";
 
 import LengthsContext from "../../contexts/LengthsContext";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
  * Form to create a range of lengths.
@@ -71,6 +72,13 @@ const LengthsRangeForm = () => {
 						>
 							Add lengths range
 						</button>
+					</div>
+					<div className="formLengths__cell">
+						<UiButtonStatusHandle
+							buttonText={"Cancel"}
+							handleMethod={lengthsContext.cancelEditLengths}
+							newStatus={"empty"}
+						/>
 					</div>
 				</div>
 			</div>

@@ -401,7 +401,11 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	 */
 	const cancelEditLengths = () => {
 		setLengths(backupLengths);
-		setLengthsStatus("view");
+		if (backupLengths.length === 0) {
+			setLengthsStatus("empty");
+		} else {
+			setLengthsStatus("view");
+		}
 	};
 
 	// render content

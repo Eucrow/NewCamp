@@ -52,27 +52,13 @@ const LengthForm = ({ l, idx }) => {
 						/>
 					</div>
 					<div className="formLengths__cell">
-						<button
-							className="icon_button button__hidden"
-							type="button"
-							title="Add length"
-							onClick={(e) => {
-								lengthsContext.addLength(l.length, idx);
-							}}
-						>
+						<button className="icon_button button__hidden" type="button" aria-hidden="true" tabIndex="-1">
 							<UiIconAdd />
 						</button>
 					</div>
 
 					<div className="formLengths__cell">
-						<button
-							className="icon_button button__hidden"
-							type="button"
-							title="Delete length"
-							onClick={(e) => {
-								lengthsContext.deleteLength(idx);
-							}}
-						>
+						<button className="icon_button button__hidden" type="button" aria-hidden="true" tabIndex="-1">
 							<UiIconDelete />
 						</button>
 					</div>
