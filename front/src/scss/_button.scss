@@ -1,7 +1,7 @@
 button {
 	white-space: nowrap;
 	// min-height: 2em;
-    height: 1.8rem;
+	height: 1.8rem;
 	background-color: var(--button-background-color);
 
 	border-radius: 5px;
@@ -17,4 +17,8 @@ button {
 		color: var(--higlight-front-color);
 		background-color: var(--higlight-background-color);
 	}
+}
+
+.button__hidden {
+	visibility: hidden;
 }

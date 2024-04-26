@@ -51,6 +51,31 @@ const LengthForm = ({ l, idx }) => {
 							disabled
 						/>
 					</div>
+					<div className="formLengths__cell">
+						<button
+							className="icon_button button__hidden"
+							type="button"
+							title="Add length"
+							onClick={(e) => {
+								lengthsContext.addLength(l.length, idx);
+							}}
+						>
+							<UiIconAdd />
+						</button>
+					</div>
+
+					<div className="formLengths__cell">
+						<button
+							className="icon_button button__hidden"
+							type="button"
+							title="Delete length"
+							onClick={(e) => {
+								lengthsContext.deleteLength(idx);
+							}}
+						>
+							<UiIconDelete />
+						</button>
+					</div>
 				</div>
 			);
 		} else if (lengthsContext.lengthsStatus === "edit") {
