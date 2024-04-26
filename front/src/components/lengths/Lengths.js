@@ -202,7 +202,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	};
 
 	/**
-	 * Remove useless elements of lengths array and maintain only lenght and number of individuals.
+	 * Remove useless elements of lengths array and maintain only length and number of individuals.
 	 * @param {array} lengths to clean.
 	 */
 	const removeUselessElementsLengths = (lengths) => {

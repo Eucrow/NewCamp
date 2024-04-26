@@ -1,17 +1,17 @@
-.icon_button{
-    padding: 0px;
-    margin: 0px;
-    min-height: 0px; //mandatory reset min-height. Inheridet from <button>
-    width: 1.1rem;
-    height: 1.1rem;
-    border: 0px;
-    border-radius: 5px;
-    background-color: var(--wrapper-global-color);
-    
-    &:hover,
+.icon_button {
+	padding: 0px;
+	margin: 0px;
+	min-height: 0px; //mandatory reset min-height. Inheridet from <button>
+	width: 1.1rem;
+	height: 1.1rem;
+	border: 0px;
+	border-radius: 5px;
+	background-color: var(--wrapper-global-color);
+
+	&:hover,
 	&:active {
-		color: var(--higlight-front-color);
+		color: var(--highlight-front-color);
 		background-color: transparent;
-        fill: var(--grey-gradient-2);
+		fill: var(--grey-gradient-2);
 	}
 }

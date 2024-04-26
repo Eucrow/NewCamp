@@ -77,8 +77,8 @@
 	--highlight-text-color: var(--blue-gradient-1);
 
 	//links and buttons higlights
-	--higlight-background-color: var(--blue-gradient-1);
-	--higlight-front-color: var(--background-global-color);
+	--highlight-background-color: var(--blue-gradient-1);
+	--highlight-front-color: var(--background-global-color);
 
 	//button colors
 	--button-background-color: var(--grey-gradient-3);
@@ -101,10 +101,6 @@ html {
 	color: var(--text-color);
 	font-family: var(--normal-font);
 }
-
-// select {
-// 	font-family: var(--normal-font);
-// }
 
 h1,
 h2,
@@ -129,44 +125,4 @@ main {
 // fieldset
 fieldset.wrapper {
 	width: 100%;
-}
-
-// hauls
-// TODO: REMOVE THIS STYLES:
-.haulsWrapper {
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	padding: 0px 0px 0px 20px;
-}
-
-.haul__row {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-items: center;
-	// width: 100%;
-	min-height: 2rem;
-	padding: 5px 0px;
-}
-
-.haul__cell {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	min-height: 2rem;
-	padding-right: 10px;
-}
-
-.haul__cell:last-child {
-	padding-right: 0px;
-}
-
-// cell aligned to the right
-.haul__cell--right {
-	margin-left: auto;
-}
-
-.haul__label {
-	margin-right: 5px;
 }
