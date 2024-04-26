@@ -29,3 +29,10 @@
 .sexWrapper:not(:last-child) {
 	border-right: 1px solid var(--wrapper-border-color);
 }
+
+.sexWrapper__title {
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+	padding: 5px 0px 10px 5px;
+}

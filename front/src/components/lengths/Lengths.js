@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
-import LengthsContext from "../../contexts/LengthsContext";
+import React, { useEffect, useState, useContext } from "react";
 
 import LengthsForm from "./LengthsForm.js";
+
+import LengthsContext from "../../contexts/LengthsContext";
+import GlobalContext from "../../contexts/GlobalContext.js";
 
 /**
  * Manages and displays lengths data of a sex.
@@ -14,6 +16,8 @@ import LengthsForm from "./LengthsForm.js";
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
 const Lengths = ({ sex, catchId, unit, increment }) => {
+	const globalContext = useContext(GlobalContext);
+
 	/**
 	 * `lengths` state holds the current lengths data displayed in the UI. This data can be edited,
 	 * added to, or removed from by the user based on the interaction mode determined by `lengthsStatus`.
@@ -422,6 +426,8 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 					createRangeLengths: createRangeLengths,
 				}}
 			>
+				<div className="sexWrapper__title">{globalContext.sexesAvailable[sex]}</div>
+
 				<LengthsForm />
 			</LengthsContext.Provider>
 		);
