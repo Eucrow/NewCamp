@@ -8,10 +8,14 @@ import UiIconDelete from "./UiIconDelete";
  * @param {character} buttonText text of the button.
  * @param {character} confirmMessage text to show in a confirm message before the deletion.
  */
-const UiButtonDelete = ({ id, deleteMethod, buttonText, confirmMessage }) => {
+const UiButtonDelete = ({ id, children, deleteMethod, buttonText, confirmMessage }) => {
+	const hasChildren = children !== undefined;
+
+	const buttonClass = hasChildren ? "buttonsWrapper__button icon_button" : "buttonsWrapper__button";
+
 	const renderedButton = (
 		<button
-			className="buttonsWrapper__button icon_button"
+			className={buttonClass}
 			type="button"
 			title={buttonText}
 			onClick={(e) => {
@@ -20,7 +24,7 @@ const UiButtonDelete = ({ id, deleteMethod, buttonText, confirmMessage }) => {
 				}
 			}}
 		>
-			<UiIconDelete />
+			{hasChildren ? children : buttonText}
 		</button>
 	);
 

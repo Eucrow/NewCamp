@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 
 import LengthsForm from "./LengthsForm.js";
+import LengthsButtonBar from "./LengthsButtonBar.js";
 
 import LengthsContext from "../../contexts/LengthsContext";
 import GlobalContext from "../../contexts/GlobalContext.js";
@@ -430,7 +431,10 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 					createRangeLengths: createRangeLengths,
 				}}
 			>
-				<div className="sexWrapper__title">{globalContext.sexesAvailable[sex]}</div>
+				<div className="sexWrapper__title">
+					{globalContext.sexesAvailable[sex]}
+					{/* {<LengthsButtonBar />} */}
+				</div>
 
 				<LengthsForm />
 			</LengthsContext.Provider>

@@ -31,8 +31,20 @@
 }
 
 .sexWrapper__title {
+	// display: flex;
+	// align-items: center;
 	font-weight: bold;
-	text-align: center;
-	vertical-align: middle;
-	padding: 5px 0px 10px 5px;
+	// text-align: center;
+	// vertical-align: middle;
+	padding: 5px 0px 10px 0px;
+}
+
+.sexWrapper__buttons_bar {
+	display: inline-flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: center;
+	// padding-left: 10px;
+	width: 100%;
 }

@@ -4,6 +4,7 @@ import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSexes from "../ui/UiButtonSexes";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiIconEdit from "../ui/UiIconEdit";
+import UiIconDelete from "../ui/UiIconDelete";
 import UiButtonSave from "../ui/UiButtonSave";
 
 /**
@@ -51,6 +52,7 @@ const CatchButtonBar = ({
 					confirmMessage={
 						"Are you sure to delete this catch? This delete the catch and its sexes and lengths."
 					}
+					children={<UiIconDelete />}
 				/>
 
 				{viewSexes === false ? (

@@ -294,6 +294,7 @@ const Catches = ({ haul_id }) => {
 					{catches.map((c) => {
 						return (
 							<Catch
+								className="catches__table__row"
 								key={c.catch_id}
 								thisCatch={c}
 								handleChangeSampledWeight={handleChangeSampledWeight}
