@@ -462,14 +462,14 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<UiButtonStatusHandle
-										buttonText={"Hide haul details"}
+										buttonText={"Hide Haul Detail"}
 										handleMethod={setDetail}
 										newStatus={false}
 									>
 										{/* <UiIconDetailHide /> */}
 									</UiButtonStatusHandle>
 									<UiButtonStatusHandle
-										buttonText={"Edit haul details"}
+										buttonText={"Edit Haul Detail"}
 										handleMethod={setEdit}
 										newStatus={true}
 									>
@@ -542,7 +542,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<UiButtonStatusHandle
-										buttonText={"Hide detail"}
+										buttonText={"Hide Detail"}
 										handleMethod={setDetail}
 										newStatus={false}
 									/>

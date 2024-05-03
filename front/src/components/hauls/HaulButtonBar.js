@@ -68,12 +68,7 @@ const HaulButtonBar = ({
 			</div>
 		),
 
-		detailMode: (
-			// <UiButtonStatusHandle buttonText={"Hide haul details"} handleMethod={setDetail} newStatus={false}>
-			// 	<UiIconDetailHide />
-			// </UiButtonStatusHandle>
-			<></>
-		),
+		detailMode: <></>,
 
 		editHaulMode: (
 			<div className="form__cell form__cell--right">
@@ -84,7 +79,7 @@ const HaulButtonBar = ({
 
 		catchesMode: (
 			<div className="form__cell form__cell--right">
-				<UiButtonStatusHandle buttonText={"Hide fauna list"} handleMethod={setCatchesMode} newStatus={false}>
+				<UiButtonStatusHandle buttonText={"Hide Fauna List"} handleMethod={setCatchesMode} newStatus={false}>
 					{/* <UiIconBiometrics /> */}
 				</UiButtonStatusHandle>
 			</div>

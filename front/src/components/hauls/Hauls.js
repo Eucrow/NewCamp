@@ -86,7 +86,7 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 				<Fragment>
 					{renderHauls()}
 					<UiButtonStatusHandle
-						buttonText={"Add haul"}
+						buttonText={"Add Haul"}
 						handleMethod={setAddHaul}
 						newStatus={true}
 					></UiButtonStatusHandle>
