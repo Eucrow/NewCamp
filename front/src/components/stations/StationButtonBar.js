@@ -6,6 +6,7 @@ import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiIconEdit from "../ui/UiIconEdit";
+import UiIconDelete from "../ui/UiIconDelete";
 
 const StationButtonBar = ({ stationId, handleEdit, edit, add }) => {
 	const stationsContext = useContext(StationsContext);
@@ -46,6 +47,7 @@ const StationButtonBar = ({ stationId, handleEdit, edit, add }) => {
 						confirmMessage={
 							"All the data of the station, including hauls, catches, lengths... will be removed, are you sure?"
 						}
+						children={<UiIconDelete />}
 					/>
 				</div>
 			</div>

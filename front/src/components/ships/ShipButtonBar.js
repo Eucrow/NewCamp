@@ -5,7 +5,6 @@ import ShipsContext from "../../contexts/ShipsContext";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
-import UiIconEdit from "../ui/UiIconEdit";
 
 /**
  * Button bar of ship component.
@@ -41,13 +40,15 @@ const ShipButtonBar = (props) => {
 	if (props.edit === false) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right buttonsWrapper">
-				<UiButtonStatusHandle buttonText={"Edit ship"} handleMethod={props.handleEdit} newStatus={true}>
-					<UiIconEdit />
-				</UiButtonStatusHandle>
+				<UiButtonStatusHandle
+					buttonText={"Edit Ship"}
+					handleMethod={props.handleEdit}
+					newStatus={true}
+				></UiButtonStatusHandle>
 				<UiButtonDelete
 					id={props.ship_id}
 					deleteMethod={shipsContext.deleteShip}
-					buttonText="Delete ship"
+					buttonText="Delete Ship"
 					confirmMessage="Delete the ship?"
 				/>
 			</div>

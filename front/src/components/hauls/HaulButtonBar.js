@@ -3,10 +3,11 @@ import React from "react";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
-// import UiIconDetailShow from "../ui/UiIconDetailShow";
-// import UiIconDetailHide from "../ui/UiIconDetailHide";
 import UiIconEdit from "../ui/UiIconEdit";
-// import UiIconBiometrics from "../ui/UiIconCatches";
+import UiIconDelete from "../ui/UiIconDelete";
+import UiIconDetailShow from "../ui/UiIconDetailShow";
+import UiIconDetailHide from "../ui/UiIconDetailHide";
+// import UiIconBiometrics from "../ui/UiIconBiometrics";
 
 /**
  * HaulButtonBar component.
@@ -38,7 +39,7 @@ const HaulButtonBar = ({
 	const samplerButton = () => {
 		if (sampler_id === 1) {
 			return (
-				<UiButtonStatusHandle buttonText={"View fauna list"} handleMethod={setCatchesMode} newStatus={true}>
+				<UiButtonStatusHandle buttonText={"Fauna List"} handleMethod={setCatchesMode} newStatus={true}>
 					{/* <UiIconBiometrics /> */}
 				</UiButtonStatusHandle>
 			);
@@ -58,8 +59,9 @@ const HaulButtonBar = ({
 					deleteMethod={deleteHaul}
 					buttonText="Delete haul"
 					confirmMessage="Are you sure to delete this haul?"
+					children={<UiIconDelete />}
 				/>
-				<UiButtonStatusHandle buttonText={"View haul details"} handleMethod={setDetail} newStatus={true}>
+				<UiButtonStatusHandle buttonText={"Haul Details"} handleMethod={setDetail} newStatus={true}>
 					{/* <UiIconDetailShow /> */}
 				</UiButtonStatusHandle>
 				{samplerButton()}

@@ -5,7 +5,6 @@ import SpeciesContext from "../../contexts/SpeciesContext";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
-import UiIconEdit from "../ui/UiIconEdit";
 
 /**
  * Button bar of Sp component.
@@ -40,16 +39,18 @@ const SpButtonBar = (props) => {
 	if (props.edit === false) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right buttonsWrapper">
-				<UiButtonStatusHandle buttonText={"Edit species"} handleMethod={props.handleEdit} newStatus={true}>
-					<UiIconEdit />
-				</UiButtonStatusHandle>
+				<UiButtonStatusHandle
+					buttonText={"Edit Species"}
+					handleMethod={props.handleEdit}
+					newStatus={true}
+				></UiButtonStatusHandle>
 				<UiButtonDelete
 					id={props.sp_id}
 					deleteMethod={speciesContext.deleteSp}
 					buttonText="Delete Species"
 					confirmMessage="Delete this species? All the samples of this species on ALL the surveys will be removed!! Are you sure?"
 				/>
-				<UiButtonStatusHandle buttonText="Hide detail" handleMethod={props.changeDetail} newStatus={false} />
+				<UiButtonStatusHandle buttonText="Hide Detail" handleMethod={props.changeDetail} newStatus={false} />
 			</div>
 		);
 	}
