@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 
 import LengthsForm from "./LengthsForm.js";
-import LengthsButtonBar from "./LengthsButtonBar.js";
 
 import LengthsContext from "../../contexts/LengthsContext";
 import GlobalContext from "../../contexts/GlobalContext.js";
@@ -195,7 +194,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 
 	/**
 	 * Remove zero number individuals from lengths array.
-	 * @param {array of objec} lengths to remove zero number individuals.
+	 * @param {array of object} lengths to remove zero number individuals.
 	 */
 	const removeZeroNumberIndividuals = (lengths) => {
 		var newLengths = lengths.filter((e) => e.number_individuals !== 0 && e.number_individuals !== "");
@@ -236,7 +235,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	};
 
 	/**
-	 * Transform units from milimeters to measure unit in state.
+	 * Transform units from millimeters to measure unit in state.
 	 * @param {array} lengths to transform.
 	 */
 	const transformUnitsFromMm = (lengths) => {

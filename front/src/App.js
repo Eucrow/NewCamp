@@ -5,7 +5,6 @@ import "./index.scss";
 import SelectedSurveyContext from "./contexts/SelectedSuveryContext";
 import GlobalContext from "./contexts/GlobalContext.js";
 
-// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { HashRouter as Router, Route, Link } from "react-router-dom";
 
 import ComponentsSurveys from "./components/surveys/Surveys.js";
@@ -14,16 +13,10 @@ import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
 
 import Stations from "./components/stations/Stations.js";
 
-// import ComponentsHauls from "./components/hauls/Hauls.js";
-
 import Species from "./components/species/Species";
 import Ships from "./components/ships/Ships";
-import Gears from "./components/gears/Trawls";
 
 export default function App() {
-	// const [surveySelector, setSurvey] = useState(null);
-	// const value = { surveySelector, setSurvey };
-
 	const [selectedSurvey, setSelectedSurvey] = useState(() => {
 		const survey_description = window.localStorage.getItem("survey_description");
 
@@ -94,15 +87,12 @@ export default function App() {
 								</Link>
 							</li>
 							<li className="headNav__item" role="none">
-								<Link to="/Trawls">Trawls</Link>
+								<Link to="/" role="menuitem">
+									Home
+								</Link>
 							</li>
 						</ul>
-						{/* <Link to="/">Home</Link>- -*/}
-						{/* <Link to="/Strata">Strata</Link> */}
 					</nav>
-					{/* <main>
-					
-				</main> */}
 
 					<Route path="/" exact component={Home} />
 
@@ -119,20 +109,9 @@ export default function App() {
 					/>
 
 					<Route path="/Surveys" exact component={ComponentsSurveys} />
-
 					<Route path="/Stations" exact component={Stations} />
-
-					{/* TODO: CONSIDER IF THE NEXT PATH IS USEFULL */}
-					{/* <Route path="/Hauls/:survey_id([0-9]+)" exact component={ComponentsHauls} />
-				<Route path="/Hauls" exact component={ComponentsHauls} /> */}
-
-					{/* <Route path="/Weights" component={Weights} /> */}
-					{/* <Route path="/Samples" component={Samples} /> */}
 					<Route path="/Species" component={Species} />
-
 					<Route path="/Ships" component={Ships} />
-
-					<Route path="/Trawls" component={Gears} />
 				</Router>
 			</GlobalContext.Provider>
 		</SelectedSurveyContext.Provider>
