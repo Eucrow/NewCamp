@@ -54,7 +54,7 @@ const LengthsForm = () => {
 					}}
 				>
 					<div className="formLengths__table">
-						<div className="formLengths__row ">
+						<div className="formLengths__row">
 							<div className="formLengths__cell formLengths__cell--header">
 								{lengthsContext.measureUnit}
 							</div>
@@ -81,9 +81,9 @@ const LengthsForm = () => {
 			);
 		} else if (lengthsContext.lengthsStatus === "add") {
 			return (
-				<div className="formLengths__table">
-					<LengthsRangeForm />
-				</div>
+				// <div className="lengthsWrapper">
+				<LengthsRangeForm />
+				// </div>
 			);
 		} else if (lengthsContext.lengthsStatus === "empty") {
 			return (

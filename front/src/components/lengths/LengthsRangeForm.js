@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { useState } from "react";
 
 import LengthsContext from "../../contexts/LengthsContext";
@@ -15,6 +15,8 @@ const LengthsRangeForm = () => {
 
 	const [maximumRange, setMaximumRange] = useState("");
 
+	const [validRange, setValidRange] = useState(true);
+
 	const handleMinimumRange = (e) => {
 		setMinimumRange(e.target.value);
 	};
@@ -23,44 +25,64 @@ const LengthsRangeForm = () => {
 		setMaximumRange(e.target.value);
 	};
 
+	let minimumRef = useRef(null);
+	let maximumRef = useRef(null);
+
+	useEffect(() => {
+		if (minimumRange > maximumRange) {
+			maximumRef.current.setCustomValidity("The maximum length must be greater than the minimum length.");
+			setValidRange(false);
+		} else {
+			maximumRef.current.setCustomValidity("");
+			setValidRange(true);
+		}
+	}, [minimumRange, maximumRange]);
+
 	return (
 		<form className="lengthsWrapper">
-			<div className="formLengths__table">
-				<div>
-					<label className="formLengths__cell formLengths__cell--header">
+			<div className="formLengthsRange__table">
+				<div className="formLengthsRange__row">
+					<label className="formLengthsRange__cell formLengths__cell--header" for="minimum">
 						Minimum length ({lengthsContext.measureUnit}):
-						<input
-							type="number"
-							id="minimum"
-							name="minimum"
-							step={lengthsContext.increment}
-							autoFocus
-							min="0"
-							max="9999"
-							value={minimumRange}
-							onChange={(e) => handleMinimumRange(e)}
-						/>
 					</label>
+					<input
+						className="formLengthsRange__cell"
+						type="number"
+						id="minimum"
+						name="minimum"
+						ref={minimumRef}
+						step={lengthsContext.increment}
+						autoFocus
+						min="0"
+						max="9999"
+						value={minimumRange}
+						onChange={(e) => handleMinimumRange(e)}
+					/>
 				</div>
-				<div>
-					<label className="formLengths__cell formLengths__cell--header">
+				<div className="formLengthsRange__row">
+					<label className="formLengthsRange__cell formLengths__cell--header" for="maximum">
 						Maximum length ({lengthsContext.measureUnit}):
-						<input
-							type="number"
-							id="maximum"
-							name="maximum"
-							step={lengthsContext.increment}
-							min="0"
-							max="9999"
-							value={maximumRange}
-							onChange={(e) => handleMaximumRange(e)}
-						/>
 					</label>
+					<input
+						className="formLengthsRange__cell"
+						type="number"
+						id="maximum"
+						name="maximum"
+						ref={maximumRef}
+						step={lengthsContext.increment}
+						min="0"
+						max="9999"
+						value={maximumRange}
+						onChange={(e) => handleMaximumRange(e)}
+					/>
 				</div>
-				<div className="form__cell buttonsWrapper--center">
+			</div>
+			<div className="formLengthsRange__row">
+				<div className="form__row buttonsWrapper--center">
 					<button
-						className="buttonsWrapper__button"
+						className="formLengthsRange__cell buttonsWrapper__button"
 						type="button"
+						disabled={!validRange}
 						onClick={() => {
 							lengthsContext.createRangeLengths(minimumRange, maximumRange);
 							setMaximumRange("");
