@@ -5,9 +5,6 @@ import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiIconEdit from "../ui/UiIconEdit";
 import UiIconDelete from "../ui/UiIconDelete";
-import UiIconDetailShow from "../ui/UiIconDetailShow";
-import UiIconDetailHide from "../ui/UiIconDetailHide";
-// import UiIconBiometrics from "../ui/UiIconBiometrics";
 
 /**
  * HaulButtonBar component.

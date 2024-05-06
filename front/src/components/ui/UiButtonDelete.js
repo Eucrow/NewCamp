@@ -1,6 +1,4 @@
 import React from "react";
-
-import UiIconDelete from "./UiIconDelete";
 /**
  * Component of button to delete
  * @param {number} id id of the element to delete.
