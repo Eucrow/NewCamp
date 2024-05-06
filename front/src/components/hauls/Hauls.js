@@ -18,8 +18,8 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 
 	/**
 	 * Method to check if a combination of haul / sampler_id already exists in the hauls of this component.
-	 * @param {string} haul haul to check if alreay exists.
-	 * @param {string} samplerId samplerId to check if alreay exists.
+	 * @param {string} haul haul to check if already exists.
+	 * @param {string} samplerId samplerId to check if already exists.
 	 * @returns True if exists, false if doesn't.
 	 */
 	const haulSamplerExists = (haul, samplerId) => {
