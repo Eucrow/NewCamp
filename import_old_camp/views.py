@@ -521,6 +521,14 @@ def create_stratum(request):
                 else:
                     message.append("<p>There aren't areas of stratification " + area_col + ".</p>")
 
+    Stratum.objects.get_or_create(
+        stratum="not_assigned",
+        area=0,
+        comment="<p>In Demersales surveys, the stratification is a combination of geographic sector and " \
+                "depth.</p> ",
+        stratification_id=stratification_object.id
+    )
+
     return HttpResponse(message, status=HTTP_201_CREATED)
 
 
@@ -615,7 +623,9 @@ class HaulsImport:
                                                  stratification=self.stratification_object)
             return stratum_object.id
         else:
-            return None
+            stratum_object = Stratum.objects.get(stratum="not_assigned",
+                                                 stratification=self.stratification_object)
+            return stratum_object.id
 
     def get_station_id_or_create(self, row):
         """
@@ -625,7 +635,7 @@ class HaulsImport:
         """
 
         # add station data
-        # temporaly, in all demersales surveys, the station is the same than the haul
+        # temporally, in all demersales surveys, the station is the same as the haul
         if not Station.objects.filter(station=row['LANCE'], survey__acronym=self.survey_name).exists():
             station_new = Station()
             station_new.station = row['LANCE']
@@ -695,6 +705,12 @@ class HaulsImport:
         # the empty values must be saved as Na, so:
         meteo_table = meteo_table.replace('', pd.NA)
 
+        def convert_wind_velocity(row):
+            if not pd.isna(row['wind_velocity']):
+                return float(row['wind_velocity'].replace(',', '.'))
+
+        meteo_table["wind_velocity"] = meteo_table.apply(convert_wind_velocity, axis=1)
+
         return meteo_table
 
     def format_haul_trawl_table(self, file):
@@ -718,6 +734,18 @@ class HaulsImport:
         trawl_table['hauling_date_time'] = trawl_table[["FECHA", "HORA_V"]].agg(' '.join, axis=1)
         trawl_table['hauling_date_time'] = pd.to_datetime(trawl_table['hauling_date_time'], format='%d/%m/%Y %H.%M')
 
+        def convert_velocity(row):
+            try:
+                return float(row['VELOCIDAD'].replace(',', '.'))
+            except ValueError:
+                return ""
+
+            # if not pd.isna(row['wind_velocity']):
+            #     return float(row['wind_velocity'].replace(',', '.'))
+
+        trawl_table["velocity"] = trawl_table.apply(convert_velocity, axis=1)
+
+        # format coordinates
         def format_latitude_decimal(row, coor_var, cardinal_var, cardinal_value):
             """
             Change the format of latitude by LATITUD var and cardinal points var. To use in apply.
@@ -746,7 +774,7 @@ class HaulsImport:
         fields = list(self.fields_trawl.values())
 
         fields.extend(['haul_id', 'shooting_date_time', 'hauling_date_time', 'shooting_latitude', 'shooting_longitude',
-                       'hauling_latitude', 'hauling_longitude'])
+                       'hauling_latitude', 'hauling_longitude', 'velocity'])
 
         trawl_table = file[fields]
 
@@ -754,7 +782,7 @@ class HaulsImport:
 
         new_fields.extend(
             ['haul_id', 'shooting_date_time', 'hauling_date_time', 'shooting_latitude', 'shooting_longitude',
-             'hauling_latitude', 'hauling_longitude'])
+             'hauling_latitude', 'hauling_longitude', 'velocity'])
 
         trawl_table.columns = new_fields
 
@@ -1195,12 +1223,19 @@ class OldCampImport:
 
         # hydro = HydrographiesImport(self.request)
         # hydrography_import = hydro.import_hydrographies_csv()
-        #
+
         # response = [survey_import.content, hauls_import.content, faunas_import.content, ntall_import.content,
         #             hydrography_import.content]
-        # # response = [survey_import.content, hauls_import.content, ]
-        #
-        # return HttpResponse(response)
+        # response = [survey_import.content, hauls_import.content, ]
+        # return HttpResponse([stratification.content,
+        #                      stratum.content,
+        #                      survey_import.content,
+        #                      hauls_import.content,
+        #                      ntall_import.content,
+        #                      faunas_import.content,
+        #                      hydrography_import.content])
+
+        return HttpResponse(response)
 
     def import_species(self):
         species = SpeciesImport(self.request)

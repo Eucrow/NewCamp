@@ -126,6 +126,8 @@ class MeteorologyAPI(APIView):
 
     def get(self, request, haul_id):
         """Retrieve the Meteorology data for a given haul. """
+        print(type(haul_id))
+        haul_id = int(haul_id)
         meteorology = get_object_or_404(Meteorology, haul_id=haul_id)
         serializer = MeteorologySerializer(meteorology)
         return Response(serializer.data)
@@ -198,6 +200,9 @@ class TrawlAPI(APIView):
 
     def get(self, request, haul_id):
         """Retrieve the Trawl data for a given haul."""
+        # haul_id = int(haul_id)
+        print(type(haul_id))
+        haul_id = int(haul_id)
         trawl = get_object_or_404(HaulTrawl, haul_id=haul_id)
         # trawl = HaulTrawl.objects.get(haul_id=haul_id)
         serializer = TrawlSerializer(trawl)
