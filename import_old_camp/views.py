@@ -705,6 +705,12 @@ class HaulsImport:
         # the empty values must be saved as Na, so:
         meteo_table = meteo_table.replace('', pd.NA)
 
+        def convert_wind_velocity(row):
+            if not pd.isna(row['wind_velocity']):
+                return float(row['wind_velocity'].replace(',', '.'))
+
+        meteo_table["wind_velocity"] = meteo_table.apply(convert_wind_velocity, axis=1)
+
         return meteo_table
 
     def format_haul_trawl_table(self, file):
@@ -728,6 +734,18 @@ class HaulsImport:
         trawl_table['hauling_date_time'] = trawl_table[["FECHA", "HORA_V"]].agg(' '.join, axis=1)
         trawl_table['hauling_date_time'] = pd.to_datetime(trawl_table['hauling_date_time'], format='%d/%m/%Y %H.%M')
 
+        def convert_velocity(row):
+            try:
+                return float(row['VELOCIDAD'].replace(',', '.'))
+            except ValueError:
+                return ""
+
+            # if not pd.isna(row['wind_velocity']):
+            #     return float(row['wind_velocity'].replace(',', '.'))
+
+        trawl_table["velocity"] = trawl_table.apply(convert_velocity, axis=1)
+
+        # format coordinates
         def format_latitude_decimal(row, coor_var, cardinal_var, cardinal_value):
             """
             Change the format of latitude by LATITUD var and cardinal points var. To use in apply.
@@ -756,7 +774,7 @@ class HaulsImport:
         fields = list(self.fields_trawl.values())
 
         fields.extend(['haul_id', 'shooting_date_time', 'hauling_date_time', 'shooting_latitude', 'shooting_longitude',
-                       'hauling_latitude', 'hauling_longitude'])
+                       'hauling_latitude', 'hauling_longitude', 'velocity'])
 
         trawl_table = file[fields]
 
@@ -764,7 +782,7 @@ class HaulsImport:
 
         new_fields.extend(
             ['haul_id', 'shooting_date_time', 'hauling_date_time', 'shooting_latitude', 'shooting_longitude',
-             'hauling_latitude', 'hauling_longitude'])
+             'hauling_latitude', 'hauling_longitude', 'velocity'])
 
         trawl_table.columns = new_fields
 
