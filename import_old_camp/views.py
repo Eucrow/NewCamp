@@ -521,6 +521,14 @@ def create_stratum(request):
                 else:
                     message.append("<p>There aren't areas of stratification " + area_col + ".</p>")
 
+    Stratum.objects.get_or_create(
+        stratum="not_assigned",
+        area=0,
+        comment="<p>In Demersales surveys, the stratification is a combination of geographic sector and " \
+                "depth.</p> ",
+        stratification_id=stratification_object.id
+    )
+
     return HttpResponse(message, status=HTTP_201_CREATED)
 
 
@@ -615,7 +623,9 @@ class HaulsImport:
                                                  stratification=self.stratification_object)
             return stratum_object.id
         else:
-            return None
+            stratum_object = Stratum.objects.get(stratum="not_assigned",
+                                                 stratification=self.stratification_object)
+            return stratum_object.id
 
     def get_station_id_or_create(self, row):
         """
@@ -625,7 +635,7 @@ class HaulsImport:
         """
 
         # add station data
-        # temporaly, in all demersales surveys, the station is the same than the haul
+        # temporally, in all demersales surveys, the station is the same as the haul
         if not Station.objects.filter(station=row['LANCE'], survey__acronym=self.survey_name).exists():
             station_new = Station()
             station_new.station = row['LANCE']
@@ -1195,12 +1205,19 @@ class OldCampImport:
 
         # hydro = HydrographiesImport(self.request)
         # hydrography_import = hydro.import_hydrographies_csv()
-        #
+
         # response = [survey_import.content, hauls_import.content, faunas_import.content, ntall_import.content,
         #             hydrography_import.content]
-        # # response = [survey_import.content, hauls_import.content, ]
-        #
-        # return HttpResponse(response)
+        # response = [survey_import.content, hauls_import.content, ]
+        # return HttpResponse([stratification.content,
+        #                      stratum.content,
+        #                      survey_import.content,
+        #                      hauls_import.content,
+        #                      ntall_import.content,
+        #                      faunas_import.content,
+        #                      hydrography_import.content])
+
+        return HttpResponse(response)
 
     def import_species(self):
         species = SpeciesImport(self.request)
