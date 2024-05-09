@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 # from djgeojson.views import GeoJSONLayerView
 
 from ships.api import ShipsAPI, ShipAPI
-from gears.api import GearTrawlsAPI, GearTrawlsBasicAPI, GearTrawlAPI, GearTrawlsNamesAPI
+from gears.api import GearTrawlsAPI, GearTrawlsBasicAPI, GearTrawlAPI, GearTrawlsNamesAPI, GearCTDsBasicAPI
 from species.api import SpAPI, SpeciesGroupAPI, SpeciesAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
@@ -79,6 +79,10 @@ urlpatterns = [
                   # re_path(r'^api/1.0/gears/trawl/basic/$', GearTrawlsNamesAPI.as_view(), name="gear_names"),
                   re_path(r'^api/1.0/gears/trawl/(?P<pk>[0-9]+)$',
                           GearTrawlAPI.as_view(), name="gear_get_update_delete_api"),
+
+                  # CTD API URLS
+                  re_path(r'^api/1.0/gears/ctd/basic/$',
+                          GearCTDsBasicAPI.as_view(), name="gear"),
 
                   # Samplers API URLS
                   re_path(r'^api/1.0/samplers/$', SamplersAPI.as_view(),

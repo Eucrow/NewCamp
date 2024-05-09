@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework_csv import renderers as r
 
 from gears.models import Trawl
+from gears.models import CTD
 # from hauls.views import HaulsImport
 from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 from hauls.serializers import HaulSerializer, HaulGeoJSONSerializer, HaulTrawlSerializer, HaulHydrographySerializer, \
@@ -91,6 +92,7 @@ class HaulAPI(APIView):
         return Response(status=HTTP_204_NO_CONTENT)
 
     def put(self, request, haul_id):
+        
         haul = get_object_or_404(Haul, pk=haul_id)
         serializer = HaulSerializer(
             haul, data=request.data, partial=True, context={'request': request})
@@ -280,16 +282,19 @@ class HaulHydrographyAPI(APIView):
         serializer = HaulHydrographySerializer(data=request.data)
 
         station = Station.objects.get(pk=request.data['station_id'])
-        stratum = Stratum.objects.get(pk=request.data['stratum_id'])
+        # stratum = Stratum.objects.get(pk=request.data['stratum_id'])
         sampler = Sampler.objects.get(pk=request.data['sampler_id'])
         # TODO: I'M USING THE TRAWL GEAR --> NEED TO CREATE A HYDROGRAPHY GEAR
-        gear = Trawl.objects.get(pk=request.data['gear_id'])
+        # trawl = Trawl.objects.get(pk=request.data['trawl_id'])
+        ctd = CTD.objects.get(pk=request.data['ctd_id'])
 
         if serializer.is_valid():
             serializer.save(station=station,
-                            stratum=stratum,
+                            # stratum=stratum,
                             sampler=sampler,
-                            gear=gear)
+                            # trawl=trawl,
+                            ctd=ctd,
+                            )
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

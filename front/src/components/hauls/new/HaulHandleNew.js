@@ -32,7 +32,8 @@ const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, sa
 		haul: "",
 		stratum_id: "",
 		sampler_id: "",
-		gear_id: "",
+		trawl_id: "",
+		ctd_id: "",
 		valid: "off",
 	});
 
@@ -56,7 +57,8 @@ const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, sa
 			haul: newHaul.haul,
 			stratum_id: newHaul.stratum_id,
 			sampler_id: newHaul.sampler_id,
-			gear_id: newHaul.gear,
+			trawl_id: newHaul.trawl,
+			ctd_id: newHaul.ctd,
 			valid: newHaul.valid,
 			meteo: meteo,
 			trawl_characteristics: trawlCharacteristics,

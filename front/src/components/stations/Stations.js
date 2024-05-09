@@ -10,19 +10,21 @@ const Stations = () => {
 	const [add, setAdd] = useState(false);
 	const [stations, setStations] = useState([]);
 	const [strata, setStrata] = useState([]);
-	const [gears, setGears] = useState([]);
+	const [trawls, setTrawls] = useState([]);
+	const [ctds, setCtds] = useState([]);
 	const [samplers, setSamplers] = useState([]);
 	const [stationsBackup, setStationsBackup] = useState([stations]);
 
 	const selectedSurveyContext = useContext(SelectedSurveyContext);
 	const apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
-	const apiHydrographyForm = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
+	const apiNewHydrography = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
 	const apiStation = "http://127.0.0.1:8000/api/1.0/station/";
 	const apiHaul = "http://127.0.0.1:8000/api/1.0/haul/";
-	const apiNewHaul = "http://127.0.0.1:8000/api/1.0/haul/new/";
+	const apiNewTrawl = "http://127.0.0.1:8000/api/1.0/haul/new/";
 	const apiSurveyPartial = "http://127.0.0.1:8000/api/1.0/survey/";
 	const apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
-	const apiGears = "http://127.0.0.1:8000/api/1.0/gears/trawl/basic/";
+	const apiTrawls = "http://127.0.0.1:8000/api/1.0/gears/trawl/basic/";
+	const apiCTDs = "http://127.0.0.1:8000/api/1.0/gears/ctd/basic/";
 	const apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
 
 	/**
@@ -140,9 +142,7 @@ const Stations = () => {
 		e.preventDefault();
 		console.log(haul);
 
-		// const apiForm = haul.sampler_id === "1" ? apiTrawlForm : haul.sampler_id === "2" ? apiHydrographyForm : null;
-
-		const apiForm = haul.sampler_id === "1" ? apiNewHaul : haul.sampler_id === "2" ? apiHydrographyForm : null;
+		const apiForm = haul.sampler_id === "1" ? apiNewTrawl : haul.sampler_id === "2" ? apiNewHydrography : null;
 
 		fetch(apiForm, {
 			method: "POST",
@@ -230,7 +230,7 @@ const Stations = () => {
 	};
 
 	/**
-	 * Detele haul.
+	 * Delete haul.
 	 * @param {number} id_haul
 	 */
 	const deleteHaul = (id_haul) => {
@@ -336,23 +336,35 @@ const Stations = () => {
 					setStationsBackup(stations);
 				});
 
-			// Fetch gears
-			fetch(apiGears)
+			// Fetch trawls
+			fetch(apiTrawls)
 				.then((response) => {
 					if (response.status > 400) {
-						alert("something were wrong fetching the gears !!");
+						alert("something were wrong fetching the trawls !!");
 					}
 					return response.json();
 				})
-				.then((gears) => {
-					setGears(gears);
+				.then((trawls) => {
+					setTrawls(trawls);
+				});
+
+			// Fetch CTDs
+			fetch(apiCTDs)
+				.then((response) => {
+					if (response.status > 400) {
+						alert("something were wrong fetching the trawls !!");
+					}
+					return response.json();
+				})
+				.then((ctds) => {
+					setCtds(ctds);
 				});
 
 			// Fetch samplers
 			fetch(apiSamplers)
 				.then((response) => {
 					if (response.status > 400) {
-						alert("something were wrong fecthing the samplers!!");
+						alert("something were wrong fetching the samplers!!");
 					}
 					return response.json();
 				})
@@ -381,7 +393,8 @@ const Stations = () => {
 					updateStation: updateStation,
 					validateStationNumber: validateStationNumber,
 					strata: strata,
-					gears: gears,
+					trawls: trawls,
+					ctds: ctds,
 					samplers: samplers,
 					restoreStations: restoreStations,
 					restoreHaulCommon: restoreHaulCommon,

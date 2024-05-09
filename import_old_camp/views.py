@@ -24,7 +24,7 @@ from species.models import Sp
 from stations.models import Station
 from strata.models import Stratum
 from stratifications.models import Stratification
-from gears.models import Trawl
+from gears.models import Trawl, CTD
 from surveys.models import Survey
 from samplers.models import Sampler
 from samples.models import Length, SampledWeight, Sex
@@ -650,8 +650,8 @@ class HaulsImport:
         """
         Format table to save in database with to_sql function of pandas.
         Remove useless variables and add station_id and stratum_id.
-        :param file: file hauls in pandas dataframe
-        :return: pandas dataframe formatted
+        :param file: file hauls in pandas data frame
+        :return: pandas data frame formatted
         """
 
         hauls_table = file
@@ -662,15 +662,18 @@ class HaulsImport:
 
         hauls_table.loc[:, 'sampler_id'] = self.sampler_object.id
 
-        hauls_table.loc[:, 'gear_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
+        # hauls_table.loc[:, 'gear_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
+        hauls_table.loc[:, 'trawl_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
+
+        hauls_table.loc[:, 'sampler_type'] = "trawl"
 
         fields = list(self.fields_haul.values())
-        fields.extend(['station_id', 'stratum_id', 'sampler_id', 'gear_id'])
+        fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type'])
 
         hauls_table = file[fields]
 
         new_fields = list(self.fields_haul.keys())
-        new_fields.extend(['station_id', 'stratum_id', 'sampler_id', 'gear_id'])
+        new_fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type'])
 
         hauls_table.columns = new_fields
 
@@ -683,8 +686,8 @@ class HaulsImport:
         """
         Format table to save in database with to_sql function of pandas.
         Remove useless variables and add station_id and stratum_id.
-        :param file: file hauls in pandas dataframe
-        :return: pandas dataframe formatted
+        :param file: file hauls in pandas data frame
+        :return: pandas data frame formatted
         """
         meteo_table = file
 
@@ -717,8 +720,8 @@ class HaulsImport:
         """
         Format table to save in database with to_sql function of pandas.
         Remove useless variables and add station_id and stratum_id.
-        :param file: file hauls in pandas dataframe
-        :return: pandas dataframe formatted
+        :param file: file hauls in pandas data frame
+        :return: pandas data frame formatted
         """
         trawl_table = file
 
@@ -1120,7 +1123,11 @@ class HydrographiesImport:
         # of hidrography file), so firstly we identify it:
         sampler_object = Sampler.objects.get(sampler="CTD")
 
-        # Check if there are a Station with the same acronym than haul already stored, and if it isn't, create it:
+        # gear
+        # By defaul we use the same gear for all the hydrography hauls
+        ctd_object, created = CTD.objects.get_or_create(name="1", brand="default", model="default")
+
+        # Check if there are a Station with the same acronym as haul already stored, and if it isn't, create it:
         # try:
         # station_object = Station.objects.get(station=row["LANCE"], survey=self.survey_object)
         station_object, created = Station.objects.get_or_create(
@@ -1132,7 +1139,9 @@ class HydrographiesImport:
         haul_object, created = Haul.objects.get_or_create(
             haul=row['ESTN'],
             sampler=sampler_object,
-            station=station_object
+            station=station_object,
+            ctd=ctd_object,
+            sampler_type="CTD",
         )
 
         if HaulHydrography.objects.filter(haul=haul_object).exists():
@@ -1205,37 +1214,26 @@ class OldCampImport:
         hauls_import = hauls.import_hauls_csv()
 
         # Is mandatory that NTALL will be imported before FAUNA file
-        ntall = NtallImport(self.request)
-        ntall_import = ntall.import_ntall_csv()
+        # ntall = NtallImport(self.request)
+        # ntall_import = ntall.import_ntall_csv()
 
         # The catches table is filled firstly in the import of NTALL file. In this importation only the
         # species measured has been saved. With the FAUNA file, only of species which hasn't been
         # measured must be stored because is used to_sql from pandas library.
-        faunas = FaunasImport(self.request)
-        faunas_import = faunas.import_faunas_csv()
+        # faunas = FaunasImport(self.request)
+        # faunas_import = faunas.import_faunas_csv()
+
+        hydro = HydrographiesImport(self.request)
+        hydrography_import = hydro.import_hydrographies_csv()
 
         return HttpResponse([stratification.content,
                              stratum.content,
                              survey_import.content,
                              hauls_import.content,
-                             ntall_import.content,
-                             faunas_import.content])
-
-        # hydro = HydrographiesImport(self.request)
-        # hydrography_import = hydro.import_hydrographies_csv()
-
-        # response = [survey_import.content, hauls_import.content, faunas_import.content, ntall_import.content,
-        #             hydrography_import.content]
-        # response = [survey_import.content, hauls_import.content, ]
-        # return HttpResponse([stratification.content,
-        #                      stratum.content,
-        #                      survey_import.content,
-        #                      hauls_import.content,
-        #                      ntall_import.content,
-        #                      faunas_import.content,
-        #                      hydrography_import.content])
-
-        return HttpResponse(response)
+                             # ntall_import.content,
+                             # faunas_import.content,
+                             hydrography_import.content
+                             ])
 
     def import_species(self):
         species = SpeciesImport(self.request)

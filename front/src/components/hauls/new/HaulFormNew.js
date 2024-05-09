@@ -14,55 +14,12 @@ const HaulFormNew = ({ newHaul, handleChange, validateHaulSampler, haulRef, samp
 		return (
 			<Fragment>
 				<label className="form__cell">
-					Haul:
-					<input
-						type="number"
-						id="haul"
-						name="haul"
-						className="input__noSpinner"
-						autoFocus
-						required
-						min="1"
-						max="99"
-						maxLength="2"
-						size={2}
-						ref={haulRef}
-						onChange={(e) => {
-							handleChange(e);
-							validateHaulSampler(e, e.target.value, newHaul.sampler_id);
-						}}
-					/>
-				</label>
-
-				<label className="form__cell">
-					Stratum:
-					<select
-						id="stratum_id"
-						name="stratum_id"
-						className="select__largeWidth"
-						required
-						value={newHaul?.stratum_id || ""}
-						onChange={(e) => {
-							handleChange(e);
-						}}
-					>
-						<option value=""></option>
-						{stationsContext.strata.map((stratum) => {
-							return (
-								<option key={stratum.id} value={stratum.id}>
-									{stratum.stratum}
-								</option>
-							);
-						})}
-					</select>
-				</label>
-
-				<label className="form__cell">
 					Sampler:
 					<select
 						id="sampler_id"
 						name="sampler_id"
 						className="select__normalWidth"
+						autoFocus
 						required
 						value={newHaul?.sampler_id || ""}
 						ref={samplerRef}
@@ -81,28 +38,73 @@ const HaulFormNew = ({ newHaul, handleChange, validateHaulSampler, haulRef, samp
 						})}
 					</select>
 				</label>
-
 				<label className="form__cell">
-					Gear:
-					<select
-						id="gear_id"
-						name="gear"
+					Haul:
+					<input
+						type="number"
+						id="haul"
+						name="haul"
+						className="input__noSpinner"
 						required
-						value={newHaul?.gear || ""}
+						min="1"
+						max="99"
+						maxLength="2"
+						size={2}
+						ref={haulRef}
 						onChange={(e) => {
 							handleChange(e);
+							validateHaulSampler(e, e.target.value, newHaul.sampler_id);
 						}}
-					>
-						<option value=""></option>
-						{stationsContext.gears.map((gear) => {
-							return (
-								<option key={gear.id} value={gear.id}>
-									{gear.name}
-								</option>
-							);
-						})}
-					</select>
+					/>
 				</label>
+
+				{newHaul.sampler_id === "1" ? (
+					<label className="form__cell">
+						Gear:
+						<select
+							id="trawl_id"
+							name="trawl"
+							required
+							value={newHaul?.trawl || ""}
+							onChange={(e) => {
+								handleChange(e);
+							}}
+						>
+							<option value=""></option>
+							{stationsContext.trawls.map((trawl) => {
+								return (
+									<option key={trawl.id} value={trawl.id}>
+										{trawl.name}
+									</option>
+								);
+							})}
+						</select>
+					</label>
+				) : null}
+
+				{newHaul.sampler_id === "2" ? (
+					<label className="form__cell">
+						Gear:
+						<select
+							id="ctd_id"
+							name="ctd"
+							required
+							value={newHaul?.ctd || ""}
+							onChange={(e) => {
+								handleChange(e);
+							}}
+						>
+							<option value=""></option>
+							{stationsContext.ctds.map((ctd) => {
+								return (
+									<option key={ctd.id} value={ctd.id}>
+										{ctd.name}
+									</option>
+								);
+							})}
+						</select>
+					</label>
+				) : null}
 
 				<label className="form__cell">
 					Valid:
@@ -115,6 +117,31 @@ const HaulFormNew = ({ newHaul, handleChange, validateHaulSampler, haulRef, samp
 						}}
 					/>
 				</label>
+
+				{newHaul.sampler_id === "1" ? (
+					<label className="form__cell">
+						Stratum:
+						<select
+							id="stratum_id"
+							name="stratum_id"
+							className="select__largeWidth"
+							required
+							value={newHaul?.stratum_id || ""}
+							onChange={(e) => {
+								handleChange(e);
+							}}
+						>
+							<option value=""></option>
+							{stationsContext.strata.map((stratum) => {
+								return (
+									<option key={stratum.id} value={stratum.id}>
+										{stratum.stratum}
+									</option>
+								);
+							})}
+						</select>
+					</label>
+				) : null}
 			</Fragment>
 		);
 	};

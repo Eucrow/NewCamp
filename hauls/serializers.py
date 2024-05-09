@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from gears.models import Trawl
+from gears.models import CTD
 from samplers.models import Sampler
 from stations.models import Station
 from strata.models import Stratum
@@ -42,8 +43,11 @@ class HaulSerializer(serializers.ModelSerializer):
     """
 
     # gear = GearTrawlBasicSerializer(read_only=True)
-    gear_id = serializers.PrimaryKeyRelatedField(queryset=Trawl.objects.all(),
-                                                 source='gear')
+    trawl_id = serializers.PrimaryKeyRelatedField(queryset=Trawl.objects.all(),
+                                                  source='trawl')
+
+    # ctd_id = serializers.PrimaryKeyRelatedField(queryset=CTD.objects.all(),
+    #                                             source='ctd')
 
     # sampler = SamplerSerializer(read_only=True)
     sampler_id = serializers.PrimaryKeyRelatedField(queryset=Sampler.objects.all(),
@@ -59,8 +63,10 @@ class HaulSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'valid', 'gear_id', 'gear', 'sampler_id', 'sampler', 'stratum_id', 'stratum',
-                  'station_id', 'station']
+        fields = ['id', 'haul', 'valid', 'trawl_id', 'trawl',
+                  # 'ctd', 'ctd_id',
+                  'sampler_id', 'sampler', 'stratum_id',
+                  'stratum', 'station_id', 'station']
 
     def get_fields(self):
         """
@@ -70,7 +76,7 @@ class HaulSerializer(serializers.ModelSerializer):
         fields = super().get_fields()
 
         if self.context['request'].method == 'POST' or self.context['request'].method == 'PUT':
-            fields.pop('gear')
+            fields.pop('trawl')
             fields.pop('sampler')
             fields.pop('stratum')
             fields.pop('station')
@@ -88,7 +94,7 @@ class HaulSerializer(serializers.ModelSerializer):
             representation['sampler'] = self.validated_data['sampler'].sampler
             representation['stratum'] = self.validated_data['stratum'].stratum
             representation['station'] = self.validated_data['station'].station
-            representation['gear'] = self.validated_data['gear'].name
+            representation['trawl'] = self.validated_data['trawl'].name
 
         return representation
 
@@ -127,11 +133,11 @@ class HaulTrawlSerializer(serializers.ModelSerializer):
     sampler = serializers.CharField(source='sampler.sampler', read_only=True)
 
     # gear is the 'name' of the gear
-    gear = serializers.IntegerField(source='gear.name', read_only=True)
+    trawl = serializers.IntegerField(source='trawl.name', read_only=True)
 
     class Meta:
         model = Haul
-        fields = ['id', 'station_id', 'haul', 'stratum_id', 'stratum', 'sampler_id', 'sampler', 'gear', 'gear_id',
+        fields = ['id', 'station_id', 'haul', 'stratum_id', 'stratum', 'sampler_id', 'sampler', 'trawl', 'trawl_id',
                   'valid', 'meteo', 'trawl_characteristics']
 
     # This is a nested serializer, so we have to overwrite the create function
@@ -206,11 +212,11 @@ class HaulHydrographySerializer(serializers.ModelSerializer):
 
     station = serializers.CharField(source='station.station', read_only=True)
 
-    stratum = serializers.CharField(source='stratum.stratum', read_only=True)
+    # stratum = serializers.CharField(source='stratum.stratum', read_only=True)
 
     sampler = serializers.CharField(source='sampler.sampler', read_only=True)
 
-    gear = serializers.IntegerField(source='gear.name', read_only=True)
+    ctd = serializers.IntegerField(source='ctd.name', read_only=True)
 
     # station and sampler can't be changed...
     # station = StationSerializer(read_only=True)
@@ -219,8 +225,8 @@ class HaulHydrographySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['id', 'station', 'station_id', 'haul', 'stratum', 'stratum_id', 'sampler', 'sampler_id', 'gear',
-                  'gear_id', 'valid', 'hydrography_characteristics',
+        fields = ['id', 'station', 'station_id', 'haul', 'sampler', 'sampler_id', 'ctd',
+                  'ctd_id', 'valid', 'hydrography_characteristics',
                   ]
 
     # This is a nested serializer, so we have to overwrite the create function

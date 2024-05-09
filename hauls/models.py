@@ -17,14 +17,43 @@ class Haul(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(99)])
     # gear = models.PositiveIntegerField(null=True, blank=True)
     valid = models.BooleanField(null=True, blank=True)
+
+    SAMPLER_TYPE_CHOICES = [
+        ('trawl', 'Trawl'),
+        ('ctd', 'CTD'),
+    ]
+
+    sampler_type = models.CharField(
+        max_length=11,
+        choices=SAMPLER_TYPE_CHOICES,
+        null=True,
+        blank=True,
+    )
+
+    trawl = models.ForeignKey(
+        'gears.Trawl',
+        # on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+
+    ctd = models.ForeignKey(
+        'gears.CTD',
+        # on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+
     # right now, the gear field can be null because there are no gear for ctd. Gear field is really only
     # for trawls
     # TODO: fix the gears models to accommodate multiple type of gears. Maybe put inside Samplers.
-    gear = models.ForeignKey('gears.Trawl', null=True,
-                             blank=True, on_delete=models.CASCADE)
+    # gear = models.ForeignKey('gears.Trawl', null=True,
+    #                          blank=True, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('station', 'stratum', 'sampler', 'haul',)
+        unique_together = ('station', 'stratum', 'sampler', 'haul', 'trawl', 'ctd',)
 
 
 class Meteorology(models.Model):

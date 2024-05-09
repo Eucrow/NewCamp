@@ -63,15 +63,27 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 	const handleChangeGear = (e) => {
 		const value = e.target.value;
 
-		const gear = stationsContext.gears.find((g) => g.id === parseInt(value));
+		const gear = stationsContext.trawls.find((g) => g.id === parseInt(value));
 
-		setThisHaul((prev_state) => {
-			return {
-				...prev_state,
-				gear_id: value,
-				gear: gear.name,
-			};
-		});
+		if (thisHaul.sampler_id === 1) {
+			setThisHaul((prev_state) => {
+				return {
+					...prev_state,
+					trawl_id: value,
+					trawl: gear.name,
+				};
+			});
+		}
+
+		if (thisHaul.sampler_id === 2) {
+			setThisHaul((prev_state) => {
+				return {
+					...prev_state,
+					ctd_id: value,
+					ctd: gear.name,
+				};
+			});
+		}
 	};
 
 	const handleChangeValid = (e) => {
@@ -89,49 +101,12 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 		return (
 			<form className="form__row form--wide" onSubmit={(e) => handleSubmit(e, thisHaul.id, station_id)}>
 				<label className="form__cell">
-					Haul:
-					<input
-						type="number"
-						name="haul"
-						id="haul"
-						autoFocus
-						className="input__noSpinner"
-						min="1"
-						max="99"
-						maxLength="2"
-						size={2}
-						value={thisHaul.haul || ""}
-						onChange={(e) => {
-							handleChange(e);
-						}}
-					/>
-				</label>
-				<label className="form__cell">
-					Stratum:
-					<select
-						id="stratum_id"
-						name="stratum_id"
-						className="select__largeWidth"
-						value={thisHaul.stratum_id || "choose"}
-						onChange={(e) => {
-							handleChangeStratum(e);
-						}}
-					>
-						{stationsContext.strata.map((stratum) => {
-							return (
-								<option key={stratum.id} value={stratum.id}>
-									{stratum.stratum}
-								</option>
-							);
-						})}
-					</select>
-				</label>
-				<label className="form__cell">
 					Sampler:
 					<select
 						id="sampler_id"
 						name="sampler"
 						className="select__normalWidth"
+						autoFocus
 						disabled
 						value={thisHaul.sampler_id || "choose"}
 						onChange={handleChangeNestedIds}
@@ -146,25 +121,69 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 					</select>
 				</label>
 				<label className="form__cell">
-					Gear:
-					<select
-						id="gear_id"
-						name="gear_id"
-						className="select__gear"
-						value={thisHaul.gear_id || "choose"}
+					Haul:
+					<input
+						type="number"
+						name="haul"
+						id="haul"
+						className="input__noSpinner"
+						min="1"
+						max="99"
+						maxLength="2"
+						size={2}
+						value={thisHaul.haul || ""}
 						onChange={(e) => {
-							handleChangeGear(e);
+							handleChange(e);
 						}}
-					>
-						{stationsContext.gears.map((gear) => {
-							return (
-								<option key={gear.id} value={gear.id}>
-									{gear.name}
-								</option>
-							);
-						})}
-					</select>
+					/>
 				</label>
+
+				{thisHaul.sampler_id === 1 ? (
+					<label className="form__cell">
+						Gear:
+						<select
+							id="trawl_id"
+							name="trawl_id"
+							className="select__gear"
+							value={thisHaul.trawl_id || "choose"}
+							onChange={(e) => {
+								handleChangeGear(e);
+							}}
+						>
+							{stationsContext.trawls.map((trawl) => {
+								return (
+									<option key={trawl.id} value={trawl.id}>
+										{trawl.name}
+									</option>
+								);
+							})}
+						</select>
+					</label>
+				) : null}
+
+				{thisHaul.sampler_id === 2 ? (
+					<label className="form__cell">
+						Gear:
+						<select
+							id="ctd_id"
+							name="ctd_id"
+							className="select__gear"
+							value={thisHaul.ctd_id || "choose"}
+							onChange={(e) => {
+								handleChangeGear(e);
+							}}
+						>
+							{stationsContext.ctds.map((ctd) => {
+								return (
+									<option key={ctd.id} value={ctd.id}>
+										{ctd.name}
+									</option>
+								);
+							})}
+						</select>
+					</label>
+				) : null}
+
 				<label className="form__cell">
 					Valid:
 					<input
@@ -178,6 +197,29 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 						}}
 					/>
 				</label>
+
+				{thisHaul.sampler_id === 1 ? (
+					<label className="form__cell">
+						Stratum:
+						<select
+							id="stratum_id"
+							name="stratum_id"
+							className="select__largeWidth"
+							value={thisHaul.stratum_id || "choose"}
+							onChange={(e) => {
+								handleChangeStratum(e);
+							}}
+						>
+							{stationsContext.strata.map((stratum) => {
+								return (
+									<option key={stratum.id} value={stratum.id}>
+										{stratum.stratum}
+									</option>
+								);
+							})}
+						</select>
+					</label>
+				) : null}
 
 				<HaulButtonBar
 					haul_id={thisHaul.id}
