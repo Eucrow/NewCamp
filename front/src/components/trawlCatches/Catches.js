@@ -10,10 +10,9 @@ import CatchesButtonBar from "./CatchesButtonBar.js";
  */
 const Catches = ({ haul_id }) => {
 	const [catches, setCatches] = useState([]);
-	const [, setPlaceholder] = useState("Loading");
 	const [add, setAdd] = useState(false);
 
-	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/";
+	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;
 	const apiCatch = "http://127.0.0.1:8000/api/1.0/catch/";
 	const apiCreateCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
 	const apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch";
@@ -32,7 +31,7 @@ const Catches = ({ haul_id }) => {
 			.then(() => {
 				setCatches(
 					catches.filter((c) => {
-						return idx !== c.id;
+						return idx !== c.catch_id;
 					})
 				);
 			})
@@ -47,7 +46,7 @@ const Catches = ({ haul_id }) => {
 		const value = evt.target.value;
 
 		const newCatches = catches.map((c) => {
-			if (idx !== c.id) return c;
+			if (idx !== c.catch_id) return c;
 			return { ...c, group: value };
 		});
 
@@ -66,7 +65,7 @@ const Catches = ({ haul_id }) => {
 		const sp_name = val[2];
 
 		const newCatches = catches.map((c) => {
-			if (idx !== c.id) return c;
+			if (idx !== c.catch_id) return c;
 			return {
 				...c,
 				sp_id: sp,
@@ -87,13 +86,13 @@ const Catches = ({ haul_id }) => {
 
 		// Firstly, get the data of catch to modify
 		const thisCatch = catches.find((c) => {
-			if (c.id === idx) {
+			if (c.catch_id === idx) {
 				return c;
 			}
 			return false;
 		});
 
-		// Secondly, check if exists another catch whith the same species and category
+		// Secondly, check if exists another catch whit the same species and category
 		const repeatedCatch = catches.some(
 			(c) => (c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category === parseInt(value))
 		);
@@ -103,7 +102,7 @@ const Catches = ({ haul_id }) => {
 			alert("This category of the species already exists");
 		} else if (repeatedCatch === false) {
 			const newCatches = catches.map((c) => {
-				if (c.id !== idx) return c;
+				if (c.catch_id !== idx) return c;
 				return {
 					...c,
 					category: value,
@@ -122,7 +121,7 @@ const Catches = ({ haul_id }) => {
 		const value = evt.target.value;
 
 		const newCatches = catches.map((c) => {
-			if (c.id !== idx) return c;
+			if (c.catch_id !== idx) return c;
 			return {
 				...c,
 				weight: value,
@@ -140,7 +139,7 @@ const Catches = ({ haul_id }) => {
 		const value = evt.target.value;
 
 		const newCatches = catches.map((c) => {
-			if (c.id !== idx) return c;
+			if (c.catch_id !== idx) return c;
 			return {
 				...c,
 				sampled_weight: value,
@@ -157,10 +156,10 @@ const Catches = ({ haul_id }) => {
 	 */
 	const handleCancelEditCatch = (idx, backupCatch) => {
 		const newCatches = catches.map((c) => {
-			if (c.id !== idx) return c;
+			if (c.catch_id !== idx) return c;
 			return {
 				...c,
-				id: backupCatch.id,
+				id: backupCatch.catch_id,
 				group: backupCatch.group,
 				weight: backupCatch.weight,
 				sampled_weight: backupCatch.sampled_weight,
@@ -180,11 +179,11 @@ const Catches = ({ haul_id }) => {
 	 */
 	const updateCatch = (idx) => {
 		const updatedCatch = catches.find(function (c) {
-			return idx === c.id;
+			return idx === c.catch_id;
 		});
 
 		const request = {
-			catch_id: updatedCatch.id,
+			catch_id: updatedCatch.catch_id,
 			haul_id: updatedCatch.haul,
 			sp_code: updatedCatch.sp_code,
 			group: updatedCatch.group,
@@ -232,8 +231,8 @@ const Catches = ({ haul_id }) => {
 		// add haul id to data request:
 		newCatch["haul_id"] = haul_id;
 
-		existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category).then((response) => {
-			if (response === true) {
+		existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category).then((responseExists) => {
+			if (responseExists === true) {
 				alert("Catch already exists");
 			} else {
 				fetch(apiCreateCatch, {
@@ -245,7 +244,7 @@ const Catches = ({ haul_id }) => {
 				})
 					.then((response) => response.json())
 					.then((c) => {
-						const newCatches = [...catches, c];
+						const newCatches = [c, ...catches];
 						setCatches(newCatches);
 						setAdd(false);
 					})
@@ -255,44 +254,61 @@ const Catches = ({ haul_id }) => {
 	};
 
 	useEffect(() => {
-		const thisApiCatches = apiCatches + haul_id;
-
-		fetch(thisApiCatches)
-			.then((response) => {
-				if (response.status > 400) {
-					setPlaceholder("Something went wrong!");
+		const fetchCatches = async () => {
+			try {
+				const data = await fetch(apiCatches);
+				if (!data.ok) {
+					throw new Error("Something went wrong! " + data.status + " " + data.statusText);
 				}
-				return response.json();
-			})
-			.then((catches) => {
-				setCatches(catches);
-			});
-	}, [haul_id]);
+				setCatches(await data.json());
+			} catch (error) {
+				console.error("Error fetching data: ", error);
+			}
+		};
+		fetchCatches();
+	}, [apiCatches]);
 
 	const renderContent = () => {
 		return (
-			<fieldset className="wrapper form__row form--wide catchesList">
-				<legend>Biometric sampling</legend>
-				<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
-				{add === true ? (
-					<Catch thisCatchStatus="add" createCatch={createCatch} handleChangeAdd={setAdd} />
-				) : null}
-				{catches.map((c) => {
-					return (
-						<Catch
-							key={c.id}
-							thisCatch={c}
-							handleChangeSampledWeight={handleChangeSampledWeight}
-							handleChangeGroup={handleChangeGroup}
-							handleChangeSpecies={handleChangeSpecies}
-							handleChangeCategory={handleChangeCategory}
-							handleChangeWeight={handleChangeWeight}
-							handleCancelEditCatch={handleCancelEditCatch}
-							updateCatch={updateCatch}
-							deleteCatch={deleteCatch}
-						/>
-					);
-				})}
+			<fieldset className="wrapper catchesList">
+				<legend>Fauna list</legend>
+
+				<div className="catches__table">
+					{
+						<div className="catches__table__row catches__table__header">
+							<div className="catches__table__cell catches__table__group">Group</div>
+							<div className="catches__table__cell catches__table__species">Species</div>
+							<div className="catches__table__cell catches__table__category">Category</div>
+							<div className="catches__table__cell catches__table__weight">Weight (g.)</div>
+							<div className="catches__table__cell catches__table__sampledWeight">
+								Sampled weight (g.)
+							</div>
+							<div className="catches__table__cell catches__table__buttonBar">
+								<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
+							</div>
+						</div>
+					}
+					{add === true ? (
+						<Catch thisCatchStatus="add" createCatch={createCatch} handleChangeAdd={setAdd} />
+					) : null}
+					{catches.map((c) => {
+						return (
+							<Catch
+								className="catches__table__row"
+								key={c.catch_id}
+								thisCatch={c}
+								handleChangeSampledWeight={handleChangeSampledWeight}
+								handleChangeGroup={handleChangeGroup}
+								handleChangeSpecies={handleChangeSpecies}
+								handleChangeCategory={handleChangeCategory}
+								handleChangeWeight={handleChangeWeight}
+								handleCancelEditCatch={handleCancelEditCatch}
+								updateCatch={updateCatch}
+								deleteCatch={deleteCatch}
+							/>
+						);
+					})}
+				</div>
 			</fieldset>
 		);
 	};

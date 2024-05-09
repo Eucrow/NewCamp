@@ -59,20 +59,38 @@ class HaulSerializer(serializers.ModelSerializer):
     """
     Serializer of hauls data with sampler.
     """
-    gear = serializers.IntegerField(source="gear.name")
-    gear_id = serializers.IntegerField(source="gear.id")
+
+    def get_trawl(self, obj):
+        return obj.trawl.name if obj.trawl else None
+
+    def get_trawl_id(self, obj):
+        return obj.trawl.id if obj.trawl else None
+
+    trawl = serializers.SerializerMethodField()
+    trawl_id = serializers.SerializerMethodField()
+    # trawl = serializers.IntegerField(source="trawl.name")
+    # trawl_id = serializers.IntegerField(source="trawl.id")
 
     sampler = serializers.CharField(source="sampler.sampler")
     sampler_id = serializers.IntegerField(source="sampler.id")
 
-    stratum = serializers.CharField(source="stratum.stratum")
-    stratum_id = serializers.IntegerField(source="stratum.id")
+    def get_stratum(self, obj):
+        return obj.stratum.stratum if obj.stratum else None
+
+    def get_stratum_id(self, obj):
+        return obj.stratum.id if obj.stratum else None
+
+    stratum = serializers.SerializerMethodField()
+    stratum_id = serializers.SerializerMethodField()
+    # stratum = serializers.CharField(source="stratum.stratum")
+    # stratum_id = serializers.IntegerField(source="stratum.id")
 
     station = serializers.IntegerField(source="station.station")
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'valid', 'gear', 'gear_id', 'sampler', 'sampler_id', 'stratum', 'stratum_id', 'station']
+        fields = ['id', 'haul', 'valid', 'trawl', 'trawl_id', 'sampler', 'sampler_id', 'stratum', 'stratum_id',
+                  'station']
         depth = 1
 
 

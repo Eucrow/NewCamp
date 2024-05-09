@@ -39,30 +39,18 @@ const SpButtonBar = (props) => {
 	if (props.edit === false) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right buttonsWrapper">
-				<button
-					type="button"
-					className="buttonsWrapper__button"
-					onClick={(e) => {
-						props.handleEdit(true);
-					}}
-				>
-					Edit Species
-				</button>
+				<UiButtonStatusHandle
+					buttonText={"Edit Species"}
+					handleMethod={props.handleEdit}
+					newStatus={true}
+				></UiButtonStatusHandle>
 				<UiButtonDelete
 					id={props.sp_id}
 					deleteMethod={speciesContext.deleteSp}
 					buttonText="Delete Species"
 					confirmMessage="Delete this species? All the samples of this species on ALL the surveys will be removed!! Are you sure?"
 				/>
-				<button
-					type="button"
-					className="buttonsWrapper__button"
-					onClick={(e) => {
-						props.changeDetail(false);
-					}}
-				>
-					Hide Detail
-				</button>
+				<UiButtonStatusHandle buttonText="Hide Detail" handleMethod={props.changeDetail} newStatus={false} />
 			</div>
 		);
 	}

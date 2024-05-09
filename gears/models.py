@@ -2,6 +2,7 @@ from django.core.validators import MinValueValidator
 from decimal import Decimal
 from django.db import models
 
+
 # Create your models here.
 class Trawl(models.Model):
     # ARTE: use the old camp ARTE field as name of the gear
@@ -16,7 +17,7 @@ class Trawl(models.Model):
     # KG_PUERTA otter boards weight in kg
     otter_boards_weight = models.PositiveSmallIntegerField(null=True)
     # MT_BURLON groundgear length in meters
-    groundgear_length  = models.DecimalField(max_digits=3, decimal_places=1, null=True)
+    groundgear_length = models.DecimalField(max_digits=3, decimal_places=1, null=True)
     # KG_BURLON groundgear weight in kg
     groundgear_weight = models.PositiveSmallIntegerField(null=True)
     # MT_CORCHO headline length in meters
@@ -41,6 +42,20 @@ class Trawl(models.Model):
     horizontal_aperture = models.DecimalField(max_digits=3, decimal_places=1, null=True)
     # ABERT_V in meters
     vertical_aperture = models.DecimalField(max_digits=3, decimal_places=1, null=True)
+    # OBSERV
+    comment = models.CharField(max_length=500, null=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class CTD(models.Model):
+    # CTD
+    name = models.PositiveSmallIntegerField(null=False, unique=True)
+    # MARCA
+    brand = models.CharField(max_length=50, null=False)
+    # MODELO
+    model = models.CharField(max_length=50, null=False)
     # OBSERV
     comment = models.CharField(max_length=500, null=True)
 

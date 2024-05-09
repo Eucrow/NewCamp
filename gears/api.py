@@ -2,8 +2,9 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from gears.models import Trawl
-from gears.serializers import GearTrawlSerializer, GearTrawlBasicSerializer, GearTrawlsNamesSerializer
+from gears.models import Trawl, CTD
+from gears.serializers import GearTrawlSerializer, GearTrawlBasicSerializer, GearTrawlsNamesSerializer, \
+    GearCTDBasicSerializer
 
 
 class GearTrawlsAPI(ListCreateAPIView):
@@ -40,3 +41,11 @@ class GearTrawlsNamesAPI(APIView):
         gears = Trawl.objects.all()
         serializer = GearTrawlsNamesSerializer(gears, many=True)
         return Response(serializer.data)
+
+
+class GearCTDsBasicAPI(ListAPIView):
+    '''
+    Api to retrieve, update or destroy ctd
+    '''
+    queryset = CTD.objects.all()
+    serializer_class = GearCTDBasicSerializer

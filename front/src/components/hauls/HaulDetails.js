@@ -16,8 +16,8 @@ import HydrographyFormEdit from "./edit/HydrographyFormEdit";
 import UiButtonSave from "../ui/UiButtonSave";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
-import UiIconDetailHide from "../ui/UiIconDetailHide";
-import UiIconEdit from "../ui/UiIconEdit";
+// import UiIconDetailHide from "../ui/UiIconDetailHide";
+// import UiIconEdit from "../ui/UiIconEdit";
 
 // const useRenderCount = () => {
 // 	const renderCount = useRef(0);
@@ -47,7 +47,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 	const [edit, setEdit] = useState(false);
 
-	const [fecthError, setFetchError] = useState("");
+	const [, setFetchError] = useState("");
 
 	const apiHydrographyPartial = "http://127.0.0.1:8000/api/1.0/hydrography/";
 	const apiMeteorologyPartial = "http://127.0.0.1:8000/api/1.0/meteorology/";
@@ -462,14 +462,18 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<UiButtonStatusHandle
-										buttonText={"Hide detail"}
+										buttonText={"Hide Haul Detail"}
 										handleMethod={setDetail}
 										newStatus={false}
 									>
-										<UiIconDetailHide />
+										{/* <UiIconDetailHide /> */}
 									</UiButtonStatusHandle>
-									<UiButtonStatusHandle buttonText={"Edit"} handleMethod={setEdit} newStatus={true}>
-										<UiIconEdit />
+									<UiButtonStatusHandle
+										buttonText={"Edit Haul Detail"}
+										handleMethod={setEdit}
+										newStatus={true}
+									>
+										{/* <UiIconEdit /> */}
 									</UiButtonStatusHandle>
 								</div>
 							</div>
@@ -512,7 +516,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
-									<UiButtonSave buttonText="Save Haul" />
+									<UiButtonSave buttonText="Save" />
 									<UiButtonStatusHandle
 										buttonText={"Cancel"}
 										handleMethod={handleCancel}
@@ -538,7 +542,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							<div className="form__cell form__cell--right">
 								<div className="buttonsWrapper">
 									<UiButtonStatusHandle
-										buttonText={"Hide detail"}
+										buttonText={"Hide Detail"}
 										handleMethod={setDetail}
 										newStatus={false}
 									/>

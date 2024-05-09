@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from gears.models import Trawl
+from gears.models import Trawl, CTD
 
 
 class GearTrawlSerializer(serializers.ModelSerializer):
@@ -35,3 +35,13 @@ class GearTrawlsNamesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trawl
         fields = ['name', ]
+
+
+class GearCTDBasicSerializer(serializers.ModelSerializer):
+    '''
+    CTD serializer with basic information. To use as options in select fields of a form.
+    '''
+
+    class Meta:
+        model = CTD
+        fields = ['id', 'name']

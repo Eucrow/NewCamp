@@ -68,7 +68,8 @@ class CatchHaulAPI(APIView):
 
     def post(self, request):
         response_data = {}
-        catch_serializer = CatchSerializer(data=request.data, partial=True)
+        # catch_serializer = CatchSerializer(data=request.data, partial=True)
+        catch_serializer = CatchesVerboseSerializer(data=request.data, partial=True)
         sample_weight_serializer = SampleWeightSerializer(
             data=request.data, partial=True)
 
@@ -81,12 +82,11 @@ class CatchHaulAPI(APIView):
             return Response(catch_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         if "sampled_weight" in request.data:
-            if sample_weight_serializer.is_valid() & (request.data["sampled_weight"] != ""):
-                sample_weight_serializer.save(catch_id=catch_serializer.data["id"],
+            if sample_weight_serializer.is_valid() & (request.data["sampled_weight"] != "") & (
+                    request.data["sampled_weight"] is not None):
+                sample_weight_serializer.save(catch_id=catch_serializer.data["catch_id"],
                                               sampled_weight=request.data["sampled_weight"])
                 response_data.update(sample_weight_serializer.data)
-            else:
-                return Response(sample_weight_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         return Response(response_data, status=HTTP_201_CREATED)
 
@@ -100,10 +100,8 @@ class CatchHaulAPI(APIView):
         catch.sp_id = sp_id
 
         # If the sampled weight has been changed to empty, delete the sampled weight object.
-        if request.data["sampled_weight"] == "":
-            sampledWeightObject = SampledWeight.objects.get(
-                catch_id=request.data["catch_id"])
-            sampledWeightObject.delete()
+        if request.data["sampled_weight"] == "" or request.data["sampled_weight"] is None:
+            SampledWeight.objects.filter(catch_id=request.data["catch_id"]).delete()
             if catch_serializer.is_valid():
                 catch_serializer.save()
                 return Response(catch_serializer.data, status=HTTP_201_CREATED)

@@ -5,12 +5,20 @@ import LengthsContext from "../../contexts/LengthsContext";
 import UiIconAdd from "../ui/UiIconAdd";
 import UiIconDelete from "../ui/UiIconDelete";
 
+/**
+ * Renders a form for displaying and editing one length.
+ * @component
+ *
+ * @returns {JSX.Element} A JSX element that renders the lengths form.
+ */
 const LengthForm = ({ l, idx }) => {
 	useEffect(() => {
 		if (l.is_valid === false) {
 			lengthRef.current.setCustomValidity("This length already exists.");
+			lengthsContext.setValidLengths(false);
 		} else {
 			lengthRef.current.setCustomValidity("");
+			lengthsContext.setValidLengths(true);
 		}
 	}, [l]);
 
@@ -43,6 +51,17 @@ const LengthForm = ({ l, idx }) => {
 							disabled
 						/>
 					</div>
+					<div className="formLengths__cell">
+						<button className="icon_button button__hidden" type="button" aria-hidden="true" tabIndex="-1">
+							<UiIconAdd />
+						</button>
+					</div>
+
+					<div className="formLengths__cell">
+						<button className="icon_button button__hidden" type="button" aria-hidden="true" tabIndex="-1">
+							<UiIconDelete />
+						</button>
+					</div>
 				</div>
 			);
 		} else if (lengthsContext.lengthsStatus === "edit") {
@@ -52,6 +71,7 @@ const LengthForm = ({ l, idx }) => {
 						<input
 							type="number"
 							name="length"
+							step={lengthsContext.increment}
 							autoFocus
 							min="0"
 							max="9999"

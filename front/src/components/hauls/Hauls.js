@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Fragment } from "react";
 import Haul from "./Haul";
-import UiButtonAdd from "../ui/UiButtonAdd";
+import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 const Hauls = ({ hauls, stationId, createHaul }) => {
 	/**
@@ -10,7 +10,7 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 	 * @param {method} createHaul
 	 */
 
-	const [add, setAdd] = useState(false);
+	const [addHaul, setAddHaul] = useState(false);
 
 	// Refs used to validate haul/sampler combination
 	const haulRef = useRef(null);
@@ -18,8 +18,8 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 
 	/**
 	 * Method to check if a combination of haul / sampler_id already exists in the hauls of this component.
-	 * @param {string} haul haul to check if alreay exists.
-	 * @param {string} samplerId samplerId to check if alreay exists.
+	 * @param {string} haul haul to check if already exists.
+	 * @param {string} samplerId samplerId to check if already exists.
 	 * @returns True if exists, false if doesn't.
 	 */
 	const haulSamplerExists = (haul, samplerId) => {
@@ -64,7 +64,7 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 	const renderHauls = () => {
 		if (hauls) {
 			return (
-				<div>
+				<Fragment>
 					{hauls.map((haul) => {
 						return (
 							<Haul
@@ -75,35 +75,37 @@ const Hauls = ({ hauls, stationId, createHaul }) => {
 							/>
 						);
 					})}
-				</div>
+				</Fragment>
 			);
-		} else {
-			return "there are not hauls";
 		}
 	};
 
 	const renderContent = () => {
-		if (add === false) {
+		if (addHaul === false) {
 			return (
-				<>
+				<Fragment>
 					{renderHauls()}
-					<UiButtonAdd handleAdd={setAdd} text={"Add haul"} />
-				</>
+					<UiButtonStatusHandle
+						buttonText={"Add Haul"}
+						handleMethod={setAddHaul}
+						newStatus={true}
+					></UiButtonStatusHandle>
+				</Fragment>
 			);
-		} else if (add === true) {
+		} else if (addHaul === true) {
 			return (
-				<>
+				<Fragment>
 					{renderHauls()}
 					<Haul
 						stationId={stationId}
-						add={add}
-						handleAdd={setAdd}
+						addHaul={addHaul}
+						handleAddHaul={setAddHaul}
 						createHaul={createHaul}
 						validateHaulSampler={validateHaulSampler}
 						haulRef={haulRef}
 						samplerRef={samplerRef}
 					/>
-				</>
+				</Fragment>
 			);
 		}
 	};

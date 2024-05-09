@@ -1,7 +1,7 @@
 button {
 	white-space: nowrap;
 	// min-height: 2em;
-    height: 1.8rem;
+	height: 1.8rem;
 	background-color: var(--button-background-color);
 
 	border-radius: 5px;
@@ -14,7 +14,11 @@ button {
 
 	&:hover,
 	&:active {
-		color: var(--higlight-front-color);
-		background-color: var(--higlight-background-color);
+		color: var(--highlight-front-color);
+		background-color: var(--highlight-background-color);
 	}
+}
+
+.button__hidden {
+	visibility: hidden;
 }

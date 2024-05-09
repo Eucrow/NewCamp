@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 
 import Sexes from "../sexes/Sexes.js";
 import CatchForm from "./CatchForm.js";
@@ -39,7 +39,7 @@ const Catch = ({
 	const [backupCatch] = useState(thisCatch || "");
 
 	const handleCancel = () => {
-		handleCancelEditCatch(thisCatch.id, backupCatch);
+		handleCancelEditCatch(thisCatch.catch_id, backupCatch);
 	};
 
 	const renderContent = () => {
@@ -56,42 +56,42 @@ const Catch = ({
 			);
 		} else if (catchStatus === "view") {
 			return (
-				<div className="form__row form--wide catch">
+				<Fragment>
 					<CatchForm
 						catchStatus={catchStatus}
 						thisCatch={thisCatch}
 						deleteCatch={deleteCatch}
 						handleViewSexes={setViewSexes}
-						catchId={thisCatch.id}
+						catchId={thisCatch.catch_id}
 						viewSexes={viewSexes}
 						editCatchStatus={setCatchStatus}
 					/>
-					<Sexes
-						catchId={thisCatch.id}
-						unit={thisCatch.unit}
-						increment={thisCatch.increment}
-						viewSexes={viewSexes}
-					/>
-				</div>
+					{viewSexes && (
+						<Sexes
+							catchId={thisCatch.catch_id}
+							unit={thisCatch.unit}
+							increment={thisCatch.increment}
+							viewSexes={viewSexes}
+						/>
+					)}
+				</Fragment>
 			);
 		} else if (catchStatus === "edit") {
 			return (
-				<div className="form__row">
-					<CatchForm
-						catchStatus={catchStatus}
-						thisCatch={thisCatch}
-						handleChangeGroup={handleChangeGroup}
-						handleChangeSpecies={handleChangeSpecies}
-						handleChangeCategory={handleChangeCategory}
-						handleChangeWeight={handleChangeWeight}
-						handleChangeSampledWeight={handleChangeSampledWeight}
-						updateCatch={updateCatch}
-						editCatchStatus={setCatchStatus}
-						catchId={thisCatch.id}
-						viewSexes={viewSexes}
-						handleCancel={handleCancel}
-					/>
-				</div>
+				<CatchForm
+					catchStatus={catchStatus}
+					thisCatch={thisCatch}
+					handleChangeGroup={handleChangeGroup}
+					handleChangeSpecies={handleChangeSpecies}
+					handleChangeCategory={handleChangeCategory}
+					handleChangeWeight={handleChangeWeight}
+					handleChangeSampledWeight={handleChangeSampledWeight}
+					updateCatch={updateCatch}
+					editCatchStatus={setCatchStatus}
+					catchId={thisCatch.catch_id}
+					viewSexes={viewSexes}
+					handleCancel={handleCancel}
+				/>
 			);
 		}
 	};

@@ -40,19 +40,15 @@ const ShipButtonBar = (props) => {
 	if (props.edit === false) {
 		ButtonBar = (
 			<div className="form__cell form__cell--right buttonsWrapper">
-				<button
-					type="button"
-					className="buttonsWrapper__button"
-					onClick={(e) => {
-						props.handleEdit(true);
-					}}
-				>
-					Edit Ship
-				</button>
+				<UiButtonStatusHandle
+					buttonText={"Edit Ship"}
+					handleMethod={props.handleEdit}
+					newStatus={true}
+				></UiButtonStatusHandle>
 				<UiButtonDelete
 					id={props.ship_id}
 					deleteMethod={shipsContext.deleteShip}
-					buttonText="Delete ship"
+					buttonText="Delete Ship"
 					confirmMessage="Delete the ship?"
 				/>
 			</div>

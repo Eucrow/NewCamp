@@ -1,8 +1,50 @@
 .sexesWrapper {
-    display: flex;
-    flex-direction: column;
-    margin: 0 0 0 10%;
+	display: flex;
+	flex-direction: row;
+	// align-items: flex-start;
+	// margin: 0 0 0 5%;
+
+	flex-wrap: wrap;
+	justify-content: space-around;
+	// align-items: baseline;
+	min-height: 2rem;
+	padding: 1px 0px 1px 0px;
+	width: 100%;
 }
-.sexes__sex {
-    width: 30%;
+
+.sexWrapper {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-items: center;
+	min-height: 2rem;
+	// flex-grow: 1;
+	width: 33%;
+	padding: 5px 10px;
+	margin: 10px 0;
+	background-color: var(--wrapper-background-color);
+}
+
+.sexWrapper:not(:last-child) {
+	border-right: 1px solid var(--wrapper-border-color);
+}
+
+.sexWrapper__title {
+	// display: flex;
+	// align-items: center;
+	font-weight: bold;
+	// text-align: center;
+	// vertical-align: middle;
+	padding: 5px 0px 10px 0px;
+}
+
+.sexWrapper__buttons_bar {
+	display: inline-flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: center;
+	// padding-left: 10px;
+	width: 100%;
 }
