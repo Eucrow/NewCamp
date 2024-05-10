@@ -1120,12 +1120,12 @@ class HydrographiesImport:
 
         # station
         # The station of hydrography haul is the station of the trawl haul (which is stored in the 'haul' field
-        # of hidrography file), so firstly we identify it:
+        # of hydrography file), so firstly we identify it:
         sampler_object = Sampler.objects.get(sampler="CTD")
 
         # gear
-        # By defaul we use the same gear for all the hydrography hauls
-        ctd_object, created = CTD.objects.get_or_create(name="1", brand="default", model="default")
+        # By default we use the same gear for all the hydrography hauls
+        ctd_object, created = CTD.objects.get_or_create(name="1", brand="default brand", model="default model")
 
         # Check if there are a Station with the same acronym as haul already stored, and if it isn't, create it:
         # try:
@@ -1214,14 +1214,14 @@ class OldCampImport:
         hauls_import = hauls.import_hauls_csv()
 
         # Is mandatory that NTALL will be imported before FAUNA file
-        # ntall = NtallImport(self.request)
-        # ntall_import = ntall.import_ntall_csv()
+        ntall = NtallImport(self.request)
+        ntall_import = ntall.import_ntall_csv()
 
         # The catches table is filled firstly in the import of NTALL file. In this importation only the
         # species measured has been saved. With the FAUNA file, only of species which hasn't been
         # measured must be stored because is used to_sql from pandas library.
-        # faunas = FaunasImport(self.request)
-        # faunas_import = faunas.import_faunas_csv()
+        faunas = FaunasImport(self.request)
+        faunas_import = faunas.import_faunas_csv()
 
         hydro = HydrographiesImport(self.request)
         hydrography_import = hydro.import_hydrographies_csv()
@@ -1230,8 +1230,8 @@ class OldCampImport:
                              stratum.content,
                              survey_import.content,
                              hauls_import.content,
-                             # ntall_import.content,
-                             # faunas_import.content,
+                             ntall_import.content,
+                             faunas_import.content,
                              hydrography_import.content
                              ])
 
