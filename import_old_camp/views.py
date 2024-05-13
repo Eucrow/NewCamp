@@ -209,43 +209,6 @@ def get_sex_id(row):
     return sex_id
 
 
-# def get_or_create_categories(sp, category_name):
-#     """
-#     Get the category object if exists. If not, create it and return it.
-#     :param sp: sp of category.
-#     :param category_name: name of category.
-#     :return: Category object.
-#     """
-#
-#     obj, created = Category.objects.get_or_create(
-#         sp=sp,
-#         category_name=category_name
-#     )
-#
-#     return obj
-
-
-# def create_category(row):
-#     sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
-#     category_name = row['CATE']
-#     # try:
-#     #     obj = Category.objects.get(sp_id=sp_id, category_name=row['CATE'])
-#     # except Category.DoesNotExist:
-#     #     obj = Category(sp_id=sp_id, category_name=row['CATE'])
-#     #     obj.save()
-#     obj, created = Category.objects.get_or_create(
-#         sp=sp,
-#         category_name=category_name
-#     )
-#
-#     return obj
-
-
-# def check_or_create_categories(df):
-#     df = df[['GRUPO', 'ESP', 'CATE']].drop_duplicates()
-#     df.apply(create_category, axis=1)
-
-
 class FaunasImport:
 
     def __init__(self, request):
@@ -851,60 +814,6 @@ class NtallImport:
             'sampled_weight': 'PESO_M',
         }
 
-    # def save_catches(self):
-    #     """
-    #     Function to import the CSV file with catches info.
-    #     To import again the file, first must truncate the table.
-    #     :return:
-    #     """
-    #
-    #     categories = self.csv_file[['LANCE', 'GRUPO', 'ESP', 'CATE', 'PESO_GR']]
-    #
-    #     csv_catches = categories.drop_duplicates()
-    #
-    #     # for row in uniques:
-    #     for index, row in csv_catches.iterrows():
-    #         tmp = {}
-    #
-    #         station_object = Station.objects.get(survey=self.survey_object, sampler=self.sampler_object,
-    #                                              station=row['LANCE'])
-    #         haul_object = Haul.objects.get(station=station_object, haul=row['LANCE'])
-    #         # print("<p>lance: ", row['LANCE'], " grupo: ", row['GRUPO'], " especie: ", row['ESP'], "</p>")
-    #         species_object = Sp.objects.get(group=row['GRUPO'], sp_code=row["ESP"])
-    #         tmp["weight"] = row["PESO_GR"]
-    #         tmp["haul"] = haul_object.pk
-    #         tmp["specie"] = species_object.pk
-    #
-    #         # add category
-    #         if not categoryExists(row["CATE"], tmp["specie"]):
-    #             category = Category.objects.create(category_name=row["CATE"], sp=species_object).pk
-    #             tmp["category"] = category
-    #         else:
-    #             category = Category.objects.get(category_name=row["CATE"], sp=species_object.pk).pk
-    #             tmp["category"] = category
-    #
-    #         # check if haul/species/category already exists
-    #         if Catch.objects.filter(category=tmp["category"],
-    #                                 specie=tmp["specie"],
-    #                                 haul=tmp["haul"]).exists():
-    #             self.message.append('<p>The category ' + str(tmp["category"]) +
-    #                                 ' of ' + str(species_object.sp_name) +
-    #                                 ', haul ' + str(haul_object.haul) +
-    #                                 ' already exists.</p>')
-    #         else:
-    #             serializer = CatchesSerializer(data=tmp)
-    #
-    #             serializer.is_valid(raise_exception=True)
-    #
-    #             serializer.save()
-    #
-    #             self.message.append(
-    #                 '<p>The retained weight of the species ' + str(species_object.sp_name) +
-    #                 ' in haul ' + str(haul_object.haul) +
-    #                 ' has been added to the database.</p>')
-    #
-    #     return HttpResponse(self.message, status=HTTP_201_CREATED)
-
     def get_file(self, file_key):
         """
         Get file from request in pandas dataframe format
@@ -913,6 +822,35 @@ class NtallImport:
         """
         new_file = self.request.FILES[file_key]
         return pd.read_csv(new_file, sep=";", decimal=",")
+
+    def get_sp_unit(self, row):
+        """
+        Get the species unit. Used in pandas apply function.
+        :param row: row of the apply function
+        :return: Species unit
+        """
+        sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
+        return sp.unit
+
+    def transform_length(self, row):
+        """
+        Fix the lengths of the species. Used in pandas apply function.
+        If the unit is 1 (cm), the length is multiplied by 10. If the unit is 2 (mm), the length is not modified. If the
+        unit is different, the length is not modified because it is assumed
+        to be stored as mm.
+        :param row: row of the apply function
+        :return: Fixed lengths
+        """
+        unit = self.get_sp_unit(row)
+
+        if unit == 1:
+            return row['TALLA'] * 10
+
+        if unit == 2:
+            return row['TALLA']
+
+        if unit != 1 and unit != 2:
+            return row['TALLA']
 
     def format_sexes_table(self, file):
         lengths_table = self.ntall
@@ -947,6 +885,9 @@ class NtallImport:
         lengths_df = pd.merge(left=lengths_table, right=lengths_df, how='left',
                               on=['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO'])
 
+        lengths_df['TALLA'] = lengths_df.apply(self.transform_length, axis=1)
+        duplicated = lengths_df[['sex_id', 'TALLA', 'NUMER']].duplicated()
+        lengths_df_duplicted = lengths_df[duplicated]
         fields = list(self.fields_lengths.values())
         fields.extend(['sex_id'])
 
@@ -1010,7 +951,7 @@ class NtallImport:
                     "again:",
                     not_exists])
 
-        # create categories if doesn't exists in species_category
+        # create categories if it doesn't exist in species_category
         # check_or_create_categories(lengths_file)
 
         # Create engine.
@@ -1120,12 +1061,12 @@ class HydrographiesImport:
 
         # station
         # The station of hydrography haul is the station of the trawl haul (which is stored in the 'haul' field
-        # of hidrography file), so firstly we identify it:
+        # of hydrography file), so firstly we identify it:
         sampler_object = Sampler.objects.get(sampler="CTD")
 
         # gear
-        # By defaul we use the same gear for all the hydrography hauls
-        ctd_object, created = CTD.objects.get_or_create(name="1", brand="default", model="default")
+        # By default we use the same gear for all the hydrography hauls
+        ctd_object, created = CTD.objects.get_or_create(name="1", brand="default brand", model="default model")
 
         # Check if there are a Station with the same acronym as haul already stored, and if it isn't, create it:
         # try:
@@ -1201,6 +1142,8 @@ class OldCampImport:
         self.request = request
 
     def import_complete(self):
+        all_species = Sp.objects.all()
+
         stratification_name = get_type_survey(self.request.FILES['camp'].name) + "-sector-profundidad"
 
         stratification = create_stratification(stratification_name)
@@ -1214,14 +1157,14 @@ class OldCampImport:
         hauls_import = hauls.import_hauls_csv()
 
         # Is mandatory that NTALL will be imported before FAUNA file
-        # ntall = NtallImport(self.request)
-        # ntall_import = ntall.import_ntall_csv()
+        ntall = NtallImport(self.request)
+        ntall_import = ntall.import_ntall_csv()
 
         # The catches table is filled firstly in the import of NTALL file. In this importation only the
         # species measured has been saved. With the FAUNA file, only of species which hasn't been
         # measured must be stored because is used to_sql from pandas library.
-        # faunas = FaunasImport(self.request)
-        # faunas_import = faunas.import_faunas_csv()
+        faunas = FaunasImport(self.request)
+        faunas_import = faunas.import_faunas_csv()
 
         hydro = HydrographiesImport(self.request)
         hydrography_import = hydro.import_hydrographies_csv()
@@ -1230,8 +1173,8 @@ class OldCampImport:
                              stratum.content,
                              survey_import.content,
                              hauls_import.content,
-                             # ntall_import.content,
-                             # faunas_import.content,
+                             ntall_import.content,
+                             faunas_import.content,
                              hydrography_import.content
                              ])
 
