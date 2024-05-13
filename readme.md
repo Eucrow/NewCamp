@@ -6,4 +6,4 @@ NewCamp is the upgrade of the old Camp database to technologies used in present 
 
 Used in demersal surveys of the IEO since the 80's, the original Camp was created in dBase IV over MSDos. Now, the NewCamp is a web application programmed in Python/Django and Javascript/React, using temporally SQLite.
 
-Version 0.10.1
+Version 0.10.2

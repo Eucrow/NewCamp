@@ -6,11 +6,13 @@ const isDev = require("electron-is-dev");
 function createWindow() {
 	// Create the browser window.
 	const win = new BrowserWindow({
-		width: 800,
-		height: 600,
+		width: 1024,
+		height: 768,
+		title: "NewCamp",
 		webPreferences: {
 			nodeIntegration: true,
 		},
+		autoHideMenuBar: true,
 	});
 
 	//load the index.html from a url
