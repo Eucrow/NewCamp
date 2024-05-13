@@ -32,6 +32,11 @@
 	font-weight: bold;
 }
 
+.formLengths__cell--total {
+	// display: table-row;
+	border-top: 1px solid var(--blue-gradient-3);
+}
+
 .formLengthsRange__table {
 	border-width: 1px 0 1px 0;
 	padding-top: 3px;
@@ -44,10 +49,12 @@
 // the use of padding-bottom (and others) in the table-row. This property only can be
 // altered in display:table-cell elements.
 .formLengths__row:last-child > .formLengths__cell,
-.formLengths__row:first-child > .formLengths__cell {
-	border-width: 0 0 1px 0;
-	border-style: solid;
-	border-color: var(--blue-gradient-3);
+.formLengths__row:first-child > .formLengths__cell,
+.formLengths__row--total:last-child > .formLengths__cell {
+	border-bottom: 1px solid var(--blue-gradient-3);
+}
+.formLengths__row--total:first-child > .formLengths__cell {
+	border-top: 1px solid var(--blue-gradient-3);
 }
 
 .formLengths__row:nth-child(2) > .formLengths__cell {

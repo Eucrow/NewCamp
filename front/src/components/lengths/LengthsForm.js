@@ -41,7 +41,37 @@ const LengthsForm = () => {
 						{lengthsContext.lengths.map((l, idx) => {
 							return <LengthForm l={l} idx={idx} key={idx} increment={lengthsContext.increment} />;
 						})}
+
+						{/* <div className="formLengths__table"> */}
+						<div className="formLengths__row ">
+							<div className="formLengths__cell formLengths__cell--total">Total:</div>
+							<div className="formLengths__cell formLengths__cell--total">
+								# TODO: make this input not readable as input in ARIA
+								<input
+									type="number"
+									name="number_individuals"
+									min="0"
+									max="9999"
+									value={lengthsContext.totalIndividuals}
+									disabled
+								/>
+							</div>
+							<div
+								className="formLengths__cell formLengths__cell--total formLengths--hidden"
+								aria-hidden="true"
+							>
+								{/* Prevent space for two columns more. Mandatory to show properly the lines of the first row */}
+							</div>
+							<div
+								className="formLengths__cell formLengths__cell--total formLengths--hidden"
+								aria-hidden="true"
+							>
+								{/* Prevent space for two columns more. Mandatory to show properly the lines of the first row */}
+							</div>
+						</div>
 					</div>
+					{/* </div> */}
+
 					<LengthsButtonBar />
 				</form>
 			);

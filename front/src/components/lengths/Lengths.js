@@ -40,6 +40,13 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 		},
 	]);
 
+	const [totalIndividuals, setTotalIndividuals] = useState();
+
+	useEffect(() => {
+		let total = lengths.reduce((sum, l) => sum + Number(l.number_individuals), 0);
+		setTotalIndividuals(total);
+	}, [lengths]);
+
 	/**
 	 * The `lengthsStatus` state is used to manage the current display mode of the lengths data.
 	 * It determines the interaction level available to the user and the visual presentation of the data.
@@ -414,6 +421,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 			<LengthsContext.Provider
 				value={{
 					lengths: lengths,
+					totalIndividuals: totalIndividuals,
 					sex: sex,
 					measureUnit: measureUnit,
 					increment: increment,
