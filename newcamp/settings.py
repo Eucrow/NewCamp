@@ -15,6 +15,8 @@ import os
 from django.conf import settings
 from django.conf.urls.static import static
 
+from decouple import config
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,14 +24,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1!xp89z^$1+7@4j#s*t94eh(3r0u77f=srdbbi==g*x0_=*sez'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['newcampdemo0723.azurewebsites.net',
-                 '127.0.0.1', ]
+ALLOWED_HOSTS = ['127.0.0.1', ]
 
 # Application definition
 

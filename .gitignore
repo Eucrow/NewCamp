@@ -8,6 +8,8 @@
 *.sqlite3
 */migrations/*
 
+.env
+
 
 /front/node_modules
 /front/build
