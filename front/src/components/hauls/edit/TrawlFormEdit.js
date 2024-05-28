@@ -462,17 +462,17 @@ const TrawlFormEdit = ({
 				</div>
 				<div className="form__row">
 					<label className="field">
-						Grid (m):
+						Sampling rectangle:
 						<input
 							type="number"
-							name="grid"
-							id="grid"
+							name="sampling_rectangle"
+							id="sampling_rectangle"
 							min={0}
 							max={99}
 							maxLength={2}
 							size={2}
 							step={1}
-							value={trawl.grid || ""}
+							value={trawl.sampling_rectangle || ""}
 							onChange={(e) => {
 								handleChangeTrawl(e);
 							}}

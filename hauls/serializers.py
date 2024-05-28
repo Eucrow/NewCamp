@@ -118,7 +118,8 @@ class TrawlSerializer(serializers.ModelSerializer):
         fields = ['shooting_date_time', 'shooting_latitude', 'shooting_longitude', 'shooting_depth',
                   'hauling_date_time', 'hauling_latitude', 'hauling_longitude', 'hauling_depth', 'bottom_date_time',
                   'bottom_latitude', 'bottom_longitude', 'bottom_depth', 'course', 'velocity', 'cable', 'sweep',
-                  'otter_boards_distance', 'horizontal_aperture', 'vertical_aperture', 'grid', 'track', 'comment', ]
+                  'otter_boards_distance', 'horizontal_aperture', 'vertical_aperture', 'sampling_rectangle', 'track',
+                  'comment', ]
 
 
 class HaulTrawlSerializer(serializers.ModelSerializer):

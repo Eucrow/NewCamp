@@ -110,7 +110,7 @@ class HaulTrawl(models.Model):
                                               decimal_places=1, null=True, blank=True)
     vertical_aperture = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(99)], max_digits=3,
                                             decimal_places=1, null=True, blank=True)
-    grid = models.PositiveIntegerField(
+    sampling_rectangle = models.PositiveIntegerField(
         validators=[MaxValueValidator(99)], null=True, blank=True)
     track = models.PositiveIntegerField(
         validators=[MaxValueValidator(9999)], null=True, blank=True)
