@@ -453,10 +453,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				return (
 					<form className="form--wide" disabled>
 						<div className="form__row">
-							<MeteorologyFormView meteorology={meteorology} />
+							<TrawlFormView trawl={trawl} />
 						</div>
 						<div className="form__row">
-							<TrawlFormView trawl={trawl} />
+							<MeteorologyFormView meteorology={meteorology} />
 						</div>
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
@@ -491,14 +491,6 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							setEdit(false);
 						}}
 					>
-						{/* <p>Render count: {renderCount}</p> */}
-						<div className="form__row">
-							<MeteorologyFormEdit
-								meteorology={meteorology}
-								handleChangeMeteorology={handleChangeMeteorology}
-							/>
-						</div>
-
 						<div className="form__row">
 							<TrawlFormEdit
 								trawl={trawl}
@@ -510,6 +502,12 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 								bottomLongitude={bottomLongitude}
 								handleChangeTrawl={handleChangeTrawl}
 								handleCoordinatesChange={handleCoordinatesChange}
+							/>
+						</div>
+						<div className="form__row">
+							<MeteorologyFormEdit
+								meteorology={meteorology}
+								handleChangeMeteorology={handleChangeMeteorology}
 							/>
 						</div>
 
