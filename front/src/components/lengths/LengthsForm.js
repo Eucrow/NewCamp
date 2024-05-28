@@ -46,7 +46,7 @@ const LengthsForm = () => {
 						<div className="formLengths__row ">
 							<div className="formLengths__cell formLengths__cell--total">Total:</div>
 							<div className="formLengths__cell formLengths__cell--total">
-								# TODO: make this input not readable as input in ARIA
+								{/* # TODO: make this input not readable as input in ARIA */}
 								<input
 									type="number"
 									name="number_individuals"
