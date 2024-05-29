@@ -92,7 +92,7 @@ class HaulAPI(APIView):
         return Response(status=HTTP_204_NO_CONTENT)
 
     def put(self, request, haul_id):
-        
+
         haul = get_object_or_404(Haul, pk=haul_id)
         serializer = HaulSerializer(
             haul, data=request.data, partial=True, context={'request': request})
@@ -162,39 +162,6 @@ class MeteorologyAPI(APIView):
         meteorology = Meteorology.objects.get(haul_id=haul_id)
         meteorology.delete()
         return Response(status=HTTP_204_NO_CONTENT)
-
-
-class HaulTrawlAPI(APIView):
-    """
-    Endpoint to manage the Haul Trawl of a survey.
-    """
-
-    def get(self, request, haul_id):
-        haul = get_object_or_404(Haul, pk=haul_id)
-        serializer = HaulTrawlSerializer(haul)
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = HaulTrawlSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(station_id=request.data['station_id'],
-                            # stratum_id=request.data['stratum_id'],
-                            stratum_id=request.data['stratum_id'],
-                            # stratum=request.data['stratum'],
-                            sampler_id=request.data['sampler_id'],
-                            gear_id=request.data['gear_id'])
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-    def put(self, request, haul_id):
-        haul = get_object_or_404(Haul, pk=haul_id)
-        serializer = HaulTrawlSerializer(haul, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        else:
-            return Response(status=HTTP_400_BAD_REQUEST)
 
 
 class TrawlAPI(APIView):

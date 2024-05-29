@@ -1,13 +1,21 @@
 import React from "react";
 
+import TrawlSamplingPointEdit from "./TrawlSamplingPointEdit";
+
 const TrawlFormEdit = ({
 	trawl,
 	shootingLatitude,
 	shootingLongitude,
-	haulingLatitude,
-	haulingLongitude,
 	bottomLatitude,
 	bottomLongitude,
+	trawlingLatitude,
+	trawlingLongitude,
+	haulingLatitude,
+	haulingLongitude,
+	takeOffLatitude,
+	takeOffLongitude,
+	onBoardLatitude,
+	onBoardLongitude,
 	handleChangeTrawl,
 	handleCoordinatesChange,
 }) => {
@@ -20,9 +28,15 @@ const TrawlFormEdit = ({
 	const renderContent = () => {
 		const shooting_date_time = trawl.shooting_date_time;
 
+		const bottom_date_time = trawl.bottom_date_time;
+
+		const trawling_date_time = trawl.trawling_date_time;
+
 		const hauling_date_time = trawl.hauling_date_time;
 
-		const bottom_date_time = trawl.bottom_date_time;
+		const take_off_date_time = trawl.take_off_date_time;
+
+		const on_board_date_time = trawl.on_board_date_time;
 
 		return (
 			<fieldset className="wrapper">
@@ -42,300 +56,69 @@ const TrawlFormEdit = ({
 					<div className="characteristicsGrid__colName" aria-hidden="true">
 						Depth (m):
 					</div>
-
-					{/* second row */}
-					<div className="characteristicsGrid__rowName" aria-hidden="true">
-						Shooting:
-					</div>
-					<div className="characteristicsGrid__field">
-						<input
-							type="datetime-local"
-							name="shooting_date_time"
-							id="shooting_date_time"
-							autoFocus
-							value={shooting_date_time}
-							onChange={(e) => {
-								handleChangeTrawl(e);
-							}}
-							aria-label="Shooting date and time"
-						/>
-					</div>
-
-					<div className="characteristicsGrid__field">
-						<input
-							type="number"
-							className="coordinates"
-							name="shooting_latitude_degrees"
-							id="shooting_latitude_degrees"
-							min={-90}
-							max={90}
-							value={shootingLatitude["degrees"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Degrees shooting latitude"
-						/>
-						º{" "}
-						<input
-							type="number"
-							className="coordinates"
-							name="shooting_latitude_minutes"
-							id="shooting_latitude_minutes"
-							min={0}
-							max={60}
-							step={0.001}
-							pattern="[0-9]+(\,[0-9]{3})?"
-							value={shootingLatitude["minutes"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Minutes shooting latitude"
-						/>
-						'
-					</div>
-
-					<div className="characteristicsGrid__field">
-						<input
-							type="number"
-							className="coordinates"
-							name="shooting_longitude_degrees"
-							id="shooting_longitude_degrees"
-							min={-90}
-							max={90}
-							value={shootingLongitude["degrees"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Degrees shooting longitude"
-						/>
-						º{" "}
-						<input
-							type="number"
-							className="coordinates"
-							name="shooting_longitude_minutes"
-							id="shooting_longitude_minutes"
-							min={0}
-							max={60}
-							step={0.001}
-							value={shootingLongitude["minutes"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Minutes shooting longitude"
-						/>
-						'
-					</div>
-					<div className="characteristicsGrid__field">
-						<input
-							type="number"
-							name="shooting_depth"
-							id="shooting_depth"
-							min={0}
-							max={9999}
-							size={4}
-							step={1}
-							value={trawl.shooting_depth || ""}
-							onChange={(e) => {
-								handleChangeTrawl(e);
-							}}
-							aria-label="Shooting depth"
-						/>
-					</div>
-
-					{/* third row */}
-					<div className="characteristicsGrid__rowName" aria-hidden="true">
-						Hauling:
-					</div>
-					<div className="characteristicsGrid__field">
-						<input
-							type="datetime-local"
-							name="hauling_date_time"
-							id="hauling_date_time"
-							value={hauling_date_time}
-							onChange={(e) => {
-								handleChangeTrawl(e);
-							}}
-							aria-label="Hauling date and time"
-						/>
-					</div>
-
-					<div className="characteristicsGrid__field">
-						<input
-							type="number"
-							className="coordinates"
-							name="hauling_latitude_degrees"
-							id="hauling_latitude_degrees"
-							min={-90}
-							max={90}
-							value={haulingLatitude["degrees"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Degrees hauling latitude"
-						/>
-						º{" "}
-						<input
-							type="number"
-							className="coordinates"
-							name="hauling_latitude_minutes"
-							id="hauling_latitude_minutes"
-							min={0}
-							max={60}
-							step={0.001}
-							value={haulingLatitude["minutes"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Minutes hauling latitude"
-						/>
-						'
-					</div>
-
-					<div className="characteristicsGrid__field">
-						<input
-							type="number"
-							className="coordinates"
-							name="hauling_longitude_degrees"
-							id="hauling_longitude_degrees"
-							min={-90}
-							max={90}
-							value={haulingLongitude["degrees"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Degrees hauling longitude"
-						/>
-						º{" "}
-						<input
-							type="number"
-							className="coordinates"
-							name="hauling_longitude_minutes"
-							id="hauling_longitude_minutes"
-							min={0}
-							max={60}
-							step={0.001}
-							value={haulingLongitude["minutes"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Minutes hauling longitude"
-						/>
-						'
-					</div>
-					<div className="characteristicsGrid__field">
-						<input
-							type="number"
-							name="hauling_depth"
-							id="hauling_depth"
-							min={0}
-							max={9999}
-							size={4}
-							step={1}
-							value={trawl.hauling_depth || ""}
-							onChange={(e) => {
-								handleChangeTrawl(e);
-							}}
-							aria-label="Hauling depth"
-						/>
-					</div>
-
-					{/* fourth row */}
-					<div className="characteristicsGrid__rowName" aria-hidden="true">
-						Bottom:
-					</div>
-					<div className="characteristicsGrid__field">
-						<input
-							type="datetime-local"
-							name="bottom_date_time"
-							id="bottom_date_time"
-							value={bottom_date_time}
-							onChange={(e) => {
-								handleChangeTrawl(e);
-							}}
-							aria-label="Bottom date and time"
-						/>
-					</div>
-					<div className="characteristicsGrid__field">
-						<input
-							type="number"
-							className="coordinates"
-							name="bottom_latitude_degrees"
-							id="bottom_latitude_degrees"
-							min={-90}
-							max={90}
-							value={bottomLatitude["degrees"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Degrees bottom latitude"
-						/>
-						º{" "}
-						<input
-							type="number"
-							className="coordinates"
-							name="bottom_latitude_minutes"
-							id="bottom_latitude_minutes"
-							min={0}
-							max={60}
-							step={0.001}
-							value={bottomLatitude["minutes"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Minutes bottom latitude"
-						/>
-						'
-					</div>
-
-					<div className="characteristicsGrid__field">
-						<input
-							type="number"
-							className="coordinates"
-							name="bottom_longitude_degrees"
-							id="bottom_longitude_degrees"
-							min={-90}
-							max={90}
-							value={bottomLongitude["degrees"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Degrees bottom longitude"
-						/>
-						º{" "}
-						<input
-							type="number"
-							className="coordinates"
-							name="bottom_longitude_minutes"
-							id="bottom_longitude_minutes"
-							min={0}
-							max={60}
-							step={0.001}
-							value={bottomLongitude["minutes"] || ""}
-							onChange={(e) => {
-								handleCoordinatesChange(e);
-							}}
-							aria-label="Minutes bottom longitude"
-						/>
-						'
-					</div>
-					<div className="characteristicsGrid__field">
-						<input
-							type="number"
-							name="bottom_depth"
-							id="bottom_depth"
-							min={0}
-							max={9999}
-							maxLength={4}
-							size={4}
-							step={1}
-							value={trawl.bottom_depth || ""}
-							onChange={(e) => {
-								handleChangeTrawl(e);
-							}}
-							aria-label="Bottom depth"
-						/>
-					</div>
 				</div>
+				<TrawlSamplingPointEdit
+					handleChangeTrawl={handleChangeTrawl}
+					handleCoordinatesChange={handleCoordinatesChange}
+					nameSamplingPoint={"Shooting"}
+					typeSamplingPoint={"shooting"}
+					dateTime={shooting_date_time}
+					latitude={shootingLatitude}
+					longitude={shootingLongitude}
+					depth={trawl.shooting_depth}
+					autofocus={true}
+				/>
+				<TrawlSamplingPointEdit
+					handleChangeTrawl={handleChangeTrawl}
+					handleCoordinatesChange={handleCoordinatesChange}
+					nameSamplingPoint={"Bottom"}
+					typeSamplingPoint={"bottom"}
+					dateTime={bottom_date_time}
+					latitude={bottomLatitude}
+					longitude={bottomLongitude}
+					depth={trawl.bottom_depth}
+				/>
+
+				<TrawlSamplingPointEdit
+					handleChangeTrawl={handleChangeTrawl}
+					handleCoordinatesChange={handleCoordinatesChange}
+					nameSamplingPoint={"Trawling"}
+					typeSamplingPoint={"trawling"}
+					dateTime={trawling_date_time}
+					latitude={trawlingLatitude}
+					longitude={trawlingLongitude}
+					depth={trawl.trawling_depth}
+				/>
+				<TrawlSamplingPointEdit
+					handleChangeTrawl={handleChangeTrawl}
+					handleCoordinatesChange={handleCoordinatesChange}
+					nameSamplingPoint={"Hauling"}
+					typeSamplingPoint={"hauling"}
+					dateTime={hauling_date_time}
+					latitude={haulingLatitude}
+					longitude={haulingLongitude}
+					depth={trawl.hauling_depth}
+				/>
+				<TrawlSamplingPointEdit
+					handleChangeTrawl={handleChangeTrawl}
+					handleCoordinatesChange={handleCoordinatesChange}
+					nameSamplingPoint={"Take off"}
+					typeSamplingPoint={"take_off"}
+					dateTime={take_off_date_time}
+					latitude={takeOffLatitude}
+					longitude={takeOffLongitude}
+					depth={trawl.take_off_depth}
+				/>
+				<TrawlSamplingPointEdit
+					handleChangeTrawl={handleChangeTrawl}
+					handleCoordinatesChange={handleCoordinatesChange}
+					nameSamplingPoint={"On board"}
+					typeSamplingPoint={"on_board"}
+					dateTime={on_board_date_time}
+					latitude={onBoardLatitude}
+					longitude={onBoardLongitude}
+					depth={trawl.on_board_depth}
+				/>
 
 				<div className="form__row">
 					<label className="field">

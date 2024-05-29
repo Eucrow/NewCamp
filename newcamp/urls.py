@@ -33,7 +33,7 @@ from stratifications.api import StratificationsAPI
 from strata.api import StrataAPI
 from samplers.api import SamplersAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
-from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, HaulTrawlAPI, \
+from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, \
     HaulHydrographyAPI, HydrographyAPI, MeteorologyAPI, TrawlAPI
 from catches.api import CatchHaulListAPI, CatchHaulAPI, CatchVerboseAPI
 from samples.api import LengthsSexAPI
@@ -141,9 +141,6 @@ urlpatterns = [
                           name="add_meteorology_api"),
 
                   # Trawl hauls
-                  # re_path(r'^api/1.0/haul/trawl/(?P<haul_id>[0-9]+)$', HaulTrawlAPI.as_view(),
-                  #     name="get_trawl_haul_api"),
-                  # re_path(r'^api/1.0/haul/trawl/new/$', HaulTrawlAPI.as_view(), name="add_trawl_haul_api"),
                   re_path(r'^api/1.0/trawl/(?P<haul_id>[0-9]+)$',
                           TrawlAPI.as_view(), name="retrieve_update_delete_trawl_api"),
                   re_path(r'^api/1.0/trawl/$', TrawlAPI.as_view(), name="add_trawl_api"),
