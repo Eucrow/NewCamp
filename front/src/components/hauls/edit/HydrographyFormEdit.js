@@ -3,8 +3,8 @@ import React from "react";
 const HydrographyFormEdit = ({
 	hydrography,
 	handleChangeHydrography,
-	latitude,
-	longitude,
+	hidro_latitude,
+	hidro_longitude,
 	handleCoordinatesChange,
 }) => {
 	/**
@@ -38,11 +38,11 @@ const HydrographyFormEdit = ({
 						<input
 							type="number"
 							className="coordinates"
-							name="latitude_degrees"
-							id="latitude_degrees"
+							name="hidro_latitude_degrees"
+							id="hidro_latitude_degrees"
 							min={-90}
 							max={90}
-							value={latitude["degrees"] || ""}
+							value={hidro_latitude["degrees"] || ""}
 							onChange={(e) => {
 								handleCoordinatesChange(e);
 							}}
@@ -52,13 +52,13 @@ const HydrographyFormEdit = ({
 						<input
 							type="number"
 							className="coordinates"
-							name="latitude_minutes"
-							id="latitude_minutes"
+							name="hidro_latitude_minutes"
+							id="hidro_latitude_minutes"
 							min={0}
 							max={60}
 							step={0.001}
 							pattern="[0-9]+(\,[0-9]{3})?"
-							value={latitude["minutes"] || ""}
+							value={hidro_latitude["minutes"] || ""}
 							onChange={(e) => {
 								handleCoordinatesChange(e);
 							}}
@@ -72,11 +72,11 @@ const HydrographyFormEdit = ({
 						<input
 							type="number"
 							className="coordinates"
-							name="longitude_degrees"
-							id="longitude_degrees"
+							name="hidro_longitude_degrees"
+							id="hidro_longitude_degrees"
 							min={-90}
 							max={90}
-							value={longitude["degrees"] || ""}
+							value={hidro_longitude["degrees"] || ""}
 							onChange={(e) => {
 								handleCoordinatesChange(e);
 							}}
@@ -86,13 +86,13 @@ const HydrographyFormEdit = ({
 						<input
 							type="number"
 							className="coordinates"
-							name="longitude_minutes"
-							id="longitude_minutes"
+							name="hidro_longitude_minutes"
+							id="hidro_longitude_minutes"
 							min={0}
 							max={60}
 							step={0.001}
 							pattern="[0-9]+(\,[0-9]{3})?"
-							value={longitude["minutes"] || ""}
+							value={hidro_longitude["minutes"] || ""}
 							onChange={(e) => {
 								handleCoordinatesChange(e);
 							}}

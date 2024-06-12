@@ -30,7 +30,7 @@ const LengthForm = ({ l, idx }) => {
 		if (lengthsContext.lengthsStatus === "view") {
 			return (
 				<div className="formLengths__row" key={l.length}>
-					# TODO: make this inputs not readable as inputs in ARIA
+					{/* # TODO: make this inputs not readable as inputs in ARIA */}
 					<div className="formLengths__cell">
 						<input
 							type="number"

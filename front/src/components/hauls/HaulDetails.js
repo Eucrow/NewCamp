@@ -16,16 +16,6 @@ import HydrographyFormEdit from "./edit/HydrographyFormEdit";
 import UiButtonSave from "../ui/UiButtonSave";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
-// import UiIconDetailHide from "../ui/UiIconDetailHide";
-// import UiIconEdit from "../ui/UiIconEdit";
-
-// const useRenderCount = () => {
-// 	const renderCount = useRef(0);
-// 	useEffect(() => {
-// 		renderCount.current += 1;
-// 	});
-// 	return renderCount.current;
-// };
 
 const HaulDetails = ({ haul, detail, setDetail }) => {
 	/**
@@ -54,23 +44,36 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	const apiTrawlPartial = "http://127.0.0.1:8000/api/1.0/trawl/";
 
 	// TRAWL
+	// TODO: factorize this??
 	const [shootingLatitude, setShootingLatitude] = useState({ degrees: 0, minutes: 0 });
 	const [shootingLongitude, setShootingLongitude] = useState({ degrees: 0, minutes: 0 });
-	const [haulingLatitude, setHaulingLatitude] = useState({ degrees: 0, minutes: 0 });
-	const [haulingLongitude, setHaulingLongitude] = useState({ degrees: 0, minutes: 0 });
 	const [bottomLatitude, setBottomLatitude] = useState({ degrees: 0, minutes: 0 });
 	const [bottomLongitude, setBottomLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [trawlingLatitude, setTrawlingLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [trawlingLongitude, setTrawlingLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [haulingLatitude, setHaulingLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [haulingLongitude, setHaulingLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [takeOffLatitude, setTakeOffLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [takeOffLongitude, setTakeOffLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [onBoardLatitude, setOnBoardLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [onBoardLongitude, setOnBoardLongitude] = useState({ degrees: 0, minutes: 0 });
 
 	const [backupShootingLatitude, setBackupShootingLatitude] = useState({ degrees: 0, minutes: 0 });
 	const [backupShootingLongitude, setBackupShootingLongitude] = useState({ degrees: 0, minutes: 0 });
-	const [backupHaulingLatitude, setBackupHaulingLatitude] = useState({ degrees: 0, minutes: 0 });
-	const [backupHaulingLongitude, setBackupHaulingLongitude] = useState({ degrees: 0, minutes: 0 });
 	const [backupBottomLatitude, setBackupBottomLatitude] = useState({ degrees: 0, minutes: 0 });
 	const [backupBottomLongitude, setBackupBottomLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupTrawlingLatitude, setBackupTrawlingLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupTrawlingLongitude, setBackupTrawlingLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupHaulingLatitude, setBackupHaulingLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupHaulingLongitude, setBackupHaulingLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupTakeOffLatitude, setBackupTakeOffLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupTakeOffLongitude, setBackupTakeOffLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupOnBoardLatitude, setBackupOnBoardLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupOnBoardLongitude, setBackupOnBoardLongitude] = useState({ degrees: 0, minutes: 0 });
 
 	// HTYDROGRAPHY
-	const [latitude, setLatitude] = useState({ degrees: 0, minutes: 0 });
-	const [longitude, setLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [hidroLatitude, setHidroLatitude] = useState({ degrees: 0, minutes: 0 });
+	const [hidroLongitude, setHidroLongitude] = useState({ degrees: 0, minutes: 0 });
 
 	const [backupLatitude, setBackupLatitude] = useState({ degrees: 0, minutes: 0 });
 	const [backupLongitude, setBackupLongitude] = useState({ degrees: 0, minutes: 0 });
@@ -84,48 +87,80 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		const [degreesShootingLongitude, minutesShootingLongitude] = convertDecimalToDMCoordinate(
 			trawl.shooting_longitude
 		);
+		const [degreesBottomLatitude, minutesBottomLatitude] = convertDecimalToDMCoordinate(trawl.bottom_latitude);
+		const [degreesBottomLongitude, minutesBottomLongitude] = convertDecimalToDMCoordinate(trawl.bottom_longitude);
+		const [degreesTrawlingLatitude, minutesTrawlingLatitude] = convertDecimalToDMCoordinate(
+			trawl.trawling_latitude
+		);
+		const [degreesTrawlingLongitude, minutesTrawlingLongitude] = convertDecimalToDMCoordinate(
+			trawl.trawling_longitude
+		);
 		const [degreesHaulingLatitude, minutesHaulingLatitude] = convertDecimalToDMCoordinate(trawl.hauling_latitude);
 		const [degreesHaulingLongitude, minutesHaulingLongitude] = convertDecimalToDMCoordinate(
 			trawl.hauling_longitude
 		);
-		const [degreesBottomLatitude, minutesBottomLatitude] = convertDecimalToDMCoordinate(trawl.bottom_latitude);
-		const [degreesBottomLongitude, minutesBottomLongitude] = convertDecimalToDMCoordinate(trawl.bottom_longitude);
+		const [degreesTakeOffLatitude, minutesTakeOffLatitude] = convertDecimalToDMCoordinate(trawl.take_off_latitude);
+		const [degreesTakeOffLongitude, minutesTakeOffLongitude] = convertDecimalToDMCoordinate(
+			trawl.take_off_longitude
+		);
+		const [degreesOnBoardLatitude, minutesOnBoardLatitude] = convertDecimalToDMCoordinate(trawl.on_board_latitude);
+		const [degreesOnBoardLongitude, minutesOnBoardLongitude] = convertDecimalToDMCoordinate(
+			trawl.on_board_longitude
+		);
 
 		// Store the converted latitude and longitude values in state
 		setShootingLatitude({ degrees: degreesShootingLatitude, minutes: minutesShootingLatitude });
 		setShootingLongitude({ degrees: degreesShootingLongitude, minutes: minutesShootingLongitude });
-		setHaulingLatitude({ degrees: degreesHaulingLatitude, minutes: minutesHaulingLatitude });
-		setHaulingLongitude({ degrees: degreesHaulingLongitude, minutes: minutesHaulingLongitude });
 		setBottomLatitude({ degrees: degreesBottomLatitude, minutes: minutesBottomLatitude });
 		setBottomLongitude({ degrees: degreesBottomLongitude, minutes: minutesBottomLongitude });
+		setTrawlingLatitude({ degrees: degreesTrawlingLatitude, minutes: minutesTrawlingLatitude });
+		setTrawlingLongitude({ degrees: degreesTrawlingLongitude, minutes: minutesTrawlingLongitude });
+		setHaulingLatitude({ degrees: degreesHaulingLatitude, minutes: minutesHaulingLatitude });
+		setHaulingLongitude({ degrees: degreesHaulingLongitude, minutes: minutesHaulingLongitude });
+		setTakeOffLatitude({ degrees: degreesTakeOffLatitude, minutes: minutesTakeOffLatitude });
+		setTakeOffLongitude({ degrees: degreesTakeOffLongitude, minutes: minutesTakeOffLongitude });
+		setOnBoardLatitude({ degrees: degreesOnBoardLatitude, minutes: minutesOnBoardLatitude });
+		setOnBoardLongitude({ degrees: degreesOnBoardLongitude, minutes: minutesOnBoardLongitude });
 
 		// Store the converted latitude and longitude values in backup state
 		setBackupShootingLatitude({ degrees: degreesShootingLatitude, minutes: minutesShootingLatitude });
 		setBackupShootingLongitude({ degrees: degreesShootingLongitude, minutes: minutesShootingLongitude });
-		setBackupHaulingLatitude({ degrees: degreesHaulingLatitude, minutes: minutesHaulingLatitude });
-		setBackupHaulingLongitude({ degrees: degreesHaulingLongitude, minutes: minutesHaulingLongitude });
 		setBackupBottomLatitude({ degrees: degreesBottomLatitude, minutes: minutesBottomLatitude });
 		setBackupBottomLongitude({ degrees: degreesBottomLongitude, minutes: minutesBottomLongitude });
+		setBackupTrawlingLatitude({ degrees: degreesTrawlingLatitude, minutes: minutesTrawlingLatitude });
+		setBackupTrawlingLongitude({ degrees: degreesTrawlingLongitude, minutes: minutesTrawlingLongitude });
+		setBackupHaulingLatitude({ degrees: degreesHaulingLatitude, minutes: minutesHaulingLatitude });
+		setBackupHaulingLongitude({ degrees: degreesHaulingLongitude, minutes: minutesHaulingLongitude });
+		setBackupTakeOffLatitude({ degrees: degreesTakeOffLatitude, minutes: minutesTakeOffLatitude });
+		setBackupTakeOffLongitude({ degrees: degreesTakeOffLongitude, minutes: minutesTakeOffLongitude });
+		setBackupOnBoardLatitude({ degrees: degreesOnBoardLatitude, minutes: minutesOnBoardLatitude });
+		setBackupOnBoardLongitude({ degrees: degreesOnBoardLongitude, minutes: minutesOnBoardLongitude });
 
 		// HYDROGRAPHY
 		// Convert the latitude and longitude values to degrees and minutes when the component is loaded
-		const [degreesLatitude, minutesLatitude] = convertDecimalToDMCoordinate(hydrography.latitude);
-		const [degreesLongitude, minutesLongitude] = convertDecimalToDMCoordinate(hydrography.longitude);
+		const [degreesHidroLatitude, minutesLatitude] = convertDecimalToDMCoordinate(hydrography.latitude);
+		const [degreesHidroLongitude, minutesLongitude] = convertDecimalToDMCoordinate(hydrography.longitude);
 
 		// Store the converted latitude and longitude values in state
-		setLatitude({ degrees: degreesLatitude, minutes: minutesLatitude });
-		setLongitude({ degrees: degreesLongitude, minutes: minutesLongitude });
+		setHidroLatitude({ degrees: degreesHidroLatitude, minutes: minutesLatitude });
+		setHidroLongitude({ degrees: degreesHidroLongitude, minutes: minutesLongitude });
 
 		// Store the converted latitude and longitude values in backup state
-		setBackupLatitude({ degrees: degreesLatitude, minutes: minutesLatitude });
-		setBackupLongitude({ degrees: degreesLongitude, minutes: minutesLongitude });
+		setBackupLatitude({ degrees: degreesHidroLatitude, minutes: minutesLatitude });
+		setBackupLongitude({ degrees: degreesHidroLongitude, minutes: minutesLongitude });
 	}, [
 		trawl.bottom_latitude,
 		trawl.bottom_longitude,
 		trawl.hauling_latitude,
 		trawl.hauling_longitude,
+		trawl.trawling_latitude,
+		trawl.trawling_longitude,
 		trawl.shooting_latitude,
 		trawl.shooting_longitude,
+		trawl.take_off_latitude,
+		trawl.take_off_longitude,
+		trawl.on_board_latitude,
+		trawl.on_board_longitude,
 		hydrography.latitude,
 		hydrography.longitude,
 	]);
@@ -157,102 +192,88 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		}));
 	};
 
-	useEffect(() => {
-		console.log(hydrography);
-	}, [hydrography]);
-
 	const handleCoordinatesChange = (e) => {
 		const name = e.target.name;
 		const value = e.target.value;
 
-		// determine which setter function to call based on the name of the input element
-		// this is not the best way to do it, but it works
-		let setter;
-		let units;
-		switch (true) {
-			// TRAWL
-			case name === "shooting_latitude_degrees" || name === "shooting_latitude_minutes":
-				setter = setShootingLatitude;
-				units = name.split("_")[2];
-				break;
-			case name === "shooting_longitude_degrees" || name === "shooting_longitude_minutes":
-				setter = setShootingLongitude;
-				units = name.split("_")[2];
-				break;
-			case name === "hauling_latitude_degrees" || name === "hauling_latitude_minutes":
-				setter = setHaulingLatitude;
-				units = name.split("_")[2];
-				break;
-			case name === "hauling_longitude_degrees" || name === "hauling_longitude_minutes":
-				setter = setHaulingLongitude;
-				units = name.split("_")[2];
-				break;
-			case name === "bottom_latitude_degrees" || name === "bottom_latitude_minutes":
-				setter = setBottomLatitude;
-				units = name.split("_")[2];
-				break;
-			case name === "bottom_longitude_degrees" || name === "bottom_longitude_minutes":
-				setter = setBottomLongitude;
-				units = name.split("_")[2];
-				break;
-			// HYDROGRAPHY
-			case name === "latitude_degrees" || name === "latitude_minutes":
-				setter = setLatitude;
-				units = name.split("_")[1];
-				break;
-			case name === "longitude_degrees" || name === "longitude_minutes":
-				setter = setLongitude;
-				units = name.split("_")[1];
-				break;
-			default:
-				return;
-		}
+		// Mapping of names to setter functions
+		const nameToSetter = {
+			shooting_latitude_degrees: setShootingLatitude,
+			shooting_latitude_minutes: setShootingLatitude,
+			shooting_longitude_degrees: setShootingLongitude,
+			shooting_longitude_minutes: setShootingLongitude,
+			bottom_latitude_degrees: setBottomLatitude,
+			bottom_latitude_minutes: setBottomLatitude,
+			bottom_longitude_degrees: setBottomLongitude,
+			bottom_longitude_minutes: setBottomLongitude,
+			trawling_latitude_degrees: setTrawlingLatitude,
+			trawling_latitude_minutes: setTrawlingLatitude,
+			trawling_longitude_degrees: setTrawlingLongitude,
+			trawling_longitude_minutes: setTrawlingLongitude,
+			hauling_latitude_degrees: setHaulingLatitude,
+			hauling_latitude_minutes: setHaulingLatitude,
+			hauling_longitude_degrees: setHaulingLongitude,
+			hauling_longitude_minutes: setHaulingLongitude,
+			take_off_latitude_degrees: setTakeOffLatitude,
+			take_off_latitude_minutes: setTakeOffLatitude,
+			take_off_longitude_degrees: setTakeOffLongitude,
+			take_off_longitude_minutes: setTakeOffLongitude,
+			on_board_latitude_degrees: setOnBoardLatitude,
+			on_board_latitude_minutes: setOnBoardLatitude,
+			on_board_longitude_degrees: setOnBoardLongitude,
+			on_board_longitude_minutes: setOnBoardLongitude,
+			hidro_latitude_degrees: setHidroLatitude,
+			hidro_latitude_minutes: setHidroLatitude,
+		};
 
-		// update the state using the appropriate setter function and element
+		// Get the setter function from the mapping
+		const setter = nameToSetter[name];
+
+		// Get the units from the name
+		const units = name.split("_")[2];
+
+		// Update the state using the appropriate setter function and element
 		setter((prev) => ({
 			...prev,
 			[units]: value,
 		}));
 	};
 
+	/**
+	 * Converts decimal coordinates to degrees and minutes format.
+	 * @param {number} decimalCoordinate The decimal coordinate value.
+	 * @returns {Array} An array containing the degrees and minutes values.
+	 */
+	const convertCoordinates = (coordinates) => {
+		return convertDMToDecimalCoordinate(coordinates["degrees"], coordinates["minutes"]);
+	};
+
 	const updateCoordinates = () => {
 		// TODO: I'm doing this with coordinates or trawl and hydrography. Should be done separately.
 		// TRAWL
-		const shooting_latitude = convertDMToDecimalCoordinate(
-			shootingLatitude["degrees"],
-			shootingLatitude["minutes"]
-		);
 
-		const shooting_longitude = convertDMToDecimalCoordinate(
-			shootingLongitude["degrees"],
-			shootingLongitude["minutes"]
-		);
-
-		const hauling_latitude = convertDMToDecimalCoordinate(haulingLatitude["degrees"], haulingLatitude["minutes"]);
-
-		const hauling_longitude = convertDMToDecimalCoordinate(
-			haulingLongitude["degrees"],
-			haulingLongitude["minutes"]
-		);
-
-		const bottom_latitude = convertDMToDecimalCoordinate(bottomLatitude["degrees"], bottomLatitude["minutes"]);
-
-		const bottom_longitude = convertDMToDecimalCoordinate(bottomLongitude["degrees"], bottomLongitude["minutes"]);
-
-		// HYDROGRAPHY
-		const latitude_hydro = convertDMToDecimalCoordinate(latitude["degrees"], latitude["minutes"]);
-		const longitude_hydro = convertDMToDecimalCoordinate(longitude["degrees"], longitude["minutes"]);
-
-		return {
-			shooting_latitude,
-			shooting_longitude,
-			hauling_latitude,
-			hauling_longitude,
-			bottom_latitude,
-			bottom_longitude,
-			latitude_hydro,
-			longitude_hydro,
+		const coordinates = {
+			shooting_latitude: shootingLatitude,
+			shooting_longitude: shootingLongitude,
+			bottom_latitude: bottomLatitude,
+			bottom_longitude: bottomLongitude,
+			trawling_latitude: trawlingLatitude,
+			trawling_longitude: trawlingLongitude,
+			hauling_latitude: haulingLatitude,
+			hauling_longitude: haulingLongitude,
+			take_off_latitude: takeOffLatitude,
+			take_off_longitude: takeOffLongitude,
+			hidro_latitude: hidroLatitude,
+			hidro_longitude: hidroLongitude,
 		};
+
+		const convertedCoordinates = {};
+
+		for (const [key, value] of Object.entries(coordinates)) {
+			convertedCoordinates[key] = convertCoordinates(value);
+		}
+
+		return convertedCoordinates;
 	};
 
 	const handleSubmit = (e) => {
@@ -263,15 +284,13 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			const trawlCopy = JSON.parse(JSON.stringify(trawl));
 
 			const newCoordinates = updateCoordinates();
-			// update the coordinates in the deepcopy trawl object
-			trawlCopy["shooting_latitude"] = newCoordinates["shooting_latitude"];
-			trawlCopy["shooting_longitude"] = newCoordinates["shooting_longitude"];
-			trawlCopy["hauling_latitude"] = newCoordinates["hauling_latitude"];
-			trawlCopy["hauling_longitude"] = newCoordinates["hauling_longitude"];
-			trawlCopy["bottom_latitude"] = newCoordinates["bottom_latitude"];
-			trawlCopy["bottom_longitude"] = newCoordinates["bottom_longitude"];
+
 			// to avoid a infinite loop, we need to update the state of the trawl object completely
 			// so we need to update the state of the trawl object with the deepcopy
+
+			for (const key in newCoordinates) {
+				trawlCopy[key] = newCoordinates[key];
+			}
 
 			// update the date time fields, must be null if empty, instead of empty string.
 			trawlCopy["shooting_date_time"] =
@@ -279,6 +298,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			trawlCopy["hauling_date_time"] =
 				trawlCopy["hauling_date_time"] === "" ? null : trawlCopy["hauling_date_time"];
 			trawlCopy["bottom_date_time"] = trawlCopy["bottom_date_time"] === "" ? null : trawlCopy["bottom_date_time"];
+
 			setTrawl(trawlCopy);
 
 			const apiTrawl = apiTrawlPartial + haul.id;
@@ -297,14 +317,14 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		}
 
 		if (haul.sampler_id === 2) {
-			// create a deepcopy of the hyfrogaphy object
+			// create a deepcopy of the hydrography object
 			const hydrographyCopy = JSON.parse(JSON.stringify(hydrography));
 
 			const newCoordinates = updateCoordinates();
 
 			// update the coordinates in the deepcopy trawl object
-			hydrographyCopy["latitude"] = newCoordinates["latitude_hydro"];
-			hydrographyCopy["longitude"] = newCoordinates["longitude_hydro"];
+			hydrographyCopy["latitude"] = newCoordinates["hidro_latitude"];
+			hydrographyCopy["longitude"] = newCoordinates["hidro_longitude"];
 			// to avoid a infinite loop, we need to update the state of the trawl object completely
 			// so we need to update the state of the trawl object with the deepcopy
 
@@ -346,14 +366,20 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		//TRAWL
 		setShootingLatitude(backupShootingLatitude);
 		setShootingLongitude(backupShootingLongitude);
-		setHaulingLatitude(backupHaulingLatitude);
-		setHaulingLongitude(backupHaulingLongitude);
 		setBottomLatitude(backupBottomLatitude);
 		setBottomLongitude(backupBottomLongitude);
+		setTrawlingLatitude(backupTrawlingLatitude);
+		setTrawlingLongitude(backupTrawlingLongitude);
+		setHaulingLatitude(backupHaulingLatitude);
+		setHaulingLongitude(backupHaulingLongitude);
+		setTakeOffLatitude(backupTakeOffLatitude);
+		setTakeOffLongitude(backupTakeOffLongitude);
+		setOnBoardLatitude(backupOnBoardLatitude);
+		setOnBoardLongitude(backupOnBoardLongitude);
 
 		//HYDROGRAPHY
-		setLatitude(backupLatitude);
-		setLongitude(backupLongitude);
+		setHidroLatitude(backupLatitude);
+		setHidroLongitude(backupLongitude);
 	};
 
 	/**
@@ -413,13 +439,19 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 						return response.json();
 					})
 					.then((trawl) => {
-						// Convert date and time to local time (just removve the Z at the end).
+						// Convert date and time to local time (just remove the Z at the end).
 						const fixed_shooting_date_time = fixDateTime(trawl.shooting_date_time);
-						const fixed_hauling_date_time = fixDateTime(trawl.hauling_date_time);
 						const fixed_bottom_date_time = fixDateTime(trawl.bottom_date_time);
+						const fixed_trawling_date_time = fixDateTime(trawl.trawling_date_time);
+						const fixed_hauling_date_time = fixDateTime(trawl.hauling_date_time);
+						const fixed_take_off_date_time = fixDateTime(trawl.take_off_date_time);
+						const fixed_on_board_date_time = fixDateTime(trawl.on_board_date_time);
 						trawl.shooting_date_time = fixed_shooting_date_time;
-						trawl.hauling_date_time = fixed_hauling_date_time;
 						trawl.bottom_date_time = fixed_bottom_date_time;
+						trawl.trawling_date_time = fixed_trawling_date_time;
+						trawl.hauling_date_time = fixed_hauling_date_time;
+						trawl.take_off_date_time = fixed_take_off_date_time;
+						trawl.on_board_date_time = fixed_on_board_date_time;
 
 						setTrawl(trawl);
 						setBackupTrawl(trawl);
@@ -453,10 +485,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				return (
 					<form className="form--wide" disabled>
 						<div className="form__row">
-							<MeteorologyFormView meteorology={meteorology} />
+							<TrawlFormView trawl={trawl} />
 						</div>
 						<div className="form__row">
-							<TrawlFormView trawl={trawl} />
+							<MeteorologyFormView meteorology={meteorology} />
 						</div>
 						<div className="form__row">
 							<div className="form__cell form__cell--right">
@@ -491,25 +523,29 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							setEdit(false);
 						}}
 					>
-						{/* <p>Render count: {renderCount}</p> */}
-						<div className="form__row">
-							<MeteorologyFormEdit
-								meteorology={meteorology}
-								handleChangeMeteorology={handleChangeMeteorology}
-							/>
-						</div>
-
 						<div className="form__row">
 							<TrawlFormEdit
 								trawl={trawl}
 								shootingLatitude={shootingLatitude}
 								shootingLongitude={shootingLongitude}
-								haulingLatitude={haulingLatitude}
-								haulingLongitude={haulingLongitude}
 								bottomLatitude={bottomLatitude}
 								bottomLongitude={bottomLongitude}
+								trawlingLatitude={trawlingLatitude}
+								trawlingLongitude={trawlingLongitude}
+								haulingLatitude={haulingLatitude}
+								haulingLongitude={haulingLongitude}
+								takeOffLatitude={takeOffLatitude}
+								takeOffLongitude={takeOffLongitude}
+								onBoardLatitude={onBoardLatitude}
+								onBoardLongitude={onBoardLongitude}
 								handleChangeTrawl={handleChangeTrawl}
 								handleCoordinatesChange={handleCoordinatesChange}
+							/>
+						</div>
+						<div className="form__row">
+							<MeteorologyFormEdit
+								meteorology={meteorology}
+								handleChangeMeteorology={handleChangeMeteorology}
 							/>
 						</div>
 
@@ -535,7 +571,11 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				return (
 					<form className="form--wide noSpinner" disabled>
 						<div className="form__row">
-							<HydrographyFormView hydrography={hydrography} latitude={latitude} longitude={longitude} />
+							<HydrographyFormView
+								hydrography={hydrography}
+								hidro_latitude={hidroLatitude}
+								hidro_longitude={hidroLongitude}
+							/>
 						</div>
 
 						<div className="form__row">
@@ -568,8 +608,8 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 							<HydrographyFormEdit
 								hydrography={hydrography}
 								handleChangeHydrography={handleChangeHydrography}
-								latitude={latitude}
-								longitude={longitude}
+								hidro_latitude={hidroLatitude}
+								hidro_longitude={hidroLongitude}
 								handleCoordinatesChange={handleCoordinatesChange}
 							/>
 						</div>

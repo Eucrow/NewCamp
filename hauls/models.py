@@ -71,6 +71,7 @@ class HaulTrawl(models.Model):
     haul = models.OneToOneField(
         'hauls.Haul', on_delete=models.CASCADE, related_name='trawl_characteristics')
 
+    # Shooting
     shooting_date_time = models.DateTimeField(null=True, blank=True)
     shooting_latitude = models.DecimalField(validators=[MinValueValidator(-90), MaxValueValidator(90)], max_digits=9,
                                             decimal_places=6, null=True, blank=True)
@@ -80,6 +81,27 @@ class HaulTrawl(models.Model):
     shooting_depth = models.PositiveIntegerField(
         validators=[MaxValueValidator(9999)], null=True, blank=True)
 
+    # ---- Start coordinates ----
+    # Bottom
+    bottom_date_time = models.DateTimeField(null=True, blank=True)
+    bottom_latitude = models.DecimalField(validators=[MinValueValidator(-90), MaxValueValidator(90)], max_digits=9,
+                                          decimal_places=6, null=True, blank=True)
+    bottom_longitude = models.DecimalField(validators=[MinValueValidator(-180), MaxValueValidator(180)], max_digits=10,
+                                           decimal_places=6, null=True, blank=True)
+    bottom_depth = models.PositiveIntegerField(
+        validators=[MaxValueValidator(9999)], null=True, blank=True)
+
+    # Trawling
+    trawling_date_time = models.DateTimeField(null=True, blank=True)
+    trawling_latitude = models.DecimalField(validators=[MinValueValidator(-90), MaxValueValidator(90)], max_digits=9,
+                                            decimal_places=6, null=True, blank=True)
+    trawling_longitude = models.DecimalField(validators=[MinValueValidator(-180), MaxValueValidator(180)],
+                                             max_digits=10,
+                                             decimal_places=6, null=True, blank=True)
+    trawling_depth = models.PositiveIntegerField(
+        validators=[MaxValueValidator(9999)], null=True, blank=True)
+
+    # Hauling
     hauling_date_time = models.DateTimeField(null=True, blank=True)
     hauling_latitude = models.DecimalField(validators=[MinValueValidator(-90), MaxValueValidator(90)], max_digits=9,
                                            decimal_places=6, null=True, blank=True)
@@ -88,13 +110,26 @@ class HaulTrawl(models.Model):
     hauling_depth = models.PositiveIntegerField(
         validators=[MaxValueValidator(9999)], null=True, blank=True)
 
-    bottom_date_time = models.DateTimeField(null=True, blank=True)
-    bottom_latitude = models.DecimalField(validators=[MinValueValidator(-90), MaxValueValidator(90)], max_digits=9,
-                                          decimal_places=6, null=True, blank=True)
-    bottom_longitude = models.DecimalField(validators=[MinValueValidator(-180), MaxValueValidator(180)], max_digits=10,
-                                           decimal_places=6, null=True, blank=True)
-    bottom_depth = models.PositiveIntegerField(
+    # Take off
+    take_off_date_time = models.DateTimeField(null=True, blank=True)
+    take_off_latitude = models.DecimalField(validators=[MinValueValidator(-90), MaxValueValidator(90)], max_digits=9,
+                                            decimal_places=6, null=True, blank=True)
+    take_off_longitude = models.DecimalField(validators=[MinValueValidator(-180), MaxValueValidator(180)],
+                                             max_digits=10,
+                                             decimal_places=6, null=True, blank=True)
+    take_off_depth = models.PositiveIntegerField(
         validators=[MaxValueValidator(9999)], null=True, blank=True)
+
+    # On board
+    on_board_date_time = models.DateTimeField(null=True, blank=True)
+    on_board_latitude = models.DecimalField(validators=[MinValueValidator(-90), MaxValueValidator(90)], max_digits=9,
+                                            decimal_places=6, null=True, blank=True)
+    on_board_longitude = models.DecimalField(validators=[MinValueValidator(-180), MaxValueValidator(180)],
+                                             max_digits=10,
+                                             decimal_places=6, null=True, blank=True)
+    on_board_depth = models.PositiveIntegerField(
+        validators=[MaxValueValidator(9999)], null=True, blank=True)
+    # ---- End coordinates ----
 
     course = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(360)], null=True,
                                          blank=True)
@@ -110,7 +145,7 @@ class HaulTrawl(models.Model):
                                               decimal_places=1, null=True, blank=True)
     vertical_aperture = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(99)], max_digits=3,
                                             decimal_places=1, null=True, blank=True)
-    grid = models.PositiveIntegerField(
+    sampling_rectangle = models.PositiveIntegerField(
         validators=[MaxValueValidator(99)], null=True, blank=True)
     track = models.PositiveIntegerField(
         validators=[MaxValueValidator(9999)], null=True, blank=True)
