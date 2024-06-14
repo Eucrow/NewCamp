@@ -18,14 +18,15 @@ class Catch(models.Model):
         constraints = [
             UniqueConstraint(fields=['haul', 'sp', 'category'], name='unique_catch')
         ]
-
-    def save(self, *args, **kwargs):
-        # only individuals are allowed to be created if no lengths exist
-        sex_instances = Sex.objects.filter(catch=self.catch)
-
-        if Length.objects.filter(sex__in=sex_instances, number_individuals__isnull=False).exists():
-            raise ValidationError('Individuals already exist for this catch')
-        super(Catch, self).save(*args, **kwargs)
+    #
+    # def save(self, *args, **kwargs):
+    #     if hasattr(self, 'catch'):
+    #         # only individuals are allowed to be created if no lengths exist
+    #         sex_instances = Sex.objects.filter(catch=self.catch)
+    #
+    #         if Length.objects.filter(sex__in=sex_instances, number_individuals__isnull=False).exists():
+    #             raise ValidationError('Individuals already exist for this catch')
+    #         super(Catch, self).save(*args, **kwargs)
 
 # class Category(models.Model):
 #

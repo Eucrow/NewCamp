@@ -16,8 +16,8 @@ class CatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        fields = ['catch_id', 'haul_id', 'group', 'sp_code',
-                  'weight', 'sp_name', 'category']
+        fields = ['catch_id', 'haul_id', 'group', 'sp_code', 'weight', 'sp_name', 'category',
+                  'not_measured_individuals', ]
 
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
