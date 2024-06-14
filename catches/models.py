@@ -21,3 +21,5 @@ class Catch(models.Model):
 #
 #     class Meta:
 #         unique_together = ('sp', 'category_name')
+
+

@@ -1,11 +1,9 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
-
 from catches.models import Catch
 from samples.models import Sex, Length, SampledWeight
 from samples.serializers import SampleWeightSerializer, LengthSerializer
-# from sexes.serializers import SexesExistsSerializer
-# from species.serializers import CategorySerializer
+
 from species.models import Sp
 from species.serializers import SpSimpleSerializer
 
@@ -32,11 +30,13 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
     increment = serializers.FloatField(source='sp.increment', read_only=True)
     sampled_weight = serializers.FloatField(
         source='samples.sampled_weight', required=False, read_only=True)
+    individuals_not_measured = serializers.IntegerField(
+        source='not_measured_individuals.number_individuals', required=False, read_only=True)
 
     class Meta:
         model = Catch
         fields = ['catch_id', 'weight', 'category', 'haul', 'haul_id', 'group', 'sp_id', 'sp_code',
-                  'sp_name', 'unit', 'increment', 'sampled_weight']
+                  'sp_name', 'unit', 'increment', 'sampled_weight', 'individuals_not_measured']
 
 
 class SexCatchSerializer(serializers.ModelSerializer):
@@ -47,6 +47,7 @@ class SexCatchSerializer(serializers.ModelSerializer):
         fields = ['id', 'sex', 'catch', 'lengths', ]
 
     # This is a nested serializer, so we have to overwrite the create function
+
     def create(self, validated_data):
         # Firstly, get the data from the nested parts
         lengths_data = validated_data.pop('lengths')

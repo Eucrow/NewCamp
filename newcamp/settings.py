@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     # 'frontend',
     'conn_r',
     'sexes',
+    'not_measured_individuals',
 ]
 
 MIDDLEWARE = [
@@ -143,7 +144,6 @@ USE_TZ = True
 # The next line must be uncommented when the distribution version is generated: (I don't know if the rest of the time is mandatory)
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-
 
 # determines if the library will use database transactions on data import, just to be on the safe side.
 IMPORT_EXPORT_USE_TRANSACTIONS = True
