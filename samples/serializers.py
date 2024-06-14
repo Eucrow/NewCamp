@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from samples.models import Length, SampledWeight
-from not_measured_individuals.models import notMeasuredIndividual
+
+
+# from not_measured_individuals.models import notMeasuredIndividual
 
 
 class SampleWeightSerializer(serializers.ModelSerializer):
@@ -32,8 +34,7 @@ class LengthSexSerializer(serializers.ModelSerializer):
         model = Length
         fields = ['catch_id', 'sex_id', 'sex', 'length_id', 'length', 'number_individuals', ]
 
-
-class individualSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = notMeasuredIndividual
-        fields = ['catch_id', 'number_individuals', ]
+# class individualSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = notMeasuredIndividual
+#         fields = ['catch_id', 'number_individuals', ]

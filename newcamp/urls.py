@@ -36,7 +36,7 @@ from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySu
 from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, \
     HaulHydrographyAPI, HydrographyAPI, MeteorologyAPI, TrawlAPI
 from catches.api import CatchHaulListAPI, CatchHaulAPI, CatchVerboseAPI
-from samples.api import LengthsSexAPI, IndividualsAPI
+from samples.api import LengthsSexAPI
 # , SampledWeightDetail, SampledWeightCreate
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 from conn_r.api import GetTrawlHaulsAPIConnR, GetDataStationsAPIConnR
@@ -177,10 +177,6 @@ urlpatterns = [
                   re_path(r'^api/1.0/catch$', CatchHaulAPI.as_view(), name="edit_catch_api"),
                   re_path(r'^api/1.0/catch/remove$',
                           CatchHaulAPI.as_view(), name="remove_catch_api"),
-
-                  # Individuals API URLs
-                  re_path(r'^api/1.0/individuals/(?P<catch_id>[0-9]+)$', IndividualsAPI.as_view(),
-                          name="get_individuals_api"),
 
                   # Samples API URLs
                   # re_path(r'^api/1.0/samples/new$', SampleAPI.as_view(), name="add_sample_api"),

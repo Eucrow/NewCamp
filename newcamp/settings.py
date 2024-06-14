@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     # 'frontend',
     'conn_r',
     'sexes',
-    'not_measured_individuals',
 ]
 
 MIDDLEWARE = [

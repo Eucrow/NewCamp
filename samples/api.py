@@ -4,8 +4,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from catches.serializers import SexCatchSerializer
 from samples.models import Length, SampledWeight, Sex
-from samples.serializers import SampleWeightSerializer, LengthSexSerializer, individualSerializer
-from not_measured_individuals.models import notMeasuredIndividual
+from samples.serializers import SampleWeightSerializer, LengthSexSerializer
 
 
 # class SampledWeightCreate(APIView):
@@ -78,27 +77,27 @@ class LengthsSexAPI(APIView):
 
         return Response(status=HTTP_204_NO_CONTENT)
 
-
-class IndividualsAPI(APIView):
-    """
-
-    Retrieve, create and delete individuals of a catch.
-    """
-
-    def get(self, request, catch_id):
-        individuals = notMeasuredIndividual.objects.filter(catch_id=catch_id)
-        serializer = individualSerializer(individuals, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, catch_id):
-        """
-        Create a new Individual instance
-        """
-        serializer = individualSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save(catch_id=catch_id)
-            return Response(serializer.data, status=HTTP_201_CREATED)
-
-        else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+#
+# class IndividualsAPI(APIView):
+#     """
+#
+#     Retrieve, create and delete individuals of a catch.
+#     """
+#
+#     def get(self, request, catch_id):
+#         individuals = notMeasuredIndividual.objects.filter(catch_id=catch_id)
+#         serializer = individualSerializer(individuals, many=True)
+#         return Response(serializer.data)
+#
+#     def post(self, request, catch_id):
+#         """
+#         Create a new Individual instance
+#         """
+#         serializer = individualSerializer(data=request.data)
+#
+#         if serializer.is_valid():
+#             serializer.save(catch_id=catch_id)
+#             return Response(serializer.data, status=HTTP_201_CREATED)
+#
+#         else:
+#             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
