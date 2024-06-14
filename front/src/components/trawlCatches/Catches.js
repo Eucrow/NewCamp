@@ -208,7 +208,9 @@ const Catches = ({ haul_id }) => {
 			group: updatedCatch.group,
 			category: updatedCatch.category,
 			weight: updatedCatch.weight,
-			sampled_weight: updatedCatch.sampled_weight,
+			sampled_weight: updatedCatch.sampled_weight === "0" ? null : updatedCatch.sampled_weight,
+			not_measured_individuals:
+				updatedCatch.not_measured_individuals === "0" ? null : updatedCatch.not_measured_individuals,
 		};
 
 		fetch(apiEditRemoveCatch, {
