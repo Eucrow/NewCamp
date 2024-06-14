@@ -29,6 +29,7 @@ const Catch = ({
 	handleChangeWeight,
 	handleCancelEditCatch,
 	handleChangeSampledWeight,
+	handleChangeNotMeasuredIndividuals,
 	handleChangeAdd,
 	createCatch,
 	updateCatch,
@@ -51,6 +52,7 @@ const Catch = ({
 						createCatch={createCatch}
 						editCatchStatus={setCatchStatus}
 						handleChangeAdd={handleChangeAdd}
+						handleChangeNotMeasuredIndividuals={handleChangeNotMeasuredIndividuals}
 					/>
 				</div>
 			);
@@ -86,6 +88,7 @@ const Catch = ({
 					handleChangeCategory={handleChangeCategory}
 					handleChangeWeight={handleChangeWeight}
 					handleChangeSampledWeight={handleChangeSampledWeight}
+					handleChangeNotMeasuredIndividuals={handleChangeNotMeasuredIndividuals}
 					updateCatch={updateCatch}
 					editCatchStatus={setCatchStatus}
 					catchId={thisCatch.catch_id}

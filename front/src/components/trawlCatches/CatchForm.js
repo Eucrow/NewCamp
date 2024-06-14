@@ -34,6 +34,7 @@ const CatchForm = ({
 	handleChangeCategory,
 	handleChangeWeight,
 	handleChangeSampledWeight,
+	handleChangeNotMeasuredIndividuals,
 	updateCatch,
 	editCatchStatus,
 	catchId,
@@ -48,7 +49,8 @@ const CatchForm = ({
 	const [category, setCategory] = useState("");
 	const [weight, setWeight] = useState("");
 	const [sampled_weight, setSampled_weight] = useState("");
-	const [new_catch, setNew_catch] = useState({ group, sp_id, category, weight });
+	const [not_measured_individuals, setNot_measured_individuals] = useState("");
+	const [new_catch, setNew_catch] = useState({ group, sp_id, category, sampled_weight, not_measured_individuals });
 	const globalContext = useContext(GlobalContext);
 
 	useEffect(() => {
@@ -129,6 +131,16 @@ const CatchForm = ({
 						onChange={(e) => setSampled_weight(e.target.value)}
 						aria-label="Sampled weight"
 					/>
+					<input
+						className="catches__table__cell catches__table__individuals"
+						type="number"
+						id="individuals"
+						name="individuals"
+						min="1"
+						max="99999999"
+						onChange={(e) => setNot_measured_individuals(e.target.value)}
+						aria-label="Not measured individuals"
+					/>
 					<CatchButtonBar catchStatus={"add"} handleChangeAdd={handleChangeAdd} />
 				</form>
 			);
@@ -187,6 +199,17 @@ const CatchForm = ({
 						max="99999999"
 						value={thisCatch.sampled_weight || ""}
 						aria-label="Sampled weight"
+					/>
+					<input
+						className="catches__table__cell catches__table__individuals input__noSpinner"
+						disabled
+						type="number"
+						id="individuals"
+						name="individuals"
+						min="1"
+						max="99999999"
+						value={thisCatch.not_measured_individuals || ""}
+						aria-label="Not measured individuals"
 					/>
 					<CatchButtonBar
 						className=""
@@ -273,6 +296,17 @@ const CatchForm = ({
 						value={thisCatch.sampled_weight || ""}
 						onChange={handleChangeSampledWeight(thisCatch.catch_id)}
 						aria-label="Sampled weight"
+					/>
+					<input
+						className="catches__table__cell catches__table__individuals"
+						type="number"
+						id="individuals"
+						name="individuals"
+						min="1"
+						max="99999999"
+						value={thisCatch.not_measured_individuals || ""}
+						onChange={handleChangeNotMeasuredIndividuals(thisCatch.catch_id)}
+						aria-label="Not measured individuals"
 					/>
 					<CatchButtonBar
 						catchStatus={catchStatus}

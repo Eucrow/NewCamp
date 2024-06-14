@@ -150,6 +150,24 @@ const Catches = ({ haul_id }) => {
 	};
 
 	/**
+	 * Method to manage the sampled weight field.
+	 * @param {number} idx - The index of the catch.
+	 */
+	const handleChangeNotMeasuredIndividuals = (idx) => (evt) => {
+		const value = evt.target.value;
+
+		const newCatches = catches.map((c) => {
+			if (c.catch_id !== idx) return c;
+			return {
+				...c,
+				not_measured_individuals: value,
+			};
+		});
+
+		setCatches(newCatches);
+	};
+
+	/**
 	 * Manage cancellation of catch edition.
 	 * @param {number} idx haul id.
 	 * @param {object} backupCatch catch state previous to the edition.
@@ -163,6 +181,7 @@ const Catches = ({ haul_id }) => {
 				group: backupCatch.group,
 				weight: backupCatch.weight,
 				sampled_weight: backupCatch.sampled_weight,
+				not_measured_individuals: backupCatch.not_measured_individuals,
 				category: backupCatch.category,
 				sp_code: backupCatch.sp_code,
 				sp_id: backupCatch.sp_id,
@@ -283,6 +302,9 @@ const Catches = ({ haul_id }) => {
 							<div className="catches__table__cell catches__table__sampledWeight">
 								Sampled weight (g.)
 							</div>
+							<div className="catches__table__cell catches__table__individuals">
+								Not measured individuals
+							</div>
 							<div className="catches__table__cell catches__table__buttonBar">
 								<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
 							</div>
@@ -297,11 +319,12 @@ const Catches = ({ haul_id }) => {
 								className="catches__table__row"
 								key={c.catch_id}
 								thisCatch={c}
-								handleChangeSampledWeight={handleChangeSampledWeight}
 								handleChangeGroup={handleChangeGroup}
 								handleChangeSpecies={handleChangeSpecies}
 								handleChangeCategory={handleChangeCategory}
 								handleChangeWeight={handleChangeWeight}
+								handleChangeSampledWeight={handleChangeSampledWeight}
+								handleChangeNotMeasuredIndividuals={handleChangeNotMeasuredIndividuals}
 								handleCancelEditCatch={handleCancelEditCatch}
 								updateCatch={updateCatch}
 								deleteCatch={deleteCatch}
