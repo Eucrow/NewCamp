@@ -43,6 +43,7 @@ const CatchForm = ({
 	deleteCatch,
 	handleViewSexes,
 	handleChangeAdd,
+	allowedSexes,
 }) => {
 	const [group, setGroup] = useState("");
 	const [sp_id, setSp_id] = useState("");
@@ -219,6 +220,7 @@ const CatchForm = ({
 						editCatchStatus={editCatchStatus}
 						deleteCatch={deleteCatch}
 						handleViewSexes={handleViewSexes}
+						allowedSexes={allowedSexes}
 					/>
 				</form>
 			);

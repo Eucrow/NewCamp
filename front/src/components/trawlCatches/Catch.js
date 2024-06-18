@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import Sexes from "../sexes/Sexes.js";
 import CatchForm from "./CatchForm.js";
@@ -37,7 +37,16 @@ const Catch = ({
 }) => {
 	const [catchStatus, setCatchStatus] = useState(thisCatchStatus || "view");
 	const [viewSexes, setViewSexes] = useState(false);
+	const [allowedSexes, setAllowedSexes] = useState(false);
 	const [backupCatch] = useState(thisCatch || "");
+
+	useEffect(() => {
+		if (thisCatch.not_measured_individuals == null) {
+			setAllowedSexes(true);
+		} else {
+			setAllowedSexes(false);
+		}
+	}, [thisCatch.not_measured_individuals]);
 
 	const handleCancel = () => {
 		handleCancelEditCatch(thisCatch.catch_id, backupCatch);
@@ -66,6 +75,7 @@ const Catch = ({
 						handleViewSexes={setViewSexes}
 						catchId={thisCatch.catch_id}
 						viewSexes={viewSexes}
+						allowedSexes={allowedSexes}
 						editCatchStatus={setCatchStatus}
 					/>
 					{viewSexes && (
