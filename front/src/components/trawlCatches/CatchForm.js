@@ -191,7 +191,7 @@ const CatchForm = ({
 						aria-label="Weight"
 					/>
 					<input
-						className="catches__table__cell catches__table__sampledWeight input__noSpinner"
+						className="catches__table__cell catches__table__sampledWeight"
 						disabled
 						type="number"
 						id="sampled_weight"
@@ -202,7 +202,7 @@ const CatchForm = ({
 						aria-label="Sampled weight"
 					/>
 					<input
-						className="catches__table__cell catches__table__individuals input__noSpinner"
+						className="catches__table__cell catches__table__individuals"
 						disabled
 						type="number"
 						id="individuals"
