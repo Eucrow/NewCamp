@@ -19,6 +19,7 @@ const CatchButtonBar = ({
 	handleViewSexes,
 	handleCancel,
 	handleChangeAdd,
+	allowedSexes,
 }) => {
 	var ButtonBar = null;
 
@@ -44,7 +45,6 @@ const CatchButtonBar = ({
 				<UiButtonStatusHandle handleMethod={editCatchStatus} buttonText={"Edit species"} newStatus={"edit"}>
 					<UiIconEdit />
 				</UiButtonStatusHandle>
-
 				<UiButtonDelete
 					id={catchId}
 					deleteMethod={deleteCatch}
@@ -55,10 +55,12 @@ const CatchButtonBar = ({
 					children={<UiIconDelete />}
 				/>
 
-				{viewSexes === false ? (
-					<UiButtonSexes handleMethod={handleViewSexes} newStatus={true} />
+				{allowedSexes === false ? (
+					<UiButtonSexes disabled={true} />
+				) : viewSexes === false ? (
+					<UiButtonSexes handleMethod={handleViewSexes} newStatus={true} disabled={false} />
 				) : (
-					<UiButtonSexes handleMethod={handleViewSexes} newStatus={false} />
+					<UiButtonSexes handleMethod={handleViewSexes} newStatus={false} disabled={false} />
 				)}
 			</div>
 		);

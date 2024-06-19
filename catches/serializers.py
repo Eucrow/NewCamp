@@ -1,11 +1,9 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
-
 from catches.models import Catch
 from samples.models import Sex, Length, SampledWeight
 from samples.serializers import SampleWeightSerializer, LengthSerializer
-# from sexes.serializers import SexesExistsSerializer
-# from species.serializers import CategorySerializer
+
 from species.models import Sp
 from species.serializers import SpSimpleSerializer
 
@@ -18,8 +16,8 @@ class CatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        fields = ['catch_id', 'haul_id', 'group', 'sp_code',
-                  'weight', 'sp_name', 'category']
+        fields = ['catch_id', 'haul_id', 'group', 'sp_code', 'weight', 'sp_name', 'category',
+                  'not_measured_individuals', ]
 
 
 class CatchesVerboseSerializer(serializers.ModelSerializer):
@@ -35,8 +33,8 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Catch
-        fields = ['catch_id', 'weight', 'category', 'haul', 'haul_id', 'group', 'sp_id', 'sp_code',
-                  'sp_name', 'unit', 'increment', 'sampled_weight']
+        fields = ['catch_id', 'category', 'weight', 'not_measured_individuals', 'haul', 'haul_id', 'group', 'sp_id',
+                  'sp_code', 'sp_name', 'unit', 'increment', 'sampled_weight', ]
 
 
 class SexCatchSerializer(serializers.ModelSerializer):
@@ -47,6 +45,7 @@ class SexCatchSerializer(serializers.ModelSerializer):
         fields = ['id', 'sex', 'catch', 'lengths', ]
 
     # This is a nested serializer, so we have to overwrite the create function
+
     def create(self, validated_data):
         # Firstly, get the data from the nested parts
         lengths_data = validated_data.pop('lengths')

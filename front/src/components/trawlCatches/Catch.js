@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import Sexes from "../sexes/Sexes.js";
 import CatchForm from "./CatchForm.js";
@@ -29,6 +29,7 @@ const Catch = ({
 	handleChangeWeight,
 	handleCancelEditCatch,
 	handleChangeSampledWeight,
+	handleChangeNotMeasuredIndividuals,
 	handleChangeAdd,
 	createCatch,
 	updateCatch,
@@ -36,7 +37,16 @@ const Catch = ({
 }) => {
 	const [catchStatus, setCatchStatus] = useState(thisCatchStatus || "view");
 	const [viewSexes, setViewSexes] = useState(false);
+	const [allowedSexes, setAllowedSexes] = useState(false);
 	const [backupCatch] = useState(thisCatch || "");
+
+	useEffect(() => {
+		if (thisCatch.not_measured_individuals == null) {
+			setAllowedSexes(true);
+		} else {
+			setAllowedSexes(false);
+		}
+	}, [thisCatch.not_measured_individuals]);
 
 	const handleCancel = () => {
 		handleCancelEditCatch(thisCatch.catch_id, backupCatch);
@@ -51,6 +61,7 @@ const Catch = ({
 						createCatch={createCatch}
 						editCatchStatus={setCatchStatus}
 						handleChangeAdd={handleChangeAdd}
+						handleChangeNotMeasuredIndividuals={handleChangeNotMeasuredIndividuals}
 					/>
 				</div>
 			);
@@ -64,6 +75,7 @@ const Catch = ({
 						handleViewSexes={setViewSexes}
 						catchId={thisCatch.catch_id}
 						viewSexes={viewSexes}
+						allowedSexes={allowedSexes}
 						editCatchStatus={setCatchStatus}
 					/>
 					{viewSexes && (
@@ -86,6 +98,7 @@ const Catch = ({
 					handleChangeCategory={handleChangeCategory}
 					handleChangeWeight={handleChangeWeight}
 					handleChangeSampledWeight={handleChangeSampledWeight}
+					handleChangeNotMeasuredIndividuals={handleChangeNotMeasuredIndividuals}
 					updateCatch={updateCatch}
 					editCatchStatus={setCatchStatus}
 					catchId={thisCatch.catch_id}
