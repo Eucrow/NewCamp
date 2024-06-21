@@ -42,7 +42,7 @@ const LengthsRangeForm = () => {
 		<form className="lengthsWrapper">
 			<div className="formLengthsRange__table">
 				<div className="formLengthsRange__row">
-					<label className="formLengthsRange__cell formLengths__cell--header" for="minimum">
+					<label className="formLengthsRange__cell formLengths__cell--header" htmlFor="minimum">
 						Minimum length ({lengthsContext.measureUnit}):
 					</label>
 					<input
@@ -60,7 +60,7 @@ const LengthsRangeForm = () => {
 					/>
 				</div>
 				<div className="formLengthsRange__row">
-					<label className="formLengthsRange__cell formLengths__cell--header" for="maximum">
+					<label className="formLengthsRange__cell formLengths__cell--header" htmlFor="maximum">
 						Maximum length ({lengthsContext.measureUnit}):
 					</label>
 					<input
