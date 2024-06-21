@@ -4,6 +4,7 @@ input {
 	font-weight: 600;
 }
 
+// Disabled inputs
 textarea:disabled,
 select:disabled,
 option:disabled,
@@ -16,6 +17,7 @@ input:disabled {
 	color: var(--text-color);
 }
 
+// Enabled inputs
 textarea:enabled,
 select:enabled,
 option:enabled,
@@ -27,6 +29,7 @@ input:enabled {
 	background-color: var(--background-global-color);
 }
 
+// Focus and active
 textarea:focus,
 textarea:active,
 select:focus,
@@ -38,12 +41,20 @@ input:active {
 	border-color: var(--blue-gradient-1);
 }
 
+// Invalid inputs
 textarea:invalid,
 select:invalid,
 option:invalid,
 input:invalid {
 	background-color: var(--error_background) !important;
 	color: var(--error_text) !important;
+}
+.species--invalid {
+	background-color: var(--error_background) !important;
+	font-size: 1rem;
+	border-radius: 5px;
+	border: 1px solid var(--background-global-color);
+	padding: 2px 5px;
 }
 
 .form--wide {
@@ -59,7 +70,7 @@ input:invalid {
 	align-items: center;
 	min-height: 2rem;
 	padding: 1px 0px 1px 0px;
-	width:100%
+	width: 100%;
 }
 
 .form__cell {
@@ -68,12 +79,11 @@ input:invalid {
 	align-items: center;
 	padding-right: 10px;
 	min-height: 2rem;
-    flex-wrap: wrap;
+	flex-wrap: wrap;
 
 	&:last-child {
 		padding-right: 0px;
 	}
-
 }
 
 // cell aligned to the right
@@ -81,11 +91,11 @@ input:invalid {
 	margin-left: auto;
 }
 
-.form__cell--wide{
-    width: 100%;
+.form__cell--wide {
+	width: 100%;
 }
 
-// a div thia a class field to maintain together a label with an input
+// a div with a class field to maintain together a label with an input
 .field {
 	white-space: nowrap;
 	padding-right: 10px;
@@ -109,8 +119,6 @@ input:invalid {
 	border: 0px;
 }
 
-
-
 // Individual input without spinners
 /* Chrome, Safari, Edge, Opera */
 input.input__noSpinner::-webkit-inner-spin-button,
@@ -129,13 +137,12 @@ input.input__noSpinner[type="number"] {
 .noSpinner input::-webkit-outer-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
-    // appearance: none;
+	// appearance: none;
 }
 // /* Firefox */
 .noSpinner input[type="number"] {
 	-moz-appearance: textfield;
 }
-
 
 // select width
 select.select__normalWidth {
@@ -148,9 +155,9 @@ select.select__gear {
 	width: 4rem;
 }
 select:disabled {
-		-o-appearance: none;
-		-ms-appearance: none;
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
+	-o-appearance: none;
+	-ms-appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
 }

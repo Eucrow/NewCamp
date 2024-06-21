@@ -54,9 +54,19 @@ const CatchForm = ({
 	const [new_catch, setNew_catch] = useState({ group, sp_id, category, sampled_weight, not_measured_individuals });
 	const globalContext = useContext(GlobalContext);
 
+	const [style_species_invalid, setStyle_species_invalid] = useState("");
+
 	useEffect(() => {
 		setNew_catch({ group, sp_id, category, weight, sampled_weight });
 	}, [group, sp_id, category, weight, sampled_weight]);
+
+	useEffect(() => {
+		if (sp_id === "") {
+			setStyle_species_invalid("species--invalid");
+		} else {
+			setStyle_species_invalid("");
+		}
+	}, [sp_id]);
 
 	const renderContent = () => {
 		if (catchStatus === "add") {
@@ -71,8 +81,9 @@ const CatchForm = ({
 					<input
 						value={group}
 						className="catches__table__cell catches__table__group"
-						autoFocus
 						type="number"
+						required={true}
+						autoFocus
 						id="group"
 						name="group"
 						min="1"
@@ -81,7 +92,9 @@ const CatchForm = ({
 						aria-label="Group"
 					/>
 					<select
-						className="catches__table__cell catches__table__species"
+						className={"catches__table__cell catches__table__species " + style_species_invalid}
+						disabled={group === "" ? true : false}
+						required={true}
 						id="sp_code"
 						name="sp_code"
 						onChange={(e) => setSp_id(e.target.value)}
@@ -104,6 +117,7 @@ const CatchForm = ({
 						value={category}
 						className="catches__table__cell catches__table__category"
 						type="number"
+						required={true}
 						id="category"
 						name="category"
 						min="1"
@@ -115,6 +129,7 @@ const CatchForm = ({
 						value={weight}
 						className="catches__table__cell catches__table__weight"
 						type="number"
+						required={true}
 						id="weight"
 						name="weight"
 						min="1"
@@ -240,6 +255,7 @@ const CatchForm = ({
 						type="number"
 						id="group"
 						name="group"
+						required={true}
 						autoFocus
 						min="1"
 						max="5"
@@ -251,6 +267,7 @@ const CatchForm = ({
 						className="catches__table__cell catches__table__species"
 						id="sp_code"
 						name="sp_code"
+						required={true}
 						value={thisCatch.sp_id + "--" + thisCatch.sp_code + "--" + thisCatch.sp_name}
 						onChange={handleChangeSpecies(thisCatch.catch_id)}
 						aria-label="Species"
@@ -271,6 +288,7 @@ const CatchForm = ({
 						type="number"
 						id="category"
 						name="category"
+						required={true}
 						min="1"
 						max="99"
 						value={thisCatch.category}
@@ -282,6 +300,7 @@ const CatchForm = ({
 						type="number"
 						id="weight"
 						name="weight"
+						required={true}
 						min="1"
 						max="99999999"
 						value={thisCatch.weight}
