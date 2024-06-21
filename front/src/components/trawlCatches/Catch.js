@@ -41,12 +41,12 @@ const Catch = ({
 	const [backupCatch] = useState(thisCatch || "");
 
 	useEffect(() => {
-		if (thisCatch.not_measured_individuals == null) {
+		if (thisCatch && thisCatch.not_measured_individuals == null) {
 			setAllowedSexes(true);
 		} else {
 			setAllowedSexes(false);
 		}
-	}, [thisCatch.not_measured_individuals]);
+	}, [thisCatch]);
 
 	const handleCancel = () => {
 		handleCancelEditCatch(thisCatch.catch_id, backupCatch);
