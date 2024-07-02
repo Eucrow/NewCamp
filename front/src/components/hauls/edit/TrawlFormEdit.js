@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import TrawlSamplingPointEdit from "./TrawlSamplingPointEdit";
 
@@ -39,8 +39,10 @@ const TrawlFormEdit = ({
 		const on_board_date_time = trawl.on_board_date_time;
 
 		return (
-			<fieldset className="wrapper">
-				<legend>Trawl characteristics:</legend>
+			// <fieldset className="wrapper">
+			// 	<legend>Trawl characteristics:</legend>
+			<Fragment>
+				<h4>Trawl characteristics</h4>
 				<div className="characteristicsGrid characteristicsGrid--trawl form__row">
 					{/* first row */}
 					<div></div>
@@ -292,7 +294,8 @@ const TrawlFormEdit = ({
 						/>
 					</label>
 				</div>
-			</fieldset>
+			</Fragment>
+			//</fieldset>
 		);
 	};
 

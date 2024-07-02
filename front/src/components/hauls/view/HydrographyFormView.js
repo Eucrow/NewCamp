@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 const HydrographyFormView = ({ hydrography, hidro_latitude, hidro_longitude }) => {
 	/**
@@ -8,9 +8,10 @@ const HydrographyFormView = ({ hydrography, hidro_latitude, hidro_longitude }) =
 
 	const renderContent = () => {
 		return (
-			<fieldset className="wrapper">
-				<legend>Hydrography characteristics</legend>
-
+			// <fieldset className="wrapper">
+			// 	<legend>Hydrography characteristics</legend>
+			<Fragment>
+				<h4>Meteorology</h4>
 				<div className="form__row">
 					<label className="field">
 						Date time:
@@ -346,7 +347,8 @@ const HydrographyFormView = ({ hydrography, hidro_latitude, hidro_longitude }) =
 						<textarea disabled id="comment" name="comment" value={hydrography.comment || ""} />
 					</label>
 				</div>
-			</fieldset>
+			</Fragment>
+			// </fieldset>
 		);
 	};
 
