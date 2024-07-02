@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, Fragment } from "react";
 
 import SpeciesContext from "../../contexts/SpeciesContext";
 
@@ -76,8 +76,8 @@ const ViewEditSpForm = (props) => {
 					/>
 				</span>
 			</div>
-			<fieldset className="wrapper ">
-				<legend>Params</legend>
+			<Fragment>
+				<h4>Parameters</h4>
 
 				<span className="field">
 					<label htmlFor="a_param">a param:</label>
@@ -113,9 +113,9 @@ const ViewEditSpForm = (props) => {
 						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
-			</fieldset>
-			<fieldset className="wrapper">
-				<legend>Measurement</legend>
+			</Fragment>
+			<Fragment>
+				<h4>Measurement</h4>
 				<span className="field">
 					<label htmlFor="unit">Measure unit:</label>
 					<select
@@ -126,7 +126,6 @@ const ViewEditSpForm = (props) => {
 						value={props.sp.unit}
 						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 					>
-						<option selected></option>
 						<option value="1">cm</option>
 						<option value="2">mm</option>
 					</select>
@@ -135,7 +134,7 @@ const ViewEditSpForm = (props) => {
 				<span className="field">
 					<label htmlFor="increment">Increment:</label>
 					<input
-						type="numeric"
+						type="number"
 						id="increment"
 						name="increment"
 						className="input__noSpinner"
@@ -150,7 +149,7 @@ const ViewEditSpForm = (props) => {
 						onKeyDown={speciesContext.preventNegativeE}
 					/>
 				</span>
-			</fieldset>
+			</Fragment>
 			<div className="form__row">
 				<SpButtonBar
 					edit={props.edit}
