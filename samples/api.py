@@ -56,7 +56,9 @@ class LengthsSexAPI(APIView):
         # for length_data in lengths_data:
 
         for length_data in request.data:
-            Length.objects.create(sex_id=sex_instance.id, **length_data)
+            length_instance = Length(sex_id=sex_instance.id, **length_data)
+            length_instance.full_clean()  # call full_clean() method to run the clean() method in Length model
+            length_instance.save()
 
         # Retrieve the newly created Length instances
 
