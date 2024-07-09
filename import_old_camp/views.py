@@ -20,7 +20,7 @@ from catches.models import Catch
 from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 from hauls.serializers import ImportHydrographyesSerializer
 from newcamp.apps import convert_comma_to_dot, empty
-from species.models import Sp
+from species.models import Sp, MeasurementType
 from stations.models import Station
 from strata.models import Stratum
 from stratifications.models import Stratification
@@ -209,6 +209,44 @@ def get_sex_id(row):
     return sex_id
 
 
+def fill_measurement_type():
+    """
+    Fill the measurement type table with the values of the old camp.
+    :return: HttpResponse
+    """
+    MeasurementType.objects.get_or_create(name="mm", increment=1, conversion_factor=1)
+    MeasurementType.objects.get_or_create(name="cm", increment=10, conversion_factor=0.1)
+    MeasurementType.objects.get_or_create(name="1/2cm", increment=5, conversion_factor=0.1)
+
+
+def get_unit_name(unit, increment):
+    """
+    Get the unit name from the code of the species. Used in pandas apply function.
+    :param unit: Unit of measurement.
+    :param increment: Increment of the measurement.
+    :return: Unit of the species.
+    """
+
+    if (unit == 1) & (increment == 1):
+        return "cm"
+    # there are some cases where unit is 1 and the increment is 0, but it shouldn't be, so I set it to cm:
+    elif (unit == 1) & (increment == 0):
+        return "cm"
+    # there are some cases where unit is 1 and the increment is 2, but it shouldn't be, so I set it to cm:
+    elif (unit == 1) & (increment == 2):
+        return "cm"
+    elif (unit == 2) & (increment == 1):
+        return "mm"
+    elif (unit == 2) & (increment == 5):
+        return "mm"
+    # there are some cases where unit is 2 and the increment is 0, but it shouldn't be, so I set it to mm:
+    elif (unit == 2) & (increment == 0):
+        return "mm"
+    # there are some cases where unit is 0 and the increment is 1, but it shouldn't be, so I set it to cm:
+    elif (unit == 0) & (increment == 1):
+        return "cm"
+
+
 class FaunasImport:
 
     def __init__(self, request):
@@ -306,6 +344,8 @@ class SpeciesImport:
             "APHIA": "APHIA",
         }
 
+    fill_measurement_type()
+
     def get_file(self, file_key):
         """
         Get file from request in pandas dataframe format
@@ -326,9 +366,25 @@ class SpeciesImport:
 
         species_df['comment'] = ""
 
+        species_df['measurement_type_id'] = ""
+
         # species_df['id'] = range(0, 0 + len(species_df))
 
         return species_df
+
+    def get_measurement_type(self, row):
+        """
+        Get the measurement type id. Used in pandas apply function.
+        :param row: row of the apply function
+        :return: Measurement type id.
+        """
+        unit_name = get_unit_name(row['unit'], row['increment'])
+        print(row['unit'], row['increment'])
+        try:
+            measurement_type = MeasurementType.objects.get(name=unit_name)
+            return measurement_type.id
+        except ObjectDoesNotExist:
+            raise ValueError("MeasurementType object with name {} does not exist".format(unit_name))
 
     def import_species_csv(self):
         """
@@ -344,11 +400,16 @@ class SpeciesImport:
 
         # species
         species_table = self.format_species_table(species_file)
+
+        species_table['measurement_type_id'] = species_table.apply(self.get_measurement_type, axis=1)
+        species_table = species_table.drop(columns=['unit', 'increment'], axis=1)
+
         # Previously use the argument if_exists="replace" to avoid partial saving of new species files.
         # But in this way, the primary key is not generated (to_sql not allow it) and change the original
         # structure without primary key.
         # At the end, I use if_exists="append" to maintain the original primary key.
         species_table.to_sql("species_sp", con=engine, if_exists="append", index="id")
+
         return HttpResponse(self.message, status=HTTP_201_CREATED)
 
 
