@@ -72,9 +72,9 @@ urlpatterns = [
                           SpeciesImportAPI.as_view(), name="species_import_api"),
 
                   # MeasurementType API URLS
-                  path('api/1.0/measurement_units/<int:pk>/', MeasurementTypeAPI.as_view(),
+                  path('api/1.0/measurement_type/<int:pk>/', MeasurementTypeAPI.as_view(),
                        name='measurement_units_retrieve_update_delete'),
-                  path('api/1.0/measurement_units/', MeasurementTypeListCreateAPI.as_view(),
+                  path('api/1.0/measurement_types/', MeasurementTypeListCreateAPI.as_view(),
                        name='measurement_units_list_create'),
 
                   # Trawls API URLS

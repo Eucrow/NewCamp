@@ -56,7 +56,7 @@ const Species = () => {
 		fetch(api, {
 			method: "PUT",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(globalContext.species[0]),
+			body: JSON.stringify(globalContext.species[sp_id]),
 		})
 			.then((response) => response.json())
 			.then((data) => console.log(data))

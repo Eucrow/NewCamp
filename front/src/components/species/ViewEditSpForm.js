@@ -1,6 +1,7 @@
 import React, { useContext, Fragment } from "react";
 
 import SpeciesContext from "../../contexts/SpeciesContext";
+import GlobalContext from "../../contexts/GlobalContext";
 
 import SpButtonBar from "./SpButtonBar";
 
@@ -14,6 +15,7 @@ import SpButtonBar from "./SpButtonBar";
 
 const ViewEditSpForm = (props) => {
 	const speciesContext = useContext(SpeciesContext);
+	const globalContext = useContext(GlobalContext);
 
 	const is_disabled = props.edit === true ? false : true;
 
@@ -54,7 +56,7 @@ const ViewEditSpForm = (props) => {
 						size={50}
 						pattern="^[a-zA-Z\s]{1,50}$"
 						disabled={is_disabled}
-						value={props.sp.spanish_name}
+						value={props.sp.spanish_name || ""}
 						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 					/>
 				</span>
@@ -70,7 +72,7 @@ const ViewEditSpForm = (props) => {
 						size={6}
 						step={1}
 						disabled={is_disabled}
-						value={props.sp.APHIA}
+						value={props.sp.APHIA || ""}
 						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 						onKeyDown={speciesContext.preventNegativeE}
 					/>
@@ -91,7 +93,7 @@ const ViewEditSpForm = (props) => {
 						size={8}
 						step={0.000001}
 						disabled={is_disabled}
-						value={props.sp.a_param}
+						value={props.sp.a_param || ""}
 						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 						onKeyDown={speciesContext.preventNegativeE}
 					/>
@@ -108,7 +110,7 @@ const ViewEditSpForm = (props) => {
 						size={8}
 						step={0.000001}
 						disabled={is_disabled}
-						value={props.sp.b_param}
+						value={props.sp.b_param || ""}
 						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 						onKeyDown={speciesContext.preventNegativeE}
 					/>
@@ -117,37 +119,23 @@ const ViewEditSpForm = (props) => {
 			<Fragment>
 				<h4>Measurement</h4>
 				<span className="field">
-					<label htmlFor="unit">Measure unit:</label>
+					<label htmlFor="measurement_type">Measure unit:</label>
 					<select
-						id="unit"
-						name="unit"
+						id="measurement_type"
+						name="measurement_type"
 						required
 						disabled={is_disabled}
-						value={props.sp.unit}
+						value={props.sp.measurement_type}
 						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
 					>
-						<option value="1">cm</option>
-						<option value="2">mm</option>
+						{globalContext.measurementTypes.map((mt) => {
+							return (
+								<option key={mt.id} value={mt.id}>
+									{mt.name}
+								</option>
+							);
+						})}
 					</select>
-				</span>
-
-				<span className="field">
-					<label htmlFor="increment">Increment:</label>
-					<input
-						type="number"
-						id="increment"
-						name="increment"
-						className="input__noSpinner"
-						required
-						min="0"
-						max="9"
-						size={1}
-						step={1}
-						disabled={is_disabled}
-						value={props.sp.increment}
-						onChange={(e) => speciesContext.handleChange(e, props.sp.id)}
-						onKeyDown={speciesContext.preventNegativeE}
-					/>
 				</span>
 			</Fragment>
 			<div className="form__row">

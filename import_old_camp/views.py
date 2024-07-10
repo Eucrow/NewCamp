@@ -238,7 +238,7 @@ def get_unit_name(unit, increment):
     elif (unit == 2) & (increment == 1):
         return "mm"
     elif (unit == 2) & (increment == 5):
-        return "mm"
+        return "1/2cm"
     # there are some cases where unit is 2 and the increment is 0, but it shouldn't be, so I set it to mm:
     elif (unit == 2) & (increment == 0):
         return "mm"

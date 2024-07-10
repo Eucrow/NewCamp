@@ -30,13 +30,19 @@ export default function App() {
 	});
 
 	const apiSpecies = "http://127.0.0.1:8000/api/1.0/species/";
+	const apiMeasurementTypes = "http://127.0.0.1:8000/api/1.0/measurement_types/";
 
 	const [species, setSpecies] = useState([]);
+	const [measurementTypes, setMeasurementTypes] = useState([]);
 
 	useEffect(() => {
 		fetch(apiSpecies)
 			.then((response) => response.json())
 			.then((data) => setSpecies(data));
+
+		fetch(apiMeasurementTypes)
+			.then((response) => response.json())
+			.then((data) => setMeasurementTypes(data));
 	}, []);
 
 	const sexesAvailable = {
@@ -54,7 +60,7 @@ export default function App() {
 				setSelectedSurveyId,
 			}}
 		>
-			<GlobalContext.Provider value={{ species, setSpecies, apiSpecies, sexesAvailable }}>
+			<GlobalContext.Provider value={{ species, setSpecies, apiSpecies, sexesAvailable, measurementTypes }}>
 				<Router>
 					<nav className="headNav" aria-label="nCamp">
 						<h1 className="headNav__selectedSurvey">
