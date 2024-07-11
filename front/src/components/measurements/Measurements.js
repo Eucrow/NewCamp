@@ -7,6 +7,15 @@ import ViewEditMeasurement from "./ViewEditMeasurement";
 const Measurements = () => {
 	const [measurements, setMeasurements] = useState([]);
 
+	const [backupMeasurements, setBackupMeasurements] = useState([
+		{
+			id: "",
+			name: "",
+			increment: "",
+			conversion_factor: "",
+		},
+	]);
+
 	const globalContext = useContext(GlobalContext);
 
 	useEffect(() => {
@@ -34,6 +43,7 @@ const Measurements = () => {
 		try {
 			const response = await axios.get(globalContext.apiMeasurementTypes);
 			setMeasurements(response.data);
+			setBackupMeasurements(response.data);
 		} catch (error) {
 			console.error("Error fetching measurements:", error);
 		}
@@ -100,6 +110,8 @@ const Measurements = () => {
 						measurement={measurement}
 						handleChange={handleChange}
 						updateMeasurement={updateMeasurement}
+						setMeasurements={setMeasurements}
+						backupMeasurements={backupMeasurements}
 					/>
 				))}
 

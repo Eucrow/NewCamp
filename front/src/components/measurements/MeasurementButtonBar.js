@@ -1,48 +1,45 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
- * Button bar of Sp component.
+ * Button bar of Measurement component.
  * @param {object} props survey object.
  * @param {boolean} edit variable to indicate if the element is edited or not.
  * @param {method} handleEdit method to handle de 'edit' boolean variable.
  */
 
-const MeasurementButtonBar = (props) => {
+const MeasurementButtonBar = ({ id, edit, handleEdit, handleCancel, deleteMeasurement }) => {
 	var content = "";
 
-	if (props.add === true) {
+	if (edit === true) {
 		content = (
 			<div className="form__cell form__cell--right">
 				<UiButtonSave buttonText={"Save Measurement"} />
-				<UiButtonStatusHandle buttonText="Cancel" handleMethod={props.handleAdd} newStatus={false} />
+				<button
+					onClick={() => {
+						handleCancel();
+					}}
+				>
+					Cancel
+				</button>
 			</div>
 		);
 	}
 
-	if (props.edit === true) {
-		content = (
-			<div className="form__cell form__cell--right">
-				<UiButtonSave buttonText={"Save Measurement"} />
-				<UiButtonStatusHandle buttonText="Cancel" handleMethod={props.handleEdit} newStatus={false} />
-			</div>
-		);
-	}
-
-	if (props.edit === false) {
+	if (edit === false) {
 		content = (
 			<div className="form__cell form__cell--right buttonsWrapper">
 				<UiButtonStatusHandle
 					buttonText={"Edit Measurement"}
-					handleMethod={props.handleEdit}
+					handleMethod={handleEdit}
 					newStatus={true}
 				></UiButtonStatusHandle>
 				<UiButtonDelete
-					id={props.sp_id}
-					deleteMethod={props.deleteMeasurement}
+					id={id}
+					deleteMethod={deleteMeasurement}
 					buttonText="Delete Measurement"
 					confirmMessage="Delete this species? All the samples of this species on ALL the surveys will be removed!! Are you sure?"
 				/>

@@ -2,9 +2,15 @@ import React, { useState } from "react";
 
 import MeasurementButtonBar from "./MeasurementButtonBar";
 
-const ViewEditMeasurement = ({ measurement, handleChange, updateMeasurement }) => {
+const ViewEditMeasurement = ({ measurement, handleChange, updateMeasurement, setMeasurements, backupMeasurements }) => {
 	const [add, setAdd] = useState(false);
 	const [edit, setEdit] = useState(false);
+
+	const handleCancel = () => {
+		setMeasurements(backupMeasurements);
+		setAdd(false);
+		setEdit(false);
+	};
 
 	const renderContent = () => {
 		const handleSubmit = (e) => {
@@ -57,7 +63,13 @@ const ViewEditMeasurement = ({ measurement, handleChange, updateMeasurement }) =
 					</div>
 				</div>
 
-				<MeasurementButtonBar add={add} edit={edit} handleAdd={setAdd} handleEdit={setEdit} />
+				<MeasurementButtonBar
+					add={add}
+					edit={edit}
+					handleAdd={setAdd}
+					handleEdit={setEdit}
+					handleCancel={handleCancel}
+				/>
 			</form>
 		);
 		return content;
