@@ -16,6 +16,8 @@ const Measurements = () => {
 		},
 	]);
 
+	const [isNameValid, setIsNameValid] = useState(true);
+
 	const globalContext = useContext(GlobalContext);
 
 	useEffect(() => {
@@ -37,6 +39,10 @@ const Measurements = () => {
 			});
 			return measures;
 		});
+
+		if (name === "name") {
+			validateMeasurementName(e, value);
+		}
 	};
 
 	const fetchMeasurements = async () => {
@@ -75,18 +81,6 @@ const Measurements = () => {
 			.catch((error) => console.log(error));
 	};
 
-	// const updateMeasurement = async (id, updatedMeasurement) => {
-	// 	try {
-	// 		const response = await axios.put(`${globalContext.apiMeasurementTypes}/${id}`, updatedMeasurement);
-	// 		const updatedMeasurements = measurements.map((measurement) =>
-	// 			measurement.id === id ? response.data : measurement
-	// 		);
-	// 		setMeasurements(updatedMeasurements);
-	// 	} catch (error) {
-	// 		console.error("Error updating measurement:", error);
-	// 	}
-	// };
-
 	const deleteMeasurement = async (id) => {
 		try {
 			await axios.delete(`${globalContext.apiMeasurementTypes}/${id}`);
@@ -95,6 +89,27 @@ const Measurements = () => {
 		} catch (error) {
 			console.error("Error deleting measurement:", error);
 		}
+	};
+
+	/**
+	 * Validate measurement names duplication
+	 * @param {event} e onChange event.
+	 * @param {start_date} name Name of measurement to be validated.
+	 * @returns In case of error in date, show report validity.
+	 */
+	const validateMeasurementName = (e, name) => {
+		e.target.setCustomValidity("");
+
+		const isDuplicated = measurements.some((measurement) => measurement.name === name);
+
+		if (isDuplicated) {
+			e.target.setCustomValidity("Already exists a measurement with this name");
+			setIsNameValid(false);
+		} else {
+			setIsNameValid(true);
+		}
+
+		return e.target.reportValidity();
 	};
 
 	return (
@@ -112,20 +127,9 @@ const Measurements = () => {
 						updateMeasurement={updateMeasurement}
 						setMeasurements={setMeasurements}
 						backupMeasurements={backupMeasurements}
+						isNameValid={isNameValid}
 					/>
 				))}
-
-				{/* Add a form to create new measurements
-			<form
-				onSubmit={(e) => {
-					e.preventDefault();
-					const newMeasurement = { name: "New Measurement" }; // Replace with form values
-					createMeasurement(newMeasurement);
-				}}
-			>
-				<input type="text" placeholder="Measurement Name" />
-				<button type="submit">Create</button>
-			</form> */}
 			</div>
 		</main>
 	);

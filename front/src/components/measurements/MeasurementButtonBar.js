@@ -11,13 +11,13 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
  * @param {method} handleEdit method to handle de 'edit' boolean variable.
  */
 
-const MeasurementButtonBar = ({ id, edit, handleEdit, handleCancel, deleteMeasurement }) => {
+const MeasurementButtonBar = ({ id, edit, handleEdit, handleCancel, deleteMeasurement, isNameValid }) => {
 	var content = "";
 
 	if (edit === true) {
 		content = (
 			<div className="form__cell form__cell--right">
-				<UiButtonSave buttonText={"Save Measurement"} />
+				<UiButtonSave buttonText={"Save Measurement"} isDisabled={!isNameValid} />
 				<button
 					onClick={() => {
 						handleCancel();

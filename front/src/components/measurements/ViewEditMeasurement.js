@@ -2,7 +2,14 @@ import React, { useState } from "react";
 
 import MeasurementButtonBar from "./MeasurementButtonBar";
 
-const ViewEditMeasurement = ({ measurement, handleChange, updateMeasurement, setMeasurements, backupMeasurements }) => {
+const ViewEditMeasurement = ({
+	measurement,
+	handleChange,
+	updateMeasurement,
+	setMeasurements,
+	backupMeasurements,
+	isNameValid,
+}) => {
 	const [add, setAdd] = useState(false);
 	const [edit, setEdit] = useState(false);
 
@@ -69,6 +76,7 @@ const ViewEditMeasurement = ({ measurement, handleChange, updateMeasurement, set
 					handleAdd={setAdd}
 					handleEdit={setEdit}
 					handleCancel={handleCancel}
+					isNameValid={isNameValid}
 				/>
 			</form>
 		);
