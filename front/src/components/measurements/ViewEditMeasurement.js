@@ -44,7 +44,7 @@ const ViewEditMeasurement = ({
 					</div>
 					<div className="form__cell">
 						<label>
-							Increment:
+							Increment (mm):
 							<input
 								type="text"
 								id="increment"
@@ -52,6 +52,7 @@ const ViewEditMeasurement = ({
 								value={measurement.increment}
 								disabled={!edit}
 								size={6}
+								onChange={(e) => handleChange(e, measurement.id)}
 							/>
 						</label>
 					</div>
@@ -65,6 +66,7 @@ const ViewEditMeasurement = ({
 								value={measurement.conversion_factor}
 								disabled={!edit}
 								size={6}
+								onChange={(e) => handleChange(e, measurement.id)}
 							/>
 						</label>
 					</div>
