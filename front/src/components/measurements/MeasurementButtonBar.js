@@ -3,6 +3,8 @@ import React from "react";
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+import UiIconEdit from "../ui/UiIconEdit";
+import UiIconDelete from "../ui/UiIconDelete";
 
 /**
  * Button bar of Measurement component.
@@ -32,17 +34,17 @@ const MeasurementButtonBar = ({ id, edit, handleEdit, handleCancel, deleteMeasur
 	if (edit === false) {
 		content = (
 			<div className="form__cell form__cell--right buttonsWrapper">
-				<UiButtonStatusHandle
-					buttonText={"Edit Measurement"}
-					handleMethod={handleEdit}
-					newStatus={true}
-				></UiButtonStatusHandle>
+				<UiButtonStatusHandle buttonText={"Edit Measurement"} handleMethod={handleEdit} newStatus={true}>
+					<UiIconEdit />
+				</UiButtonStatusHandle>
 				<UiButtonDelete
 					id={id}
 					deleteMethod={deleteMeasurement}
 					buttonText="Delete Measurement"
 					confirmMessage="Delete this species? All the samples of this species on ALL the surveys will be removed!! Are you sure?"
-				/>
+				>
+					<UiIconDelete />
+				</UiButtonDelete>
 			</div>
 		);
 	}

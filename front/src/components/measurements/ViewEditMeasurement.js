@@ -2,6 +2,18 @@ import React, { useState } from "react";
 
 import MeasurementButtonBar from "./MeasurementButtonBar";
 
+/**
+ * Renders a form for viewing and editing a measurement.
+ *
+ * @component
+ * @param {Object} measurement - The measurement object.
+ * @param {Function} handleChange - The function to handle input changes.
+ * @param {Function} updateMeasurement - The function to update the measurement.
+ * @param {Function} setMeasurements - The function to set the measurements.
+ * @param {Array} backupMeasurements - The backup measurements array.
+ * @param {Function} isNameValid - The function to check if the name is valid.
+ * @returns {JSX.Element} The rendered ViewEditMeasurement component.
+ */
 const ViewEditMeasurement = ({
 	measurement,
 	handleChange,
@@ -26,7 +38,7 @@ const ViewEditMeasurement = ({
 		};
 
 		const content = (
-			<form className="wrapper" onSubmit={handleSubmit}>
+			<form className="wrapper kkkk" onSubmit={handleSubmit}>
 				<div className="form__row" key={measurement.id}>
 					<div className="form__cell">
 						<label>
@@ -70,16 +82,15 @@ const ViewEditMeasurement = ({
 							/>
 						</label>
 					</div>
+					<MeasurementButtonBar
+						add={add}
+						edit={edit}
+						handleAdd={setAdd}
+						handleEdit={setEdit}
+						handleCancel={handleCancel}
+						isNameValid={isNameValid}
+					/>
 				</div>
-
-				<MeasurementButtonBar
-					add={add}
-					edit={edit}
-					handleAdd={setAdd}
-					handleEdit={setEdit}
-					handleCancel={handleCancel}
-					isNameValid={isNameValid}
-				/>
 			</form>
 		);
 		return content;

@@ -117,8 +117,7 @@ const Measurements = () => {
 			<header>
 				<h1 className="title">Measurement</h1>
 			</header>
-			<div className="wrapper measurementWrapper>">
-				{/* Render the measurements */}
+			<div className="wrapper measurementsWrapper kkkk>">
 				{measurements.map((measurement) => (
 					<ViewEditMeasurement
 						key={measurement.id}
