@@ -81,7 +81,7 @@ const MeasurementFormNew = ({ add, setAdd, createMeasurement }) => {
 							/>
 						</label>
 					</div>
-					<MeasurementButtonBar add={add} handleAdd={setAdd} />
+					<MeasurementButtonBar add={add} setAdd={setAdd} />
 				</div>
 			</form>
 		);

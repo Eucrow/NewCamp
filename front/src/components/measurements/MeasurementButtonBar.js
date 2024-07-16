@@ -56,6 +56,7 @@ const MeasurementButtonBar = ({ id, add, setAdd, edit, handleEdit, handleCancel,
 					buttonText={"Save Measurement"}
 					// isDisabled={!isNameValid}
 				/>
+				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={setAdd} newStatus={false} />
 			</div>
 		);
 	}
