@@ -13,7 +13,7 @@ import UiIconDelete from "../ui/UiIconDelete";
  * @param {method} handleEdit method to handle de 'edit' boolean variable.
  */
 
-const MeasurementButtonBar = ({ id, edit, handleEdit, handleCancel, deleteMeasurement, isNameValid }) => {
+const MeasurementButtonBar = ({ id, add, setAdd, edit, handleEdit, handleCancel, deleteMeasurement, isNameValid }) => {
 	var content = "";
 
 	if (edit === true) {
@@ -45,6 +45,17 @@ const MeasurementButtonBar = ({ id, edit, handleEdit, handleCancel, deleteMeasur
 				>
 					<UiIconDelete />
 				</UiButtonDelete>
+			</div>
+		);
+	}
+
+	if (add === true) {
+		content = (
+			<div className="form__cell form__cell--right buttonsWrapper">
+				<UiButtonSave
+					buttonText={"Save Measurement"}
+					// isDisabled={!isNameValid}
+				/>
 			</div>
 		);
 	}

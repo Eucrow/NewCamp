@@ -2,10 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import GlobalContext from "../../contexts/GlobalContext";
 
+import MeasurementFormNew from "./MeasurementFormNew";
+import MeasurementsButtonBar from "./MeasurementsButtonBar";
 import ViewEditMeasurement from "./ViewEditMeasurement";
 
 const Measurements = () => {
 	const [measurements, setMeasurements] = useState([]);
+	const [add, setAdd] = useState(false);
 
 	const [backupMeasurements, setBackupMeasurements] = useState([
 		{
@@ -55,13 +58,19 @@ const Measurements = () => {
 		}
 	};
 
-	const createMeasurement = async (newMeasurement) => {
-		try {
-			const response = await axios.post(globalContext.apiMeasurementTypes, newMeasurement);
-			setMeasurements([...measurements, response.data]);
-		} catch (error) {
-			console.error("Error creating measurement:", error);
-		}
+	const createMeasurement = (e, newMeasurement) => {
+		e.preventDefault();
+
+		fetch(globalContext.apiMeasurementTypes, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(newMeasurement),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				setMeasurements([...measurements, data]);
+			})
+			.catch((error) => console.log(error));
 	};
 
 	const updateMeasurement = (e, measurementId) => {
@@ -112,26 +121,40 @@ const Measurements = () => {
 		return e.target.reportValidity();
 	};
 
-	return (
-		<main>
-			<header>
-				<h1 className="title">Measurement</h1>
-			</header>
-			<div className="wrapper measurementsWrapper kkkk>">
-				{measurements.map((measurement) => (
-					<ViewEditMeasurement
-						key={measurement.id}
-						measurement={measurement}
-						handleChange={handleChange}
-						updateMeasurement={updateMeasurement}
-						setMeasurements={setMeasurements}
-						backupMeasurements={backupMeasurements}
-						isNameValid={isNameValid}
-					/>
-				))}
-			</div>
-		</main>
-	);
+	const renderContent = () => {
+		var content = "";
+
+		content = (
+			<main>
+				<header>
+					<h1 className="title">Measurement</h1>
+				</header>
+				<div className="wrapper measurementsWrapper">
+					{add === true ? (
+						<MeasurementFormNew add={add} setAdd={setAdd} createMeasurement={createMeasurement} />
+					) : (
+						<MeasurementsButtonBar add={add} setAdd={setAdd} />
+					)}
+
+					{measurements.map((measurement) => (
+						<ViewEditMeasurement
+							key={measurement.id}
+							measurement={measurement}
+							handleChange={handleChange}
+							updateMeasurement={updateMeasurement}
+							setMeasurements={setMeasurements}
+							backupMeasurements={backupMeasurements}
+							isNameValid={isNameValid}
+						/>
+					))}
+				</div>
+			</main>
+		);
+
+		return content;
+	};
+
+	return renderContent();
 };
 
 export default Measurements;

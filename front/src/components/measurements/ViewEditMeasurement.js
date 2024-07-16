@@ -22,12 +22,12 @@ const ViewEditMeasurement = ({
 	backupMeasurements,
 	isNameValid,
 }) => {
-	const [add, setAdd] = useState(false);
+	// const [add, setAdd] = useState(false);
 	const [edit, setEdit] = useState(false);
 
 	const handleCancel = () => {
 		setMeasurements(backupMeasurements);
-		setAdd(false);
+		// setAdd(false);
 		setEdit(false);
 	};
 
@@ -38,7 +38,7 @@ const ViewEditMeasurement = ({
 		};
 
 		const content = (
-			<form className="wrapper kkkk" onSubmit={handleSubmit}>
+			<form className="wrapper" onSubmit={handleSubmit}>
 				<div className="form__row" key={measurement.id}>
 					<div className="form__cell">
 						<label>
@@ -54,38 +54,44 @@ const ViewEditMeasurement = ({
 							/>
 						</label>
 					</div>
-					<div className="form__cell">
+					<div className="form__cell noSpinner">
 						<label>
 							Increment (mm):
 							<input
-								type="text"
+								type="number"
 								id="increment"
 								name="increment"
 								value={measurement.increment}
 								disabled={!edit}
-								size={6}
+								min="0"
+								max="9999"
+								size={4}
+								step={1}
 								onChange={(e) => handleChange(e, measurement.id)}
 							/>
 						</label>
 					</div>
-					<div className="form__cell">
+					<div className="form__cell noSpinner">
 						<label>
 							Conversion factor:
 							<input
-								type="text"
+								type="number"
 								id="conversion_factor"
 								name="conversion_factor"
 								value={measurement.conversion_factor}
 								disabled={!edit}
-								size={6}
+								min="0"
+								max="9999"
+								size={4}
+								step={0.001}
 								onChange={(e) => handleChange(e, measurement.id)}
 							/>
 						</label>
 					</div>
 					<MeasurementButtonBar
-						add={add}
+						// add={add}
 						edit={edit}
-						handleAdd={setAdd}
+						// handleAdd={setAdd}
 						handleEdit={setEdit}
 						handleCancel={handleCancel}
 						isNameValid={isNameValid}
