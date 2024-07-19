@@ -3,20 +3,20 @@ import React, { useState, useRef } from "react";
 import MeasurementButtonBar from "./MeasurementButtonBar";
 
 /**
- * Renders a form for creating a new measurement.
- * @param {boolean} add - Indicates whether the form is in "add" mode.
- * @param {function} setAdd - Function to update the "add" state.
+ * Represents a form for creating a new measurement.
+ * @param {boolean} add - Indicates whether to add a new measurement.
+ * @param {function} setAdd - Function to set the add state.
  * @param {function} createMeasurement - Function to create a new measurement.
- * @returns {JSX.Element} The rendered form.
+ * @param {boolean} isNameValid - Indicates whether the measurement name is valid.
+ * @param {function} validateMeasurementName - Function to validate the measurement name.
+ * @returns {JSX.Element} The rendered MeasurementFormNew component.
  */
 const MeasurementFormNew = ({ add, setAdd, createMeasurement, isNameValid, validateMeasurementName }) => {
-	const [measurement, setMeasurement] = useState([
-		{
-			name: "",
-			increment: "",
-			conversion_factor: "",
-		},
-	]);
+	const [measurement, setMeasurement] = useState({
+		name: "",
+		increment: "",
+		conversion_factor: "",
+	});
 
 	const nameRef = useRef(null);
 	const incrementRef = useRef(null);
@@ -24,6 +24,9 @@ const MeasurementFormNew = ({ add, setAdd, createMeasurement, isNameValid, valid
 
 	const [isFormValid, setIsFormValid] = useState(false);
 
+	/**
+	 * Validates the form inputs and updates the form validity state.
+	 */
 	const validateForm = () => {
 		const isNameValid = nameRef.current.checkValidity();
 		const isIncrementValid = incrementRef.current.checkValidity();
@@ -41,8 +44,8 @@ const MeasurementFormNew = ({ add, setAdd, createMeasurement, isNameValid, valid
 		const name = e.target.name;
 		const value = e.target.value;
 
-		setMeasurement(() => {
-			return { ...measurement, [name]: value };
+		setMeasurement((prevMeasurement) => {
+			return { ...prevMeasurement, [name]: value };
 		});
 
 		if (name === "name") {
@@ -51,6 +54,10 @@ const MeasurementFormNew = ({ add, setAdd, createMeasurement, isNameValid, valid
 		validateForm();
 	};
 
+	/**
+	 * Handles the form submission event.
+	 * @param {Event} e - The form submission event.
+	 */
 	const handleSubmit = (e) => {
 		createMeasurement(e, measurement);
 		setAdd(false);
@@ -61,7 +68,7 @@ const MeasurementFormNew = ({ add, setAdd, createMeasurement, isNameValid, valid
 	 * @returns {JSX.Element} The rendered content.
 	 */
 	const renderContent = () => {
-		const content = (
+		return (
 			<form className="wrapper" onSubmit={handleSubmit}>
 				<div className="form__row">
 					<div className="form__cell">
@@ -124,7 +131,6 @@ const MeasurementFormNew = ({ add, setAdd, createMeasurement, isNameValid, valid
 				</div>
 			</form>
 		);
-		return content;
 	};
 
 	return renderContent();

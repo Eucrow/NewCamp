@@ -1,26 +1,33 @@
 import React from "react";
 
-import UiButtonDelete from "../ui/UiButtonDelete";
+// import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSave from "../ui/UiButtonSave";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import UiIconEdit from "../ui/UiIconEdit";
-import UiIconDelete from "../ui/UiIconDelete";
+// import UiIconDelete from "../ui/UiIconDelete";
 
 /**
- * Button bar of Measurement component.
- * @param {object} props survey object.
- * @param {boolean} edit variable to indicate if the element is edited or not.
- * @param {method} handleEdit method to handle de 'edit' boolean variable.
+ * Represents a button bar component for managing measurements.
+ *
+ * @component
+ * @param {string} id - The ID of the measurement.
+ * @param {boolean} add - Indicates whether the component is in "add" mode.
+ * @param {function} setAdd - The function to set the "add" mode.
+ * @param {boolean} edit - Indicates whether the component is in "edit" mode.
+ * @param {function} handleEdit - The function to handle the edit action.
+ * @param {function} handleCancel - The function to handle the cancel action.
+ * @param {boolean} isNameValid - Indicates whether the measurement name is valid.
+ * @param {boolean} isFormValid - Indicates whether the measurement form is valid.
+ * @returns {JSX.Element} The rendered MeasurementButtonBar component.
  */
-
 const MeasurementButtonBar = ({
-	id,
+	// id,
 	add,
 	setAdd,
 	edit,
 	handleEdit,
 	handleCancel,
-	deleteMeasurement,
+	// deleteMeasurement,
 	isNameValid,
 	isFormValid,
 }) => {
@@ -47,14 +54,14 @@ const MeasurementButtonBar = ({
 				<UiButtonStatusHandle buttonText={"Edit Measurement"} handleMethod={handleEdit} newStatus={true}>
 					<UiIconEdit />
 				</UiButtonStatusHandle>
-				<UiButtonDelete
+				{/* <UiButtonDelete
 					id={id}
 					deleteMethod={deleteMeasurement}
 					buttonText="Delete Measurement"
 					confirmMessage="Delete this species? All the samples of this species on ALL the surveys will be removed!! Are you sure?"
 				>
 					<UiIconDelete />
-				</UiButtonDelete>
+				</UiButtonDelete> */}
 			</div>
 		);
 	}

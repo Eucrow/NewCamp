@@ -10,3 +10,11 @@
 		max-width: 95%;
 	}
 }
+
+.measurement__notes {
+	width: 80%;
+	font-size: 0.9rem; // Adjust font size as needed
+	color: var(--text-color); // Use a variable or specific color
+	margin-top: 5px; // Adjust spacing as needed
+	font-style: italic; // Optional: make it italic to differentiate from other text
+}
