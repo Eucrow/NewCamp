@@ -131,7 +131,13 @@ const Measurements = () => {
 				</header>
 				<div className="wrapper measurementsWrapper">
 					{add === true ? (
-						<MeasurementFormNew add={add} setAdd={setAdd} createMeasurement={createMeasurement} />
+						<MeasurementFormNew
+							add={add}
+							setAdd={setAdd}
+							createMeasurement={createMeasurement}
+							isNameValid={isNameValid}
+							validateMeasurementName={validateMeasurementName}
+						/>
 					) : (
 						<MeasurementsButtonBar add={add} setAdd={setAdd} />
 					)}
