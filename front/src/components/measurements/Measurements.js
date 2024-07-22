@@ -1,3 +1,17 @@
+/**
+ * Represents the Measurements component.
+ * This component is responsible for managing measurements.
+ * It fetches measurements from an API, allows creating, updating, and deleting measurements,
+ * and provides a form for adding new measurements.
+ *
+ * The manage of measurements have some limitations. In order to avoid inconsistencies,
+ * the system does not allow to delete measurements that are being used in any surveys
+ * and only the 'name' field is editable.
+ *
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Measurements component
+ */
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import GlobalContext from "../../contexts/GlobalContext";
