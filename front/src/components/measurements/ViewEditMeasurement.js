@@ -73,7 +73,7 @@ const ViewEditMeasurement = ({
 					</div>
 					<div className="form__cell noSpinner">
 						<label>
-							Conversion factor:
+							Conversion factor (to mm):
 							<input
 								type="number"
 								id="conversion_factor"

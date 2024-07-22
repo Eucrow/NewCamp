@@ -31,10 +31,9 @@ class Sp(models.Model):
 class MeasurementType(models.Model):
     name = models.CharField(max_length=6, unique=True)
     increment = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9999)])
-    # the conversion factor is a decimal number between 0.001 and 1, that will be used to convert the measurement to mm.
-    # For example, for a measurement type "cm", the conversion factor must be 0.1.
-    conversion_factor = models.DecimalField(max_digits=4, decimal_places=3,
-                                            validators=[MinValueValidator(0.001), MaxValueValidator(1)])
+    # The conversion factor is a number used to multiply the units of measurement to convert them to millimeters
+    # For example, for a measurement type "cm", the conversion factor must be 10.
+    conversion_factor = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9999)])
     # UNITS_CHOICES = [
     #     ('cm', 'Centimeters'),
     #     ('mm', 'Millimeters'),

@@ -148,6 +148,10 @@ const Measurements = () => {
 					not allow to delete measurements that are being used in any surveys and only the 'name' field is
 					editable. If you need to change a measurement, please contact the system administrator.
 				</div>
+				<div className="wrapper measurementsWrapper measurement__notes">
+					The conversion factor is a number used to multiply the units of measurement to convert them to
+					millimeters. For example, for a measurement type "cm", the conversion factor must be 10.
+				</div>
 				<div className="wrapper measurementsWrapper">
 					{add === true ? (
 						<MeasurementFormNew

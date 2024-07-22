@@ -107,7 +107,7 @@ const MeasurementFormNew = ({ add, setAdd, createMeasurement, isNameValid, valid
 					</div>
 					<div className="form__cell noSpinner">
 						<label>
-							Conversion factor:
+							Conversion factor (to mm):
 							<input
 								type="number"
 								id="conversion_factor"
