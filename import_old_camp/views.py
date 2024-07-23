@@ -138,7 +138,8 @@ def get_sp_id(row):
     try:
         return Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP']).id
     except ObjectDoesNotExist:
-        raise ValueError("Sp object with group {} and sp_code {} does not exist".format(row['GRUPO'], row['ESP']))
+        raise ValueError(
+            "Sp object with group " + str(row['GRUPO']) + " and sp_code " + str(row['ESP']) + " does not exists")
 
 
 # def get_category_id(row):
@@ -211,12 +212,12 @@ def get_sex_id(row):
 
 def fill_measurement_type():
     """
-    Fill the measurement type table with the values of the old camp.
+    Fill the measurement type table with the values of the old camp. Only if the data doesn't exist.
     :return: HttpResponse
     """
     MeasurementType.objects.get_or_create(name="mm", increment=1, conversion_factor=1)
-    MeasurementType.objects.get_or_create(name="cm", increment=10, conversion_factor=0.1)
-    MeasurementType.objects.get_or_create(name="1/2cm", increment=5, conversion_factor=0.1)
+    MeasurementType.objects.get_or_create(name="cm", increment=10, conversion_factor=10)
+    MeasurementType.objects.get_or_create(name="1/2cm", increment=5, conversion_factor=10)
 
 
 def get_unit_name(unit, increment):
@@ -630,8 +631,11 @@ class HaulsImport:
         :param row: row of the apply function
         :return: gear id
         """
-        trawl_gear = Trawl.objects.get(name=row["ARTE"])
-        return trawl_gear.id
+        try:
+            trawl_gear = Trawl.objects.get(name=row["ARTE"])
+            return trawl_gear.id
+        except Trawl.DoesNotExist:
+            print("The trawl " + str(row["ARTE"]) + " does not exists in Trawl table.")
 
     def get_stratum_id(self, row):
         """
@@ -893,6 +897,15 @@ class NtallImport:
         sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
         return sp.unit
 
+    def get_measurement_factor(self, row):
+        """
+        Get the measurement factor of the species. Used in pandas apply function.
+        :param row: row of the apply function
+        :return: Measurement factor
+        """
+        sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
+        return sp.measurement_type.conversion_factor
+
     def transform_length(self, row):
         """
         Fix the lengths of the species. Used in pandas apply function.
@@ -902,16 +915,21 @@ class NtallImport:
         :param row: row of the apply function
         :return: Fixed lengths
         """
-        unit = self.get_sp_unit(row)
 
-        if unit == 1:
-            return row['TALLA'] * 10
+        measurement_factor = self.get_measurement_factor(row)
 
-        if unit == 2:
-            return row['TALLA']
+        return row['TALLA'] * measurement_factor
 
-        if unit != 1 and unit != 2:
-            return row['TALLA']
+        # unit = self.get_sp_unit(row)
+        #
+        # if unit == 1:
+        #     return row['TALLA'] * 10
+        #
+        # if unit == 2:
+        #     return row['TALLA']
+        #
+        # if unit != 1 and unit != 2:
+        #     return row['TALLA']
 
     def format_sexes_table(self, file):
         lengths_table = self.ntall
