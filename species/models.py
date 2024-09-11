@@ -31,6 +31,6 @@ class Sp(models.Model):
 class MeasurementType(models.Model):
     name = models.CharField(max_length=6, unique=True)
     increment = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9999)])
-    # The conversion factor is a number used to multiply the units of measurement to convert them to millimeters
+    # The conversion factor is a number used to multiply the measurement to convert them to millimeters
     # For example, for a measurement type "cm", the conversion factor must be 10.
     conversion_factor = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9999)])

@@ -49,6 +49,27 @@ export default function App() {
 		3: "Undetermined",
 	};
 
+	const getMeasurementName = (measurementTypeId) => {
+		if (measurementTypeId !== undefined) {
+			const measurementName = measurementTypes.find((m) => m.id === measurementTypeId);
+			return measurementName ? measurementName.name : "no unit";
+		}
+	};
+
+	const getMeasurementFactor = (measurementTypeId) => {
+		if (measurementTypeId !== undefined) {
+			const measurementFactor = measurementTypes.find((m) => m.id === measurementTypeId);
+			return measurementFactor.conversion_factor;
+		}
+	};
+
+	const getMeasurement = (measurementTypeId) => {
+		if (measurementTypeId !== undefined) {
+			const measurement = measurementTypes.find((m) => m.id === measurementTypeId);
+			return measurement;
+		}
+	};
+
 	return (
 		<SelectedSurveyContext.Provider
 			value={{
@@ -59,7 +80,17 @@ export default function App() {
 			}}
 		>
 			<GlobalContext.Provider
-				value={{ species, setSpecies, apiSpecies, sexesAvailable, measurementTypes, apiMeasurementTypes }}
+				value={{
+					species,
+					setSpecies,
+					apiSpecies,
+					sexesAvailable,
+					measurementTypes,
+					apiMeasurementTypes,
+					getMeasurementName,
+					getMeasurementFactor,
+					getMeasurement,
+				}}
 			>
 				<Router>
 					<nav className="headNav" aria-label="nCamp">

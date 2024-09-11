@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import LengthForm from "./LengthForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
 
+import GlobalContext from "../../contexts/GlobalContext.js";
 import LengthsContext from "../../contexts/LengthsContext";
 
 /**
@@ -14,6 +15,10 @@ import LengthsContext from "../../contexts/LengthsContext";
 const LengthsForm = () => {
 	const lengthsContext = useContext(LengthsContext);
 
+	const unit = lengthsContext.measurement ? lengthsContext.measurement.name : "no unit";
+	const increment = lengthsContext.measurement ? lengthsContext.measurement.increment : 1;
+	const factor = lengthsContext.measurement ? lengthsContext.measurement.conversion_factor : 1;
+
 	const renderContent = () => {
 		if (lengthsContext.lengthsStatus === "view") {
 			//TODO: Add the aria property aria labels to avoid the screen readers read the form as a form.
@@ -21,9 +26,7 @@ const LengthsForm = () => {
 				<form className="lengthsWrapper">
 					<div className="formLengths__table">
 						<div className="formLengths__row ">
-							<div className="formLengths__cell formLengths__cell--header">
-								{lengthsContext.measureUnit}
-							</div>
+							<div className="formLengths__cell formLengths__cell--header">{unit}</div>
 							<div className="formLengths__cell formLengths__cell--header">number</div>
 							<div
 								className="formLengths__cell formLengths__cell--header formLengths--hidden"
@@ -39,7 +42,7 @@ const LengthsForm = () => {
 							</div>
 						</div>
 						{lengthsContext.lengths.map((l, idx) => {
-							return <LengthForm l={l} idx={idx} key={idx} increment={lengthsContext.increment} />;
+							return <LengthForm l={l} idx={idx} key={idx} increment={increment} />;
 						})}
 
 						{/* <div className="formLengths__table"> */}
@@ -85,9 +88,7 @@ const LengthsForm = () => {
 				>
 					<div className="formLengths__table">
 						<div className="formLengths__row">
-							<div className="formLengths__cell formLengths__cell--header">
-								{lengthsContext.measureUnit}
-							</div>
+							<div className="formLengths__cell formLengths__cell--header">{unit}</div>
 							<div className="formLengths__cell formLengths__cell--header">number</div>
 							<div
 								className="formLengths__cell formLengths__cell--header formLengths--hidden"
@@ -103,7 +104,7 @@ const LengthsForm = () => {
 							</div>
 						</div>
 						{lengthsContext.lengths.map((l, idx) => {
-							return <LengthForm l={l} idx={idx} key={idx} increment={lengthsContext.increment} />;
+							return <LengthForm l={l} idx={idx} key={idx} />;
 						})}
 					</div>
 					<LengthsButtonBar />

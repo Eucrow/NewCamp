@@ -17,6 +17,9 @@ const LengthsRangeForm = () => {
 
 	const [validRange, setValidRange] = useState(true);
 
+	const unit = lengthsContext.measurement ? lengthsContext.measurement.name : "no unit";
+	const increment = lengthsContext.measurement ? lengthsContext.measurement.increment : 1;
+
 	const handleMinimumRange = (e) => {
 		setMinimumRange(e.target.value);
 	};
@@ -43,7 +46,7 @@ const LengthsRangeForm = () => {
 			<div className="formLengthsRange__table">
 				<div className="formLengthsRange__row">
 					<label className="formLengthsRange__cell formLengths__cell--header" htmlFor="minimum">
-						Minimum length ({lengthsContext.measureUnit}):
+						Minimum length ({unit}):
 					</label>
 					<input
 						className="formLengthsRange__cell"
@@ -51,7 +54,7 @@ const LengthsRangeForm = () => {
 						id="minimum"
 						name="minimum"
 						ref={minimumRef}
-						step={lengthsContext.increment}
+						step={increment}
 						autoFocus
 						min="0"
 						max="9999"
@@ -61,7 +64,7 @@ const LengthsRangeForm = () => {
 				</div>
 				<div className="formLengthsRange__row">
 					<label className="formLengthsRange__cell formLengths__cell--header" htmlFor="maximum">
-						Maximum length ({lengthsContext.measureUnit}):
+						Maximum length ({unit}):
 					</label>
 					<input
 						className="formLengthsRange__cell"
@@ -69,7 +72,7 @@ const LengthsRangeForm = () => {
 						id="maximum"
 						name="maximum"
 						ref={maximumRef}
-						step={lengthsContext.increment}
+						step={increment}
 						min="0"
 						max="9999"
 						value={maximumRange}

@@ -71,7 +71,7 @@ const LengthForm = ({ l, idx }) => {
 						<input
 							type="number"
 							name="length"
-							step={lengthsContext.increment}
+							step={lengthsContext.measurement.increment / lengthsContext.measurement.conversion_factor}
 							autoFocus
 							min="0"
 							max="9999"

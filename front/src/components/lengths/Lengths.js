@@ -15,7 +15,7 @@ import GlobalContext from "../../contexts/GlobalContext.js";
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const Lengths = ({ sex, catchId, unit, increment }) => {
+const Lengths = ({ sex, catchId, increment, unit }) => {
 	const globalContext = useContext(GlobalContext);
 
 	/**
@@ -65,17 +65,9 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 
 	const apiLengthsSex = "http://127.0.0.1:8000/api/1.0/lengths/";
 
-	const getUnit = (u) => {
-		if (Number(u) === 1) {
-			return "cm";
-		} else if (Number(u) === 2) {
-			return "mm";
-		} else {
-			return "no unit";
-		}
-	};
-
-	const [measureUnit, setMeasureUnit] = useState(getUnit(unit));
+	const [measurementTypeId, setMeasurementTypeId] = useState();
+	const [measurementFactor, setMeasurementFactor] = useState();
+	const [measurement, setMeasurement] = useState();
 
 	useEffect(() => {
 		if (responseError !== null) {
@@ -83,16 +75,47 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 		}
 	}, [responseError]);
 
+	// TODO: EXPLAIN THIS TWO RELATED USEEFFECTS
 	useEffect(() => {
 		getLengths().then((lens) => {
-			lens = fillLengths(lens);
-			setBackupLengths(lens);
-			setLengths(lens);
+			setMeasurementTypeId(lens.measurement_type_id);
+
+			// const newMeasurementTypeId = extractMeasurementTypeId(lens);
+			// setMeasurementTypeId(newMeasurementTypeId); // This will trigger the useEffect below
+
+			// var lengths = extractLengths(lens);
+			var lengths = lens.lengths;
+			setBackupLengths(lengths);
+
 			if (lens.length === 0) {
 				setLengthsStatus("empty");
 			}
 		});
 	}, []);
+
+	useEffect(() => {
+		if (measurementTypeId !== null) {
+			// const factor = globalContext.getMeasurementFactor(measurementTypeId);
+
+			if (backupLengths) {
+				const transformedLengths = transformUnitsFromMm(backupLengths, measurementFactor);
+				setLengths(transformedLengths);
+			}
+		}
+	}, [measurementTypeId, backupLengths]);
+
+	useEffect(() => {
+		if (measurementTypeId !== null) {
+			const factor = globalContext.getMeasurementFactor(measurementTypeId);
+			setMeasurementFactor(factor);
+			const measurement = globalContext.getMeasurement(measurementTypeId);
+			setMeasurement(measurement);
+		}
+		// const factor = globalContext.getMeasurementFactor(measurementTypeId);
+		// setMeasurementFactor(factor);
+		// const measurement = globalContext.getMeasurement(measurementTypeId);
+		// setMeasurement(measurement);
+	}, [measurementTypeId]);
 
 	/**
 	 * Get all lengths of a sexId from database.
@@ -106,10 +129,25 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 			setResponseError("Something went wrong! (getLengths)");
 		}
 		const data = await response.json();
+		return data;
+	};
 
-		const updatedData = transformUnitsFromMm(data);
+	const extractLengths = (lengths) => {
+		var newLengths = lengths;
+		newLengths = newLengths.map((l) => {
+			return {
+				length: l.length,
+				number_individuals: l.number_individuals,
+			};
+		});
+		return newLengths;
+	};
 
-		return updatedData;
+	const extractMeasurementTypeId = (lengths) => {
+		if (lengths.length > 0) {
+			const measurementTypeId = lengths[0].measurement_type_id;
+			return measurementTypeId;
+		}
 	};
 
 	/**
@@ -226,17 +264,17 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	 * Transform units to millimeters.
 	 * @param {array} lengths to transform.
 	 */
-	const transformUnitsToMm = (lengths) => {
+	const transformUnitsToMm = (lengths, factor) => {
 		var newLengths = lengths;
 
-		if (Number(unit) === 1) {
-			newLengths = newLengths.map((l) => {
-				return {
-					length: l.length * 10,
-					number_individuals: l.number_individuals,
-				};
-			});
-		}
+		// if (Number(unit) === 1) {
+		newLengths = newLengths.map((l) => {
+			return {
+				length: l.length * factor,
+				number_individuals: l.number_individuals,
+			};
+		});
+		// }
 
 		return newLengths;
 	};
@@ -245,20 +283,32 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	 * Transform units from millimeters to measure unit in state.
 	 * @param {array} lengths to transform.
 	 */
-	const transformUnitsFromMm = (lengths) => {
+	const transformUnitsFromMm = (lengths, factor) => {
 		var newLengths = lengths;
 
-		if (Number(unit) === 1) {
-			newLengths = newLengths.map((l) => {
-				return {
-					length: l.length / 10,
-					number_individuals: l.number_individuals,
-				};
-			});
-		}
+		newLengths = newLengths.map((l) => {
+			return {
+				length: l.length / factor,
+				number_individuals: l.number_individuals,
+			};
+		});
 
 		return newLengths;
 	};
+	// const transformUnitsFromMm = (lengths) => {
+	// 	var newLengths = lengths;
+
+	// 	if (Number(unit) === 1) {
+	// 		newLengths = newLengths.map((l) => {
+	// 			return {
+	// 				length: l.length / measurementFactor,
+	// 				number_individuals: l.number_individuals,
+	// 			};
+	// 		});
+	// 	}
+
+	// 	return newLengths;
+	// };
 
 	/**
 	 * Save lengths database.
@@ -423,8 +473,8 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 					lengths: lengths,
 					totalIndividuals: totalIndividuals,
 					sex: sex,
-					measureUnit: measureUnit,
-					increment: increment,
+					// measureUnit: measureUnit,
+					// increment: increment,
 					lengthsStatus: lengthsStatus,
 					setLengthsStatus: setLengthsStatus,
 					validLengths: validLengths,
@@ -436,6 +486,8 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 					deleteLengths: deleteLengths,
 					saveSexAndLengths: saveSexAndLengths,
 					createRangeLengths: createRangeLengths,
+					measurementTypeId: measurementTypeId,
+					measurement: measurement,
 				}}
 			>
 				<div className="sexWrapper__title">

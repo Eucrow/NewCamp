@@ -10,7 +10,12 @@ import Lengths from "../lengths/Lengths.js";
  * @param {boolean} viewSexes Show or hide this Sexes component.
  * @returns JSX of sexes component. The component show three columns, one by sex: male, female and undetermined.
  */
-const Sexes = ({ catchId, unit, increment, viewSexes }) => {
+const Sexes = ({
+	catchId,
+	// unit, increment,
+	measurementTypeId,
+	viewSexes,
+}) => {
 	const renderContent = () => {
 		let content = [];
 
@@ -21,7 +26,13 @@ const Sexes = ({ catchId, unit, increment, viewSexes }) => {
 		for (let i = 1; i <= 3; i++) {
 			content.push(
 				<div className="sexWrapper" key={"sex" + catchId + i}>
-					<Lengths sex={i} unit={unit} increment={increment} catchId={catchId} />
+					<Lengths
+						sex={i}
+						//  unit={unit}
+						//  increment={increment}
+						measurementTypeId={measurementTypeId}
+						catchId={catchId}
+					/>
 				</div>
 			);
 		}

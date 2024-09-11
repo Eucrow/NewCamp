@@ -380,7 +380,7 @@ class SpeciesImport:
         :return: Measurement type id.
         """
         unit_name = get_unit_name(row['unit'], row['increment'])
-        print(row['unit'], row['increment'])
+        # print(row['unit'], row['increment'])
         try:
             measurement_type = MeasurementType.objects.get(name=unit_name)
             return measurement_type.id
@@ -906,6 +906,19 @@ class NtallImport:
         sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
         return sp.measurement_type.conversion_factor
 
+    def get_measurement_type(self, grupo, esp):
+        """
+        Get the measurement type id. Used in pandas apply function.
+        :param row: row of the apply function
+        :return: Measurement type id.
+        """
+        sp = Sp.objects.get(group=grupo, sp_code=esp)
+        try:
+            measurement_type = sp.measurement_type
+            return measurement_type.id
+        except ObjectDoesNotExist:
+            raise ValueError("MeasurementType object with measurement_type {} does not exist".format(measurement_type))
+
     def transform_length(self, row):
         """
         Fix the lengths of the species. Used in pandas apply function.
@@ -937,15 +950,19 @@ class NtallImport:
         # get the catch grouped
         sexed_table = lengths_table[['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO']].drop_duplicates()
         sexed_table['catch_id'] = sexed_table.apply(get_catch_id, axis=1, args=[self.survey_name])
+        sexed_table['measurement_type_id'] = sexed_table.apply(
+            lambda row: self.get_measurement_type(row["GRUPO"], row["ESP"]), axis=1)
 
         fields = list(self.fields_sexes.values())
         fields.extend(['catch_id'])
+        fields.extend(['measurement_type_id'])
 
         sexed_table = sexed_table[fields]
 
         new_fields = list(self.fields_sexes.keys())
         new_fields.extend(['catch_id'])
-
+        new_fields.extend(['measurement_type_id'])
+        
         sexed_table.columns = new_fields
 
         return sexed_table
@@ -965,8 +982,8 @@ class NtallImport:
                               on=['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO'])
 
         lengths_df['TALLA'] = lengths_df.apply(self.transform_length, axis=1)
-        duplicated = lengths_df[['sex_id', 'TALLA', 'NUMER']].duplicated()
-        lengths_df_duplicted = lengths_df[duplicated]
+        # duplicated = lengths_df[['sex_id', 'TALLA', 'NUMER']].duplicated()
+        # lengths_df_duplicted = lengths_df[duplicated]
         fields = list(self.fields_lengths.values())
         fields.extend(['sex_id'])
 
