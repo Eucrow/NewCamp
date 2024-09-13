@@ -44,7 +44,6 @@ const LengthsForm = () => {
 						{lengthsContext.lengths.map((l, idx) => {
 							return <LengthForm l={l} idx={idx} key={idx} increment={increment} />;
 						})}
-
 						{/* <div className="formLengths__table"> */}
 						<div className="formLengths__row ">
 							<div className="formLengths__cell formLengths__cell--total">Total:</div>

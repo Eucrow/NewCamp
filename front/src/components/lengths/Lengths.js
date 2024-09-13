@@ -78,44 +78,53 @@ const Lengths = ({ sex, catchId, increment, unit }) => {
 	// TODO: EXPLAIN THIS TWO RELATED USEEFFECTS
 	useEffect(() => {
 		getLengths().then((lens) => {
-			setMeasurementTypeId(lens.measurement_type_id);
+			// setMeasurementTypeId(lens.measurement_type_id);
 
-			// const newMeasurementTypeId = extractMeasurementTypeId(lens);
-			// setMeasurementTypeId(newMeasurementTypeId); // This will trigger the useEffect below
+			if (lens.lengths.length > 0) {
+				const measurement = globalContext.getMeasurement(lens.measurement_type_id);
+				setMeasurement(measurement);
 
-			// var lengths = extractLengths(lens);
-			var lengths = lens.lengths;
-			setBackupLengths(lengths);
+				const transformedLengths = transformUnitsFromMm(lens.lengths, measurement.conversion_factor);
 
-			if (lens.length === 0) {
+				setBackupLengths(transformedLengths);
+				setLengths(transformedLengths);
+			}
+
+			if (lens.lengths.length === 0) {
 				setLengthsStatus("empty");
 			}
 		});
 	}, []);
 
-	useEffect(() => {
-		if (measurementTypeId !== null) {
-			// const factor = globalContext.getMeasurementFactor(measurementTypeId);
+	// useEffect(() => {
+	// 	getLengths().then((lens) => {
+	// 		var lengths = lens.lengths;
 
-			if (backupLengths) {
-				const transformedLengths = transformUnitsFromMm(backupLengths, measurementFactor);
-				setLengths(transformedLengths);
-			}
-		}
-	}, [measurementTypeId, backupLengths]);
+	// 		setBackupLengths(lengths);
 
-	useEffect(() => {
-		if (measurementTypeId !== null) {
-			const factor = globalContext.getMeasurementFactor(measurementTypeId);
-			setMeasurementFactor(factor);
-			const measurement = globalContext.getMeasurement(measurementTypeId);
-			setMeasurement(measurement);
-		}
-		// const factor = globalContext.getMeasurementFactor(measurementTypeId);
-		// setMeasurementFactor(factor);
-		// const measurement = globalContext.getMeasurement(measurementTypeId);
-		// setMeasurement(measurement);
-	}, [measurementTypeId]);
+	// 		if (lens.lengths.length === 0) {
+	// 			setLengthsStatus("empty");
+	// 		}
+	// 	});
+	// }, [measurement]);
+
+	// useEffect(() => {
+	// 	if (measurementTypeId !== null) {
+	// 		if (backupLengths) {
+	// 			const transformedLengths = transformUnitsFromMm(backupLengths, measurement.conversion_factor);
+	// 			setLengths(transformedLengths);
+	// 		}
+	// 	}
+	// }, [measurementTypeId, backupLengths]);
+
+	// useEffect(() => {
+	// 	if (measurementTypeId !== null) {
+	// 		// const factor = globalContext.getMeasurementFactor(measurementTypeId);
+	// 		// setMeasurementFactor(factor);
+	// 		const measurement = globalContext.getMeasurement(measurementTypeId);
+	// 		setMeasurement(measurement);
+	// 	}
+	// }, [measurementTypeId]);
 
 	/**
 	 * Get all lengths of a sexId from database.
@@ -132,23 +141,23 @@ const Lengths = ({ sex, catchId, increment, unit }) => {
 		return data;
 	};
 
-	const extractLengths = (lengths) => {
-		var newLengths = lengths;
-		newLengths = newLengths.map((l) => {
-			return {
-				length: l.length,
-				number_individuals: l.number_individuals,
-			};
-		});
-		return newLengths;
-	};
+	// const extractLengths = (lengths) => {
+	// 	var newLengths = lengths;
+	// 	newLengths = newLengths.map((l) => {
+	// 		return {
+	// 			length: l.length,
+	// 			number_individuals: l.number_individuals,
+	// 		};
+	// 	});
+	// 	return newLengths;
+	// };
 
-	const extractMeasurementTypeId = (lengths) => {
-		if (lengths.length > 0) {
-			const measurementTypeId = lengths[0].measurement_type_id;
-			return measurementTypeId;
-		}
-	};
+	// const extractMeasurementTypeId = (lengths) => {
+	// 	if (lengths.length > 0) {
+	// 		const measurementTypeId = lengths[0].measurement_type_id;
+	// 		return measurementTypeId;
+	// 	}
+	// };
 
 	/**
 	 * Delete all lengths of a sexId in database. The sexId variable is taken from parent component via props.
