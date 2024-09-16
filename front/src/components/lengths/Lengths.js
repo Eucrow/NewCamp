@@ -15,7 +15,7 @@ import GlobalContext from "../../contexts/GlobalContext.js";
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const Lengths = ({ sex, catchId, increment, unit, catchMeasurementTypeId }) => {
+const Lengths = ({ sex, catchId, increment, unit, spId, catchMeasurementTypeId }) => {
 	const globalContext = useContext(GlobalContext);
 
 	/**
@@ -101,8 +101,12 @@ const Lengths = ({ sex, catchId, increment, unit, catchMeasurementTypeId }) => {
 				setLengthsStatus("empty");
 				// When there are no lengths, the measurement type is get from the measurement_type_id
 				// of the props.
-				const measurement = globalContext.getMeasurement(catchMeasurementTypeId);
-				setMeasurement(measurement);
+				// const measurement = globalContext.getMeasurement(catchMeasurementTypeId);
+				const measurement = getSp().then((sp) => {
+					const measurement = globalContext.getMeasurement(sp.measurement_type);
+					setMeasurement(measurement);
+				});
+				// setMeasurement(measurement);
 			}
 		});
 	}, []);
@@ -114,6 +118,16 @@ const Lengths = ({ sex, catchId, increment, unit, catchMeasurementTypeId }) => {
 			setLengths(lengths);
 		}
 	}, [measurement, temporaryLengths]);
+
+	const getSp = async () => {
+		const api = globalContext.apiSpecies + "/" + spId;
+		const response = await fetch(api);
+		if (response.status > 400) {
+			setResponseError("Something went wrong! (getSpecies)");
+		}
+		const data = await response.json();
+		return data;
+	};
 
 	// useEffect(() => {
 	// 	getLengths().then((lens) => {
@@ -243,7 +257,7 @@ const Lengths = ({ sex, catchId, increment, unit, catchMeasurementTypeId }) => {
 		// 	totalIncrement = 10 * Number(increment);
 		// }
 
-		const increment = measurement.conversion_factor / measurement.increment;
+		const increment = measurement.increment / measurement.conversion_factor;
 
 		// for (let i = minimumLength; i <= maximumLength; i++) {
 		// for (let i = minimumLength; i <= maximumLength; i += totalIncrement) {

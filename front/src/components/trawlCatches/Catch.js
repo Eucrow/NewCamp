@@ -81,6 +81,7 @@ const Catch = ({
 					{viewSexes && (
 						<Sexes
 							catchId={thisCatch.catch_id}
+							spId={thisCatch.sp_id}
 							// unit={thisCatch.unit}
 							// increment={thisCatch.increment}
 							catchMeasurementTypeId={thisCatch.measurement_type_id}

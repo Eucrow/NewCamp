@@ -14,6 +14,7 @@ const Sexes = ({
 	catchId,
 	// unit, increment,
 	catchMeasurementTypeId,
+	spId,
 	viewSexes,
 }) => {
 	const renderContent = () => {
@@ -32,6 +33,7 @@ const Sexes = ({
 						//  increment={increment}
 						catchMeasurementTypeId={catchMeasurementTypeId}
 						catchId={catchId}
+						spId={spId}
 					/>
 				</div>
 			);
