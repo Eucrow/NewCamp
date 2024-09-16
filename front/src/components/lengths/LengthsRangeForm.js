@@ -18,7 +18,8 @@ const LengthsRangeForm = () => {
 	const [validRange, setValidRange] = useState(true);
 
 	const unit = lengthsContext.measurement ? lengthsContext.measurement.name : "no unit";
-	const increment = lengthsContext.measurement ? lengthsContext.measurement.increment : 1;
+	// const increment = lengthsContext.measurement ? lengthsContext.measurement.increment : 1;
+	const increment = lengthsContext.measurement.increment / lengthsContext.measurement.conversion_factor;
 
 	const handleMinimumRange = (e) => {
 		setMinimumRange(e.target.value);

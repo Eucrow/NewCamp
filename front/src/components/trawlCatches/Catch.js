@@ -83,7 +83,7 @@ const Catch = ({
 							catchId={thisCatch.catch_id}
 							// unit={thisCatch.unit}
 							// increment={thisCatch.increment}
-							measurementTypeId={thisCatch.measurement_type_id}
+							catchMeasurementTypeId={thisCatch.measurement_type_id}
 							viewSexes={viewSexes}
 						/>
 					)}

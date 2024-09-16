@@ -49,16 +49,16 @@ class LengthsSexAPI(APIView):
         serializer = LengthSexRetrieveSerializer(data)
         return Response(serializer.data)
 
-    def post(self, request, catch_id, sex, measurement_type_id):
-        # Create a mew Sex instance
+    def post(self, request, catch_id, sex):
+        # Extract measurement_type_id from the request data
+        measurement_type_id = request.data.get('measurement_type_id')
+        # Create a new Sex instance
+        # sex_instance, create = Sex.objects.update_or_create(catch_id=catch_id, sex=sex,
+        #                                                     defaults={'measurement_type_id': measurement_type_id})
 
         sex_instance = Sex.objects.create(catch_id=catch_id, sex=sex, measurement_type_id=measurement_type_id)
-
         # Create a new Length instance for each length in lengths_data
-
-        # for length_data in lengths_data:
-
-        for length_data in request.data:
+        for length_data in request.data.get('lengths'):
             length_instance = Length(sex_id=sex_instance.id, **length_data)
             length_instance.full_clean()  # call full_clean() method to run the clean() method in Length model
             length_instance.save()

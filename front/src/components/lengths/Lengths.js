@@ -15,7 +15,7 @@ import GlobalContext from "../../contexts/GlobalContext.js";
  *
  * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
  */
-const Lengths = ({ sex, catchId, increment, unit }) => {
+const Lengths = ({ sex, catchId, increment, unit, catchMeasurementTypeId }) => {
 	const globalContext = useContext(GlobalContext);
 
 	/**
@@ -39,6 +39,8 @@ const Lengths = ({ sex, catchId, increment, unit }) => {
 			number_individuals: "",
 		},
 	]);
+
+	const [temporaryLengths, setTemporaryLengths] = useState([]);
 
 	const [totalIndividuals, setTotalIndividuals] = useState();
 
@@ -75,26 +77,43 @@ const Lengths = ({ sex, catchId, increment, unit }) => {
 		}
 	}, [responseError]);
 
-	// TODO: EXPLAIN THIS TWO RELATED USEEFFECTS
 	useEffect(() => {
 		getLengths().then((lens) => {
 			// setMeasurementTypeId(lens.measurement_type_id);
 
 			if (lens.lengths.length > 0) {
+				// If there are lengths, get the measurement type and set it in the state.
+				// In this way, the measurement type is the stored in the lengths.
 				const measurement = globalContext.getMeasurement(lens.measurement_type_id);
 				setMeasurement(measurement);
 
-				const transformedLengths = transformUnitsFromMm(lens.lengths, measurement.conversion_factor);
+				// var transformedLengths = transformUnitsFromMm(lens.lengths, measurement.conversion_factor);
+				var temporaryLengths = transformUnitsFromMm(lens.lengths, measurement.conversion_factor);
+				setTemporaryLengths(temporaryLengths);
 
-				setBackupLengths(transformedLengths);
-				setLengths(transformedLengths);
+				// transformedLengths = fillLengths(transformedLengths);
+
+				// setBackupLengths(transformedLengths);
+				// setLengths(transformedLengths);
 			}
 
 			if (lens.lengths.length === 0) {
 				setLengthsStatus("empty");
+				// When there are no lengths, the measurement type is get from the measurement_type_id
+				// of the props.
+				const measurement = globalContext.getMeasurement(catchMeasurementTypeId);
+				setMeasurement(measurement);
 			}
 		});
 	}, []);
+
+	useEffect(() => {
+		if (measurement && temporaryLengths.length > 0) {
+			var lengths = fillLengths(temporaryLengths);
+			setBackupLengths(lengths);
+			setLengths(lengths);
+		}
+	}, [measurement, temporaryLengths]);
 
 	// useEffect(() => {
 	// 	getLengths().then((lens) => {
@@ -218,14 +237,17 @@ const Lengths = ({ sex, catchId, increment, unit }) => {
 
 		// to calculate the increment in lengths, in case the unit is cm (unit=1)
 		// simply multiply the increment by 10... TODO: Try to do it in a more global way.
-		var totalIncrement = increment;
+		// var totalIncrement = increment;
 
-		if (unit === 1) {
-			totalIncrement = 10 * Number(increment);
-		}
+		// if (unit === 1) {
+		// 	totalIncrement = 10 * Number(increment);
+		// }
+
+		const increment = measurement.conversion_factor / measurement.increment;
 
 		// for (let i = minimumLength; i <= maximumLength; i++) {
-		for (let i = minimumLength; i <= maximumLength; i += totalIncrement) {
+		// for (let i = minimumLength; i <= maximumLength; i += totalIncrement) {
+		for (let i = minimumLength; i <= maximumLength; i += increment) {
 			let originalLength = lengths.filter((e) => e.length === i);
 
 			if (originalLength.length !== 0) {
@@ -329,7 +351,13 @@ const Lengths = ({ sex, catchId, increment, unit }) => {
 	const saveLengths = async (lengths) => {
 		const api = apiLengthsSex + catchId + "/" + sex;
 
-		lengths = transformUnitsToMm(lengths);
+		lengths = transformUnitsToMm(lengths, measurement.conversion_factor);
+
+		// add the measurement type id to the lengths
+		lengths = {
+			measurement_type_id: measurement.id,
+			lengths: lengths,
+		};
 
 		try {
 			const response = await fetch(api, {
@@ -343,7 +371,7 @@ const Lengths = ({ sex, catchId, increment, unit }) => {
 				setResponseError("Something went wrong! (saveLengths())");
 			}
 			let data = await response.json();
-			data = transformUnitsFromMm(data);
+			data = transformUnitsFromMm(data, measurement.conversion_factor);
 			return data;
 		} catch (error) {
 			return console.log(error);
@@ -387,7 +415,11 @@ const Lengths = ({ sex, catchId, increment, unit }) => {
 	const createRangeLengths = (minLength, maxLength) => {
 		var newLengths = [];
 
-		for (var l = Number(minLength); l <= Number(maxLength); l += increment) {
+		for (
+			var l = Number(minLength);
+			l <= Number(maxLength);
+			l += measurement.increment / measurement.conversion_factor
+		) {
 			newLengths.push({
 				length: l,
 				number_individuals: "",
@@ -496,6 +528,7 @@ const Lengths = ({ sex, catchId, increment, unit }) => {
 					saveSexAndLengths: saveSexAndLengths,
 					createRangeLengths: createRangeLengths,
 					measurementTypeId: measurementTypeId,
+					catchMeasurementTypeId: catchMeasurementTypeId,
 					measurement: measurement,
 				}}
 			>

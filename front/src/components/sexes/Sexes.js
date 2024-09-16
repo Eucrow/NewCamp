@@ -13,7 +13,7 @@ import Lengths from "../lengths/Lengths.js";
 const Sexes = ({
 	catchId,
 	// unit, increment,
-	measurementTypeId,
+	catchMeasurementTypeId,
 	viewSexes,
 }) => {
 	const renderContent = () => {
@@ -30,7 +30,7 @@ const Sexes = ({
 						sex={i}
 						//  unit={unit}
 						//  increment={increment}
-						measurementTypeId={measurementTypeId}
+						catchMeasurementTypeId={catchMeasurementTypeId}
 						catchId={catchId}
 					/>
 				</div>
