@@ -6,31 +6,20 @@ import LengthsContext from "../../contexts/LengthsContext";
 import GlobalContext from "../../contexts/GlobalContext.js";
 
 /**
- * Manages and displays lengths data of a sex.
+ * Lengths component is responsible for managing and displaying lengths data for a specific sex and catch ID.
+ * It allows users to view, edit, add, and delete lengths, and handles the transformation of units based on
+ * the measurement type.
+ * The component fetches lengths data from the server, manages state for lengths and their backup,
+ * and provides various utility functions for data manipulation.
+ *
  * @component
- * @param {number} sex Sex.
- * @param {number} catchId The ID of the catch for which lengths data should be fetched.
- * @param {number} unit The unit of measurement for the lengths. 1 represents cm, 2 represents mm.
- * @param {number} increment The increment value for lengths.
- *
- * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
- */
-/**
- * Lengths component manages the display, editing, and saving of length measurements for a specific sex and catch ID.
- * It fetches lengths data from the server, allows user modifications, and handles unit conversions.
- * The component also provides functionalities to add, edit, delete, and validate lengths.
- *
- * @param {Object} props - The properties object.
- * @param {string} props.sex - The sex identifier for which lengths are managed.
- * @param {number} props.catchId - The catch ID associated with the lengths.
- * @param {number} props.increment - The increment value for length measurements.
- * @param {string} props.unit - The unit of measurement for lengths.
- * @param {number} props.spId - The species ID associated with the lengths.
- * @param {number} props.catchMeasurementTypeId - The measurement type ID for the catch.
+ * @param {Object} props - The component props.
+ * @param {string} props.sex - The sex identifier for which lengths data is managed.
+ * @param {string} props.catchId - The catch ID associated with the lengths data.
+ * @param {string} props.spId - The species ID used to fetch species-specific data.
  * @returns {JSX.Element} The rendered Lengths component.
  */
-
-const Lengths = ({ sex, catchId, increment, unit, spId, catchMeasurementTypeId }) => {
+const Lengths = ({ sex, catchId, spId }) => {
 	const globalContext = useContext(GlobalContext);
 
 	/**
