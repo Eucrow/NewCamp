@@ -3,20 +3,19 @@ import React from "react";
 import Lengths from "../lengths/Lengths.js";
 
 /**
- * Sexes component.
- * @param {numeric} catchId Id of catch.
- * @param {numeric} unit Measurement unit: "1" or "2". "1" is centimeters and "2" is millimeters.
- * @param {numeric} increment Increment of measurement unit.
- * @param {boolean} viewSexes Show or hide this Sexes component.
- * @returns JSX of sexes component. The component show three columns, one by sex: male, female and undetermined.
+ * Sexes Component
+ *
+ * This component renders the sexes and its corresponding lengths for a catch.
+ *
+ * @component
+ * @param {Object} props - The properties object.
+ * @param {number} props.catchId - The ID of the catch.
+ * @param {number} props.spId - The ID of the species.
+ * @param {boolean} props.viewSexes - A flag to determine whether to display the sexes.
+ *
+ * @returns {JSX.Element|null} The rendered component or null if `viewSexes` is false.
  */
-const Sexes = ({
-	catchId,
-	// unit, increment,
-	catchMeasurementTypeId,
-	spId,
-	viewSexes,
-}) => {
+const Sexes = ({ catchId, spId, viewSexes }) => {
 	const renderContent = () => {
 		let content = [];
 
@@ -27,14 +26,7 @@ const Sexes = ({
 		for (let i = 1; i <= 3; i++) {
 			content.push(
 				<div className="sexWrapper" key={"sex" + catchId + i}>
-					<Lengths
-						sex={i}
-						//  unit={unit}
-						//  increment={increment}
-						catchMeasurementTypeId={catchMeasurementTypeId}
-						catchId={catchId}
-						spId={spId}
-					/>
+					<Lengths sex={i} catchId={catchId} spId={spId} />
 				</div>
 			);
 		}
