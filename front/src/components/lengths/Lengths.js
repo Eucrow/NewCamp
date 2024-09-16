@@ -482,7 +482,7 @@ const Lengths = ({ sex, catchId, increment, unit, catchMeasurementTypeId }) => {
 	const addLength = (l, index) => {
 		let newLengths = [...lengths];
 
-		let newLength = Number(l) + Number(increment);
+		let newLength = Number(l) + Number(measurement.increment / measurement.conversion_factor);
 
 		newLengths.splice(index + 1, 0, {
 			length: newLength,
