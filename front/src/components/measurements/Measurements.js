@@ -149,8 +149,10 @@ const Measurements = () => {
 					editable. If you need to change a measurement, please contact the system administrator.
 				</div>
 				<div className="wrapper measurementsWrapper measurement__notes">
-					The conversion factor is a number used to multiply the units of measurement to convert them to
-					millimeters. For example, for a measurement type "cm", the conversion factor must be 10.
+					The conversion factor is a number to convert the measurement units to millimeters (which is the unit
+					used in the database to store the lengths measurements). The conversion factor is the number of
+					millimeters in one unit of the measurement type. For example, for a measurement type "cm", the
+					conversion factor must be 10.
 				</div>
 				<div className="wrapper measurementsWrapper">
 					{add === true ? (

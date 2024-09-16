@@ -1,9 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import LengthForm from "./LengthForm.js";
 import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
 
-import GlobalContext from "../../contexts/GlobalContext.js";
 import LengthsContext from "../../contexts/LengthsContext";
 
 /**
@@ -16,8 +15,6 @@ const LengthsForm = () => {
 	const lengthsContext = useContext(LengthsContext);
 
 	const unit = lengthsContext.measurement ? lengthsContext.measurement.name : "no unit";
-	const increment = lengthsContext.measurement ? lengthsContext.measurement.increment : 1;
-	const factor = lengthsContext.measurement ? lengthsContext.measurement.conversion_factor : 1;
 
 	const renderContent = () => {
 		if (lengthsContext.lengthsStatus === "view") {
@@ -42,9 +39,8 @@ const LengthsForm = () => {
 							</div>
 						</div>
 						{lengthsContext.lengths.map((l, idx) => {
-							return <LengthForm l={l} idx={idx} key={idx} increment={increment} />;
+							return <LengthForm l={l} idx={idx} key={idx} />;
 						})}
-						{/* <div className="formLengths__table"> */}
 						<div className="formLengths__row ">
 							<div className="formLengths__cell formLengths__cell--total">Total:</div>
 							<div className="formLengths__cell formLengths__cell--total">
@@ -72,7 +68,6 @@ const LengthsForm = () => {
 							</div>
 						</div>
 					</div>
-					{/* </div> */}
 
 					<LengthsButtonBar />
 				</form>
@@ -110,17 +105,12 @@ const LengthsForm = () => {
 				</form>
 			);
 		} else if (lengthsContext.lengthsStatus === "add") {
-			return (
-				// <div className="lengthsWrapper">
-				<LengthsRangeForm />
-				// </div>
-			);
+			return <LengthsRangeForm />;
 		} else if (lengthsContext.lengthsStatus === "empty") {
 			return (
 				<div className="formLengths__table">
 					<LengthsButtonBar />
 				</div>
-				// null
 			);
 		}
 	};
