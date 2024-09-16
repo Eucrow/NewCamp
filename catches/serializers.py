@@ -30,12 +30,12 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
     increment = serializers.FloatField(source='sp.increment', read_only=True)
     sampled_weight = serializers.FloatField(
         source='samples.sampled_weight', required=False, read_only=True)
-    measurement_type_id = serializers.IntegerField(source='sp.measurement_type_id', read_only=True)
 
     class Meta:
         model = Catch
         fields = ['catch_id', 'category', 'weight', 'not_measured_individuals', 'haul', 'haul_id', 'group', 'sp_id',
-                  'sp_code', 'sp_name', 'unit', 'increment', 'sampled_weight', 'measurement_type_id', ]
+                  'sp_code', 'sp_name', 'unit', 'increment', 'sampled_weight',
+                  ]
 
 
 class SexCatchSerializer(serializers.ModelSerializer):
