@@ -206,6 +206,7 @@ const Lengths = ({ sex, catchId, increment, unit, spId, catchMeasurementTypeId }
 		});
 
 		setLengthsStatus("empty");
+		setBackupLengths([]);
 
 		if (response.status > 400) {
 			setResponseError("Something went wrong! (deleteLengths())");
