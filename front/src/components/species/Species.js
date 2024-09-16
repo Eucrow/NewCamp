@@ -51,7 +51,7 @@ const Species = () => {
 	const handleUpdateSp = (e, sp_id) => {
 		e.preventDefault();
 
-		const api = globalContext.apiSpecies + sp_id;
+		const api = globalContext.apiSpecies + "/" + sp_id;
 
 		fetch(api, {
 			method: "PUT",
