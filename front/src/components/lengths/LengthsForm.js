@@ -6,11 +6,13 @@ import LengthsRangeForm from "./LengthsRangeForm.js";
 import LengthsContext from "../../contexts/LengthsContext";
 
 /**
- * Renders a form for displaying and editing lengths data.
- * @component
+ * LengthsForm component renders different forms based on the lengthsStatus from the LengthsContext.
+ * It can render a view form, an edit form, an add form, or an empty state.
  *
- * @returns {JSX.Element} A JSX element that renders the lengths form.
- */
+ * @component
+ * @returns {JSX.Element} The rendered form based on the lengthsStatus.
+ **/
+
 const LengthsForm = () => {
 	const lengthsContext = useContext(LengthsContext);
 
