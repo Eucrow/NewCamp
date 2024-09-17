@@ -574,6 +574,10 @@ class HaulsImport:
         self.stratification_name = get_type_survey(self.request.FILES['camp'].name) + "-sector-profundidad"
         self.stratification_object = Stratification.objects.get(stratification=self.stratification_name)
 
+        # TODO: the valid field now must be fill the "valid" of the newCamp database and
+        # the field "special". The field "special" is a boolean field which indicates if
+        # the haul is special or not.
+
         self.fields_haul = {
             "haul": "LANCE",
             # "gear": "ARTE",
@@ -962,7 +966,7 @@ class NtallImport:
         new_fields = list(self.fields_sexes.keys())
         new_fields.extend(['catch_id'])
         new_fields.extend(['measurement_type_id'])
-        
+
         sexed_table.columns = new_fields
 
         return sexed_table
