@@ -8,13 +8,11 @@ import GlobalContext from "./contexts/GlobalContext.js";
 import { HashRouter as Router, Route, Link } from "react-router-dom";
 
 import ComponentsSurveys from "./components/surveys/Surveys.js";
-
 import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
-
 import Stations from "./components/stations/Stations.js";
-
 import Species from "./components/species/Species";
 import Ships from "./components/ships/Ships";
+import Measurements from "./components/measurements/Measurements";
 
 export default function App() {
 	const [selectedSurvey, setSelectedSurvey] = useState(() => {
@@ -29,20 +27,47 @@ export default function App() {
 		return survey_id !== null ? survey_id : "";
 	});
 
-	const apiSpecies = "http://127.0.0.1:8000/api/1.0/species/";
+	const apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
+	const apiMeasurementTypes = "http://127.0.0.1:8000/api/1.0/measurement_types";
 
 	const [species, setSpecies] = useState([]);
+	const [measurementTypes, setMeasurementTypes] = useState([]);
 
 	useEffect(() => {
 		fetch(apiSpecies)
 			.then((response) => response.json())
 			.then((data) => setSpecies(data));
+
+		fetch(apiMeasurementTypes)
+			.then((response) => response.json())
+			.then((data) => setMeasurementTypes(data));
 	}, []);
 
 	const sexesAvailable = {
 		1: "Male",
 		2: "Female",
 		3: "Undetermined",
+	};
+
+	const getMeasurementName = (measurementTypeId) => {
+		if (measurementTypeId !== undefined) {
+			const measurementName = measurementTypes.find((m) => m.id === measurementTypeId);
+			return measurementName ? measurementName.name : "no unit";
+		}
+	};
+
+	const getMeasurementFactor = (measurementTypeId) => {
+		if (measurementTypeId !== undefined) {
+			const measurementFactor = measurementTypes.find((m) => m.id === measurementTypeId);
+			return measurementFactor.conversion_factor;
+		}
+	};
+
+	const getMeasurement = (measurementTypeId) => {
+		if (measurementTypeId !== undefined) {
+			const measurement = measurementTypes.find((m) => m.id === measurementTypeId);
+			return measurement;
+		}
 	};
 
 	return (
@@ -54,7 +79,19 @@ export default function App() {
 				setSelectedSurveyId,
 			}}
 		>
-			<GlobalContext.Provider value={{ species, setSpecies, apiSpecies, sexesAvailable }}>
+			<GlobalContext.Provider
+				value={{
+					species,
+					setSpecies,
+					apiSpecies,
+					sexesAvailable,
+					measurementTypes,
+					apiMeasurementTypes,
+					getMeasurementName,
+					getMeasurementFactor,
+					getMeasurement,
+				}}
+			>
 				<Router>
 					<nav className="headNav" aria-label="nCamp">
 						<h1 className="headNav__selectedSurvey">
@@ -87,6 +124,11 @@ export default function App() {
 								</Link>
 							</li>
 							<li className="headNav__item" role="none">
+								<Link to="/Measurements" role="menuitem">
+									Measurements
+								</Link>
+							</li>
+							<li className="headNav__item" role="none">
 								<Link to="/" role="menuitem">
 									Home
 								</Link>
@@ -112,6 +154,7 @@ export default function App() {
 					<Route path="/Stations" exact component={Stations} />
 					<Route path="/Species" component={Species} />
 					<Route path="/Ships" component={Ships} />
+					<Route path="/Measurements" component={Measurements} />
 				</Router>
 			</GlobalContext.Provider>
 		</SelectedSurveyContext.Provider>

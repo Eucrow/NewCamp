@@ -6,13 +6,17 @@ import LengthsRangeForm from "./LengthsRangeForm.js";
 import LengthsContext from "../../contexts/LengthsContext";
 
 /**
- * Renders a form for displaying and editing lengths data.
- * @component
+ * LengthsForm component renders different forms based on the lengthsStatus from the LengthsContext.
+ * It can render a view form, an edit form, an add form, or an empty state.
  *
- * @returns {JSX.Element} A JSX element that renders the lengths form.
- */
+ * @component
+ * @returns {JSX.Element} The rendered form based on the lengthsStatus.
+ **/
+
 const LengthsForm = () => {
 	const lengthsContext = useContext(LengthsContext);
+
+	const unit = lengthsContext.measurement ? lengthsContext.measurement.name : "no unit";
 
 	const renderContent = () => {
 		if (lengthsContext.lengthsStatus === "view") {
@@ -21,9 +25,7 @@ const LengthsForm = () => {
 				<form className="lengthsWrapper">
 					<div className="formLengths__table">
 						<div className="formLengths__row ">
-							<div className="formLengths__cell formLengths__cell--header">
-								{lengthsContext.measureUnit}
-							</div>
+							<div className="formLengths__cell formLengths__cell--header">{unit}</div>
 							<div className="formLengths__cell formLengths__cell--header">number</div>
 							<div
 								className="formLengths__cell formLengths__cell--header formLengths--hidden"
@@ -39,10 +41,8 @@ const LengthsForm = () => {
 							</div>
 						</div>
 						{lengthsContext.lengths.map((l, idx) => {
-							return <LengthForm l={l} idx={idx} key={idx} increment={lengthsContext.increment} />;
+							return <LengthForm l={l} idx={idx} key={idx} />;
 						})}
-
-						{/* <div className="formLengths__table"> */}
 						<div className="formLengths__row ">
 							<div className="formLengths__cell formLengths__cell--total">Total:</div>
 							<div className="formLengths__cell formLengths__cell--total">
@@ -70,7 +70,6 @@ const LengthsForm = () => {
 							</div>
 						</div>
 					</div>
-					{/* </div> */}
 
 					<LengthsButtonBar />
 				</form>
@@ -85,9 +84,7 @@ const LengthsForm = () => {
 				>
 					<div className="formLengths__table">
 						<div className="formLengths__row">
-							<div className="formLengths__cell formLengths__cell--header">
-								{lengthsContext.measureUnit}
-							</div>
+							<div className="formLengths__cell formLengths__cell--header">{unit}</div>
 							<div className="formLengths__cell formLengths__cell--header">number</div>
 							<div
 								className="formLengths__cell formLengths__cell--header formLengths--hidden"
@@ -103,24 +100,19 @@ const LengthsForm = () => {
 							</div>
 						</div>
 						{lengthsContext.lengths.map((l, idx) => {
-							return <LengthForm l={l} idx={idx} key={idx} increment={lengthsContext.increment} />;
+							return <LengthForm l={l} idx={idx} key={idx} />;
 						})}
 					</div>
 					<LengthsButtonBar />
 				</form>
 			);
 		} else if (lengthsContext.lengthsStatus === "add") {
-			return (
-				// <div className="lengthsWrapper">
-				<LengthsRangeForm />
-				// </div>
-			);
+			return <LengthsRangeForm />;
 		} else if (lengthsContext.lengthsStatus === "empty") {
 			return (
 				<div className="formLengths__table">
 					<LengthsButtonBar />
 				</div>
-				// null
 			);
 		}
 	};

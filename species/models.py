@@ -13,10 +13,11 @@ class Sp(models.Model):
     spanish_name = models.CharField(max_length=50, null=True, blank=True)
     a_param = models.DecimalField(max_digits=7, decimal_places=6, null=True, blank=True)
     b_param = models.DecimalField(max_digits=7, decimal_places=6, null=True, blank=True)
-    unit = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(1)], null=True, blank=True)
-    increment = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9)], null=True, blank=True)
+    # unit = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(1)], null=True, blank=True)
+    # increment = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9)], null=True, blank=True)
     APHIA = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(999999)], null=True, blank=True)
     comment = models.CharField(max_length=1000, null=True, blank=True)
+    measurement_type = models.ForeignKey('MeasurementType', on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         constraints = [
@@ -25,3 +26,12 @@ class Sp(models.Model):
 
     def __unicode__(self):
         return self.sp_name
+
+
+class MeasurementType(models.Model):
+    name = models.CharField(max_length=6, unique=True)
+    increment = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9999)])
+    # The conversion factor is a number to convert the measurement units to millimeters (all measurements are stored in
+    # millimeters). The conversion factor is the number of millimeters in one unit of the measurement type.
+    # For example, for a measurement type "cm", the conversion factor must be 10.
+    conversion_factor = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9999)])

@@ -34,7 +34,8 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Catch
         fields = ['catch_id', 'category', 'weight', 'not_measured_individuals', 'haul', 'haul_id', 'group', 'sp_id',
-                  'sp_code', 'sp_name', 'unit', 'increment', 'sampled_weight', ]
+                  'sp_code', 'sp_name', 'unit', 'increment', 'sampled_weight',
+                  ]
 
 
 class SexCatchSerializer(serializers.ModelSerializer):

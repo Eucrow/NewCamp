@@ -5,8 +5,8 @@ from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
 
-from species.models import Sp
-from species.serializers import SpeciesSerializer, SpSimpleSerializer
+from species.models import Sp, MeasurementType
+from species.serializers import SpeciesSerializer, SpSimpleSerializer, MeasurementTypeSerializer
 
 
 # class SpeciesListAPI(APIView):
@@ -59,8 +59,24 @@ class SpeciesGroupAPI(APIView):
     """
     Api to retrieve species by group.
     """
+
     def get(self, request, group):
         sp = Sp.objects.filter(group=group)
         serializer = SpSimpleSerializer(sp, many=True)
         return Response(serializer.data)
 
+
+class MeasurementTypeAPI(RetrieveUpdateDestroyAPIView):
+    """
+    Api to retrieve, update or destroy measurement types.
+    """
+    queryset = MeasurementType.objects.all()
+    serializer_class = MeasurementTypeSerializer
+
+
+class MeasurementTypeListCreateAPI(ListCreateAPIView):
+    '''
+    Api to list measurement types
+    '''
+    queryset = MeasurementType.objects.all()
+    serializer_class = MeasurementTypeSerializer

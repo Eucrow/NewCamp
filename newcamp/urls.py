@@ -24,7 +24,7 @@ from django.conf.urls.static import static
 
 from ships.api import ShipsAPI, ShipAPI
 from gears.api import GearTrawlsAPI, GearTrawlsBasicAPI, GearTrawlAPI, GearTrawlsNamesAPI, GearCTDsBasicAPI
-from species.api import SpAPI, SpeciesGroupAPI, SpeciesAPI
+from species.api import SpAPI, SpeciesGroupAPI, SpeciesAPI, MeasurementTypeAPI, MeasurementTypeListCreateAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
 from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
@@ -70,6 +70,12 @@ urlpatterns = [
                           SpeciesGroupAPI.as_view(), name="species_group_api"),
                   re_path(r'^api/1.0/species/import$',
                           SpeciesImportAPI.as_view(), name="species_import_api"),
+
+                  # MeasurementType API URLS
+                  path('api/1.0/measurement_types/<int:pk>', MeasurementTypeAPI.as_view(),
+                       name='measurement_units_retrieve_update_delete'),
+                  path('api/1.0/measurement_types', MeasurementTypeListCreateAPI.as_view(),
+                       name='measurement_units_list_create'),
 
                   # Trawls API URLS
                   re_path(r'^api/1.0/gears/trawl/$', GearTrawlsAPI.as_view(),
