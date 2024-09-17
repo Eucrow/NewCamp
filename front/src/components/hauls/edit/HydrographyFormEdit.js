@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 const HydrographyFormEdit = ({
 	hydrography,
@@ -15,9 +15,10 @@ const HydrographyFormEdit = ({
 
 	const renderContent = () => {
 		return (
-			<fieldset className="wrapper">
-				<legend>Hydrography characteristics</legend>
-
+			// <fieldset className="wrapper">
+			// 	<legend>Hydrography characteristics</legend>
+			<Fragment>
+				<h4>Hydrography characteristics</h4>
 				<div className="form__row">
 					<label className="field">
 						Date time:
@@ -401,7 +402,8 @@ const HydrographyFormEdit = ({
 						/>
 					</label>
 				</div>
-			</fieldset>
+			</Fragment>
+			// </fieldset>
 		);
 	};
 

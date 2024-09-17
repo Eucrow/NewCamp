@@ -6,16 +6,20 @@ import LengthsContext from "../../contexts/LengthsContext";
 import GlobalContext from "../../contexts/GlobalContext.js";
 
 /**
- * Manages and displays lengths data of a sex.
- * @component
- * @param {number} sex Sex.
- * @param {number} catchId The ID of the catch for which lengths data should be fetched.
- * @param {number} unit The unit of measurement for the lengths. 1 represents cm, 2 represents mm.
- * @param {number} increment The increment value for lengths.
+ * Lengths component is responsible for managing and displaying lengths data for a specific sex and catch ID.
+ * It allows users to view, edit, add, and delete lengths, and handles the transformation of units based on
+ * the measurement type.
+ * The component fetches lengths data from the server, manages state for lengths and their backup,
+ * and provides various utility functions for data manipulation.
  *
- * @returns {JSX.Element} A JSX element that renders the lengths data and provides interfaces for manipulating it.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.sex - The sex identifier for which lengths data is managed.
+ * @param {string} props.catchId - The catch ID associated with the lengths data.
+ * @param {string} props.spId - The species ID used to fetch species-specific data.
+ * @returns {JSX.Element} The rendered Lengths component.
  */
-const Lengths = ({ sex, catchId, unit, increment }) => {
+const Lengths = ({ sex, catchId, spId }) => {
 	const globalContext = useContext(GlobalContext);
 
 	/**
@@ -39,6 +43,8 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 			number_individuals: "",
 		},
 	]);
+
+	const [temporaryLengths, setTemporaryLengths] = useState([]);
 
 	const [totalIndividuals, setTotalIndividuals] = useState();
 
@@ -65,17 +71,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 
 	const apiLengthsSex = "http://127.0.0.1:8000/api/1.0/lengths/";
 
-	const getUnit = (u) => {
-		if (Number(u) === 1) {
-			return "cm";
-		} else if (Number(u) === 2) {
-			return "mm";
-		} else {
-			return "no unit";
-		}
-	};
-
-	const [measureUnit, setMeasureUnit] = useState(getUnit(unit));
+	const [measurement, setMeasurement] = useState();
 
 	useEffect(() => {
 		if (responseError !== null) {
@@ -83,16 +79,65 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 		}
 	}, [responseError]);
 
+	/**
+	 * Fetch the lengths and the measurement type of a sex.
+	 * If there aren't lengths, the measurement type is get from the species data.
+	 * The measurement type is set in the state and the lengths are transformed to the unit of measurement.
+	 * The lengths are stored in a temporary state, temporaryLengths.
+	 */
 	useEffect(() => {
 		getLengths().then((lens) => {
-			lens = fillLengths(lens);
-			setBackupLengths(lens);
-			setLengths(lens);
-			if (lens.length === 0) {
+			if (lens.lengths.length > 0) {
+				// If there are lengths, get the measurement type and set it in the state.
+				// In this way, the measurement type is the stored in the lengths.
+				const measurement = globalContext.getMeasurement(lens.measurement_type_id);
+				setMeasurement(measurement);
+
+				// var transformedLengths = transformUnitsFromMm(lens.lengths, measurement.conversion_factor);
+				var temporaryLengths = transformUnitsFromMm(lens.lengths, measurement.conversion_factor);
+				setTemporaryLengths(temporaryLengths);
+			}
+
+			if (lens.lengths.length === 0) {
 				setLengthsStatus("empty");
+				// When there are no lengths, the measurement type is get from the measurement_type_id
+				// of the props.
+				const measurement = getSp().then((sp) => {
+					const measurement = globalContext.getMeasurement(sp.measurement_type);
+					setMeasurement(measurement);
+				});
 			}
 		});
 	}, []);
+
+	/**
+	 * Whe the measurement and temporaryLengths are set, the lengths are filled and set in the state.
+	 * Is mandatory this step because we need the measurement to fill the lengths, but when the lengths
+	 * are empty (new lengths), the measurement is need to be fetched from the species data (see the previous
+	 * useEffect).
+	 */
+	useEffect(() => {
+		if (measurement && temporaryLengths.length > 0) {
+			var lengths = fillLengths(temporaryLengths);
+			setBackupLengths(lengths);
+			setLengths(lengths);
+		}
+	}, [measurement, temporaryLengths]);
+
+	/**
+	 * Get species data from database.
+	 * @returns JSON with species data.
+	 * @returns {Object} The species data.
+	 */
+	const getSp = async () => {
+		const api = globalContext.apiSpecies + "/" + spId;
+		const response = await fetch(api);
+		if (response.status > 400) {
+			setResponseError("Something went wrong! (getSpecies)");
+		}
+		const data = await response.json();
+		return data;
+	};
 
 	/**
 	 * Get all lengths of a sexId from database.
@@ -106,10 +151,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 			setResponseError("Something went wrong! (getLengths)");
 		}
 		const data = await response.json();
-
-		const updatedData = transformUnitsFromMm(data);
-
-		return updatedData;
+		return data;
 	};
 
 	/**
@@ -126,34 +168,11 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 		});
 
 		setLengthsStatus("empty");
+		setBackupLengths([]);
 
 		if (response.status > 400) {
 			setResponseError("Something went wrong! (deleteLengths())");
 		}
-	};
-
-	/**
-	 * Method used in orderLengths to sort lengths.
-	 */
-	const orderLengthsFunction = (a, b) => {
-		if (a.length < b.length) {
-			return -1;
-		}
-
-		if (a.length > b.length) {
-			return 1;
-		}
-
-		return 0;
-	};
-
-	/**
-	 * Order lengths array.
-	 */
-	const orderLengths = () => {
-		var newLengths = lengths;
-		newLengths.sort(orderLengthsFunction);
-		setLengths(newLengths);
 	};
 
 	/**
@@ -169,16 +188,9 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 
 		var newLengths = [];
 
-		// to calculate the increment in lengths, in case the unit is cm (unit=1)
-		// simply multiply the increment by 10... TODO: Try to do it in a more global way.
-		var totalIncrement = increment;
+		const increment = measurement.increment / measurement.conversion_factor;
 
-		if (unit === 1) {
-			totalIncrement = 10 * Number(increment);
-		}
-
-		// for (let i = minimumLength; i <= maximumLength; i++) {
-		for (let i = minimumLength; i <= maximumLength; i += totalIncrement) {
+		for (let i = minimumLength; i <= maximumLength; i += increment) {
 			let originalLength = lengths.filter((e) => e.length === i);
 
 			if (originalLength.length !== 0) {
@@ -226,17 +238,17 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	 * Transform units to millimeters.
 	 * @param {array} lengths to transform.
 	 */
-	const transformUnitsToMm = (lengths) => {
+	const transformUnitsToMm = (lengths, factor) => {
 		var newLengths = lengths;
 
-		if (Number(unit) === 1) {
-			newLengths = newLengths.map((l) => {
-				return {
-					length: l.length * 10,
-					number_individuals: l.number_individuals,
-				};
-			});
-		}
+		// if (Number(unit) === 1) {
+		newLengths = newLengths.map((l) => {
+			return {
+				length: l.length * factor,
+				number_individuals: l.number_individuals,
+			};
+		});
+		// }
 
 		return newLengths;
 	};
@@ -245,17 +257,15 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	 * Transform units from millimeters to measure unit in state.
 	 * @param {array} lengths to transform.
 	 */
-	const transformUnitsFromMm = (lengths) => {
+	const transformUnitsFromMm = (lengths, factor) => {
 		var newLengths = lengths;
 
-		if (Number(unit) === 1) {
-			newLengths = newLengths.map((l) => {
-				return {
-					length: l.length / 10,
-					number_individuals: l.number_individuals,
-				};
-			});
-		}
+		newLengths = newLengths.map((l) => {
+			return {
+				length: l.length / factor,
+				number_individuals: l.number_individuals,
+			};
+		});
 
 		return newLengths;
 	};
@@ -270,7 +280,13 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	const saveLengths = async (lengths) => {
 		const api = apiLengthsSex + catchId + "/" + sex;
 
-		lengths = transformUnitsToMm(lengths);
+		lengths = transformUnitsToMm(lengths, measurement.conversion_factor);
+
+		// add the measurement type id to the lengths
+		lengths = {
+			measurement_type_id: measurement.id,
+			lengths: lengths,
+		};
 
 		try {
 			const response = await fetch(api, {
@@ -284,7 +300,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 				setResponseError("Something went wrong! (saveLengths())");
 			}
 			let data = await response.json();
-			data = transformUnitsFromMm(data);
+			data = transformUnitsFromMm(data, measurement.conversion_factor);
 			return data;
 		} catch (error) {
 			return console.log(error);
@@ -328,7 +344,11 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	const createRangeLengths = (minLength, maxLength) => {
 		var newLengths = [];
 
-		for (var l = Number(minLength); l <= Number(maxLength); l += increment) {
+		for (
+			var l = Number(minLength);
+			l <= Number(maxLength);
+			l += measurement.increment / measurement.conversion_factor
+		) {
 			newLengths.push({
 				length: l,
 				number_individuals: "",
@@ -391,7 +411,7 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 	const addLength = (l, index) => {
 		let newLengths = [...lengths];
 
-		let newLength = Number(l) + Number(increment);
+		let newLength = Number(l) + Number(measurement.increment / measurement.conversion_factor);
 
 		newLengths.splice(index + 1, 0, {
 			length: newLength,
@@ -423,8 +443,6 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 					lengths: lengths,
 					totalIndividuals: totalIndividuals,
 					sex: sex,
-					measureUnit: measureUnit,
-					increment: increment,
 					lengthsStatus: lengthsStatus,
 					setLengthsStatus: setLengthsStatus,
 					validLengths: validLengths,
@@ -436,12 +454,10 @@ const Lengths = ({ sex, catchId, unit, increment }) => {
 					deleteLengths: deleteLengths,
 					saveSexAndLengths: saveSexAndLengths,
 					createRangeLengths: createRangeLengths,
+					measurement: measurement,
 				}}
 			>
-				<div className="sexWrapper__title">
-					{globalContext.sexesAvailable[sex]}
-					{/* {<LengthsButtonBar />} */}
-				</div>
+				<div className="sexWrapper__title">{globalContext.sexesAvailable[sex]}</div>
 
 				<LengthsForm />
 			</LengthsContext.Provider>

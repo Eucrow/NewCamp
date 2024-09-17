@@ -21,18 +21,32 @@ class LengthSerializer(serializers.ModelSerializer):
         fields = ['sex_id', 'length', 'number_individuals', ]
 
 
-class LengthSexSerializer(serializers.ModelSerializer):
+class LengthDetailSerializer(serializers.ModelSerializer):
     """
-    Lengths serializer by sex
+    Serializer for individual length details
     """
-    sex_id = serializers.IntegerField(source='sex.id')
-    sex = serializers.IntegerField(source='sex.sex')
-    catch_id = serializers.IntegerField(source='sex.catch_id')
-    length_id = serializers.IntegerField(source='id')
 
     class Meta:
         model = Length
-        fields = ['catch_id', 'sex_id', 'sex', 'length_id', 'length', 'number_individuals', ]
+        fields = ['length', 'number_individuals']
+
+
+class LengthSexRetrieveSerializer(serializers.Serializer):
+    """
+    Serializer to retrieve lengths by sex with measurement_type_id
+    """
+    measurement_type_id = serializers.IntegerField()
+    lengths = LengthDetailSerializer(many=True)
+
+
+class LengthSexCreateSerializer(serializers.ModelSerializer):
+    """
+
+    """
+
+    class Meta:
+        model = Length
+        fields = ['length', 'number_individuals', ]
 
 # class individualSerializer(serializers.ModelSerializer):
 #     class Meta:

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from catches.serializers import SexCatchSerializer
 from samples.models import Length, SampledWeight, Sex
-from samples.serializers import SampleWeightSerializer, LengthSexSerializer
+from samples.serializers import SampleWeightSerializer, LengthSexRetrieveSerializer, LengthSexCreateSerializer
 
 
 # class SampledWeightCreate(APIView):
@@ -31,38 +31,43 @@ class LengthsSexAPI(APIView):
     """
 
     Retrieve, create and delete lengths with its sex.
-
     There is not implemented the update method for simplicity. All the lengths
-
     of a sex are deleted and created in the same request. So instead of update the lengths,
-
     the user must delete them and create new ones.
     """
 
     def get(self, request, catch_id, sex):
-        lengths = Length.objects.filter(sex_id__catch_id=catch_id, sex_id__sex=sex)
-
-        serializer = LengthSexSerializer(lengths, many=True)
-
+        try:
+            sex_instance = Sex.objects.get(catch_id=catch_id, sex=sex)
+        except Sex.DoesNotExist:
+            return Response({'measurement_type_id': None, 'lengths': []})
+        lengths = Length.objects.filter(sex_id=sex_instance.id)
+        data = {
+            'measurement_type_id': sex_instance.measurement_type_id,
+            'lengths': lengths
+        }
+        serializer = LengthSexRetrieveSerializer(data)
         return Response(serializer.data)
 
     def post(self, request, catch_id, sex):
-        # Create a mew Sex instance
+        # Extract measurement_type_id from the request data
+        measurement_type_id = request.data.get('measurement_type_id')
+        # Create a new Sex instance
+        # sex_instance, create = Sex.objects.update_or_create(catch_id=catch_id, sex=sex,
+        #                                                     defaults={'measurement_type_id': measurement_type_id})
 
-        sex_instance = Sex.objects.create(catch_id=catch_id, sex=sex)
-
+        sex_instance = Sex.objects.create(catch_id=catch_id, sex=sex, measurement_type_id=measurement_type_id)
         # Create a new Length instance for each length in lengths_data
-
-        # for length_data in lengths_data:
-
-        for length_data in request.data:
-            Length.objects.create(sex_id=sex_instance.id, **length_data)
+        for length_data in request.data.get('lengths'):
+            length_instance = Length(sex_id=sex_instance.id, **length_data)
+            length_instance.full_clean()  # call full_clean() method to run the clean() method in Length model
+            length_instance.save()
 
         # Retrieve the newly created Length instances
 
         lengths = Length.objects.filter(sex_id=sex_instance.id)
 
-        serializer = LengthSexSerializer(lengths, many=True)
+        serializer = LengthSexCreateSerializer(lengths, many=True)
         return Response(serializer.data, status=HTTP_201_CREATED)
 
     def delete(self, request, catch_id, sex):

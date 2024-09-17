@@ -78,14 +78,7 @@ const Catch = ({
 						allowedSexes={allowedSexes}
 						editCatchStatus={setCatchStatus}
 					/>
-					{viewSexes && (
-						<Sexes
-							catchId={thisCatch.catch_id}
-							unit={thisCatch.unit}
-							increment={thisCatch.increment}
-							viewSexes={viewSexes}
-						/>
-					)}
+					{viewSexes && <Sexes catchId={thisCatch.catch_id} spId={thisCatch.sp_id} viewSexes={viewSexes} />}
 				</Fragment>
 			);
 		} else if (catchStatus === "edit") {

@@ -20,7 +20,7 @@ from catches.models import Catch
 from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 from hauls.serializers import ImportHydrographyesSerializer
 from newcamp.apps import convert_comma_to_dot, empty
-from species.models import Sp
+from species.models import Sp, MeasurementType
 from stations.models import Station
 from strata.models import Stratum
 from stratifications.models import Stratification
@@ -138,7 +138,8 @@ def get_sp_id(row):
     try:
         return Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP']).id
     except ObjectDoesNotExist:
-        raise ValueError("Sp object with group {} and sp_code {} does not exist".format(row['GRUPO'], row['ESP']))
+        raise ValueError(
+            "Sp object with group " + str(row['GRUPO']) + " and sp_code " + str(row['ESP']) + " does not exists")
 
 
 # def get_category_id(row):
@@ -207,6 +208,44 @@ def get_sex_id(row):
     sex_id = Sex.objects.get(catch_id=row['catch_id'], sex=row['SEXO']).id
 
     return sex_id
+
+
+def fill_measurement_type():
+    """
+    Fill the measurement type table with the values of the old camp. Only if the data doesn't exist.
+    :return: HttpResponse
+    """
+    MeasurementType.objects.get_or_create(name="mm", increment=1, conversion_factor=1)
+    MeasurementType.objects.get_or_create(name="cm", increment=10, conversion_factor=10)
+    MeasurementType.objects.get_or_create(name="1/2cm", increment=5, conversion_factor=10)
+
+
+def get_unit_name(unit, increment):
+    """
+    Get the unit name from the code of the species. Used in pandas apply function.
+    :param unit: Unit of measurement.
+    :param increment: Increment of the measurement.
+    :return: Unit of the species.
+    """
+
+    if (unit == 1) & (increment == 1):
+        return "cm"
+    # there are some cases where unit is 1 and the increment is 0, but it shouldn't be, so I set it to cm:
+    elif (unit == 1) & (increment == 0):
+        return "cm"
+    # there are some cases where unit is 1 and the increment is 2, but it shouldn't be, so I set it to cm:
+    elif (unit == 1) & (increment == 2):
+        return "cm"
+    elif (unit == 2) & (increment == 1):
+        return "mm"
+    elif (unit == 2) & (increment == 5):
+        return "1/2cm"
+    # there are some cases where unit is 2 and the increment is 0, but it shouldn't be, so I set it to mm:
+    elif (unit == 2) & (increment == 0):
+        return "mm"
+    # there are some cases where unit is 0 and the increment is 1, but it shouldn't be, so I set it to cm:
+    elif (unit == 0) & (increment == 1):
+        return "cm"
 
 
 class FaunasImport:
@@ -306,6 +345,8 @@ class SpeciesImport:
             "APHIA": "APHIA",
         }
 
+    fill_measurement_type()
+
     def get_file(self, file_key):
         """
         Get file from request in pandas dataframe format
@@ -326,9 +367,25 @@ class SpeciesImport:
 
         species_df['comment'] = ""
 
+        species_df['measurement_type_id'] = ""
+
         # species_df['id'] = range(0, 0 + len(species_df))
 
         return species_df
+
+    def get_measurement_type(self, row):
+        """
+        Get the measurement type id. Used in pandas apply function.
+        :param row: row of the apply function
+        :return: Measurement type id.
+        """
+        unit_name = get_unit_name(row['unit'], row['increment'])
+        # print(row['unit'], row['increment'])
+        try:
+            measurement_type = MeasurementType.objects.get(name=unit_name)
+            return measurement_type.id
+        except ObjectDoesNotExist:
+            raise ValueError("MeasurementType object with name {} does not exist".format(unit_name))
 
     def import_species_csv(self):
         """
@@ -344,11 +401,16 @@ class SpeciesImport:
 
         # species
         species_table = self.format_species_table(species_file)
+
+        species_table['measurement_type_id'] = species_table.apply(self.get_measurement_type, axis=1)
+        species_table = species_table.drop(columns=['unit', 'increment'], axis=1)
+
         # Previously use the argument if_exists="replace" to avoid partial saving of new species files.
         # But in this way, the primary key is not generated (to_sql not allow it) and change the original
         # structure without primary key.
         # At the end, I use if_exists="append" to maintain the original primary key.
         species_table.to_sql("species_sp", con=engine, if_exists="append", index="id")
+
         return HttpResponse(self.message, status=HTTP_201_CREATED)
 
 
@@ -569,8 +631,11 @@ class HaulsImport:
         :param row: row of the apply function
         :return: gear id
         """
-        trawl_gear = Trawl.objects.get(name=row["ARTE"])
-        return trawl_gear.id
+        try:
+            trawl_gear = Trawl.objects.get(name=row["ARTE"])
+            return trawl_gear.id
+        except Trawl.DoesNotExist:
+            print("The trawl " + str(row["ARTE"]) + " does not exists in Trawl table.")
 
     def get_stratum_id(self, row):
         """
@@ -832,6 +897,28 @@ class NtallImport:
         sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
         return sp.unit
 
+    def get_measurement_factor(self, row):
+        """
+        Get the measurement factor of the species. Used in pandas apply function.
+        :param row: row of the apply function
+        :return: Measurement factor
+        """
+        sp = Sp.objects.get(group=row['GRUPO'], sp_code=row['ESP'])
+        return sp.measurement_type.conversion_factor
+
+    def get_measurement_type(self, grupo, esp):
+        """
+        Get the measurement type id. Used in pandas apply function.
+        :param row: row of the apply function
+        :return: Measurement type id.
+        """
+        sp = Sp.objects.get(group=grupo, sp_code=esp)
+        try:
+            measurement_type = sp.measurement_type
+            return measurement_type.id
+        except ObjectDoesNotExist:
+            raise ValueError("MeasurementType object with measurement_type {} does not exist".format(measurement_type))
+
     def transform_length(self, row):
         """
         Fix the lengths of the species. Used in pandas apply function.
@@ -841,16 +928,21 @@ class NtallImport:
         :param row: row of the apply function
         :return: Fixed lengths
         """
-        unit = self.get_sp_unit(row)
 
-        if unit == 1:
-            return row['TALLA'] * 10
+        measurement_factor = self.get_measurement_factor(row)
 
-        if unit == 2:
-            return row['TALLA']
+        return row['TALLA'] * measurement_factor
 
-        if unit != 1 and unit != 2:
-            return row['TALLA']
+        # unit = self.get_sp_unit(row)
+        #
+        # if unit == 1:
+        #     return row['TALLA'] * 10
+        #
+        # if unit == 2:
+        #     return row['TALLA']
+        #
+        # if unit != 1 and unit != 2:
+        #     return row['TALLA']
 
     def format_sexes_table(self, file):
         lengths_table = self.ntall
@@ -858,15 +950,19 @@ class NtallImport:
         # get the catch grouped
         sexed_table = lengths_table[['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO']].drop_duplicates()
         sexed_table['catch_id'] = sexed_table.apply(get_catch_id, axis=1, args=[self.survey_name])
+        sexed_table['measurement_type_id'] = sexed_table.apply(
+            lambda row: self.get_measurement_type(row["GRUPO"], row["ESP"]), axis=1)
 
         fields = list(self.fields_sexes.values())
         fields.extend(['catch_id'])
+        fields.extend(['measurement_type_id'])
 
         sexed_table = sexed_table[fields]
 
         new_fields = list(self.fields_sexes.keys())
         new_fields.extend(['catch_id'])
-
+        new_fields.extend(['measurement_type_id'])
+        
         sexed_table.columns = new_fields
 
         return sexed_table
@@ -886,8 +982,8 @@ class NtallImport:
                               on=['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO'])
 
         lengths_df['TALLA'] = lengths_df.apply(self.transform_length, axis=1)
-        duplicated = lengths_df[['sex_id', 'TALLA', 'NUMER']].duplicated()
-        lengths_df_duplicted = lengths_df[duplicated]
+        # duplicated = lengths_df[['sex_id', 'TALLA', 'NUMER']].duplicated()
+        # lengths_df_duplicted = lengths_df[duplicated]
         fields = list(self.fields_lengths.values())
         fields.extend(['sex_id'])
 

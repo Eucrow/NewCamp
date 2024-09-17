@@ -20,6 +20,8 @@ class Sex(models.Model):
         'catches.Catch', on_delete=models.CASCADE, related_name='sexes')
     sex = models.IntegerField(validators=[MinValueValidator(
         1), MaxValueValidator(3)], null=False, blank=False)
+    measurement_type = models.ForeignKey('species.MeasurementType', on_delete=models.CASCADE,
+                                         related_name='measurement_type')
 
     class Meta:
         unique_together = ('sex', 'catch')
@@ -37,13 +39,12 @@ class Length(models.Model):
         unique_together = ('sex', 'length')
 
     def clean(self):
-        # to avoid circular imports, the import of notMeasuredIndividual model is done here
-        from not_measured_individuals.models import notMeasuredIndividual
-        # only lengths are allowed to be created if no individuals exist
-        if self.number_individuals is not None:
-            if notMeasuredIndividual.objects.filter(catch=self.catch).exists():
-                raise ValidationError('Individuals already exist for this catch. It is not possible to add lengths if'
-                                      'already exists number of individuals in the category.')
+        from catches.models import Catch
+        not_measured_individuals = Catch.objects.get(id=self.sex.catch_id).not_measured_individuals
+        print(not_measured_individuals)
+        if not_measured_individuals is not None:
+            raise ValidationError('Individuals already exist for this catch. It is not possible to add lengths if '
+                                  'already exists number of individuals in the category.')
 
     def __str__(self):
         return '%d: %d' % (self.length, self.number_individuals)

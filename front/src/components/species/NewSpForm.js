@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 
 import SpeciesContext from "../../contexts/SpeciesContext";
+import GlobalContext from "../../contexts/GlobalContext";
 
 import SpButtonBar from "./SpButtonBar";
 
@@ -8,6 +9,7 @@ const NewSpForm = () => {
 	const [sp, setSp] = useState({});
 
 	const speciesContext = useContext(SpeciesContext);
+	const globalContext = useContext(GlobalContext);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -150,29 +152,22 @@ const NewSpForm = () => {
 				<fieldset className="wrapper">
 					<legend>Measurement</legend>
 					<span className="field">
-						<label htmlFor="unit">Measure unit:</label>
-						<select id="unit" name="unit" required defaultValue={""} onChange={(e) => handleChange(e)}>
-							<option value=""></option>
-							<option value="1">mm</option>
-							<option value="2">cm</option>
-						</select>
-					</span>
-
-					<span className="field">
-						<label htmlFor="increment">Increment:</label>
-						<input
-							type="numeric"
-							id="increment"
-							name="increment"
-							className="input__noSpinner"
+						<label htmlFor="measurement_type">Measure unit:</label>
+						<select
+							id="measurement_type"
+							name="measurement_type"
 							required
-							min="0"
-							max="9"
-							size={1}
-							step={1}
+							defaultValue={""}
 							onChange={(e) => handleChange(e)}
-							onKeyDown={speciesContext.preventNegativeE}
-						/>
+						>
+							{globalContext.measurementTypes.map((mt) => {
+								return (
+									<option key={mt.id} value={mt.id}>
+										{mt.name}
+									</option>
+								);
+							})}
+						</select>
 					</span>
 				</fieldset>
 				<div className="form__row">

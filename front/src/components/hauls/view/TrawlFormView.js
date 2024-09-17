@@ -1,12 +1,14 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import TrawlSamplingPointView from "./TrawlSamplingPointView";
 
 const TrawlFormView = ({ trawl }) => {
 	const renderContent = () => {
 		return (
-			<fieldset className="wrapper">
-				<legend>Trawl characteristics:</legend>
+			// <fieldset className="wrapper">
+			// <legend>Trawl characteristics:</legend>
+			<Fragment>
+				<h4>Trawl characteristics</h4>
 				<div className="characteristicsGrid characteristicsGrid--trawl form__row">
 					{/* first row titles */}
 					<div></div>
@@ -23,7 +25,6 @@ const TrawlFormView = ({ trawl }) => {
 						Depth (m):
 					</div>
 				</div>
-
 				<TrawlSamplingPointView
 					nameSamplingPoint={"Shooting"}
 					typeSamplingPoint={"shooting"}
@@ -40,7 +41,6 @@ const TrawlFormView = ({ trawl }) => {
 					longitude={trawl.bottom_longitude}
 					depth={trawl.bottom_depth}
 				/>
-
 				<TrawlSamplingPointView
 					nameSamplingPoint={"Trawling"}
 					typeSamplingPoint={"trawling"}
@@ -49,7 +49,6 @@ const TrawlFormView = ({ trawl }) => {
 					longitude={trawl.trawling_longitude}
 					depth={trawl.trawling_depth}
 				/>
-
 				<TrawlSamplingPointView
 					nameSamplingPoint={"Hauling"}
 					typeSamplingPoint={"hauling"}
@@ -58,7 +57,6 @@ const TrawlFormView = ({ trawl }) => {
 					longitude={trawl.hauling_longitude}
 					depth={trawl.hauling_depth}
 				/>
-
 				<TrawlSamplingPointView
 					nameSamplingPoint={"Take Off"}
 					typeSamplingPoint={"take_off"}
@@ -67,7 +65,6 @@ const TrawlFormView = ({ trawl }) => {
 					longitude={trawl.take_off_longitude}
 					depth={trawl.take_off_depth}
 				/>
-
 				<TrawlSamplingPointView
 					nameSamplingPoint={"On Board"}
 					typeSamplingPoint={"on_board"}
@@ -76,7 +73,6 @@ const TrawlFormView = ({ trawl }) => {
 					longitude={trawl.on_board_longitude}
 					depth={trawl.on_board_depth}
 				/>
-
 				<div className="form__row">
 					<label className="field">
 						Course (degrees):
@@ -224,7 +220,8 @@ const TrawlFormView = ({ trawl }) => {
 						<textarea disabled name="comment" id="comment" value={trawl.comment || ""} />
 					</label>
 				</div>
-			</fieldset>
+			</Fragment>
+			// </fieldset>
 		);
 	};
 
