@@ -37,7 +37,7 @@ const StationButtonBar = ({ stationId, handleEdit, edit, add }) => {
 		ButtonBar = (
 			<div className="station__cell station__cell--right">
 				<div className="buttonsWrapper">
-					<UiButtonStatusHandle handleMethod={handleEdit} buttonText={"Edit sex"} newStatus={true}>
+					<UiButtonStatusHandle handleMethod={handleEdit} buttonText={"Edit station"} newStatus={true}>
 						<UiIconEdit />
 					</UiButtonStatusHandle>
 					<UiButtonDelete
