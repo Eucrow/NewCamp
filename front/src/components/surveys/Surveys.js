@@ -197,7 +197,7 @@ const Surveys = () => {
 		e.target.setCustomValidity("");
 
 		if (typeof end_date != "undefined" && e.target.value > end_date) {
-			e.target.setCustomValidity("Start date must be sooner than end date.");
+			e.target.setCustomValidity("Start date must be before the end date.");
 		}
 
 		return e.target.reportValidity();
@@ -213,7 +213,7 @@ const Surveys = () => {
 		e.target.setCustomValidity("");
 
 		if (typeof start_date != "undefined" && start_date > e.target.value) {
-			e.target.setCustomValidity("End date must be later than start date.");
+			e.target.setCustomValidity("End date must be after the start date.");
 		}
 
 		return e.target.reportValidity();
