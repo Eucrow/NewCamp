@@ -10,26 +10,13 @@ import SurveyButtonBar from "./SurveyButtonBar";
 const NewSurveyForm = () => {
 	const surveysContext = useContext(SurveysContext);
 
-	const [survey, setSurvey] = useState({
-		// description: "",
-		// acronym: "",
-		// start_date: "",
-		// end_date: "",
-		// ship: "",
-		// hauls_duration: "",
-		// stratification_id: "",
-		// width_x: "",
-		// width_y: "",
-		// origin_x: "",
-		// origin_y: "",
-		// comment: "",
-	});
+	const [survey, setSurvey] = useState({});
 
 	const formRef = React.createRef();
 
 	/**
 	 * Manage fields change in 'survey' state.
-	 * This method is diferent to handleChange os Surveys component.
+	 * This method is different to handleChange os Surveys component.
 	 * @param {event} e - Event.
 	 */
 	const handleChange = (e) => {
@@ -92,7 +79,7 @@ const NewSurveyForm = () => {
 							type="date"
 							id="start_date"
 							name="start_date"
-							onChange={(e) => {
+							onBlur={(e) => {
 								handleChange(e);
 								surveysContext.validateStartDate(e, survey.end_date);
 							}}
@@ -104,7 +91,7 @@ const NewSurveyForm = () => {
 							type="date"
 							id="end_date"
 							name="end_date"
-							onChange={(e) => {
+							onBlur={(e) => {
 								handleChange(e);
 								surveysContext.validateEndDate(e, survey.start_date);
 							}}
