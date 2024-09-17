@@ -18,7 +18,6 @@ const LengthsRangeForm = () => {
 	const [validRange, setValidRange] = useState(true);
 
 	const unit = lengthsContext.measurement ? lengthsContext.measurement.name : "no unit";
-	// const increment = lengthsContext.measurement ? lengthsContext.measurement.increment : 1;
 	const increment = lengthsContext.measurement.increment / lengthsContext.measurement.conversion_factor;
 
 	const handleMinimumRange = (e) => {
@@ -33,7 +32,7 @@ const LengthsRangeForm = () => {
 	let maximumRef = useRef(null);
 
 	useEffect(() => {
-		if (minimumRange > maximumRange) {
+		if (Number(minimumRange) > Number(maximumRange)) {
 			maximumRef.current.setCustomValidity("The maximum length must be greater than the minimum length.");
 			setValidRange(false);
 		} else {
