@@ -43,7 +43,7 @@ class HaulListCsvApi(ListAPIView):
 
 class HaulAPI(APIView):
     """
-    Endpoint to retrieve and delete information of one haul of a survey
+    Endpoint to manage the Haul of a survey.
     """
 
     def get(self, request, haul_id):

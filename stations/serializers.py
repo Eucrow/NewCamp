@@ -68,8 +68,6 @@ class HaulSerializer(serializers.ModelSerializer):
 
     trawl = serializers.SerializerMethodField()
     trawl_id = serializers.SerializerMethodField()
-    # trawl = serializers.IntegerField(source="trawl.name")
-    # trawl_id = serializers.IntegerField(source="trawl.id")
 
     sampler = serializers.CharField(source="sampler.sampler")
     sampler_id = serializers.IntegerField(source="sampler.id")
@@ -82,14 +80,13 @@ class HaulSerializer(serializers.ModelSerializer):
 
     stratum = serializers.SerializerMethodField()
     stratum_id = serializers.SerializerMethodField()
-    # stratum = serializers.CharField(source="stratum.stratum")
-    # stratum_id = serializers.IntegerField(source="stratum.id")
 
     station = serializers.IntegerField(source="station.station")
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'valid', 'trawl', 'trawl_id', 'sampler', 'sampler_id', 'stratum', 'stratum_id',
+        fields = ['id', 'haul', 'valid', 'special', 'trawl', 'trawl_id', 'sampler', 'sampler_id', 'stratum',
+                  'stratum_id',
                   'station']
         depth = 1
 

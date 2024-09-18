@@ -56,6 +56,11 @@ const HaulFormView = ({ haul, detail, setEdit, setDetail, catchesMode, setCatche
 					<input type="checkbox" name="valid" id="valid" disabled defaultChecked={haul.valid} />
 				</label>
 
+				<label className="form__cell">
+					Special:
+					<input type="checkbox" name="special" id="special" disabled defaultChecked={haul.special} />
+				</label>
+
 				{haul.sampler_id === 1 ? (
 					<label className="form__cell">
 						Stratum:

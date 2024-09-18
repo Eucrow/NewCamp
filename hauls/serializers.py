@@ -63,7 +63,7 @@ class HaulSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Haul
-        fields = ['id', 'haul', 'valid', 'trawl_id', 'trawl',
+        fields = ['id', 'haul', 'valid', 'special', 'trawl_id', 'trawl',
                   # 'ctd', 'ctd_id',
                   'sampler_id', 'sampler', 'stratum_id',
                   'stratum', 'station_id', 'station']
