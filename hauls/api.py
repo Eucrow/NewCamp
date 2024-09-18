@@ -1,52 +1,17 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
-from rest_framework.generics import RetrieveAPIView, ListAPIView
-from rest_framework.parsers import MultiPartParser
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT, HTTP_200_OK
 from rest_framework.views import APIView
 from rest_framework_csv import renderers as r
 
-from gears.models import Trawl
 from gears.models import CTD
-# from hauls.views import HaulsImport
 from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 from hauls.serializers import HaulSerializer, HaulGeoJSONSerializer, HaulTrawlSerializer, HaulHydrographySerializer, \
     HydrographySerializer, MeteorologySerializer, TrawlSerializer
 from samplers.models import Sampler
 from stations.models import Station
-from strata.models import Stratum
-
-from surveys.models import Survey
-
-
-# class HaulsImportAPI(APIView, HaulsImport):
-#     parser_classes = (MultiPartParser,)
-#
-#     def put(self, request):
-#         return self.import_hauls_csv()
-
-
-class HaulListAPI(ListAPIView):
-    """
-    Endpoint to get the hauls of a survey
-    """
-
-    def get(self, request, survey_id):
-        hauls = Haul.objects.filter(station__survey__pk=survey_id)
-        serializer = HaulSerializer(hauls, many=True, context={'request': request})
-        return Response(serializer.data)
-
-
-class HaulListAllAPI(ListAPIView):
-    """
-    Endpoint to get all the hauls of all surveys
-    """
-
-    def get(self, request):
-        hauls = Haul.objects.all()
-        serializer = HaulSerializer(hauls, many=True)
-        return Response(serializer.data)
 
 
 class HaulListCsvApi(ListAPIView):
@@ -78,7 +43,7 @@ class HaulListCsvApi(ListAPIView):
 
 class HaulAPI(APIView):
     """
-    Endpoint to retrieve and delete information of one haul of a survey
+    Endpoint to manage the Haul of a survey.
     """
 
     def get(self, request, haul_id):

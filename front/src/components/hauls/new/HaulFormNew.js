@@ -117,6 +117,17 @@ const HaulFormNew = ({ newHaul, handleChange, validateHaulSampler, haulRef, samp
 						}}
 					/>
 				</label>
+				<label className="form__cell">
+					Special:
+					<input
+						type="checkbox"
+						id="special"
+						name="special"
+						onChange={(e) => {
+							handleChange(e);
+						}}
+					/>
+				</label>
 
 				{newHaul.sampler_id === "1" ? (
 					<label className="form__cell">

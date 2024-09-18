@@ -35,6 +35,7 @@ const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, sa
 		trawl_id: "",
 		ctd_id: "",
 		valid: "off",
+		special: "off",
 	});
 
 	const [meteo] = useState({});
@@ -60,6 +61,7 @@ const HaulHandleNew = ({ station_id, handleAdd, validateHaulSampler, haulRef, sa
 			trawl_id: newHaul.trawl,
 			ctd_id: newHaul.ctd,
 			valid: newHaul.valid,
+			special: newHaul.special,
 			meteo: meteo,
 			trawl_characteristics: trawlCharacteristics,
 			hydrography_characteristics: hydrographyCharacteristics,

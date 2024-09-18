@@ -16,7 +16,9 @@ class Haul(models.Model):
     haul = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(99)])
     # gear = models.PositiveIntegerField(null=True, blank=True)
-    valid = models.BooleanField(null=True, blank=True)
+    # valid = models.BooleanField(null=True, blank=True)
+    valid = models.BooleanField(default=True)
+    special = models.BooleanField(default=False)
 
     SAMPLER_TYPE_CHOICES = [
         ('trawl', 'Trawl'),
