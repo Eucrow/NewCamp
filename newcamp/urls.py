@@ -33,7 +33,7 @@ from stratifications.api import StratificationsAPI
 from strata.api import StrataAPI
 from samplers.api import SamplersAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
-from hauls.api import HaulListAPI, HaulListAllAPI, HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, \
+from hauls.api import HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, \
     HaulHydrographyAPI, HydrographyAPI, MeteorologyAPI, TrawlAPI
 from catches.api import CatchHaulListAPI, CatchHaulAPI, CatchVerboseAPI
 from samples.api import LengthsSexAPI
@@ -138,6 +138,11 @@ urlpatterns = [
                   re_path(r'^api/1.0/haul/(?P<haul_id>[0-9]+)$',
                           HaulAPI.as_view(), name="haul_api"),
                   re_path(r'^api/1.0/haul/new/$', HaulAPI.as_view(), name="add_haul_api"),
+                  re_path(r'^api/1.0/hauls/csv/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListCsvApi.as_view(),
+                          name="get_hauls_api_csv"),
+
+                  re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$',
+                          HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
 
                   # TODO: I think this is not needed. Check it.
                   # Meteorology API URLs
@@ -159,15 +164,6 @@ urlpatterns = [
                           name="get_hydrography_haul_api"),
                   re_path(r'^api/1.0/haul/hydrography/new/$',
                           HaulHydrographyAPI.as_view(), name="add_hydrography_haul_api"),
-
-                  re_path(r'^api/1.0/hauls/$', HaulListAllAPI.as_view(), name="get_hauls_api"),
-                  re_path(r'^api/1.0/hauls/(?P<survey_id>[0-9][0-9])$',
-                          HaulListAPI.as_view(), name="get_hauls_api"),
-                  re_path(r'^api/1.0/hauls/csv/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListCsvApi.as_view(),
-                          name="get_hauls_api_csv"),
-
-                  re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$',
-                          HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
 
                   # Catches API URLS
                   re_path(r'^api/1.0/catches/(?P<haul_id>[0-9]+)$',

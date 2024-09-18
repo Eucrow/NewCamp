@@ -97,6 +97,17 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 		});
 	};
 
+	const handleChangeSpecial = (e) => {
+		const value = !Boolean(e.target.value);
+
+		setThisHaul((prev_state) => {
+			return {
+				...prev_state,
+				special: value,
+			};
+		});
+	};
+
 	const renderContent = () => {
 		return (
 			<form className="form__row form--wide" onSubmit={(e) => handleSubmit(e, thisHaul.id, station_id)}>
@@ -194,6 +205,20 @@ const HaulFormEdit = ({ thisHaul, setThisHaul, station_id, edit, setEdit, handle
 						value={thisHaul.valid || ""}
 						onChange={(e) => {
 							handleChangeValid(e);
+						}}
+					/>
+				</label>
+
+				<label className="form__cell">
+					Special:
+					<input
+						type="checkbox"
+						name="special"
+						id="special"
+						defaultChecked={thisHaul.special}
+						value={thisHaul.special || ""}
+						onChange={(e) => {
+							handleChangeSpecial(e);
 						}}
 					/>
 				</label>
