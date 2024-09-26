@@ -22,7 +22,7 @@ class HaulListCsvApi(ListAPIView):
 
     def get(self, request, acronym_survey):
         hauls = Haul.objects.filter(station__survey__acronym=acronym_survey)
-        serializer = HaulSerializer(hauls, many=True)
+        serializer = HaulSerializer(hauls, context={'request': request}, many=True)
 
         response = Response(serializer.data, content_type='text/csv')
         content_disposition = 'attachment; filename=' + 'hauls_' + acronym_survey + '.csv'
@@ -93,7 +93,7 @@ class MeteorologyAPI(APIView):
 
     def get(self, request, haul_id):
         """Retrieve the Meteorology data for a given haul. """
-        print(type(haul_id))
+        # print(type(haul_id))
         haul_id = int(haul_id)
         meteorology = get_object_or_404(Meteorology, haul_id=haul_id)
         serializer = MeteorologySerializer(meteorology)

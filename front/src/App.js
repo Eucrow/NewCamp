@@ -13,6 +13,7 @@ import Stations from "./components/stations/Stations.js";
 import Species from "./components/species/Species";
 import Ships from "./components/ships/Ships";
 import Measurements from "./components/measurements/Measurements";
+import Reports from "./components/reports/Reports.js";
 
 export default function App() {
 	const [selectedSurvey, setSelectedSurvey] = useState(() => {
@@ -29,9 +30,11 @@ export default function App() {
 
 	const apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
 	const apiMeasurementTypes = "http://127.0.0.1:8000/api/1.0/measurement_types";
+	const apiSurveys = "http://127.0.0.1:8000/api/1.0/survey/";
 
 	const [species, setSpecies] = useState([]);
 	const [measurementTypes, setMeasurementTypes] = useState([]);
+	const [surveys, setSurveys] = useState([]);
 
 	useEffect(() => {
 		fetch(apiSpecies)
@@ -41,6 +44,18 @@ export default function App() {
 		fetch(apiMeasurementTypes)
 			.then((response) => response.json())
 			.then((data) => setMeasurementTypes(data));
+
+		fetch(apiSurveys)
+			.then((response) => {
+				if (response.status > 400) {
+					alert("something were wrong getting the surveys!!");
+				}
+				return response.json();
+			})
+			.then((surveys) => {
+				setSurveys(surveys);
+			})
+			.catch((error) => console.log(error));
 	}, []);
 
 	const sexesAvailable = {
@@ -90,6 +105,8 @@ export default function App() {
 					getMeasurementName,
 					getMeasurementFactor,
 					getMeasurement,
+					apiSurveys,
+					surveys,
 				}}
 			>
 				<Router>
@@ -129,6 +146,11 @@ export default function App() {
 								</Link>
 							</li>
 							<li className="headNav__item" role="none">
+								<Link to="/Reports" role="menuitem">
+									Reports
+								</Link>
+							</li>
+							<li className="headNav__item" role="none">
 								<Link to="/" role="menuitem">
 									Home
 								</Link>
@@ -155,6 +177,7 @@ export default function App() {
 					<Route path="/Species" component={Species} />
 					<Route path="/Ships" component={Ships} />
 					<Route path="/Measurements" component={Measurements} />
+					<Route path="/Reports" component={Reports} />
 				</Router>
 			</GlobalContext.Provider>
 		</SelectedSurveyContext.Provider>
@@ -168,48 +191,6 @@ const Home = () => (
 		<FakeText />
 	</Fragment>
 );
-// Surveys Page
-// const Surveys = () => (
-//   <Fragment>
-//     <h1>Surveys</h1>
-//     <FakeText />
-//   </Fragment>
-//   );
-// Stations Page
-// const Stations = () => (
-// 	<Fragment>
-// 		<h1>Stations</h1>
-// 		<FakeText />
-// 	</Fragment>
-// );
-// Hauls Page
-// const Hauls = () => (
-//   <Fragment>
-//     <h1>Hauls</h1>
-//     <FakeText />
-//   </Fragment>
-//   );
-// Weights Page
-// const Weights = () => (
-// 	<Fragment>
-// 		<h1>Weights</h1>
-// 		<FakeText />
-// 	</Fragment>
-// );
-// // Samples Page
-// const Samples = () => (
-// 	<Fragment>
-// 		<h1>Samples</h1>
-// 		<FakeText />
-// 	</Fragment>
-// );
-// Species Page
-// const Species = () => (
-//   <Fragment>
-//     <h1>Species</h1>
-//     <FakeText />
-//   </Fragment>
-//   );
 
 const FakeText = () => (
 	<p>

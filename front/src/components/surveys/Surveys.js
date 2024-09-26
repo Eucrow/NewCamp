@@ -107,7 +107,7 @@ const Surveys = () => {
 
 	/**
 	 * Update survey from database and state.
-	 * @param {numeric} surveyId - Survey identificator of survey to update.
+	 * @param {numeric} surveyId - Survey id of survey to update.
 	 */
 	const updateSurvey = (surveyId) => {
 		const api = apiSurvey + surveyId;
@@ -243,6 +243,7 @@ const Surveys = () => {
 		content = (
 			<SurveysContext.Provider
 				value={{
+					apiSurvey: apiSurvey,
 					handleChange: handleChange,
 					handleChangeStratification: handleChangeStratification,
 					add: add,
@@ -256,6 +257,7 @@ const Surveys = () => {
 					validateEndDate: validateEndDate,
 					forceReportValidity: forceReportValidity,
 					handleCancelEditSurvey: handleCancelEditSurvey,
+					getSurveys: getSurveys,
 				}}
 			>
 				<main>
