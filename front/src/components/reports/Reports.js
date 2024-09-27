@@ -9,19 +9,26 @@ const Reports = () => {
 
 	const [selectedSurvey, setSelectedSurvey] = useState("");
 	const [disableDownload, setDisableDownload] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 
-	const handleSubmit = () => {
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		setIsLoading(true);
 		const apiReport = apiCSVReport + "/" + selectedSurvey;
-		//TODO: covert this to a custom hook
+		//TODO: convert this to a custom hook
 		fetch(apiReport)
 			.then((response) => {
 				if (response.status > 400) {
+					setIsLoading(false);
 					alert("something were wrong getting the report!!");
 				}
 				return response.blob();
 			})
 			.then((blob) => {
-				if (!blob) return;
+				if (!blob) {
+					setIsLoading(false);
+					return;
+				}
 				const url = window.URL.createObjectURL(blob);
 				const a = document.createElement("a");
 				a.href = url;
@@ -29,8 +36,13 @@ const Reports = () => {
 				document.body.appendChild(a);
 				a.click();
 				a.remove();
+				window.URL.revokeObjectURL(url); // Clean up the URL object
+				setIsLoading(false); // Set loading to false after download is triggered
 			})
-			.catch((error) => console.log(error));
+			.catch((error) => {
+				setIsLoading(false);
+				console.log(error);
+			});
 	};
 
 	const renderContent = () => {
@@ -69,6 +81,8 @@ const Reports = () => {
 						<UiButtonDownload handleMethod={handleSubmit} disabled={disableDownload} />
 					</div>
 				</form>
+
+				{isLoading && <p>Creating file... Please wait.</p>}
 			</main>
 		);
 	};

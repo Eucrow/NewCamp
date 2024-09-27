@@ -9,7 +9,7 @@ import UiIconDownload from "./UiIconDownload";
  * @param {character} newStatus new status of the element.
  */
 
-const UiButtonDownload = ({ children, handleMethod, newStatus, disabled = false }) => {
+const UiButtonDownload = ({ children, handleMethod, disabled = false }) => {
 	// const title =
 	// 	disabled === false
 	// 		? "Add lengths"
@@ -20,7 +20,7 @@ const UiButtonDownload = ({ children, handleMethod, newStatus, disabled = false 
 			className="buttonsWrapper__button icon_button"
 			value="Download"
 			disabled={disabled}
-			onClick={() => handleMethod()}
+			onClick={(e) => handleMethod(e)}
 		>
 			<UiIconDownload />
 		</button>
