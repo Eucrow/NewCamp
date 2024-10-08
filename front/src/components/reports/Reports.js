@@ -52,39 +52,41 @@ const Reports = () => {
 					<h1 className="title">Reports</h1>
 				</header>
 				<div className="wrapper">
-					<form className="wrapper form__row reportWrapper">
-						<div className="form__cell">Lengths report:</div>
-						<div className="form__cell">
-							<select
-								type="select"
-								id="report"
-								name="report"
-								value={selectedSurvey}
-								required
-								onChange={(e) => {
-									setSelectedSurvey(e.target.value);
-									setDisableDownload(false);
-								}}
-							>
-								<option value="" disabled>
-									Select survey
-								</option>
-								{surveys.map((survey) => {
-									return (
-										<option key={survey.id} value={survey.id}>
-											{survey.description}
-										</option>
-									);
-								})}
-							</select>
-						</div>
-						<div className="form__cell">
-							<UiButtonDownload handleMethod={handleSubmit} disabled={disableDownload} />
-						</div>
-					</form>
+					{isLoading ? (
+						<p>Creating file... Please wait.</p>
+					) : (
+						<form className="wrapper form__row reportWrapper">
+							<div className="form__cell">Lengths report:</div>
+							<div className="form__cell">
+								<select
+									type="select"
+									id="report"
+									name="report"
+									value={selectedSurvey}
+									required
+									onChange={(e) => {
+										setSelectedSurvey(e.target.value);
+										setDisableDownload(false);
+									}}
+								>
+									<option value="" disabled>
+										Select survey
+									</option>
+									{surveys.map((survey) => {
+										return (
+											<option key={survey.id} value={survey.id}>
+												{survey.description}
+											</option>
+										);
+									})}
+								</select>
+							</div>
+							<div className="form__cell">
+								<UiButtonDownload handleMethod={handleSubmit} disabled={disableDownload} />
+							</div>
+						</form>
+					)}
 				</div>
-
-				{isLoading && <p>Creating file... Please wait.</p>}
 			</main>
 		);
 	};
