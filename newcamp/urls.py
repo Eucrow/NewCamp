@@ -40,6 +40,7 @@ from samples.api import LengthsSexAPI
 # , SampledWeightDetail, SampledWeightCreate
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 from conn_r.api import GetTrawlHaulsAPIConnR, GetDataStationsAPIConnR
+from reports.api import ReportLengthsCSVApi
 
 urlpatterns = [
                   re_path(r'^admin/', admin.site.urls),
@@ -206,6 +207,10 @@ urlpatterns = [
                   re_path(r'^api/1.0/conn_r/get_data_stations/(?P<acronym>[A-Z][0-9][0-9])$',
                           GetDataStationsAPIConnR.as_view(),
                           name="get_data_stations_api_conn_r"),
+
+                  # Export csv
+                  re_path(r'api/1.0/reports/report_csv/(?P<survey_id>[0-9]+)$', ReportLengthsCSVApi.as_view(),
+                          name='report_csv'),
 
                   # Frontend
                   # path('', include('frontend.urls')),
