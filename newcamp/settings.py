@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     # 'frontend',
     'conn_r',
     'sexes',
+    'reports',
 ]
 
 MIDDLEWARE = [
