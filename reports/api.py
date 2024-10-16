@@ -25,8 +25,9 @@ class ReportLengthsCSVApi(APIView):
         # create writer
         writer = csv.writer(response)
         writer.writerow(
-            ['acronym', 'Station ID', 'Haul ID', 'station', 'haul', 'valid', 'category', 'weight',
-             'sampled_weight', 'species', 'group', 'code', 'not_measured_individuals', 'sex',
+            ['acronym', 'Station ID', 'Haul ID', 'station', 'haul', 'valid',
+             'species', 'group', 'code', 'category', 'weight',
+             'sampled_weight', 'not_measured_individuals', 'sex',
              'measurement_type', 'measurement', 'length', 'number_individuals'])
 
         # Write data
@@ -51,7 +52,7 @@ class ReportLengthsCSVApi(APIView):
                                 [survey.acronym, station.station, haul.id, station.station, haul.haul,
                                  haul.valid, species.sp_name,
                                  species.group, species.sp_code, catch.category, catch.weight,
-                                 catch.not_measured_individuals, sampled_weight_value, sex.sex,
+                                 sampled_weight_value, catch.not_measured_individuals, sex.sex,
                                  sex.measurement_type_id, measurements.name, length_converted,
                                  length.number_individuals])
 
