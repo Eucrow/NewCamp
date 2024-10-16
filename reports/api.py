@@ -39,21 +39,30 @@ class ReportLengthsCSVApi(APIView):
                     species = Sp.objects.get(pk=catch.sp_id)
                     measurements = MeasurementType.objects.get(sp=species)
                     try:
-                        sampled_weight = SampledWeight.objects.get(pk=catch.id)
+                        sampled_weight = SampledWeight.objects.get(catch_id=catch.id)
                         sampled_weight_value = sampled_weight.sampled_weight
                     except SampledWeight.DoesNotExist:
                         sampled_weight_value = None
+
                     sexes = Sex.objects.filter(catch=catch)
-                    for sex in sexes:
-                        lengths = Length.objects.filter(sex=sex)
-                        for length in lengths:
-                            length_converted = length.length / measurements.conversion_factor
-                            writer.writerow(
-                                [survey.acronym, station.station, haul.id, station.station, haul.haul,
-                                 haul.valid, species.sp_name,
-                                 species.group, species.sp_code, catch.category, catch.weight,
-                                 sampled_weight_value, catch.not_measured_individuals, sex.sex,
-                                 sex.measurement_type_id, measurements.name, length_converted,
-                                 length.number_individuals])
+
+                    if sexes.exists():
+                        for sex in sexes:
+                            lengths = Length.objects.filter(sex=sex)
+                            for length in lengths:
+                                length_converted = length.length / measurements.conversion_factor
+                                writer.writerow(
+                                    [survey.acronym, station.station, haul.id, station.station, haul.haul,
+                                     haul.valid, species.sp_name,
+                                     species.group, species.sp_code, catch.category, catch.weight,
+                                     sampled_weight_value, catch.not_measured_individuals, sex.sex,
+                                     sex.measurement_type_id, measurements.name, length_converted,
+                                     length.number_individuals])
+                    else:
+                        writer.writerow(
+                            [survey.acronym, station.station, haul.id, station.station, haul.haul,
+                             haul.valid, species.sp_name,
+                             species.group, species.sp_code, catch.category, catch.weight,
+                             sampled_weight_value, catch.not_measured_individuals])
 
         return response
