@@ -356,7 +356,8 @@ const Lengths = ({ sex, catchId, spId }) => {
 		}
 
 		setLengths(newLengths);
-		setLengthsStatus("edit");
+		// setLengthsStatus("edit");
+		setLengthsStatus("new");
 	};
 
 	/**
