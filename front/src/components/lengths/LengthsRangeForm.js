@@ -42,12 +42,7 @@ const LengthsRangeForm = () => {
 	}, [minimumRange, maximumRange]);
 
 	return (
-		<form
-			className="lengthsWrapper"
-			onSubmit={(e) => {
-				e.preventDefault(); // Prevent the default form submission behavior
-			}}
-		>
+		<form className="lengthsWrapper">
 			<div className="formLengthsRange__table">
 				<div className="formLengthsRange__row">
 					<label className="formLengthsRange__cell formLengths__cell--header" htmlFor="minimum">

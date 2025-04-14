@@ -114,6 +114,7 @@ const LengthsForm = () => {
 				<form
 					className="lengthsWrapper"
 					onSubmit={(e) => {
+						e.preventDefault(); // Prevent form submission to allow adding new lengths
 						lengthsContext.saveSexAndLengths(e, lengthsContext.lengths);
 					}}
 				>

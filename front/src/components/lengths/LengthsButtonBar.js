@@ -63,6 +63,7 @@ const LengthsButtonBar = () => {
 					Add Lengths
 				</button>
 				<button
+					type="button"
 					onClick={() => {
 						lengthsContext.cancelEditLengths();
 					}}
