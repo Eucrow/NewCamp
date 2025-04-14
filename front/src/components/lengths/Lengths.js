@@ -38,10 +38,10 @@ const Lengths = ({ sex, catchId, spId }) => {
 	 * before any edits.
 	 */
 	const [backupLengths, setBackupLengths] = useState([
-		{
-			length: "",
-			number_individuals: "",
-		},
+		// {
+		// 	length: "",
+		// 	number_individuals: "",
+		// },
 	]);
 
 	const [temporaryLengths, setTemporaryLengths] = useState([]);
