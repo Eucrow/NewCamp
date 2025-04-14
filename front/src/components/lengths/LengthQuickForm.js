@@ -3,10 +3,11 @@ import React, { useContext } from "react";
 import LengthsContext from "../../contexts/LengthsContext";
 
 /**
- * Renders a form for displaying and editing one length.
+ * Renders the quick form for adding one length. The form only allow add number of
+ * individuals without editing or removing lengths
  * @component
  *
- * @returns {JSX.Element} A JSX element that renders the lengths form.
+ * @returns {JSX.Element} A JSX element that renders the length form.
  */
 const LengthQuickForm = ({ l, idx, autofocus }) => {
 	const lengthsContext = useContext(LengthsContext);

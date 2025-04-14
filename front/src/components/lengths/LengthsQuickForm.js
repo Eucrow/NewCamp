@@ -3,6 +3,15 @@ import LengthsContext from "../../contexts/LengthsContext";
 
 import LengthQuickForm from "./LengthQuickForm";
 
+/**
+ * LengthsQuickForm Component
+ *
+ * This component renders a quick form for adding lengths. The form only allow add number of
+ * individuals without editing or removing lengths. The first input field
+ * receive focus when the component is rendered.
+ * @component
+ * @returns {JSX.Element} A JSX element that renders the lengths quick form.
+ */
 const LengthsQuickForm = () => {
 	const lengthsContext = useContext(LengthsContext);
 
