@@ -165,7 +165,7 @@ const CatchForm = ({
 						onChange={(e) => setNot_measured_individuals(e.target.value)}
 						aria-label="Not measured individuals"
 					/>
-					<CatchButton Bar catchStatus={"add"} handleChangeAdd={handleChangeAdd} />
+					<CatchButtonBar catchStatus={"add"} handleChangeAdd={handleChangeAdd} />
 				</form>
 			);
 		} else if (catchStatus === "view" || catchStatus === "") {

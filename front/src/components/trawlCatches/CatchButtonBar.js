@@ -27,14 +27,11 @@ const CatchButtonBar = ({
 		ButtonBar = (
 			<div className="catches__table__buttonBar">
 				<UiButtonSave buttonText={"Save"} />
-				<button
-					onClick={(e) => {
-						e.preventDefault();
-						handleChangeAdd(false);
-					}}
-				>
-					Cancel
-				</button>
+				<UiButtonStatusHandle
+					handleMethod={handleChangeAdd}
+					buttonText={"Cancel"}
+					newStatus={"false"}
+				/>
 			</div>
 		);
 	}
@@ -42,7 +39,11 @@ const CatchButtonBar = ({
 	if (catchStatus === "view") {
 		ButtonBar = (
 			<div className="catches__table__buttonBar">
-				<UiButtonStatusHandle handleMethod={editCatchStatus} buttonText={"Edit species"} newStatus={"edit"}>
+				<UiButtonStatusHandle
+					handleMethod={editCatchStatus}
+					buttonText={"Edit species"}
+					newStatus={"edit"}
+				>
 					<UiIconEdit />
 				</UiButtonStatusHandle>
 				<UiButtonDelete
@@ -58,9 +59,17 @@ const CatchButtonBar = ({
 				{allowedSexes === false ? (
 					<UiButtonSexes disabled={true} />
 				) : viewSexes === false ? (
-					<UiButtonSexes handleMethod={handleViewSexes} newStatus={true} disabled={false} />
+					<UiButtonSexes
+						handleMethod={handleViewSexes}
+						newStatus={true}
+						disabled={false}
+					/>
 				) : (
-					<UiButtonSexes handleMethod={handleViewSexes} newStatus={false} disabled={false} />
+					<UiButtonSexes
+						handleMethod={handleViewSexes}
+						newStatus={false}
+						disabled={false}
+					/>
 				)}
 			</div>
 		);
