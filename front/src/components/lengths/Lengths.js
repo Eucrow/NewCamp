@@ -94,7 +94,10 @@ const Lengths = ({ sex, catchId, spId }) => {
 				setMeasurement(measurement);
 
 				// var transformedLengths = transformUnitsFromMm(lens.lengths, measurement.conversion_factor);
-				var temporaryLengths = transformUnitsFromMm(lens.lengths, measurement.conversion_factor);
+				var temporaryLengths = transformUnitsFromMm(
+					lens.lengths,
+					measurement.conversion_factor
+				);
 				setTemporaryLengths(temporaryLengths);
 			}
 
@@ -216,7 +219,9 @@ const Lengths = ({ sex, catchId, spId }) => {
 	 * @param {array of object} lengths to remove zero number individuals.
 	 */
 	const removeZeroNumberIndividuals = (lengths) => {
-		var newLengths = lengths.filter((e) => e.number_individuals !== 0 && e.number_individuals !== "");
+		var newLengths = lengths.filter(
+			(e) => e.number_individuals !== 0 && e.number_individuals !== ""
+		);
 		return newLengths;
 	};
 

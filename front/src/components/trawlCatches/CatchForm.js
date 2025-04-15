@@ -51,7 +51,13 @@ const CatchForm = ({
 	const [weight, setWeight] = useState("");
 	const [sampled_weight, setSampled_weight] = useState("");
 	const [not_measured_individuals, setNot_measured_individuals] = useState("");
-	const [new_catch, setNew_catch] = useState({ group, sp_id, category, sampled_weight, not_measured_individuals });
+	const [new_catch, setNew_catch] = useState({
+		group,
+		sp_id,
+		category,
+		sampled_weight,
+		not_measured_individuals,
+	});
 	const globalContext = useContext(GlobalContext);
 
 	const [style_species_invalid, setStyle_species_invalid] = useState("");
@@ -92,7 +98,9 @@ const CatchForm = ({
 						aria-label="Group"
 					/>
 					<select
-						className={"catches__table__cell catches__table__species " + style_species_invalid}
+						className={
+							"catches__table__cell catches__table__species " + style_species_invalid
+						}
 						disabled={group === "" ? true : false}
 						required={true}
 						id="sp_code"
@@ -157,7 +165,7 @@ const CatchForm = ({
 						onChange={(e) => setNot_measured_individuals(e.target.value)}
 						aria-label="Not measured individuals"
 					/>
-					<CatchButtonBar catchStatus={"add"} handleChangeAdd={handleChangeAdd} />
+					<CatchButton Bar catchStatus={"add"} handleChangeAdd={handleChangeAdd} />
 				</form>
 			);
 		} else if (catchStatus === "view" || catchStatus === "") {
@@ -268,7 +276,9 @@ const CatchForm = ({
 						id="sp_code"
 						name="sp_code"
 						required={true}
-						value={thisCatch.sp_id + "--" + thisCatch.sp_code + "--" + thisCatch.sp_name}
+						value={
+							thisCatch.sp_id + "--" + thisCatch.sp_code + "--" + thisCatch.sp_name
+						}
 						onChange={handleChangeSpecies(thisCatch.catch_id)}
 						aria-label="Species"
 					>

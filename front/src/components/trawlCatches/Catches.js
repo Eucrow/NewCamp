@@ -94,7 +94,10 @@ const Catches = ({ haul_id }) => {
 
 		// Secondly, check if exists another catch whit the same species and category
 		const repeatedCatch = catches.some(
-			(c) => (c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category === parseInt(value))
+			(c) =>
+				(c.group === thisCatch.group) &
+				(c.sp_code === thisCatch.sp_code) &
+				(c.category === parseInt(value))
 		);
 
 		// And finally save the state or thrown an alert.
@@ -208,9 +211,12 @@ const Catches = ({ haul_id }) => {
 			group: updatedCatch.group,
 			category: updatedCatch.category,
 			weight: updatedCatch.weight,
-			sampled_weight: updatedCatch.sampled_weight === "0" ? null : updatedCatch.sampled_weight,
+			sampled_weight:
+				updatedCatch.sampled_weight === "0" ? null : updatedCatch.sampled_weight,
 			not_measured_individuals:
-				updatedCatch.not_measured_individuals === "0" ? null : updatedCatch.not_measured_individuals,
+				updatedCatch.not_measured_individuals === "0"
+					? null
+					: updatedCatch.not_measured_individuals,
 		};
 
 		fetch(apiEditRemoveCatch, {
@@ -268,6 +274,7 @@ const Catches = ({ haul_id }) => {
 						const newCatches = [c, ...catches];
 						setCatches(newCatches);
 						setAdd(false);
+						setTimeout(() => setAdd(true), 0); //use setTimeout to avoid this and previous setAdd executed syncronously
 					})
 					.catch((error) => console.log(error));
 			}
@@ -298,9 +305,15 @@ const Catches = ({ haul_id }) => {
 					{
 						<div className="catches__table__row catches__table__header">
 							<div className="catches__table__cell catches__table__group">Group</div>
-							<div className="catches__table__cell catches__table__species">Species</div>
-							<div className="catches__table__cell catches__table__category">Category</div>
-							<div className="catches__table__cell catches__table__weight">Weight (g.)</div>
+							<div className="catches__table__cell catches__table__species">
+								Species
+							</div>
+							<div className="catches__table__cell catches__table__category">
+								Category
+							</div>
+							<div className="catches__table__cell catches__table__weight">
+								Weight (g.)
+							</div>
 							<div className="catches__table__cell catches__table__sampledWeight">
 								Sampled weight (g.)
 							</div>
@@ -313,7 +326,11 @@ const Catches = ({ haul_id }) => {
 						</div>
 					}
 					{add === true ? (
-						<Catch thisCatchStatus="add" createCatch={createCatch} handleChangeAdd={setAdd} />
+						<Catch
+							thisCatchStatus="add"
+							createCatch={createCatch}
+							handleChangeAdd={setAdd}
+						/>
 					) : null}
 					{catches.map((c) => {
 						return (
@@ -326,7 +343,9 @@ const Catches = ({ haul_id }) => {
 								handleChangeCategory={handleChangeCategory}
 								handleChangeWeight={handleChangeWeight}
 								handleChangeSampledWeight={handleChangeSampledWeight}
-								handleChangeNotMeasuredIndividuals={handleChangeNotMeasuredIndividuals}
+								handleChangeNotMeasuredIndividuals={
+									handleChangeNotMeasuredIndividuals
+								}
 								handleCancelEditCatch={handleCancelEditCatch}
 								updateCatch={updateCatch}
 								deleteCatch={deleteCatch}

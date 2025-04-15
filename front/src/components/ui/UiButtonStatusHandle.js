@@ -16,7 +16,9 @@ import React from "react";
 const UiButtonStatusHandle = ({ children, buttonText, handleMethod, newStatus }) => {
 	const hasChildren = children !== undefined;
 
-	const buttonClass = hasChildren ? "buttonsWrapper__button icon_button" : "buttonsWrapper__button";
+	const buttonClass = hasChildren
+		? "buttonsWrapper__button icon_button"
+		: "buttonsWrapper__button";
 
 	const renderedButton = (
 		<button
@@ -26,6 +28,7 @@ const UiButtonStatusHandle = ({ children, buttonText, handleMethod, newStatus })
 			onClick={() => {
 				handleMethod(newStatus);
 			}}
+			autoFocus
 		>
 			{hasChildren ? children : buttonText}
 		</button>

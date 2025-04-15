@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
@@ -9,7 +9,13 @@ const CatchesButtonBar = ({ add, handleChangeAdd }) => {
 	var ButtonBar = null;
 
 	if (add === false) {
-		ButtonBar = <UiButtonStatusHandle handleMethod={handleChangeAdd} buttonText={"Add species"} newStatus={true} />;
+		ButtonBar = (
+			<UiButtonStatusHandle
+				handleMethod={handleChangeAdd}
+				buttonText={"Add species"}
+				newStatus={true}
+			/>
+		);
 	}
 
 	return ButtonBar;
