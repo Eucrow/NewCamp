@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
+import React from "react";
 import CatchButtonBar from "./CatchButtonBar";
-import GlobalContext from "../../contexts/GlobalContext";
 
 /**
  * View CatchForm is a functional component that represents a form to view catch data.
@@ -20,7 +19,6 @@ const ViewCatchForm = ({
 	thisCatch,
 	editCatchStatus,
 	viewSexes,
-	deleteCatch,
 	handleViewSexes,
 	allowedSexes,
 }) => {
@@ -97,7 +95,6 @@ const ViewCatchForm = ({
 					catchStatus={catchStatus}
 					viewSexes={viewSexes}
 					editCatchStatus={editCatchStatus}
-					deleteCatch={deleteCatch}
 					handleViewSexes={handleViewSexes}
 					allowedSexes={allowedSexes}
 				/>

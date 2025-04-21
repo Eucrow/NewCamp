@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import CatchButtonBar from "./CatchButtonBar";
+
 import GlobalContext from "../../contexts/GlobalContext";
+import CatchesContext from "../../contexts/CatchesContext";
+
+import CatchButtonBar from "./CatchButtonBar";
 
 /**
  * EditCatchForm is a functional component that represents the form to edit catch.
@@ -20,20 +23,7 @@ import GlobalContext from "../../contexts/GlobalContext";
  * @param {function} handleCancel - A function to handle cancel action.
  * @returns {JSX.Element} The rendered Catch component.
  */
-const EditCatchForm = ({
-	catchStatus,
-	thisCatch,
-	handleChangeGroup,
-	handleChangeSpecies,
-	handleChangeCategory,
-	handleChangeWeight,
-	handleChangeSampledWeight,
-	handleChangeNotMeasuredIndividuals,
-	updateCatch,
-	editCatchStatus,
-	catchId,
-	handleCancel,
-}) => {
+const EditCatchForm = ({ catchStatus, thisCatch, editCatchStatus, catchId, handleCancel }) => {
 	const [group, setGroup] = useState("");
 	const [sp_id, setSp_id] = useState("");
 	const [category, setCategory] = useState("");
@@ -47,7 +37,9 @@ const EditCatchForm = ({
 		sampled_weight,
 		not_measured_individuals,
 	});
+
 	const globalContext = useContext(GlobalContext);
+	const catchesContext = useContext(CatchesContext);
 
 	const [style_species_invalid, setStyle_species_invalid] = useState("");
 
@@ -65,7 +57,7 @@ const EditCatchForm = ({
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		updateCatch(catchId);
+		catchesContext.updateCatch(catchId);
 		editCatchStatus("view");
 	};
 
@@ -83,7 +75,7 @@ const EditCatchForm = ({
 					min="1"
 					max="5"
 					value={thisCatch.group}
-					onChange={handleChangeGroup(thisCatch.catch_id)}
+					onChange={catchesContext.handleChangeGroup(thisCatch.catch_id)}
 					aria-label="Group"
 				/>
 				<select
@@ -92,7 +84,7 @@ const EditCatchForm = ({
 					name="sp_code"
 					required={true}
 					value={thisCatch.sp_id + "--" + thisCatch.sp_code + "--" + thisCatch.sp_name}
-					onChange={handleChangeSpecies(thisCatch.catch_id)}
+					onChange={catchesContext.handleChangeSpecies(thisCatch.catch_id)}
 					aria-label="Species"
 				>
 					{globalContext.species
@@ -115,7 +107,7 @@ const EditCatchForm = ({
 					min="1"
 					max="99"
 					value={thisCatch.category}
-					onChange={handleChangeCategory(thisCatch.catch_id)}
+					onChange={catchesContext.handleChangeCategory(thisCatch.catch_id)}
 					aria-label="Category"
 				/>
 				<input
@@ -127,7 +119,7 @@ const EditCatchForm = ({
 					min="1"
 					max="99999999"
 					value={thisCatch.weight}
-					onChange={handleChangeWeight(thisCatch.catch_id)}
+					onChange={catchesContext.handleChangeWeight(thisCatch.catch_id)}
 					aria-label="Weight"
 				/>
 				<input
@@ -138,7 +130,7 @@ const EditCatchForm = ({
 					min="0"
 					max="99999999"
 					value={thisCatch.sampled_weight || ""}
-					onChange={handleChangeSampledWeight(thisCatch.catch_id)}
+					onChange={catchesContext.handleChangeSampledWeight(thisCatch.catch_id)}
 					aria-label="Sampled weight"
 				/>
 				<input
@@ -149,7 +141,7 @@ const EditCatchForm = ({
 					min="0"
 					max="99999999"
 					value={thisCatch.not_measured_individuals || ""}
-					onChange={handleChangeNotMeasuredIndividuals(thisCatch.catch_id)}
+					onChange={catchesContext.handleChangeNotMeasuredIndividuals(thisCatch.catch_id)}
 					aria-label="Not measured individuals"
 				/>
 				<CatchButtonBar

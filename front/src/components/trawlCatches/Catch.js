@@ -1,4 +1,6 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
+
+import CatchesContext from "../../contexts/CatchesContext.js";
 
 import Sexes from "../sexes/Sexes.js";
 import NewCatchForm from "./NewCatchForm.js";
@@ -7,40 +9,18 @@ import ViewCatchForm from "./ViewCatchForm.js";
 
 /**
  * Catch component.
- * @param {object} props - The component props.
- * @param {object} props.thisCatch - The catch managed by this component.
- * @param {string} props.thisCatchStatus - The status of the catch.
- * @param {function} props.handleChangeGroup - The function to handle group changes.
- * @param {function} props.handleChangeSpecies - The function to handle species changes.
- * @param {function} props.handleChangeCategory - The function to handle category changes.
- * @param {function} props.handleChangeWeight - The function to handle weight changes.
- * @param {function} props.handleCancelEditCatch - The function to handle cancellation of catch edition.
- * @param {function} props.handleChangeSampledWeight - The function to handle sampled weight changes.
- * @param {function} props.handleChangeAdd - The function to handle adding a catch.
- * @param {function} props.createCatch - The function to create a catch.
- * @param {function} props.updateCatch - The function to update a catch.
- * @param {function} props.deleteCatch - The function to delete a catch.
+ * @param {object} thisCatch - The catch managed by this component.
+ * @param {string} thisCatchStatus - The status of the catch.
+ * @param {function} handleChangeAdd - The function to handle adding a catch.
  * @returns {JSX.Element} The rendered Catch component.
  */
-const Catch = ({
-	thisCatch,
-	thisCatchStatus,
-	handleChangeGroup,
-	handleChangeSpecies,
-	handleChangeCategory,
-	handleChangeWeight,
-	handleCancelEditCatch,
-	handleChangeSampledWeight,
-	handleChangeNotMeasuredIndividuals,
-	handleChangeAdd,
-	createCatch,
-	updateCatch,
-	deleteCatch,
-}) => {
+const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 	const [catchStatus, setCatchStatus] = useState(thisCatchStatus || "view");
 	const [viewSexes, setViewSexes] = useState(false);
 	const [allowedSexes, setAllowedSexes] = useState(false);
 	const [backupCatch] = useState(thisCatch || "");
+
+	const catchesContext = useContext(CatchesContext);
 
 	useEffect(() => {
 		if (thisCatch && thisCatch.not_measured_individuals == null) {
@@ -51,14 +31,14 @@ const Catch = ({
 	}, [thisCatch]);
 
 	const handleCancel = () => {
-		handleCancelEditCatch(thisCatch.catch_id, backupCatch);
+		catchesContext.handleCancelEditCatch(thisCatch.catch_id, backupCatch);
 	};
 
 	const renderContent = () => {
 		if (catchStatus === "add") {
 			return (
 				<div className="form__row form--wide">
-					<NewCatchForm createCatch={createCatch} handleChangeAdd={handleChangeAdd} />
+					<NewCatchForm handleChangeAdd={handleChangeAdd} />
 				</div>
 			);
 		} else if (catchStatus === "view") {
@@ -67,7 +47,6 @@ const Catch = ({
 					<ViewCatchForm
 						catchStatus={catchStatus}
 						thisCatch={thisCatch}
-						deleteCatch={deleteCatch}
 						handleViewSexes={setViewSexes}
 						catchId={thisCatch.catch_id}
 						viewSexes={viewSexes}
@@ -88,13 +67,6 @@ const Catch = ({
 				<EditCatchForm
 					catchStatus={catchStatus}
 					thisCatch={thisCatch}
-					handleChangeGroup={handleChangeGroup}
-					handleChangeSpecies={handleChangeSpecies}
-					handleChangeCategory={handleChangeCategory}
-					handleChangeWeight={handleChangeWeight}
-					handleChangeSampledWeight={handleChangeSampledWeight}
-					handleChangeNotMeasuredIndividuals={handleChangeNotMeasuredIndividuals}
-					updateCatch={updateCatch}
 					editCatchStatus={setCatchStatus}
 					catchId={thisCatch.catch_id}
 					viewSexes={viewSexes}

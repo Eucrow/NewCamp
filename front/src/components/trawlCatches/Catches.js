@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+
+import "../../contexts/CatchesContext.js";
 
 import Catch from "./Catch.js";
 import CatchesButtonBar from "./CatchesButtonBar.js";
+import CatchesContext from "../../contexts/CatchesContext.js";
 
 /**
  * Renders a list of catches for a specific haul.
@@ -296,61 +299,65 @@ const Catches = ({ haul_id }) => {
 
 	const renderContent = () => {
 		return (
-			<fieldset className="wrapper catchesList">
-				<legend>Fauna list</legend>
+			<CatchesContext.Provider
+				value={{
+					handleChangeGroup: handleChangeGroup,
+					handleChangeSpecies: handleChangeSpecies,
+					handleChangeCategory: handleChangeCategory,
+					handleChangeWeight: handleChangeWeight,
+					handleChangeSampledWeight: handleChangeSampledWeight,
+					handleChangeNotMeasuredIndividuals: handleChangeNotMeasuredIndividuals,
+					handleCancelEditCatch: handleCancelEditCatch,
+					// TODO: I don't understand why can't add handleChangeAdd to the context?
+					// handleChangeAdd: setAdd,
+					createCatch: createCatch,
+					updateCatch: updateCatch,
+					deleteCatch: deleteCatch,
+				}}
+			>
+				<fieldset className="wrapper catchesList">
+					<legend>Fauna list</legend>
 
-				<div className="catches__table">
-					<div className="catches__table__row catches__table__header">
-						<div className="catches__table__cell catches__table__group">Group</div>
-						<div className="catches__table__cell catches__table__species">Species</div>
-						<div className="catches__table__cell catches__table__category">
-							Category
-						</div>
-						<div className="catches__table__cell catches__table__weight">
-							Weight (g.)
-						</div>
-						<div className="catches__table__cell catches__table__sampledWeight">
-							Sampled weight (g.)
-						</div>
-						<div className="catches__table__cell catches__table__individuals">
-							Not measured individuals
-						</div>
-						{add === false && (
-							<div className="catches__table__cell catches__table__buttonBar">
-								<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
+					<div className="catches__table">
+						<div className="catches__table__row catches__table__header">
+							<div className="catches__table__cell catches__table__group">Group</div>
+							<div className="catches__table__cell catches__table__species">
+								Species
 							</div>
-						)}
-					</div>
+							<div className="catches__table__cell catches__table__category">
+								Category
+							</div>
+							<div className="catches__table__cell catches__table__weight">
+								Weight (g.)
+							</div>
+							<div className="catches__table__cell catches__table__sampledWeight">
+								Sampled weight (g.)
+							</div>
+							<div className="catches__table__cell catches__table__individuals">
+								Not measured individuals
+							</div>
+							{add === false && (
+								<div className="catches__table__cell catches__table__buttonBar">
+									<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
+								</div>
+							)}
+						</div>
 
-					{add === true ? (
-						<Catch
-							thisCatchStatus="add"
-							createCatch={createCatch}
-							handleChangeAdd={setAdd}
-						/>
-					) : null}
-					{catches.map((c) => {
-						return (
-							<Catch
-								className="catches__table__row"
-								key={c.catch_id}
-								thisCatch={c}
-								handleChangeGroup={handleChangeGroup}
-								handleChangeSpecies={handleChangeSpecies}
-								handleChangeCategory={handleChangeCategory}
-								handleChangeWeight={handleChangeWeight}
-								handleChangeSampledWeight={handleChangeSampledWeight}
-								handleChangeNotMeasuredIndividuals={
-									handleChangeNotMeasuredIndividuals
-								}
-								handleCancelEditCatch={handleCancelEditCatch}
-								updateCatch={updateCatch}
-								deleteCatch={deleteCatch}
-							/>
-						);
-					})}
-				</div>
-			</fieldset>
+						{add === true ? (
+							<Catch thisCatchStatus="add" handleChangeAdd={setAdd} />
+						) : null}
+						{catches.map((c) => {
+							return (
+								<Catch
+									className="catches__table__row"
+									key={c.catch_id}
+									thisCatch={c}
+								/>
+							);
+						})}
+					</div>
+				</fieldset>
+			</CatchesContext.Provider>
 		);
 	};
 

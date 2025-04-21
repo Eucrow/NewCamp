@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import CatchesContext from "../../contexts/CatchesContext";
 
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSexes from "../ui/UiButtonSexes";
@@ -14,14 +16,14 @@ const CatchButtonBar = ({
 	catchId,
 	catchStatus,
 	viewSexes,
-	editCatchStatus,
-	deleteCatch,
 	handleViewSexes,
 	handleCancel,
 	handleChangeAdd,
 	allowedSexes,
 }) => {
 	var ButtonBar = null;
+
+	const catchesContext = useContext(CatchesContext);
 
 	if (catchStatus === "add") {
 		ButtonBar = (
@@ -40,7 +42,7 @@ const CatchButtonBar = ({
 		ButtonBar = (
 			<div className="catches__table__buttonBar">
 				<UiButtonStatusHandle
-					handleMethod={editCatchStatus}
+					handleMethod={catchesContext.editCatchStatus}
 					buttonText={"Edit species"}
 					newStatus={"edit"}
 				>
@@ -48,7 +50,7 @@ const CatchButtonBar = ({
 				</UiButtonStatusHandle>
 				<UiButtonDelete
 					id={catchId}
-					deleteMethod={deleteCatch}
+					deleteMethod={catchesContext.deleteCatch}
 					buttonText={"Delete species"}
 					confirmMessage={
 						"Are you sure to delete this catch? This delete the catch and its sexes and lengths."
@@ -83,7 +85,7 @@ const CatchButtonBar = ({
 				<button
 					onClick={() => {
 						handleCancel();
-						editCatchStatus("view");
+						catchesContext.editCatchStatus("view");
 					}}
 				>
 					Cancel
