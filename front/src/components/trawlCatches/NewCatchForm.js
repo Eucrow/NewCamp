@@ -51,7 +51,7 @@ const NewCatchForm = ({ createCatch, handleChangeAdd }) => {
 
 	const renderContent = () => {
 		return (
-			<form className="catches__table__row" onSubmit={handleSubmit}>
+			<form className="catches__table__row" onSubmit={(e) => handleSubmit(e)}>
 				<input
 					value={new_catch.group}
 					className="catches__table__cell catches__table__group"

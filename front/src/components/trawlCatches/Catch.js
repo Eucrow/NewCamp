@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useState } from "react";
 
 import Sexes from "../sexes/Sexes.js";
-import CatchForm from "./CatchForm.js";
 import NewCatchForm from "./NewCatchForm.js";
+import EditCatchForm from "./EditCatchForm.js";
+import ViewCatchForm from "./ViewCatchForm.js";
 
 /**
  * Catch component.
@@ -63,7 +64,7 @@ const Catch = ({
 		} else if (catchStatus === "view") {
 			return (
 				<Fragment>
-					<CatchForm
+					<ViewCatchForm
 						catchStatus={catchStatus}
 						thisCatch={thisCatch}
 						deleteCatch={deleteCatch}
@@ -84,7 +85,7 @@ const Catch = ({
 			);
 		} else if (catchStatus === "edit") {
 			return (
-				<CatchForm
+				<EditCatchForm
 					catchStatus={catchStatus}
 					thisCatch={thisCatch}
 					handleChangeGroup={handleChangeGroup}
