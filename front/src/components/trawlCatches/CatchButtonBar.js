@@ -29,8 +29,8 @@ const CatchButtonBar = ({
 				<UiButtonSave buttonText={"Save"} />
 				<UiButtonStatusHandle
 					handleMethod={handleChangeAdd}
-					buttonText={"Cancel"}
-					newStatus={"false"}
+					buttonText={"Done"}
+					newStatus={false}
 				/>
 			</div>
 		);

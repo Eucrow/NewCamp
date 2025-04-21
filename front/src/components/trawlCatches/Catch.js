@@ -57,13 +57,6 @@ const Catch = ({
 		if (catchStatus === "add") {
 			return (
 				<div className="form__row form--wide">
-					{/* <CatchForm
-						catchStatus={catchStatus}
-						createCatch={createCatch}
-						editCatchStatus={setCatchStatus}
-						handleChangeAdd={handleChangeAdd}
-						handleChangeNotMeasuredIndividuals={handleChangeNotMeasuredIndividuals}
-					/> */}
 					<NewCatchForm createCatch={createCatch} handleChangeAdd={handleChangeAdd} />
 				</div>
 			);

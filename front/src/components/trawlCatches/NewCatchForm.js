@@ -25,7 +25,13 @@ import GlobalContext from "../../contexts/GlobalContext";
  * @param {function} handleChangeAdd - A function to handle changes to the add field.
  * @returns {JSX.Element} The rendered Catch component.
  */
-const NewCatchForm = ({ createCatch, handleChangeAdd }) => {
+const NewCatchForm = ({
+	catchStatus,
+	createCatch,
+	editCatchStatus,
+	handleChangeAdd,
+	handleChangeNotMeasuredIndividuals,
+}) => {
 	const [group, setGroup] = useState("");
 	const [sp_id, setSp_id] = useState("");
 	const [category, setCategory] = useState("");
