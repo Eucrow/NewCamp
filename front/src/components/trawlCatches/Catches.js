@@ -273,8 +273,6 @@ const Catches = ({ haul_id }) => {
 					.then((c) => {
 						const newCatches = [c, ...catches];
 						setCatches(newCatches);
-						setAdd(false);
-						setTimeout(() => setAdd(true), 0); //use setTimeout to avoid this and previous setAdd executed syncronously
 					})
 					.catch((error) => console.log(error));
 			}
@@ -302,29 +300,28 @@ const Catches = ({ haul_id }) => {
 				<legend>Fauna list</legend>
 
 				<div className="catches__table">
-					{
-						<div className="catches__table__row catches__table__header">
-							<div className="catches__table__cell catches__table__group">Group</div>
-							<div className="catches__table__cell catches__table__species">
-								Species
-							</div>
-							<div className="catches__table__cell catches__table__category">
-								Category
-							</div>
-							<div className="catches__table__cell catches__table__weight">
-								Weight (g.)
-							</div>
-							<div className="catches__table__cell catches__table__sampledWeight">
-								Sampled weight (g.)
-							</div>
-							<div className="catches__table__cell catches__table__individuals">
-								Not measured individuals
-							</div>
+					<div className="catches__table__row catches__table__header">
+						<div className="catches__table__cell catches__table__group">Group</div>
+						<div className="catches__table__cell catches__table__species">Species</div>
+						<div className="catches__table__cell catches__table__category">
+							Category
+						</div>
+						<div className="catches__table__cell catches__table__weight">
+							Weight (g.)
+						</div>
+						<div className="catches__table__cell catches__table__sampledWeight">
+							Sampled weight (g.)
+						</div>
+						<div className="catches__table__cell catches__table__individuals">
+							Not measured individuals
+						</div>
+						{add === false && (
 							<div className="catches__table__cell catches__table__buttonBar">
 								<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
 							</div>
-						</div>
-					}
+						)}
+					</div>
+
 					{add === true ? (
 						<Catch
 							thisCatchStatus="add"

@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 
 import Sexes from "../sexes/Sexes.js";
 import CatchForm from "./CatchForm.js";
+import NewCatchForm from "./NewCatchForm.js";
 
 /**
  * Catch component.
@@ -56,13 +57,14 @@ const Catch = ({
 		if (catchStatus === "add") {
 			return (
 				<div className="form__row form--wide">
-					<CatchForm
+					{/* <CatchForm
 						catchStatus={catchStatus}
 						createCatch={createCatch}
 						editCatchStatus={setCatchStatus}
 						handleChangeAdd={handleChangeAdd}
 						handleChangeNotMeasuredIndividuals={handleChangeNotMeasuredIndividuals}
-					/>
+					/> */}
+					<NewCatchForm createCatch={createCatch} handleChangeAdd={handleChangeAdd} />
 				</div>
 			);
 		} else if (catchStatus === "view") {
@@ -78,7 +80,13 @@ const Catch = ({
 						allowedSexes={allowedSexes}
 						editCatchStatus={setCatchStatus}
 					/>
-					{viewSexes && <Sexes catchId={thisCatch.catch_id} spId={thisCatch.sp_id} viewSexes={viewSexes} />}
+					{viewSexes && (
+						<Sexes
+							catchId={thisCatch.catch_id}
+							spId={thisCatch.sp_id}
+							viewSexes={viewSexes}
+						/>
+					)}
 				</Fragment>
 			);
 		} else if (catchStatus === "edit") {
