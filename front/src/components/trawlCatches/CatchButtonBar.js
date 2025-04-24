@@ -20,6 +20,7 @@ const CatchButtonBar = ({
 	handleCancel,
 	handleChangeAdd,
 	allowedSexes,
+	editCatchStatus,
 }) => {
 	var ButtonBar = null;
 
@@ -42,7 +43,7 @@ const CatchButtonBar = ({
 		ButtonBar = (
 			<div className="catches__table__buttonBar">
 				<UiButtonStatusHandle
-					handleMethod={catchesContext.editCatchStatus}
+					handleMethod={editCatchStatus}
 					buttonText={"Edit species"}
 					newStatus={"edit"}
 				>

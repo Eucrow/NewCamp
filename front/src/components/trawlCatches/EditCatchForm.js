@@ -11,13 +11,6 @@ import CatchButtonBar from "./CatchButtonBar";
  * @component
  * @param {string} catchStatus - The current status of the catch: "", "view" or "edit".
  * @param {object} thisCatch - The catch object that is currently being managed by this component.
- * @param {object} species - An object containing species data.
- * @param {function} handleChangeGroup - A function to handle changes to the group field.
- * @param {function} handleChangeSpecies - A function to handle changes to the species field.
- * @param {function} handleChangeCategory - A function to handle changes to the category field.
- * @param {function} handleChangeWeight - A function to handle changes to the weight field.
- * @param {function} handleChangeSampledWeight - A function to handle changes to the sampled_weight field.
- * @param {function} updateCatch - A function to update the catch in the database.
  * @param {function} editCatchStatus - A function to manage the catchStatus state.
  * @param {string} catchId - The id of the catch.
  * @param {function} handleCancel - A function to handle cancel action.
