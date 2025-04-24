@@ -86,7 +86,7 @@ const CatchButtonBar = ({
 				<button
 					onClick={() => {
 						handleCancel();
-						catchesContext.editCatchStatus("view");
+						editCatchStatus("view");
 					}}
 				>
 					Cancel

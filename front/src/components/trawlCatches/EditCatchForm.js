@@ -17,36 +17,36 @@ import CatchButtonBar from "./CatchButtonBar";
  * @returns {JSX.Element} The rendered Catch component.
  */
 const EditCatchForm = ({ catchStatus, thisCatch, editCatchStatus, catchId, handleCancel }) => {
-	const [group, setGroup] = useState("");
+	// const [group, setGroup] = useState("");
 	const [sp_id, setSp_id] = useState("");
-	const [category, setCategory] = useState("");
-	const [weight, setWeight] = useState("");
-	const [sampled_weight, setSampled_weight] = useState("");
-	const [not_measured_individuals, setNot_measured_individuals] = useState("");
-	const [new_catch, setNew_catch] = useState({
-		group,
-		sp_id,
-		category,
-		sampled_weight,
-		not_measured_individuals,
-	});
+	// const [category, setCategory] = useState("");
+	// const [weight, setWeight] = useState("");
+	// const [sampled_weight, setSampled_weight] = useState("");
+	// const [not_measured_individuals, setNot_measured_individuals] = useState("");
+	// const [new_catch, setNew_catch] = useState({
+	// 	group,
+	// 	sp_id,
+	// 	category,
+	// 	sampled_weight,
+	// 	not_measured_individuals,
+	// });
 
 	const globalContext = useContext(GlobalContext);
 	const catchesContext = useContext(CatchesContext);
 
 	const [style_species_invalid, setStyle_species_invalid] = useState("");
 
-	useEffect(() => {
-		setNew_catch({ group, sp_id, category, weight, sampled_weight });
-	}, [group, sp_id, category, weight, sampled_weight]);
+	// useEffect(() => {
+	// 	setNew_catch({ group, sp_id, category, weight, sampled_weight });
+	// }, [group, sp_id, category, weight, sampled_weight]);
 
 	useEffect(() => {
-		if (sp_id === "") {
+		if (thisCatch.sp_id === "") {
 			setStyle_species_invalid("species--invalid");
 		} else {
 			setStyle_species_invalid("");
 		}
-	}, [sp_id]);
+	}, [thisCatch.sp_id]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
