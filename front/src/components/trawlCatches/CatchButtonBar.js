@@ -46,6 +46,7 @@ const CatchButtonBar = ({
 					handleMethod={editCatchStatus}
 					buttonText={"Edit species"}
 					newStatus={"edit"}
+					disabled={catchesContext.add}
 				>
 					<UiIconEdit />
 				</UiButtonStatusHandle>
@@ -57,9 +58,10 @@ const CatchButtonBar = ({
 						"Are you sure to delete this catch? This delete the catch and its sexes and lengths."
 					}
 					children={<UiIconDelete />}
+					disabled={catchesContext.add}
 				/>
 
-				{allowedSexes === false ? (
+				{allowedSexes === false || catchesContext.add === true ? (
 					<UiButtonSexes disabled={true} />
 				) : viewSexes === false ? (
 					<UiButtonSexes

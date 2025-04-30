@@ -313,6 +313,7 @@ const Catches = ({ haul_id }) => {
 					createCatch: createCatch,
 					updateCatch: updateCatch,
 					deleteCatch: deleteCatch,
+					add: add,
 				}}
 			>
 				<fieldset className="wrapper catchesList">
