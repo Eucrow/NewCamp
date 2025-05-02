@@ -13,18 +13,7 @@ import UiButtonSave from "../ui/UiButtonSave";
 /**
  * Catch button bar component.
  */
-const CatchButtonBar = (
-	{
-		// catchId,
-		// catchStatus,
-		// viewSexes,
-		// setViewSexes,
-		// handleCancel,
-		// handleChangeAdd,
-		// allowedSexes,
-		// editCatchStatus,
-	}
-) => {
+const CatchButtonBar = () => {
 	var ButtonBar = null;
 
 	const catchesContext = useContext(CatchesContext);

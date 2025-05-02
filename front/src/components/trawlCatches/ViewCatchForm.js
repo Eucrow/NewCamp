@@ -15,16 +15,7 @@ import CatchContext from "../../contexts/CatchContext";
  * @param {object} allowedSexes - An object containing allowedSexes state, which allow to add sexes to the catch or don't.
  * @returns {JSX.Element} The rendered Catch component.
  */
-const ViewCatchForm = (
-	{
-		// catchStatus,
-		// thisCatch,
-		// editCatchStatus,
-		// viewSexes,
-		// setViewSexes,
-		// allowedSexes,
-	}
-) => {
+const ViewCatchForm = () => {
 	const catchContext = useContext(CatchContext);
 
 	const renderContent = () => {
@@ -96,15 +87,7 @@ const ViewCatchForm = (
 					value={catchContext.thisCatch.not_measured_individuals || ""}
 					aria-label="Not measured individuals"
 				/>
-				<CatchButtonBar
-					className=""
-					// catchId={thisCatch.catch_id}
-					// catchStatus={catchStatus}
-					// viewSexes={viewSexes}
-					// editCatchStatus={editCatchStatus}
-					// setViewSexes={setViewSexes}
-					// allowedSexes={allowedSexes}
-				/>
+				<CatchButtonBar className="" />
 			</form>
 		);
 	};

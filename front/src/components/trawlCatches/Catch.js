@@ -46,22 +46,13 @@ const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 		if (catchStatus === "add") {
 			return (
 				<div className="form__row form--wide">
-					<NewCatchForm
-					// handleChangeAdd={handleChangeAdd}
-					/>
+					<NewCatchForm />
 				</div>
 			);
 		} else if (catchStatus === "view") {
 			return (
 				<Fragment>
-					<ViewCatchForm
-					// catchStatus={catchStatus}
-					// thisCatch={thisCatch}
-					// handleViewSexes={setViewSexes}
-					// viewSexes={viewSexes}
-					// allowedSexes={allowedSexes}
-					// editCatchStatus={editCatchStatus}
-					/>
+					<ViewCatchForm />
 					{viewSexes && (
 						<Sexes
 							catchId={thisCatch.catch_id}
@@ -72,15 +63,7 @@ const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 				</Fragment>
 			);
 		} else if (catchStatus === "edit") {
-			return (
-				<EditCatchForm
-					// catchStatus={catchStatus}
-					// thisCatch={thisCatch}
-					editCatchStatus={setCatchStatus}
-					// viewSexes={viewSexes}
-					// handleCancel={handleCancel}
-				/>
-			);
+			return <EditCatchForm />;
 		}
 	};
 
