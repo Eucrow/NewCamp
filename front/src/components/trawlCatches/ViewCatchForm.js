@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import CatchButtonBar from "./CatchButtonBar";
-import CatchesContext from "../../contexts/CatchesContext";
+import CatchContext from "../../contexts/CatchContext";
 
 /**
  * View CatchForm is a functional component that represents a form to view catch data.
@@ -15,14 +15,18 @@ import CatchesContext from "../../contexts/CatchesContext";
  * @param {object} allowedSexes - An object containing allowedSexes state, which allow to add sexes to the catch or don't.
  * @returns {JSX.Element} The rendered Catch component.
  */
-const ViewCatchForm = ({
-	catchStatus,
-	thisCatch,
-	editCatchStatus,
-	viewSexes,
-	handleViewSexes,
-	allowedSexes,
-}) => {
+const ViewCatchForm = (
+	{
+		// catchStatus,
+		// thisCatch,
+		// editCatchStatus,
+		// viewSexes,
+		// setViewSexes,
+		// allowedSexes,
+	}
+) => {
+	const catchContext = useContext(CatchContext);
+
 	const renderContent = () => {
 		return (
 			<form className="catches__table__row">
@@ -34,7 +38,7 @@ const ViewCatchForm = ({
 					min="1"
 					max="5"
 					disabled
-					value={thisCatch.group}
+					value={catchContext.thisCatch.group}
 					aria-label="Group"
 				/>
 				<select
@@ -44,7 +48,9 @@ const ViewCatchForm = ({
 					disabled
 					aria-label="Species"
 				>
-					<option key={thisCatch.sp_id}>{thisCatch.sp_name}</option>
+					<option key={catchContext.thisCatch.sp_id}>
+						{catchContext.thisCatch.sp_name}
+					</option>
 				</select>
 				<input
 					className="catches__table__cell catches__table__category"
@@ -54,7 +60,7 @@ const ViewCatchForm = ({
 					min="1"
 					max="99"
 					disabled
-					value={thisCatch.category}
+					value={catchContext.thisCatch.category}
 					aria-label="Category"
 				/>
 				<input
@@ -65,7 +71,7 @@ const ViewCatchForm = ({
 					min="1"
 					max="99999999"
 					disabled
-					value={thisCatch.weight}
+					value={catchContext.thisCatch.weight}
 					aria-label="Weight"
 				/>
 				<input
@@ -76,7 +82,7 @@ const ViewCatchForm = ({
 					name="sampled_weight"
 					min="0"
 					max="99999999"
-					value={thisCatch.sampled_weight || ""}
+					value={catchContext.thisCatch.sampled_weight || ""}
 					aria-label="Sampled weight"
 				/>
 				<input
@@ -87,17 +93,17 @@ const ViewCatchForm = ({
 					name="individuals"
 					min="0"
 					max="99999999"
-					value={thisCatch.not_measured_individuals || ""}
+					value={catchContext.thisCatch.not_measured_individuals || ""}
 					aria-label="Not measured individuals"
 				/>
 				<CatchButtonBar
 					className=""
-					catchId={thisCatch.catch_id}
-					catchStatus={catchStatus}
-					viewSexes={viewSexes}
-					editCatchStatus={editCatchStatus}
-					handleViewSexes={handleViewSexes}
-					allowedSexes={allowedSexes}
+					// catchId={thisCatch.catch_id}
+					// catchStatus={catchStatus}
+					// viewSexes={viewSexes}
+					// editCatchStatus={editCatchStatus}
+					// setViewSexes={setViewSexes}
+					// allowedSexes={allowedSexes}
 				/>
 			</form>
 		);

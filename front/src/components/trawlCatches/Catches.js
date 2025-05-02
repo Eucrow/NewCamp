@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 
 import "../../contexts/CatchesContext.js";
 
@@ -232,6 +232,9 @@ const Catches = ({ haul_id }) => {
 			body: JSON.stringify(request),
 		})
 			.then((response) => response.json())
+			.then(() => {
+				setEditingCatchId(null);
+			})
 			.catch((error) => alert(error));
 	};
 

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 
 import CatchesContext from "../../contexts/CatchesContext";
+import CatchContext from "../../contexts/CatchContext";
 
 import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonSexes from "../ui/UiButtonSexes";
@@ -12,53 +13,58 @@ import UiButtonSave from "../ui/UiButtonSave";
 /**
  * Catch button bar component.
  */
-const CatchButtonBar = ({
-	catchId,
-	catchStatus,
-	viewSexes,
-	handleViewSexes,
-	handleCancel,
-	handleChangeAdd,
-	allowedSexes,
-	editCatchStatus,
-}) => {
+const CatchButtonBar = (
+	{
+		// catchId,
+		// catchStatus,
+		// viewSexes,
+		// setViewSexes,
+		// handleCancel,
+		// handleChangeAdd,
+		// allowedSexes,
+		// editCatchStatus,
+	}
+) => {
 	var ButtonBar = null;
 
 	const catchesContext = useContext(CatchesContext);
+	const catchContext = useContext(CatchContext);
 
 	const isDisabled = () => {
 		return (
 			catchesContext.add === true ||
-			(catchesContext.editingCatchId !== null && catchesContext.editingCatchId !== catchId)
+			(catchesContext.editingCatchId !== null &&
+				catchesContext.editingCatchId !== catchContext.catchId)
 		);
 	};
 
-	if (catchStatus === "add") {
+	if (catchContext.catchStatus === "add") {
 		ButtonBar = (
 			<div className="catches__table__buttonBar">
 				<UiButtonSave buttonText={"Save"} />
 				<UiButtonStatusHandle
-					handleMethod={handleChangeAdd}
-					buttonText={"Done"}
+					handleMethod={catchContext.handleChangeAdd}
+					buttonText={"Cancel"}
 					newStatus={false}
 				/>
 			</div>
 		);
 	}
 
-	if (catchStatus === "view") {
+	if (catchContext.catchStatus === "view") {
 		ButtonBar = (
 			<div className="catches__table__buttonBar">
 				<UiButtonStatusHandle
-					handleMethod={editCatchStatus}
+					handleMethod={catchContext.editCatchStatus}
 					buttonText={"Edit species"}
 					newStatus={"edit"}
 					disabled={isDisabled()}
 				>
 					<UiIconEdit />
 				</UiButtonStatusHandle>
+
 				<UiButtonDelete
-					id={catchId}
+					id={catchContext.thisCatch.catch_id}
 					deleteMethod={catchesContext.deleteCatch}
 					buttonText={"Delete species"}
 					confirmMessage={
@@ -68,17 +74,17 @@ const CatchButtonBar = ({
 					disabled={isDisabled()}
 				/>
 
-				{allowedSexes === false || isDisabled() === true ? (
+				{catchContext.allowedSexes === false || isDisabled() === true ? (
 					<UiButtonSexes disabled={true} />
-				) : viewSexes === false ? (
+				) : catchContext.viewSexes === false ? (
 					<UiButtonSexes
-						handleMethod={handleViewSexes}
+						handleMethod={catchContext.setViewSexes}
 						newStatus={true}
 						disabled={false}
 					/>
 				) : (
 					<UiButtonSexes
-						handleMethod={handleViewSexes}
+						handleMethod={catchContext.setViewSexes}
 						newStatus={false}
 						disabled={false}
 					/>
@@ -87,15 +93,15 @@ const CatchButtonBar = ({
 		);
 	}
 
-	if (catchStatus === "edit") {
+	if (catchContext.catchStatus === "edit") {
 		ButtonBar = (
 			<div className="catches__table__buttonBar">
 				<UiButtonSave buttonText={"Save"} />
 
 				<button
-					onClick={() => {
-						handleCancel();
-						editCatchStatus("view");
+					onClick={(e) => {
+						e.preventDefault();
+						catchContext.handleCancel();
 					}}
 				>
 					Cancel

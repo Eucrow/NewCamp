@@ -4,6 +4,7 @@ import CatchButtonBar from "./CatchButtonBar";
 
 import GlobalContext from "../../contexts/GlobalContext";
 import CatchesContext from "../../contexts/CatchesContext";
+import CatchContext from "../../contexts/CatchContext";
 
 /**
  * CatchForm is a functional component that represents a empty form for adding catch data.
@@ -13,7 +14,11 @@ import CatchesContext from "../../contexts/CatchesContext";
  * @param {function} handleChangeAdd - A function to manage the add state.
  * @returns {JSX.Element} The rendered Catch component.
  */
-const NewCatchForm = ({ handleChangeAdd }) =>
+const NewCatchForm = (
+	{
+		// handleChangeAdd
+	}
+) =>
 	// { createCatch, handleChangeAdd }
 	{
 		const [new_catch, setNew_catch] = useState({
@@ -27,6 +32,7 @@ const NewCatchForm = ({ handleChangeAdd }) =>
 
 		const globalContext = useContext(GlobalContext);
 		const catchesContext = useContext(CatchesContext);
+		const catchContext = useContext(CatchContext);
 
 		const [style_species_invalid, setStyle_species_invalid] = useState("");
 
@@ -141,7 +147,9 @@ const NewCatchForm = ({ handleChangeAdd }) =>
 						onChange={(e) => handleInputChange("individuals", e.target.value)}
 						aria-label="Not measured individuals"
 					/>
-					<CatchButtonBar catchStatus={"add"} handleChangeAdd={handleChangeAdd} />
+					<CatchButtonBar
+					//  catchStatus={"add"} handleChangeAdd={handleChangeAdd}
+					/>
 				</form>
 			);
 		};

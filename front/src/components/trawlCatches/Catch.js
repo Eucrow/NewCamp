@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState, useContext, createContext } from "react";
 
 import CatchesContext from "../../contexts/CatchesContext.js";
+import CatchContext from "../../contexts/CatchContext.js";
 
 import Sexes from "../sexes/Sexes.js";
 import NewCatchForm from "./NewCatchForm.js";
@@ -37,26 +38,29 @@ const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 
 	const handleCancel = () => {
 		catchesContext.handleCancelEditCatch(thisCatch.catch_id, backupCatch);
+		editCatchStatus("view");
+		catchesContext.setEditingCatchId(null);
 	};
 
 	const renderContent = () => {
 		if (catchStatus === "add") {
 			return (
 				<div className="form__row form--wide">
-					<NewCatchForm handleChangeAdd={handleChangeAdd} />
+					<NewCatchForm
+					// handleChangeAdd={handleChangeAdd}
+					/>
 				</div>
 			);
 		} else if (catchStatus === "view") {
 			return (
 				<Fragment>
 					<ViewCatchForm
-						catchStatus={catchStatus}
-						thisCatch={thisCatch}
-						handleViewSexes={setViewSexes}
-						catchId={thisCatch.catch_id}
-						viewSexes={viewSexes}
-						allowedSexes={allowedSexes}
-						editCatchStatus={editCatchStatus}
+					// catchStatus={catchStatus}
+					// thisCatch={thisCatch}
+					// handleViewSexes={setViewSexes}
+					// viewSexes={viewSexes}
+					// allowedSexes={allowedSexes}
+					// editCatchStatus={editCatchStatus}
 					/>
 					{viewSexes && (
 						<Sexes
@@ -70,18 +74,32 @@ const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 		} else if (catchStatus === "edit") {
 			return (
 				<EditCatchForm
-					catchStatus={catchStatus}
-					thisCatch={thisCatch}
+					// catchStatus={catchStatus}
+					// thisCatch={thisCatch}
 					editCatchStatus={setCatchStatus}
-					catchId={thisCatch.catch_id}
-					viewSexes={viewSexes}
-					handleCancel={handleCancel}
+					// viewSexes={viewSexes}
+					// handleCancel={handleCancel}
 				/>
 			);
 		}
 	};
 
-	return renderContent();
+	return (
+		<CatchContext.Provider
+			value={{
+				catchStatus,
+				thisCatch,
+				handleChangeAdd,
+				viewSexes,
+				allowedSexes,
+				editCatchStatus,
+				setViewSexes,
+				handleCancel,
+			}}
+		>
+			{renderContent()}
+		</CatchContext.Provider>
+	);
 };
 
 export default Catch;
