@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useContext, use } from "react";
+import React, { useEffect, useRef, useState, useContext, use } from "react";
 
 import CatchButtonBar from "./CatchButtonBar";
 
 import GlobalContext from "../../contexts/GlobalContext";
 import CatchesContext from "../../contexts/CatchesContext";
-import CatchContext from "../../contexts/CatchContext";
 
 /**
  * CatchForm is a functional component that represents a empty form for adding catch data.
@@ -24,12 +23,23 @@ const NewCatchForm = () => {
 		// not_measured_individuals: "",
 	});
 
-	const globalContext = useContext(GlobalContext);
-	const catchesContext = useContext(CatchesContext);
-	const catchContext = useContext(CatchContext);
-
 	const [style_species_invalid, setStyle_species_invalid] = useState("");
 
+	const globalContext = useContext(GlobalContext);
+	const catchesContext = useContext(CatchesContext);
+
+	const focusRef = useRef(null);
+
+	// Put focus on the group input when the group changes. This make that when the form is submitted,
+	// it is reset and all fields change to "", including the group variable. So when the variable
+	// group change, the useEffect runs.
+	useEffect(() => {
+		if (focusRef.current) {
+			focusRef.current.focus();
+		}
+	}, [new_catch.group]);
+
+	// Check if the species is selected. If not, set the style_species_invalid to species--invalid.
 	useEffect(() => {
 		if (new_catch.sp_id === "") {
 			setStyle_species_invalid("species--invalid");
@@ -59,11 +69,11 @@ const NewCatchForm = () => {
 		return (
 			<form className="catches__table__row" onSubmit={(e) => handleSubmit(e)}>
 				<input
+					ref={focusRef}
 					value={new_catch.group}
 					className="catches__table__cell catches__table__group"
 					type="number"
 					required={true}
-					autoFocus
 					id="group"
 					name="group"
 					min="1"

@@ -289,6 +289,9 @@ const Catches = ({ haul_id }) => {
 
 	useEffect(() => {
 		const fetchCatches = async () => {
+			// Save scroll position
+			const scrollY = window.scrollY;
+
 			try {
 				const data = await fetch(apiCatches);
 				if (!data.ok) {
@@ -297,6 +300,9 @@ const Catches = ({ haul_id }) => {
 				setCatches(await data.json());
 			} catch (error) {
 				console.error("Error fetching data: ", error);
+			} finally {
+				// Restore scroll position
+				window.scrollTo(0, scrollY);
 			}
 		};
 		fetchCatches();
