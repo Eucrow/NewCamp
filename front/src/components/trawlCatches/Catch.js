@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useContext } from "react";
+import React, { Fragment, useEffect, useState, useContext, createContext } from "react";
 
 import CatchesContext from "../../contexts/CatchesContext.js";
 
@@ -21,6 +21,11 @@ const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 	const [backupCatch] = useState(thisCatch || "");
 
 	const catchesContext = useContext(CatchesContext);
+
+	const editCatchStatus = (status) => {
+		catchesContext.setEditingCatchId(thisCatch.catch_id);
+		setCatchStatus(status);
+	};
 
 	useEffect(() => {
 		if (thisCatch && thisCatch.not_measured_individuals == null) {
@@ -51,7 +56,7 @@ const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 						catchId={thisCatch.catch_id}
 						viewSexes={viewSexes}
 						allowedSexes={allowedSexes}
-						editCatchStatus={setCatchStatus}
+						editCatchStatus={editCatchStatus}
 					/>
 					{viewSexes && (
 						<Sexes

@@ -52,6 +52,7 @@ const EditCatchForm = ({ catchStatus, thisCatch, editCatchStatus, catchId, handl
 		e.preventDefault();
 		catchesContext.updateCatch(catchId);
 		editCatchStatus("view");
+		catchesContext.setEditingCatchId(null);
 	};
 
 	const renderContent = () => {

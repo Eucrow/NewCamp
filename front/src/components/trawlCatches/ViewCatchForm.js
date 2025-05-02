@@ -1,5 +1,6 @@
 import React from "react";
 import CatchButtonBar from "./CatchButtonBar";
+import CatchesContext from "../../contexts/CatchesContext";
 
 /**
  * View CatchForm is a functional component that represents a form to view catch data.

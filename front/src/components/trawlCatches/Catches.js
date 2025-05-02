@@ -14,6 +14,7 @@ import CatchesContext from "../../contexts/CatchesContext.js";
 const Catches = ({ haul_id }) => {
 	const [catches, setCatches] = useState([]);
 	const [add, setAdd] = useState(false);
+	const [editingCatchId, setEditingCatchId] = useState(null);
 
 	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;
 	const apiCatch = "http://127.0.0.1:8000/api/1.0/catch/";
@@ -196,6 +197,7 @@ const Catches = ({ haul_id }) => {
 		});
 
 		setCatches(newCatches);
+		setEditingCatchId(null);
 	};
 
 	/**
@@ -314,6 +316,8 @@ const Catches = ({ haul_id }) => {
 					updateCatch: updateCatch,
 					deleteCatch: deleteCatch,
 					add: add,
+					editingCatchId: editingCatchId,
+					setEditingCatchId: setEditingCatchId,
 				}}
 			>
 				<fieldset className="wrapper catchesList">

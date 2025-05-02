@@ -26,6 +26,13 @@ const CatchButtonBar = ({
 
 	const catchesContext = useContext(CatchesContext);
 
+	const isDisabled = () => {
+		return (
+			catchesContext.add === true ||
+			(catchesContext.editingCatchId !== null && catchesContext.editingCatchId !== catchId)
+		);
+	};
+
 	if (catchStatus === "add") {
 		ButtonBar = (
 			<div className="catches__table__buttonBar">
@@ -46,7 +53,7 @@ const CatchButtonBar = ({
 					handleMethod={editCatchStatus}
 					buttonText={"Edit species"}
 					newStatus={"edit"}
-					disabled={catchesContext.add}
+					disabled={isDisabled()}
 				>
 					<UiIconEdit />
 				</UiButtonStatusHandle>
@@ -58,10 +65,10 @@ const CatchButtonBar = ({
 						"Are you sure to delete this catch? This delete the catch and its sexes and lengths."
 					}
 					children={<UiIconDelete />}
-					disabled={catchesContext.add}
+					disabled={isDisabled()}
 				/>
 
-				{allowedSexes === false || catchesContext.add === true ? (
+				{allowedSexes === false || isDisabled() === true ? (
 					<UiButtonSexes disabled={true} />
 				) : viewSexes === false ? (
 					<UiButtonSexes
