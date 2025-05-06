@@ -12,6 +12,7 @@ import UiButtonSave from "../ui/UiButtonSave";
 import UiButton from "../ui/UiButton";
 import UiIconSaveAndAdd from "../ui/UiIconSaveAndAdd";
 import UiIconSaveAndFinish from "../ui/UiIconSaveAndFinish";
+import UiIconCancel from "../ui/UiIconCancel";
 
 /**
  * Catch button bar component.
@@ -56,9 +57,6 @@ const CatchButtonBar = ({ newCatch, setNewCatch }) => {
 	if (catchContext.catchStatus === "add") {
 		ButtonBar = (
 			<div className="catches__table__buttonBar">
-				{/* <button type="button" onClick={(e) => handleSaveAndAdd(e)}>
-					Save and add new one
-				</button> */}
 				<UiButton buttonText={"Save and add new species"} method={handleSaveAndAdd}>
 					<UiIconSaveAndAdd />
 				</UiButton>
@@ -67,15 +65,13 @@ const CatchButtonBar = ({ newCatch, setNewCatch }) => {
 					<UiIconSaveAndFinish />
 				</UiButton>
 
-				{/* <button type="button" onClick={(e) => handleSaveAndFinish(e)}>
-					Save and finish add
-				</button> */}
-
 				<UiButtonStatusHandle
 					handleMethod={catchContext.handleChangeAdd}
 					buttonText={"Cancel"}
 					newStatus={false}
-				/>
+				>
+					<UiIconCancel />
+				</UiButtonStatusHandle>
 			</div>
 		);
 	}

@@ -293,26 +293,6 @@ const Catches = ({ haul_id }) => {
 			console.error("Error creating catch: ", error);
 			alert("Error creating catch: " + error.message);
 		}
-
-		// existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category).then((responseExists) => {
-		// 	if (responseExists === true) {
-		// 		alert("Catch already exists");
-		// 	} else {
-		// 		fetch(apiCreateCatch, {
-		// 			method: "POST",
-		// 			headers: {
-		// 				"Content-Type": "application/json",
-		// 			},
-		// 			body: JSON.stringify(newCatch),
-		// 		})
-		// 			.then((response) => response.json())
-		// 			.then((c) => {
-		// 				const newCatches = [c, ...catches];
-		// 				setCatches(newCatches);
-		// 			})
-		// 			.catch((error) => console.log(error));
-		// 	}
-		// });
 	};
 
 	useEffect(() => {
@@ -389,13 +369,7 @@ const Catches = ({ haul_id }) => {
 							<Catch thisCatchStatus="add" handleChangeAdd={setAdd} />
 						) : null}
 						{catches.map((c) => {
-							return (
-								<Catch
-									className="catches__table__row"
-									key={c.catch_id}
-									thisCatch={c}
-								/>
-							);
+							return <Catch key={c.catch_id} thisCatch={c} />;
 						})}
 					</div>
 				</fieldset>

@@ -44,11 +44,7 @@ const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 
 	const renderContent = () => {
 		if (catchStatus === "add") {
-			return (
-				<div className="form__row form--wide">
-					<NewCatchForm />
-				</div>
-			);
+			return <NewCatchForm />;
 		} else if (catchStatus === "view") {
 			return (
 				<Fragment>
