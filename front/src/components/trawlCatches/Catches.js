@@ -262,29 +262,57 @@ const Catches = ({ haul_id }) => {
 	 * If the catch already exists, it alerts the user.
 	 * @param {Object} newCatch - The new catch to be created.
 	 */
-	const createCatch = (newCatch) => {
-		// add haul id to data request:
-		newCatch["haul_id"] = haul_id;
+	const createCatch = async (newCatch) => {
+		try {
+			// add haul id to data request:
+			newCatch["haul_id"] = haul_id;
 
-		existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category).then((responseExists) => {
-			if (responseExists === true) {
+			const exists = await existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category);
+			if (exists === true) {
 				alert("Catch already exists");
-			} else {
-				fetch(apiCreateCatch, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(newCatch),
-				})
-					.then((response) => response.json())
-					.then((c) => {
-						const newCatches = [c, ...catches];
-						setCatches(newCatches);
-					})
-					.catch((error) => console.log(error));
+				return;
 			}
-		});
+
+			// Create new catch
+			const response = await fetch(apiCreateCatch, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(newCatch),
+			});
+			if (!response.ok) {
+				throw new Error(
+					"Something went wrong! " + response.status + " " + response.statusText
+				);
+			}
+
+			const createdCatch = await response.json();
+			setCatches([createdCatch, ...catches]);
+		} catch (error) {
+			console.error("Error creating catch: ", error);
+			alert("Error creating catch: " + error.message);
+		}
+
+		// existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category).then((responseExists) => {
+		// 	if (responseExists === true) {
+		// 		alert("Catch already exists");
+		// 	} else {
+		// 		fetch(apiCreateCatch, {
+		// 			method: "POST",
+		// 			headers: {
+		// 				"Content-Type": "application/json",
+		// 			},
+		// 			body: JSON.stringify(newCatch),
+		// 		})
+		// 			.then((response) => response.json())
+		// 			.then((c) => {
+		// 				const newCatches = [c, ...catches];
+		// 				setCatches(newCatches);
+		// 			})
+		// 			.catch((error) => console.log(error));
+		// 	}
+		// });
 	};
 
 	useEffect(() => {

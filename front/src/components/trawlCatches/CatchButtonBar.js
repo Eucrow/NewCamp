@@ -13,7 +13,7 @@ import UiButtonSave from "../ui/UiButtonSave";
 /**
  * Catch button bar component.
  */
-const CatchButtonBar = () => {
+const CatchButtonBar = ({ new_catch, setNew_catch }) => {
 	var ButtonBar = null;
 
 	const catchesContext = useContext(CatchesContext);
@@ -27,15 +27,45 @@ const CatchButtonBar = () => {
 		);
 	};
 
+	const handleSaveAndAdd = async (e) => {
+		e.preventDefault();
+		await catchesContext.createCatch(new_catch);
+		setNew_catch({
+			group: "",
+			sp_id: "",
+			category: "",
+			weight: "",
+			sampled_weight: "",
+			// not_measured_individuals: "",
+		});
+	};
+
+	const handleSaveAndFinish = async (e) => {
+		e.preventDefault();
+		try {
+			await catchesContext.createCatch(new_catch);
+			catchContext.handleChangeAdd(false);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	if (catchContext.catchStatus === "add") {
 		ButtonBar = (
 			<div className="catches__table__buttonBar">
-				<UiButtonSave buttonText={"Save"} />
+				<button type="button" onClick={(e) => handleSaveAndAdd(e)}>
+					Save and add new one
+				</button>
+
 				<UiButtonStatusHandle
 					handleMethod={catchContext.handleChangeAdd}
 					buttonText={"Cancel"}
 					newStatus={false}
 				/>
+
+				<button type="button" onClick={(e) => handleSaveAndFinish(e)}>
+					Save and finish add
+				</button>
 			</div>
 		);
 	}

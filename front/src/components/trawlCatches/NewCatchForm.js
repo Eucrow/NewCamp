@@ -3,14 +3,11 @@ import React, { useEffect, useRef, useState, useContext, use } from "react";
 import CatchButtonBar from "./CatchButtonBar";
 
 import GlobalContext from "../../contexts/GlobalContext";
-import CatchesContext from "../../contexts/CatchesContext";
 
 /**
  * CatchForm is a functional component that represents a empty form for adding catch data.
  *
  * @component
- * @param {function} createCatch - A function to create a new catch in the database.
- * @param {function} handleChangeAdd - A function to manage the add state.
  * @returns {JSX.Element} The rendered Catch component.
  */
 const NewCatchForm = () => {
@@ -26,7 +23,6 @@ const NewCatchForm = () => {
 	const [style_species_invalid, setStyle_species_invalid] = useState("");
 
 	const globalContext = useContext(GlobalContext);
-	const catchesContext = useContext(CatchesContext);
 
 	const focusRef = useRef(null);
 
@@ -52,22 +48,9 @@ const NewCatchForm = () => {
 		setNew_catch((prev) => ({ ...prev, [field]: value }));
 	};
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		catchesContext.createCatch(new_catch);
-		setNew_catch({
-			group: "",
-			sp_id: "",
-			category: "",
-			weight: "",
-			sampled_weight: "",
-			// not_measured_individuals: "",
-		});
-	};
-
 	const renderContent = () => {
 		return (
-			<form className="catches__table__row" onSubmit={(e) => handleSubmit(e)}>
+			<form className="catches__table__row">
 				<input
 					ref={focusRef}
 					value={new_catch.group}
@@ -151,7 +134,7 @@ const NewCatchForm = () => {
 					onChange={(e) => handleInputChange("individuals", e.target.value)}
 					aria-label="Not measured individuals"
 				/>
-				<CatchButtonBar />
+				<CatchButtonBar new_catch={new_catch} setNew_catch={setNew_catch} />
 			</form>
 		);
 	};

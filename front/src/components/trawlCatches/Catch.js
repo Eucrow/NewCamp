@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useContext, createContext } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
 
 import CatchesContext from "../../contexts/CatchesContext.js";
 import CatchContext from "../../contexts/CatchContext.js";
@@ -71,6 +71,7 @@ const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 		<CatchContext.Provider
 			value={{
 				catchStatus,
+				setCatchStatus,
 				thisCatch,
 				handleChangeAdd,
 				viewSexes,
