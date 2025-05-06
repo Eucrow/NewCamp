@@ -26,6 +26,8 @@ const NewCatchForm = () => {
 
 	const focusRef = useRef(null);
 
+	const [isFormValid, setIsFormValid] = useState(false);
+
 	// Put focus on the group input when the group changes. This make that when the form is submitted,
 	// it is reset and all fields change to "", including the group variable. So when the variable
 	// group change, the useEffect runs.
@@ -43,6 +45,26 @@ const NewCatchForm = () => {
 			setStyle_species_invalid("");
 		}
 	}, [newCatch.sp_id]);
+
+	const validateForm = () => {
+		const requiredFields = {
+			group: newCatch.group,
+			sp_id: newCatch.sp_id,
+			category: newCatch.category,
+			weight: newCatch.weight,
+		};
+
+		const isValid = Object.values(requiredFields).every(
+			(value) => value !== null && value !== "" && value !== "Select species..."
+		);
+
+		setIsFormValid(isValid);
+	};
+
+	// Add useEffect to check validation whenever form fields change
+	useEffect(() => {
+		validateForm();
+	}, [newCatch]);
 
 	const handleInputChange = (field, value) => {
 		setNewCatch((prev) => ({ ...prev, [field]: value }));
@@ -134,7 +156,11 @@ const NewCatchForm = () => {
 					onChange={(e) => handleInputChange("individuals", e.target.value)}
 					aria-label="Not measured individuals"
 				/>
-				<CatchButtonBar newCatch={newCatch} setNewCatch={setNewCatch} />
+				<CatchButtonBar
+					newCatch={newCatch}
+					setNewCatch={setNewCatch}
+					isFormValid={isFormValid}
+				/>
 			</form>
 		);
 	};

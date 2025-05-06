@@ -17,7 +17,7 @@ import UiIconCancel from "../ui/UiIconCancel";
 /**
  * Catch button bar component.
  */
-const CatchButtonBar = ({ newCatch, setNewCatch }) => {
+const CatchButtonBar = ({ newCatch, setNewCatch, isFormValid }) => {
 	var ButtonBar = null;
 
 	const catchesContext = useContext(CatchesContext);
@@ -57,11 +57,19 @@ const CatchButtonBar = ({ newCatch, setNewCatch }) => {
 	if (catchContext.catchStatus === "add") {
 		ButtonBar = (
 			<div className="catches__table__buttonBar">
-				<UiButton buttonText={"Save and add new species"} method={handleSaveAndAdd}>
+				<UiButton
+					buttonText={"Save and add new species"}
+					method={handleSaveAndAdd}
+					disabled={!isFormValid}
+				>
 					<UiIconSaveAndAdd />
 				</UiButton>
 
-				<UiButton buttonText={"Save and finish"} method={handleSaveAndFinish}>
+				<UiButton
+					buttonText={"Save and finish"}
+					method={handleSaveAndFinish}
+					disabled={!isFormValid}
+				>
 					<UiIconSaveAndFinish />
 				</UiButton>
 
