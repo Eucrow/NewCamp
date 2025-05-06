@@ -13,7 +13,7 @@ import UiButtonSave from "../ui/UiButtonSave";
 /**
  * Catch button bar component.
  */
-const CatchButtonBar = ({ new_catch, setNew_catch }) => {
+const CatchButtonBar = ({ newCatch, setNewCatch }) => {
 	var ButtonBar = null;
 
 	const catchesContext = useContext(CatchesContext);
@@ -29,8 +29,8 @@ const CatchButtonBar = ({ new_catch, setNew_catch }) => {
 
 	const handleSaveAndAdd = async (e) => {
 		e.preventDefault();
-		await catchesContext.createCatch(new_catch);
-		setNew_catch({
+		await catchesContext.createCatch(newCatch);
+		setNewCatch({
 			group: "",
 			sp_id: "",
 			category: "",
@@ -43,7 +43,7 @@ const CatchButtonBar = ({ new_catch, setNew_catch }) => {
 	const handleSaveAndFinish = async (e) => {
 		e.preventDefault();
 		try {
-			await catchesContext.createCatch(new_catch);
+			await catchesContext.createCatch(newCatch);
 			catchContext.handleChangeAdd(false);
 		} catch (error) {
 			console.log(error);

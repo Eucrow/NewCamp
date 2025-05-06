@@ -11,7 +11,7 @@ import GlobalContext from "../../contexts/GlobalContext";
  * @returns {JSX.Element} The rendered Catch component.
  */
 const NewCatchForm = () => {
-	const [new_catch, setNew_catch] = useState({
+	const [newCatch, setNewCatch] = useState({
 		group: "",
 		sp_id: "",
 		category: "",
@@ -33,19 +33,19 @@ const NewCatchForm = () => {
 		if (focusRef.current) {
 			focusRef.current.focus();
 		}
-	}, [new_catch.group]);
+	}, [newCatch.group]);
 
 	// Check if the species is selected. If not, set the style_species_invalid to species--invalid.
 	useEffect(() => {
-		if (new_catch.sp_id === "") {
+		if (newCatch.sp_id === "") {
 			setStyle_species_invalid("species--invalid");
 		} else {
 			setStyle_species_invalid("");
 		}
-	}, [new_catch.sp_id]);
+	}, [newCatch.sp_id]);
 
 	const handleInputChange = (field, value) => {
-		setNew_catch((prev) => ({ ...prev, [field]: value }));
+		setNewCatch((prev) => ({ ...prev, [field]: value }));
 	};
 
 	const renderContent = () => {
@@ -53,7 +53,7 @@ const NewCatchForm = () => {
 			<form className="catches__table__row">
 				<input
 					ref={focusRef}
-					value={new_catch.group}
+					value={newCatch.group}
 					className="catches__table__cell catches__table__group"
 					type="number"
 					required={true}
@@ -68,7 +68,7 @@ const NewCatchForm = () => {
 					className={
 						"catches__table__cell catches__table__species " + style_species_invalid
 					}
-					disabled={new_catch.group === "" ? true : false}
+					disabled={newCatch.group === "" ? true : false}
 					required={true}
 					id="sp_code"
 					name="sp_code"
@@ -77,7 +77,7 @@ const NewCatchForm = () => {
 				>
 					<option>Select species...</option>
 					{globalContext.species.map((s) => {
-						if (s.group === parseInt(new_catch.group)) {
+						if (s.group === parseInt(newCatch.group)) {
 							return (
 								<option value={s.id} key={s.id}>
 									{s.sp_code}-{s.sp_name}
@@ -89,7 +89,7 @@ const NewCatchForm = () => {
 					})}
 				</select>
 				<input
-					value={new_catch.category}
+					value={newCatch.category}
 					className="catches__table__cell catches__table__category"
 					type="number"
 					required={true}
@@ -101,7 +101,7 @@ const NewCatchForm = () => {
 					aria-label="Category"
 				/>
 				<input
-					value={new_catch.weight}
+					value={newCatch.weight}
 					className="catches__table__cell catches__table__weight"
 					type="number"
 					required={true}
@@ -114,7 +114,7 @@ const NewCatchForm = () => {
 				/>
 				<input
 					className="catches__table__cell catches__table__sampledWeight"
-					value={new_catch.sampled_weight}
+					value={newCatch.sampled_weight}
 					type="number"
 					id="sampled_weight"
 					name="sampled_weight"
@@ -125,7 +125,7 @@ const NewCatchForm = () => {
 				/>
 				<input
 					className="catches__table__cell catches__table__individuals"
-					value={new_catch.not_measured_individuals}
+					value={newCatch.not_measured_individuals}
 					type="number"
 					id="individuals"
 					name="individuals"
@@ -134,7 +134,7 @@ const NewCatchForm = () => {
 					onChange={(e) => handleInputChange("individuals", e.target.value)}
 					aria-label="Not measured individuals"
 				/>
-				<CatchButtonBar new_catch={new_catch} setNew_catch={setNew_catch} />
+				<CatchButtonBar newCatch={newCatch} setNewCatch={setNewCatch} />
 			</form>
 		);
 	};
