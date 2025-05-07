@@ -46,7 +46,11 @@ const NewCatchForm = () => {
 		}
 	}, [newCatch.sp_id]);
 
-	const validateForm = () => {
+	const validateWeight = () => {
+		return newCatch.weight >= newCatch.sampled_weight;
+	};
+
+	const validateRequired = () => {
 		const requiredFields = {
 			group: newCatch.group,
 			sp_id: newCatch.sp_id,
@@ -58,6 +62,11 @@ const NewCatchForm = () => {
 			(value) => value !== null && value !== "" && value !== "Select species..."
 		);
 
+		return isValid;
+	};
+
+	const validateForm = () => {
+		const isValid = validateWeight() && validateRequired();
 		setIsFormValid(isValid);
 	};
 
