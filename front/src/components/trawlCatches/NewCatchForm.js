@@ -25,6 +25,8 @@ const NewCatchForm = () => {
 	const globalContext = useContext(GlobalContext);
 
 	const focusRef = useRef(null);
+	const weightRef = useRef(null);
+	const sampledWeightRef = useRef(null);
 
 	const [isFormValid, setIsFormValid] = useState(false);
 
@@ -47,7 +49,26 @@ const NewCatchForm = () => {
 	}, [newCatch.sp_id]);
 
 	const validateWeight = () => {
-		return newCatch.weight >= newCatch.sampled_weight;
+		const isValid = Number(newCatch.weight) >= Number(newCatch.sampled_weight);
+
+		if (!isValid) {
+			weightRef.current.setCustomValidity(
+				"Weight must be greater than or equal to sampled weight."
+			);
+			sampledWeightRef.current.setCustomValidity(
+				"Sampled weight must be less than or equal to weight."
+			);
+			// Only report validity if the field is currently focused
+			if (document.activeElement === weightRef.current) {
+				weightRef.current.reportValidity();
+			} else if (document.activeElement === sampledWeightRef.current) {
+				sampledWeightRef.current.reportValidity();
+			}
+		} else {
+			weightRef.current.setCustomValidity("");
+			sampledWeightRef.current.setCustomValidity("");
+		}
+		return isValid;
 	};
 
 	const validateRequired = () => {
@@ -73,7 +94,13 @@ const NewCatchForm = () => {
 	// Add useEffect to check validation whenever form fields change
 	useEffect(() => {
 		validateForm();
-	}, [newCatch]);
+	}, [
+		newCatch.group,
+		newCatch.sp_id,
+		newCatch.category,
+		newCatch.weight,
+		newCatch.sampled_weight,
+	]);
 
 	const handleInputChange = (field, value) => {
 		setNewCatch((prev) => ({ ...prev, [field]: value }));
@@ -138,6 +165,7 @@ const NewCatchForm = () => {
 					required={true}
 					id="weight"
 					name="weight"
+					ref={weightRef}
 					min="1"
 					max="99999999"
 					onChange={(e) => handleInputChange("weight", e.target.value)}
@@ -149,6 +177,7 @@ const NewCatchForm = () => {
 					type="number"
 					id="sampled_weight"
 					name="sampled_weight"
+					ref={sampledWeightRef}
 					min="0"
 					max="99999999"
 					onChange={(e) => handleInputChange("sampled_weight", e.target.value)}
