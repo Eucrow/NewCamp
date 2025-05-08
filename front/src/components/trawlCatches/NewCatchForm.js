@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 
 import CatchButtonBar from "./CatchButtonBar";
-
+// import FloatingError from "../ui/FloatingError";
+import FloatingError from "../ui/FloatingError";
 import GlobalContext from "../../contexts/GlobalContext";
 
 /**
@@ -30,6 +31,13 @@ const NewCatchForm = () => {
 
 	const [isFormValid, setIsFormValid] = useState(false);
 
+	const [validationErrors, setValidationErrors] = useState({
+		weight: "",
+		sampledWeight: "",
+	});
+
+	const [activeField, setActiveField] = useState(null);
+
 	// Put focus on the group input when the group changes. This make that when the form is submitted,
 	// it is reset and all fields change to "", including the group variable. So when the variable
 	// group change, the useEffect runs.
@@ -51,23 +59,11 @@ const NewCatchForm = () => {
 	const validateWeight = () => {
 		const isValid = Number(newCatch.weight) >= Number(newCatch.sampled_weight);
 
-		if (!isValid) {
-			weightRef.current.setCustomValidity(
-				"Weight must be greater than or equal to sampled weight."
-			);
-			sampledWeightRef.current.setCustomValidity(
-				"Sampled weight must be less than or equal to weight."
-			);
-			// Only report validity if the field is currently focused
-			if (document.activeElement === weightRef.current) {
-				weightRef.current.reportValidity();
-			} else if (document.activeElement === sampledWeightRef.current) {
-				sampledWeightRef.current.reportValidity();
-			}
-		} else {
-			weightRef.current.setCustomValidity("");
-			sampledWeightRef.current.setCustomValidity("");
-		}
+		setValidationErrors((prev) => ({
+			weight: isValid ? "" : "Weight must be greater than sampled weight",
+			sampledWeight: isValid ? "" : "Sampled weight must be less than weight",
+		}));
+
 		return isValid;
 	};
 
@@ -158,31 +154,51 @@ const NewCatchForm = () => {
 					onChange={(e) => handleInputChange("category", e.target.value)}
 					aria-label="Category"
 				/>
-				<input
-					value={newCatch.weight}
-					className="catches__table__cell catches__table__weight"
-					type="number"
-					required={true}
-					id="weight"
-					name="weight"
-					ref={weightRef}
-					min="1"
-					max="99999999"
-					onChange={(e) => handleInputChange("weight", e.target.value)}
-					aria-label="Weight"
-				/>
-				<input
-					className="catches__table__cell catches__table__sampledWeight"
-					value={newCatch.sampled_weight}
-					type="number"
-					id="sampled_weight"
-					name="sampled_weight"
-					ref={sampledWeightRef}
-					min="0"
-					max="99999999"
-					onChange={(e) => handleInputChange("sampled_weight", e.target.value)}
-					aria-label="Sampled weight"
-				/>
+				<div className="catches__table__cell">
+					<input
+						value={newCatch.weight}
+						className={` catches__table__weight ${
+							validationErrors.weight ? "input-error" : ""
+						}`}
+						type="number"
+						required={true}
+						id="weight"
+						name="weight"
+						min="1"
+						max="99999999"
+						onChange={(e) => handleInputChange("weight", e.target.value)}
+						onFocus={() => setActiveField("weight")}
+						onBlur={() => setActiveField(null)}
+					/>
+
+					<FloatingError
+						message={validationErrors.weight}
+						show={activeField === "weight"}
+						inputRef={weightRef}
+					/>
+				</div>
+				<div className="catches__table__cell">
+					<input
+						className={`catches__table__sampledWeight ${
+							validationErrors.sampledWeight ? "input-error" : ""
+						} `}
+						value={newCatch.sampled_weight}
+						type="number"
+						id="sampled_weight"
+						name="sampled_weight"
+						min="0"
+						max="99999999"
+						onChange={(e) => handleInputChange("sampled_weight", e.target.value)}
+						onFocus={() => setActiveField("sampledWeight")}
+						onBlur={() => setActiveField(null)}
+					/>
+					<FloatingError
+						message={validationErrors.sampledWeight}
+						show={activeField === "sampledWeight"}
+						inputRef={sampledWeightRef}
+					/>
+				</div>
+
 				<input
 					className="catches__table__cell catches__table__individuals"
 					value={newCatch.not_measured_individuals}
