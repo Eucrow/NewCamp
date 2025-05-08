@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 
 import CatchButtonBar from "./CatchButtonBar";
-// import FloatingError from "../ui/FloatingError";
 import FloatingError from "../ui/FloatingError";
+
+import { useCatchValidation } from "../../hooks/useCatchValidation";
+
 import GlobalContext from "../../contexts/GlobalContext";
 
 /**
@@ -21,22 +23,15 @@ const NewCatchForm = () => {
 		// not_measured_individuals: "",
 	});
 
-	const [style_species_invalid, setStyle_species_invalid] = useState("");
-
 	const globalContext = useContext(GlobalContext);
 
 	const focusRef = useRef(null);
 	const weightRef = useRef(null);
 	const sampledWeightRef = useRef(null);
 
-	const [isFormValid, setIsFormValid] = useState(false);
-
-	const [validationErrors, setValidationErrors] = useState({
-		weight: "",
-		sampledWeight: "",
-	});
-
 	const [activeField, setActiveField] = useState(null);
+
+	const { validationErrors, isFormValid, isSpeciesValid } = useCatchValidation(newCatch);
 
 	// Put focus on the group input when the group changes. This make that when the form is submitted,
 	// it is reset and all fields change to "", including the group variable. So when the variable
@@ -46,57 +41,6 @@ const NewCatchForm = () => {
 			focusRef.current.focus();
 		}
 	}, [newCatch.group]);
-
-	// Check if the species is selected. If not, set the style_species_invalid to species--invalid.
-	useEffect(() => {
-		if (newCatch.sp_id === "") {
-			setStyle_species_invalid("species--invalid");
-		} else {
-			setStyle_species_invalid("");
-		}
-	}, [newCatch.sp_id]);
-
-	const validateWeight = () => {
-		const isValid = Number(newCatch.weight) >= Number(newCatch.sampled_weight);
-
-		setValidationErrors((prev) => ({
-			weight: isValid ? "" : "Weight must be greater than sampled weight",
-			sampledWeight: isValid ? "" : "Sampled weight must be less than weight",
-		}));
-
-		return isValid;
-	};
-
-	const validateRequired = () => {
-		const requiredFields = {
-			group: newCatch.group,
-			sp_id: newCatch.sp_id,
-			category: newCatch.category,
-			weight: newCatch.weight,
-		};
-
-		const isValid = Object.values(requiredFields).every(
-			(value) => value !== null && value !== "" && value !== "Select species..."
-		);
-
-		return isValid;
-	};
-
-	const validateForm = () => {
-		const isValid = validateWeight() && validateRequired();
-		setIsFormValid(isValid);
-	};
-
-	// Add useEffect to check validation whenever form fields change
-	useEffect(() => {
-		validateForm();
-	}, [
-		newCatch.group,
-		newCatch.sp_id,
-		newCatch.category,
-		newCatch.weight,
-		newCatch.sampled_weight,
-	]);
 
 	const handleInputChange = (field, value) => {
 		setNewCatch((prev) => ({ ...prev, [field]: value }));
@@ -119,9 +63,9 @@ const NewCatchForm = () => {
 					aria-label="Group"
 				/>
 				<select
-					className={
-						"catches__table__cell catches__table__species " + style_species_invalid
-					}
+					className={`catches__table__cell catches__table__species ${
+						isSpeciesValid === true ? "" : "species--invalid"
+					}`}
 					disabled={newCatch.group === "" ? true : false}
 					required={true}
 					id="sp_code"
