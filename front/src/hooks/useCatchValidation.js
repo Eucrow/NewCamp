@@ -73,6 +73,6 @@ export const useCatchValidation = (newCatch) => {
 	return {
 		validationErrors: validationState.errors,
 		isFormValid: validationState.isFormValid,
-		style_species_invalid: validationState.isSpeciesValid,
+		isSpeciesValid: validationState.isSpeciesValid,
 	};
 };
