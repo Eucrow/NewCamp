@@ -1,5 +1,21 @@
 import { useState, useEffect, useCallback } from "react";
 
+/**
+ * Custom hook for handling form validation in the NewCatchForm component.
+ * Validates weight relationships and required fields, and manages species selection state.
+ *
+ * @param {Object} newCatch - The catch form data object
+ * @param {string} newCatch.group - The group number (1-5)
+ * @param {string} newCatch.sp_id - The selected species ID
+ * @param {string} newCatch.category - The category number
+ * @param {string} newCatch.weight - The total weight
+ * @param {string} newCatch.sampled_weight - The sampled weight (must be <= weight)
+ *
+ * @returns {Object} Validation state and errors
+ * @returns {Object} validationErrors - Object containing error messages for weight and sampled weight
+ * @returns {boolean} isFormValid - Whether the entire form is valid
+ * @returns {boolean} isSpeciesValid - Whether a species has been selected
+ */
 export const useCatchValidation = (newCatch) => {
 	// State to hold all validation-related values
 	const [validationState, setValidationState] = useState({

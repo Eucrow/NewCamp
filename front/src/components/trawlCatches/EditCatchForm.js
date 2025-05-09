@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 
 import GlobalContext from "../../contexts/GlobalContext";
 import CatchesContext from "../../contexts/CatchesContext";
@@ -7,6 +7,7 @@ import CatchContext from "../../contexts/CatchContext";
 import { useCatchValidation } from "../../hooks/useCatchValidation";
 
 import CatchButtonBar from "./CatchButtonBar";
+import FloatingError from "../ui/FloatingError";
 
 /**
  * EditCatchForm is a functional component that represents the form to edit catch.
@@ -24,19 +25,14 @@ const EditCatchForm = () => {
 	const catchesContext = useContext(CatchesContext);
 	const catchContext = useContext(CatchContext);
 
+	const weightRef = useRef(null);
+	const sampledWeightRef = useRef(null);
+
+	const [activeField, setActiveField] = useState(null);
+
 	const { validationErrors, isFormValid, isSpeciesValid } = useCatchValidation(
 		catchContext.thisCatch
 	);
-
-	// const [style_species_invalid, setStyle_species_invalid] = useState("");
-
-	// useEffect(() => {
-	// 	if (catchContext.thisCatch.sp_id === "") {
-	// 		setStyle_species_invalid("species--invalid");
-	// 	} else {
-	// 		setStyle_species_invalid("");
-	// 	}
-	// }, [catchContext.thisCatch.sp_id]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -73,31 +69,15 @@ const EditCatchForm = () => {
 					id="sp_code"
 					name="sp_code"
 					required={true}
-					// trying to use useCatchValidation custom hook. I need  the handleChangeSpecie only receive
-					// the sp_id and get the sp_code and sp_name from the globalContext.species array.
-
-					value={
-						catchContext.thisCatch.sp_id
-						// catchContext.thisCatch.sp_id +
-						// "--" +
-						// catchContext.thisCatch.sp_code +
-						// "--" +
-						// catchContext.thisCatch.sp_name
-					}
+					value={catchContext.thisCatch.sp_id}
 					onChange={catchesContext.handleChangeSpecies(catchContext.thisCatch.catch_id)}
 					aria-label="Species"
 				>
 					{globalContext.species
 						.filter((s) => s.group === parseInt(catchContext.thisCatch.group))
 						.map((s) => (
-							<option
-								// key={s.id + "--" + s.sp_code + "--" + s.sp_name}
-								// value={s.id + "--" + s.sp_code + "--" + s.sp_name}
-								key={s.id}
-								value={s.id}
-							>
+							<option key={s.id} value={s.id}>
 								{s.sp_code}
-								{/* -{s.sp_name} */}
 							</option>
 						))}
 				</select>
@@ -113,31 +93,52 @@ const EditCatchForm = () => {
 					onChange={catchesContext.handleChangeCategory(catchContext.thisCatch.catch_id)}
 					aria-label="Category"
 				/>
-				<input
-					className="catches__table__cell catches__table__weight"
-					type="number"
-					id="weight"
-					name="weight"
-					required={true}
-					min="1"
-					max="99999999"
-					value={catchContext.thisCatch.weight}
-					onChange={catchesContext.handleChangeWeight(catchContext.thisCatch.catch_id)}
-					aria-label="Weight"
-				/>
-				<input
-					className="catches__table__cell catches__table__sampledWeight"
-					type="number"
-					id="sampled_weight"
-					name="sampled_weight"
-					min="0"
-					max="99999999"
-					value={catchContext.thisCatch.sampled_weight || ""}
-					onChange={catchesContext.handleChangeSampledWeight(
-						catchContext.thisCatch.catch_id
-					)}
-					aria-label="Sampled weight"
-				/>
+				<div className="catches__table__cell">
+					<input
+						className={` catches__table__weight ${
+							validationErrors.weight ? "input-error" : ""
+						}`}
+						type="number"
+						id="weight"
+						name="weight"
+						required={true}
+						min="1"
+						max="99999999"
+						value={catchContext.thisCatch.weight}
+						onChange={catchesContext.handleChangeWeight(
+							catchContext.thisCatch.catch_id
+						)}
+						aria-label="Weight"
+					/>
+					<FloatingError
+						message={validationErrors.weight}
+						show={activeField === "weight"}
+						inputRef={weightRef}
+					/>
+				</div>
+				<div className="catches__table__cell">
+					<input
+						className={`catches__table__sampledWeight ${
+							validationErrors.sampledWeight ? "input-error" : ""
+						} `}
+						type="number"
+						id="sampled_weight"
+						name="sampled_weight"
+						min="0"
+						max="99999999"
+						value={catchContext.thisCatch.sampled_weight || ""}
+						onChange={catchesContext.handleChangeSampledWeight(
+							catchContext.thisCatch.catch_id
+						)}
+						aria-label="Sampled weight"
+					/>
+
+					<FloatingError
+						message={validationErrors.sampledWeight}
+						show={activeField === "sampledWeight"}
+						inputRef={sampledWeightRef}
+					/>
+				</div>
 				<input
 					className="catches__table__cell catches__table__individuals"
 					type="number"
@@ -151,7 +152,7 @@ const EditCatchForm = () => {
 					)}
 					aria-label="Not measured individuals"
 				/>
-				<CatchButtonBar />
+				<CatchButtonBar isFormValid={isFormValid} />
 			</form>
 		);
 	};
