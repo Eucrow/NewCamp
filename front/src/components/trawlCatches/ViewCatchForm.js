@@ -33,6 +33,17 @@ const ViewCatchForm = () => {
 					aria-label="Group"
 				/>
 				<select
+					className="catches__table__cell catches__table__code"
+					id="sp_code"
+					name="sp_code"
+					disabled
+					aria-label="Species code"
+				>
+					<option key={catchContext.thisCatch.sp_id}>
+						{catchContext.thisCatch.sp_code}
+					</option>
+				</select>
+				<select
 					className="catches__table__cell catches__table__species"
 					id="sp_code"
 					name="sp_code"

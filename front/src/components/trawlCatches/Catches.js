@@ -349,6 +349,7 @@ const Catches = ({ haul_id }) => {
 					<div className="catches__table">
 						<div className="catches__table__row catches__table__header">
 							<div className="catches__table__cell catches__table__group">Group</div>
+							<div className="catches__table__cell catches__table__code">Code</div>
 							<div className="catches__table__cell catches__table__species">
 								Species
 							</div>
