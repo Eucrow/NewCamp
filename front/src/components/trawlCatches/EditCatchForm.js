@@ -63,6 +63,57 @@ const EditCatchForm = () => {
 					aria-label="Group"
 				/>
 				<select
+					className={`catches__table__cell catches__table__code ${
+						isSpeciesValid === true ? "" : "species--invalid"
+					}`}
+					value={catchContext.thisCatch.sp_id}
+					disabled={catchContext.thisCatch.group === "" ? true : false}
+					required={true}
+					id="sp_code"
+					name="sp_code"
+					onChange={catchesContext.handleChangeSpecies(catchContext.thisCatch.catch_id)}
+					aria-label="Species code"
+				>
+					<option>Code...</option>
+					{globalContext.species.map((s) => {
+						if (s.group === parseInt(catchContext.thisCatch.group)) {
+							return (
+								<option value={s.id} key={s.id}>
+									{s.sp_code}
+								</option>
+							);
+						} else {
+							return null;
+						}
+					})}
+				</select>
+				<select
+					className={`catches__table__cell catches__table__species ${
+						isSpeciesValid === true ? "" : "species--invalid"
+					}`}
+					value={catchContext.thisCatch.sp_id}
+					disabled={catchContext.thisCatch.group === "" ? true : false}
+					required={true}
+					id="sp_name"
+					name="sp_name"
+					tabIndex={-1}
+					onChange={catchesContext.handleChangeSpecies(catchContext.thisCatch.catch_id)}
+					aria-label="Species"
+				>
+					<option value=""></option>
+					{globalContext.species.map((s) => {
+						if (s.group === parseInt(catchContext.thisCatch.group)) {
+							return (
+								<option value={s.id} key={s.id}>
+									{s.sp_name}
+								</option>
+							);
+						} else {
+							return null;
+						}
+					})}
+				</select>
+				{/* <select
 					className={`catches__table__cell catches__table__species ${
 						isSpeciesValid === true ? "" : "species--invalid"
 					}`}
@@ -80,7 +131,7 @@ const EditCatchForm = () => {
 								{s.sp_code}
 							</option>
 						))}
-				</select>
+				</select> */}
 				<input
 					className="catches__table__cell catches__table__category"
 					type="number"
