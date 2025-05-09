@@ -17,10 +17,17 @@ const NewCatchForm = () => {
 	const [newCatch, setNewCatch] = useState({
 		group: "",
 		sp_id: "",
+		sp_code: "",
+		sp_name: "",
 		category: "",
 		weight: "",
 		sampled_weight: "",
 		// not_measured_individuals: "",
+	});
+
+	const [speciesSelected, setSpeciesSelected] = useState({
+		sp_code: "",
+		sp_name: "",
 	});
 
 	const globalContext = useContext(GlobalContext);
@@ -43,7 +50,19 @@ const NewCatchForm = () => {
 	}, [newCatch.group]);
 
 	const handleInputChange = (field, value) => {
-		setNewCatch((prev) => ({ ...prev, [field]: value }));
+		if (field === "sp_code" || field === "sp_name") {
+			const selSpecies = globalContext.species.find((s) => s.id === parseInt(value));
+			if (selSpecies) {
+				setNewCatch((prev) => ({
+					...prev,
+					sp_id: value,
+					sp_code: selSpecies.sp_code,
+					sp_name: selSpecies.sp_name,
+				}));
+			}
+		} else {
+			setNewCatch((prev) => ({ ...prev, [field]: value }));
+		}
 	};
 
 	const renderContent = () => {
@@ -63,22 +82,49 @@ const NewCatchForm = () => {
 					aria-label="Group"
 				/>
 				<select
-					className={`catches__table__cell catches__table__species ${
+					className={`catches__table__cell catches__table__code ${
 						isSpeciesValid === true ? "" : "species--invalid"
 					}`}
+					value={newCatch.sp_id}
 					disabled={newCatch.group === "" ? true : false}
 					required={true}
 					id="sp_code"
 					name="sp_code"
 					onChange={(e) => handleInputChange("sp_id", e.target.value)}
-					aria-label="Species"
+					aria-label="Species code"
 				>
-					<option>Select species...</option>
+					<option>Code...</option>
 					{globalContext.species.map((s) => {
 						if (s.group === parseInt(newCatch.group)) {
 							return (
 								<option value={s.id} key={s.id}>
-									{s.sp_code}-{s.sp_name}
+									{s.sp_code}
+								</option>
+							);
+						} else {
+							return null;
+						}
+					})}
+				</select>
+				<select
+					className={`catches__table__cell catches__table__species ${
+						isSpeciesValid === true ? "" : "species--invalid"
+					}`}
+					value={newCatch.sp_id}
+					disabled={newCatch.group === "" ? true : false}
+					required={true}
+					id="sp_name"
+					name="sp_name"
+					tabIndex={-1}
+					onChange={(e) => handleInputChange("sp_id", e.target.value)}
+					aria-label="Species"
+				>
+					<option value=""></option>
+					{globalContext.species.map((s) => {
+						if (s.group === parseInt(newCatch.group)) {
+							return (
+								<option value={s.id} key={s.id}>
+									{s.sp_name}
 								</option>
 							);
 						} else {
