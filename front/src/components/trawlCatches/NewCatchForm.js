@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 
-import CatchButtonBar from "./CatchButtonBar";
-import FloatingError from "../ui/FloatingError";
+import GlobalContext from "../../contexts/GlobalContext";
 
 import { useCatchValidation } from "../../hooks/useCatchValidation";
 
-import GlobalContext from "../../contexts/GlobalContext";
+import CatchButtonBar from "./CatchButtonBar";
+import FloatingError from "../ui/FloatingError";
 
 /**
  * CatchForm is a functional component that represents a empty form for adding catch data.

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import "../../contexts/CatchesContext.js";
 
 import Catch from "./Catch.js";
 import CatchesButtonBar from "./CatchesButtonBar.js";
 import CatchesContext from "../../contexts/CatchesContext.js";
+import GlobalContext from "../../contexts/GlobalContext.js";
 
 /**
  * Renders a list of catches for a specific haul.
@@ -15,6 +16,8 @@ const Catches = ({ haul_id }) => {
 	const [catches, setCatches] = useState([]);
 	const [add, setAdd] = useState(false);
 	const [editingCatchId, setEditingCatchId] = useState(null);
+
+	const globalContext = useContext(GlobalContext);
 
 	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;
 	const apiCatch = "http://127.0.0.1:8000/api/1.0/catch/";
@@ -62,19 +65,22 @@ const Catches = ({ haul_id }) => {
 	 * @param {number} idx - The index of the catch.
 	 */
 	const handleChangeSpecies = (idx) => (evt) => {
-		const value = evt.target.value;
-		const val = value.split("--");
-		const sp = val[0];
-		const sp_code = val[1];
-		const sp_name = val[2];
+		const sp_id = parseInt(evt.target.value);
+
+		const species = globalContext.species.filter((s) => {
+			if (s.id === sp_id) {
+				return s;
+			}
+			return false;
+		})[0];
 
 		const newCatches = catches.map((c) => {
 			if (idx !== c.catch_id) return c;
 			return {
 				...c,
-				sp_id: sp,
-				sp_code: sp_code,
-				sp_name: sp_name,
+				sp_id: sp_id,
+				sp_code: species.sp_code,
+				sp_name: species.sp_name,
 			};
 		});
 

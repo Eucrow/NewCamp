@@ -64,17 +64,10 @@ export const useCatchValidation = (newCatch) => {
 
 	// Update species validation state when species selection changes
 	useEffect(() => {
-		if (newCatch.sp_id === "") {
-			setValidationState((prev) => ({
-				...prev,
-				isSpeciesValid: false,
-			}));
-		} else {
-			setValidationState((prev) => ({
-				...prev,
-				isSpeciesValid: true,
-			}));
-		}
+		setValidationState((prev) => ({
+			...prev,
+			isSpeciesValid: newCatch.sp_id !== "" && newCatch.sp_id !== undefined,
+		}));
 	}, [newCatch.sp_id]);
 
 	return {

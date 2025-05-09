@@ -4,6 +4,8 @@ import GlobalContext from "../../contexts/GlobalContext";
 import CatchesContext from "../../contexts/CatchesContext";
 import CatchContext from "../../contexts/CatchContext";
 
+import { useCatchValidation } from "../../hooks/useCatchValidation";
+
 import CatchButtonBar from "./CatchButtonBar";
 
 /**
@@ -22,15 +24,19 @@ const EditCatchForm = () => {
 	const catchesContext = useContext(CatchesContext);
 	const catchContext = useContext(CatchContext);
 
-	const [style_species_invalid, setStyle_species_invalid] = useState("");
+	const { validationErrors, isFormValid, isSpeciesValid } = useCatchValidation(
+		catchContext.thisCatch
+	);
 
-	useEffect(() => {
-		if (catchContext.thisCatch.sp_id === "") {
-			setStyle_species_invalid("species--invalid");
-		} else {
-			setStyle_species_invalid("");
-		}
-	}, [catchContext.thisCatch.sp_id]);
+	// const [style_species_invalid, setStyle_species_invalid] = useState("");
+
+	// useEffect(() => {
+	// 	if (catchContext.thisCatch.sp_id === "") {
+	// 		setStyle_species_invalid("species--invalid");
+	// 	} else {
+	// 		setStyle_species_invalid("");
+	// 	}
+	// }, [catchContext.thisCatch.sp_id]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -61,16 +67,22 @@ const EditCatchForm = () => {
 					aria-label="Group"
 				/>
 				<select
-					className="catches__table__cell catches__table__species"
+					className={`catches__table__cell catches__table__species ${
+						isSpeciesValid === true ? "" : "species--invalid"
+					}`}
 					id="sp_code"
 					name="sp_code"
 					required={true}
+					// trying to use useCatchValidation custom hook. I need  the handleChangeSpecie only receive
+					// the sp_id and get the sp_code and sp_name from the globalContext.species array.
+
 					value={
-						catchContext.thisCatch.sp_id +
-						"--" +
-						catchContext.thisCatch.sp_code +
-						"--" +
-						catchContext.thisCatch.sp_name
+						catchContext.thisCatch.sp_id
+						// catchContext.thisCatch.sp_id +
+						// "--" +
+						// catchContext.thisCatch.sp_code +
+						// "--" +
+						// catchContext.thisCatch.sp_name
 					}
 					onChange={catchesContext.handleChangeSpecies(catchContext.thisCatch.catch_id)}
 					aria-label="Species"
@@ -79,10 +91,13 @@ const EditCatchForm = () => {
 						.filter((s) => s.group === parseInt(catchContext.thisCatch.group))
 						.map((s) => (
 							<option
-								key={s.id + "--" + s.sp_code + "--" + s.sp_name}
-								value={s.id + "--" + s.sp_code + "--" + s.sp_name}
+								// key={s.id + "--" + s.sp_code + "--" + s.sp_name}
+								// value={s.id + "--" + s.sp_code + "--" + s.sp_name}
+								key={s.id}
+								value={s.id}
 							>
-								{s.sp_code}-{s.sp_name}
+								{s.sp_code}
+								{/* -{s.sp_name} */}
 							</option>
 						))}
 				</select>
