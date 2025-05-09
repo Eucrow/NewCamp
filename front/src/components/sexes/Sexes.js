@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 
 import Lengths from "../lengths/Lengths.js";
 
@@ -23,6 +23,7 @@ const Sexes = ({ catchId, spId, viewSexes }) => {
 		// gets its own 'i', with the value 'i' had at the time the function was created.
 		// This prevents potential bugs where all functions share the same 'i',
 		// which would have its final value, not the value it had when the function was created.
+		// In this case, as Lengths component is created asynchronously, we need to use 'let' to avoid closure issues.
 		for (let i = 1; i <= 3; i++) {
 			content.push(
 				<div className="sexWrapper" key={"sex" + catchId + i}>

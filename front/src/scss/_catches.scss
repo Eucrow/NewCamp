@@ -22,6 +22,11 @@
 	// display: table-cell;
 	// display: flex;
 	display: flow;
+
+	input {
+		height: 100%; // Make input fill the cell height
+		// width: 100%; // Ensure input takes full width
+	}
 }
 
 .catches__table__header {
