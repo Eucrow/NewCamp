@@ -35,10 +35,12 @@ const NewCatchForm = () => {
 	const focusRef = useRef(null);
 	const weightRef = useRef(null);
 	const sampledWeightRef = useRef(null);
+	const categoryRef = useRef(null);
 
 	const [activeField, setActiveField] = useState(null);
 
-	const { validationErrors, isFormValid, isSpeciesValid } = useCatchValidation(newCatch);
+	const { validationErrors, isFormValid, isSpeciesValid, existsCatch } =
+		useCatchValidation(newCatch);
 
 	// Put focus on the group input when the group changes. This make that when the form is submitted,
 	// it is reset and all fields change to "", including the group variable. So when the variable
@@ -83,7 +85,7 @@ const NewCatchForm = () => {
 				/>
 				<select
 					className={`catches__table__cell catches__table__code ${
-						isSpeciesValid === true ? "" : "species--invalid"
+						isSpeciesValid === true && existsCatch === false ? "" : "species--invalid"
 					}`}
 					value={newCatch.sp_id}
 					disabled={newCatch.group === "" ? true : false}
@@ -93,7 +95,7 @@ const NewCatchForm = () => {
 					onChange={(e) => handleInputChange("sp_id", e.target.value)}
 					aria-label="Species code"
 				>
-					<option>Code...</option>
+					<option></option>
 					{globalContext.species.map((s) => {
 						if (s.group === parseInt(newCatch.group)) {
 							return (
@@ -108,7 +110,7 @@ const NewCatchForm = () => {
 				</select>
 				<select
 					className={`catches__table__cell catches__table__species ${
-						isSpeciesValid === true ? "" : "species--invalid"
+						isSpeciesValid === true && existsCatch === false ? "" : "species--invalid"
 					}`}
 					value={newCatch.sp_id}
 					disabled={newCatch.group === "" ? true : false}
@@ -132,18 +134,27 @@ const NewCatchForm = () => {
 						}
 					})}
 				</select>
-				<input
-					value={newCatch.category}
-					className="catches__table__cell catches__table__category"
-					type="number"
-					required={true}
-					id="category"
-					name="category"
-					min="1"
-					max="99"
-					onChange={(e) => handleInputChange("category", e.target.value)}
-					aria-label="Category"
-				/>
+				<div className="catches__table__cell">
+					<input
+						value={newCatch.category}
+						className={` catches__table__category ${
+							existsCatch === false ? "" : "species--invalid"
+						}`}
+						type="number"
+						required={true}
+						id="category"
+						name="category"
+						min="1"
+						max="99"
+						onChange={(e) => handleInputChange("category", e.target.value)}
+						aria-label="Category"
+					/>
+					<FloatingError
+						message={validationErrors.category}
+						show={existsCatch}
+						inputRef={categoryRef}
+					/>
+				</div>
 				<div className="catches__table__cell">
 					<input
 						value={newCatch.weight}

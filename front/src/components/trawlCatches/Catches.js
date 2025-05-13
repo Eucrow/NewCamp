@@ -233,19 +233,16 @@ const Catches = ({ haul_id }) => {
 	const existsCatch = (sp_id, category, originalCatchId) => {
 		if (!sp_id || !category) return false;
 
-		// Filter catches excluding the current catch being edited
-		const cleanCatches = catches.filter((c) => {
-			if (originalCatchId && c.catch_id === originalCatchId) {
-				return false;
-			}
-			return true;
-		});
+		// Start with all catches except the one being edited
+		const activeCatches = originalCatchId
+			? catches.filter((item) => item.catch_id !== originalCatchId)
+			: catches;
 
-		const existsCatch = cleanCatches.some((c) => {
-			return c.sp_id === sp_id && parseInt(c.category) === parseInt(category);
-		});
-
-		return existsCatch;
+		return activeCatches.some(
+			(item) =>
+				parseInt(item.sp_id) === parseInt(sp_id) &&
+				parseInt(item.category) === parseInt(category)
+		);
 	};
 
 	/**
