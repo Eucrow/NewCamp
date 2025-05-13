@@ -27,10 +27,11 @@ const EditCatchForm = () => {
 
 	const weightRef = useRef(null);
 	const sampledWeightRef = useRef(null);
+	const categoryRef = useRef(null);
 
 	const [activeField, setActiveField] = useState(null);
 
-	const { validationErrors, isFormValid, isSpeciesValid } = useCatchValidation(
+	const { validationErrors, isFormValid, isSpeciesValid, existsCatch } = useCatchValidation(
 		catchContext.thisCatch
 	);
 
@@ -49,22 +50,26 @@ const EditCatchForm = () => {
 					name="haul_id"
 					value={catchContext.thisCatch.haul_id}
 				/>
-				<input
-					className="catches__table__cell catches__table__group"
-					type="number"
-					id="group"
-					name="group"
-					required={true}
-					autoFocus
-					min="1"
-					max="5"
-					value={catchContext.thisCatch.group}
-					onChange={catchesContext.handleChangeGroup(catchContext.thisCatch.catch_id)}
-					aria-label="Group"
-				/>
+				<div className="catches__table__cell">
+					<input
+						className={` catches__table__group ${
+							existsCatch === false ? "" : "species--invalid"
+						}`}
+						type="number"
+						id="group"
+						name="group"
+						required={true}
+						autoFocus
+						min="1"
+						max="5"
+						value={catchContext.thisCatch.group}
+						onChange={catchesContext.handleChangeGroup(catchContext.thisCatch.catch_id)}
+						aria-label="Group"
+					/>
+				</div>
 				<select
 					className={`catches__table__cell catches__table__code ${
-						isSpeciesValid === true ? "" : "species--invalid"
+						isSpeciesValid === true && existsCatch === false ? "" : "species--invalid"
 					}`}
 					value={catchContext.thisCatch.sp_id}
 					disabled={catchContext.thisCatch.group === "" ? true : false}
@@ -74,7 +79,7 @@ const EditCatchForm = () => {
 					onChange={catchesContext.handleChangeSpecies(catchContext.thisCatch.catch_id)}
 					aria-label="Species code"
 				>
-					<option>Code...</option>
+					<option></option>
 					{globalContext.species.map((s) => {
 						if (s.group === parseInt(catchContext.thisCatch.group)) {
 							return (
@@ -89,14 +94,14 @@ const EditCatchForm = () => {
 				</select>
 				<select
 					className={`catches__table__cell catches__table__species ${
-						isSpeciesValid === true ? "" : "species--invalid"
+						isSpeciesValid === true && existsCatch === false ? "" : "species--invalid"
 					}`}
 					value={catchContext.thisCatch.sp_id}
 					disabled={catchContext.thisCatch.group === "" ? true : false}
 					required={true}
 					id="sp_name"
 					name="sp_name"
-					tabIndex={-1}
+					// tabIndex={-1} // In edit mode the select species must be focusable
 					onChange={catchesContext.handleChangeSpecies(catchContext.thisCatch.catch_id)}
 					aria-label="Species"
 				>
@@ -113,37 +118,29 @@ const EditCatchForm = () => {
 						}
 					})}
 				</select>
-				{/* <select
-					className={`catches__table__cell catches__table__species ${
-						isSpeciesValid === true ? "" : "species--invalid"
-					}`}
-					id="sp_code"
-					name="sp_code"
-					required={true}
-					value={catchContext.thisCatch.sp_id}
-					onChange={catchesContext.handleChangeSpecies(catchContext.thisCatch.catch_id)}
-					aria-label="Species"
-				>
-					{globalContext.species
-						.filter((s) => s.group === parseInt(catchContext.thisCatch.group))
-						.map((s) => (
-							<option key={s.id} value={s.id}>
-								{s.sp_code}
-							</option>
-						))}
-				</select> */}
-				<input
-					className="catches__table__cell catches__table__category"
-					type="number"
-					id="category"
-					name="category"
-					required={true}
-					min="1"
-					max="99"
-					value={catchContext.thisCatch.category}
-					onChange={catchesContext.handleChangeCategory(catchContext.thisCatch.catch_id)}
-					aria-label="Category"
-				/>
+				<div className="catches__table__cell">
+					<input
+						className={` catches__table__category ${
+							existsCatch === false ? "" : "species--invalid"
+						}`}
+						type="number"
+						id="category"
+						name="category"
+						required={true}
+						min="1"
+						max="99"
+						value={catchContext.thisCatch.category}
+						onChange={(e) => {
+							catchesContext.handleChangeCategory(catchContext.thisCatch.catch_id)(e);
+						}}
+						aria-label="Category"
+					/>
+					<FloatingError
+						message={validationErrors.category}
+						show={existsCatch}
+						inputRef={categoryRef}
+					/>
+				</div>
 				<div className="catches__table__cell">
 					<input
 						className={` catches__table__weight ${
@@ -159,6 +156,8 @@ const EditCatchForm = () => {
 						onChange={catchesContext.handleChangeWeight(
 							catchContext.thisCatch.catch_id
 						)}
+						onFocus={() => setActiveField("weight")}
+						onBlur={() => setActiveField(null)}
 						aria-label="Weight"
 					/>
 					<FloatingError
@@ -182,8 +181,9 @@ const EditCatchForm = () => {
 							catchContext.thisCatch.catch_id
 						)}
 						aria-label="Sampled weight"
+						onFocus={() => setActiveField("sampledWeight")}
+						onBlur={() => setActiveField(null)}
 					/>
-
 					<FloatingError
 						message={validationErrors.sampledWeight}
 						show={activeField === "sampledWeight"}

@@ -5,13 +5,15 @@
 
 .floating-error {
 	position: absolute;
-	background-color: var(--error_background) !important;
+	// background-color: var(--error_background) !important;
+	background-color: var(--grey-gradient-4) !important;
 	color: var(--error_text) !important;
 	padding: 8px 12px;
 	border-radius: 4px;
 	font-size: 0.875rem;
 	z-index: 1000;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	border: 1px solid var(--grey-gradient-1);
 }
 
 .floating-error::before {
@@ -21,5 +23,5 @@
 	left: 10px;
 	border-left: 6px solid transparent;
 	border-right: 6px solid transparent;
-	border-bottom: 6px solid var(--error_background);
+	border-bottom: 6px solid var(--grey-gradient-1);
 }

@@ -14,6 +14,7 @@ import GlobalContext from "../../contexts/GlobalContext.js";
  */
 const Catches = ({ haul_id }) => {
 	const [catches, setCatches] = useState([]);
+	const [catchesBackup, setCatchesBackup] = useState([]);
 	const [add, setAdd] = useState(false);
 	const [editingCatchId, setEditingCatchId] = useState(null);
 
@@ -95,35 +96,35 @@ const Catches = ({ haul_id }) => {
 		const value = evt.target.value;
 
 		// Firstly, get the data of catch to modify
-		const thisCatch = catches.find((c) => {
-			if (c.catch_id === idx) {
-				return c;
-			}
-			return false;
-		});
+		// const thisCatch = catches.find((c) => {
+		// 	if (c.catch_id === idx) {
+		// 		return c;
+		// 	}
+		// 	return false;
+		// });
 
-		// Secondly, check if exists another catch whit the same species and category
-		const repeatedCatch = catches.some(
-			(c) =>
-				(c.group === thisCatch.group) &
-				(c.sp_code === thisCatch.sp_code) &
-				(c.category === parseInt(value))
-		);
+		// // Secondly, check if exists another catch whit the same species and category
+		// const repeatedCatch = catches.some(
+		// 	(c) =>
+		// 		(c.group === thisCatch.group) &
+		// 		(c.sp_code === thisCatch.sp_code) &
+		// 		(c.category === parseInt(value))
+		// );
 
 		// And finally save the state or thrown an alert.
-		if (repeatedCatch === true) {
-			alert("This category of the species already exists");
-		} else if (repeatedCatch === false) {
-			const newCatches = catches.map((c) => {
-				if (c.catch_id !== idx) return c;
-				return {
-					...c,
-					category: value,
-				};
-			});
+		// if (repeatedCatch === true) {
+		// 	alert("This category of the species already exists");
+		// } else if (repeatedCatch === false) {
+		const newCatches = catches.map((c) => {
+			if (c.catch_id !== idx) return c;
+			return {
+				...c,
+				category: value,
+			};
+		});
 
-			setCatches(newCatches);
-		}
+		setCatches(newCatches);
+		// }
 	};
 
 	/**
@@ -251,16 +252,34 @@ const Catches = ({ haul_id }) => {
 	 * @param {string} category - The category of the catch to check.
 	 * @returns {boolean} Returns true if the catch exists, false otherwise.
 	 */
-	const existsCatch = (haulId, spId, category) => {
-		const thisApiCatch = apiCatch + haulId + "/" + spId + "/" + category;
+	// const existsCatch = (haulId, spId, category) => {
+	// 	const thisApiCatch = apiCatch + haulId + "/" + spId + "/" + category;
 
-		return fetch(thisApiCatch).then((response) => {
-			if (response.status === 200) {
-				return true;
-			} else {
+	// 	return fetch(thisApiCatch).then((response) => {
+	// 		if (response.status === 200) {
+	// 			return true;
+	// 		} else {
+	// 			return false;
+	// 		}
+	// 	});
+	// };
+
+	const existsCatch = (sp_id, category, originalCatchId) => {
+		if (!sp_id || !category) return false;
+
+		// Filter catches excluding the current catch being edited
+		const cleanCatches = catches.filter((c) => {
+			if (originalCatchId && c.catch_id === originalCatchId) {
 				return false;
 			}
+			return true;
 		});
+
+		const existsCatch = cleanCatches.some((c) => {
+			return c.sp_id === sp_id && parseInt(c.category) === parseInt(category);
+		});
+
+		return existsCatch;
 	};
 
 	/**
@@ -341,6 +360,8 @@ const Catches = ({ haul_id }) => {
 					add: add,
 					editingCatchId: editingCatchId,
 					setEditingCatchId: setEditingCatchId,
+					existsCatch: existsCatch,
+					haul_id: haul_id,
 				}}
 			>
 				<fieldset className="wrapper catchesList">
