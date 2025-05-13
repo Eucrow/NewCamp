@@ -7,14 +7,7 @@ import React from "react";
  * @param {character} confirmMessage text to show in a confirm message before the deletion.
  * @param {boolean} disabled if the button is disabled or not.
  */
-const UiButtonDelete = ({
-	id,
-	children,
-	deleteMethod,
-	buttonText,
-	confirmMessage,
-	disabled = false,
-}) => {
+const UiButton = ({ children, method, buttonText, disabled = false }) => {
 	const hasChildren = children !== undefined;
 
 	const buttonClass = hasChildren
@@ -28,9 +21,7 @@ const UiButtonDelete = ({
 			title={buttonText}
 			disabled={disabled}
 			onClick={(e) => {
-				if (window.confirm(confirmMessage)) {
-					deleteMethod(id);
-				}
+				method(e);
 			}}
 		>
 			{hasChildren ? children : buttonText}
@@ -40,4 +31,4 @@ const UiButtonDelete = ({
 	return renderedButton;
 };
 
-export default UiButtonDelete;
+export default UiButton;

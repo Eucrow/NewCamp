@@ -6,17 +6,27 @@ import React from "react";
  * In case any children is passed, the button is rendered with the children. Otherwise, the button is rendered with
  * the buttonText. Usually, the button is a icon.
  * TODO: is there any way to detect if the children is a icon?
- * @param {method} handleMethod Method to handle the boolean parameter.
+ * @param {character} children Children to show in the button. Usually, an icon.
  * @param {character} buttonText Text to show in the button.
+ * @param {method} handleMethod Method to handle the boolean parameter.
  * @param {boolean} newStatus The new string value of the variable.
+ * @param {boolean} disabled If the button is disabled or not.
  * TODO: I think it is not a good idea to use this component. Without the name of the variable,
  * it is not possible to know what component will be renderer.
  */
 
-const UiButtonStatusHandle = ({ children, buttonText, handleMethod, newStatus }) => {
+const UiButtonStatusHandle = ({
+	children,
+	buttonText,
+	handleMethod,
+	newStatus,
+	disabled = false,
+}) => {
 	const hasChildren = children !== undefined;
 
-	const buttonClass = hasChildren ? "buttonsWrapper__button icon_button" : "buttonsWrapper__button";
+	const buttonClass = hasChildren
+		? "buttonsWrapper__button icon_button"
+		: "buttonsWrapper__button";
 
 	const renderedButton = (
 		<button
@@ -26,6 +36,8 @@ const UiButtonStatusHandle = ({ children, buttonText, handleMethod, newStatus })
 			onClick={() => {
 				handleMethod(newStatus);
 			}}
+			disabled={disabled}
+			autoFocus
 		>
 			{hasChildren ? children : buttonText}
 		</button>

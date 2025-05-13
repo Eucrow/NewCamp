@@ -4,6 +4,7 @@ import LengthsButtonBar from "./LengthsButtonBar.js";
 import LengthsRangeForm from "./LengthsRangeForm.js";
 
 import LengthsContext from "../../contexts/LengthsContext";
+import LengthsQuickForm from "./LengthsQuickForm.js";
 
 /**
  * LengthsForm component renders different forms based on the lengthsStatus from the LengthsContext.
@@ -108,6 +109,19 @@ const LengthsForm = () => {
 			);
 		} else if (lengthsContext.lengthsStatus === "add") {
 			return <LengthsRangeForm />;
+		} else if (lengthsContext.lengthsStatus === "new") {
+			return (
+				<form
+					className="lengthsWrapper"
+					onSubmit={(e) => {
+						e.preventDefault(); // Prevent form submission to allow adding new lengths
+						lengthsContext.saveSexAndLengths(e, lengthsContext.lengths);
+					}}
+				>
+					<LengthsQuickForm />
+					<LengthsButtonBar />
+				</form>
+			);
 		} else if (lengthsContext.lengthsStatus === "empty") {
 			return (
 				<div className="formLengths__table">

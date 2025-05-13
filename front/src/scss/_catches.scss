@@ -22,6 +22,11 @@
 	// display: table-cell;
 	// display: flex;
 	display: flow;
+
+	input {
+		height: 100%; // Make input fill the cell height
+		// width: 100%; // Ensure input takes full width
+	}
 }
 
 .catches__table__header {
@@ -48,6 +53,11 @@
 }
 
 .catches__table__group {
+	width: 7ch;
+	// width: 10%;
+	text-align: center;
+}
+.catches__table__code {
 	width: 7ch;
 	// width: 10%;
 	text-align: center;

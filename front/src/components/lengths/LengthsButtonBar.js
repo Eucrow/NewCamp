@@ -56,6 +56,23 @@ const LengthsButtonBar = () => {
 		);
 	} else if (lengthsContext.lengthsStatus === "add") {
 		ButtonBar = null;
+	} else if (lengthsContext.lengthsStatus === "new") {
+		ButtonBar = (
+			<div className="form__cell sexWrapper__buttons_bar">
+				<button className="buttonsWrapper__button" type="submit" disabled={!lengthsContext.validLengths}>
+					Add Lengths
+				</button>
+				<button
+					type="button"
+					onClick={() => {
+						lengthsContext.cancelEditLengths();
+					}}
+				>
+					Cancel
+				</button>
+				<div className="form__cell buttonsWrapper--center"></div>
+			</div>
+		);
 	}
 
 	return ButtonBar;

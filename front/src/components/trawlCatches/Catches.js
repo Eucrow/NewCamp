@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+
+import "../../contexts/CatchesContext.js";
 
 import Catch from "./Catch.js";
 import CatchesButtonBar from "./CatchesButtonBar.js";
+import CatchesContext from "../../contexts/CatchesContext.js";
+import GlobalContext from "../../contexts/GlobalContext.js";
 
 /**
  * Renders a list of catches for a specific haul.
@@ -11,9 +15,11 @@ import CatchesButtonBar from "./CatchesButtonBar.js";
 const Catches = ({ haul_id }) => {
 	const [catches, setCatches] = useState([]);
 	const [add, setAdd] = useState(false);
+	const [editingCatchId, setEditingCatchId] = useState(null);
+
+	const globalContext = useContext(GlobalContext);
 
 	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;
-	const apiCatch = "http://127.0.0.1:8000/api/1.0/catch/";
 	const apiCreateCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
 	const apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch";
 
@@ -58,19 +64,22 @@ const Catches = ({ haul_id }) => {
 	 * @param {number} idx - The index of the catch.
 	 */
 	const handleChangeSpecies = (idx) => (evt) => {
-		const value = evt.target.value;
-		const val = value.split("--");
-		const sp = val[0];
-		const sp_code = val[1];
-		const sp_name = val[2];
+		const sp_id = parseInt(evt.target.value);
+
+		const species = globalContext.species.filter((s) => {
+			if (s.id === sp_id) {
+				return s;
+			}
+			return false;
+		})[0];
 
 		const newCatches = catches.map((c) => {
 			if (idx !== c.catch_id) return c;
 			return {
 				...c,
-				sp_id: sp,
-				sp_code: sp_code,
-				sp_name: sp_name,
+				sp_id: sp_id,
+				sp_code: species.sp_code,
+				sp_name: species.sp_name,
 			};
 		});
 
@@ -84,33 +93,16 @@ const Catches = ({ haul_id }) => {
 	const handleChangeCategory = (idx) => (evt) => {
 		const value = evt.target.value;
 
-		// Firstly, get the data of catch to modify
-		const thisCatch = catches.find((c) => {
-			if (c.catch_id === idx) {
-				return c;
-			}
-			return false;
+		const newCatches = catches.map((c) => {
+			if (c.catch_id !== idx) return c;
+			return {
+				...c,
+				category: value,
+			};
 		});
 
-		// Secondly, check if exists another catch whit the same species and category
-		const repeatedCatch = catches.some(
-			(c) => (c.group === thisCatch.group) & (c.sp_code === thisCatch.sp_code) & (c.category === parseInt(value))
-		);
-
-		// And finally save the state or thrown an alert.
-		if (repeatedCatch === true) {
-			alert("This category of the species already exists");
-		} else if (repeatedCatch === false) {
-			const newCatches = catches.map((c) => {
-				if (c.catch_id !== idx) return c;
-				return {
-					...c,
-					category: value,
-				};
-			});
-
-			setCatches(newCatches);
-		}
+		setCatches(newCatches);
+		// }
 	};
 
 	/**
@@ -190,6 +182,7 @@ const Catches = ({ haul_id }) => {
 		});
 
 		setCatches(newCatches);
+		setEditingCatchId(null);
 	};
 
 	/**
@@ -208,9 +201,12 @@ const Catches = ({ haul_id }) => {
 			group: updatedCatch.group,
 			category: updatedCatch.category,
 			weight: updatedCatch.weight,
-			sampled_weight: updatedCatch.sampled_weight === "0" ? null : updatedCatch.sampled_weight,
+			sampled_weight:
+				updatedCatch.sampled_weight === "0" ? null : updatedCatch.sampled_weight,
 			not_measured_individuals:
-				updatedCatch.not_measured_individuals === "0" ? null : updatedCatch.not_measured_individuals,
+				updatedCatch.not_measured_individuals === "0"
+					? null
+					: updatedCatch.not_measured_individuals,
 		};
 
 		fetch(apiEditRemoveCatch, {
@@ -221,26 +217,32 @@ const Catches = ({ haul_id }) => {
 			body: JSON.stringify(request),
 		})
 			.then((response) => response.json())
+			.then(() => {
+				setEditingCatchId(null);
+			})
 			.catch((error) => alert(error));
 	};
 
 	/**
 	 * Method to check if a catch with a specific haul_id, sp_id, and category exists in the list of catches.
-	 * @param {number} haulId - The id of the haul to check.
-	 * @param {number} spId - The id of the species to check.
+	 * @param {number} sp_id - The id of the species to check.
 	 * @param {string} category - The category of the catch to check.
+	 * @param {number} originalCatchId - The id of the original catch being edited (if any).
 	 * @returns {boolean} Returns true if the catch exists, false otherwise.
 	 */
-	const existsCatch = (haulId, spId, category) => {
-		const thisApiCatch = apiCatch + haulId + "/" + spId + "/" + category;
+	const existsCatch = (sp_id, category, originalCatchId) => {
+		if (!sp_id || !category) return false;
 
-		return fetch(thisApiCatch).then((response) => {
-			if (response.status === 200) {
-				return true;
-			} else {
-				return false;
-			}
-		});
+		// Start with all catches except the one being edited
+		const activeCatches = originalCatchId
+			? catches.filter((item) => item.catch_id !== originalCatchId)
+			: catches;
+
+		return activeCatches.some(
+			(item) =>
+				parseInt(item.sp_id) === parseInt(sp_id) &&
+				parseInt(item.category) === parseInt(category)
+		);
 	};
 
 	/**
@@ -248,34 +250,44 @@ const Catches = ({ haul_id }) => {
 	 * If the catch already exists, it alerts the user.
 	 * @param {Object} newCatch - The new catch to be created.
 	 */
-	const createCatch = (newCatch) => {
-		// add haul id to data request:
-		newCatch["haul_id"] = haul_id;
+	const createCatch = async (newCatch) => {
+		try {
+			// add haul id to data request:
+			newCatch["haul_id"] = haul_id;
 
-		existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category).then((responseExists) => {
-			if (responseExists === true) {
+			const exists = await existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category);
+			if (exists === true) {
 				alert("Catch already exists");
-			} else {
-				fetch(apiCreateCatch, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(newCatch),
-				})
-					.then((response) => response.json())
-					.then((c) => {
-						const newCatches = [c, ...catches];
-						setCatches(newCatches);
-						setAdd(false);
-					})
-					.catch((error) => console.log(error));
+				return;
 			}
-		});
+
+			// Create new catch
+			const response = await fetch(apiCreateCatch, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(newCatch),
+			});
+			if (!response.ok) {
+				throw new Error(
+					"Something went wrong! " + response.status + " " + response.statusText
+				);
+			}
+
+			const createdCatch = await response.json();
+			setCatches([createdCatch, ...catches]);
+		} catch (error) {
+			console.error("Error creating catch: ", error);
+			alert("Error creating catch: " + error.message);
+		}
 	};
 
 	useEffect(() => {
 		const fetchCatches = async () => {
+			// Save scroll position
+			const scrollY = window.scrollY;
+
 			try {
 				const data = await fetch(apiCatches);
 				if (!data.ok) {
@@ -284,6 +296,9 @@ const Catches = ({ haul_id }) => {
 				setCatches(await data.json());
 			} catch (error) {
 				console.error("Error fetching data: ", error);
+			} finally {
+				// Restore scroll position
+				window.scrollTo(0, scrollY);
 			}
 		};
 		fetchCatches();
@@ -291,50 +306,65 @@ const Catches = ({ haul_id }) => {
 
 	const renderContent = () => {
 		return (
-			<fieldset className="wrapper catchesList">
-				<legend>Fauna list</legend>
+			<CatchesContext.Provider
+				value={{
+					handleChangeGroup: handleChangeGroup,
+					handleChangeSpecies: handleChangeSpecies,
+					handleChangeCategory: handleChangeCategory,
+					handleChangeWeight: handleChangeWeight,
+					handleChangeSampledWeight: handleChangeSampledWeight,
+					handleChangeNotMeasuredIndividuals: handleChangeNotMeasuredIndividuals,
+					handleCancelEditCatch: handleCancelEditCatch,
+					// TODO: I don't understand why can't add handleChangeAdd to the context?
+					// handleChangeAdd: setAdd,
+					createCatch: createCatch,
+					updateCatch: updateCatch,
+					deleteCatch: deleteCatch,
+					add: add,
+					editingCatchId: editingCatchId,
+					setEditingCatchId: setEditingCatchId,
+					existsCatch: existsCatch,
+					haul_id: haul_id,
+				}}
+			>
+				<fieldset className="wrapper catchesList">
+					<legend>Fauna list</legend>
 
-				<div className="catches__table">
-					{
+					<div className="catches__table">
 						<div className="catches__table__row catches__table__header">
 							<div className="catches__table__cell catches__table__group">Group</div>
-							<div className="catches__table__cell catches__table__species">Species</div>
-							<div className="catches__table__cell catches__table__category">Category</div>
-							<div className="catches__table__cell catches__table__weight">Weight (g.)</div>
+							<div className="catches__table__cell catches__table__code">Code</div>
+							<div className="catches__table__cell catches__table__species">
+								Species
+							</div>
+							<div className="catches__table__cell catches__table__category">
+								Category
+							</div>
+							<div className="catches__table__cell catches__table__weight">
+								Weight (g.)
+							</div>
 							<div className="catches__table__cell catches__table__sampledWeight">
 								Sampled weight (g.)
 							</div>
 							<div className="catches__table__cell catches__table__individuals">
 								Not measured individuals
 							</div>
-							<div className="catches__table__cell catches__table__buttonBar">
-								<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
-							</div>
+							{add === false && (
+								<div className="catches__table__cell catches__table__buttonBar">
+									<CatchesButtonBar add={add} handleChangeAdd={setAdd} />
+								</div>
+							)}
 						</div>
-					}
-					{add === true ? (
-						<Catch thisCatchStatus="add" createCatch={createCatch} handleChangeAdd={setAdd} />
-					) : null}
-					{catches.map((c) => {
-						return (
-							<Catch
-								className="catches__table__row"
-								key={c.catch_id}
-								thisCatch={c}
-								handleChangeGroup={handleChangeGroup}
-								handleChangeSpecies={handleChangeSpecies}
-								handleChangeCategory={handleChangeCategory}
-								handleChangeWeight={handleChangeWeight}
-								handleChangeSampledWeight={handleChangeSampledWeight}
-								handleChangeNotMeasuredIndividuals={handleChangeNotMeasuredIndividuals}
-								handleCancelEditCatch={handleCancelEditCatch}
-								updateCatch={updateCatch}
-								deleteCatch={deleteCatch}
-							/>
-						);
-					})}
-				</div>
-			</fieldset>
+
+						{add === true ? (
+							<Catch thisCatchStatus="add" handleChangeAdd={setAdd} />
+						) : null}
+						{catches.map((c) => {
+							return <Catch key={c.catch_id} thisCatch={c} />;
+						})}
+					</div>
+				</fieldset>
+			</CatchesContext.Provider>
 		);
 	};
 
