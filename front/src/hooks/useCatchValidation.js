@@ -99,13 +99,15 @@ export const useCatchValidation = (newCatch) => {
 			isFormValid: isValid,
 			errors: {
 				...prev.errors,
-				category: existsCatch ? "Category of this species already exists." : "",
+				category: existsCatch ? "Category of the species already exists." : "",
 			},
 		}));
 	}, [
 		validateWeight,
 		validateRequiredFields,
 		newCatch.sp_id,
+		newCatch.sp_code,
+		newCatch.sp_name,
 		newCatch.category,
 		newCatch.catch_id,
 	]);

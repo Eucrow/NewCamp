@@ -52,7 +52,24 @@ const NewCatchForm = () => {
 	}, [newCatch.group]);
 
 	const handleInputChange = (field, value) => {
-		if (field === "sp_code" || field === "sp_name") {
+		if (field === "sp_code" && value) {
+			const selSpecies = globalContext.species.find((s) => s.sp_code === parseInt(value));
+			if (selSpecies) {
+				setNewCatch((prev) => ({
+					...prev,
+					sp_id: selSpecies.id,
+					sp_code: selSpecies.sp_code,
+					sp_name: selSpecies.sp_name,
+				}));
+			} else {
+				setNewCatch((prev) => ({
+					...prev,
+					sp_id: "",
+					sp_code: value,
+					sp_name: "",
+				}));
+			}
+		} else if (field === "sp_name") {
 			const selSpecies = globalContext.species.find((s) => s.id === parseInt(value));
 			if (selSpecies) {
 				setNewCatch((prev) => ({
@@ -64,6 +81,47 @@ const NewCatchForm = () => {
 			}
 		} else {
 			setNewCatch((prev) => ({ ...prev, [field]: value }));
+		}
+	};
+
+	// const handleInputChange = (field, value) => {
+	// 	setNewCatch((prev) => ({ ...prev, [field]: value }));
+	// };
+
+	const handleInputSpCodeChange = (e) => {
+		e.preventDefault();
+
+		const value = e.target.value;
+
+		const selSpecies = globalContext.species.find(
+			(s) => s.sp_code === parseInt(value) && s.group === parseInt(newCatch.group)
+		);
+
+		if (selSpecies) {
+			setNewCatch((prev) => ({
+				...prev,
+				sp_id: selSpecies.id,
+				sp_code: selSpecies.sp_code,
+				sp_name: selSpecies.sp_name,
+			}));
+		} else {
+			setNewCatch((prev) => ({ ...prev, sp_id: "", sp_code: value, sp_name: "" }));
+			return;
+		}
+		console.log("species", selSpecies);
+	};
+
+	const handleInputSpNameChange = (e) => {
+		e.preventDefault();
+		const value = e.target.value;
+		const selSpecies = globalContext.species.find((s) => s.sp_name === value);
+		if (selSpecies) {
+			setNewCatch((prev) => ({
+				...prev,
+				sp_id: selSpecies.id,
+				sp_code: selSpecies.sp_code,
+				sp_name: selSpecies.sp_name,
+			}));
 		}
 	};
 
@@ -83,7 +141,25 @@ const NewCatchForm = () => {
 					onChange={(e) => handleInputChange("group", e.target.value)}
 					aria-label="Group"
 				/>
-				<select
+				<div className="catches__table__cell">
+					<input
+						className={`catches__table__code ${
+							isSpeciesValid === true && existsCatch === false
+								? ""
+								: "species--invalid"
+						}`}
+						type="text"
+						value={newCatch.sp_code}
+						disabled={newCatch.group === "" ? true : false}
+						required={true}
+						id="sp_code"
+						name="sp_code"
+						onChange={(e) => handleInputSpCodeChange(e)}
+						// onChange={(e) => handleInputChange("sp_code", e.target.value)}
+						aria-label="Species code"
+					/>
+				</div>
+				{/* <select
 					className={`catches__table__cell catches__table__code ${
 						isSpeciesValid === true && existsCatch === false ? "" : "species--invalid"
 					}`}
@@ -107,25 +183,28 @@ const NewCatchForm = () => {
 							return null;
 						}
 					})}
-				</select>
+				</select> */}
 				<select
 					className={`catches__table__cell catches__table__species ${
 						isSpeciesValid === true && existsCatch === false ? "" : "species--invalid"
 					}`}
-					value={newCatch.sp_id}
+					// value={newCatch.sp_id}
+					value={newCatch.sp_name}
 					disabled={newCatch.group === "" ? true : false}
 					required={true}
 					id="sp_name"
 					name="sp_name"
 					tabIndex={-1}
-					onChange={(e) => handleInputChange("sp_id", e.target.value)}
+					onChange={(e) => handleInputSpNameChange(e)}
+					// onChange={(e) => handleInputChange("sp_name", e.target.value)}
 					aria-label="Species"
 				>
 					<option value=""></option>
 					{globalContext.species.map((s) => {
 						if (s.group === parseInt(newCatch.group)) {
 							return (
-								<option value={s.id} key={s.id}>
+								// <option value={s.id} key={s.id}>
+								<option value={s.sp_name} key={s.id}>
 									{s.sp_name}
 								</option>
 							);

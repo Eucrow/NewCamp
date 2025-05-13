@@ -96,6 +96,7 @@ const EditCatchForm = () => {
 					className={`catches__table__cell catches__table__species ${
 						isSpeciesValid === true && existsCatch === false ? "" : "species--invalid"
 					}`}
+					// value={catchContext.thisCatch.sp_id}
 					value={catchContext.thisCatch.sp_id}
 					disabled={catchContext.thisCatch.group === "" ? true : false}
 					required={true}
