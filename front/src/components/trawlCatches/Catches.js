@@ -14,14 +14,12 @@ import GlobalContext from "../../contexts/GlobalContext.js";
  */
 const Catches = ({ haul_id }) => {
 	const [catches, setCatches] = useState([]);
-	const [catchesBackup, setCatchesBackup] = useState([]);
 	const [add, setAdd] = useState(false);
 	const [editingCatchId, setEditingCatchId] = useState(null);
 
 	const globalContext = useContext(GlobalContext);
 
 	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;
-	const apiCatch = "http://127.0.0.1:8000/api/1.0/catch/";
 	const apiCreateCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
 	const apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch";
 
@@ -95,26 +93,6 @@ const Catches = ({ haul_id }) => {
 	const handleChangeCategory = (idx) => (evt) => {
 		const value = evt.target.value;
 
-		// Firstly, get the data of catch to modify
-		// const thisCatch = catches.find((c) => {
-		// 	if (c.catch_id === idx) {
-		// 		return c;
-		// 	}
-		// 	return false;
-		// });
-
-		// // Secondly, check if exists another catch whit the same species and category
-		// const repeatedCatch = catches.some(
-		// 	(c) =>
-		// 		(c.group === thisCatch.group) &
-		// 		(c.sp_code === thisCatch.sp_code) &
-		// 		(c.category === parseInt(value))
-		// );
-
-		// And finally save the state or thrown an alert.
-		// if (repeatedCatch === true) {
-		// 	alert("This category of the species already exists");
-		// } else if (repeatedCatch === false) {
 		const newCatches = catches.map((c) => {
 			if (c.catch_id !== idx) return c;
 			return {
@@ -247,23 +225,11 @@ const Catches = ({ haul_id }) => {
 
 	/**
 	 * Method to check if a catch with a specific haul_id, sp_id, and category exists in the list of catches.
-	 * @param {number} haulId - The id of the haul to check.
-	 * @param {number} spId - The id of the species to check.
+	 * @param {number} sp_id - The id of the species to check.
 	 * @param {string} category - The category of the catch to check.
+	 * @param {number} originalCatchId - The id of the original catch being edited (if any).
 	 * @returns {boolean} Returns true if the catch exists, false otherwise.
 	 */
-	// const existsCatch = (haulId, spId, category) => {
-	// 	const thisApiCatch = apiCatch + haulId + "/" + spId + "/" + category;
-
-	// 	return fetch(thisApiCatch).then((response) => {
-	// 		if (response.status === 200) {
-	// 			return true;
-	// 		} else {
-	// 			return false;
-	// 		}
-	// 	});
-	// };
-
 	const existsCatch = (sp_id, category, originalCatchId) => {
 		if (!sp_id || !category) return false;
 
