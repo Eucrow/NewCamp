@@ -53,7 +53,13 @@ const Catches = ({ haul_id }) => {
 
 		const newCatches = catches.map((c) => {
 			if (idx !== c.catch_id) return c;
-			return { ...c, group: value };
+			return {
+				...c,
+				group: value,
+				sp_id: "",
+				sp_code: "",
+				sp_name: "",
+			};
 		});
 
 		setCatches(newCatches);
