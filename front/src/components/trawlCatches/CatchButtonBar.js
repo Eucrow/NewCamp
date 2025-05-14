@@ -37,6 +37,8 @@ const CatchButtonBar = ({ newCatch, setNewCatch, isFormValid }) => {
 		setNewCatch({
 			group: "",
 			sp_id: "",
+			sp_code: "",
+			sp_name: "",
 			category: "",
 			weight: "",
 			sampled_weight: "",
