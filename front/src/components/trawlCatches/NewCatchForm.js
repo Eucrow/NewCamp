@@ -79,14 +79,18 @@ const NewCatchForm = () => {
 					sp_name: selSpecies.sp_name,
 				}));
 			}
+		} else if (field === "group") {
+			setNewCatch((prev) => ({
+				...prev,
+				group: value,
+				sp_id: "",
+				sp_code: "",
+				sp_name: "",
+			}));
 		} else {
 			setNewCatch((prev) => ({ ...prev, [field]: value }));
 		}
 	};
-
-	// const handleInputChange = (field, value) => {
-	// 	setNewCatch((prev) => ({ ...prev, [field]: value }));
-	// };
 
 	const handleInputSpCodeChange = (e) => {
 		e.preventDefault();
@@ -155,40 +159,13 @@ const NewCatchForm = () => {
 						id="sp_code"
 						name="sp_code"
 						onChange={(e) => handleInputSpCodeChange(e)}
-						// onChange={(e) => handleInputChange("sp_code", e.target.value)}
 						aria-label="Species code"
 					/>
 				</div>
-				{/* <select
-					className={`catches__table__cell catches__table__code ${
-						isSpeciesValid === true && existsCatch === false ? "" : "species--invalid"
-					}`}
-					value={newCatch.sp_id}
-					disabled={newCatch.group === "" ? true : false}
-					required={true}
-					id="sp_code"
-					name="sp_code"
-					onChange={(e) => handleInputChange("sp_id", e.target.value)}
-					aria-label="Species code"
-				>
-					<option></option>
-					{globalContext.species.map((s) => {
-						if (s.group === parseInt(newCatch.group)) {
-							return (
-								<option value={s.id} key={s.id}>
-									{s.sp_code}
-								</option>
-							);
-						} else {
-							return null;
-						}
-					})}
-				</select> */}
 				<select
 					className={`catches__table__cell catches__table__species ${
 						isSpeciesValid === true && existsCatch === false ? "" : "species--invalid"
 					}`}
-					// value={newCatch.sp_id}
 					value={newCatch.sp_name}
 					disabled={newCatch.group === "" ? true : false}
 					required={true}
@@ -196,14 +173,12 @@ const NewCatchForm = () => {
 					name="sp_name"
 					tabIndex={-1}
 					onChange={(e) => handleInputSpNameChange(e)}
-					// onChange={(e) => handleInputChange("sp_name", e.target.value)}
 					aria-label="Species"
 				>
 					<option value=""></option>
 					{globalContext.species.map((s) => {
 						if (s.group === parseInt(newCatch.group)) {
 							return (
-								// <option value={s.id} key={s.id}>
 								<option value={s.sp_name} key={s.id}>
 									{s.sp_name}
 								</option>

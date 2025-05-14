@@ -59,27 +59,6 @@ const Catches = ({ haul_id }) => {
 		setCatches(newCatches);
 	};
 
-	/**
-	 * Method to manage the species field.
-	 * @param {number} idx - The index of the catch.
-	 */
-	// const handleChangeSpecies = (idx) => (evt) => {
-	// 	const sp_code = evt.target.value;
-	// 	const species = globalContext.species.find((s) => s.sp_code === sp_code);
-
-	// 	// Update the catch with the found species info
-	// 	const newCatches = catches.map((c) => {
-	// 		if (c.catch_id !== idx) return c;
-	// 		return {
-	// 			...c,
-	// 			sp_code: sp_code,
-	// 			sp_id: species ? species.id : "",
-	// 			sp_name: species ? species.sp_name : "",
-	// 		};
-	// 	});
-
-	// 	setCatches(newCatches);
-	// };
 	const handleChangeSpeciesName = (idx) => (evt) => {
 		const sp_id = parseInt(evt.target.value);
 
@@ -271,7 +250,6 @@ const Catches = ({ haul_id }) => {
 	 * @returns {boolean} Returns true if the catch exists, false otherwise.
 	 */
 	const existsCatch = (sp_id, category, originalCatchId) => {
-		// if (!sp_id || !category) return false;
 		if (sp_id === "" || category === "") return false;
 
 		// Start with all catches except the one being edited
