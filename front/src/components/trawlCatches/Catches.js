@@ -80,7 +80,7 @@ const Catches = ({ haul_id }) => {
 
 	// 	setCatches(newCatches);
 	// };
-	const handleChangeSpecies = (idx) => (evt) => {
+	const handleChangeSpeciesName = (idx) => (evt) => {
 		const sp_id = parseInt(evt.target.value);
 
 		const species = globalContext.species.filter((s) => {
@@ -103,7 +103,7 @@ const Catches = ({ haul_id }) => {
 		setCatches(newCatches);
 	};
 
-	const handleChangeSpeciesCode = (idx) => (evt, sp_group) => {
+	const handleChangeSpeciesCode = (idx, sp_group) => (evt) => {
 		const sp_code = parseInt(evt.target.value);
 
 		const species = globalContext.species.find((s) => {
@@ -117,7 +117,7 @@ const Catches = ({ haul_id }) => {
 			if (idx !== c.catch_id) return c;
 			return {
 				...c,
-				sp_id: species.sp_id,
+				sp_id: species.id,
 				sp_code: sp_code,
 				sp_name: species.sp_name,
 			};
@@ -349,7 +349,7 @@ const Catches = ({ haul_id }) => {
 			<CatchesContext.Provider
 				value={{
 					handleChangeGroup: handleChangeGroup,
-					handleChangeSpecies: handleChangeSpecies,
+					handleChangeSpeciesName: handleChangeSpeciesName,
 					handleChangeSpeciesCode: handleChangeSpeciesCode,
 					handleChangeCategory: handleChangeCategory,
 					handleChangeWeight: handleChangeWeight,

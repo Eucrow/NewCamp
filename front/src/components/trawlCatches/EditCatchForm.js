@@ -82,7 +82,8 @@ const EditCatchForm = () => {
 						name="sp_code"
 						// onChange={(e) => handleInputSpCodeChange(e)}
 						onChange={catchesContext.handleChangeSpeciesCode(
-							catchContext.thisCatch.catch_id
+							catchContext.thisCatch.catch_id,
+							catchContext.thisCatch.group
 						)}
 						aria-label="Species code"
 					/>
@@ -123,7 +124,9 @@ const EditCatchForm = () => {
 					id="sp_name"
 					name="sp_name"
 					// tabIndex={-1} // In edit mode the select species must be focusable
-					onChange={catchesContext.handleChangeSpecies(catchContext.thisCatch.catch_id)}
+					onChange={catchesContext.handleChangeSpeciesName(
+						catchContext.thisCatch.catch_id
+					)}
 					aria-label="Species"
 				>
 					<option value=""></option>
