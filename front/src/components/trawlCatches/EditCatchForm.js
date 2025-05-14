@@ -67,7 +67,27 @@ const EditCatchForm = () => {
 						aria-label="Group"
 					/>
 				</div>
-				<select
+				<div className="catches__table__cell">
+					<input
+						className={`catches__table__cell catches__table__code ${
+							isSpeciesValid === true && existsCatch === false
+								? ""
+								: "species--invalid"
+						}`}
+						type="text"
+						value={catchContext.thisCatch.sp_code}
+						disabled={catchContext.thisCatch.group === "" ? true : false}
+						required={true}
+						id="sp_code"
+						name="sp_code"
+						// onChange={(e) => handleInputSpCodeChange(e)}
+						onChange={catchesContext.handleChangeSpeciesCode(
+							catchContext.thisCatch.catch_id
+						)}
+						aria-label="Species code"
+					/>
+				</div>
+				{/* <select
 					className={`catches__table__cell catches__table__code ${
 						isSpeciesValid === true && existsCatch === false ? "" : "species--invalid"
 					}`}
@@ -91,7 +111,7 @@ const EditCatchForm = () => {
 							return null;
 						}
 					})}
-				</select>
+				</select> */}
 				<select
 					className={`catches__table__cell catches__table__species ${
 						isSpeciesValid === true && existsCatch === false ? "" : "species--invalid"

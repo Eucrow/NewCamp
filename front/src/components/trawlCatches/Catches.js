@@ -103,6 +103,29 @@ const Catches = ({ haul_id }) => {
 		setCatches(newCatches);
 	};
 
+	const handleChangeSpeciesCode = (idx) => (evt, sp_group) => {
+		const sp_code = parseInt(evt.target.value);
+
+		const species = globalContext.species.find((s) => {
+			if (s.sp_code === parseInt(sp_code) && s.group === parseInt(sp_group)) {
+				return s;
+			}
+			return false;
+		});
+
+		const newCatches = catches.map((c) => {
+			if (idx !== c.catch_id) return c;
+			return {
+				...c,
+				sp_id: species.sp_id,
+				sp_code: sp_code,
+				sp_name: species.sp_name,
+			};
+		});
+
+		setCatches(newCatches);
+	};
+
 	/**
 	 * Method to manage the category field.
 	 * @param {number} idx - The index of the catch.
@@ -327,6 +350,7 @@ const Catches = ({ haul_id }) => {
 				value={{
 					handleChangeGroup: handleChangeGroup,
 					handleChangeSpecies: handleChangeSpecies,
+					handleChangeSpeciesCode: handleChangeSpeciesCode,
 					handleChangeCategory: handleChangeCategory,
 					handleChangeWeight: handleChangeWeight,
 					handleChangeSampledWeight: handleChangeSampledWeight,
