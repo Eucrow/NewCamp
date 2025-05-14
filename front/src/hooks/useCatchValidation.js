@@ -90,6 +90,9 @@ export const useCatchValidation = (newCatch) => {
 			newCatch.category,
 			newCatch.catch_id
 		);
+		console.log("existsCatch", existsCatch);
+		console.log("sp_id", newCatch.sp_id);
+		console.log("sp_name", newCatch.sp_name);
 
 		const isValid = validateWeight() && validateRequiredFields() && !existsCatch;
 

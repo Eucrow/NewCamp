@@ -25,11 +25,6 @@ const NewCatchForm = () => {
 		// not_measured_individuals: "",
 	});
 
-	const [speciesSelected, setSpeciesSelected] = useState({
-		sp_code: "",
-		sp_name: "",
-	});
-
 	const globalContext = useContext(GlobalContext);
 
 	const focusRef = useRef(null);
@@ -51,73 +46,44 @@ const NewCatchForm = () => {
 		}
 	}, [newCatch.group]);
 
-	const handleInputChange = (field, value) => {
-		if (field === "sp_code" && value) {
-			const selSpecies = globalContext.species.find((s) => s.sp_code === parseInt(value));
-			if (selSpecies) {
-				setNewCatch((prev) => ({
-					...prev,
-					sp_id: selSpecies.id,
-					sp_code: selSpecies.sp_code,
-					sp_name: selSpecies.sp_name,
-				}));
-			} else {
-				setNewCatch((prev) => ({
-					...prev,
-					sp_id: "",
-					sp_code: value,
-					sp_name: "",
-				}));
-			}
-		} else if (field === "sp_name") {
-			const selSpecies = globalContext.species.find((s) => s.id === parseInt(value));
-			if (selSpecies) {
-				setNewCatch((prev) => ({
-					...prev,
-					sp_id: value,
-					sp_code: selSpecies.sp_code,
-					sp_name: selSpecies.sp_name,
-				}));
-			}
-		} else if (field === "group") {
+	const handleGroupChange = (value) => {
+		setNewCatch((prev) => ({
+			...prev,
+			group: value,
+			sp_id: "",
+			sp_code: "",
+			sp_name: "",
+		}));
+	};
+
+	const handleSpeciesCodeChange = (value) => {
+		if (!value) {
 			setNewCatch((prev) => ({
 				...prev,
-				group: value,
 				sp_id: "",
 				sp_code: "",
 				sp_name: "",
 			}));
-		} else {
-			setNewCatch((prev) => ({ ...prev, [field]: value }));
-		}
-	};
-
-	const handleInputSpCodeChange = (e) => {
-		e.preventDefault();
-
-		const value = e.target.value;
-
-		const selSpecies = globalContext.species.find(
-			(s) => s.sp_code === parseInt(value) && s.group === parseInt(newCatch.group)
-		);
-
-		if (selSpecies) {
-			setNewCatch((prev) => ({
-				...prev,
-				sp_id: selSpecies.id,
-				sp_code: selSpecies.sp_code,
-				sp_name: selSpecies.sp_name,
-			}));
-		} else {
-			setNewCatch((prev) => ({ ...prev, sp_id: "", sp_code: value, sp_name: "" }));
 			return;
 		}
-		console.log("species", selSpecies);
+
+		const numValue = parseInt(value);
+		if (isNaN(numValue)) return;
+
+		const selSpecies = globalContext.species.find(
+			(s) => s.sp_code === numValue && s.group === parseInt(newCatch.group)
+		);
+
+		setNewCatch((prev) => ({
+			...prev,
+			sp_id: selSpecies?.id ?? "", // Use nullish coalescing: ?? only returns the right side when the left is null or undefined
+			sp_code: numValue,
+			sp_name: selSpecies?.sp_name || "",
+		}));
 	};
 
-	const handleInputSpNameChange = (e) => {
-		e.preventDefault();
-		const value = e.target.value;
+	const handleSpeciesNameChange = (value) => {
+		//TODO: this is dangerous, because could be a species name in different group
 		const selSpecies = globalContext.species.find((s) => s.sp_name === value);
 		if (selSpecies) {
 			setNewCatch((prev) => ({
@@ -126,6 +92,26 @@ const NewCatchForm = () => {
 				sp_code: selSpecies.sp_code,
 				sp_name: selSpecies.sp_name,
 			}));
+		}
+	};
+
+	const handleBasicFieldChange = (field, value) => {
+		setNewCatch((prev) => ({ ...prev, [field]: value }));
+	};
+
+	const handleInputChange = (field, value) => {
+		switch (field) {
+			case "group":
+				handleGroupChange(value);
+				break;
+			case "sp_code":
+				handleSpeciesCodeChange(value);
+				break;
+			case "sp_name":
+				handleSpeciesNameChange(value);
+				break;
+			default:
+				handleBasicFieldChange(field, value);
 		}
 	};
 
@@ -142,7 +128,10 @@ const NewCatchForm = () => {
 					name="group"
 					min="1"
 					max="5"
-					onChange={(e) => handleInputChange("group", e.target.value)}
+					onChange={(e) => {
+						e.preventDefault();
+						handleInputChange("group", e.target.value);
+					}}
 					aria-label="Group"
 				/>
 				<div className="catches__table__cell">
@@ -152,13 +141,16 @@ const NewCatchForm = () => {
 								? ""
 								: "species--invalid"
 						}`}
-						type="text"
+						type="number"
 						value={newCatch.sp_code}
 						disabled={newCatch.group === "" ? true : false}
 						required={true}
 						id="sp_code"
 						name="sp_code"
-						onChange={(e) => handleInputSpCodeChange(e)}
+						onChange={(e) => {
+							e.preventDefault();
+							handleInputChange("sp_code", e.target.value);
+						}}
 						aria-label="Species code"
 					/>
 				</div>
@@ -172,7 +164,10 @@ const NewCatchForm = () => {
 					id="sp_name"
 					name="sp_name"
 					tabIndex={-1}
-					onChange={(e) => handleInputSpNameChange(e)}
+					onChange={(e) => {
+						e.preventDefault();
+						handleInputChange("sp_name", e.target.value);
+					}}
 					aria-label="Species"
 				>
 					<option value=""></option>
@@ -200,7 +195,10 @@ const NewCatchForm = () => {
 						name="category"
 						min="1"
 						max="99"
-						onChange={(e) => handleInputChange("category", e.target.value)}
+						onChange={(e) => {
+							e.preventDefault();
+							handleInputChange("category", e.target.value);
+						}}
 						aria-label="Category"
 					/>
 					<FloatingError
@@ -221,11 +219,14 @@ const NewCatchForm = () => {
 						name="weight"
 						min="1"
 						max="99999999"
-						onChange={(e) => handleInputChange("weight", e.target.value)}
+						category
+						onChange={(e) => {
+							e.preventDefault();
+							handleInputChange("weight", e.target.value);
+						}}
 						onFocus={() => setActiveField("weight")}
 						onBlur={() => setActiveField(null)}
 					/>
-
 					<FloatingError
 						message={validationErrors.weight}
 						show={activeField === "weight"}
@@ -243,7 +244,10 @@ const NewCatchForm = () => {
 						name="sampled_weight"
 						min="0"
 						max="99999999"
-						onChange={(e) => handleInputChange("sampled_weight", e.target.value)}
+						onChange={(e) => {
+							e.preventDefault();
+							handleInputChange("sampled_weight", e.target.value);
+						}}
 						onFocus={() => setActiveField("sampledWeight")}
 						onBlur={() => setActiveField(null)}
 					/>
@@ -262,7 +266,10 @@ const NewCatchForm = () => {
 					name="individuals"
 					min="0"
 					max="99999999"
-					onChange={(e) => handleInputChange("individuals", e.target.value)}
+					onChange={(e) => {
+						e.preventDefault();
+						handleInputChange("individuals", e.target.value);
+					}}
 					aria-label="Not measured individuals"
 				/>
 				<CatchButtonBar
