@@ -271,7 +271,8 @@ const Catches = ({ haul_id }) => {
 	 * @returns {boolean} Returns true if the catch exists, false otherwise.
 	 */
 	const existsCatch = (sp_id, category, originalCatchId) => {
-		if (!sp_id || !category) return false;
+		// if (!sp_id || !category) return false;
+		if (sp_id === "" || category === "") return false;
 
 		// Start with all catches except the one being edited
 		const activeCatches = originalCatchId
