@@ -37,6 +37,19 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
                   'sp_code', 'sp_name', 'unit', 'increment', 'sampled_weight',
                   ]
 
+    # This is the validation of sampled weight when a new catch is created:
+    def validate(self, data):
+        sampled_weight = self.initial_data.get('sampled_weight')
+        weight = data.get('weight')
+
+        if sampled_weight and weight:
+            if float(sampled_weight) > float(weight):
+                raise serializers.ValidationError({
+                    'sampled_weight': 'Sampled weight cannot be greater than total weight.'
+                })
+
+        return data
+
 
 class SexCatchSerializer(serializers.ModelSerializer):
     lengths = LengthSerializer(many=True)

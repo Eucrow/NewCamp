@@ -14,6 +14,19 @@ class SampleWeightSerializer(serializers.ModelSerializer):
         model = SampledWeight
         fields = ['id', 'sampled_weight', 'catch_id', ]
 
+    # This is the validation of sampled weight, both when is created and when is updated.
+    def validate(self, data):
+        sampled_weight = data.get('sampled_weight') or self.initial_data.get('sampled_weight')
+        weight = self.initial_data.get('weight')
+
+        if sampled_weight is not None and weight is not None:
+            if float(sampled_weight) > float(weight):
+                raise serializers.ValidationError({
+                    'sampled_weight': 'Sampled weight cannot be greater than total weight.'
+                })
+
+        return data
+
 
 class LengthSerializer(serializers.ModelSerializer):
     class Meta:
