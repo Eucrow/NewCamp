@@ -61,8 +61,11 @@
 	width: 7ch;
 	// width: 10%;
 	text-align: center;
+	user-select: none;
 }
-
+.catches__table__code:hover {
+	background-color: rgba(0, 0, 0, 0.05);
+}
 .catches__table__species {
 	width: 31ch;
 	// width: 40%;

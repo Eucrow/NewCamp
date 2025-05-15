@@ -17,6 +17,8 @@ const Catches = ({ haul_id }) => {
 	const [add, setAdd] = useState(false);
 	const [editingCatchId, setEditingCatchId] = useState(null);
 
+	const [codeSortOrder, setCodeSortOrder] = useState("asc"); // 'asc' or 'desc'
+
 	const globalContext = useContext(GlobalContext);
 
 	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;
@@ -256,6 +258,76 @@ const Catches = ({ haul_id }) => {
 		}
 	};
 
+	const sortByCode = () => {
+		const sortedCatches = [...catches].sort((a, b) => {
+			// Convert sp_code to numbers for proper numeric sorting
+			const aCode = Number(a.sp_code);
+			const bCode = Number(b.sp_code);
+
+			// First compare by sp_code numerically
+			const codeComparison = codeSortOrder === "asc" ? aCode - bCode : bCode - aCode;
+
+			// If codes are equal, compare by category
+			if (codeComparison === 0) {
+				return codeSortOrder === "asc" ? a.category - b.category : b.category - a.category;
+			}
+
+			return codeComparison;
+		});
+
+		setCatches(sortedCatches);
+		setCodeSortOrder(codeSortOrder === "asc" ? "desc" : "asc");
+	};
+
+	const sortByName = () => {
+		const sortedCatches = [...catches].sort((a, b) => {
+			const codeComparison =
+				codeSortOrder === "asc"
+					? a.sp_name.localeCompare(b.sp_name)
+					: b.sp_name.localeCompare(a.sp_name);
+
+			// If codes are equal, compare by category
+			if (codeComparison === 0) {
+				return codeSortOrder === "asc" ? a.category - b.category : b.category - a.category;
+			}
+
+			return codeComparison;
+		});
+
+		setCatches(sortedCatches);
+		setCodeSortOrder(codeSortOrder === "asc" ? "desc" : "asc");
+	};
+
+	const sortCatches = (field) => {
+		const sortedCatches = [...catches].sort((a, b) => {
+			let comparison;
+
+			// Handle numeric fields (sp_code)
+			if (field === "sp_code") {
+				const aValue = Number(a[field]);
+				const bValue = Number(b[field]);
+				comparison = codeSortOrder === "asc" ? aValue - bValue : bValue - aValue;
+			}
+			// Handle string fields (sp_name, group)
+			if (field === "sp_name") {
+				comparison =
+					codeSortOrder === "asc"
+						? a[field].localeCompare(b[field])
+						: b[field].localeCompare(a[field]);
+			}
+
+			// If primary values are equal, compare by category
+			if (comparison === 0) {
+				return codeSortOrder === "asc" ? a.category - b.category : b.category - a.category;
+			}
+
+			return comparison;
+		});
+
+		setCatches(sortedCatches);
+		setCodeSortOrder(codeSortOrder === "asc" ? "desc" : "asc");
+	};
+
 	useEffect(() => {
 		const fetchCatches = async () => {
 			// Save scroll position
@@ -304,9 +376,26 @@ const Catches = ({ haul_id }) => {
 					<div className="catches__table">
 						<div className="catches__table__row catches__table__header">
 							<div className="catches__table__cell catches__table__group">Group</div>
-							<div className="catches__table__cell catches__table__code">Code</div>
-							<div className="catches__table__cell catches__table__species">
+							<div
+								className="catches__table__cell catches__table__code sort__container"
+								onClick={() => sortCatches("sp_code")}
+							>
+								Code
+								<span className="sort__icon">
+									{codeSortOrder === "asc" ? "↑" : "↓"}
+								</span>
+							</div>
+							{/* <div className="catches__table__cell catches__table__species">
 								Species
+							</div> */}
+							<div
+								className="catches__table__cell catches__table__code sort__container"
+								onClick={() => sortCatches("sp_name")}
+							>
+								Species
+								<span className="sort__icon">
+									{codeSortOrder === "asc" ? "↑" : "↓"}
+								</span>
 							</div>
 							<div className="catches__table__cell catches__table__category">
 								Category
