@@ -112,72 +112,19 @@ const Catches = ({ haul_id }) => {
 	};
 
 	/**
-	 * Method to manage the category field.
-	 * @param {number} idx - The index of the catch.
-	 */
-	const handleChangeCategory = (idx) => (evt) => {
-		const value = evt.target.value;
-
-		const newCatches = catches.map((c) => {
-			if (c.catch_id !== idx) return c;
-			return {
-				...c,
-				category: value,
-			};
-		});
-
-		setCatches(newCatches);
-		// }
-	};
-
-	/**
-	 * Method to manage the weight field.
-	 * @param {number} idx - The index of the catch.
-	 */
-	const handleChangeWeight = (idx) => (evt) => {
-		const value = evt.target.value;
-
-		const newCatches = catches.map((c) => {
-			if (c.catch_id !== idx) return c;
-			return {
-				...c,
-				weight: value,
-			};
-		});
-
-		setCatches(newCatches);
-	};
-
-	/**
-	 * Method to manage the sampled weight field.
-	 * @param {number} idx - The index of the catch.
-	 */
-	const handleChangeSampledWeight = (idx) => (evt) => {
-		const value = evt.target.value;
-
-		const newCatches = catches.map((c) => {
-			if (c.catch_id !== idx) return c;
-			return {
-				...c,
-				sampled_weight: value,
-			};
-		});
-
-		setCatches(newCatches);
-	};
-
-	/**
-	 * Method to manage the sampled weight field.
-	 * @param {number} idx - The index of the catch.
-	 */
-	const handleChangeNotMeasuredIndividuals = (idx) => (evt) => {
+	 * Method to handle input changes for catch fields.
+	 * @param {number} idx - The index of the catch being edited.
+	 * @param {string} field - The field being edited (e.g., 'weight', 'sampled_weight', 'not_measured_individuals').
+	 * @returns {function} A function that takes an event and updates the catch field.
+	 * */
+	const handleInputChange = (idx, field) => (evt) => {
 		const value = evt.target.value === "0" || evt.target.value === "" ? null : evt.target.value;
 
 		const newCatches = catches.map((c) => {
 			if (c.catch_id !== idx) return c;
 			return {
 				...c,
-				not_measured_individuals: value,
+				[field]: value,
 			};
 		});
 
@@ -221,7 +168,8 @@ const Catches = ({ haul_id }) => {
 
 		const request = {
 			catch_id: updatedCatch.catch_id,
-			haul_id: updatedCatch.haul,
+			haul_id: updatedCatch.haul_id,
+			haul: updatedCatch.haul,
 			sp_code: updatedCatch.sp_code,
 			group: updatedCatch.group,
 			category: updatedCatch.category,
@@ -336,11 +284,8 @@ const Catches = ({ haul_id }) => {
 					handleChangeGroup: handleChangeGroup,
 					handleChangeSpeciesName: handleChangeSpeciesName,
 					handleChangeSpeciesCode: handleChangeSpeciesCode,
-					handleChangeCategory: handleChangeCategory,
-					handleChangeWeight: handleChangeWeight,
-					handleChangeSampledWeight: handleChangeSampledWeight,
-					handleChangeNotMeasuredIndividuals: handleChangeNotMeasuredIndividuals,
 					handleCancelEditCatch: handleCancelEditCatch,
+					handleInputChange: handleInputChange,
 					// TODO: I don't understand why can't add handleChangeAdd to the context?
 					// handleChangeAdd: setAdd,
 					createCatch: createCatch,

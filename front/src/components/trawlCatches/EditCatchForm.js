@@ -126,9 +126,10 @@ const EditCatchForm = () => {
 						min="1"
 						max="99"
 						value={catchContext.thisCatch.category}
-						onChange={(e) => {
-							catchesContext.handleChangeCategory(catchContext.thisCatch.catch_id)(e);
-						}}
+						onChange={catchesContext.handleInputChange(
+							catchContext.thisCatch.catch_id,
+							"category"
+						)}
 						aria-label="Category"
 					/>
 					<FloatingError
@@ -149,8 +150,13 @@ const EditCatchForm = () => {
 						min="1"
 						max="99999999"
 						value={catchContext.thisCatch.weight}
-						onChange={catchesContext.handleChangeWeight(
-							catchContext.thisCatch.catch_id
+						// onChange={catchesContext.handleChangeWeight(
+						// 	catchContext.thisCatch.catch_id
+						// )}
+						not_measured_individuals
+						onChange={catchesContext.handleInputChange(
+							catchContext.thisCatch.catch_id,
+							"weight"
 						)}
 						onFocus={() => setActiveField("weight")}
 						onBlur={() => setActiveField(null)}
@@ -173,8 +179,9 @@ const EditCatchForm = () => {
 						min="0"
 						max="99999999"
 						value={catchContext.thisCatch.sampled_weight || ""}
-						onChange={catchesContext.handleChangeSampledWeight(
-							catchContext.thisCatch.catch_id
+						onChange={catchesContext.handleInputChange(
+							catchContext.thisCatch.catch_id,
+							"sampled_weight"
 						)}
 						aria-label="Sampled weight"
 						onFocus={() => setActiveField("sampledWeight")}
@@ -189,13 +196,17 @@ const EditCatchForm = () => {
 				<input
 					className="catches__table__cell catches__table__individuals"
 					type="number"
-					id="individuals"
-					name="individuals"
+					id="not_measured_individuals"
+					name="not_measured_individuals"
 					min="0"
 					max="99999999"
 					value={catchContext.thisCatch.not_measured_individuals || ""}
-					onChange={catchesContext.handleChangeNotMeasuredIndividuals(
-						catchContext.thisCatch.catch_id
+					// onChange={catchesContext.handleChangeNotMeasuredIndividuals(
+					// 	catchContext.thisCatch.catch_id
+					// )}
+					onChange={catchesContext.handleInputChange(
+						catchContext.thisCatch.catch_id,
+						"not_measured_individuals"
 					)}
 					aria-label="Not measured individuals"
 				/>
