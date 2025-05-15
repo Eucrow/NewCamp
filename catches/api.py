@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from catches.models import Catch
 
-from catches.serializers import CatchSerializer, CatchesVerboseSerializer
+from catches.serializers import CatchesVerboseSerializer
 from samples.models import SampledWeight
 from samples.serializers import SampleWeightSerializer
 from species.models import Sp
@@ -63,12 +63,11 @@ class CatchHaulAPI(APIView):
     def get(self, request, haul_id, sp_id, category):
         catch = get_object_or_404(
             Catch, haul_id=haul_id, sp_id=sp_id, category=category)
-        serializer = CatchSerializer(catch)
+        serializer = CatchesVerboseSerializer(catch)
         return Response(serializer.data)
 
     def post(self, request):
         response_data = {}
-        # catch_serializer = CatchSerializer(data=request.data, partial=True)
         catch_serializer = CatchesVerboseSerializer(data=request.data, partial=True)
         sample_weight_serializer = SampleWeightSerializer(
             data=request.data, partial=True)
@@ -76,7 +75,7 @@ class CatchHaulAPI(APIView):
         if catch_serializer.is_valid():
             catch_serializer.save(haul_id=request.data["haul_id"],
                                   sp_id=request.data["sp_id"],
-                                  category=request.data["category"],)
+                                  category=request.data["category"], )
             response_data.update(catch_serializer.data)
         else:
             return Response(catch_serializer.errors, status=HTTP_400_BAD_REQUEST)
@@ -93,7 +92,7 @@ class CatchHaulAPI(APIView):
     def put(self, request):
         catch = Catch.objects.get(id=request.data["catch_id"])
 
-        catch_serializer = CatchSerializer(catch, data=request.data)
+        catch_serializer = CatchesVerboseSerializer(catch, data=request.data)
 
         # Update the sp_id if the sp_code or group has been changed.
         sp_id = Sp.objects.get(sp_code=request.data["sp_code"], group=request.data["group"]).id

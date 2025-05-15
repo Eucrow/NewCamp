@@ -8,18 +8,6 @@ from species.models import Sp
 from species.serializers import SpSimpleSerializer
 
 
-class CatchSerializer(serializers.ModelSerializer):
-    sp_name = serializers.CharField(source='sp.sp_name', read_only=True)
-    group = serializers.IntegerField(source='sp.group', read_only=True)
-    sp_code = serializers.IntegerField(source='sp.sp_code', read_only=True)
-    catch_id = serializers.IntegerField(source='id', read_only=True)
-
-    class Meta:
-        model = Catch
-        fields = ['catch_id', 'haul_id', 'group', 'sp_code', 'weight', 'sp_name', 'category',
-                  'not_measured_individuals', ]
-
-
 class CatchesVerboseSerializer(serializers.ModelSerializer):
     group = serializers.CharField(source='sp.group', read_only=True)
     catch_id = serializers.IntegerField(source='id')
@@ -59,7 +47,6 @@ class SexCatchSerializer(serializers.ModelSerializer):
         fields = ['id', 'sex', 'catch', 'lengths', ]
 
     # This is a nested serializer, so we have to overwrite the create function
-
     def create(self, validated_data):
         # Firstly, get the data from the nested parts
         lengths_data = validated_data.pop('lengths')
