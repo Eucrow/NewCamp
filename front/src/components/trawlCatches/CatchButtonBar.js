@@ -42,7 +42,7 @@ const CatchButtonBar = ({ newCatch, setNewCatch, isFormValid }) => {
 			category: "",
 			weight: "",
 			sampled_weight: "",
-			// not_measured_individuals: "",
+			not_measured_individuals: "",
 		});
 	};
 

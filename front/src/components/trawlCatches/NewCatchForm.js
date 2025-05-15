@@ -22,7 +22,7 @@ const NewCatchForm = () => {
 		category: "",
 		weight: "",
 		sampled_weight: "",
-		// not_measured_individuals: "",
+		not_measured_individuals: "",
 	});
 
 	const globalContext = useContext(GlobalContext);
@@ -262,13 +262,13 @@ const NewCatchForm = () => {
 					className="catches__table__cell catches__table__individuals"
 					value={newCatch.not_measured_individuals}
 					type="number"
-					id="individuals"
-					name="individuals"
+					id="not_measured_individuals"
+					name="not_measured_individuals"
 					min="0"
 					max="99999999"
 					onChange={(e) => {
 						e.preventDefault();
-						handleInputChange("individuals", e.target.value);
+						handleInputChange("not_measured_individuals", e.target.value);
 					}}
 					aria-label="Not measured individuals"
 				/>

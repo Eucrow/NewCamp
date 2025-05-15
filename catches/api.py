@@ -76,7 +76,7 @@ class CatchHaulAPI(APIView):
         if catch_serializer.is_valid():
             catch_serializer.save(haul_id=request.data["haul_id"],
                                   sp_id=request.data["sp_id"],
-                                  category=request.data["category"])
+                                  category=request.data["category"],)
             response_data.update(catch_serializer.data)
         else:
             return Response(catch_serializer.errors, status=HTTP_400_BAD_REQUEST)
