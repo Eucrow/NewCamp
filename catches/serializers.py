@@ -19,6 +19,13 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
     sampled_weight = serializers.FloatField(
         source='samples.sampled_weight', required=False, read_only=True)
 
+    # if not_measure_individuals is empty, convert to None
+    def to_internal_value(self, data):
+        if 'not_measured_individuals' in data and data['not_measured_individuals'] == "":
+            data = data.copy()
+            data['not_measured_individuals'] = None
+        return super().to_internal_value(data)
+
     class Meta:
         model = Catch
         fields = ['catch_id', 'category', 'weight', 'not_measured_individuals', 'haul', 'haul_id', 'group', 'sp_id',

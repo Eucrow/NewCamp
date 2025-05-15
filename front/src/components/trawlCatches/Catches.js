@@ -171,7 +171,7 @@ const Catches = ({ haul_id }) => {
 	 * @param {number} idx - The index of the catch.
 	 */
 	const handleChangeNotMeasuredIndividuals = (idx) => (evt) => {
-		const value = evt.target.value === "0" ? null : evt.target.value;
+		const value = evt.target.value === "0" || evt.target.value === "" ? null : evt.target.value;
 
 		const newCatches = catches.map((c) => {
 			if (c.catch_id !== idx) return c;

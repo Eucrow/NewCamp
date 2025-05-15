@@ -11,6 +11,17 @@ class SampledWeight(models.Model):
     sampled_weight = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(99999999)])
 
+    def clean(self):
+        if self.sampled_weight and self.catch.weight:
+            if self.sampled_weight > self.catch.weight:
+                raise ValidationError({
+                    'sampled_weight': 'Sampled weight cannot be greater than catch weight.'
+                })
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return '%d: %d' % (self.catch.id, self.sampled_weight)
 
