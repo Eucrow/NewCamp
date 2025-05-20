@@ -389,7 +389,7 @@ const Catches = ({ haul_id }) => {
 								Species
 							</div> */}
 							<div
-								className="catches__table__cell catches__table__code sort__container"
+								className="catches__table__cell catches__table__species sort__container"
 								onClick={() => sortCatches("sp_name")}
 							>
 								Species
