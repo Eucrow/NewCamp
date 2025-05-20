@@ -381,19 +381,16 @@ const Catches = ({ haul_id }) => {
 								onClick={() => sortCatches("sp_code")}
 							>
 								Code
-								<span className="sort__icon">
+								<span className="sort__container__arrow">
 									{codeSortOrder === "asc" ? "↑" : "↓"}
 								</span>
 							</div>
-							{/* <div className="catches__table__cell catches__table__species">
-								Species
-							</div> */}
 							<div
 								className="catches__table__cell catches__table__species sort__container"
 								onClick={() => sortCatches("sp_name")}
 							>
 								Species
-								<span className="sort__icon">
+								<span className="sort__container__arrow">
 									{codeSortOrder === "asc" ? "↑" : "↓"}
 								</span>
 							</div>
