@@ -18,7 +18,7 @@
 }
 
 .catches__table__cell {
-	margin: 0px 5px;
+	margin: 0px 0px;
 	// display: table-cell;
 	// display: flex;
 	display: flow;
@@ -67,11 +67,11 @@
 	background-color: rgba(0, 0, 0, 0.05);
 }
 .catches__table__species {
-	width: 31ch;
+	width: 28ch;
 	// width: 40%;
 }
 .catches__table__category {
-	width: 10ch;
+	width: 8ch;
 	// width: 10%;
 	text-align: center;
 }
@@ -86,7 +86,7 @@
 	text-align: center;
 }
 .catches__table__individuals {
-	width: 12ch;
+	width: 10ch;
 	// width: 10%;
 	text-align: center;
 }
