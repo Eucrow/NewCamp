@@ -3,7 +3,11 @@ import { useState, useCallback } from "react";
 /**
  * Custom hook for handling catch sorting functionality
  * @param {Array} catches - The array of catches to sort
- * @returns {Object} Sorting state and functions
+ * @returns {Object} An object containing:
+ *   @returns {Function} sortCatches - Function to sort catches by a given field
+ *   @returns {Object} sortConfig - Current sort configuration
+ *   @returns {string} sortConfig.field - The field being sorted
+ *   @returns {string} sortConfig.direction - Sort direction ('asc' or 'desc')
  */
 export const useSortCatches = (catches) => {
 	const [sortConfig, setSortConfig] = useState({
@@ -51,6 +55,5 @@ export const useSortCatches = (catches) => {
 	return {
 		sortCatches,
 		sortConfig,
-		direction: sortConfig.direction,
 	};
 };
