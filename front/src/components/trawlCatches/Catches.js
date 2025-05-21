@@ -264,67 +264,7 @@ const Catches = ({ haul_id }) => {
 	};
 
 	const sortCatches = (field) => {
-		const sortedCatches = [...catches].sort((a, b) => {
-			// Get the appropriate sort direction based on field
-			const getSortDirection = () => {
-				switch (field) {
-					case "group":
-						return groupSortOrder === "asc" ? 1 : -1;
-					case "sp_code":
-						return codeSortOrder === "asc" ? 1 : -1;
-					case "sp_name":
-						return nameSortOrder === "asc" ? 1 : -1;
-					default:
-						return 1;
-				}
-			};
-
-			const direction = getSortDirection();
-
-			// Helper functions
-			const compareStrings = (str1, str2) => str1.localeCompare(str2) * direction;
-			const compareNumbers = (num1, num2) => (num1 - num2) * direction;
-
-			if (field === "group") {
-				// Compare group first
-				const groupCompare = compareNumbers(Number(a.group), Number(b.group));
-				if (groupCompare !== 0) {
-					return groupCompare;
-				}
-				// If groups are equal, compare by code
-				const codeCompare = compareNumbers(Number(a.sp_code), Number(b.sp_code));
-				if (codeCompare !== 0) {
-					return codeCompare;
-				}
-				// If codes are equal, compare by name
-				return compareStrings(a.sp_name, b.sp_name);
-			}
-
-			if (field === "sp_code") {
-				// Sort by code, then name, then category
-				const codeCompare = compareNumbers(Number(a.sp_code), Number(b.sp_code));
-				if (codeCompare !== 0) return codeCompare;
-
-				const nameCompare = compareStrings(a.sp_name, b.sp_name);
-				if (nameCompare !== 0) return nameCompare;
-
-				return compareNumbers(a.category, b.category);
-			}
-
-			if (field === "sp_name") {
-				// Sort by name, then category
-				const nameCompare = compareStrings(a.sp_name, b.sp_name);
-				if (nameCompare !== 0) return nameCompare;
-
-				return compareNumbers(a.category, b.category);
-			}
-
-			return 0;
-		});
-
-		setCatches(sortedCatches);
-
-		// Update the appropriate sort order
+		// Update the sort order first
 		switch (field) {
 			case "group":
 				setGroupSortOrder(groupSortOrder === "asc" ? "desc" : "asc");
@@ -338,6 +278,59 @@ const Catches = ({ haul_id }) => {
 			default:
 				break;
 		}
+
+		// Get the new sort direction based on the updated state
+		const getNewSortDirection = () => {
+			switch (field) {
+				case "group":
+					return groupSortOrder === "desc" ? 1 : -1;
+				case "sp_code":
+					return codeSortOrder === "desc" ? 1 : -1;
+				case "sp_name":
+					return nameSortOrder === "desc" ? 1 : -1;
+				default:
+					return 1;
+			}
+		};
+
+		const direction = getNewSortDirection();
+
+		const sortedCatches = [...catches].sort((a, b) => {
+			// Helper functions
+			const compareStrings = (str1, str2) => str1.localeCompare(str2) * direction;
+			const compareNumbers = (num1, num2) => (num1 - num2) * direction;
+
+			if (field === "group") {
+				const groupCompare = compareNumbers(Number(a.group), Number(b.group));
+				if (groupCompare !== 0) return groupCompare;
+
+				const codeCompare = compareNumbers(Number(a.sp_code), Number(b.sp_code));
+				if (codeCompare !== 0) return codeCompare;
+
+				return compareStrings(a.sp_name, b.sp_name);
+			}
+
+			if (field === "sp_code") {
+				const codeCompare = compareNumbers(Number(a.sp_code), Number(b.sp_code));
+				if (codeCompare !== 0) return codeCompare;
+
+				const nameCompare = compareStrings(a.sp_name, b.sp_name);
+				if (nameCompare !== 0) return nameCompare;
+
+				return compareNumbers(a.category, b.category);
+			}
+
+			if (field === "sp_name") {
+				const nameCompare = compareStrings(a.sp_name, b.sp_name);
+				if (nameCompare !== 0) return nameCompare;
+
+				return compareNumbers(a.category, b.category);
+			}
+
+			return 0;
+		});
+
+		setCatches(sortedCatches);
 	};
 
 	useEffect(() => {
