@@ -4,5 +4,13 @@
 	align-items: center;
 }
 .sort__container__arrow {
-	margin-left: 4px;
+	margin-left: 2px;
+	width: 15px;
+	height: 15px;
+	flex-shrink: 0;
 }
+
+// .sort__container__arrow svg {
+// 	width: 100%;
+// 	height: 100%;
+// }

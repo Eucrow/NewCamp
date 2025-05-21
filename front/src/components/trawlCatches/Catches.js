@@ -7,6 +7,9 @@ import CatchesButtonBar from "./CatchesButtonBar.js";
 import CatchesContext from "../../contexts/CatchesContext.js";
 import GlobalContext from "../../contexts/GlobalContext.js";
 
+import UiIconUp from "../ui/UiIconUp";
+import UiIconDown from "../ui/UiIconDown";
+
 /**
  * Renders a list of catches for a specific haul.
  * @param {number}haul_id - The id of the haul.
@@ -406,27 +409,27 @@ const Catches = ({ haul_id }) => {
 								onClick={() => sortCatches("group")}
 							>
 								Group
-								<span className="sort__container__arrow">
-									{groupSortOrder === "asc" ? "↑" : "↓"}
-								</span>
+								<div className="sort__container__arrow">
+									{groupSortOrder === "asc" ? <UiIconUp /> : <UiIconDown />}
+								</div>
 							</div>
 							<div
 								className="catches__table__cell catches__table__code sort__container"
 								onClick={() => sortCatches("sp_code")}
 							>
 								Code
-								<span className="sort__container__arrow">
-									{codeSortOrder === "asc" ? "↑" : "↓"}
-								</span>
+								<div className="sort__container__arrow">
+									{codeSortOrder === "asc" ? <UiIconUp /> : <UiIconDown />}
+								</div>
 							</div>
 							<div
 								className="catches__table__cell catches__table__species sort__container"
 								onClick={() => sortCatches("sp_name")}
 							>
 								Species
-								<span className="sort__container__arrow">
-									{nameSortOrder === "asc" ? "↑" : "↓"}
-								</span>
+								<div className="sort__container__arrow">
+									{nameSortOrder === "asc" ? <UiIconUp /> : <UiIconDown />}
+								</div>
 							</div>
 							<div className="catches__table__cell catches__table__category">
 								Category
