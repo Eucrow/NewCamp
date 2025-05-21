@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 
+// ??????????????
 import "../../contexts/CatchesContext.js";
+
+import CatchesContext from "../../contexts/CatchesContext.js";
+import GlobalContext from "../../contexts/GlobalContext.js";
+
+import { useSortCatches } from "../../hooks/useSortCatches.js";
 
 import Catch from "./Catch.js";
 import CatchesButtonBar from "./CatchesButtonBar.js";
-import CatchesContext from "../../contexts/CatchesContext.js";
-import GlobalContext from "../../contexts/GlobalContext.js";
 
 import UiIconUp from "../ui/UiIconUp";
 import UiIconDown from "../ui/UiIconDown";
@@ -19,10 +23,7 @@ const Catches = ({ haul_id }) => {
 	const [catches, setCatches] = useState([]);
 	const [add, setAdd] = useState(false);
 	const [editingCatchId, setEditingCatchId] = useState(null);
-
-	const [groupSortOrder, setGroupSortOrder] = useState("asc"); // 'asc' or 'desc'
-	const [codeSortOrder, setCodeSortOrder] = useState("asc"); // 'asc' or 'desc'
-	const [nameSortOrder, setNameSortOrder] = useState("asc"); // 'asc' or 'desc'
+	const { sortCatches, sortConfig } = useSortCatches(catches); // State to trigger sorting
 
 	const globalContext = useContext(GlobalContext);
 
@@ -263,74 +264,9 @@ const Catches = ({ haul_id }) => {
 		}
 	};
 
-	const sortCatches = (field) => {
-		// Update the sort order first
-		switch (field) {
-			case "group":
-				setGroupSortOrder(groupSortOrder === "asc" ? "desc" : "asc");
-				break;
-			case "sp_code":
-				setCodeSortOrder(codeSortOrder === "asc" ? "desc" : "asc");
-				break;
-			case "sp_name":
-				setNameSortOrder(nameSortOrder === "asc" ? "desc" : "asc");
-				break;
-			default:
-				break;
-		}
-
-		// Get the new sort direction based on the updated state
-		const getNewSortDirection = () => {
-			switch (field) {
-				case "group":
-					return groupSortOrder === "desc" ? 1 : -1;
-				case "sp_code":
-					return codeSortOrder === "desc" ? 1 : -1;
-				case "sp_name":
-					return nameSortOrder === "desc" ? 1 : -1;
-				default:
-					return 1;
-			}
-		};
-
-		const direction = getNewSortDirection();
-
-		const sortedCatches = [...catches].sort((a, b) => {
-			// Helper functions
-			const compareStrings = (str1, str2) => str1.localeCompare(str2) * direction;
-			const compareNumbers = (num1, num2) => (num1 - num2) * direction;
-
-			if (field === "group") {
-				const groupCompare = compareNumbers(Number(a.group), Number(b.group));
-				if (groupCompare !== 0) return groupCompare;
-
-				const codeCompare = compareNumbers(Number(a.sp_code), Number(b.sp_code));
-				if (codeCompare !== 0) return codeCompare;
-
-				return compareStrings(a.sp_name, b.sp_name);
-			}
-
-			if (field === "sp_code") {
-				const codeCompare = compareNumbers(Number(a.sp_code), Number(b.sp_code));
-				if (codeCompare !== 0) return codeCompare;
-
-				const nameCompare = compareStrings(a.sp_name, b.sp_name);
-				if (nameCompare !== 0) return nameCompare;
-
-				return compareNumbers(a.category, b.category);
-			}
-
-			if (field === "sp_name") {
-				const nameCompare = compareStrings(a.sp_name, b.sp_name);
-				if (nameCompare !== 0) return nameCompare;
-
-				return compareNumbers(a.category, b.category);
-			}
-
-			return 0;
-		});
-
-		setCatches(sortedCatches);
+	const handleSortCatches = (field) => {
+		const sortedData = sortCatches(field);
+		setCatches(sortedData);
 	};
 
 	useEffect(() => {
@@ -399,29 +335,44 @@ const Catches = ({ haul_id }) => {
 						<div className="catches__table__row catches__table__header">
 							<div
 								className="catches__table__cell catches__table__group sort__container"
-								onClick={() => sortCatches("group")}
+								onClick={() => handleSortCatches("group")}
 							>
 								Group
 								<div className="sort__container__arrow">
-									{groupSortOrder === "asc" ? <UiIconUp /> : <UiIconDown />}
+									{sortConfig.field === "group" &&
+									sortConfig.direction === "asc" ? (
+										<UiIconUp />
+									) : (
+										<UiIconDown />
+									)}
 								</div>
 							</div>
 							<div
 								className="catches__table__cell catches__table__code sort__container"
-								onClick={() => sortCatches("sp_code")}
+								onClick={() => handleSortCatches("sp_code")}
 							>
 								Code
 								<div className="sort__container__arrow">
-									{codeSortOrder === "asc" ? <UiIconUp /> : <UiIconDown />}
+									{sortConfig.field === "sp_code" &&
+									sortConfig.direction === "asc" ? (
+										<UiIconUp />
+									) : (
+										<UiIconDown />
+									)}
 								</div>
 							</div>
 							<div
 								className="catches__table__cell catches__table__species sort__container"
-								onClick={() => sortCatches("sp_name")}
+								onClick={() => handleSortCatches("sp_name")}
 							>
 								Species
 								<div className="sort__container__arrow">
-									{nameSortOrder === "asc" ? <UiIconUp /> : <UiIconDown />}
+									{sortConfig.field === "sp_name" &&
+									sortConfig.direction === "asc" ? (
+										<UiIconUp />
+									) : (
+										<UiIconDown />
+									)}
 								</div>
 							</div>
 							<div className="catches__table__cell catches__table__category">
