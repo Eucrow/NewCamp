@@ -24,12 +24,44 @@ const CatchButtonBar = ({ newCatch, setNewCatch, isFormValid }) => {
 	const catchContext = useContext(CatchContext);
 
 	const isDisabled = () => {
+		// console.log("isDisabled check:", {
+		// 	catchId: catchContext.thisCatch?.catch_id,
+		// 	editingId: catchesContext.editingCatchId,
+		// 	add: catchesContext.add,
+		// 	catchStatus: catchContext.catchStatus,
+		// });
+
 		return (
-			catchesContext.add === true ||
-			(catchesContext.editingCatchId !== null &&
-				catchesContext.editingCatchId !== catchContext.catchId)
+			catchesContext.add === true || catchesContext.editingCatchId !== null
+			// (catchesContext.editingCatchId !== null &&
+			// 	catchesContext.editingCatchId !== catchContext.thisCatch.catch_id)
+			// (catchesContext.editingCatchId !== null &&
+			// 	// catchesContext.editingCatchId !== catchContext.catchId)
+			// catchesContext.editingCatchId !== catchContext.thisCatch.catch_id)
 		);
 	};
+
+	// const isDisabled = () => {
+	// 	// If we're adding a new catch, disable all buttons
+	// 	if (catchesContext.add === true) {
+	// 		return true;
+	// 	}
+
+	// 	// If a catch is being edited, only enable buttons for other catches
+	// 	if (catchesContext.editingCatchId !== null) {
+	// 		return catchesContext.editingCatchId === catchContext.thisCatch.catch_id;
+	// 	}
+
+	// 	// Otherwise, enable all buttons
+	// 	return false;
+	// };
+
+	// const isDisabled = () => {
+	// 	// Disable ALL buttons when:
+	// 	// 1. We're adding a new catch OR
+	// 	// 2. Any catch is being edited
+	// 	return catchesContext.add === true || catchesContext.editingCatchId !== null;
+	// };
 
 	const handleSaveAndAdd = async (e) => {
 		e.preventDefault();

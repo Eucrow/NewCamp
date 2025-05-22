@@ -7,6 +7,7 @@ import CatchesContext from "../../contexts/CatchesContext.js";
 import GlobalContext from "../../contexts/GlobalContext.js";
 
 import { useSortCatches } from "../../hooks/useSortCatches.js";
+import { useCatchesCrud } from "../../hooks/useCatchesCrud.js";
 
 import Catch from "./Catch.js";
 import CatchesButtonBar from "./CatchesButtonBar.js";
@@ -21,37 +22,15 @@ import UiIconDown from "../ui/UiIconDown";
  * @returns {JSX.Element} The Catches component.
  */
 const Catches = ({ haul_id }) => {
-	const [catches, setCatches] = useState([]);
 	const [add, setAdd] = useState(false);
 	const [editingCatchId, setEditingCatchId] = useState(null);
-	const { sortCatches, sortConfig } = useSortCatches(catches); // State to trigger sorting
+	const { catches, setCatches, existsCatch, createCatch, updateCatch, deleteCatch } =
+		useCatchesCrud(haul_id);
+	const { sortCatches, sortConfig } = useSortCatches(catches);
 
 	const globalContext = useContext(GlobalContext);
 
 	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;
-	const apiCreateCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
-	const apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch";
-
-	const deleteCatch = (idx) => {
-		const request = { id: idx };
-
-		fetch(apiEditRemoveCatch, {
-			method: "DELETE",
-			headers: {
-				"Content-Type": "application/json",
-				Accept: "application/json",
-			},
-			body: JSON.stringify(request),
-		})
-			.then(() => {
-				setCatches(
-					catches.filter((c) => {
-						return idx !== c.catch_id;
-					})
-				);
-			})
-			.catch((error) => alert(error));
-	};
 
 	/**
 	 * Method to manage the group field.
@@ -164,105 +143,6 @@ const Catches = ({ haul_id }) => {
 
 		setCatches(newCatches);
 		setEditingCatchId(null);
-	};
-
-	/**
-	 * Method to update a catch in the database.
-	 * @param {number} idx - The index of the catch to update.
-	 */
-	const updateCatch = (idx) => {
-		const updatedCatch = catches.find(function (c) {
-			return idx === c.catch_id;
-		});
-
-		const request = {
-			catch_id: updatedCatch.catch_id,
-			haul_id: updatedCatch.haul_id,
-			haul: updatedCatch.haul,
-			sp_code: updatedCatch.sp_code,
-			group: updatedCatch.group,
-			category: updatedCatch.category,
-			weight: updatedCatch.weight,
-			sampled_weight:
-				updatedCatch.sampled_weight === "0" ? null : updatedCatch.sampled_weight,
-			not_measured_individuals:
-				updatedCatch.not_measured_individuals === "0"
-					? null
-					: updatedCatch.not_measured_individuals,
-		};
-
-		fetch(apiEditRemoveCatch, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(request),
-		})
-			.then((response) => response.json())
-			.then(() => {
-				setEditingCatchId(null);
-			})
-			.catch((error) => alert(error));
-	};
-
-	/**
-	 * Method to check if a catch with a specific haul_id, sp_id, and category exists in the list of catches.
-	 * @param {number} sp_id - The id of the species to check.
-	 * @param {string} category - The category of the catch to check.
-	 * @param {number} originalCatchId - The id of the original catch being edited (if any).
-	 * @returns {boolean} Returns true if the catch exists, false otherwise.
-	 */
-	const existsCatch = (sp_id, category, originalCatchId) => {
-		if (sp_id === "" || category === "") return false;
-
-		// Start with all catches except the one being edited
-		const activeCatches = originalCatchId
-			? catches.filter((item) => item.catch_id !== originalCatchId)
-			: catches;
-
-		return activeCatches.some(
-			(item) =>
-				parseInt(item.sp_id) === parseInt(sp_id) &&
-				parseInt(item.category) === parseInt(category)
-		);
-	};
-
-	/**
-	 * Method to create a new catch.
-	 * If the catch already exists, it alerts the user.
-	 * @param {Object} newCatch - The new catch to be created.
-	 */
-	const createCatch = async (newCatch) => {
-		try {
-			// add haul id to data request:
-			newCatch["haul_id"] = haul_id;
-
-			const exists = await existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category);
-			if (exists === true) {
-				alert("Catch already exists");
-				return;
-			}
-
-			// Create new catch
-			const response = await fetch(apiCreateCatch, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(newCatch),
-			});
-			if (!response.ok) {
-				throw new Error(
-					"Something went wrong! " + response.status + " " + response.statusText
-				);
-			}
-
-			const createdCatch = await response.json();
-			setCatches([createdCatch, ...catches]);
-		} catch (error) {
-			console.error("Error creating catch: ", error);
-			alert("Error creating catch: " + error.message);
-		}
 	};
 
 	const handleSortCatches = (field) => {

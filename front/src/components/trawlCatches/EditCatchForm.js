@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 
 import GlobalContext from "../../contexts/GlobalContext";
 import CatchesContext from "../../contexts/CatchesContext";
@@ -10,16 +10,13 @@ import CatchButtonBar from "./CatchButtonBar";
 import FloatingError from "../ui/FloatingError";
 
 /**
- * EditCatchForm is a functional component that represents the form to edit catch.
+ * EditCatchForm Component
+ *
+ * A form component that handles the editing of catch entries in the trawl catches system.
+ * It provides input fields for catch details like group, species, weight, etc., with validation.
  *
  * @component
- * @param {string} catchStatus - The current status of the catch: "", "view" or "edit".
- * @param {object} thisCatch - The catch object that is currently being managed by this component.
- * @param {function} editCatchStatus - A function to manage the catchStatus state.
- * @param {string} catchId - The id of the catch.
- * @param {function} handleCancel - A function to handle cancel action.
- * @returns {JSX.Element} The rendered Catch component.
- */
+ **/
 const EditCatchForm = () => {
 	const globalContext = useContext(GlobalContext);
 	const catchesContext = useContext(CatchesContext);
@@ -35,11 +32,20 @@ const EditCatchForm = () => {
 		catchContext.thisCatch
 	);
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		catchesContext.updateCatch(catchContext.thisCatch.catch_id);
-		catchContext.editCatchStatus("view");
+		try {
+			await catchesContext.updateCatch(catchContext.thisCatch.catch_id);
+			catchesContext.setEditingCatchId(null);
+			catchContext.setCatchStatus("view");
+		} catch (error) {
+			console.error("Error updating catch:", error);
+		}
 	};
+
+	useEffect(() => {
+		console.log("update editingCatchId to:", catchesContext.editingCatchId);
+	}, [catchesContext.editingCatchId]);
 
 	const renderContent = () => {
 		return (
@@ -150,10 +156,6 @@ const EditCatchForm = () => {
 						min="1"
 						max="99999999"
 						value={catchContext.thisCatch.weight}
-						// onChange={catchesContext.handleChangeWeight(
-						// 	catchContext.thisCatch.catch_id
-						// )}
-						not_measured_individuals
 						onChange={catchesContext.handleInputChange(
 							catchContext.thisCatch.catch_id,
 							"weight"
@@ -201,9 +203,6 @@ const EditCatchForm = () => {
 					min="0"
 					max="99999999"
 					value={catchContext.thisCatch.not_measured_individuals || ""}
-					// onChange={catchesContext.handleChangeNotMeasuredIndividuals(
-					// 	catchContext.thisCatch.catch_id
-					// )}
 					onChange={catchesContext.handleInputChange(
 						catchContext.thisCatch.catch_id,
 						"not_measured_individuals"
