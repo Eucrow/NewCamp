@@ -28,6 +28,7 @@ const UiButtonDelete = ({
 			title={buttonText}
 			disabled={disabled}
 			onClick={(e) => {
+				e.preventDefault();
 				if (window.confirm(confirmMessage)) {
 					deleteMethod(id);
 				}

@@ -7,6 +7,150 @@ export const useCatchesCrud = (haul_id) => {
 
 	const [catches, setCatches] = useState([]);
 
+	const fetchWithError = async (url, options) => {
+		const response = await fetch(url, {
+			headers: {
+				"Content-Type": "application/json",
+				...options.headers,
+			},
+			...options,
+		});
+
+		if (response.status === 204) {
+			return { status: 204 };
+		}
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		return response.json();
+	};
+
+	/**
+	 * Method to check if a catch with a specific haul_id, sp_id, and category exists in the list of catches.
+	 * @param {number} sp_id - The id of the species to check.
+	 * @param {string} category - The category of the catch to check.
+	 * @param {number} originalCatchId - The id of the original catch being edited (if any).
+	 * @returns {boolean} Returns true if the catch exists, false otherwise.
+	 */
+	const existsCatch = (sp_id, category, originalCatchId) => {
+		if (sp_id === "" || category === "") return false;
+
+		// Start with all catches except the one being edited
+		const activeCatches = originalCatchId
+			? catches.filter((item) => item.catch_id !== originalCatchId)
+			: catches;
+
+		return activeCatches.some(
+			(item) =>
+				parseInt(item.sp_id) === parseInt(sp_id) &&
+				parseInt(item.category) === parseInt(category)
+		);
+	};
+
+	/**
+	 * Method to create a new catch.
+	 * If the catch already exists, it alerts the user.
+	 * @param {Object} newCatch - The new catch to be created.
+	 */
+	const createCatch = async (newCatch) => {
+		try {
+			// add haul id to data request:
+			newCatch["haul_id"] = haul_id;
+
+			const exists = existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category);
+			if (exists === true) {
+				alert("Catch already exists");
+				return;
+			}
+
+			const createdCatch = await fetchWithError(apiCreateCatch, {
+				method: "POST",
+				body: JSON.stringify(newCatch),
+			});
+
+			setCatches((prevCatches) => [createdCatch, ...prevCatches]);
+
+			return createdCatch;
+		} catch (error) {
+			console.error("Error creating catch: ", error);
+			throw error;
+		}
+	};
+
+	/**
+	 * Method to update a catch in the database.
+	 * @param {number} idx - The index of the catch to update.
+	 */
+	const updateCatch = async (idx) => {
+		try {
+			// Find catch to update
+			const updatedCatch = catches.find((c) => idx === c.catch_id);
+			if (!updatedCatch) {
+				throw new Error("Catch not found");
+			}
+
+			const requestData = {
+				catch_id: updatedCatch.catch_id,
+				haul_id: updatedCatch.haul_id,
+				haul: updatedCatch.haul,
+				sp_code: updatedCatch.sp_code,
+				group: updatedCatch.group,
+				category: updatedCatch.category,
+				weight: updatedCatch.weight,
+				sampled_weight:
+					updatedCatch.sampled_weight === "0" ? null : updatedCatch.sampled_weight,
+				not_measured_individuals:
+					updatedCatch.not_measured_individuals === "0"
+						? null
+						: updatedCatch.not_measured_individuals,
+			};
+
+			const data = await fetchWithError(apiEditRemoveCatch, {
+				method: "PUT",
+				body: JSON.stringify(requestData),
+			});
+
+			setCatches((prevCatches) => prevCatches.map((c) => (c.catch_id === idx ? data : c)));
+
+			return data;
+		} catch (error) {
+			console.error("Error updating catch:", error);
+			throw error;
+		}
+	};
+
+	/**
+	 * Method to delete a catch from the database and update local state.
+	 * @param {number} idx - The ID of the catch to delete.
+	 */
+
+	const deleteCatch = async (idx) => {
+		console.log("Catch deleted:", idx);
+		try {
+			// await fetchWithError(apiEditRemoveCatch, {
+			// 	method: "DELETE",
+			// 	body: JSON.stringify({ id: idx }),
+			// });
+			const response = await fetch(apiEditRemoveCatch, {
+				method: "DELETE",
+				body: JSON.stringify({ id: idx }),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			if (response.status === 204) {
+				setCatches((prevCatches) => prevCatches.filter((c) => c.catch_id !== idx));
+			}
+		} catch (error) {
+			console.error("Error deleting catch:", error);
+			throw error;
+		}
+	};
+	// ESTO NO FUNCIONA DEL TODO YA QUE NO ACTUALIZA LA PANTALLA. PASA IGUAL CON EL UPDATECATCH
+
 	useEffect(() => {
 		const fetchCatches = async () => {
 			// Save scroll position
@@ -43,146 +187,7 @@ export const useCatchesCrud = (haul_id) => {
 			}
 		};
 		fetchCatches();
-	}, [haul_id]);
-
-	/**
-	 * Method to check if a catch with a specific haul_id, sp_id, and category exists in the list of catches.
-	 * @param {number} sp_id - The id of the species to check.
-	 * @param {string} category - The category of the catch to check.
-	 * @param {number} originalCatchId - The id of the original catch being edited (if any).
-	 * @returns {boolean} Returns true if the catch exists, false otherwise.
-	 */
-	const existsCatch = (sp_id, category, originalCatchId) => {
-		if (sp_id === "" || category === "") return false;
-
-		// Start with all catches except the one being edited
-		const activeCatches = originalCatchId
-			? catches.filter((item) => item.catch_id !== originalCatchId)
-			: catches;
-
-		return activeCatches.some(
-			(item) =>
-				parseInt(item.sp_id) === parseInt(sp_id) &&
-				parseInt(item.category) === parseInt(category)
-		);
-	};
-
-	/**
-	 * Method to create a new catch.
-	 * If the catch already exists, it alerts the user.
-	 * @param {Object} newCatch - The new catch to be created.
-	 */
-	const createCatch = async (newCatch) => {
-		try {
-			// add haul id to data request:
-			newCatch["haul_id"] = haul_id;
-
-			const exists = await existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category);
-			if (exists === true) {
-				alert("Catch already exists");
-				return;
-			}
-
-			// Create new catch
-			const response = await fetch(apiCreateCatch, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(newCatch),
-			});
-			if (!response.ok) {
-				throw new Error(
-					"Something went wrong! " + response.status + " " + response.statusText
-				);
-			}
-
-			const createdCatch = await response.json();
-			setCatches([createdCatch, ...catches]);
-		} catch (error) {
-			console.error("Error creating catch: ", error);
-			alert("Error creating catch: " + error.message);
-		}
-	};
-
-	/**
-	 * Method to update a catch in the database.
-	 * @param {number} idx - The index of the catch to update.
-	 */
-	const updateCatch = async (idx) => {
-		try {
-			const updatedCatch = catches.find((c) => idx === c.catch_id);
-			if (!updatedCatch) {
-				throw new Error("Catch not found");
-			}
-
-			const request = {
-				catch_id: updatedCatch.catch_id,
-				haul_id: updatedCatch.haul_id,
-				haul: updatedCatch.haul,
-				sp_code: updatedCatch.sp_code,
-				group: updatedCatch.group,
-				category: updatedCatch.category,
-				weight: updatedCatch.weight,
-				sampled_weight:
-					updatedCatch.sampled_weight === "0" ? null : updatedCatch.sampled_weight,
-				not_measured_individuals:
-					updatedCatch.not_measured_individuals === "0"
-						? null
-						: updatedCatch.not_measured_individuals,
-			};
-
-			const response = await fetch(apiEditRemoveCatch, {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(request),
-			});
-
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-
-			const data = await response.json();
-
-			// Update local state
-			setCatches((prevCatches) => prevCatches.map((c) => (c.catch_id === idx ? data : c)));
-
-			return data;
-		} catch (error) {
-			console.error("Error updating catch:", error);
-			throw error;
-		}
-	};
-
-	/**
-	 * Method to delete a catch from the database and update local state.
-	 * @param {number} idx - The ID of the catch to delete.
-	 */
-	const deleteCatch = async (idx) => {
-		try {
-			const request = { id: idx };
-			const response = await fetch(apiEditRemoveCatch, {
-				method: "DELETE",
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json",
-				},
-				body: JSON.stringify(request),
-			});
-
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-
-			// Update local state using functional update
-			setCatches((prevCatches) => prevCatches.filter((c) => c.catch_id !== idx));
-		} catch (error) {
-			console.error("Error deleting catch:", error);
-			throw error;
-		}
-	};
+	}, []);
 
 	return {
 		catches,
