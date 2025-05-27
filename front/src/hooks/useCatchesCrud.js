@@ -127,21 +127,14 @@ export const useCatchesCrud = (haul_id) => {
 	 */
 
 	const deleteCatch = async (idx) => {
-		console.log("Catch deleted:", idx);
 		try {
-			// await fetchWithError(apiEditRemoveCatch, {
-			// 	method: "DELETE",
-			// 	body: JSON.stringify({ id: idx }),
-			// });
-			const response = await fetch(apiEditRemoveCatch, {
+			const response = await fetchWithError(apiEditRemoveCatch, {
 				method: "DELETE",
 				body: JSON.stringify({ id: idx }),
-				headers: {
-					"Content-Type": "application/json",
-				},
 			});
 
 			if (response.status === 204) {
+				console.log("Catch deleted successfully");
 				setCatches((prevCatches) => prevCatches.filter((c) => c.catch_id !== idx));
 			}
 		} catch (error) {
@@ -149,7 +142,6 @@ export const useCatchesCrud = (haul_id) => {
 			throw error;
 		}
 	};
-	// ESTO NO FUNCIONA DEL TODO YA QUE NO ACTUALIZA LA PANTALLA. PASA IGUAL CON EL UPDATECATCH
 
 	useEffect(() => {
 		const fetchCatches = async () => {
