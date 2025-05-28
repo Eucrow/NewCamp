@@ -1,5 +1,20 @@
 import React, { useState, useEffect } from "react";
 
+/**
+ * Custom React hook for managing CRUD operations for catches associated with a specific haul.
+ *
+ * This hook provides methods to fetch, create, update, and delete catch records from the backend API.
+ * It also provides utility functions for checking the existence of a catch and managing local state.
+ *
+ * @param {number|string} haul_id - The ID of the haul for which catches are managed.
+ * @returns {Object} An object containing:
+ *   - catches: Array of catch objects.
+ *   - setCatches: Function to manually set the catches state.
+ *   - existsCatch: Function to check if a catch exists.
+ *   - createCatch: Function to create a new catch.
+ *   - updateCatch: Function to update an existing catch.
+ *   - deleteCatch: Function to delete a catch.
+ */
 export const useCatchesCrud = (haul_id) => {
 	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;
 	const apiCreateCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
@@ -59,7 +74,7 @@ export const useCatchesCrud = (haul_id) => {
 			// add haul id to data request:
 			newCatch["haul_id"] = haul_id;
 
-			const exists = existsCatch(newCatch.haul_id, newCatch.sp_id, newCatch.category);
+			const exists = existsCatch(newCatch.sp_id, newCatch.category, newCatch.catch_id);
 			if (exists === true) {
 				alert("Catch already exists");
 				return;
@@ -125,7 +140,6 @@ export const useCatchesCrud = (haul_id) => {
 	 * Method to delete a catch from the database and update local state.
 	 * @param {number} idx - The ID of the catch to delete.
 	 */
-
 	const deleteCatch = async (idx) => {
 		try {
 			const response = await fetchWithError(apiEditRemoveCatch, {
@@ -143,6 +157,13 @@ export const useCatchesCrud = (haul_id) => {
 		}
 	};
 
+	/**
+	 * useEffect to fetch catches from the backend API when the component mounts.
+	 *
+	 * This effect retrieves the list of catches for the given haul_id, sorts them by group, species code, and species name,
+	 * and updates the local state. It also preserves and restores the scroll position during the fetch to maintain user experience.
+	 * Runs only once on mount.
+	 */
 	useEffect(() => {
 		const fetchCatches = async () => {
 			// Save scroll position
