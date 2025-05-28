@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_CONFIG, buildApiUrl } from "../config/api";
 
 /**
  * Custom React hook for managing CRUD operations for catches associated with a specific haul.
@@ -16,9 +17,9 @@ import React, { useState, useEffect } from "react";
  *   - deleteCatch: Function to delete a catch.
  */
 export const useCatchesCrud = (haul_id) => {
-	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;
-	const apiCreateCatch = "http://127.0.0.1:8000/api/1.0/catches/new";
-	const apiEditRemoveCatch = "http://127.0.0.1:8000/api/1.0/catch";
+	const apiCatches = buildApiUrl(API_CONFIG.ENDPOINTS.CATCHES_BY_HAUL(haul_id));
+	const apiCreateCatch = buildApiUrl(API_CONFIG.ENDPOINTS.CREATE_CATCH);
+	const apiEditRemoveCatch = buildApiUrl(API_CONFIG.ENDPOINTS.EDIT_REMOVE_CATCH);
 
 	const [catches, setCatches] = useState([]);
 
