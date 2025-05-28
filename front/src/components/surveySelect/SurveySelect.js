@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { API_CONFIG, buildApiUrl } from "../../config/api";
+
 import SelectSurveyButton from "./UiSelectSurveyButton";
 import UnselectSurveyButton from "./UiUnselectSurveyButton";
 
@@ -12,7 +14,7 @@ class ComponentsSurveySelect extends Component {
 			placeholder: "Loading",
 		};
 
-		this.apiSurveys = "http://127.0.0.1:8000/api/1.0/survey/";
+		this.apiSurveys = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SURVEYS);
 
 		this.ShowUnselectButton = this.ShowUnselectButton.bind(this);
 	}
@@ -60,10 +62,7 @@ class ComponentsSurveySelect extends Component {
 					{this.state.surveys.map((s) => {
 						return (
 							<div key={s.id} className="selectSurvey__row">
-								<label
-									className="selectSurvey__element"
-									htmlFor={s.description}
-								>
+								<label className="selectSurvey__element" htmlFor={s.description}>
 									{s.description}
 								</label>
 								<SelectSurveyButton

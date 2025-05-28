@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
+import { API_CONFIG, buildApiUrl } from "../../config/api";
+
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import StationsContext from "../../contexts/StationsContext";
 import StationsButtonBar from "./StationsButtonBar";
@@ -14,32 +16,18 @@ const Stations = () => {
 	const [ctds, setCtds] = useState([]);
 	const [samplers, setSamplers] = useState([]);
 	const [stationsBackup, setStationsBackup] = useState([stations]);
-
 	const selectedSurveyContext = useContext(SelectedSurveyContext);
-	const apiStationsPartial = "http://127.0.0.1:8000/api/1.0/stations/";
-	const apiNewHydrography = "http://127.0.0.1:8000/api/1.0/haul/hydrography/new/";
-	const apiStation = "http://127.0.0.1:8000/api/1.0/station/";
-	const apiHaul = "http://127.0.0.1:8000/api/1.0/haul/";
-	const apiNewTrawl = "http://127.0.0.1:8000/api/1.0/haul/new/";
-	const apiSurveyPartial = "http://127.0.0.1:8000/api/1.0/survey/";
-	const apiStrataPartial = "http://127.0.0.1:8000/api/1.0/strata/";
-	const apiTrawls = "http://127.0.0.1:8000/api/1.0/gears/trawl/basic/";
-	const apiCTDs = "http://127.0.0.1:8000/api/1.0/gears/ctd/basic/";
-	const apiSamplers = "http://127.0.0.1:8000/api/1.0/samplers/";
 
 	/**
 	 * Create station.
 	 * @param {event} e
 	 * @param {object} station - The station to be created.
-	 */
-	const createStation = (e, station) => {
+	 */	const createStation = (e, station) => {
 		e.preventDefault();
 
-		fetch(apiStation, {
+		fetch(buildApiUrl(API_CONFIG.ENDPOINTS.STATION), {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(station),
 		})
 			.then((response) => response.json())
@@ -55,19 +43,16 @@ const Stations = () => {
 	 * Edit station.
 	 * @param {event} e
 	 * @param {number} stationId - The ID of the station to be edited.
-	 */
-	const updateStation = (e, stationId) => {
+	 */	const updateStation = (e, stationId) => {
 		e.preventDefault();
 
-		const api = apiStation + stationId;
+		const api = buildApiUrl(API_CONFIG.ENDPOINTS.STATION_BY_ID(stationId));
 
 		const updated_station = stations.filter((station) => station.id === stationId);
 
 		fetch(api, {
 			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(updated_station[0]), //look the [0]!!!
 		}).catch((error) => console.log(error));
 	};
@@ -91,14 +76,13 @@ const Stations = () => {
 	 * Delete station.
 	 * @param {event} e
 	 * @param {number} stationId - The ID of the station to be deleted.
-	 */
-	const deleteStation = (stationId) => {
-		const api = apiStation + stationId;
+	 */	const deleteStation = (stationId) => {
+		const api = buildApiUrl(API_CONFIG.ENDPOINTS.STATION_BY_ID(stationId));
 
 		fetch(api, {
 			method: "DELETE",
 			headers: {
-				"Content-Type": "application/json",
+				...API_CONFIG.HEADERS.DEFAULT,
 				Accept: "application/json",
 			},
 		})
@@ -137,25 +121,29 @@ const Stations = () => {
 	 * Creates the common properties of a haul and sends to the server.
 	 * @param {event} e
 	 * @param {object} updatedHaul - The updated haul object.
-	 */
-	const createHaul = (e, haul) => {
+	 */	const createHaul = (e, haul) => {
 		e.preventDefault();
 		console.log(haul);
 
-		const apiForm = haul.sampler_id === "1" ? apiNewTrawl : haul.sampler_id === "2" ? apiNewHydrography : null;
+		const apiForm =
+			haul.sampler_id === "1"
+				? buildApiUrl(API_CONFIG.ENDPOINTS.CREATE_TRAWL)
+				: haul.sampler_id === "2"
+				? buildApiUrl(API_CONFIG.ENDPOINTS.CREATE_HYDROGRAPHY)
+				: null;
 
 		fetch(apiForm, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(haul),
 		})
 			.then((response) => response.json())
 			.then((h) => {
 				const newStations = stations.map((station) => {
 					if (station.id === parseInt(haul.station_id)) {
-						station.hauls ? (station.hauls = [...station.hauls, h]) : (station.hauls = [h]);
+						station.hauls
+							? (station.hauls = [...station.hauls, h])
+							: (station.hauls = [h]);
 						return station;
 					} else {
 						return station;
@@ -186,19 +174,16 @@ const Stations = () => {
 			} else {
 				return station;
 			}
-		});
-		setStations(newStations);
+		});		setStations(newStations);
 
-		const apiForm = apiHaul + updatedHaul.id;
+		const apiForm = buildApiUrl(API_CONFIG.ENDPOINTS.HAUL_BY_ID(updatedHaul.id));
 
 		const station = stations.find((s) => s.station === updatedHaul.station);
 		const haul = station.hauls.find((h) => h.id === updatedHaul.id);
 
 		fetch(apiForm, {
 			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(haul),
 		}).catch((error) => console.log(error));
 	};
@@ -208,7 +193,9 @@ const Stations = () => {
 	 * @param {number} haulId - The ID of the haul to be restored.
 	 */
 	const restoreHaulCommon = (haulId) => {
-		const backupHaul = stationsBackup.find((station) => station.hauls.some((h) => h.id === haulId));
+		const backupHaul = stationsBackup.find((station) =>
+			station.hauls.some((h) => h.id === haulId)
+		);
 
 		const newStations = stations.map((station) => {
 			if (station.station === backupHaul.station) {
@@ -232,14 +219,13 @@ const Stations = () => {
 	/**
 	 * Delete haul.
 	 * @param {number} id_haul
-	 */
-	const deleteHaul = (id_haul) => {
-		const api = apiHaul + id_haul;
+	 */	const deleteHaul = (id_haul) => {
+		const api = buildApiUrl(API_CONFIG.ENDPOINTS.HAUL_BY_ID(id_haul));
 
 		fetch(api, {
 			method: "DELETE",
 			headers: {
-				"Content-Type": "application/json",
+				...API_CONFIG.HEADERS.DEFAULT,
 				Accept: "application/json",
 			},
 		})
@@ -289,16 +275,14 @@ const Stations = () => {
 		/**
 		 * Build url api of all the stations of a survey, using apiHauls and SelectedSurveyContext
 		 * @returns url api
-		 */
-		const getStationsApi = () => {
+		 */		const getStationsApi = () => {
 			return selectedSurveyContext.selectedSurveyId === null
-				? apiStationsPartial
-				: apiStationsPartial + "hauls/" + selectedSurveyContext.selectedSurveyId;
+				? buildApiUrl(API_CONFIG.ENDPOINTS.GET_STATIONS)
+				: buildApiUrl(API_CONFIG.ENDPOINTS.GET_STATIONS_WITH_HAULS(selectedSurveyContext.selectedSurveyId));
 		};
-
 		if (selectedSurveyContext.selectedSurveyId !== "") {
 			// Fetch strata (require previously fetch survey to get stratification).
-			const apiSurvey = apiSurveyPartial + selectedSurveyContext.selectedSurveyId;
+			const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.SURVEY_BY_ID(selectedSurveyContext.selectedSurveyId));
 
 			fetch(apiSurvey)
 				.then((response) => {
@@ -306,9 +290,8 @@ const Stations = () => {
 						alert("something were wrong!!");
 					}
 					return response.json();
-				})
-				.then((survey) => {
-					const apiStrata = apiStrataPartial + survey.stratification_id;
+				})				.then((survey) => {
+					const apiStrata = buildApiUrl(API_CONFIG.ENDPOINTS.STRATA_BY_ID(survey.stratification_id));
 					fetch(apiStrata)
 						.then((response) => {
 							if (response.status > 400) {
@@ -334,10 +317,8 @@ const Stations = () => {
 				.then((stations) => {
 					setStations(stations);
 					setStationsBackup(stations);
-				});
-
-			// Fetch trawls
-			fetch(apiTrawls)
+				});			// Fetch trawls
+			fetch(buildApiUrl(API_CONFIG.ENDPOINTS.GET_TRAWLS))
 				.then((response) => {
 					if (response.status > 400) {
 						alert("something were wrong fetching the trawls !!");
@@ -346,10 +327,8 @@ const Stations = () => {
 				})
 				.then((trawls) => {
 					setTrawls(trawls);
-				});
-
-			// Fetch CTDs
-			fetch(apiCTDs)
+				});			// Fetch CTDs
+			fetch(buildApiUrl(API_CONFIG.ENDPOINTS.GET_CTDS))
 				.then((response) => {
 					if (response.status > 400) {
 						alert("something were wrong fetching the trawls !!");
@@ -358,10 +337,8 @@ const Stations = () => {
 				})
 				.then((ctds) => {
 					setCtds(ctds);
-				});
-
-			// Fetch samplers
-			fetch(apiSamplers)
+				});			// Fetch samplers
+			fetch(buildApiUrl(API_CONFIG.ENDPOINTS.GET_SAMPLERS))
 				.then((response) => {
 					if (response.status > 400) {
 						alert("something were wrong fetching the samplers!!");
@@ -406,7 +383,11 @@ const Stations = () => {
 						<h1 className="title">Stations</h1>
 					</header>
 					<div className="wrapper stationsWrapper">
-						{add === true ? <NewStationForm handleAdd={setAdd} createStation={createStation} /> : ""}
+						{add === true ? (
+							<NewStationForm handleAdd={setAdd} createStation={createStation} />
+						) : (
+							""
+						)}
 
 						<StationsButtonBar add={add} handleAdd={setAdd}></StationsButtonBar>
 

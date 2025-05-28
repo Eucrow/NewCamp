@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-
-// ??????????????
-import "../../contexts/CatchesContext.js";
+import { API_CONFIG, buildApiUrl } from "../../config/api.js";
 
 import CatchesContext from "../../contexts/CatchesContext.js";
 import GlobalContext from "../../contexts/GlobalContext.js";
@@ -10,11 +8,7 @@ import { useSortCatches } from "../../hooks/useSortCatches.js";
 import { useCatchesCrud } from "../../hooks/useCatchesCrud.js";
 
 import Catch from "./Catch.js";
-import CatchesButtonBar from "./CatchesButtonBar.js";
 import CatchesHeader from "./CatchesHeader.js";
-
-import UiIconUp from "../ui/UiIconUp";
-import UiIconDown from "../ui/UiIconDown";
 
 /**
  * Renders a list of catches for a specific haul.
@@ -30,7 +24,7 @@ const Catches = ({ haul_id }) => {
 
 	const globalContext = useContext(GlobalContext);
 
-	const apiCatches = "http://127.0.0.1:8000/api/1.0/catches/" + haul_id;
+	const apiCatches = buildApiUrl(API_CONFIG.ENDPOINTS.CATCHES_BY_HAUL(haul_id));
 
 	/**
 	 * Method to manage the group field.

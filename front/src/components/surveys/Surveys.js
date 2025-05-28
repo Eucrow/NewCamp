@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { API_CONFIG, buildApiUrl } from "../../config/api";
+
 import SurveysContext from "../../contexts/SurveysContext";
 
 import SurveysButtonBar from "./SurveysButtonBar";
@@ -16,8 +18,8 @@ const Surveys = () => {
 	const [stratifications, setStratifications] = useState([]);
 	const [add, setAdd] = useState(false);
 
-	const apiSurvey = "http://127.0.0.1:8000/api/1.0/survey/";
-	const apiStratification = "http://127.0.0.1:8000/api/1.0/stratifications/";
+	const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SURVEYS);
+	const apiStrata = buildApiUrl(API_CONFIG.ENDPOINTS.GET_STRATA);
 
 	/**
 	 * Manage change in fields of a previous created survey.
@@ -164,7 +166,7 @@ const Surveys = () => {
 	 * Get all stratifications.
 	 */
 	const getStratifications = () => {
-		return fetch(apiStratification)
+		return fetch(apiStrata)
 			.then((response) => {
 				if (response.status > 400) {
 					alert("something were wrong getting the stratifications!!");
