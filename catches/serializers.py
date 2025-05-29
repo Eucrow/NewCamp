@@ -18,6 +18,20 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
     increment = serializers.FloatField(source='sp.increment', read_only=True)
     sampled_weight = serializers.FloatField(
         source='samples.sampled_weight', required=False, read_only=True)
+    # haul_has_lengths = SerializerMethodField()
+
+    # def get_haul_has_lengths(self, obj):
+    #     """
+    #     Check if the haul has any lengths measured across all its catches
+    #     """
+    #     # Get all catches for this haul
+    #     haul_catches = Catch.objects.filter(haul=obj.haul)
+        
+    #     # Check if any catch in this haul has lengths measured
+    #     for catch in haul_catches:
+    #         if catch.sexes.filter(lengths__isnull=False).exists():
+    #             return True
+    #     return False
 
     # if not_measure_individuals is empty, convert to None
     def to_internal_value(self, data):
@@ -30,6 +44,7 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
         model = Catch
         fields = ['catch_id', 'category', 'weight', 'not_measured_individuals', 'haul', 'haul_id', 'group', 'sp_id',
                   'sp_code', 'sp_name', 'unit', 'increment', 'sampled_weight',
+                    # 'haul_has_lengths',
                   ]
 
     # This is the validation of sampled weight when a new catch is created:

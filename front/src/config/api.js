@@ -19,10 +19,10 @@ export const API_CONFIG = {
 		GET_SAMPLERS: "/samplers/",
 
 		// Species endpoints
-		GET_SPECIES: "/species/",
+		GET_SPECIES: "/species",
 
 		// Measurement types endpoints
-		GET_MEASUREMENT_TYPES: "/measurement_types/",
+		GET_MEASUREMENT_TYPES: "/measurement_types",
 
 		// Surveys endpoints
 		GET_SURVEYS: "/survey",
