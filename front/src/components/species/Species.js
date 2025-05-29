@@ -1,5 +1,7 @@
 import React, { useState, useContext } from "react";
 
+import { API_CONFIG } from "../../config/api.js";
+
 import GlobalContext from "../../contexts/GlobalContext";
 import SpeciesContext from "../../contexts/SpeciesContext";
 

@@ -14,6 +14,9 @@
  */
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+
+import { API_CONFIG } from "../../config/api.js";
+
 import GlobalContext from "../../contexts/GlobalContext";
 
 import MeasurementFormNew from "./MeasurementFormNew";
