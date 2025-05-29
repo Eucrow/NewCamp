@@ -18,7 +18,7 @@ const Surveys = () => {
 	const [stratifications, setStratifications] = useState([]);
 	const [add, setAdd] = useState(false);
 
-	const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SURVEYS);
+	const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.SURVEY);
 	const apiStrata = buildApiUrl(API_CONFIG.ENDPOINTS.GET_STRATA);
 
 	/**
@@ -88,15 +88,16 @@ const Surveys = () => {
 	 * @param {object} survey - Survey object to create.
 	 */
 	const createSurvey = (survey) => {
+		console.log("Creating survey:", JSON.stringify(survey));
 		fetch(apiSurvey, {
 			method: "POST",
-			headers: {
-				"Content-type": "Application/json",
-				Accept: "Application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(survey),
 		})
 			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
 				return response.json();
 			})
 			.then((survey) => {
@@ -120,7 +121,7 @@ const Surveys = () => {
 
 		fetch(api, {
 			method: "PUT",
-			headers: { "Content-Type": "application/json" },
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(updatedSurvey[0]),
 		})
 			.then((response) => {
@@ -150,10 +151,7 @@ const Surveys = () => {
 
 		fetch(api, {
 			method: "DELETE",
-			headers: {
-				"Content-type": "Application/json",
-				Accept: "Application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 		})
 			.then(() => {
 				const newSurveys = surveys.filter((survey) => survey.id !== surveyId);

@@ -1,4 +1,7 @@
 import React, { useState, useContext } from "react";
+
+import { API_CONFIG, buildApiUrl } from "../../config/api";
+
 import GlobalContext from "../../contexts/GlobalContext";
 import UiButtonDownload from "../ui/UiButtonDownload";
 
@@ -14,7 +17,8 @@ const Reports = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setIsLoading(true);
-		const apiReport = apiCSVReport + "/" + selectedSurvey;
+		// const apiReport = apiCSVReport + "/" + selectedSurvey;
+		const apiReport = buildApiUrl(API_CONFIG.ENDPOINTS.GET_REPORTS_CSV(selectedSurvey));
 		//TODO: convert this to a custom hook
 		fetch(apiReport)
 			.then((response) => {
@@ -82,7 +86,10 @@ const Reports = () => {
 								</select>
 							</div>
 							<div className="form__cell">
-								<UiButtonDownload handleMethod={handleSubmit} disabled={disableDownload} />
+								<UiButtonDownload
+									handleMethod={handleSubmit}
+									disabled={disableDownload}
+								/>
 							</div>
 						</form>
 					)}

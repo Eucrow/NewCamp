@@ -77,7 +77,7 @@ const Measurements = () => {
 
 		fetch(globalContext.apiMeasurementTypes, {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(newMeasurement),
 		})
 			.then((response) => response.json())
@@ -92,11 +92,13 @@ const Measurements = () => {
 
 		const api = globalContext.apiMeasurementTypes + "/" + measurementId;
 
-		const updatedMeasurement = measurements.filter((measurement) => measurement.id === measurementId)[0];
+		const updatedMeasurement = measurements.filter(
+			(measurement) => measurement.id === measurementId
+		)[0];
 
 		fetch(api, {
 			method: "PUT",
-			headers: { "Content-Type": "application/json" },
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(updatedMeasurement),
 		})
 			.then((response) => response.json())
@@ -144,15 +146,17 @@ const Measurements = () => {
 					<h1 className="title">Measurement</h1>
 				</header>
 				<div className="wrapper measurementsWrapper measurement__notes">
-					The manage of measurements have some limitations. In order to avoid inconsistencies, the system does
-					not allow to delete measurements that are being used in any surveys and only the 'name' field is
-					editable. If you need to change a measurement, please contact the system administrator.
+					The manage of measurements have some limitations. In order to avoid
+					inconsistencies, the system does not allow to delete measurements that are being
+					used in any surveys and only the 'name' field is editable. If you need to change
+					a measurement, please contact the system administrator.
 				</div>
 				<div className="wrapper measurementsWrapper measurement__notes">
-					The conversion factor is a number to convert the measurement units to millimeters (which is the unit
-					used in the database to store the lengths measurements). The conversion factor is the number of
-					millimeters in one unit of the measurement type. For example, for a measurement type "cm", the
-					conversion factor must be 10.
+					The conversion factor is a number to convert the measurement units to
+					millimeters (which is the unit used in the database to store the lengths
+					measurements). The conversion factor is the number of millimeters in one unit of
+					the measurement type. For example, for a measurement type "cm", the conversion
+					factor must be 10.
 				</div>
 				<div className="wrapper measurementsWrapper">
 					{add === true ? (

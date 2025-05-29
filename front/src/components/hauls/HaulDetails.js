@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { API_CONFIG, buildApiUrl } from "../../config/api";
+
 import {
 	convertDecimalToDMCoordinate,
 	convertDMToDecimalCoordinate,
@@ -39,9 +41,9 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 	const [, setFetchError] = useState("");
 
-	const apiHydrographyPartial = "http://127.0.0.1:8000/api/1.0/hydrography/";
-	const apiMeteorologyPartial = "http://127.0.0.1:8000/api/1.0/meteorology/";
-	const apiTrawlPartial = "http://127.0.0.1:8000/api/1.0/trawl/";
+	const apiHydrography = buildApiUrl(API_CONFIG.ENDPOINTS.GET_HYDROGRAPHY_BY_HAUL_ID(haul.id));
+	const apiMeteorology = buildApiUrl(API_CONFIG.ENDPOINTS.GET_METEOROLOGY_BY_HAUL_ID(haul.id));
+	const apiTrawl = buildApiUrl(API_CONFIG.ENDPOINTS.GET_TRAWL_BY_HAUL_ID(haul.id));
 
 	// TRAWL
 	// TODO: factorize this??
@@ -58,18 +60,39 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	const [onBoardLatitude, setOnBoardLatitude] = useState({ degrees: 0, minutes: 0 });
 	const [onBoardLongitude, setOnBoardLongitude] = useState({ degrees: 0, minutes: 0 });
 
-	const [backupShootingLatitude, setBackupShootingLatitude] = useState({ degrees: 0, minutes: 0 });
-	const [backupShootingLongitude, setBackupShootingLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupShootingLatitude, setBackupShootingLatitude] = useState({
+		degrees: 0,
+		minutes: 0,
+	});
+	const [backupShootingLongitude, setBackupShootingLongitude] = useState({
+		degrees: 0,
+		minutes: 0,
+	});
 	const [backupBottomLatitude, setBackupBottomLatitude] = useState({ degrees: 0, minutes: 0 });
 	const [backupBottomLongitude, setBackupBottomLongitude] = useState({ degrees: 0, minutes: 0 });
-	const [backupTrawlingLatitude, setBackupTrawlingLatitude] = useState({ degrees: 0, minutes: 0 });
-	const [backupTrawlingLongitude, setBackupTrawlingLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupTrawlingLatitude, setBackupTrawlingLatitude] = useState({
+		degrees: 0,
+		minutes: 0,
+	});
+	const [backupTrawlingLongitude, setBackupTrawlingLongitude] = useState({
+		degrees: 0,
+		minutes: 0,
+	});
 	const [backupHaulingLatitude, setBackupHaulingLatitude] = useState({ degrees: 0, minutes: 0 });
-	const [backupHaulingLongitude, setBackupHaulingLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupHaulingLongitude, setBackupHaulingLongitude] = useState({
+		degrees: 0,
+		minutes: 0,
+	});
 	const [backupTakeOffLatitude, setBackupTakeOffLatitude] = useState({ degrees: 0, minutes: 0 });
-	const [backupTakeOffLongitude, setBackupTakeOffLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupTakeOffLongitude, setBackupTakeOffLongitude] = useState({
+		degrees: 0,
+		minutes: 0,
+	});
 	const [backupOnBoardLatitude, setBackupOnBoardLatitude] = useState({ degrees: 0, minutes: 0 });
-	const [backupOnBoardLongitude, setBackupOnBoardLongitude] = useState({ degrees: 0, minutes: 0 });
+	const [backupOnBoardLongitude, setBackupOnBoardLongitude] = useState({
+		degrees: 0,
+		minutes: 0,
+	});
 
 	// HTYDROGRAPHY
 	const [hidroLatitude, setHidroLatitude] = useState({ degrees: 0, minutes: 0 });
@@ -87,34 +110,50 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		const [degreesShootingLongitude, minutesShootingLongitude] = convertDecimalToDMCoordinate(
 			trawl.shooting_longitude
 		);
-		const [degreesBottomLatitude, minutesBottomLatitude] = convertDecimalToDMCoordinate(trawl.bottom_latitude);
-		const [degreesBottomLongitude, minutesBottomLongitude] = convertDecimalToDMCoordinate(trawl.bottom_longitude);
+		const [degreesBottomLatitude, minutesBottomLatitude] = convertDecimalToDMCoordinate(
+			trawl.bottom_latitude
+		);
+		const [degreesBottomLongitude, minutesBottomLongitude] = convertDecimalToDMCoordinate(
+			trawl.bottom_longitude
+		);
 		const [degreesTrawlingLatitude, minutesTrawlingLatitude] = convertDecimalToDMCoordinate(
 			trawl.trawling_latitude
 		);
 		const [degreesTrawlingLongitude, minutesTrawlingLongitude] = convertDecimalToDMCoordinate(
 			trawl.trawling_longitude
 		);
-		const [degreesHaulingLatitude, minutesHaulingLatitude] = convertDecimalToDMCoordinate(trawl.hauling_latitude);
+		const [degreesHaulingLatitude, minutesHaulingLatitude] = convertDecimalToDMCoordinate(
+			trawl.hauling_latitude
+		);
 		const [degreesHaulingLongitude, minutesHaulingLongitude] = convertDecimalToDMCoordinate(
 			trawl.hauling_longitude
 		);
-		const [degreesTakeOffLatitude, minutesTakeOffLatitude] = convertDecimalToDMCoordinate(trawl.take_off_latitude);
+		const [degreesTakeOffLatitude, minutesTakeOffLatitude] = convertDecimalToDMCoordinate(
+			trawl.take_off_latitude
+		);
 		const [degreesTakeOffLongitude, minutesTakeOffLongitude] = convertDecimalToDMCoordinate(
 			trawl.take_off_longitude
 		);
-		const [degreesOnBoardLatitude, minutesOnBoardLatitude] = convertDecimalToDMCoordinate(trawl.on_board_latitude);
+		const [degreesOnBoardLatitude, minutesOnBoardLatitude] = convertDecimalToDMCoordinate(
+			trawl.on_board_latitude
+		);
 		const [degreesOnBoardLongitude, minutesOnBoardLongitude] = convertDecimalToDMCoordinate(
 			trawl.on_board_longitude
 		);
 
 		// Store the converted latitude and longitude values in state
 		setShootingLatitude({ degrees: degreesShootingLatitude, minutes: minutesShootingLatitude });
-		setShootingLongitude({ degrees: degreesShootingLongitude, minutes: minutesShootingLongitude });
+		setShootingLongitude({
+			degrees: degreesShootingLongitude,
+			minutes: minutesShootingLongitude,
+		});
 		setBottomLatitude({ degrees: degreesBottomLatitude, minutes: minutesBottomLatitude });
 		setBottomLongitude({ degrees: degreesBottomLongitude, minutes: minutesBottomLongitude });
 		setTrawlingLatitude({ degrees: degreesTrawlingLatitude, minutes: minutesTrawlingLatitude });
-		setTrawlingLongitude({ degrees: degreesTrawlingLongitude, minutes: minutesTrawlingLongitude });
+		setTrawlingLongitude({
+			degrees: degreesTrawlingLongitude,
+			minutes: minutesTrawlingLongitude,
+		});
 		setHaulingLatitude({ degrees: degreesHaulingLatitude, minutes: minutesHaulingLatitude });
 		setHaulingLongitude({ degrees: degreesHaulingLongitude, minutes: minutesHaulingLongitude });
 		setTakeOffLatitude({ degrees: degreesTakeOffLatitude, minutes: minutesTakeOffLatitude });
@@ -123,23 +162,60 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		setOnBoardLongitude({ degrees: degreesOnBoardLongitude, minutes: minutesOnBoardLongitude });
 
 		// Store the converted latitude and longitude values in backup state
-		setBackupShootingLatitude({ degrees: degreesShootingLatitude, minutes: minutesShootingLatitude });
-		setBackupShootingLongitude({ degrees: degreesShootingLongitude, minutes: minutesShootingLongitude });
+		setBackupShootingLatitude({
+			degrees: degreesShootingLatitude,
+			minutes: minutesShootingLatitude,
+		});
+		setBackupShootingLongitude({
+			degrees: degreesShootingLongitude,
+			minutes: minutesShootingLongitude,
+		});
 		setBackupBottomLatitude({ degrees: degreesBottomLatitude, minutes: minutesBottomLatitude });
-		setBackupBottomLongitude({ degrees: degreesBottomLongitude, minutes: minutesBottomLongitude });
-		setBackupTrawlingLatitude({ degrees: degreesTrawlingLatitude, minutes: minutesTrawlingLatitude });
-		setBackupTrawlingLongitude({ degrees: degreesTrawlingLongitude, minutes: minutesTrawlingLongitude });
-		setBackupHaulingLatitude({ degrees: degreesHaulingLatitude, minutes: minutesHaulingLatitude });
-		setBackupHaulingLongitude({ degrees: degreesHaulingLongitude, minutes: minutesHaulingLongitude });
-		setBackupTakeOffLatitude({ degrees: degreesTakeOffLatitude, minutes: minutesTakeOffLatitude });
-		setBackupTakeOffLongitude({ degrees: degreesTakeOffLongitude, minutes: minutesTakeOffLongitude });
-		setBackupOnBoardLatitude({ degrees: degreesOnBoardLatitude, minutes: minutesOnBoardLatitude });
-		setBackupOnBoardLongitude({ degrees: degreesOnBoardLongitude, minutes: minutesOnBoardLongitude });
+		setBackupBottomLongitude({
+			degrees: degreesBottomLongitude,
+			minutes: minutesBottomLongitude,
+		});
+		setBackupTrawlingLatitude({
+			degrees: degreesTrawlingLatitude,
+			minutes: minutesTrawlingLatitude,
+		});
+		setBackupTrawlingLongitude({
+			degrees: degreesTrawlingLongitude,
+			minutes: minutesTrawlingLongitude,
+		});
+		setBackupHaulingLatitude({
+			degrees: degreesHaulingLatitude,
+			minutes: minutesHaulingLatitude,
+		});
+		setBackupHaulingLongitude({
+			degrees: degreesHaulingLongitude,
+			minutes: minutesHaulingLongitude,
+		});
+		setBackupTakeOffLatitude({
+			degrees: degreesTakeOffLatitude,
+			minutes: minutesTakeOffLatitude,
+		});
+		setBackupTakeOffLongitude({
+			degrees: degreesTakeOffLongitude,
+			minutes: minutesTakeOffLongitude,
+		});
+		setBackupOnBoardLatitude({
+			degrees: degreesOnBoardLatitude,
+			minutes: minutesOnBoardLatitude,
+		});
+		setBackupOnBoardLongitude({
+			degrees: degreesOnBoardLongitude,
+			minutes: minutesOnBoardLongitude,
+		});
 
 		// HYDROGRAPHY
 		// Convert the latitude and longitude values to degrees and minutes when the component is loaded
-		const [degreesHidroLatitude, minutesLatitude] = convertDecimalToDMCoordinate(hydrography.latitude);
-		const [degreesHidroLongitude, minutesLongitude] = convertDecimalToDMCoordinate(hydrography.longitude);
+		const [degreesHidroLatitude, minutesLatitude] = convertDecimalToDMCoordinate(
+			hydrography.latitude
+		);
+		const [degreesHidroLongitude, minutesLongitude] = convertDecimalToDMCoordinate(
+			hydrography.longitude
+		);
 
 		// Store the converted latitude and longitude values in state
 		setHidroLatitude({ degrees: degreesHidroLatitude, minutes: minutesLatitude });
@@ -297,17 +373,14 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				trawlCopy["shooting_date_time"] === "" ? null : trawlCopy["shooting_date_time"];
 			trawlCopy["hauling_date_time"] =
 				trawlCopy["hauling_date_time"] === "" ? null : trawlCopy["hauling_date_time"];
-			trawlCopy["bottom_date_time"] = trawlCopy["bottom_date_time"] === "" ? null : trawlCopy["bottom_date_time"];
+			trawlCopy["bottom_date_time"] =
+				trawlCopy["bottom_date_time"] === "" ? null : trawlCopy["bottom_date_time"];
 
 			setTrawl(trawlCopy);
 
-			const apiTrawl = apiTrawlPartial + haul.id;
-
 			fetch(apiTrawl, {
 				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers: API_CONFIG.HEADERS.DEFAULT,
 				body: JSON.stringify(trawlCopy),
 			})
 				.then(() => {
@@ -329,16 +402,13 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			// so we need to update the state of the trawl object with the deepcopy
 
 			// update the date time fields, must be null if empty, instead of empty string.
-			hydrographyCopy["date_time"] = hydrographyCopy["date_time"] === "" ? null : hydrographyCopy["date_time"];
+			hydrographyCopy["date_time"] =
+				hydrographyCopy["date_time"] === "" ? null : hydrographyCopy["date_time"];
 			setHydrography(hydrographyCopy);
-
-			const apiHydrography = apiHydrographyPartial + haul.id;
 
 			fetch(apiHydrography, {
 				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers: API_CONFIG.HEADERS.DEFAULT,
 				body: JSON.stringify(hydrographyCopy),
 			})
 				.then(() => {
@@ -347,12 +417,9 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				.catch((error) => console.log(error));
 		}
 
-		const apiMeteorology = apiMeteorologyPartial + haul.id;
 		fetch(apiMeteorology, {
 			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(meteorology),
 		}).catch((error) => console.log(error));
 	};
@@ -406,9 +473,9 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	 * @param {number} haul.sampler_id - The ID of the sampler used for the haul.
 	 */
 	useEffect(() => {
-		const apiMeteorology = apiMeteorologyPartial + haul.id;
-		const apiHydrography = apiHydrographyPartial + haul.id;
-		const apiTrawl = apiTrawlPartial + haul.id;
+		// const apiMeteorology = apiMeteorologyPartial + haul.id;
+		// const apiHydrography = apiHydrographyPartial + haul.id;
+		// const apiTrawl = apiTrawlPartial + haul.id;
 
 		if (detail === true) {
 			if (haul.sampler_id === 1) {
@@ -477,7 +544,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 					.catch((error) => console.log(error));
 			}
 		}
-	}, [detail, haul.sampler_id, apiHydrographyPartial, haul.id, apiMeteorologyPartial]);
+	}, [detail, haul.sampler_id, apiHydrography, haul.id, apiMeteorology]);
 
 	const renderContent = () => {
 		if (Number(haul.sampler_id) === 1) {
@@ -587,7 +654,11 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 										newStatus={false}
 									/>
 
-									<UiButtonStatusHandle buttonText={"Edit"} handleMethod={setEdit} newStatus={true} />
+									<UiButtonStatusHandle
+										buttonText={"Edit"}
+										handleMethod={setEdit}
+										newStatus={true}
+									/>
 								</div>
 							</div>
 						</div>

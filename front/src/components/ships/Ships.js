@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { API_CONFIG, buildApiUrl } from "../../config/api";
+
 import ShipsContext from "../../contexts/ShipsContext";
 
 import ShipsButtonBar from "./ShipsButtonBar";
@@ -18,7 +20,7 @@ class Ships extends Component {
 			add: false, // true to add new ship; false to not to.
 		};
 
-		this.apiShip = "http://127.0.0.1:8000/api/1.0/ship/";
+		this.apiShip = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SHIPS);
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
@@ -76,10 +78,7 @@ class Ships extends Component {
 
 		fetch(this.apiShip, {
 			method: "POST",
-			headers: {
-				"Content-type": "Application/json",
-				Accept: "Application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(ship),
 		})
 			.then((response) => {
@@ -110,7 +109,7 @@ class Ships extends Component {
 
 		fetch(api, {
 			method: "PUT",
-			headers: { "Content-Type": "application/json" },
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(updatedShip[0]),
 		})
 			.then((response) => {
@@ -133,10 +132,7 @@ class Ships extends Component {
 
 		fetch(api, {
 			method: "DELETE",
-			headers: {
-				"Content-type": "Application/json",
-				Accept: "Application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 		})
 			.then(() => {
 				const newShips = this.state.ships.filter((ship) => ship.id !== ship_id);

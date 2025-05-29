@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 
-import LengthsForm from "./LengthsForm.js";
+import { API_CONFIG, buildApiUrl } from "../../config/api.js";
 
 import LengthsContext from "../../contexts/LengthsContext";
 import GlobalContext from "../../contexts/GlobalContext.js";
 
+import LengthsForm from "./LengthsForm.js";
 /**
  * Lengths component is responsible for managing and displaying lengths data for a specific sex and catch ID.
  * It allows users to view, edit, add, and delete lengths, and handles the transformation of units based on
@@ -68,8 +69,6 @@ const Lengths = ({ sex, catchId, spId }) => {
 	const [responseError, setResponseError] = useState(null);
 
 	const [validLengths, setValidLengths] = useState(true);
-
-	const apiLengthsSex = "http://127.0.0.1:8000/api/1.0/lengths/";
 
 	const [measurement, setMeasurement] = useState();
 
@@ -148,7 +147,7 @@ const Lengths = ({ sex, catchId, spId }) => {
 	 * @returns JSON with lengths.
 	 */
 	const getLengths = async () => {
-		const api = apiLengthsSex + catchId + "/" + sex;
+		const api = buildApiUrl(API_CONFIG.ENDPOINTS.SAVE_GET_DELETE_LENGTHS(catchId, sex));
 		const response = await fetch(api);
 		if (response.status > 400) {
 			setResponseError("Something went wrong! (getLengths)");
@@ -162,12 +161,10 @@ const Lengths = ({ sex, catchId, spId }) => {
 	 * @returns JSON
 	 */
 	const deleteLengths = async () => {
-		const api = apiLengthsSex + catchId + "/" + sex;
+		const api = buildApiUrl(API_CONFIG.ENDPOINTS.SAVE_GET_DELETE_LENGTHS(catchId, sex));
 		const response = await fetch(api, {
 			method: "DELETE",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 		});
 
 		setLengthsStatus("empty");
@@ -283,7 +280,7 @@ const Lengths = ({ sex, catchId, spId }) => {
 	 * @return JSON response or error.
 	 */
 	const saveLengths = async (lengths) => {
-		const api = apiLengthsSex + catchId + "/" + sex;
+		const api = buildApiUrl(API_CONFIG.ENDPOINTS.SAVE_GET_DELETE_LENGTHS(catchId, sex));
 
 		lengths = transformUnitsToMm(lengths, measurement.conversion_factor);
 
@@ -296,9 +293,7 @@ const Lengths = ({ sex, catchId, spId }) => {
 		try {
 			const response = await fetch(api, {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers: API_CONFIG.HEADERS.DEFAULT,
 				body: JSON.stringify(lengths),
 			});
 			if (response.status > 400) {

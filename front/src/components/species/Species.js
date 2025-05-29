@@ -55,7 +55,7 @@ const Species = () => {
 
 		fetch(api, {
 			method: "PUT",
-			headers: { "Content-Type": "application/json" },
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(globalContext.species[sp_id]),
 		})
 			.then((response) => response.json())
@@ -70,7 +70,7 @@ const Species = () => {
 
 		fetch(api, {
 			method: "DELETE",
-			headers: { "Content-Type": "application/json" },
+			headers: API_CONFIG.HEADERS.DEFAULT,
 		})
 			.then(() => {
 				globalContext.setSpecies(updatedSpecies);
@@ -86,7 +86,7 @@ const Species = () => {
 
 		fetch(globalContext.apiSpecies, {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
+			headers: API_CONFIG.HEADERS.DEFAULT,
 			body: JSON.stringify(new_sp),
 		})
 			.then((response) => response.json())

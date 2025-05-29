@@ -2,6 +2,8 @@ import React, { Fragment, useEffect, useState } from "react";
 
 import "./index.scss";
 
+import { API_CONFIG, buildApiUrl } from "./config/api.js";
+
 import SelectedSurveyContext from "./contexts/SelectedSuveryContext";
 import GlobalContext from "./contexts/GlobalContext.js";
 
@@ -28,9 +30,9 @@ export default function App() {
 		return survey_id !== null ? survey_id : "";
 	});
 
-	const apiSpecies = "http://127.0.0.1:8000/api/1.0/species";
-	const apiMeasurementTypes = "http://127.0.0.1:8000/api/1.0/measurement_types";
-	const apiSurveys = "http://127.0.0.1:8000/api/1.0/survey/";
+	const apiSpecies = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SPECIES);
+	const apiMeasurementTypes = buildApiUrl(API_CONFIG.ENDPOINTS.GET_MEASUREMENT_TYPES);
+	const apiSurveys = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SURVEYS);
 
 	const [species, setSpecies] = useState([]);
 	const [measurementTypes, setMeasurementTypes] = useState([]);
@@ -105,7 +107,6 @@ export default function App() {
 					getMeasurementName,
 					getMeasurementFactor,
 					getMeasurement,
-					apiSurveys,
 					surveys,
 				}}
 			>
@@ -194,10 +195,10 @@ const Home = () => (
 
 const FakeText = () => (
 	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-		laborum.
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+		labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+		laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+		voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+		cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 	</p>
 );

@@ -26,7 +26,7 @@ export const useCatchesCrud = (haul_id) => {
 	const fetchWithError = async (url, options) => {
 		const response = await fetch(url, {
 			headers: {
-				"Content-Type": "application/json",
+				...API_CONFIG.HEADERS.DEFAULT,
 				...options.headers,
 			},
 			...options,

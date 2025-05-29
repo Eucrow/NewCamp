@@ -22,7 +22,7 @@ const Stations = () => {
 	 * Create station.
 	 * @param {event} e
 	 * @param {object} station - The station to be created.
-	 */	const createStation = (e, station) => {
+	 */ const createStation = (e, station) => {
 		e.preventDefault();
 
 		fetch(buildApiUrl(API_CONFIG.ENDPOINTS.STATION), {
@@ -43,7 +43,7 @@ const Stations = () => {
 	 * Edit station.
 	 * @param {event} e
 	 * @param {number} stationId - The ID of the station to be edited.
-	 */	const updateStation = (e, stationId) => {
+	 */ const updateStation = (e, stationId) => {
 		e.preventDefault();
 
 		const api = buildApiUrl(API_CONFIG.ENDPOINTS.STATION_BY_ID(stationId));
@@ -76,15 +76,12 @@ const Stations = () => {
 	 * Delete station.
 	 * @param {event} e
 	 * @param {number} stationId - The ID of the station to be deleted.
-	 */	const deleteStation = (stationId) => {
+	 */ const deleteStation = (stationId) => {
 		const api = buildApiUrl(API_CONFIG.ENDPOINTS.STATION_BY_ID(stationId));
 
 		fetch(api, {
 			method: "DELETE",
-			headers: {
-				...API_CONFIG.HEADERS.DEFAULT,
-				Accept: "application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 		})
 			.then(() => {
 				const newStations = stations.filter((station) => station.id !== stationId);
@@ -121,7 +118,7 @@ const Stations = () => {
 	 * Creates the common properties of a haul and sends to the server.
 	 * @param {event} e
 	 * @param {object} updatedHaul - The updated haul object.
-	 */	const createHaul = (e, haul) => {
+	 */ const createHaul = (e, haul) => {
 		e.preventDefault();
 		console.log(haul);
 
@@ -174,7 +171,8 @@ const Stations = () => {
 			} else {
 				return station;
 			}
-		});		setStations(newStations);
+		});
+		setStations(newStations);
 
 		const apiForm = buildApiUrl(API_CONFIG.ENDPOINTS.HAUL_BY_ID(updatedHaul.id));
 
@@ -219,15 +217,12 @@ const Stations = () => {
 	/**
 	 * Delete haul.
 	 * @param {number} id_haul
-	 */	const deleteHaul = (id_haul) => {
+	 */ const deleteHaul = (id_haul) => {
 		const api = buildApiUrl(API_CONFIG.ENDPOINTS.HAUL_BY_ID(id_haul));
 
 		fetch(api, {
 			method: "DELETE",
-			headers: {
-				...API_CONFIG.HEADERS.DEFAULT,
-				Accept: "application/json",
-			},
+			headers: API_CONFIG.HEADERS.DEFAULT,
 		})
 			.then(() => {
 				var newStations = stations.map((station) => {
@@ -275,14 +270,20 @@ const Stations = () => {
 		/**
 		 * Build url api of all the stations of a survey, using apiHauls and SelectedSurveyContext
 		 * @returns url api
-		 */		const getStationsApi = () => {
+		 */ const getStationsApi = () => {
 			return selectedSurveyContext.selectedSurveyId === null
 				? buildApiUrl(API_CONFIG.ENDPOINTS.GET_STATIONS)
-				: buildApiUrl(API_CONFIG.ENDPOINTS.GET_STATIONS_WITH_HAULS(selectedSurveyContext.selectedSurveyId));
+				: buildApiUrl(
+						API_CONFIG.ENDPOINTS.GET_STATIONS_WITH_HAULS(
+							selectedSurveyContext.selectedSurveyId
+						)
+				  );
 		};
 		if (selectedSurveyContext.selectedSurveyId !== "") {
 			// Fetch strata (require previously fetch survey to get stratification).
-			const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.SURVEY_BY_ID(selectedSurveyContext.selectedSurveyId));
+			const apiSurvey = buildApiUrl(
+				API_CONFIG.ENDPOINTS.SURVEY_BY_ID(selectedSurveyContext.selectedSurveyId)
+			);
 
 			fetch(apiSurvey)
 				.then((response) => {
@@ -290,8 +291,11 @@ const Stations = () => {
 						alert("something were wrong!!");
 					}
 					return response.json();
-				})				.then((survey) => {
-					const apiStrata = buildApiUrl(API_CONFIG.ENDPOINTS.STRATA_BY_ID(survey.stratification_id));
+				})
+				.then((survey) => {
+					const apiStrata = buildApiUrl(
+						API_CONFIG.ENDPOINTS.STRATA_BY_ID(survey.stratification_id)
+					);
 					fetch(apiStrata)
 						.then((response) => {
 							if (response.status > 400) {
@@ -317,7 +321,7 @@ const Stations = () => {
 				.then((stations) => {
 					setStations(stations);
 					setStationsBackup(stations);
-				});			// Fetch trawls
+				}); // Fetch trawls
 			fetch(buildApiUrl(API_CONFIG.ENDPOINTS.GET_TRAWLS))
 				.then((response) => {
 					if (response.status > 400) {
@@ -327,7 +331,7 @@ const Stations = () => {
 				})
 				.then((trawls) => {
 					setTrawls(trawls);
-				});			// Fetch CTDs
+				}); // Fetch CTDs
 			fetch(buildApiUrl(API_CONFIG.ENDPOINTS.GET_CTDS))
 				.then((response) => {
 					if (response.status > 400) {
@@ -337,7 +341,7 @@ const Stations = () => {
 				})
 				.then((ctds) => {
 					setCtds(ctds);
-				});			// Fetch samplers
+				}); // Fetch samplers
 			fetch(buildApiUrl(API_CONFIG.ENDPOINTS.GET_SAMPLERS))
 				.then((response) => {
 					if (response.status > 400) {
