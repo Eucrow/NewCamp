@@ -2,8 +2,9 @@ import React, { useEffect, useState, useContext } from "react";
 
 import { API_CONFIG, buildApiUrl } from "../../config/api.js";
 
-import LengthsContext from "../../contexts/LengthsContext";
 import GlobalContext from "../../contexts/GlobalContext.js";
+import LengthsContext from "../../contexts/LengthsContext";
+import CatchesContext from "../../contexts/CatchesContext.js";
 
 import LengthsForm from "./LengthsForm.js";
 /**
@@ -22,6 +23,8 @@ import LengthsForm from "./LengthsForm.js";
  */
 const Lengths = ({ sex, catchId, spId }) => {
 	const globalContext = useContext(GlobalContext);
+
+	const catchesContext = useContext(CatchesContext);
 
 	/**
 	 * `lengths` state holds the current lengths data displayed in the UI. This data can be edited,
@@ -301,6 +304,7 @@ const Lengths = ({ sex, catchId, spId }) => {
 			}
 			let data = await response.json();
 			data = transformUnitsFromMm(data, measurement.conversion_factor);
+			catchesContext.handleChangeHaulHasLengths(catchId)(true);
 			return data;
 		} catch (error) {
 			return console.log(error);

@@ -139,6 +139,17 @@ const Catches = ({ haul_id }) => {
 		setEditingCatchId(null);
 	};
 
+	const handleChangeHaulHasLengths = (idx) => (hasLengths) => {
+		const newCatches = catches.map((c) => {
+			if (c.catch_id !== idx) return c;
+			return {
+				...c,
+				haul_has_lengths: hasLengths,
+			};
+		});
+		setCatches(newCatches);
+	};
+
 	const handleSortCatches = (field) => {
 		const sortedData = sortCatches(field);
 		setCatches(sortedData);
@@ -191,6 +202,7 @@ const Catches = ({ haul_id }) => {
 					handleChangeSpeciesCode: handleChangeSpeciesCode,
 					handleCancelEditCatch: handleCancelEditCatch,
 					handleInputChange: handleInputChange,
+					handleChangeHaulHasLengths: handleChangeHaulHasLengths,
 					// TODO: I don't understand why can't add handleChangeAdd to the context?
 					// handleChangeAdd: setAdd,
 					createCatch: createCatch,

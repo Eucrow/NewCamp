@@ -60,6 +60,9 @@ const CatchesHeader = ({ sortConfig, handleSortCatches, add, setAdd }) => {
 				<div className="catches__table__cell catches__table__individuals">
 					Not measured individuals
 				</div>
+				<div className="catches__table__cell catches__table__lengths_measured">
+					has lengths?
+				</div>
 				{add === false && (
 					<div className="catches__table__cell catches__table__buttonBar">
 						<CatchesButtonBar add={add} handleChangeAdd={setAdd} />

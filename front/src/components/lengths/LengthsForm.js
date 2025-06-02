@@ -26,8 +26,12 @@ const LengthsForm = () => {
 				<form className="lengthsWrapper">
 					<div className="formLengths__table">
 						<div className="formLengths__row ">
-							<div className="formLengths__cell formLengths__cell--header">{unit}</div>
-							<div className="formLengths__cell formLengths__cell--header">number</div>
+							<div className="formLengths__cell formLengths__cell--header">
+								{unit}
+							</div>
+							<div className="formLengths__cell formLengths__cell--header">
+								number
+							</div>
 							<div
 								className="formLengths__cell formLengths__cell--header formLengths--hidden"
 								aria-hidden="true"
@@ -53,7 +57,7 @@ const LengthsForm = () => {
 									name="number_individuals"
 									min="0"
 									max="9999"
-									value={lengthsContext.totalIndividuals}
+									value={lengthsContext.totalIndividuals || ""}
 									disabled
 								/>
 							</div>
@@ -85,8 +89,12 @@ const LengthsForm = () => {
 				>
 					<div className="formLengths__table">
 						<div className="formLengths__row">
-							<div className="formLengths__cell formLengths__cell--header">{unit}</div>
-							<div className="formLengths__cell formLengths__cell--header">number</div>
+							<div className="formLengths__cell formLengths__cell--header">
+								{unit}
+							</div>
+							<div className="formLengths__cell formLengths__cell--header">
+								number
+							</div>
 							<div
 								className="formLengths__cell formLengths__cell--header formLengths--hidden"
 								aria-hidden="true"
