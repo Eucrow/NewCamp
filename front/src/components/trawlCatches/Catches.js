@@ -139,14 +139,37 @@ const Catches = ({ haul_id }) => {
 		setEditingCatchId(null);
 	};
 
-	const handleChangeHaulHasLengths = (idx) => (hasLengths) => {
+	// const handleChangeHaulHasLengths = (idx) => (hasLengths) => {
+	// 	const newCatches = catches.map((c) => {
+	// 		if (c.catch_id !== idx) return c;
+	// 		return {
+	// 			...c,
+	// 			haul_has_lengths: hasLengths,
+	// 		};
+	// 	});
+	// 	setCatches(newCatches);
+	// };
+	const handleChangeSexLengths = (idx, sex) => (lengths) => {
+		// Sum up all number_individuals from the lengths array
+		const totalIndividuals = lengths.reduce((sum, length) => {
+			return sum + (Number(length.number_individuals) || 0);
+		}, 0);
+
 		const newCatches = catches.map((c) => {
 			if (c.catch_id !== idx) return c;
+
+			// Update the individuals_by_sex object for the specific sex
+			const updatedIndividualsBySex = {
+				...c.individuals_by_sex,
+				[sex]: totalIndividuals,
+			};
+
 			return {
 				...c,
-				haul_has_lengths: hasLengths,
+				individuals_by_sex: updatedIndividualsBySex,
 			};
 		});
+
 		setCatches(newCatches);
 	};
 
@@ -202,7 +225,8 @@ const Catches = ({ haul_id }) => {
 					handleChangeSpeciesCode: handleChangeSpeciesCode,
 					handleCancelEditCatch: handleCancelEditCatch,
 					handleInputChange: handleInputChange,
-					handleChangeHaulHasLengths: handleChangeHaulHasLengths,
+					// handleChangeHaulHasLengths: handleChangeHaulHasLengths,
+					handleChangeSexLengths: handleChangeSexLengths,
 					// TODO: I don't understand why can't add handleChangeAdd to the context?
 					// handleChangeAdd: setAdd,
 					createCatch: createCatch,

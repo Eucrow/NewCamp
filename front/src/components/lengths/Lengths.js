@@ -172,6 +172,7 @@ const Lengths = ({ sex, catchId, spId }) => {
 
 		setLengthsStatus("empty");
 		setBackupLengths([]);
+		catchesContext.handleChangeSexLengths(catchId, sex)([]);
 
 		if (response.status > 400) {
 			setResponseError("Something went wrong! (deleteLengths())");
@@ -304,7 +305,7 @@ const Lengths = ({ sex, catchId, spId }) => {
 			}
 			let data = await response.json();
 			data = transformUnitsFromMm(data, measurement.conversion_factor);
-			catchesContext.handleChangeHaulHasLengths(catchId)(true);
+			catchesContext.handleChangeSexLengths(catchId, sex)(data);
 			return data;
 		} catch (error) {
 			return console.log(error);
@@ -360,7 +361,6 @@ const Lengths = ({ sex, catchId, spId }) => {
 		}
 
 		setLengths(newLengths);
-		// setLengthsStatus("edit");
 		setLengthsStatus("new");
 	};
 

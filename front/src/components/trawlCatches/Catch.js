@@ -20,7 +20,6 @@ const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 	const [viewSexes, setViewSexes] = useState(false);
 	const [allowedSexes, setAllowedSexes] = useState(false);
 	const [backupCatch] = useState(thisCatch || "");
-	// const [haulHasLengths, setHaulHasLengths] = useState(false);
 
 	const catchesContext = useContext(CatchesContext);
 
@@ -35,11 +34,6 @@ const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 		} else {
 			setAllowedSexes(false);
 		}
-		// if (thisCatch && thisCatch.haul_has_lengths) {
-		// 	setHaulHasLengths(thisCatch.haul_has_lengths);
-		// } else {
-		// 	setHaulHasLengths(false);
-		// }
 	}, [thisCatch]);
 
 	const handleCancel = () => {
@@ -81,8 +75,6 @@ const Catch = ({ thisCatch, thisCatchStatus, handleChangeAdd }) => {
 				editCatchStatus,
 				setViewSexes,
 				handleCancel,
-				// haulHasLengths,
-				// setHaulHasLengths,
 			}}
 		>
 			{renderContent()}

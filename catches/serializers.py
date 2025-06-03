@@ -33,11 +33,23 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
             data['not_measured_individuals'] = None
         return super().to_internal_value(data)
 
+    individuals_by_sex = SerializerMethodField()
+
+    def get_individuals_by_sex(self, obj):
+        """
+        Returns a dictionary with the count of measured individuals by sex
+        """
+        result = {}
+        for sex_obj in obj.sexes.all():
+            total = sum(length.number_individuals for length in sex_obj.lengths.all())
+            result[sex_obj.sex] = total
+        return result
+
     class Meta:
         model = Catch
         fields = ['catch_id', 'category', 'weight', 'not_measured_individuals', 'haul', 'haul_id', 'group', 'sp_id',
                   'sp_code', 'sp_name', 'unit', 'increment', 'sampled_weight',
-                    'haul_has_lengths',
+                  'haul_has_lengths', 'individuals_by_sex',
                   ]
 
     # This is the validation of sampled weight when a new catch is created:

@@ -98,15 +98,18 @@ const ViewCatchForm = () => {
 					value={catchContext.thisCatch.not_measured_individuals || ""}
 					aria-label="Not measured individuals"
 				/>
-				<div className="catches__table__cell catches__table__lengths_measured">
-					<input
-						disabled
-						type="checkbox"
-						id="lengths"
-						name="lengths"
-						checked={catchContext.thisCatch.haul_has_lengths || false}
-						aria-label="Has lengths measured"
-					/>
+				<div className="catches__table__cell hasLengths__container">
+					<div className="hasLengths__row">
+						<div className="catches__table__cell catches__table__individuals hasLengths__row__sex">
+							{catchContext.thisCatch.individuals_by_sex[1] || "0"}
+						</div>
+						<div className="catches__table__cell catches__table__individuals hasLengths__row__sex">
+							{catchContext.thisCatch.individuals_by_sex[2] || "0"}
+						</div>
+						<div className="catches__table__cell catches__table__individuals hasLengths__row__sex">
+							{catchContext.thisCatch.individuals_by_sex[3] || "0"}
+						</div>
+					</div>
 				</div>
 				<CatchButtonBar className="" />
 			</form>
