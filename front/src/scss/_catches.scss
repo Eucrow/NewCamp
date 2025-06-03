@@ -7,15 +7,19 @@
 }
 
 .catches__table__row {
-	border-bottom: 0.5px solid var(--blue-gradient-4);
+	// border-bottom: 0.5px solid var(--blue-gradient-4);
 	// width: 100%;
 	display: flex;
 	flex-direction: row;
 }
 
-.catches__table__row:last-child {
-	border-bottom: none;
+.catches__table__row + .catches__table__row {
+	border-top: 0.5px solid var(--blue-gradient-4);
 }
+
+// .catches__table__row:last-child {
+// 	border-bottom: none;
+// }
 
 .catches__table__cell {
 	margin: 0px 0px;

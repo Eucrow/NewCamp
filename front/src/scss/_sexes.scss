@@ -1,12 +1,8 @@
 .sexesWrapper {
 	display: flex;
 	flex-direction: row;
-	// align-items: flex-start;
-	// margin: 0 0 0 5%;
-
 	flex-wrap: wrap;
 	justify-content: space-around;
-	// align-items: baseline;
 	min-height: 2rem;
 	padding: 1px 0px 1px 0px;
 	width: 100%;
@@ -19,11 +15,11 @@
 	justify-content: flex-start;
 	align-items: center;
 	min-height: 2rem;
-	// flex-grow: 1;
 	width: 33%;
 	padding: 5px 10px;
-	margin: 10px 0;
+	margin: 5px 0 0 0;
 	background-color: var(--wrapper-background-color);
+	border-bottom: 0.5px solid var(--blue-gradient-4);
 }
 
 .sexWrapper:not(:last-child) {
@@ -31,11 +27,7 @@
 }
 
 .sexWrapper__title {
-	// display: flex;
-	// align-items: center;
 	font-weight: bold;
-	// text-align: center;
-	// vertical-align: middle;
 	padding: 5px 0px 10px 0px;
 }
 
@@ -45,6 +37,5 @@
 	flex-wrap: wrap;
 	justify-content: space-around;
 	align-items: center;
-	// padding-left: 10px;
 	width: 100%;
 }
