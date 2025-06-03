@@ -139,16 +139,6 @@ const Catches = ({ haul_id }) => {
 		setEditingCatchId(null);
 	};
 
-	// const handleChangeHaulHasLengths = (idx) => (hasLengths) => {
-	// 	const newCatches = catches.map((c) => {
-	// 		if (c.catch_id !== idx) return c;
-	// 		return {
-	// 			...c,
-	// 			haul_has_lengths: hasLengths,
-	// 		};
-	// 	});
-	// 	setCatches(newCatches);
-	// };
 	const handleChangeSexLengths = (idx, sex) => (lengths) => {
 		// Sum up all number_individuals from the lengths array
 		const totalIndividuals = lengths.reduce((sum, length) => {
@@ -225,7 +215,6 @@ const Catches = ({ haul_id }) => {
 					handleChangeSpeciesCode: handleChangeSpeciesCode,
 					handleCancelEditCatch: handleCancelEditCatch,
 					handleInputChange: handleInputChange,
-					// handleChangeHaulHasLengths: handleChangeHaulHasLengths,
 					handleChangeSexLengths: handleChangeSexLengths,
 					// TODO: I don't understand why can't add handleChangeAdd to the context?
 					// handleChangeAdd: setAdd,

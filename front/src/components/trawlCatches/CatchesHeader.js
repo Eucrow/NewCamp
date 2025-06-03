@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
 
-import CatchesContext from "../../contexts/CatchesContext";
-
 import CatchesButtonBar from "./CatchesButtonBar.js";
 
 import UiIconUp from "../ui/UiIconUp";
@@ -11,8 +9,6 @@ import UiIconSexesFemale from "../ui/UiIconSexesFemale";
 import UiIconSexesUnknown from "../ui/UiIconSexesUnknown";
 
 const CatchesHeader = ({ sortConfig, handleSortCatches, add, setAdd }) => {
-	const catchesContext = useContext(CatchesContext);
-
 	const renderContent = () => {
 		return (
 			<div className="catches__table__row catches__table__header">
