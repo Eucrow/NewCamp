@@ -352,6 +352,21 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		return convertedCoordinates;
 	};
 
+	/**
+	 * Converts all empty strings to null in an object
+	 * @param {object} obj The object to clean
+	 * @returns {object} The cleaned object
+	 */
+	const cleanEmptyValues = (obj) => {
+		const cleaned = { ...obj };
+		Object.keys(cleaned).forEach((key) => {
+			if (cleaned[key] === "") {
+				cleaned[key] = null;
+			}
+		});
+		return cleaned;
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
@@ -368,20 +383,24 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				trawlCopy[key] = newCoordinates[key];
 			}
 
+			// Convert ALL empty strings to null
+			const cleanedTrawl = cleanEmptyValues(trawlCopy);
+
 			// update the date time fields, must be null if empty, instead of empty string.
-			trawlCopy["shooting_date_time"] =
-				trawlCopy["shooting_date_time"] === "" ? null : trawlCopy["shooting_date_time"];
-			trawlCopy["hauling_date_time"] =
-				trawlCopy["hauling_date_time"] === "" ? null : trawlCopy["hauling_date_time"];
-			trawlCopy["bottom_date_time"] =
-				trawlCopy["bottom_date_time"] === "" ? null : trawlCopy["bottom_date_time"];
+			// trawlCopy["shooting_date_time"] =
+			// 	trawlCopy["shooting_date_time"] === "" ? null : trawlCopy["shooting_date_time"];
+			// trawlCopy["hauling_date_time"] =
+			// 	trawlCopy["hauling_date_time"] === "" ? null : trawlCopy["hauling_date_time"];
+			// trawlCopy["bottom_date_time"] =
+			// 	trawlCopy["bottom_date_time"] === "" ? null : trawlCopy["bottom_date_time"];
 
-			setTrawl(trawlCopy);
+			setTrawl(cleanedTrawl);
 
+			console.log("cleanedTrawl", JSON.stringify(cleanedTrawl));
 			fetch(apiTrawl, {
 				method: "PUT",
 				headers: API_CONFIG.HEADERS.DEFAULT,
-				body: JSON.stringify(trawlCopy),
+				body: JSON.stringify(cleanedTrawl),
 			})
 				.then(() => {
 					setEdit(false);
@@ -402,14 +421,16 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			// so we need to update the state of the trawl object with the deepcopy
 
 			// update the date time fields, must be null if empty, instead of empty string.
-			hydrographyCopy["date_time"] =
-				hydrographyCopy["date_time"] === "" ? null : hydrographyCopy["date_time"];
-			setHydrography(hydrographyCopy);
+			// hydrographyCopy["date_time"] =
+			// 	hydrographyCopy["date_time"] === "" ? null : hydrographyCopy["date_time"];
+			// setHydrography(hydrographyCopy);
+			// Convert ALL empty strings to null
+			const cleanedHydrography = cleanEmptyValues(hydrographyCopy);
 
 			fetch(apiHydrography, {
 				method: "PUT",
 				headers: API_CONFIG.HEADERS.DEFAULT,
-				body: JSON.stringify(hydrographyCopy),
+				body: JSON.stringify(cleanedHydrography),
 			})
 				.then(() => {
 					setEdit(false);
