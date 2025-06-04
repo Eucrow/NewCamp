@@ -12,6 +12,8 @@ import UiIconDelete from "../ui/UiIconDelete";
  * @returns {JSX.Element} A JSX element that renders the lengths form.
  */
 const LengthForm = ({ l, idx }) => {
+	const lengthsContext = useContext(LengthsContext);
+
 	useEffect(() => {
 		if (l.is_valid === false) {
 			lengthRef.current.setCustomValidity("This length already exists.");
@@ -20,9 +22,7 @@ const LengthForm = ({ l, idx }) => {
 			lengthRef.current.setCustomValidity("");
 			lengthsContext.setValidLengths(true);
 		}
-	}, [l]);
-
-	const lengthsContext = useContext(LengthsContext);
+	}, [l, lengthsContext]);
 
 	let lengthRef = useRef(null);
 
@@ -53,12 +53,22 @@ const LengthForm = ({ l, idx }) => {
 						/>
 					</div>
 					<div className="formLengths__cell">
-						<button className="icon_button button__hidden" type="button" aria-hidden="true" tabIndex="-1">
+						<button
+							className="icon_button button__hidden"
+							type="button"
+							aria-hidden="true"
+							tabIndex="-1"
+						>
 							<UiIconAdd />
 						</button>
 					</div>
 					<div className="formLengths__cell">
-						<button className="icon_button button__hidden" type="button" aria-hidden="true" tabIndex="-1">
+						<button
+							className="icon_button button__hidden"
+							type="button"
+							aria-hidden="true"
+							tabIndex="-1"
+						>
 							<UiIconDelete />
 						</button>
 					</div>
@@ -71,7 +81,10 @@ const LengthForm = ({ l, idx }) => {
 						<input
 							type="number"
 							name="length"
-							step={lengthsContext.measurement.increment / lengthsContext.measurement.conversion_factor}
+							step={
+								lengthsContext.measurement.increment /
+								lengthsContext.measurement.conversion_factor
+							}
 							autoFocus
 							min="0"
 							max="9999"

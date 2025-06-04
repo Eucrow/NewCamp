@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import { API_CONFIG, buildApiUrl } from "../../config/api.js";
+import React, { useState, useContext } from "react";
 
 import CatchesContext from "../../contexts/CatchesContext.js";
 import GlobalContext from "../../contexts/GlobalContext.js";
@@ -23,8 +22,6 @@ const Catches = ({ haul_id }) => {
 	const { sortCatches, sortConfig } = useSortCatches(catches);
 
 	const globalContext = useContext(GlobalContext);
-
-	const apiCatches = buildApiUrl(API_CONFIG.ENDPOINTS.CATCHES_BY_HAUL(haul_id));
 
 	/**
 	 * Method to manage the group field.
@@ -167,44 +164,6 @@ const Catches = ({ haul_id }) => {
 		const sortedData = sortCatches(field);
 		setCatches(sortedData);
 	};
-
-	useEffect(() => {
-		const fetchCatches = async () => {
-			// Save scroll position
-			const scrollY = window.scrollY;
-
-			try {
-				const data = await fetch(apiCatches);
-				if (!data.ok) {
-					throw new Error("Something went wrong! " + data.status + " " + data.statusText);
-				}
-
-				const fetchedCatches = await data.json();
-
-				// Sort the fetched catches directly before setting state
-				const sortedCatches = [...fetchedCatches].sort((a, b) => {
-					// Compare group first
-					const groupCompare = Number(a.group) - Number(b.group);
-					if (groupCompare !== 0) return groupCompare;
-
-					// If groups are equal, compare by code
-					const codeCompare = Number(a.sp_code) - Number(b.sp_code);
-					if (codeCompare !== 0) return codeCompare;
-
-					// If codes are equal, compare by name
-					return a.sp_name.localeCompare(b.sp_name);
-				});
-
-				setCatches(sortedCatches);
-			} catch (error) {
-				console.error("Error fetching data: ", error);
-			} finally {
-				// Restore scroll position
-				window.scrollTo(0, scrollY);
-			}
-		};
-		fetchCatches();
-	}, [apiCatches]);
 
 	const renderContent = () => {
 		return (

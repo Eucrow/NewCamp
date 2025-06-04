@@ -151,7 +151,7 @@ const Measurements = () => {
 				<div className="wrapper measurementsWrapper measurement__notes">
 					The manage of measurements have some limitations. In order to avoid
 					inconsistencies, the system does not allow to delete measurements that are being
-					used in any surveys and only the 'name' field is editable. If you need to change
+					used in any surveys and only the 'name' field is editable. If you need to modify
 					a measurement, please contact the system administrator.
 				</div>
 				<div className="wrapper measurementsWrapper measurement__notes">

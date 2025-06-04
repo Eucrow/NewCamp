@@ -15,12 +15,13 @@ export const useSortCatches = (catches) => {
 		direction: "desc",
 	});
 
-	const compareStrings = (a, b) => a.localeCompare(b) * (sortConfig.direction === "asc" ? 1 : -1);
-
-	const compareNumbers = (a, b) => (a - b) * (sortConfig.direction === "asc" ? 1 : -1);
-
 	const sortCatches = useCallback(
 		(field) => {
+			const compareStrings = (a, b) =>
+				a.localeCompare(b) * (sortConfig.direction === "asc" ? 1 : -1);
+
+			const compareNumbers = (a, b) => (a - b) * (sortConfig.direction === "asc" ? 1 : -1);
+
 			// Toggle direction if clicking same field
 			const direction =
 				sortConfig.field === field && sortConfig.direction === "asc" ? "desc" : "asc";
@@ -49,7 +50,7 @@ export const useSortCatches = (catches) => {
 				return 0;
 			});
 		},
-		[catches, sortConfig, compareStrings, compareNumbers]
+		[catches, sortConfig]
 	);
 
 	return {

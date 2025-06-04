@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 
 import { API_CONFIG, buildApiUrl } from "../../config/api.js";
 
@@ -82,59 +82,11 @@ const Lengths = ({ sex, catchId, spId }) => {
 	}, [responseError]);
 
 	/**
-	 * Fetch the lengths and the measurement type of a sex.
-	 * If there aren't lengths, the measurement type is get from the species data.
-	 * The measurement type is set in the state and the lengths are transformed to the unit of measurement.
-	 * The lengths are stored in a temporary state, temporaryLengths.
-	 */
-	useEffect(() => {
-		getLengths().then((lens) => {
-			if (lens.lengths.length > 0) {
-				// If there are lengths, get the measurement type and set it in the state.
-				// In this way, the measurement type is the stored in the lengths.
-				const measurement = globalContext.getMeasurement(lens.measurement_type_id);
-				setMeasurement(measurement);
-
-				// var transformedLengths = transformUnitsFromMm(lens.lengths, measurement.conversion_factor);
-				var temporaryLengths = transformUnitsFromMm(
-					lens.lengths,
-					measurement.conversion_factor
-				);
-				setTemporaryLengths(temporaryLengths);
-			}
-
-			if (lens.lengths.length === 0) {
-				setLengthsStatus("empty");
-				// When there are no lengths, the measurement type is get from the measurement_type_id
-				// of the props.
-				const measurement = getSp().then((sp) => {
-					const measurement = globalContext.getMeasurement(sp.measurement_type);
-					setMeasurement(measurement);
-				});
-			}
-		});
-	}, []);
-
-	/**
-	 * Whe the measurement and temporaryLengths are set, the lengths are filled and set in the state.
-	 * Is mandatory this step because we need the measurement to fill the lengths, but when the lengths
-	 * are empty (new lengths), the measurement is need to be fetched from the species data (see the previous
-	 * useEffect).
-	 */
-	useEffect(() => {
-		if (measurement && temporaryLengths.length > 0) {
-			var lengths = fillLengths(temporaryLengths);
-			setBackupLengths(lengths);
-			setLengths(lengths);
-		}
-	}, [measurement, temporaryLengths]);
-
-	/**
 	 * Get species data from database.
 	 * @returns JSON with species data.
 	 * @returns {Object} The species data.
 	 */
-	const getSp = async () => {
+	const getSp = useCallback(async () => {
 		const api = globalContext.apiSpecies + "/" + spId;
 		const response = await fetch(api);
 		if (response.status > 400) {
@@ -142,14 +94,14 @@ const Lengths = ({ sex, catchId, spId }) => {
 		}
 		const data = await response.json();
 		return data;
-	};
+	}, [globalContext.apiSpecies, spId]);
 
 	/**
 	 * Get all lengths of a sexId from database.
 	 * When the lengths are fetched, they are transformed to the unit of measurement specified in the unit prop.
 	 * @returns JSON with lengths.
 	 */
-	const getLengths = async () => {
+	const getLengths = useCallback(async () => {
 		const api = buildApiUrl(API_CONFIG.ENDPOINTS.SAVE_GET_DELETE_LENGTHS(catchId, sex));
 		const response = await fetch(api);
 		if (response.status > 400) {
@@ -157,7 +109,7 @@ const Lengths = ({ sex, catchId, spId }) => {
 		}
 		const data = await response.json();
 		return data;
-	};
+	}, [catchId, sex]);
 
 	/**
 	 * Delete all lengths of a sexId in database. The sexId variable is taken from parent component via props.
@@ -439,6 +391,54 @@ const Lengths = ({ sex, catchId, spId }) => {
 			setLengthsStatus("view");
 		}
 	};
+
+	/**
+	 * Fetch the lengths and the measurement type of a sex.
+	 * If there aren't lengths, the measurement type is get from the species data.
+	 * The measurement type is set in the state and the lengths are transformed to the unit of measurement.
+	 * The lengths are stored in a temporary state, temporaryLengths.
+	 */
+	useEffect(() => {
+		getLengths().then((lens) => {
+			if (lens.lengths.length > 0) {
+				// If there are lengths, get the measurement type and set it in the state.
+				// In this way, the measurement type is the stored in the lengths.
+				const measurement = globalContext.getMeasurement(lens.measurement_type_id);
+				setMeasurement(measurement);
+
+				// var transformedLengths = transformUnitsFromMm(lens.lengths, measurement.conversion_factor);
+				var temporaryLengths = transformUnitsFromMm(
+					lens.lengths,
+					measurement.conversion_factor
+				);
+				setTemporaryLengths(temporaryLengths);
+			}
+
+			if (lens.lengths.length === 0) {
+				setLengthsStatus("empty");
+				// When there are no lengths, the measurement type is get from the measurement_type_id
+				// of the props.
+				getSp().then((sp) => {
+					const measurement = globalContext.getMeasurement(sp.measurement_type);
+					setMeasurement(measurement);
+				});
+			}
+		});
+	}, [getLengths, getSp, globalContext]);
+
+	/**
+	 * Whe the measurement and temporaryLengths are set, the lengths are filled and set in the state.
+	 * Is mandatory this step because we need the measurement to fill the lengths, but when the lengths
+	 * are empty (new lengths), the measurement is need to be fetched from the species data (see the previous
+	 * useEffect).
+	 */
+	useEffect(() => {
+		if (measurement && temporaryLengths.length > 0) {
+			var lengths = fillLengths(temporaryLengths);
+			setBackupLengths(lengths);
+			setLengths(lengths);
+		}
+	}, [measurement, temporaryLengths]);
 
 	// render content
 	const renderContent = () => {

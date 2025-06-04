@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { API_CONFIG, buildApiUrl } from "../config/api";
 
 /**
@@ -17,7 +17,6 @@ import { API_CONFIG, buildApiUrl } from "../config/api";
  *   - deleteCatch: Function to delete a catch.
  */
 export const useCatchesCrud = (haul_id) => {
-	const apiCatches = buildApiUrl(API_CONFIG.ENDPOINTS.CATCHES_BY_HAUL(haul_id));
 	const apiCreateCatch = buildApiUrl(API_CONFIG.ENDPOINTS.CREATE_CATCH);
 	const apiEditRemoveCatch = buildApiUrl(API_CONFIG.ENDPOINTS.EDIT_REMOVE_CATCH);
 
@@ -170,6 +169,8 @@ export const useCatchesCrud = (haul_id) => {
 			// Save scroll position
 			const scrollY = window.scrollY;
 
+			const apiCatches = buildApiUrl(API_CONFIG.ENDPOINTS.CATCHES_BY_HAUL(haul_id));
+
 			try {
 				const data = await fetch(apiCatches);
 				if (!data.ok) {
@@ -201,7 +202,7 @@ export const useCatchesCrud = (haul_id) => {
 			}
 		};
 		fetchCatches();
-	}, []);
+	}, [haul_id]);
 
 	return {
 		catches,
