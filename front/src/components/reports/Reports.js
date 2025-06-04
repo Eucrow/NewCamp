@@ -6,7 +6,6 @@ import GlobalContext from "../../contexts/GlobalContext";
 import UiButtonDownload from "../ui/UiButtonDownload";
 
 const Reports = () => {
-	const apiCSVReport = "http://127.0.0.1:8000/api/1.0/reports/report_csv";
 	const globalContext = useContext(GlobalContext);
 	const surveys = globalContext.surveys;
 
@@ -17,7 +16,6 @@ const Reports = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setIsLoading(true);
-		// const apiReport = apiCSVReport + "/" + selectedSurvey;
 		const apiReport = buildApiUrl(API_CONFIG.ENDPOINTS.GET_REPORTS_CSV(selectedSurvey));
 		//TODO: convert this to a custom hook
 		fetch(apiReport)
