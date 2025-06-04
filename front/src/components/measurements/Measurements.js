@@ -109,15 +109,16 @@ const Measurements = () => {
 			.catch((error) => console.log(error));
 	};
 
-	const deleteMeasurement = async (id) => {
-		try {
-			await axios.delete(`${globalContext.apiMeasurementTypes}/${id}`);
-			const updatedMeasurements = measurements.filter((measurement) => measurement.id !== id);
-			setMeasurements(updatedMeasurements);
-		} catch (error) {
-			console.error("Error deleting measurement:", error);
-		}
-	};
+	// Right now, the system does not allow to delete measurements.
+	// const deleteMeasurement = async (id) => {
+	// 	try {
+	// 		await axios.delete(`${globalContext.apiMeasurementTypes}/${id}`);
+	// 		const updatedMeasurements = measurements.filter((measurement) => measurement.id !== id);
+	// 		setMeasurements(updatedMeasurements);
+	// 	} catch (error) {
+	// 		console.error("Error deleting measurement:", error);
+	// 	}
+	// };
 
 	/**
 	 * Validate measurement names duplication
@@ -150,9 +151,9 @@ const Measurements = () => {
 				</header>
 				<div className="wrapper measurementsWrapper measurement__notes">
 					The manage of measurements have some limitations. In order to avoid
-					inconsistencies, the system does not allow to delete measurements that are being
-					used in any surveys and only the 'name' field is editable. If you need to modify
-					a measurement, please contact the system administrator.
+					inconsistencies, the system does not allow to delete measurements and only the
+					'name' field is editable. If you need to modify or delete a measurement, please
+					contact the system administrator.
 				</div>
 				<div className="wrapper measurementsWrapper measurement__notes">
 					The conversion factor is a number to convert the measurement units to

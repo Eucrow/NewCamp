@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import MeasurementButtonBar from "./MeasurementButtonBar";
 
@@ -24,12 +24,20 @@ const ViewEditMeasurement = ({
 }) => {
 	// const [add, setAdd] = useState(false);
 	const [edit, setEdit] = useState(false);
+	const nameInputRef = useRef(null);
 
 	const handleCancel = () => {
 		setMeasurements(backupMeasurements);
 		// setAdd(false);
 		setEdit(false);
 	};
+
+	useEffect(() => {
+		if (edit && nameInputRef.current) {
+			nameInputRef.current.focus();
+			nameInputRef.current.select();
+		}
+	}, [edit]);
 
 	const renderContent = () => {
 		const handleSubmit = (e) => {
@@ -47,6 +55,7 @@ const ViewEditMeasurement = ({
 								type="text"
 								id="name"
 								name="name"
+								ref={nameInputRef}
 								value={measurement.name}
 								disabled={!edit}
 								size={6}
@@ -62,7 +71,8 @@ const ViewEditMeasurement = ({
 								id="increment"
 								name="increment"
 								value={measurement.increment}
-								disabled={!edit}
+								// disabled={!edit}
+								disabled={true}
 								min="0"
 								max="9999"
 								size={4}
@@ -79,7 +89,8 @@ const ViewEditMeasurement = ({
 								id="conversion_factor"
 								name="conversion_factor"
 								value={measurement.conversion_factor}
-								disabled={!edit}
+								// disabled={!edit}
+								disabled={true}
 								min="0"
 								max="9999"
 								size={4}
