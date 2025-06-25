@@ -1,6 +1,6 @@
 import React from "react";
 
-import { convertDecimalToDMCoordinate } from "C:/Users/ieoma/Desktop/NewCamp/front/src/utils/Coordinates";
+import { convertDecimalToDMCoordinate } from "../../../utils/Coordinates";
 
 const TrawlSamplingPointView = ({ nameSamplingPoint, typeSamplingPoint, dateTime, latitude, longitude, depth }) => {
 	const [degrees_latitude, minutes_latitude] = convertDecimalToDMCoordinate(latitude);

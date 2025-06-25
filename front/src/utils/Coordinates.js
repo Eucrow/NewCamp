@@ -33,6 +33,15 @@ export const convertDMToDecimalCoordinate = (degree, minutes) => {
 };
 
 /**
+ * Converts degrees and decimal minutes (DDM) coordinates to decimal degrees DM format.
+ * @param {number} decimalCoordinate The decimal coordinate value.
+ * @returns {Array} An array containing the degrees and minutes values.
+ */
+export const convertDDMToDMCoordinates = (coordinates) => {
+	return convertDMToDecimalCoordinate(coordinates["degrees"], coordinates["minutes"]);
+};
+
+/**
  * Converts trawl coordinate data from decimal to degrees/minutes format
  * @param {object} trawlData - The trawl data object containing coordinate fields
  * @returns {object} - Converted coordinates in degrees/minutes format

@@ -3,12 +3,12 @@ import React, { useState, useEffect, useMemo } from "react";
 import { API_CONFIG, buildApiUrl } from "../../config/api";
 
 import {
-	convertDecimalToDMCoordinate,
-	convertDMToDecimalCoordinate,
+	convertDDMToDMCoordinates,
 	convertTrawlCoordinates,
 	convertHydrographyCoordinates,
-} from "C:/Users/ieoma/Desktop/NewCamp/front/src/utils/Coordinates";
+} from "../../utils/Coordinates";
 import { fixDateTime } from "../../utils/DateTime";
+import { haulService } from "../../services/haulService";
 
 import MeteorologyFormView from "./view/MeteorologyFormView";
 import TrawlFormView from "./view/TrawlFormView";
@@ -44,8 +44,8 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	const [, setFetchError] = useState("");
 
 	const apiHydrography = buildApiUrl(API_CONFIG.ENDPOINTS.GET_HYDROGRAPHY_BY_HAUL_ID(haul.id));
-	const apiMeteorology = buildApiUrl(API_CONFIG.ENDPOINTS.GET_METEOROLOGY_BY_HAUL_ID(haul.id));
 	const apiTrawl = buildApiUrl(API_CONFIG.ENDPOINTS.GET_TRAWL_BY_HAUL_ID(haul.id));
+	const apiMeteorology = buildApiUrl(API_CONFIG.ENDPOINTS.GET_METEOROLOGY_BY_HAUL_ID(haul.id));
 
 	const [coordinates, setCoordinates] = useState({
 		shooting: { latitude: { degrees: 0, minutes: 0 }, longitude: { degrees: 0, minutes: 0 } },
@@ -147,15 +147,6 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		}));
 	};
 
-	/**
-	 * Converts decimal coordinates to degrees and minutes format.
-	 * @param {number} decimalCoordinate The decimal coordinate value.
-	 * @returns {Array} An array containing the degrees and minutes values.
-	 */
-	const convertCoordinates = (coordinates) => {
-		return convertDMToDecimalCoordinate(coordinates["degrees"], coordinates["minutes"]);
-	};
-
 	const updateCoordinates = () => {
 		const convertedCoordinates = {};
 
@@ -164,17 +155,19 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		trawlFields.forEach((field) => {
 			const apiField =
 				field === "takeOff" ? "take_off" : field === "onBoard" ? "on_board" : field;
-			convertedCoordinates[`${apiField}_latitude`] = convertCoordinates(
+			convertedCoordinates[`${apiField}_latitude`] = convertDDMToDMCoordinates(
 				coordinates[field].latitude
 			);
-			convertedCoordinates[`${apiField}_longitude`] = convertCoordinates(
+			convertedCoordinates[`${apiField}_longitude`] = convertDDMToDMCoordinates(
 				coordinates[field].longitude
 			);
 		});
 
 		// Convert hydrography coordinates
-		convertedCoordinates.hidro_latitude = convertCoordinates(coordinates.hydro.latitude);
-		convertedCoordinates.hidro_longitude = convertCoordinates(coordinates.hydro.longitude);
+		convertedCoordinates.hidro_latitude = convertDDMToDMCoordinates(coordinates.hydro.latitude);
+		convertedCoordinates.hidro_longitude = convertDDMToDMCoordinates(
+			coordinates.hydro.longitude
+		);
 
 		return convertedCoordinates;
 	};
@@ -194,13 +187,12 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 		return cleaned;
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		if (haul.sampler_id === 1) {
 			// create a deepcopy of the trawl object
 			const trawlCopy = JSON.parse(JSON.stringify(trawl));
-			console.log(apiTrawl);
 
 			const newCoordinates = updateCoordinates();
 
@@ -210,20 +202,13 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 				}
 			});
 
-			// Convert ALL empty strings to null
 			const cleanedTrawl = cleanEmptyValues(trawlCopy);
 
 			setTrawl(cleanedTrawl);
 
-			fetch(apiTrawl, {
-				method: "PUT",
-				headers: API_CONFIG.HEADERS.DEFAULT,
-				body: JSON.stringify(cleanedTrawl),
-			})
-				.then(() => {
-					setEdit(false);
-				})
-				.catch((error) => console.log(error));
+			await haulService.updateTrawl(trawlCopy, haul.id);
+
+			setEdit(false);
 		}
 
 		if (haul.sampler_id === 2) {
@@ -235,25 +220,17 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 			hydrographyCopy["latitude"] = newCoordinates["hidro_latitude"];
 			hydrographyCopy["longitude"] = newCoordinates["hidro_longitude"];
 
-			// Convert ALL empty strings to null
 			const cleanedHydrography = cleanEmptyValues(hydrographyCopy);
 
-			fetch(apiHydrography, {
-				method: "PUT",
-				headers: API_CONFIG.HEADERS.DEFAULT,
-				body: JSON.stringify(cleanedHydrography),
-			})
-				.then(() => {
-					setEdit(false);
-				})
-				.catch((error) => console.log(error));
+			setTrawl(cleanedHydrography);
+
+			await haulService.updateHydrography(hydrographyCopy, haul.id);
+
+			setEdit(false);
 		}
 
-		fetch(apiMeteorology, {
-			method: "PUT",
-			headers: API_CONFIG.HEADERS.DEFAULT,
-			body: JSON.stringify(meteorology),
-		}).catch((error) => console.log(error));
+		await haulService.updateMeteorology(meteorology, haul.id);
+		setEdit(false);
 	};
 
 	/**
@@ -289,74 +266,105 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 	 * @param {number} haul.sampler_id - The ID of the sampler used for the haul.
 	 */
 	useEffect(() => {
-		if (detail === true) {
-			if (haul.sampler_id === 1) {
-				// Fetch meteorology.
-				fetch(apiMeteorology)
-					.then((response) => {
-						if (response.status === 404) {
-							return {};
-						} else if (response.status > 400) {
-							setFetchError("Something went wrong!");
-						}
-						return response.json();
-					})
-					.then((meteorology) => {
-						setMeteorology(meteorology);
-						setBackupMeteorology(meteorology);
-					})
-					.catch((error) => console.log(error));
+		const haulData = async () => {
+			if (detail === true) {
+				try {
+					if (haul.sampler_id === 1) {
+						const [meteorologyData, trawlData] = await Promise.all([
+							haulService.getMeteorologyByHaulId(haul.id),
+							haulService.getTrawlByHaulId(haul.id),
+						]);
 
-				// Fetch trawl.
-				fetch(apiTrawl)
-					.then((response) => {
-						if (response.status === 404) {
-							return {};
-						} else if (response.status > 400) {
-							setFetchError("Something went wrong!");
-						}
-						return response.json();
-					})
-					.then((trawl) => {
-						// Convert date and time to local time (just remove the Z at the end).
-						const fixed_shooting_date_time = fixDateTime(trawl.shooting_date_time);
-						const fixed_bottom_date_time = fixDateTime(trawl.bottom_date_time);
-						const fixed_trawling_date_time = fixDateTime(trawl.trawling_date_time);
-						const fixed_hauling_date_time = fixDateTime(trawl.hauling_date_time);
-						const fixed_take_off_date_time = fixDateTime(trawl.take_off_date_time);
-						const fixed_on_board_date_time = fixDateTime(trawl.on_board_date_time);
-						trawl.shooting_date_time = fixed_shooting_date_time;
-						trawl.bottom_date_time = fixed_bottom_date_time;
-						trawl.trawling_date_time = fixed_trawling_date_time;
-						trawl.hauling_date_time = fixed_hauling_date_time;
-						trawl.take_off_date_time = fixed_take_off_date_time;
-						trawl.on_board_date_time = fixed_on_board_date_time;
+						setMeteorology(meteorologyData);
+						setTrawl(trawlData);
 
-						setTrawl(trawl);
-						setBackupTrawl(trawl);
-					})
-					.catch((error) => console.log(error));
+						setBackupMeteorology(meteorologyData);
+						setBackupTrawl(trawlData);
+
+						// Fetch meteorology.
+						// fetch(apiMeteorology)
+						// 	.then((response) => {
+						// 		if (response.status === 404) {
+						// 			return {};
+						// 		} else if (response.status > 400) {
+						// 			setFetchError("Something went wrong!");
+						// 		}
+						// 		return response.json();
+						// 	})
+						// 	.then((meteorology) => {
+						// 		setMeteorology(meteorology);
+						// 		setBackupMeteorology(meteorology);
+						// 	})
+						// 	.catch((error) => console.log(error));
+
+						// // Fetch trawl.
+						// fetch(apiTrawl)
+						// 	.then((response) => {
+						// 		if (response.status === 404) {
+						// 			return {};
+						// 		} else if (response.status > 400) {
+						// 			setFetchError("Something went wrong!");
+						// 		}
+						// 		return response.json();
+						// 	})
+						// 	.then((trawl) => {
+						// 		// Convert date and time to local time (just remove the Z at the end).
+						// 		const fixed_shooting_date_time = fixDateTime(trawl.shooting_date_time);
+						// 		const fixed_bottom_date_time = fixDateTime(trawl.bottom_date_time);
+						// 		const fixed_trawling_date_time = fixDateTime(trawl.trawling_date_time);
+						// 		const fixed_hauling_date_time = fixDateTime(trawl.hauling_date_time);
+						// 		const fixed_take_off_date_time = fixDateTime(trawl.take_off_date_time);
+						// 		const fixed_on_board_date_time = fixDateTime(trawl.on_board_date_time);
+						// 		trawl.shooting_date_time = fixed_shooting_date_time;
+						// 		trawl.bottom_date_time = fixed_bottom_date_time;
+						// 		trawl.trawling_date_time = fixed_trawling_date_time;
+						// 		trawl.hauling_date_time = fixed_hauling_date_time;
+						// 		trawl.take_off_date_time = fixed_take_off_date_time;
+						// 		trawl.on_board_date_time = fixed_on_board_date_time;
+
+						// 		setTrawl(trawl);
+						// 		setBackupTrawl(trawl);
+						// 	})
+						// 	.catch((error) => console.log(error));
+					}
+
+					if (haul.sampler_id === 2) {
+						const [meteorologyData, hydrographyData] = await Promise.all([
+							haulService.getMeteorologyByHaulId(haul.id),
+							haulService.getHydrographyByHaulId(haul.id),
+						]);
+
+						setMeteorology(meteorologyData);
+						setHydrography(hydrographyData);
+
+						setBackupMeteorology(meteorologyData);
+						setBackupHydrography(hydrographyData);
+						// Fetch hydrography.
+						// fetch(apiHydrography)
+						// 	.then((response) => {
+						// 		if (response.status > 400) {
+						// 			setFetchError("Something went wrong!");
+						// 		}
+						// 		return response.json();
+						// 	})
+						// 	.then((hydrography) => {
+						// 		const fixed_date_time = fixDateTime(hydrography.date_time);
+						// 		hydrography.date_time = fixed_date_time;
+						// 		setHydrography(hydrography);
+						// 		setBackupHydrography(hydrography);
+						// 	})
+						// 	.catch((error) => console.log(error));
+					}
+				} catch (error) {
+					console.error("Error fetching haul data:", error);
+					setFetchError(error.message);
+				}
 			}
+		};
 
-			if (haul.sampler_id === 2) {
-				// Fetch hydrography.
-				fetch(apiHydrography)
-					.then((response) => {
-						if (response.status > 400) {
-							setFetchError("Something went wrong!");
-						}
-						return response.json();
-					})
-					.then((hydrography) => {
-						const fixed_date_time = fixDateTime(hydrography.date_time);
-						hydrography.date_time = fixed_date_time;
-						setHydrography(hydrography);
-						setBackupHydrography(hydrography);
-					})
-					.catch((error) => console.log(error));
-			}
-		}
-	}, [detail, haul.sampler_id, apiHydrography, haul.id, apiMeteorology, apiTrawl]);
+		// Actually call the async function
+		haulData();
+	}, [detail, haul.sampler_id, haul.id]);
 
 	const renderContent = () => {
 		if (Number(haul.sampler_id) === 1) {
