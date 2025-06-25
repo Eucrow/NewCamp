@@ -280,52 +280,6 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 						setBackupMeteorology(meteorologyData);
 						setBackupTrawl(trawlData);
-
-						// Fetch meteorology.
-						// fetch(apiMeteorology)
-						// 	.then((response) => {
-						// 		if (response.status === 404) {
-						// 			return {};
-						// 		} else if (response.status > 400) {
-						// 			setFetchError("Something went wrong!");
-						// 		}
-						// 		return response.json();
-						// 	})
-						// 	.then((meteorology) => {
-						// 		setMeteorology(meteorology);
-						// 		setBackupMeteorology(meteorology);
-						// 	})
-						// 	.catch((error) => console.log(error));
-
-						// // Fetch trawl.
-						// fetch(apiTrawl)
-						// 	.then((response) => {
-						// 		if (response.status === 404) {
-						// 			return {};
-						// 		} else if (response.status > 400) {
-						// 			setFetchError("Something went wrong!");
-						// 		}
-						// 		return response.json();
-						// 	})
-						// 	.then((trawl) => {
-						// 		// Convert date and time to local time (just remove the Z at the end).
-						// 		const fixed_shooting_date_time = fixDateTime(trawl.shooting_date_time);
-						// 		const fixed_bottom_date_time = fixDateTime(trawl.bottom_date_time);
-						// 		const fixed_trawling_date_time = fixDateTime(trawl.trawling_date_time);
-						// 		const fixed_hauling_date_time = fixDateTime(trawl.hauling_date_time);
-						// 		const fixed_take_off_date_time = fixDateTime(trawl.take_off_date_time);
-						// 		const fixed_on_board_date_time = fixDateTime(trawl.on_board_date_time);
-						// 		trawl.shooting_date_time = fixed_shooting_date_time;
-						// 		trawl.bottom_date_time = fixed_bottom_date_time;
-						// 		trawl.trawling_date_time = fixed_trawling_date_time;
-						// 		trawl.hauling_date_time = fixed_hauling_date_time;
-						// 		trawl.take_off_date_time = fixed_take_off_date_time;
-						// 		trawl.on_board_date_time = fixed_on_board_date_time;
-
-						// 		setTrawl(trawl);
-						// 		setBackupTrawl(trawl);
-						// 	})
-						// 	.catch((error) => console.log(error));
 					}
 
 					if (haul.sampler_id === 2) {
@@ -339,21 +293,6 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
 
 						setBackupMeteorology(meteorologyData);
 						setBackupHydrography(hydrographyData);
-						// Fetch hydrography.
-						// fetch(apiHydrography)
-						// 	.then((response) => {
-						// 		if (response.status > 400) {
-						// 			setFetchError("Something went wrong!");
-						// 		}
-						// 		return response.json();
-						// 	})
-						// 	.then((hydrography) => {
-						// 		const fixed_date_time = fixDateTime(hydrography.date_time);
-						// 		hydrography.date_time = fixed_date_time;
-						// 		setHydrography(hydrography);
-						// 		setBackupHydrography(hydrography);
-						// 	})
-						// 	.catch((error) => console.log(error));
 					}
 				} catch (error) {
 					console.error("Error fetching haul data:", error);

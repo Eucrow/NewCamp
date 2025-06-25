@@ -31,7 +31,10 @@
     "make": "react-scripts build && electron-forge make"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "no-unused-vars": "warn"
+    }
   },
   "browserslist": {
     "production": [

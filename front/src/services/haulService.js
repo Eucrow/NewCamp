@@ -24,7 +24,6 @@ export const haulService = {
 	 */
 	async getMeteorologyByHaulId(haulId) {
 		const apiUrl = buildApiUrl(API_CONFIG.ENDPOINTS.GET_METEOROLOGY_BY_HAUL_ID(haulId));
-		console.log("Fetching meteorology data from:", apiUrl);
 
 		const response = await fetch(apiUrl);
 
