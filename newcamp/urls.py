@@ -30,7 +30,7 @@ from surveys.views import SurveyDetailView
 from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
     SurveysAcronymList, SurveyNewAPI, SurveyAPI, SurveysAPI
 from stratifications.api import StratificationsAPI
-from strata.api import StrataAPI
+from strata.api import StrataAPI, StratumAPI
 from samplers.api import SamplersAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
 from hauls.api import HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, \
@@ -123,6 +123,10 @@ urlpatterns = [
                   # Stratum API URLS
                   re_path(r'^api/1.0/strata/(?P<stratification_id>[0-9]+)$',
                           StrataAPI.as_view(), name="get_strata_api"),
+                  re_path(r'^api/1.0/strata/$',
+                          StrataAPI.as_view(), name="create_stratum_api"),
+                  re_path(r'^api/1.0/stratum/(?P<pk>[0-9]+)/$',
+                          StratumAPI.as_view(), name="get_update_delete_stratum_api"),
 
                   # Stations API urls
                   re_path(r'^api/1.0/station/(?P<station_id>[0-9]+)$',

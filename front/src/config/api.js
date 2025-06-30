@@ -6,10 +6,10 @@ export const API_CONFIG = {
 		GET_SHIPS: "/ship/",
 
 		// Strata endpoints
-		// TODO: maybe stratifications should be changed to strata?
-		GET_STRATA: "/stratifications",
+		GET_STRATIFICATIONS: "/stratifications",
 		STRATA: "/strata/",
-		STRATA_BY_ID: (strataId) => `/strata/${strataId}`,
+		STRATA_BY_STRATIFICATION: (stratificationId) => `/strata/${stratificationId}`,
+		STRATUM_BY_ID: (stratumId) => `/stratum/${stratumId}/`,
 
 		// Gear endpoints
 		GET_TRAWLS: "/gears/trawl/basic/",
