@@ -14,7 +14,7 @@ import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
 import Stations from "./components/stations/Stations.js";
 import Species from "./components/species/Species";
 import Ships from "./components/ships/Ships";
-import StrataPage from "./components/strata/StrataPage";
+import Strata from "./components/strata/Strata";
 import Measurements from "./components/measurements/Measurements";
 import Reports from "./components/reports/Reports.js";
 
@@ -182,7 +182,7 @@ export default function App() {
 					<Route path="/Surveys" exact component={ComponentsSurveys} />
 					<Route path="/Stations" exact component={Stations} />
 					<Route path="/Species" component={Species} />
-					<Route path="/Strata" component={StrataPage} />
+					<Route path="/Strata" component={Strata} />
 					<Route path="/Ships" component={Ships} />
 					<Route path="/Measurements" component={Measurements} />
 					<Route path="/Reports" component={Reports} />
