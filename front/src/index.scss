@@ -34,6 +34,9 @@
 // css stations
 @use "./scss/stations";
 
+// css strata
+@use "./scss/strata";
+
 // css characteristics grid
 @use "./scss/characteristicsGrid";
 
@@ -60,58 +63,58 @@
 
 // css custom properties
 :root {
-	//FONT VARIABLES
-	--normal-font: "Roboto", "Sans Serif";
-	--special-font: "Signika", "Serif";
-	//COLOR VARIABLES
-	//blue gradient
-	--blue-gradient-1: #133347;
-	--blue-gradient-2: #3b6c90;
-	--blue-gradient-3: #74a3c4;
-	--blue-gradient-4: #a3d0f0;
+  //FONT VARIABLES
+  --normal-font: "Roboto", "Sans Serif";
+  --special-font: "Signika", "Serif";
+  //COLOR VARIABLES
+  //blue gradient
+  --blue-gradient-1: #133347;
+  --blue-gradient-2: #3b6c90;
+  --blue-gradient-3: #74a3c4;
+  --blue-gradient-4: #a3d0f0;
 
-	//grey gradient
-	--grey-gradient-1: #494c4e;
-	--grey-gradient-2: #808080;
-	--grey-gradient-3: #b8bbbf;
-	--grey-gradient-4: #e2e0e6;
+  //grey gradient
+  --grey-gradient-1: #494c4e;
+  --grey-gradient-2: #808080;
+  --grey-gradient-3: #b8bbbf;
+  --grey-gradient-4: #e2e0e6;
 
-	//orange gradient
-	--orange-gradient-1: #e76326;
-	--orange-gradient-2: #f1a17d;
-	--orange-gradient-3: #f5c1a8;
-	--orange-gradient-4: #fae0d4;
+  //orange gradient
+  --orange-gradient-1: #e76326;
+  --orange-gradient-2: #f1a17d;
+  --orange-gradient-3: #f5c1a8;
+  --orange-gradient-4: #fae0d4;
 
-	//global
-	--background-global-color: #f2f3f0;
-	// --text-color: var(--grey-gradient-1);
-	--text-color: black;
-	--highlight-text-color: var(--blue-gradient-1);
+  //global
+  --background-global-color: #f2f3f0;
+  // --text-color: var(--grey-gradient-1);
+  --text-color: black;
+  --highlight-text-color: var(--blue-gradient-1);
 
-	//links and buttons highlights
-	--highlight-background-color: var(--blue-gradient-1);
-	--highlight-front-color: var(--background-global-color);
+  //links and buttons highlights
+  --highlight-background-color: var(--blue-gradient-1);
+  --highlight-front-color: var(--background-global-color);
 
-	//button colors
-	--button-background-color: var(--grey-gradient-3);
+  //button colors
+  --button-background-color: var(--grey-gradient-3);
 
-	//wrapper border
-	--wrapper-border-color: var(--blue-gradient-3);
-	//wrapper background color
-	--wrapper-background-color: white;
+  //wrapper border
+  --wrapper-border-color: var(--blue-gradient-3);
+  //wrapper background color
+  --wrapper-background-color: white;
 
-	//nav
-	--background-nav: var(--blue-gradient-3);
+  //nav
+  --background-nav: var(--blue-gradient-3);
 
-	//error
-	--error_background: var(--orange-gradient-4);
-	--error_text: var(--orange-gradient-1);
+  //error
+  --error_background: var(--orange-gradient-4);
+  --error_text: var(--orange-gradient-1);
 }
 
 html {
-	background-color: var(--background-global-color);
-	color: var(--text-color);
-	font-family: var(--normal-font);
+  background-color: var(--background-global-color);
+  color: var(--text-color);
+  font-family: var(--normal-font);
 }
 
 h1,
@@ -120,21 +123,21 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: var(--special-font);
+  font-family: var(--special-font);
 }
 
 main {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-	.title {
-		padding: 20px;
-		color: var(--highlight-text-color);
-	}
+  .title {
+    padding: 20px;
+    color: var(--highlight-text-color);
+  }
 }
 
 // fieldset
 fieldset.wrapper {
-	width: 100%;
+  width: 100%;
 }

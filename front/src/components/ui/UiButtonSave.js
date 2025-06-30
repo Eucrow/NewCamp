@@ -6,13 +6,17 @@ import React from "react";
  * @param {boolean} isDisabled boolean to disable the button.
  */
 const UiButtonSave = ({ buttonText, isDisabled }) => {
-	const renderedButton = (
-		<button className="buttonsWrapper__button" type="submit" disabled={isDisabled}>
-			{buttonText}
-		</button>
-	);
+  const renderedButton = (
+    <button
+      className="buttonsWrapper__button"
+      type="submit"
+      disabled={isDisabled}
+    >
+      {buttonText}
+    </button>
+  );
 
-	return renderedButton;
+  return renderedButton;
 };
 
 export default UiButtonSave;

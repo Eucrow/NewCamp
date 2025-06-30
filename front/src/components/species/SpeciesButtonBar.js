@@ -8,17 +8,17 @@ import UiButtonAdd from "../ui/UiButtonAdd";
  * @param {method} handleAdd Method to handle the 'add' parameter.
  */
 const SpeciesButtonBar = ({ add, handleAdd }) => {
-	var ButtonBar = null;
+  var ButtonBar = null;
 
-	if (add === false) {
-		ButtonBar = (
-			<div className="survey__cell survey__cell--right buttonsWrapper">
-				<UiButtonAdd handleAdd={handleAdd} text={"Add Species"} />
-			</div>
-		);
-	}
+  if (add === false) {
+    ButtonBar = (
+      <div className="survey__cell survey__cell--right buttonsWrapper">
+        <UiButtonAdd handleAdd={handleAdd} text={"Add Species"} />
+      </div>
+    );
+  }
 
-	return ButtonBar;
+  return ButtonBar;
 };
 
 export default SpeciesButtonBar;

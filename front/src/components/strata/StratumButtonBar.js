@@ -21,42 +21,63 @@ import UiIconDelete from "../ui/UiIconDelete";
  * @returns {React.Element} The rendered StratumButtonBar component.
  */
 const StratumButtonBar = ({
-	stratum,
-	edit,
-	setEdit,
-	deleteStratum,
-	handleCancel,
-	isEdit,
+  stratum,
+  edit,
+  setEdit,
+  deleteStratum,
+  handleCancel,
+  handleAdd,
+  addStratum,
+  isEdit,
 }) => {
+  const buttonBarConfig = {
+    defaultMode: (
+      <div className="form__cell form__cell--right">
+        <UiButtonStatusHandle
+          buttonText={<UiIconEdit />}
+          handleMethod={setEdit}
+          newStatus={true}
+        />
+        <UiButtonDelete
+          handleMethod={() => deleteStratum && deleteStratum(stratum?.id)}
+        />
+      </div>
+    ),
+    editMode: (
+      <div className="form__cell form__cell--right">
+        <UiButtonSave />
+        <UiButtonStatusHandle
+          buttonText={"Cancel"}
+          handleMethod={
+            handleCancel ? () => handleCancel(false) : () => setEdit(false)
+          }
+          newStatus={false}
+        />
+      </div>
+    ),
+    newMode: (
+      <div className="form__cell form__cell--right">
+        <UiButtonSave />
+        <UiButtonStatusHandle
+          buttonText={"Cancel"}
+          handleMethod={handleAdd}
+          newStatus={false}
+        />
+      </div>
+    ),
+  };
 
-	const buttonBarConfig = {
-		defaultMode: (
-			<div className="form__cell form__cell--right">
-				<UiButtonStatusHandle buttonText={<UiIconEdit />} handleMethod={setEdit} newStatus={true} />
-				<UiButtonDelete handleMethod={() => deleteStratum && deleteStratum(stratum?.id)} />
-			</div>
-		),
-		editMode: (
-			<div className="form__cell form__cell--right">
-				<UiButtonSave />
-				<UiButtonStatusHandle
-					buttonText={"Cancel"}
-					handleMethod={handleCancel ? () => handleCancel(false) : () => setEdit(false)}
-					newStatus={false}
-				/>
-			</div>
-		),
-	};
+  const renderContent = () => {
+    if (isEdit || edit === true) {
+      return buttonBarConfig.editMode;
+    } else if (addStratum === true) {
+      return buttonBarConfig.newMode;
+    } else {
+      return buttonBarConfig.defaultMode;
+    }
+  };
 
-	const renderContent = () => {
-		if (isEdit || edit === true) {
-			return buttonBarConfig.editMode;
-		} else {
-			return buttonBarConfig.defaultMode;
-		}
-	};
-
-	return renderContent();
+  return renderContent();
 };
 
 export default StratumButtonBar;

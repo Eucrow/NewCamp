@@ -9,100 +9,112 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
  * @returns {JSX.Element} A JSX element that renders the lengths range form.
  */
 const LengthsRangeForm = () => {
-	const lengthsContext = useContext(LengthsContext);
+  const lengthsContext = useContext(LengthsContext);
 
-	const [minimumRange, setMinimumRange] = useState("");
+  const [minimumRange, setMinimumRange] = useState("");
 
-	const [maximumRange, setMaximumRange] = useState("");
+  const [maximumRange, setMaximumRange] = useState("");
 
-	const [validRange, setValidRange] = useState(true);
+  const [validRange, setValidRange] = useState(true);
 
-	const unit = lengthsContext.measurement ? lengthsContext.measurement.name : "no unit";
-	const increment = lengthsContext.measurement.increment / lengthsContext.measurement.conversion_factor;
+  const unit = lengthsContext.measurement
+    ? lengthsContext.measurement.name
+    : "no unit";
+  const increment =
+    lengthsContext.measurement.increment /
+    lengthsContext.measurement.conversion_factor;
 
-	const handleMinimumRange = (e) => {
-		setMinimumRange(e.target.value);
-	};
+  const handleMinimumRange = e => {
+    setMinimumRange(e.target.value);
+  };
 
-	const handleMaximumRange = (e) => {
-		setMaximumRange(e.target.value);
-	};
+  const handleMaximumRange = e => {
+    setMaximumRange(e.target.value);
+  };
 
-	let minimumRef = useRef(null);
-	let maximumRef = useRef(null);
+  let minimumRef = useRef(null);
+  let maximumRef = useRef(null);
 
-	useEffect(() => {
-		if (Number(minimumRange) > Number(maximumRange)) {
-			maximumRef.current.setCustomValidity("The maximum length must be greater than the minimum length.");
-			setValidRange(false);
-		} else {
-			maximumRef.current.setCustomValidity("");
-			setValidRange(true);
-		}
-	}, [minimumRange, maximumRange]);
+  useEffect(() => {
+    if (Number(minimumRange) > Number(maximumRange)) {
+      maximumRef.current.setCustomValidity(
+        "The maximum length must be greater than the minimum length."
+      );
+      setValidRange(false);
+    } else {
+      maximumRef.current.setCustomValidity("");
+      setValidRange(true);
+    }
+  }, [minimumRange, maximumRange]);
 
-	return (
-		<form className="lengthsWrapper">
-			<div className="formLengthsRange__table">
-				<div className="formLengthsRange__row">
-					<label className="formLengthsRange__cell formLengths__cell--header" htmlFor="minimum">
-						Minimum length ({unit}):
-					</label>
-					<input
-						className="formLengthsRange__cell"
-						type="number"
-						id="minimum"
-						name="minimum"
-						ref={minimumRef}
-						step={increment}
-						autoFocus
-						min="0"
-						max="9999"
-						value={minimumRange}
-						onChange={(e) => handleMinimumRange(e)}
-					/>
-				</div>
-				<div className="formLengthsRange__row">
-					<label className="formLengthsRange__cell formLengths__cell--header" htmlFor="maximum">
-						Maximum length ({unit}):
-					</label>
-					<input
-						className="formLengthsRange__cell"
-						type="number"
-						id="maximum"
-						name="maximum"
-						ref={maximumRef}
-						step={increment}
-						min="0"
-						max="9999"
-						value={maximumRange}
-						onChange={(e) => handleMaximumRange(e)}
-					/>
-				</div>
-			</div>
-			<div className="formLengthsRange__row">
-				<div className="form__row buttonsWrapper--center">
-					<button
-						className="formLengthsRange__cell buttonsWrapper__button"
-						type="button"
-						disabled={!validRange}
-						onClick={() => {
-							lengthsContext.createRangeLengths(minimumRange, maximumRange);
-							setMaximumRange("");
-							setMinimumRange("");
-						}}
-					>
-						Create range
-					</button>
-					<UiButtonStatusHandle
-						buttonText={"Cancel"}
-						handleMethod={lengthsContext.cancelEditLengths}
-						newStatus={"empty"}
-					/>
-				</div>
-			</div>
-		</form>
-	);
+  return (
+    <form className="lengthsWrapper">
+      <div className="formLengthsRange__table">
+        <div className="formLengthsRange__row">
+          <label
+            className="formLengthsRange__cell formLengths__cell--header"
+            htmlFor="minimum"
+          >
+            Minimum length ({unit}):
+          </label>
+          <input
+            className="formLengthsRange__cell"
+            type="number"
+            id="minimum"
+            name="minimum"
+            ref={minimumRef}
+            step={increment}
+            autoFocus
+            min="0"
+            max="9999"
+            value={minimumRange}
+            onChange={e => handleMinimumRange(e)}
+          />
+        </div>
+        <div className="formLengthsRange__row">
+          <label
+            className="formLengthsRange__cell formLengths__cell--header"
+            htmlFor="maximum"
+          >
+            Maximum length ({unit}):
+          </label>
+          <input
+            className="formLengthsRange__cell"
+            type="number"
+            id="maximum"
+            name="maximum"
+            ref={maximumRef}
+            step={increment}
+            min="0"
+            max="9999"
+            value={maximumRange}
+            onChange={e => handleMaximumRange(e)}
+          />
+        </div>
+      </div>
+      <div className="formLengthsRange__row">
+        <div className="form__row buttonsWrapper--center">
+          <button
+            className="formLengthsRange__cell buttonsWrapper__button"
+            type="button"
+            disabled={!validRange}
+            onClick={() => {
+              lengthsContext.createRangeLengths(minimumRange, maximumRange);
+              setMaximumRange("");
+              setMinimumRange("");
+            }}
+          >
+            Create range
+          </button>
+          <UiButtonStatusHandle
+            buttonText={"Cancel"}
+            handleMethod={lengthsContext.cancelEditLengths}
+            newStatus={"empty"}
+          />
+        </div>
+      </div>
+    </form>
+  );
 };
 
 export default LengthsRangeForm;

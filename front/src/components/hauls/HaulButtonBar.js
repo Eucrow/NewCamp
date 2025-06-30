@@ -22,81 +22,101 @@ import UiIconDelete from "../ui/UiIconDelete";
  * @returns {React.Element} The rendered HaulButtonBar component.
  */
 const HaulButtonBar = ({
-	haul_id,
-	sampler_id,
-	edit,
-	setEdit,
-	detail,
-	setDetail,
-	deleteHaul,
-	handleCancel,
-	catchesMode,
-	setCatchesMode,
+  haul_id,
+  sampler_id,
+  edit,
+  setEdit,
+  detail,
+  setDetail,
+  deleteHaul,
+  handleCancel,
+  catchesMode,
+  setCatchesMode,
 }) => {
-	const samplerButton = () => {
-		if (sampler_id === 1) {
-			return (
-				<UiButtonStatusHandle buttonText={"Fauna List"} handleMethod={setCatchesMode} newStatus={true}>
-					{/* <UiIconBiometrics /> */}
-				</UiButtonStatusHandle>
-			);
-		} else {
-			return null;
-		}
-	};
+  const samplerButton = () => {
+    if (sampler_id === 1) {
+      return (
+        <UiButtonStatusHandle
+          buttonText={"Fauna List"}
+          handleMethod={setCatchesMode}
+          newStatus={true}
+        >
+          {/* <UiIconBiometrics /> */}
+        </UiButtonStatusHandle>
+      );
+    } else {
+      return null;
+    }
+  };
 
-	const buttonBarConfig = {
-		defaultMode: (
-			<div className="form__cell form__cell--right">
-				<UiButtonStatusHandle handleMethod={setEdit} buttonText={"Edit haul"} newStatus={true}>
-					<UiIconEdit />
-				</UiButtonStatusHandle>
-				<UiButtonDelete
-					id={haul_id}
-					deleteMethod={deleteHaul}
-					buttonText="Delete haul"
-					confirmMessage="Are you sure to delete this haul?"
-					children={<UiIconDelete />}
-				/>
-				<UiButtonStatusHandle buttonText={"Haul Details"} handleMethod={setDetail} newStatus={true}>
-					{/* <UiIconDetailShow /> */}
-				</UiButtonStatusHandle>
-				{samplerButton()}
-			</div>
-		),
+  const buttonBarConfig = {
+    defaultMode: (
+      <div className="form__cell form__cell--right">
+        <UiButtonStatusHandle
+          handleMethod={setEdit}
+          buttonText={"Edit haul"}
+          newStatus={true}
+        >
+          <UiIconEdit />
+        </UiButtonStatusHandle>
+        <UiButtonDelete
+          id={haul_id}
+          deleteMethod={deleteHaul}
+          buttonText="Delete haul"
+          confirmMessage="Are you sure to delete this haul?"
+          children={<UiIconDelete />}
+        />
+        <UiButtonStatusHandle
+          buttonText={"Haul Details"}
+          handleMethod={setDetail}
+          newStatus={true}
+        >
+          {/* <UiIconDetailShow /> */}
+        </UiButtonStatusHandle>
+        {samplerButton()}
+      </div>
+    ),
 
-		detailMode: <></>,
+    detailMode: <></>,
 
-		editHaulMode: (
-			<div className="form__cell form__cell--right">
-				<UiButtonSave buttonText="Save Haul" />
-				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={handleCancel} newStatus={false} />
-			</div>
-		),
+    editHaulMode: (
+      <div className="form__cell form__cell--right">
+        <UiButtonSave buttonText="Save Haul" />
+        <UiButtonStatusHandle
+          buttonText={"Cancel"}
+          handleMethod={handleCancel}
+          newStatus={false}
+        />
+      </div>
+    ),
 
-		catchesMode: (
-			<div className="form__cell form__cell--right">
-				<UiButtonStatusHandle buttonText={"Hide Fauna List"} handleMethod={setCatchesMode} newStatus={false}>
-					{/* <UiIconBiometrics /> */}
-				</UiButtonStatusHandle>
-			</div>
-		),
-	};
+    catchesMode: (
+      <div className="form__cell form__cell--right">
+        <UiButtonStatusHandle
+          buttonText={"Hide Fauna List"}
+          handleMethod={setCatchesMode}
+          newStatus={false}
+        >
+          {/* <UiIconBiometrics /> */}
+        </UiButtonStatusHandle>
+      </div>
+    ),
+  };
 
-	let currentMode;
-	if (edit === true) {
-		currentMode = "editHaulMode";
-	} else if (detail === true) {
-		currentMode = "detailMode";
-	} else if (catchesMode === true) {
-		currentMode = "catchesMode";
-	} else {
-		currentMode = "defaultMode";
-	}
+  let currentMode;
+  if (edit === true) {
+    currentMode = "editHaulMode";
+  } else if (detail === true) {
+    currentMode = "detailMode";
+  } else if (catchesMode === true) {
+    currentMode = "catchesMode";
+  } else {
+    currentMode = "defaultMode";
+  }
 
-	const ButtonBar = buttonBarConfig[currentMode];
+  const ButtonBar = buttonBarConfig[currentMode];
 
-	return ButtonBar;
+  return ButtonBar;
 };
 
 export default HaulButtonBar;

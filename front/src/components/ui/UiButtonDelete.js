@@ -8,37 +8,37 @@ import React from "react";
  * @param {boolean} disabled if the button is disabled or not.
  */
 const UiButtonDelete = ({
-	id,
-	children,
-	deleteMethod,
-	buttonText,
-	confirmMessage,
-	disabled = false,
+  id,
+  children,
+  deleteMethod,
+  buttonText,
+  confirmMessage,
+  disabled = false,
 }) => {
-	const hasChildren = children !== undefined;
+  const hasChildren = children !== undefined;
 
-	const buttonClass = hasChildren
-		? "buttonsWrapper__button icon_button"
-		: "buttonsWrapper__button";
+  const buttonClass = hasChildren
+    ? "buttonsWrapper__button icon_button"
+    : "buttonsWrapper__button";
 
-	const renderedButton = (
-		<button
-			className={buttonClass}
-			type="button"
-			title={buttonText}
-			disabled={disabled}
-			onClick={(e) => {
-				e.preventDefault();
-				if (window.confirm(confirmMessage)) {
-					deleteMethod(id);
-				}
-			}}
-		>
-			{hasChildren ? children : buttonText}
-		</button>
-	);
+  const renderedButton = (
+    <button
+      className={buttonClass}
+      type="button"
+      title={buttonText}
+      disabled={disabled}
+      onClick={e => {
+        e.preventDefault();
+        if (window.confirm(confirmMessage)) {
+          deleteMethod(id);
+        }
+      }}
+    >
+      {hasChildren ? children : buttonText}
+    </button>
+  );
 
-	return renderedButton;
+  return renderedButton;
 };
 
 export default UiButtonDelete;

@@ -10,33 +10,33 @@ import UiIconDownload from "./UiIconDownload";
  */
 
 const UiButtonDownload = ({ children, handleMethod, disabled = false }) => {
-	// const title =
-	// 	disabled === false
-	// 		? "Add lengths"
-	// 		: "To allow add lengths, you must remove the number of 'not measured individuals'.";
+  // const title =
+  // 	disabled === false
+  // 		? "Add lengths"
+  // 		: "To allow add lengths, you must remove the number of 'not measured individuals'.";
 
-	const renderedButton = (
-		<button
-			className="buttonsWrapper__button icon_button"
-			value="Download"
-			disabled={disabled}
-			onClick={(e) => handleMethod(e)}
-		>
-			<UiIconDownload />
-		</button>
-		// <button
-		// 	className="buttonsWrapper__button icon_button"
-		// 	title="Download file"
-		// 	type="button"
-		// 	disabled={disabled}
-		// 	onClick={() => {
-		// 		handleMethod(newStatus);
-		// 	}}
-		// >
-		// <UiIconSexes />
-		// </button>
-	);
-	return renderedButton;
+  const renderedButton = (
+    <button
+      className="buttonsWrapper__button icon_button"
+      value="Download"
+      disabled={disabled}
+      onClick={e => handleMethod(e)}
+    >
+      <UiIconDownload />
+    </button>
+    // <button
+    // 	className="buttonsWrapper__button icon_button"
+    // 	title="Download file"
+    // 	type="button"
+    // 	disabled={disabled}
+    // 	onClick={() => {
+    // 		handleMethod(newStatus);
+    // 	}}
+    // >
+    // <UiIconSexes />
+    // </button>
+  );
+  return renderedButton;
 };
 
 export default UiButtonDownload;

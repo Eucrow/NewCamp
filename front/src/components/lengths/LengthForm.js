@@ -12,132 +12,132 @@ import UiIconDelete from "../ui/UiIconDelete";
  * @returns {JSX.Element} A JSX element that renders the lengths form.
  */
 const LengthForm = ({ l, idx }) => {
-	const lengthsContext = useContext(LengthsContext);
+  const lengthsContext = useContext(LengthsContext);
 
-	useEffect(() => {
-		if (l.is_valid === false) {
-			lengthRef.current.setCustomValidity("This length already exists.");
-			lengthsContext.setValidLengths(false);
-		} else {
-			lengthRef.current.setCustomValidity("");
-			lengthsContext.setValidLengths(true);
-		}
-	}, [l, lengthsContext]);
+  useEffect(() => {
+    if (l.is_valid === false) {
+      lengthRef.current.setCustomValidity("This length already exists.");
+      lengthsContext.setValidLengths(false);
+    } else {
+      lengthRef.current.setCustomValidity("");
+      lengthsContext.setValidLengths(true);
+    }
+  }, [l, lengthsContext]);
 
-	let lengthRef = useRef(null);
+  let lengthRef = useRef(null);
 
-	const renderContent = () => {
-		if (lengthsContext.lengthsStatus === "view") {
-			return (
-				<div className="formLengths__row" key={l.length}>
-					{/* # TODO: make this inputs not readable as inputs in ARIA */}
-					<div className="formLengths__cell">
-						<input
-							type="number"
-							name="length"
-							min="0"
-							max="9999"
-							ref={lengthRef}
-							value={l.length}
-							disabled
-						/>
-					</div>
-					<div className="formLengths__cell">
-						<input
-							type="number"
-							name="number_individuals"
-							min="0"
-							max="9999"
-							value={l.number_individuals}
-							disabled
-						/>
-					</div>
-					<div className="formLengths__cell">
-						<button
-							className="icon_button button__hidden"
-							type="button"
-							aria-hidden="true"
-							tabIndex="-1"
-						>
-							<UiIconAdd />
-						</button>
-					</div>
-					<div className="formLengths__cell">
-						<button
-							className="icon_button button__hidden"
-							type="button"
-							aria-hidden="true"
-							tabIndex="-1"
-						>
-							<UiIconDelete />
-						</button>
-					</div>
-				</div>
-			);
-		} else if (lengthsContext.lengthsStatus === "edit") {
-			return (
-				<div className="formLengths__row" key={idx}>
-					<div className="formLengths__cell">
-						<input
-							type="number"
-							name="length"
-							step={
-								lengthsContext.measurement.increment /
-								lengthsContext.measurement.conversion_factor
-							}
-							autoFocus
-							min="0"
-							max="9999"
-							ref={lengthRef}
-							value={l.length}
-							onChange={(e) => {
-								lengthsContext.editLength(idx, e);
-							}}
-						/>
-					</div>
+  const renderContent = () => {
+    if (lengthsContext.lengthsStatus === "view") {
+      return (
+        <div className="formLengths__row" key={l.length}>
+          {/* # TODO: make this inputs not readable as inputs in ARIA */}
+          <div className="formLengths__cell">
+            <input
+              type="number"
+              name="length"
+              min="0"
+              max="9999"
+              ref={lengthRef}
+              value={l.length}
+              disabled
+            />
+          </div>
+          <div className="formLengths__cell">
+            <input
+              type="number"
+              name="number_individuals"
+              min="0"
+              max="9999"
+              value={l.number_individuals}
+              disabled
+            />
+          </div>
+          <div className="formLengths__cell">
+            <button
+              className="icon_button button__hidden"
+              type="button"
+              aria-hidden="true"
+              tabIndex="-1"
+            >
+              <UiIconAdd />
+            </button>
+          </div>
+          <div className="formLengths__cell">
+            <button
+              className="icon_button button__hidden"
+              type="button"
+              aria-hidden="true"
+              tabIndex="-1"
+            >
+              <UiIconDelete />
+            </button>
+          </div>
+        </div>
+      );
+    } else if (lengthsContext.lengthsStatus === "edit") {
+      return (
+        <div className="formLengths__row" key={idx}>
+          <div className="formLengths__cell">
+            <input
+              type="number"
+              name="length"
+              step={
+                lengthsContext.measurement.increment /
+                lengthsContext.measurement.conversion_factor
+              }
+              autoFocus
+              min="0"
+              max="9999"
+              ref={lengthRef}
+              value={l.length}
+              onChange={e => {
+                lengthsContext.editLength(idx, e);
+              }}
+            />
+          </div>
 
-					<div className="formLengths__cell">
-						<input
-							type="number"
-							name="number_individuals"
-							min="0"
-							max="9999"
-							value={l.number_individuals}
-							onChange={(e) => lengthsContext.editLength(idx, e)}
-						/>
-					</div>
+          <div className="formLengths__cell">
+            <input
+              type="number"
+              name="number_individuals"
+              min="0"
+              max="9999"
+              value={l.number_individuals}
+              onChange={e => lengthsContext.editLength(idx, e)}
+            />
+          </div>
 
-					<div className="formLengths__cell">
-						<button
-							className="icon_button"
-							type="button"
-							title="Add length"
-							onClick={(e) => {
-								lengthsContext.addLength(l.length, idx);
-							}}
-						>
-							<UiIconAdd />
-						</button>
-					</div>
+          <div className="formLengths__cell">
+            <button
+              className="icon_button"
+              type="button"
+              title="Add length"
+              onClick={e => {
+                lengthsContext.addLength(l.length, idx);
+              }}
+            >
+              <UiIconAdd />
+            </button>
+          </div>
 
-					<div className="formLengths__cell">
-						<button
-							className="icon_button"
-							type="button"
-							title="Delete length"
-							onClick={(e) => {
-								lengthsContext.deleteLength(idx);
-							}}
-						>
-							<UiIconDelete />
-						</button>
-					</div>
-				</div>
-			);
-		}
-	};
+          <div className="formLengths__cell">
+            <button
+              className="icon_button"
+              type="button"
+              title="Delete length"
+              onClick={e => {
+                lengthsContext.deleteLength(idx);
+              }}
+            >
+              <UiIconDelete />
+            </button>
+          </div>
+        </div>
+      );
+    }
+  };
 
-	return renderContent();
+  return renderContent();
 };
 
 export default LengthForm;

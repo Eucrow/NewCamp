@@ -21,40 +21,47 @@ import UiIconEdit from "../ui/UiIconEdit";
  * @returns {JSX.Element} The rendered MeasurementButtonBar component.
  */
 const MeasurementButtonBar = ({
-	// id,
-	add,
-	setAdd,
-	edit,
-	handleEdit,
-	handleCancel,
-	// deleteMeasurement,
-	isNameValid,
-	isFormValid,
+  // id,
+  add,
+  setAdd,
+  edit,
+  handleEdit,
+  handleCancel,
+  // deleteMeasurement,
+  isNameValid,
+  isFormValid,
 }) => {
-	var content = "";
+  var content = "";
 
-	if (edit === true) {
-		content = (
-			<div className="form__cell form__cell--right">
-				<UiButtonSave buttonText={"Save Measurement"} isDisabled={!isNameValid} />
-				<button
-					onClick={() => {
-						handleCancel();
-					}}
-				>
-					Cancel
-				</button>
-			</div>
-		);
-	}
+  if (edit === true) {
+    content = (
+      <div className="form__cell form__cell--right">
+        <UiButtonSave
+          buttonText={"Save Measurement"}
+          isDisabled={!isNameValid}
+        />
+        <button
+          onClick={() => {
+            handleCancel();
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+    );
+  }
 
-	if (edit === false) {
-		content = (
-			<div className="form__cell form__cell--right buttonsWrapper">
-				<UiButtonStatusHandle buttonText={"Edit Measurement"} handleMethod={handleEdit} newStatus={true}>
-					<UiIconEdit />
-				</UiButtonStatusHandle>
-				{/* <UiButtonDelete
+  if (edit === false) {
+    content = (
+      <div className="form__cell form__cell--right buttonsWrapper">
+        <UiButtonStatusHandle
+          buttonText={"Edit Measurement"}
+          handleMethod={handleEdit}
+          newStatus={true}
+        >
+          <UiIconEdit />
+        </UiButtonStatusHandle>
+        {/* <UiButtonDelete
 					id={id}
 					deleteMethod={deleteMeasurement}
 					buttonText="Delete Measurement"
@@ -62,20 +69,27 @@ const MeasurementButtonBar = ({
 				>
 					<UiIconDelete />
 				</UiButtonDelete> */}
-			</div>
-		);
-	}
+      </div>
+    );
+  }
 
-	if (add === true) {
-		content = (
-			<div className="form__cell form__cell--right buttonsWrapper">
-				<UiButtonSave buttonText={"Save Measurement"} isDisabled={!isFormValid} />
-				<UiButtonStatusHandle buttonText={"Cancel"} handleMethod={setAdd} newStatus={false} />
-			</div>
-		);
-	}
+  if (add === true) {
+    content = (
+      <div className="form__cell form__cell--right buttonsWrapper">
+        <UiButtonSave
+          buttonText={"Save Measurement"}
+          isDisabled={!isFormValid}
+        />
+        <UiButtonStatusHandle
+          buttonText={"Cancel"}
+          handleMethod={setAdd}
+          newStatus={false}
+        />
+      </div>
+    );
+  }
 
-	return content;
+  return content;
 };
 
 export default MeasurementButtonBar;

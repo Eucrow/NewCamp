@@ -5,8 +5,8 @@ import { ReactComponent as SexesIconUnknown } from "../../icons/sexes_unknown.sv
  * Generic delete button.
  */
 const UiIconSexesUnknown = () => {
-	const renderedButton = <SexesIconUnknown title={"Undetermined sex"} />;
-	return renderedButton;
+  const renderedButton = <SexesIconUnknown title={"Undetermined sex"} />;
+  return renderedButton;
 };
 
 export default UiIconSexesUnknown;

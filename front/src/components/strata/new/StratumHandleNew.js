@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 
-import StratumFormNew from "./StratumFormNew";
-
-import UiButtonSave from "../../ui/UiButtonSave";
-import UiButtonStatusHandle from "../../ui/UiButtonStatusHandle";
+import StratumButtonBar from "../StratumButtonBar";
 
 /**
  * New stratum component
@@ -13,70 +10,114 @@ import UiButtonStatusHandle from "../../ui/UiButtonStatusHandle";
  * @param {method} validateStratumName
  * @returns {JSX.Element}
  */
-const StratumHandleNew = ({ stratification_id, handleAdd, createStratum, validateStratumName }) => {
+const StratumFormNew = ({
+  stratification_id,
+  handleAdd,
+  addStratum,
+  handleCancel,
+  createStratum,
+  validateStratumName,
+}) => {
+  const [newStratum, setNewStratum] = useState({
+    stratification: stratification_id,
+    stratum: "",
+    area: "",
+    comment: "",
+  });
 
-	const [newStratum, setNewStratum] = useState({
-		stratification: stratification_id,
-		stratum: "",
-		area: "",
-		comment: "",
-	});
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setNewStratum(prev_state => {
+      return {
+        ...prev_state,
+        [name]: value,
+      };
+    });
+  };
 
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setNewStratum((prev_state) => {
-			return {
-				...prev_state,
-				[name]: value,
-			};
-		});
-	};
+  const handleSubmit = e => {
+    e.preventDefault();
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		
-		// Validate stratum name if validation function is provided
-		if (validateStratumName && !validateStratumName(newStratum.stratum)) {
-			alert("Stratum name already exists in this stratification");
-			return;
-		}
+    // Validate stratum name if validation function is provided
+    if (validateStratumName && !validateStratumName(newStratum.stratum)) {
+      alert("Stratum name already exists in this stratification");
+      return;
+    }
 
-		// Call the createStratum function passed from parent
-		if (createStratum) {
-			createStratum(newStratum);
-		}
-		
-		// Reset form and close
-		setNewStratum({
-			stratification: stratification_id,
-			stratum: "",
-			area: "",
-			comment: "",
-		});
-		handleAdd(false);
-	};
+    // Call the createStratum function passed from parent
+    if (createStratum) {
+      createStratum(newStratum);
+    }
 
-	const renderContent = () => {
-		return (
-			<form className="form__row form--wide" onSubmit={handleSubmit}>
-				<StratumFormNew 
-					newStratum={newStratum} 
-					handleChange={handleChange}
-				/>
-				
-				<div className="form__cell">
-					<UiButtonSave />
-					<UiButtonStatusHandle
-						buttonText={"Cancel"}
-						handleMethod={handleAdd}
-						newStatus={false}
-					/>
-				</div>
-			</form>
-		);
-	};
+    // Reset form and close
+    setNewStratum({
+      stratification: stratification_id,
+      stratum: "",
+      area: "",
+      comment: "",
+    });
+    handleAdd(false);
+  };
 
-	return renderContent();
+  const renderContent = () => {
+    return (
+      <form className="form--wide" onSubmit={handleSubmit}>
+        <div className="form__row">
+          <label className="form__cell">
+            Stratum:
+            <input
+              className="stratum__description"
+              type="text"
+              id="stratum"
+              name="stratum"
+              autoFocus
+              required
+              maxLength="50"
+              value={newStratum?.stratum || ""}
+              onChange={handleChange}
+              placeholder="Enter stratum name"
+            />
+          </label>
+
+          <label className="form__cell">
+            Area:
+            <input
+              type="number"
+              id="area"
+              name="area"
+              min="0"
+              value={newStratum?.area || ""}
+              onChange={handleChange}
+              placeholder="Enter area"
+            />
+          </label>
+          <div className="form__cell">
+            <StratumButtonBar
+              handleCancel={handleCancel}
+              handleAdd={handleAdd}
+              addStratum={addStratum}
+            />
+          </div>
+        </div>
+        <div className="form__row">
+          <label className="form__cell">
+            Comment:
+            <textarea
+              id="comment"
+              name="comment"
+              maxLength="1000"
+              rows="3"
+              value={newStratum?.comment || ""}
+              onChange={handleChange}
+              placeholder="Enter comment (optional)"
+            />
+          </label>
+        </div>
+      </form>
+    );
+  };
+
+  return renderContent();
 };
 
-export default StratumHandleNew;
+export default StratumFormNew;
