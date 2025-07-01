@@ -33,17 +33,17 @@ const StratumButtonBar = ({
   const buttonBarConfig = {
     defaultMode: (
       <div className="form__cell form__cell--right">
-        <UiButtonStatusHandle
-          buttonText={<UiIconEdit />}
-          handleMethod={setEdit}
-          newStatus={true}
-        />
-        <UiButtonDelete deleteMethod={() => deleteStratum(stratum?.id)} />
+        <UiButtonStatusHandle handleMethod={setEdit} newStatus={true}>
+          <UiIconEdit />
+        </UiButtonStatusHandle>
+        <UiButtonDelete deleteMethod={() => deleteStratum(stratum?.id)}>
+          <UiIconDelete />
+        </UiButtonDelete>
       </div>
     ),
     editMode: (
       <div className="form__cell form__cell--right">
-        <UiButtonSave />
+        <UiButtonSave buttonText={"Save"} />
         <UiButtonStatusHandle
           buttonText={"Cancel"}
           handleMethod={() => handleCancel(false)}
@@ -53,7 +53,7 @@ const StratumButtonBar = ({
     ),
     newMode: (
       <div className="form__cell form__cell--right">
-        <UiButtonSave />
+        <UiButtonSave buttonText={"Save"} />
         <UiButtonStatusHandle
           buttonText={"Cancel"}
           handleMethod={handleAdd}

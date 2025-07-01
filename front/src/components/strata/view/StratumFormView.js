@@ -27,6 +27,8 @@ const StratumFormView = ({ stratum, edit, setEdit }) => {
               type="number"
               name="area"
               id="area"
+              min="1"
+              max="9999"
               disabled
               value={stratum.area || ""}
             />

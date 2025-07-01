@@ -75,7 +75,6 @@ const StratumFormNew = ({
               maxLength="50"
               value={newStratum?.stratum || ""}
               onChange={handleChange}
-              placeholder="Enter stratum name"
             />
           </label>
 
@@ -85,19 +84,18 @@ const StratumFormNew = ({
               type="number"
               id="area"
               name="area"
-              min="0"
+              min="1"
+              max="9999"
               value={newStratum?.area || ""}
               onChange={handleChange}
-              placeholder="Enter area"
             />
           </label>
-          <div className="form__cell">
-            <StratumButtonBar
-              handleCancel={handleCancel}
-              handleAdd={handleAdd}
-              addStratum={addStratum}
-            />
-          </div>
+
+          <StratumButtonBar
+            handleCancel={handleCancel}
+            handleAdd={handleAdd}
+            addStratum={addStratum}
+          />
         </div>
         <div className="form__row">
           <label className="form__cell">
@@ -109,7 +107,6 @@ const StratumFormNew = ({
               rows="3"
               value={newStratum?.comment || ""}
               onChange={handleChange}
-              placeholder="Enter comment (optional)"
             />
           </label>
         </div>

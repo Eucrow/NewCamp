@@ -80,7 +80,8 @@ const StratumFormEdit = ({
               type="number"
               name="area"
               id="area"
-              min="0"
+              min="1"
+              max="9999"
               value={formData.area}
               onChange={handleChange}
             />
