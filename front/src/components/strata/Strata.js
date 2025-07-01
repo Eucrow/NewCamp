@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import Stratum from "./Stratum";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 import { API_CONFIG, buildApiUrl } from "../../config/api";
@@ -141,12 +141,7 @@ const Strata = () => {
         <Fragment>
           {strata.map(stratum => {
             return (
-              <Stratum
-                key={stratum.id}
-                stratum={stratum}
-                stratificationId={selectedStratification}
-                validateStratumName={validateStratumName}
-              />
+              <Stratum key={stratum.id} stratum={stratum} addStratum={false} />
             );
           })}
         </Fragment>
@@ -158,25 +153,21 @@ const Strata = () => {
     if (addStratum === false) {
       return (
         <Fragment>
+          <div className="survey__cell survey__cell--right buttonsWrapper">
+            <UiButtonStatusHandle
+              buttonText={"Add Stratum"}
+              handleMethod={setAddStratum}
+              newStatus={true}
+            ></UiButtonStatusHandle>
+          </div>
           {renderStrataList()}
-          <UiButtonStatusHandle
-            buttonText={"Add Stratum"}
-            handleMethod={setAddStratum}
-            newStatus={true}
-          ></UiButtonStatusHandle>
         </Fragment>
       );
     } else if (addStratum === true) {
       return (
         <Fragment>
+          <Stratum addStratum={true} />
           {renderStrataList()}
-          <Stratum
-            stratificationId={selectedStratification}
-            addStratum={addStratum}
-            handleAddStratum={setAddStratum}
-            createStratum={createStratum}
-            validateStratumName={validateStratumName}
-          />
         </Fragment>
       );
     }
@@ -194,6 +185,8 @@ const Strata = () => {
           createStratum,
           updateStratum,
           deleteStratum,
+          validateStratumName,
+          setAddStratum,
         }}
       >
         <main>

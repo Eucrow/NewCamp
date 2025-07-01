@@ -1,43 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import StratumFormView from "./view/StratumFormView";
 import StratumFormEdit from "./edit/StratumFormEdit";
 import StratumFormNew from "./new/StratumHandleNew";
+import StrataContext from "../../contexts/StrataContext";
 
-const Stratum = ({
-  stratum,
-  stratificationId,
-  validateStratumName,
-  createStratum,
-  addStratum,
-  handleAddStratum,
-}) => {
+const Stratum = ({ stratum, addStratum }) => {
   const [edit, setEdit] = useState(false);
-
   const [thisStratum, setThisStratum] = useState(stratum);
+  const strataContext = useContext(StrataContext);
 
   const renderContent = () => {
     if (addStratum === true) {
       return (
         <div className="wrapper form__row">
           <StratumFormNew
-            stratification_id={stratificationId}
-            handleAdd={handleAddStratum}
+            stratification_id={strataContext.selectedStratification}
             addStratum={addStratum}
-            createStratum={createStratum}
-            validateStratumName={validateStratumName}
           />
         </div>
       );
     } else if (edit === true) {
       return (
         <div className="wrapper form__row">
-          <StratumFormEdit
-            stratum={stratum}
-            edit={edit}
-            setEdit={setEdit}
-            setThisStratum={setThisStratum}
-            validateStratumName={validateStratumName}
-          />
+          <StratumFormEdit stratum={stratum} edit={edit} setEdit={setEdit} />
         </div>
       );
     } else {

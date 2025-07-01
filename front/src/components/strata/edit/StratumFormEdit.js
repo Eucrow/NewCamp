@@ -3,13 +3,7 @@ import React, { useContext, useState } from "react";
 import StrataContext from "../../../contexts/StrataContext";
 import StratumButtonBar from "../StratumButtonBar";
 
-const StratumFormEdit = ({
-  stratum,
-  setThisStratum,
-  edit,
-  setEdit,
-  validateStratumName,
-}) => {
+const StratumFormEdit = ({ stratum, edit, setEdit }) => {
   /**
    * @param {object} stratum
    * @param {method} setThisStratum

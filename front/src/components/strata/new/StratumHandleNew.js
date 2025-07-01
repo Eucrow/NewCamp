@@ -1,23 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import StratumButtonBar from "../StratumButtonBar";
+import StrataContext from "../../../contexts/StrataContext";
 
 /**
  * New stratum component
  * @param {number} stratification_id
  * @param {method} handleAdd
- * @param {method} createStratum
- * @param {method} validateStratumName
+ * @param {method} addStratum
  * @returns {JSX.Element}
  */
-const StratumFormNew = ({
-  stratification_id,
-  handleAdd,
-  addStratum,
-  handleCancel,
-  createStratum,
-  validateStratumName,
-}) => {
+const StratumFormNew = ({ stratification_id, addStratum }) => {
+  const strataContext = useContext(StrataContext);
   const [newStratum, setNewStratum] = useState({
     stratification: stratification_id,
     stratum: "",
@@ -39,14 +33,17 @@ const StratumFormNew = ({
     e.preventDefault();
 
     // Validate stratum name if validation function is provided
-    if (validateStratumName && !validateStratumName(newStratum.stratum)) {
+    if (
+      strataContext.validateStratumName &&
+      !strataContext.validateStratumName(newStratum.stratum)
+    ) {
       alert("Stratum name already exists in this stratification");
       return;
     }
 
-    // Call the createStratum function passed from parent
-    if (createStratum) {
-      createStratum(newStratum);
+    // Call the createStratum function from context
+    if (strataContext.createStratum) {
+      strataContext.createStratum(newStratum);
     }
 
     // Reset form and close
@@ -56,7 +53,11 @@ const StratumFormNew = ({
       area: "",
       comment: "",
     });
-    handleAdd(false);
+    strataContext.setAddStratum(false);
+  };
+
+  const handleCancel = () => {
+    strataContext.setAddStratum(false);
   };
 
   const renderContent = () => {
@@ -93,7 +94,7 @@ const StratumFormNew = ({
 
           <StratumButtonBar
             handleCancel={handleCancel}
-            handleAdd={handleAdd}
+            handleAdd={strataContext.setAddStratum}
             addStratum={addStratum}
           />
         </div>
