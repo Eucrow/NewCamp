@@ -120,12 +120,12 @@ urlpatterns = [
                   re_path(r'^api/1.0/stratifications/$',
                           StratificationsAPI.as_view(), name="get_stratifications_api"),
 
-                  # Stratum API URLS
+                  # Strata API URLS
                   re_path(r'^api/1.0/strata/(?P<stratification_id>[0-9]+)$',
                           StrataAPI.as_view(), name="get_strata_api"),
                   re_path(r'^api/1.0/strata/$',
                           StrataAPI.as_view(), name="create_stratum_api"),
-                  re_path(r'^api/1.0/stratum/(?P<pk>[0-9]+)/$',
+                  re_path(r'^api/1.0/stratum/(?P<pk>[0-9]+)$',
                           StratumAPI.as_view(), name="get_update_delete_stratum_api"),
 
                   # Stations API urls

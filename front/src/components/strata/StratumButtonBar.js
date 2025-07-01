@@ -38,9 +38,7 @@ const StratumButtonBar = ({
           handleMethod={setEdit}
           newStatus={true}
         />
-        <UiButtonDelete
-          handleMethod={() => deleteStratum && deleteStratum(stratum?.id)}
-        />
+        <UiButtonDelete deleteMethod={() => deleteStratum(stratum?.id)} />
       </div>
     ),
     editMode: (
@@ -48,9 +46,7 @@ const StratumButtonBar = ({
         <UiButtonSave />
         <UiButtonStatusHandle
           buttonText={"Cancel"}
-          handleMethod={
-            handleCancel ? () => handleCancel(false) : () => setEdit(false)
-          }
+          handleMethod={() => handleCancel(false)}
           newStatus={false}
         />
       </div>

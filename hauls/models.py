@@ -11,7 +11,7 @@ class Haul(models.Model):
     station = models.ForeignKey(
         'stations.Station', on_delete=models.CASCADE, related_name='hauls')
     stratum = models.ForeignKey(
-        'strata.Stratum', null=True, blank=True, on_delete=models.CASCADE)
+        'strata.Stratum', null=True, blank=True, on_delete=models.PROTECT)
     sampler = models.ForeignKey('samplers.Sampler', on_delete=models.CASCADE)
     haul = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(99)])
