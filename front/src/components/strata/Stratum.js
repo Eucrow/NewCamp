@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import StratumFormView from "./view/StratumFormView";
 import StratumFormEdit from "./edit/StratumFormEdit";
-import StratumFormNew from "./new/StratumHandleNew";
+import StratumFormNew from "./new/StratumFormNew";
 import StrataContext from "../../contexts/StrataContext";
 
 const Stratum = ({ stratum, addStratum }) => {
