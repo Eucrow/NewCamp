@@ -302,7 +302,7 @@ const Stations = () => {
         })
         .then(survey => {
           const apiStrata = buildApiUrl(
-            API_CONFIG.ENDPOINTS.STRATA_BY_ID(survey.stratification_id)
+            API_CONFIG.ENDPOINTS.STRATUM_BY_ID(survey.stratification_id)
           );
           fetch(apiStrata)
             .then(response => {
