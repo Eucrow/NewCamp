@@ -21,10 +21,6 @@ const Strata = () => {
   // Fetch strata when stratification is selected
   useEffect(() => {
     if (selectedStratification) {
-      console.log(
-        "Fetching strata for stratification:",
-        API_CONFIG.ENDPOINTS.STRATA_BY_STRATIFICATION(selectedStratification)
-      );
       fetch(
         buildApiUrl(
           API_CONFIG.ENDPOINTS.STRATA_BY_STRATIFICATION(selectedStratification)
@@ -53,10 +49,6 @@ const Strata = () => {
           ? null
           : stratum.area,
     };
-    console.log("Creating stratum api:", API_CONFIG.ENDPOINTS.STRATA);
-    console.log(
-      JSON.stringify(processedStratum, null, 2) // Pretty print for debugging
-    );
     fetch(buildApiUrl(API_CONFIG.ENDPOINTS.STRATA), {
       method: "POST",
       headers: API_CONFIG.HEADERS.DEFAULT,
