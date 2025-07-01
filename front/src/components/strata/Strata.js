@@ -43,15 +43,24 @@ const Strata = () => {
    * @param {object} stratum - The stratum to be created.
    */
   const createStratum = stratum => {
+    // Ensure area is null if empty or not set
+    const processedStratum = {
+      ...stratum,
+      area:
+        stratum.area === undefined ||
+        stratum.area === null ||
+        stratum.area === ""
+          ? null
+          : stratum.area,
+    };
     console.log("Creating stratum api:", API_CONFIG.ENDPOINTS.STRATA);
     console.log(
-      "Creating stratum api:",
-      buildApiUrl(API_CONFIG.ENDPOINTS.STRATA)
+      JSON.stringify(processedStratum, null, 2) // Pretty print for debugging
     );
     fetch(buildApiUrl(API_CONFIG.ENDPOINTS.STRATA), {
       method: "POST",
       headers: API_CONFIG.HEADERS.DEFAULT,
-      body: JSON.stringify(stratum),
+      body: JSON.stringify(processedStratum),
     })
       .then(response => response.json())
       .then(s => {
@@ -186,6 +195,7 @@ const Strata = () => {
           updateStratum,
           deleteStratum,
           validateStratumName,
+          addStratum,
           setAddStratum,
         }}
       >

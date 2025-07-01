@@ -66,11 +66,13 @@ const StratumButtonBar = ({
   const renderContent = () => {
     if (isEdit || edit === true) {
       return buttonBarConfig.editMode;
-    } else if (addStratum === true) {
-      return buttonBarConfig.newMode;
-    } else {
-      return buttonBarConfig.defaultMode;
     }
+
+    if (addStratum === true) {
+      return buttonBarConfig.newMode;
+    }
+
+    return buttonBarConfig.defaultMode;
   };
 
   return renderContent();

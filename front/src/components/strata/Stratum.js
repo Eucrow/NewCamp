@@ -6,7 +6,6 @@ import StrataContext from "../../contexts/StrataContext";
 
 const Stratum = ({ stratum, addStratum }) => {
   const [edit, setEdit] = useState(false);
-  const [thisStratum, setThisStratum] = useState(stratum);
   const strataContext = useContext(StrataContext);
 
   const renderContent = () => {

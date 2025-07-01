@@ -33,12 +33,7 @@ const StratumFormView = ({ stratum, edit, setEdit }) => {
               value={stratum.area || ""}
             />
           </label>
-          <StratumButtonBar
-            edit={edit}
-            setEdit={setEdit}
-            stratum={stratum}
-            deleteStratum={strataContext.deleteStratum}
-          />
+          <StratumButtonBar edit={edit} setEdit={setEdit} stratum={stratum} />
         </div>
         <div className="form__row">
           <label className="form__cell form--wide">
