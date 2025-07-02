@@ -24,7 +24,7 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
 
   const stratumRef = useRef(null);
 
-  const { stratumExists, isFormValid, errors } =
+  const { stratumExists, requiredFields, isFormValid, errors } =
     useStrataValidation(newStratum);
 
   const handleChange = e => {
@@ -39,15 +39,6 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    // // Validate stratum name if validation function is provided
-    // if (
-    //   strataContext.validateStratumName &&
-    //   !strataContext.validateStratumName(newStratum.stratum)
-    // ) {
-    //   alert("Stratum name already exists in this stratification");
-    //   return;
-    // }
 
     // Call the createStratum function from context
     if (strataContext.createStratum) {
@@ -89,6 +80,11 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
             <FloatingError
               message={errors.stratumExists}
               show={stratumExists}
+              inputRef={stratumRef}
+            />
+            <FloatingError
+              message={errors.requiredFields}
+              show={!requiredFields}
               inputRef={stratumRef}
             />
           </label>

@@ -24,9 +24,11 @@ export const useStrataValidation = (stratum, originalStratum = null) => {
   // State to hold all validation-related values
   const [validationState, setValidationState] = useState({
     stratumExists: false,
+    requiredFieldsValid: false,
     isFormValid: false,
     errors: {
       stratumExists: null,
+      requiredFields: null,
     },
   });
 
@@ -37,17 +39,17 @@ export const useStrataValidation = (stratum, originalStratum = null) => {
    *
    * @returns {boolean} Whether all required fields are valid
    */
-  // const validateRequiredFields = useCallback(() => {
-  //   const requiredFields = {
-  //     stratum: stratum.stratum,
-  //   };
+  const validateRequiredFields = useCallback(() => {
+    const requiredFields = {
+      stratum: stratum.stratum,
+    };
 
-  //   const isValid = Object.values(requiredFields).every(
-  //     value => value !== null && value !== ""
-  //   );
+    const isValid = Object.values(requiredFields).every(
+      value => value !== null && value !== ""
+    );
 
-  //   return isValid;
-  // }, [stratum.stratum]);
+    return isValid;
+  }, [stratum.stratum]);
 
   /**
    * Method to check if a stratum name already exists in this stratification.
@@ -70,22 +72,37 @@ export const useStrataValidation = (stratum, originalStratum = null) => {
 
   // Effect hook that handles form validation on every change.
   useEffect(() => {
-    const stratum_exists = stratumExists(stratum, originalStratum);
+    // Validate required fields
+    const requiredFieldsValid = validateRequiredFields();
 
-    // Ready to add new validation. isValid must be true when all validations pass.
-    // For now, we only check if the stratum exists.
-    const isValid = !stratum_exists;
+    const stratumAlreadyExists = stratumExists(stratum, originalStratum);
 
-    // Set error message if stratum exists
-    const errors = {
-      stratumExists: stratum_exists
+    // Set errors messages
+    const errorsRequiredFields = {
+      requiredFields: !requiredFieldsValid
+        ? "The stratum field must be filled."
+        : null,
+    };
+
+    const errorsStratumExists = {
+      stratumExists: stratumAlreadyExists
         ? "Stratum already exists in this stratification."
         : null,
     };
 
+    // Merge errors
+    const errors = {
+      ...errorsRequiredFields,
+      ...errorsStratumExists,
+    };
+
+    // Determine if the form is valid
+    const isValid = !stratumAlreadyExists && requiredFieldsValid;
+
     setValidationState(prev => ({
       ...prev,
-      stratumExists: stratum_exists,
+      stratumExists: stratumAlreadyExists,
+      requiredFields: requiredFieldsValid,
       isFormValid: isValid,
       errors,
     }));
@@ -93,6 +110,7 @@ export const useStrataValidation = (stratum, originalStratum = null) => {
 
   return {
     stratumExists: validationState.stratumExists,
+    requiredFields: validationState.requiredFieldsValid,
     isFormValid: validationState.isFormValid,
     errors: validationState.errors,
   };

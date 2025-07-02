@@ -29,10 +29,8 @@ const StratumFormEdit = ({ stratum, edit, setEdit }) => {
   const stratumRef = useRef(null);
 
   // Pass the current stratum name and the original stratum name (from props)
-  const { stratumExists, isFormValid, errors } = useStrataValidation(
-    formData,
-    stratum
-  );
+  const { stratumExists, requiredFields, isFormValid, errors } =
+    useStrataValidation(formData, stratum);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -81,6 +79,11 @@ const StratumFormEdit = ({ stratum, edit, setEdit }) => {
             <FloatingError
               message={errors.stratumExists}
               show={stratumExists}
+              inputRef={stratumRef}
+            />
+            <FloatingError
+              message={errors.requiredFields}
+              show={!requiredFields}
               inputRef={stratumRef}
             />
           </label>
