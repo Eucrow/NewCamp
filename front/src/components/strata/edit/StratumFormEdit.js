@@ -30,8 +30,8 @@ const StratumFormEdit = ({ stratum, edit, setEdit }) => {
 
   // Pass the current stratum name and the original stratum name (from props)
   const { stratumExists, isFormValid, errors } = useStrataValidation(
-    formData.stratum,
-    stratum.stratum
+    formData,
+    stratum
   );
 
   const handleSubmit = e => {

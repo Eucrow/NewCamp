@@ -24,9 +24,8 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
 
   const stratumRef = useRef(null);
 
-  const { stratumExists, isFormValid, errors } = useStrataValidation(
-    newStratum.stratum
-  );
+  const { stratumExists, isFormValid, errors } =
+    useStrataValidation(newStratum);
 
   const handleChange = e => {
     const { name, value } = e.target;

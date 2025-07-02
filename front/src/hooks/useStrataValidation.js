@@ -31,6 +31,23 @@ export const useStrataValidation = (stratum, originalStratum = null) => {
   });
 
   const strataContext = useContext(StrataContext);
+  /**
+   * Validates that all required fields are filled.
+   * Checks group, species, category and weight.
+   *
+   * @returns {boolean} Whether all required fields are valid
+   */
+  // const validateRequiredFields = useCallback(() => {
+  //   const requiredFields = {
+  //     stratum: stratum.stratum,
+  //   };
+
+  //   const isValid = Object.values(requiredFields).every(
+  //     value => value !== null && value !== ""
+  //   );
+
+  //   return isValid;
+  // }, [stratum.stratum]);
 
   /**
    * Method to check if a stratum name already exists in this stratification.
@@ -42,9 +59,11 @@ export const useStrataValidation = (stratum, originalStratum = null) => {
       const strata = strataContext.strata || [];
 
       // Start with all strata except the one being edited
-      const filteredStrata = strata.filter(s => s.stratum !== originalStratum);
+      const filteredStrata = strata.filter(
+        s => s.stratum !== originalStratum?.stratum
+      );
 
-      return filteredStrata.some(s => s.stratum === stratum);
+      return filteredStrata.some(s => s.stratum === stratum.stratum);
     },
     [strataContext.strata]
   );
@@ -59,7 +78,9 @@ export const useStrataValidation = (stratum, originalStratum = null) => {
 
     // Set error message if stratum exists
     const errors = {
-      stratumExists: stratum_exists ? "Stratum already exists in this stratification." : null,
+      stratumExists: stratum_exists
+        ? "Stratum already exists in this stratification."
+        : null,
     };
 
     setValidationState(prev => ({
