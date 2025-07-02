@@ -302,8 +302,11 @@ const Stations = () => {
         })
         .then(survey => {
           const apiStrata = buildApiUrl(
-            API_CONFIG.ENDPOINTS.STRATUM_BY_ID(survey.stratification_id)
+            API_CONFIG.ENDPOINTS.STRATA_BY_STRATIFICATION(
+              survey.stratification_id
+            )
           );
+          console.log("apiStrata", apiStrata);
           fetch(apiStrata)
             .then(response => {
               if (response.status > 400) {
