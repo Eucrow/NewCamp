@@ -1,7 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 
 import StratumButtonBar from "../StratumButtonBar";
 import StrataContext from "../../../contexts/StrataContext";
+
+import { useStrataValidation } from "../../../hooks/useStrataValidation";
+import FloatingError from "../../ui/FloatingError";
 
 /**
  * New stratum component
@@ -19,6 +22,12 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
     comment: "",
   });
 
+  const stratumRef = useRef(null);
+
+  const { stratumExists, isFormValid, errors } = useStrataValidation(
+    newStratum.stratum
+  );
+
   const handleChange = e => {
     const { name, value } = e.target;
     setNewStratum(prev_state => {
@@ -32,14 +41,14 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    // Validate stratum name if validation function is provided
-    if (
-      strataContext.validateStratumName &&
-      !strataContext.validateStratumName(newStratum.stratum)
-    ) {
-      alert("Stratum name already exists in this stratification");
-      return;
-    }
+    // // Validate stratum name if validation function is provided
+    // if (
+    //   strataContext.validateStratumName &&
+    //   !strataContext.validateStratumName(newStratum.stratum)
+    // ) {
+    //   alert("Stratum name already exists in this stratification");
+    //   return;
+    // }
 
     // Call the createStratum function from context
     if (strataContext.createStratum) {
@@ -76,6 +85,12 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
               maxLength="50"
               value={newStratum?.stratum || ""}
               onChange={handleChange}
+              ref={stratumRef}
+            />
+            <FloatingError
+              message={errors.stratumExists}
+              show={stratumExists}
+              inputRef={stratumRef}
             />
           </label>
 
@@ -96,6 +111,7 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
             handleCancel={handleCancel}
             handleAdd={strataContext.setAddStratum}
             addStratum={addStratum}
+            isValid={isFormValid}
           />
         </div>
         <div className="form__row">
