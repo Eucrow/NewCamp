@@ -1,7 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 
 import StrataContext from "../../../contexts/StrataContext";
 import StratumButtonBar from "../StratumButtonBar";
+
+import { useStrataValidation } from "../../../hooks/useStrataValidation";
+import FloatingError from "../../ui/FloatingError";
 
 const StratumFormEdit = ({ stratum, edit, setEdit }) => {
   /**
@@ -22,6 +25,14 @@ const StratumFormEdit = ({ stratum, edit, setEdit }) => {
     area: stratum.area || "",
     comment: stratum.comment || "",
   });
+
+  const stratumRef = useRef(null);
+
+  // Pass the current stratum name and the original stratum name (from props)
+  const { stratumExists, isFormValid, errors } = useStrataValidation(
+    formData.stratum,
+    stratum.stratum
+  );
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -65,6 +76,12 @@ const StratumFormEdit = ({ stratum, edit, setEdit }) => {
               value={formData.stratum}
               onChange={handleChange}
               required
+              ref={stratumRef}
+            />
+            <FloatingError
+              message={errors.stratumExists}
+              show={stratumExists}
+              inputRef={stratumRef}
             />
           </label>
 
@@ -86,6 +103,7 @@ const StratumFormEdit = ({ stratum, edit, setEdit }) => {
             handleCancel={handleCancel}
             stratum={stratum}
             isEdit={true}
+            isValid={isFormValid}
           />
         </div>
         <div className="form__row">

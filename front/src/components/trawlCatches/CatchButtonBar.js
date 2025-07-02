@@ -163,7 +163,7 @@ const CatchButtonBar = ({ newCatch, setNewCatch, isFormValid }) => {
   if (catchContext.catchStatus === "edit") {
     ButtonBar = (
       <div className="catches__table__buttonBar">
-        <UiButtonSave buttonText={"Save"} isDisabled={!isFormValid} />
+        <UiButtonSave buttonText={"Save"} disabled={!isFormValid} />
 
         <button
           onClick={e => {

@@ -29,6 +29,7 @@ const StratumButtonBar = ({
   handleAdd,
   addStratum,
   isEdit,
+  isValid,
 }) => {
   const buttonBarConfig = {
     defaultMode: (
@@ -43,21 +44,23 @@ const StratumButtonBar = ({
     ),
     editMode: (
       <div className="form__cell form__cell--right">
-        <UiButtonSave buttonText={"Save"} />
+        <UiButtonSave buttonText={"Save"} disabled={!isValid} />
         <UiButtonStatusHandle
           buttonText={"Cancel"}
           handleMethod={() => handleCancel(false)}
           newStatus={false}
+          disabled={!isValid}
         />
       </div>
     ),
     newMode: (
       <div className="form__cell form__cell--right">
-        <UiButtonSave buttonText={"Save"} />
+        <UiButtonSave buttonText={"Save"} disabled={!isValid} />
         <UiButtonStatusHandle
           buttonText={"Cancel"}
           handleMethod={handleAdd}
           newStatus={false}
+          disabled={!isValid}
         />
       </div>
     ),
