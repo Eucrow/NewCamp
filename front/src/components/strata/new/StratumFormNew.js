@@ -7,11 +7,14 @@ import { useStrataValidation } from "../../../hooks/useStrataValidation";
 import FloatingError from "../../ui/FloatingError";
 
 /**
- * New stratum component
- * @param {number} stratification_id
- * @param {method} handleAdd
- * @param {method} addStratum
- * @returns {JSX.Element}
+ * StratumFormNew component.
+ * Renders a form for creating a new stratum, including validation and error display.
+ *
+ * @param {Object} props - The component props.
+ * @param {number} props.stratification_id - The ID of the stratification to which the new stratum belongs.
+ * @param {boolean} props.addStratum - Whether a new stratum is being added (controls button bar mode).
+ *
+ * @returns {JSX.Element} The rendered form for creating a new stratum.
  */
 const StratumFormNew = ({ stratification_id, addStratum }) => {
   const strataContext = useContext(StrataContext);

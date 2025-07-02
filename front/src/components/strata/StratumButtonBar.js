@@ -8,17 +8,20 @@ import UiIconDelete from "../ui/UiIconDelete";
 
 /**
  * StratumButtonBar component.
- * Renders a button bar with different actions related to a stratum.
+ * Renders a button bar with actions for a stratum, supporting edit, add, and default modes.
  *
- * @param {number} stratum_id - The ID of the stratum.
- * @param {boolean} edit - A boolean indicating if the stratum is currently being edited.
- * @param {function} setEdit - A function to set the edit state.
- * @param {function} deleteStratum - A function to delete the stratum.
- * @param {function} handleCancel - A function to handle canceling the edition of the stratum.
- * @param {boolean} isEdit - A boolean indicating if this is edit mode.
- * @param {object} stratum - The stratum object.
+ * @param {Object} props - The component props.
+ * @param {Object} props.stratum - The stratum object.
+ * @param {boolean} props.edit - Whether the stratum is currently being edited.
+ * @param {Function} props.setEdit - Function to set the edit state.
+ * @param {Function} props.deleteStratum - Function to delete the stratum by id.
+ * @param {Function} props.handleCancel - Function to handle canceling the edit mode.
+ * @param {Function} props.handleAdd - Function to handle canceling the add mode.
+ * @param {boolean} props.addStratum - Whether a new stratum is being added.
+ * @param {boolean} props.isEdit - Whether this is edit mode (alternative to `edit`).
+ * @param {boolean} props.isValid - Whether the current form state is valid.
  *
- * @returns {React.Element} The rendered StratumButtonBar component.
+ * @returns {React.ReactElement} The rendered StratumButtonBar component.
  */
 const StratumButtonBar = ({
   stratum,
@@ -49,7 +52,6 @@ const StratumButtonBar = ({
           buttonText={"Cancel"}
           handleMethod={() => handleCancel(false)}
           newStatus={false}
-          disabled={!isValid}
         />
       </div>
     ),
@@ -60,7 +62,6 @@ const StratumButtonBar = ({
           buttonText={"Cancel"}
           handleMethod={handleAdd}
           newStatus={false}
-          disabled={!isValid}
         />
       </div>
     ),

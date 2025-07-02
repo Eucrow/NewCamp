@@ -6,6 +6,17 @@ import StratumButtonBar from "../StratumButtonBar";
 import { useStrataValidation } from "../../../hooks/useStrataValidation";
 import FloatingError from "../../ui/FloatingError";
 
+/**
+ * StratumFormEdit component.
+ * Renders a form for editing a stratum, including validation and error display.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.stratum - The stratum object to edit.
+ * @param {boolean} props.edit - Whether the form is in edit mode.
+ * @param {Function} props.setEdit - Function to set the edit state.
+ *
+ * @returns {JSX.Element} The rendered form for editing a stratum.
+ */
 const StratumFormEdit = ({ stratum, edit, setEdit }) => {
   /**
    * @param {object} stratum

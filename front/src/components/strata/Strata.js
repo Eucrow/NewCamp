@@ -1,9 +1,18 @@
 import React, { useEffect, useState, Fragment } from "react";
 import Stratum from "./Stratum";
-import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
+import StrataButtonBar from "./StrataButtonBar";
 import { API_CONFIG, buildApiUrl } from "../../config/api";
 import StrataContext from "../../contexts/StrataContext";
 
+/**
+ * Strata component.
+ *
+ * Provides an interface for managing strata within selected stratifications.
+ * Handles fetching, creating, updating, and deleting strata, as well as validation and context management.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Strata management interface.
+ */
 const Strata = () => {
   const [strata, setStrata] = useState([]);
   const [stratifications, setStratifications] = useState([]);
@@ -124,8 +133,10 @@ const Strata = () => {
 
   /**
    * Validate the stratum name.
-   * @param {string} stratumName stratum name to check if is valid.
-   * @returns True if valid, false if not.
+   * Checks if the provided stratum name does not already exist in the current stratification.
+   *
+   * @param {string} stratumName - The stratum name to check for validity.
+   * @returns {boolean} True if valid (does not exist), false if not valid (already exists).
    */
   const validateStratumName = stratumName => {
     const stratum_exists = stratumExists(stratumName);
@@ -154,13 +165,7 @@ const Strata = () => {
     if (addStratum === false) {
       return (
         <Fragment>
-          <div className="survey__cell survey__cell--right buttonsWrapper">
-            <UiButtonStatusHandle
-              buttonText={"Add Stratum"}
-              handleMethod={setAddStratum}
-              newStatus={true}
-            ></UiButtonStatusHandle>
-          </div>
+          <StrataButtonBar handleAddStratum={setAddStratum} />
           {renderStrataList()}
         </Fragment>
       );
