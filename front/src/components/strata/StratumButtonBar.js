@@ -40,7 +40,10 @@ const StratumButtonBar = ({
         <UiButtonStatusHandle handleMethod={setEdit} newStatus={true}>
           <UiIconEdit />
         </UiButtonStatusHandle>
-        <UiButtonDelete deleteMethod={() => deleteStratum(stratum?.id)}>
+        <UiButtonDelete
+          confirmMessage={`Are you sure you want to delete the stratum "${stratum?.stratum}"?`}
+          deleteMethod={() => deleteStratum(stratum?.id)}
+        >
           <UiIconDelete />
         </UiButtonDelete>
       </div>
