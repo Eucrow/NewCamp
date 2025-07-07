@@ -215,6 +215,12 @@ const Strata = () => {
           <header>
             <h1 className="title">Strata Management</h1>
           </header>
+          <div className="wrapper measurementsWrapper measurement__notes">
+            The manage of strata have some limitations. In order to avoid
+            inconsistencies, the system does not allow to delete strata used by
+            hauls. To remove strata, please ensure they are not associated with
+            any hauls first.
+          </div>
 
           <div className="wrapper strataWrapper">
             <div className="form__row">
