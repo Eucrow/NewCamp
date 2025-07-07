@@ -33,6 +33,7 @@ const StratumButtonBar = ({
   addStratum,
   isEdit,
   isValid,
+  isDeleteable,
 }) => {
   const buttonBarConfig = {
     defaultMode: (
@@ -43,6 +44,11 @@ const StratumButtonBar = ({
         <UiButtonDelete
           confirmMessage={`Are you sure you want to delete the stratum "${stratum?.stratum}"?`}
           deleteMethod={() => deleteStratum(stratum?.id)}
+          buttonText={"Delete stratum"}
+          disabled={!isDeleteable}
+          disabledMessage={
+            "This stratum cannot be deleted because it is used in one or more hauls."
+          }
         >
           <UiIconDelete />
         </UiButtonDelete>

@@ -11,6 +11,7 @@ export const API_CONFIG = {
     STRATA: "/strata/",
     STRATA_BY_STRATIFICATION: stratificationId => `/strata/${stratificationId}`,
     STRATUM_BY_ID: stratumId => `/stratum/${stratumId}`,
+    STRATUM_IN_HAUL: stratumId => `/strata/check-stratum-in-haul/${stratumId}`,
 
     // Gear endpoints
     GET_TRAWLS: "/gears/trawl/basic/",

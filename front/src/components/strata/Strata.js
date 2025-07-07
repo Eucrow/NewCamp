@@ -143,6 +143,20 @@ const Strata = () => {
     return !stratum_exists;
   };
 
+  // Fetch if the stratum is used in any hauls
+  const stratumUsedInHauls = async stratumId => {
+    const api = buildApiUrl(API_CONFIG.ENDPOINTS.STRATUM_IN_HAUL(stratumId));
+    try {
+      const response = await fetch(api);
+      const data = await response.json();
+      console.log("Stratu in hauls ", stratumId, ":", data.exists);
+      return data.exists;
+    } catch (error) {
+      console.error("Error checking stratum in hauls:", error);
+      return false;
+    }
+  };
+
   /**
    * Method to render list of strata
    * @returns {character} List of strata in html.
@@ -194,6 +208,7 @@ const Strata = () => {
           validateStratumName,
           addStratum,
           setAddStratum,
+          stratumUsedInHauls,
         }}
       >
         <main>

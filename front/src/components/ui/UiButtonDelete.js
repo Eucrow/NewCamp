@@ -14,6 +14,7 @@ const UiButtonDelete = ({
   buttonText,
   confirmMessage,
   disabled = false,
+  disabledMessage = "This item cannot be deleted.",
 }) => {
   const hasChildren = children !== undefined;
 
@@ -25,7 +26,7 @@ const UiButtonDelete = ({
     <button
       className={buttonClass}
       type="button"
-      title={buttonText}
+      title={disabled ? disabledMessage : buttonText}
       disabled={disabled}
       onClick={e => {
         e.preventDefault();

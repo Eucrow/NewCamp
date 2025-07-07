@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import StratumFormView from "./view/StratumFormView";
 import StratumFormEdit from "./edit/StratumFormEdit";
 import StratumFormNew from "./new/StratumFormNew";
@@ -18,7 +18,20 @@ import StrataContext from "../../contexts/StrataContext";
  */
 const Stratum = ({ stratum, addStratum }) => {
   const [edit, setEdit] = useState(false);
+  const [isDeleteable, setIsDeletable] = useState(true);
   const strataContext = useContext(StrataContext);
+
+  useEffect(() => {
+    const checkDeleteable = async () => {
+      if (stratum?.id) {
+        const usedInHauls = await strataContext.stratumUsedInHauls(stratum.id);
+        setIsDeletable(!usedInHauls);
+      } else {
+        setIsDeletable(true); // New stratum is always deletable
+      }
+    };
+    checkDeleteable();
+  }, [stratum, strataContext]);
 
   const renderContent = () => {
     if (addStratum === true) {
@@ -39,7 +52,12 @@ const Stratum = ({ stratum, addStratum }) => {
     } else {
       return (
         <div className="wrapper form__row">
-          <StratumFormView stratum={stratum} edit={edit} setEdit={setEdit} />
+          <StratumFormView
+            stratum={stratum}
+            edit={edit}
+            setEdit={setEdit}
+            isDeleteable={isDeleteable}
+          />
         </div>
       );
     }

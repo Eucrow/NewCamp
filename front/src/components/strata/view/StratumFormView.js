@@ -14,7 +14,7 @@ import StratumButtonBar from "../StratumButtonBar";
  *
  * @returns {JSX.Element} The rendered read-only form for a stratum.
  */
-const StratumFormView = ({ stratum, edit, setEdit }) => {
+const StratumFormView = ({ stratum, edit, setEdit, isDeleteable }) => {
   const strataContext = useContext(StrataContext);
 
   const renderContent = () => {
@@ -49,6 +49,7 @@ const StratumFormView = ({ stratum, edit, setEdit }) => {
             setEdit={setEdit}
             stratum={stratum}
             deleteStratum={strataContext.deleteStratum}
+            isDeleteable={isDeleteable}
           />
         </div>
         <div className="form__row">

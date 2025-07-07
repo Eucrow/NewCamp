@@ -1,16 +1,30 @@
 from django.shortcuts import get_list_or_404, get_object_or_404
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from hauls.models import Haul
 from strata.models import Stratum
 from strata.serializers import StrataSerializer
+
+
+@api_view(['GET'])
+def check_stratum_in_haul(request, stratum_id):
+    """
+    Check if a stratum is referenced in any haul.
+    :param stratum_id: ID of the stratum to check.
+    :return: JSON response indicating if the stratum is referenced.
+    """
+    exists = Haul.objects.filter(stratum_id=stratum_id).exists()
+    return Response({"exists": exists})
 
 
 class StrataAPI(APIView):
     '''
     Strata API
     '''
+
     def get(self, request, stratification_id):
         '''
         Get all the strata from stratification
@@ -39,6 +53,7 @@ class StratumAPI(APIView):
     '''
     Individual Stratum API
     '''
+
     def get(self, request, pk):
         '''
         Get a specific stratum
@@ -72,5 +87,10 @@ class StratumAPI(APIView):
         :return: Response
         '''
         stratum = get_object_or_404(Stratum, pk=pk)
+        if stratum.haul_set.exists():  # Check if any haul references this stratum
+            return Response(
+                {"error": "Cannot delete stratum as it is referenced in hauls."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         stratum.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
