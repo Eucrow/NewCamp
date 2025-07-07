@@ -136,35 +136,43 @@ export default function App() {
                   Stations
                 </Link>
               </li>
-              <li className="headNav__item" role="none">
-                <Link to="/Species" role="menuitem">
-                  Species
-                </Link>
-              </li>
-              <li className="headNav__item" role="none">
-                <Link to="/Strata" role="menuitem">
-                  Strata
-                </Link>
-              </li>
-              <li className="headNav__item" role="none">
-                <Link to="/Ships" role="menuitem">
-                  Ships
-                </Link>
-              </li>
+
               <li className="headNav__item" role="none">
                 <Link to="/Surveys" role="menuitem">
                   Surveys
                 </Link>
               </li>
               <li className="headNav__item" role="none">
-                <Link to="/Measurements" role="menuitem">
-                  Measurements
-                </Link>
-              </li>
-              <li className="headNav__item" role="none">
                 <Link to="/Reports" role="menuitem">
                   Reports
                 </Link>
+              </li>
+              <li className="headNav__item headNav__dropdown" role="none">
+                <span role="menuitem" aria-haspopup="true">
+                  Reference Tables
+                </span>
+                <ul className="headNav__submenu" role="menu">
+                  <li className="headNav__item" role="none">
+                    <Link to="/Species" role="menuitem">
+                      Species
+                    </Link>
+                  </li>
+                  <li className="headNav__item" role="none">
+                    <Link to="/Measurements" role="menuitem">
+                      Measurements
+                    </Link>
+                  </li>
+                  <li className="headNav__item" role="none">
+                    <Link to="/Strata" role="menuitem">
+                      Strata
+                    </Link>
+                  </li>
+                  <li className="headNav__item" role="none">
+                    <Link to="/Ships" role="menuitem">
+                      Ships
+                    </Link>
+                  </li>
+                </ul>
               </li>
               <li className="headNav__item" role="none">
                 <Link to="/" role="menuitem">
