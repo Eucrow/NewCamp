@@ -16,60 +16,64 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 // TODO: test if instead of receive props, receive only survey.id
 const SurveyButtonBar = ({ survey, edit, handleEdit, add }) => {
-	const surveysContext = useContext(SurveysContext);
-	var ButtonBar = "";
+  const surveysContext = useContext(SurveysContext);
+  var ButtonBar = "";
 
-	if (edit === true) {
-		ButtonBar = (
-			<div className="form__cell form__cell--right buttonsWrapper">
-				<UiButtonSave buttonText={"Save Survey"} />
-				<button
-					className="buttonsWrapper__button"
-					type="button"
-					onClick={(e) => {
-						e.preventDefault();
-						surveysContext.handleCancelEditSurvey();
-						handleEdit(false);
-					}}
-				>
-					Cancel
-				</button>
-			</div>
-		);
-	}
+  if (edit === true) {
+    ButtonBar = (
+      <div className="form__cell form__cell--right buttonsWrapper">
+        <UiButtonSave buttonText={"Save Survey"} />
+        <button
+          className="buttonsWrapper__button"
+          type="button"
+          onClick={e => {
+            e.preventDefault();
+            surveysContext.handleCancelEditSurvey();
+            handleEdit(false);
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+    );
+  }
 
-	if (edit === false) {
-		ButtonBar = (
-			<div className="form__cell form__cell--right buttonsWrapper">
-				<button
-					type="button"
-					className="buttonsWrapper__button"
-					onClick={(e) => {
-						handleEdit(true);
-					}}
-				>
-					Edit Survey
-				</button>
-				<UiButtonDelete
-					id={survey.id}
-					deleteMethod={surveysContext.deleteSurvey}
-					buttonText="Delete Survey"
-					confirmMessage="Delete the survey?"
-				/>
-			</div>
-		);
-	}
+  if (edit === false) {
+    ButtonBar = (
+      <div className="form__cell form__cell--right buttonsWrapper">
+        <button
+          type="button"
+          className="buttonsWrapper__button"
+          onClick={e => {
+            handleEdit(true);
+          }}
+        >
+          Edit Survey
+        </button>
+        <UiButtonDelete
+          id={survey.id}
+          deleteMethod={surveysContext.deleteSurvey}
+          buttonText="Delete Survey"
+          confirmMessage="Delete the survey?"
+        />
+      </div>
+    );
+  }
 
-	if (add === true) {
-		ButtonBar = (
-			<div className="survey__cell form__cell--right buttonsWrapper">
-				<UiButtonSave buttonText={"Save Survey"} />
-				<UiButtonStatusHandle buttonText="Cancel" handleMethod={surveysContext.setAdd} newStatus={false} />
-			</div>
-		);
-	}
+  if (add === true) {
+    ButtonBar = (
+      <div className="survey__cell form__cell--right buttonsWrapper">
+        <UiButtonSave buttonText={"Save Survey"} />
+        <UiButtonStatusHandle
+          buttonText="Cancel"
+          handleMethod={surveysContext.setAdd}
+          newStatus={false}
+        />
+      </div>
+    );
+  }
 
-	return ButtonBar;
+  return ButtonBar;
 };
 
 export default SurveyButtonBar;

@@ -30,7 +30,7 @@ from surveys.views import SurveyDetailView
 from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
     SurveysAcronymList, SurveyNewAPI, SurveyAPI, SurveysAPI
 from stratifications.api import StratificationsAPI
-from strata.api import StrataAPI
+from strata.api import StrataAPI, StratumAPI, check_stratum_in_haul
 from samplers.api import SamplersAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
 from hauls.api import HaulGEOJsonAPI, HaulListCsvApi, HaulAPI, \
@@ -120,9 +120,15 @@ urlpatterns = [
                   re_path(r'^api/1.0/stratifications/$',
                           StratificationsAPI.as_view(), name="get_stratifications_api"),
 
-                  # Stratum API URLS
+                  # Strata API URLS
                   re_path(r'^api/1.0/strata/(?P<stratification_id>[0-9]+)$',
                           StrataAPI.as_view(), name="get_strata_api"),
+                  re_path(r'^api/1.0/strata/$',
+                          StrataAPI.as_view(), name="create_stratum_api"),
+                  re_path(r'^api/1.0/stratum/(?P<pk>[0-9]+)$',
+                          StratumAPI.as_view(), name="get_update_delete_stratum_api"),
+                  re_path('^api/1.0/strata/check-stratum-in-haul/(?P<stratum_id>[0-9]+)$', check_stratum_in_haul,
+                          name='check-stratum-in-haul'),
 
                   # Stations API urls
                   re_path(r'^api/1.0/station/(?P<station_id>[0-9]+)$',
@@ -141,7 +147,6 @@ urlpatterns = [
                   re_path(r'^api/1.0/haul/new/$', HaulAPI.as_view(), name="add_haul_api"),
                   re_path(r'^api/1.0/hauls/csv/(?P<acronym_survey>[A-Z][0-9][0-9])', HaulListCsvApi.as_view(),
                           name="get_hauls_api_csv"),
-
                   re_path(r'^api/1.0/hauls/data.geojson/(?P<pk>[0-9]+)$',
                           HaulGEOJsonAPI.as_view(), name="get_haul_geojson_api"),
 

@@ -1,0 +1,117 @@
+import { useState, useEffect, useCallback, useContext } from "react";
+import StrataContext from "../contexts/StrataContext";
+
+/**
+ * Custom hook for handling form validation in the NewCatchForm component.
+ * Validates weight relationships and required fields, and manages species selection state.
+ * Prevents creating duplicate catches with the same species and category combination.
+ *
+ * @param {Object} newCatch - The catch form data object
+ * @param {string} newCatch.group - The group number (1-5)
+ * @param {string} newCatch.sp_id - The selected species ID
+ * @param {string} newCatch.category - The category number
+ * @param {string} newCatch.weight - The total weight
+ * @param {string} newCatch.sampled_weight - The sampled weight (must be <= weight)
+ * @param {string} newCatch.catch_id - The unique identifier of the catch (used for duplicate validation)
+ *
+ * @returns {Object} Validation state and errors
+ * @returns {Object} validationErrors - Object containing error messages for weight and sampled weight
+ * @returns {boolean} isFormValid - Whether the entire form is valid
+ * @returns {boolean} isSpeciesValid - Whether a species has been selected
+ * @returns {boolean} existsCatch - Whether a catch with same species and category already exists
+ */
+export const useStrataValidation = (stratum, originalStratum = null) => {
+  // State to hold all validation-related values
+  const [validationState, setValidationState] = useState({
+    stratumExists: false,
+    requiredFieldsValid: false,
+    isFormValid: false,
+    errors: {
+      stratumExists: null,
+      requiredFields: null,
+    },
+  });
+
+  const strataContext = useContext(StrataContext);
+  /**
+   * Validates that all required fields are filled.
+   * Checks group, species, category and weight.
+   *
+   * @returns {boolean} Whether all required fields are valid
+   */
+  const validateRequiredFields = useCallback(() => {
+    const requiredFields = {
+      stratum: stratum.stratum,
+    };
+
+    const isValid = Object.values(requiredFields).every(
+      value => value !== null && value !== ""
+    );
+
+    return isValid;
+  }, [stratum.stratum]);
+
+  /**
+   * Method to check if a stratum name already exists in this stratification.
+   * @param {string} stratumName stratum name to check if already exists.
+   * @returns True if exists, false if doesn't.
+   */
+  const stratumExists = useCallback(
+    (stratum, originalStratum) => {
+      const strata = strataContext.strata || [];
+
+      // Start with all strata except the one being edited
+      const filteredStrata = strata.filter(
+        s => s.stratum !== originalStratum?.stratum
+      );
+
+      return filteredStrata.some(s => s.stratum === stratum.stratum);
+    },
+    [strataContext.strata]
+  );
+
+  // Effect hook that handles form validation on every change.
+  useEffect(() => {
+    // Validate required fields
+    const requiredFieldsValid = validateRequiredFields();
+
+    const stratumAlreadyExists = stratumExists(stratum, originalStratum);
+
+    // Set errors messages
+    const errorsRequiredFields = {
+      requiredFields: !requiredFieldsValid
+        ? "The stratum field must be filled."
+        : null,
+    };
+
+    const errorsStratumExists = {
+      stratumExists: stratumAlreadyExists
+        ? "Stratum already exists in this stratification."
+        : null,
+    };
+
+    // Merge errors
+    const errors = {
+      ...errorsRequiredFields,
+      ...errorsStratumExists,
+    };
+
+    // Determine if the form is valid
+    const isValid = !stratumAlreadyExists && requiredFieldsValid;
+
+    setValidationState(prev => ({
+      ...prev,
+      stratumExists: stratumAlreadyExists,
+      requiredFields: requiredFieldsValid,
+      isFormValid: isValid,
+      errors,
+    }));
+  }, [stratum, originalStratum, strataContext.strata]);
+
+  return {
+    stratumExists: validationState.stratumExists,
+    requiredFields: validationState.requiredFieldsValid,
+    isFormValid: validationState.isFormValid,
+    errors: validationState.errors,
+  };
+};

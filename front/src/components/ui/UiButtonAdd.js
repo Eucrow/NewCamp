@@ -7,18 +7,18 @@ import React, { Component } from "react";
  */
 
 class UiButtonAdd extends Component {
-	render() {
-		return (
-			<button
-				className="buttonsWrapper__button"
-				onClick={() => {
-					this.props.handleAdd(true);
-				}}
-			>
-				{this.props.text}
-			</button>
-		);
-	}
+  render() {
+    return (
+      <button
+        className="buttonsWrapper__button"
+        onClick={() => {
+          this.props.handleAdd(true);
+        }}
+      >
+        {this.props.text}
+      </button>
+    );
+  }
 }
 
 export default UiButtonAdd;

@@ -28,7 +28,9 @@
     "eject": "react-scripts eject",
     "electron-dev": "electron .",
     "package": "react-scripts build && electron-forge package",
-    "make": "react-scripts build && electron-forge make"
+    "make": "react-scripts build && electron-forge make",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -56,6 +58,7 @@
     "@electron-forge/maker-zip": "^6.2.1",
     "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
     "electron": "^25.3.0",
+    "prettier": "^3.6.2",
     "sass": "^1.32.12"
   }
 }

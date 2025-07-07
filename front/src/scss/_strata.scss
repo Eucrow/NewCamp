@@ -1,0 +1,15 @@
+.strataWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 80%;
+  padding: 10px 20px;
+
+  @media (max-width: 768px) {
+    max-width: 95%;
+  }
+}
+
+.stratum__description {
+  width: 50ch;
+}
