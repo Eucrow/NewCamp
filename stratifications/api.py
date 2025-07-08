@@ -1,7 +1,7 @@
-from rest_framework.generics import ListAPIView
+from rest_framework import viewsets
 from stratifications.models import Stratification
 from stratifications.serializers import StratificationSerializer
 
-class StratificationsAPI(ListAPIView):
+class StratificationViewSet(viewsets.ModelViewSet):
     queryset = Stratification.objects.all()
     serializer_class = StratificationSerializer

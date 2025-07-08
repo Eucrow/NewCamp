@@ -20,6 +20,8 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework.routers import DefaultRouter
+
 # from djgeojson.views import GeoJSONLayerView
 
 from ships.api import ShipsAPI, ShipAPI
@@ -29,7 +31,7 @@ from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDelete
 from surveys.views import SurveyDetailView
 from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
     SurveysAcronymList, SurveyNewAPI, SurveyAPI, SurveysAPI
-from stratifications.api import StratificationsAPI
+from stratifications.api import StratificationViewSet
 from strata.api import StrataAPI, StratumAPI, check_stratum_in_haul
 from samplers.api import SamplersAPI
 from stations.api import StationsAPI, StationAPI, StationsHaulsAPI, StationsBySurveyAPI
@@ -41,6 +43,9 @@ from samples.api import LengthsSexAPI
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 from conn_r.api import GetTrawlHaulsAPIConnR, GetDataStationsAPIConnR
 from reports.api import ReportLengthsCSVApi
+
+router = DefaultRouter()
+router.register(r'api/1.0/stratifications', StratificationViewSet, basename='stratification')
 
 urlpatterns = [
                   re_path(r'^admin/', admin.site.urls),
@@ -117,8 +122,7 @@ urlpatterns = [
                           SurveysListCsvAPI.as_view(), name="get_survey_api_csv"),
 
                   # Stratification API URLS
-                  re_path(r'^api/1.0/stratifications/$',
-                          StratificationsAPI.as_view(), name="get_stratifications_api"),
+                  # In the default router at the top of this file, we have registered the StratificationViewSet.
 
                   # Strata API URLS
                   re_path(r'^api/1.0/strata/(?P<stratification_id>[0-9]+)$',
@@ -220,6 +224,9 @@ urlpatterns = [
                   # Frontend
                   # path('', include('frontend.urls')),
 
-              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+              ]
+
+urlpatterns += router.urls
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # this is for compile the static files:
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
