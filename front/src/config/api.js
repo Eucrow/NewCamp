@@ -6,6 +6,10 @@ export const API_CONFIG = {
     // Ships endpoints
     GET_SHIPS: "/ship/",
 
+    // Stratification endpoints
+    GET_STRATIFICATIONS: "/stratifications/",
+    STRATIFICATION: "/stratification/",
+
     // Strata endpoints
     GET_STRATIFICATIONS: "/stratifications",
     STRATA: "/strata/",

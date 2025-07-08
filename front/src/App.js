@@ -14,6 +14,7 @@ import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
 import Stations from "./components/stations/Stations.js";
 import Species from "./components/species/Species";
 import Ships from "./components/ships/Ships";
+import Stratifications from "./components/stratifications/Stratifications";
 import Strata from "./components/strata/Strata";
 import Measurements from "./components/measurements/Measurements";
 import Reports from "./components/reports/Reports.js";
@@ -163,6 +164,11 @@ export default function App() {
                     </Link>
                   </li>
                   <li className="headNav__item" role="none">
+                    <Link to="/Stratifications" role="menuitem">
+                      Stratifications
+                    </Link>
+                  </li>
+                  <li className="headNav__item" role="none">
                     <Link to="/Strata" role="menuitem">
                       Strata
                     </Link>
@@ -199,6 +205,7 @@ export default function App() {
           <Route path="/Surveys" exact component={ComponentsSurveys} />
           <Route path="/Stations" exact component={Stations} />
           <Route path="/Species" component={Species} />
+          <Route path="/Stratifications" component={Stratifications} />
           <Route path="/Strata" component={Strata} />
           <Route path="/Ships" component={Ships} />
           <Route path="/Measurements" component={Measurements} />
