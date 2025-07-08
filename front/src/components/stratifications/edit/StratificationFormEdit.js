@@ -29,11 +29,11 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
   // Basic validation
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name?.trim()) {
       newErrors.name = "Name is required";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -58,18 +58,18 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
     setEdit(false);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
-        [name]: ""
+        [name]: "",
       }));
     }
   };

@@ -30,9 +30,11 @@ const Stratifications = () => {
   const fetchStratifications = async () => {
     try {
       setLoading(true);
-      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.GET_STRATIFICATIONS));
+      const response = await fetch(
+        buildApiUrl(API_CONFIG.ENDPOINTS.GET_STRATIFICATIONS)
+      );
       if (!response.ok) {
-        throw new Error('Failed to fetch stratifications');
+        throw new Error("Failed to fetch stratifications");
       }
       const data = await response.json();
       setStratifications(data);
@@ -49,16 +51,19 @@ const Stratifications = () => {
    * Create stratification.
    * @param {object} stratification - The stratification to be created.
    */
-  const createStratification = async (stratification) => {
+  const createStratification = async stratification => {
     try {
-      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATION), {
-        method: "POST",
-        headers: API_CONFIG.HEADERS.DEFAULT,
-        body: JSON.stringify(stratification),
-      });
+      const response = await fetch(
+        buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATION),
+        {
+          method: "POST",
+          headers: API_CONFIG.HEADERS.DEFAULT,
+          body: JSON.stringify(stratification),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to create stratification');
+        throw new Error("Failed to create stratification");
       }
 
       const newStratification = await response.json();
@@ -75,21 +80,26 @@ const Stratifications = () => {
    * Update stratification.
    * @param {object} stratification - The updated stratification.
    */
-  const updateStratification = async (stratification) => {
+  const updateStratification = async stratification => {
     try {
-      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATION + stratification.id), {
-        method: "PUT",
-        headers: API_CONFIG.HEADERS.DEFAULT,
-        body: JSON.stringify(stratification),
-      });
+      const response = await fetch(
+        buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATION + stratification.id),
+        {
+          method: "PUT",
+          headers: API_CONFIG.HEADERS.DEFAULT,
+          body: JSON.stringify(stratification),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to update stratification');
+        throw new Error("Failed to update stratification");
       }
 
       const updatedStratification = await response.json();
       setStratifications(
-        stratifications.map((s) => (s.id === stratification.id ? updatedStratification : s))
+        stratifications.map(s =>
+          s.id === stratification.id ? updatedStratification : s
+        )
       );
       setError(null);
     } catch (error) {
@@ -102,18 +112,21 @@ const Stratifications = () => {
    * Delete stratification.
    * @param {number} id - The ID of the stratification to delete.
    */
-  const deleteStratification = async (id) => {
+  const deleteStratification = async id => {
     try {
-      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATION + id), {
-        method: "DELETE",
-        headers: API_CONFIG.HEADERS.DEFAULT,
-      });
+      const response = await fetch(
+        buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATION + id),
+        {
+          method: "DELETE",
+          headers: API_CONFIG.HEADERS.DEFAULT,
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to delete stratification');
+        throw new Error("Failed to delete stratification");
       }
 
-      setStratifications(stratifications.filter((s) => s.id !== id));
+      setStratifications(stratifications.filter(s => s.id !== id));
       setError(null);
     } catch (error) {
       console.error("Error deleting stratification:", error);
@@ -163,23 +176,28 @@ const Stratifications = () => {
       <div className="stratifications">
         <div className="stratifications__header">
           <h2>Stratifications Management</h2>
-          <StratificationsButtonBar handleAddStratification={handleAddStratification} />
+          <StratificationsButtonBar
+            handleAddStratification={handleAddStratification}
+          />
         </div>
-        
+
         <div className="stratifications__content">
           {addStratification && (
             <Stratification addStratification={addStratification} />
           )}
-          
-          {stratifications.map((stratification) => (
+
+          {stratifications.map(stratification => (
             <Fragment key={stratification.id}>
               <Stratification stratification={stratification} />
             </Fragment>
           ))}
-          
+
           {stratifications.length === 0 && !addStratification && (
             <div className="no-data">
-              <p>No stratifications found. Click "Add Stratification" to create one.</p>
+              <p>
+                No stratifications found. Click "Add Stratification" to create
+                one.
+              </p>
             </div>
           )}
         </div>

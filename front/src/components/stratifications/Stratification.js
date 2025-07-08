@@ -25,18 +25,16 @@ const Stratification = ({ stratification, addStratification }) => {
     if (addStratification === true) {
       return (
         <div className="wrapper form__row">
-          <StratificationFormNew
-            addStratification={addStratification}
-          />
+          <StratificationFormNew addStratification={addStratification} />
         </div>
       );
     } else if (edit === true) {
       return (
         <div className="wrapper form__row">
-          <StratificationFormEdit 
-            stratification={stratification} 
-            edit={edit} 
-            setEdit={setEdit} 
+          <StratificationFormEdit
+            stratification={stratification}
+            edit={edit}
+            setEdit={setEdit}
           />
         </div>
       );
@@ -54,11 +52,7 @@ const Stratification = ({ stratification, addStratification }) => {
     }
   };
 
-  return (
-    <div className="stratification">
-      {renderContent()}
-    </div>
-  );
+  return <div className="stratification">{renderContent()}</div>;
 };
 
 export default Stratification;

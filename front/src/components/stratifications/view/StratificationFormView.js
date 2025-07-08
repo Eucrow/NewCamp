@@ -15,7 +15,12 @@ import StratificationButtonBar from "../StratificationButtonBar";
  *
  * @returns {JSX.Element} The rendered read-only form for a stratification.
  */
-const StratificationFormView = ({ stratification, edit, setEdit, isDeleteable }) => {
+const StratificationFormView = ({
+  stratification,
+  edit,
+  setEdit,
+  isDeleteable,
+}) => {
   const stratificationsContext = useContext(StratificationsContext);
 
   const renderContent = () => {
@@ -50,7 +55,11 @@ const StratificationFormView = ({ stratification, edit, setEdit, isDeleteable })
               name="created"
               id="created"
               disabled
-              value={stratification.created_at ? new Date(stratification.created_at).toLocaleDateString() : ""}
+              value={
+                stratification.created_at
+                  ? new Date(stratification.created_at).toLocaleDateString()
+                  : ""
+              }
             />
           </label>
           <StratificationButtonBar

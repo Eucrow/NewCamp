@@ -25,11 +25,11 @@ const StratificationFormNew = ({ addStratification }) => {
   // Basic validation
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!newStratification.name?.trim()) {
       newErrors.name = "Name is required";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -44,12 +44,12 @@ const StratificationFormNew = ({ addStratification }) => {
         [name]: value,
       };
     });
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
-        [name]: ""
+        [name]: "",
       }));
     }
   };
