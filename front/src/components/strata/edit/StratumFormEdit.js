@@ -23,7 +23,6 @@ const StratumFormEdit = ({ stratum, edit, setEdit }) => {
    * @param {method} setThisStratum
    * @param {boolean} edit
    * @param {method} setEdit
-   * @param {method} validateStratumName
    * @returns {JSX.Element}
    */
 

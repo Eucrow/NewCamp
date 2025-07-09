@@ -131,18 +131,6 @@ const Strata = () => {
     return stratum_exists.some(s => s === true);
   };
 
-  /**
-   * Validate the stratum name.
-   * Checks if the provided stratum name does not already exist in the current stratification.
-   *
-   * @param {string} stratumName - The stratum name to check for validity.
-   * @returns {boolean} True if valid (does not exist), false if not valid (already exists).
-   */
-  const validateStratumName = stratumName => {
-    const stratum_exists = stratumExists(stratumName);
-    return !stratum_exists;
-  };
-
   // Fetch if the stratum is used in any hauls
   const stratumUsedInHauls = async stratumId => {
     const api = buildApiUrl(API_CONFIG.ENDPOINTS.STRATUM_IN_HAUL(stratumId));
