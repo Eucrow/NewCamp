@@ -6,14 +6,19 @@ import StratificationFormNew from "./new/StratificationFormNew";
 /**
  * Stratification component.
  *
- * Handles the display and editing of a single stratification, supporting view, edit, and new modes.
+ * Handles the display and editing of a single stratification.
+ * Renders in one of three modes:
+ * - View: shows details of an existing stratification
+ * - Edit: allows editing an existing stratification
+ * - New: allows creation of a new stratification
+ *
+ * Uses StratificationsContext for CRUD operations.
  *
  * @component
- * @param {Object} props - The component props.
+ * @param {Object} props
  * @param {Object} [props.stratification] - The stratification object to display or edit (not required in new mode).
  * @param {boolean} props.addStratification - Whether to render the form for adding a new stratification.
- *
- * @returns {JSX.Element} The rendered stratification form in the appropriate mode.
+ * @returns {JSX.Element}
  */
 const Stratification = ({ stratification, addStratification }) => {
   const [edit, setEdit] = useState(false);

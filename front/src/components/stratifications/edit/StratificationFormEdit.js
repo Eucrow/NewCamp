@@ -7,14 +7,16 @@ import FloatingError from "../../ui/FloatingError";
 
 /**
  * StratificationFormEdit component.
- * Renders a form for editing a stratification, including validation and error display.
  *
- * @param {Object} props - The component props.
+ * Renders a form for editing a stratification, including validation and error display.
+ * Uses StratificationsContext for updateStratification.
+ *
+ * @component
+ * @param {Object} props
  * @param {Object} props.stratification - The stratification object to edit.
  * @param {boolean} props.edit - Whether the form is in edit mode.
  * @param {Function} props.setEdit - Function to set the edit state.
- *
- * @returns {JSX.Element} The rendered form for editing a stratification.
+ * @returns {JSX.Element}
  */
 const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
   const stratificationsContext = useContext(StratificationsContext);

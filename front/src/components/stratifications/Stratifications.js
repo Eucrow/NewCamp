@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Stratification from "./Stratification";
 import StratificationsButtonBar from "./StratificationsButtonBar";
 import { API_CONFIG, buildApiUrl } from "../../config/api";
@@ -7,8 +7,19 @@ import StratificationsContext from "../../contexts/StratificationsContext";
 /**
  * Stratifications component.
  *
- * Provides an interface for managing stratifications.
- * Handles fetching, creating, updating, and deleting stratifications, as well as validation and context management.
+ * Provides an interface for managing stratifications, including:
+ * - Fetching all stratifications from the API on mount
+ * - Creating, updating, and deleting stratifications
+ * - Managing UI state for adding new stratifications
+ * - Providing all relevant state and CRUD functions via StratificationsContext to child components
+ *
+ * Context values provided:
+ * - stratifications: Array of stratification objects
+ * - createStratification: Function to create a new stratification
+ * - updateStratification: Function to update an existing stratification
+ * - deleteStratification: Function to delete a stratification by id
+ * - addStratification: Boolean, whether the add form is shown
+ * - setAddStratification: Function to control add form visibility
  *
  * @component
  * @returns {JSX.Element} The rendered Stratifications management interface.
@@ -16,8 +27,6 @@ import StratificationsContext from "../../contexts/StratificationsContext";
 const Stratifications = () => {
   const [stratifications, setStratifications] = useState([]);
   const [addStratification, setAddStratification] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   // Fetch stratifications on component mount
   useEffect(() => {
@@ -29,7 +38,6 @@ const Stratifications = () => {
    */
   const fetchStratifications = async () => {
     try {
-      setLoading(true);
       const response = await fetch(
         buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATIONS)
       );
@@ -38,12 +46,8 @@ const Stratifications = () => {
       }
       const data = await response.json();
       setStratifications(data);
-      setError(null);
     } catch (error) {
       console.error("Error fetching stratifications:", error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -69,10 +73,8 @@ const Stratifications = () => {
       const newStratification = await response.json();
       setStratifications([...stratifications, newStratification]);
       setAddStratification(false);
-      setError(null);
     } catch (error) {
       console.error("Error creating stratification:", error);
-      setError(error.message);
     }
   };
 
@@ -103,10 +105,8 @@ const Stratifications = () => {
           s.id === stratification.id ? updatedStratification : s
         )
       );
-      setError(null);
     } catch (error) {
       console.error("Error updating stratification:", error);
-      setError(error.message);
     }
   };
 
@@ -129,10 +129,8 @@ const Stratifications = () => {
       }
 
       setStratifications(stratifications.filter(s => s.id !== id));
-      setError(null);
     } catch (error) {
       console.error("Error deleting stratification:", error);
-      setError(error.message);
     }
   };
 
@@ -144,24 +142,9 @@ const Stratifications = () => {
       deleteStratification,
       addStratification,
       setAddStratification,
-      loading,
-      error,
     }),
-    [stratifications, loading, error]
+    [stratifications]
   );
-
-  if (loading) {
-    return <div className="loading">Loading stratifications...</div>;
-  }
-
-  if (error) {
-    return (
-      <div className="error">
-        <p>Error: {error}</p>
-        <button onClick={fetchStratifications}>Retry</button>
-      </div>
-    );
-  }
 
   return (
     <StratificationsContext.Provider value={contextValue}>

@@ -8,12 +8,14 @@ import FloatingError from "../../ui/FloatingError";
 
 /**
  * StratificationFormNew component.
+ *
  * Renders a form for creating a new stratification, including validation and error display.
+ * Uses StratificationsContext for createStratification and setAddStratification.
  *
- * @param {Object} props - The component props.
+ * @component
+ * @param {Object} props
  * @param {boolean} props.addStratification - Whether a new stratification is being added (controls button bar mode).
- *
- * @returns {JSX.Element} The rendered form for creating a new stratification.
+ * @returns {JSX.Element}
  */
 const StratificationFormNew = ({ addStratification }) => {
   const stratificationsContext = useContext(StratificationsContext);

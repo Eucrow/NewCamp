@@ -8,7 +8,9 @@ import UiIconDelete from "../ui/UiIconDelete";
 
 /**
  * StratificationButtonBar component.
+ *
  * Renders a button bar with actions for a stratification, supporting edit, add, and default modes.
+ * Used by both view and edit/new forms for stratification actions.
  *
  * @param {Object} props - The component props.
  * @param {Object} props.stratification - The stratification object.
