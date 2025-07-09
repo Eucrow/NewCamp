@@ -35,31 +35,7 @@ const StratificationFormView = ({
               name="name"
               id="name"
               disabled
-              value={stratification.name || ""}
-            />
-          </label>
-          <label className="form__cell">
-            Description:
-            <input
-              type="text"
-              name="description"
-              id="description"
-              disabled
-              value={stratification.description || ""}
-            />
-          </label>
-          <label className="form__cell">
-            Created:
-            <input
-              type="text"
-              name="created"
-              id="created"
-              disabled
-              value={
-                stratification.created_at
-                  ? new Date(stratification.created_at).toLocaleDateString()
-                  : ""
-              }
+              value={stratification.stratification || ""}
             />
           </label>
           <StratificationButtonBar
@@ -70,6 +46,19 @@ const StratificationFormView = ({
             handleCancel={setEdit}
             isDeleteable={isDeleteable}
           />
+        </div>
+        <div className="form__row">
+          <label className="form__cell form--wide">
+            Description:
+            <input
+              className="field__comment"
+              type="text"
+              name="description"
+              id="description"
+              disabled
+              value={stratification.description || ""}
+            />
+          </label>
         </div>
       </form>
     );

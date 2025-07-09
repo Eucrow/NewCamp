@@ -1,8 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import StratificationFormView from "./view/StratificationFormView";
 import StratificationFormEdit from "./edit/StratificationFormEdit";
 import StratificationFormNew from "./new/StratificationFormNew";
-import StratificationsContext from "../../contexts/StratificationsContext";
 
 /**
  * Stratification component.
@@ -19,7 +18,6 @@ import StratificationsContext from "../../contexts/StratificationsContext";
 const Stratification = ({ stratification, addStratification }) => {
   const [edit, setEdit] = useState(false);
   const [isDeleteable, setIsDeleteable] = useState(true);
-  const stratificationsContext = useContext(StratificationsContext);
 
   const renderContent = () => {
     if (addStratification === true) {

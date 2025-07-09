@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import Stratification from "./Stratification";
 import StratificationsButtonBar from "./StratificationsButtonBar";
 import { API_CONFIG, buildApiUrl } from "../../config/api";
@@ -31,7 +31,7 @@ const Stratifications = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        buildApiUrl(API_CONFIG.ENDPOINTS.GET_STRATIFICATIONS)
+        buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATIONS)
       );
       if (!response.ok) {
         throw new Error("Failed to fetch stratifications");
@@ -54,7 +54,7 @@ const Stratifications = () => {
   const createStratification = async stratification => {
     try {
       const response = await fetch(
-        buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATION),
+        buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATIONS),
         {
           method: "POST",
           headers: API_CONFIG.HEADERS.DEFAULT,
@@ -83,7 +83,7 @@ const Stratifications = () => {
   const updateStratification = async stratification => {
     try {
       const response = await fetch(
-        buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATION + stratification.id),
+        buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATIONS + stratification.id),
         {
           method: "PUT",
           headers: API_CONFIG.HEADERS.DEFAULT,
@@ -115,7 +115,7 @@ const Stratifications = () => {
   const deleteStratification = async id => {
     try {
       const response = await fetch(
-        buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATION + id),
+        buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATIONS + id),
         {
           method: "DELETE",
           headers: API_CONFIG.HEADERS.DEFAULT,
@@ -134,29 +134,23 @@ const Stratifications = () => {
     }
   };
 
-  /**
-   * Handle adding a new stratification.
-   */
-  const handleAddStratification = () => {
-    setAddStratification(true);
-  };
+  const handleAddStratification = useCallback(value => {
+    setAddStratification(value);
+  }, []);
 
-  /**
-   * Handle canceling the add stratification operation.
-   */
-  const handleCancelAdd = () => {
-    setAddStratification(false);
-  };
-
-  const contextValue = {
-    stratifications,
-    createStratification,
-    updateStratification,
-    deleteStratification,
-    handleCancelAdd,
-    loading,
-    error,
-  };
+  const contextValue = useMemo(
+    () => ({
+      stratifications,
+      createStratification,
+      updateStratification,
+      deleteStratification,
+      addStratification,
+      setAddStratification,
+      loading,
+      error,
+    }),
+    [stratifications, loading, error]
+  );
 
   if (loading) {
     return <div className="loading">Loading stratifications...</div>;
@@ -173,35 +167,38 @@ const Stratifications = () => {
 
   return (
     <StratificationsContext.Provider value={contextValue}>
-      <div className="stratifications">
-        <div className="stratifications__header">
-          <h2>Stratifications Management</h2>
-          <StratificationsButtonBar
-            handleAddStratification={handleAddStratification}
-          />
-        </div>
-
-        <div className="stratifications__content">
-          {addStratification && (
+      <main>
+        <header>
+          <h1 className="title">Stratifications Management</h1>
+        </header>
+        <div className="wrapper stratificationsWrapper">
+          {addStratification ? (
             <Stratification addStratification={addStratification} />
+          ) : (
+            <StratificationsButtonBar
+              handleAddStratification={setAddStratification}
+            />
           )}
 
-          {stratifications.map(stratification => (
-            <Fragment key={stratification.id}>
-              <Stratification stratification={stratification} />
-            </Fragment>
-          ))}
+          <div className="stratifications__content">
+            {stratifications.map(stratification => (
+              <Stratification
+                key={stratification.id}
+                stratification={stratification}
+              />
+            ))}
 
-          {stratifications.length === 0 && !addStratification && (
-            <div className="no-data">
-              <p>
-                No stratifications found. Click "Add Stratification" to create
-                one.
-              </p>
-            </div>
-          )}
+            {stratifications.length === 0 && !addStratification && (
+              <div>
+                <p>
+                  No stratifications found. Click "Add Stratification" to create
+                  one.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </main>
     </StratificationsContext.Provider>
   );
 };

@@ -15,26 +15,12 @@ import StratificationsContext from "../../../contexts/StratificationsContext";
 const StratificationFormNew = ({ addStratification }) => {
   const stratificationsContext = useContext(StratificationsContext);
   const [newStratification, setNewStratification] = useState({
-    name: "",
+    stratification: "",
     description: "",
   });
 
   const [errors, setErrors] = useState({});
   const nameRef = useRef(null);
-
-  // Basic validation
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!newStratification.name?.trim()) {
-      newErrors.name = "Name is required";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const isFormValid = validateForm();
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -56,27 +42,21 @@ const StratificationFormNew = ({ addStratification }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    if (validateForm()) {
-      // Call the createStratification function from context
-      if (stratificationsContext.createStratification) {
-        stratificationsContext.createStratification(newStratification);
-      }
-    }
+    stratificationsContext.createStratification(newStratification);
   };
 
   const handleCancel = () => {
     setNewStratification({
-      name: "",
+      stratification: "",
       description: "",
     });
     setErrors({});
-    stratificationsContext.handleCancelAdd();
+    stratificationsContext.setAddStratification(false);
   };
 
   const renderContent = () => {
     return (
-      <form className="form--wide" onSubmit={handleSubmit}>
+      <form className="form--wide" onSubmit={e => handleSubmit(e)}>
         <div className="form__row">
           <label className="form__cell">
             Name:
@@ -84,14 +64,14 @@ const StratificationFormNew = ({ addStratification }) => {
               ref={nameRef}
               className={`stratification__name ${errors.name ? "error" : ""}`}
               type="text"
-              name="name"
-              id="name"
-              value={newStratification.name}
+              name="stratification"
+              id="stratification"
+              value={newStratification.stratification}
               onChange={handleChange}
               required
               placeholder="Enter stratification name"
             />
-            {errors.name && (
+            {errors.stratification && (
               <span className="error-message">{errors.name}</span>
             )}
           </label>
@@ -109,7 +89,8 @@ const StratificationFormNew = ({ addStratification }) => {
           <StratificationButtonBar
             addStratification={addStratification}
             handleAdd={handleCancel}
-            isValid={isFormValid}
+            // isValid={isFormValid}
+            isValid={true}
           />
         </div>
       </form>

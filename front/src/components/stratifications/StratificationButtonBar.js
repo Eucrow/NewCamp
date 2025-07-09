@@ -43,7 +43,7 @@ const StratificationButtonBar = ({
           <UiIconEdit />
         </UiButtonStatusHandle>
         <UiButtonDelete
-          confirmMessage={`Are you sure you want to delete the stratification "${stratification?.name}"?`}
+          confirmMessage={`Are you sure you want to delete the stratification "${stratification?.stratification}"?`}
           deleteMethod={() => deleteStratification(stratification?.id)}
           buttonText={"Delete stratification"}
           disabled={!isDeleteable}
