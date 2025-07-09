@@ -35,6 +35,7 @@ const StratificationButtonBar = ({
   isEdit,
   isValid,
   isDeleteable,
+  focusIndex = 0, // Default focus index for accessibility
 }) => {
   const buttonBarConfig = {
     defaultMode: (

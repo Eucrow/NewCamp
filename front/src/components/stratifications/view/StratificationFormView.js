@@ -38,14 +38,6 @@ const StratificationFormView = ({
               value={stratification.stratification || ""}
             />
           </label>
-          <StratificationButtonBar
-            edit={edit}
-            setEdit={setEdit}
-            stratification={stratification}
-            deleteStratification={stratificationsContext.deleteStratification}
-            handleCancel={setEdit}
-            isDeleteable={isDeleteable}
-          />
         </div>
         <div className="form__row">
           <label className="form__cell form--wide">
@@ -59,6 +51,16 @@ const StratificationFormView = ({
               value={stratification.description || ""}
             />
           </label>
+        </div>
+        <div className="form__row">
+          <StratificationButtonBar
+            edit={edit}
+            setEdit={setEdit}
+            stratification={stratification}
+            deleteStratification={stratificationsContext.deleteStratification}
+            handleCancel={setEdit}
+            isDeleteable={isDeleteable}
+          />
         </div>
       </form>
     );

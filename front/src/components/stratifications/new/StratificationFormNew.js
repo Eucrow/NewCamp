@@ -3,6 +3,9 @@ import React, { useState, useContext, useRef } from "react";
 import StratificationButtonBar from "../StratificationButtonBar";
 import StratificationsContext from "../../../contexts/StratificationsContext";
 
+import { useStratificationValidation } from "../../../hooks/useStratificationValidation";
+import FloatingError from "../../ui/FloatingError";
+
 /**
  * StratificationFormNew component.
  * Renders a form for creating a new stratification, including validation and error display.
@@ -19,8 +22,11 @@ const StratificationFormNew = ({ addStratification }) => {
     description: "",
   });
 
-  const [errors, setErrors] = useState({});
-  const nameRef = useRef(null);
+  const { stratificationExists, requiredFields, isFormValid, errors } =
+    useStratificationValidation(newStratification);
+
+  // const [errors, setErrors] = useState({});
+  const stratificationRef = useRef(null);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -32,12 +38,12 @@ const StratificationFormNew = ({ addStratification }) => {
     });
 
     // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
+    // if (errors[name]) {
+    //   setErrors(prev => ({
+    //     ...prev,
+    //     [name]: "",
+    //   }));
+    // }
   };
 
   const handleSubmit = e => {
@@ -50,7 +56,7 @@ const StratificationFormNew = ({ addStratification }) => {
       stratification: "",
       description: "",
     });
-    setErrors({});
+    // setErrors({});
     stratificationsContext.setAddStratification(false);
   };
 
@@ -61,8 +67,8 @@ const StratificationFormNew = ({ addStratification }) => {
           <label className="form__cell">
             Name:
             <input
-              ref={nameRef}
-              className={`stratification__name ${errors.name ? "error" : ""}`}
+              ref={stratificationRef}
+              className={`stratification__name`}
               type="text"
               name="stratification"
               id="stratification"
@@ -71,27 +77,38 @@ const StratificationFormNew = ({ addStratification }) => {
               required
               placeholder="Enter stratification name"
             />
-            {errors.stratification && (
-              <span className="error-message">{errors.name}</span>
-            )}
-          </label>
-          <label className="form__cell">
-            Description:
-            <input
-              type="text"
-              name="description"
-              id="description"
-              value={newStratification.description}
-              onChange={handleChange}
-              placeholder="Enter description (optional)"
+            <FloatingError
+              message={errors.stratificationExists}
+              show={stratificationExists}
+              inputRef={stratificationRef}
+            />
+            <FloatingError
+              message={errors.requiredFields}
+              show={!requiredFields}
+              inputRef={stratificationRef}
             />
           </label>
-          <StratificationButtonBar
-            addStratification={addStratification}
-            handleAdd={handleCancel}
-            // isValid={isFormValid}
-            isValid={true}
-          />
+          <div className="form__row">
+            <label className="form__cell form--wide">
+              Description:
+              <input
+                className="field__comment"
+                type="text"
+                name="description"
+                id="description"
+                value={newStratification.description}
+                onChange={handleChange}
+                placeholder="Enter description (optional)"
+              />
+            </label>
+          </div>
+          <div className="form__row">
+            <StratificationButtonBar
+              addStratification={addStratification}
+              handleAdd={handleCancel}
+              isValid={isFormValid}
+            />
+          </div>
         </div>
       </form>
     );
