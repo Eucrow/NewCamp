@@ -193,7 +193,6 @@ const Strata = () => {
           createStratum,
           updateStratum,
           deleteStratum,
-          validateStratumName,
           addStratum,
           setAddStratum,
           stratumUsedInHauls,
