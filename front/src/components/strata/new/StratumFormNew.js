@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 
 import StratumButtonBar from "../StratumButtonBar";
 import StrataContext from "../../../contexts/StrataContext";
@@ -26,6 +26,12 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
   });
 
   const stratumRef = useRef(null);
+
+  useEffect(() => {
+    if (addStratum && stratumRef.current) {
+      stratumRef.current.focus();
+    }
+  }, [addStratum]);
 
   const { stratumExists, requiredFields, isFormValid, errors } =
     useStrataValidation(newStratum);
@@ -73,7 +79,6 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
               type="text"
               id="stratum"
               name="stratum"
-              autoFocus
               required
               maxLength="50"
               value={newStratum?.stratum || ""}
@@ -113,9 +118,10 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
           />
         </div>
         <div className="form__row">
-          <label className="form__cell">
+          <label className="form__cell form--wide">
             Comment:
             <textarea
+              className="field__comment"
               id="comment"
               name="comment"
               maxLength="1000"

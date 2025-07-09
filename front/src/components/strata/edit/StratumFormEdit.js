@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 
 import StrataContext from "../../../contexts/StrataContext";
 import StratumButtonBar from "../StratumButtonBar";
@@ -37,6 +37,12 @@ const StratumFormEdit = ({ stratum, edit, setEdit }) => {
   });
 
   const stratumRef = useRef(null);
+
+  useEffect(() => {
+    if (edit && stratumRef.current) {
+      stratumRef.current.focus();
+    }
+  }, [edit]);
 
   // Pass the current stratum name and the original stratum name (from props)
   const { stratumExists, requiredFields, isFormValid, errors } =

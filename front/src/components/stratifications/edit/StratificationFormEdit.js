@@ -66,7 +66,7 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
       <form className="form--wide" onSubmit={handleSubmit}>
         <div className="form__row">
           <label className="form__cell">
-            Name:
+            Stratification:
             <input
               ref={stratificationRef}
               className={`stratification__name`}

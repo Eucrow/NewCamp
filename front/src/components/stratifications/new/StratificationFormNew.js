@@ -64,7 +64,7 @@ const StratificationFormNew = ({ addStratification }) => {
       <form className="form--wide" onSubmit={e => handleSubmit(e)}>
         <div className="form__row">
           <label className="form__cell">
-            Name:
+            Stratification:
             <input
               ref={stratificationRef}
               className={`stratification__name`}

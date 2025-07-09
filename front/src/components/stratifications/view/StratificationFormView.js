@@ -30,7 +30,7 @@ const StratificationFormView = ({
       <form className="form--wide">
         <div className="form__row">
           <label className="form__cell">
-            Name:
+            Stratification:
             <input
               className="stratification__name"
               type="text"
