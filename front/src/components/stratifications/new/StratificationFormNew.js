@@ -93,7 +93,7 @@ const StratificationFormNew = ({ addStratification }) => {
           <div className="form__row">
             <label className="form__cell form--wide">
               Description:
-              <input
+              <textarea
                 className="field__comment"
                 type="text"
                 name="description"
