@@ -83,7 +83,9 @@ const Stratifications = () => {
   const updateStratification = async stratification => {
     try {
       const response = await fetch(
-        buildApiUrl(API_CONFIG.ENDPOINTS.STRATIFICATIONS + stratification.id),
+        buildApiUrl(
+          API_CONFIG.ENDPOINTS.STRATIFICATIONS + stratification.id + "/"
+        ),
         {
           method: "PUT",
           headers: API_CONFIG.HEADERS.DEFAULT,
@@ -133,10 +135,6 @@ const Stratifications = () => {
       setError(error.message);
     }
   };
-
-  const handleAddStratification = useCallback(value => {
-    setAddStratification(value);
-  }, []);
 
   const contextValue = useMemo(
     () => ({

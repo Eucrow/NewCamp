@@ -2,6 +2,8 @@ import React, { useContext, useState, useRef } from "react";
 
 import StratificationsContext from "../../../contexts/StratificationsContext";
 import StratificationButtonBar from "../StratificationButtonBar";
+import { useStratificationValidation } from "../../../hooks/useStratificationValidation";
+import FloatingError from "../../ui/FloatingError";
 
 /**
  * StratificationFormEdit component.
@@ -19,42 +21,26 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
   const [backupStratification] = useState(stratification);
   const [formData, setFormData] = useState({
     id: stratification.id,
-    name: stratification.name || "",
+    stratification: stratification.stratification || "",
     description: stratification.description || "",
   });
 
-  const [errors, setErrors] = useState({});
-  const nameRef = useRef(null);
+  const { stratificationExists, requiredFields, isFormValid, errors } =
+    useStratificationValidation(formData, stratification);
 
-  // Basic validation
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.name?.trim()) {
-      newErrors.name = "Name is required";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const isFormValid = validateForm();
+  const stratificationRef = useRef(null);
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (validateForm()) {
-      stratificationsContext.updateStratification(formData);
-      setEdit(false);
-    }
+    stratificationsContext.updateStratification(formData);
+    setEdit(false);
   };
 
   const handleCancel = () => {
     setFormData({
-      id: backupStratification.id,
-      name: backupStratification.name || "",
+      stratification: backupStratification.stratification || "",
       description: backupStratification.description || "",
     });
-    setErrors({});
     setEdit(false);
   };
 
@@ -64,14 +50,6 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
       ...prev,
       [name]: value,
     }));
-
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
   };
 
   const renderContent = () => {
@@ -81,22 +59,32 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
           <label className="form__cell">
             Name:
             <input
-              ref={nameRef}
-              className={`stratification__name ${errors.name ? "error" : ""}`}
+              ref={stratificationRef}
+              className={`stratification__name`}
               type="text"
-              name="name"
-              id="name"
-              value={formData.name}
+              name="stratification"
+              id="stratification"
+              value={formData.stratification}
               onChange={handleInputChange}
               required
             />
-            {errors.name && (
-              <span className="error-message">{errors.name}</span>
-            )}
+            <FloatingError
+              message={errors.stratificationExists}
+              show={stratificationExists}
+              inputRef={stratificationRef}
+            />
+            <FloatingError
+              message={errors.requiredFields}
+              show={!requiredFields}
+              inputRef={stratificationRef}
+            />
           </label>
-          <label className="form__cell">
+        </div>
+        <div className="form__row">
+          <label className="form__cell form--wide">
             Description:
             <input
+              className="field__comment"
               type="text"
               name="description"
               id="description"
@@ -104,6 +92,8 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
               onChange={handleInputChange}
             />
           </label>
+        </div>
+        <div className="form__row">
           <StratificationButtonBar
             edit={edit}
             setEdit={setEdit}
