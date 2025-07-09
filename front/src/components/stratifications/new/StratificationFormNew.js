@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 
 import StratificationButtonBar from "../StratificationButtonBar";
 import StratificationsContext from "../../../contexts/StratificationsContext";
@@ -27,8 +27,13 @@ const StratificationFormNew = ({ addStratification }) => {
   const { stratificationExists, requiredFields, isFormValid, errors } =
     useStratificationValidation(newStratification);
 
-  // const [errors, setErrors] = useState({});
   const stratificationRef = useRef(null);
+
+  useEffect(() => {
+    if (addStratification && stratificationRef.current) {
+      stratificationRef.current.focus();
+    }
+  }, [addStratification]);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -38,14 +43,6 @@ const StratificationFormNew = ({ addStratification }) => {
         [name]: value,
       };
     });
-
-    // Clear error when user starts typing
-    // if (errors[name]) {
-    //   setErrors(prev => ({
-    //     ...prev,
-    //     [name]: "",
-    //   }));
-    // }
   };
 
   const handleSubmit = e => {

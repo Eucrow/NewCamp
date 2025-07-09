@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 
 import StratificationsContext from "../../../contexts/StratificationsContext";
 import StratificationButtonBar from "../StratificationButtonBar";
@@ -31,6 +31,12 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
     useStratificationValidation(formData, stratification);
 
   const stratificationRef = useRef(null);
+
+  useEffect(() => {
+    if (edit && stratificationRef.current) {
+      stratificationRef.current.focus();
+    }
+  }, [edit]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -70,6 +76,7 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
               value={formData.stratification}
               onChange={handleInputChange}
               required
+              autoFocus
             />
             <FloatingError
               message={errors.stratificationExists}
