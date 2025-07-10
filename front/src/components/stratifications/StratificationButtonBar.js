@@ -37,7 +37,6 @@ const StratificationButtonBar = ({
   isEdit,
   isValid,
   isDeleteable,
-  focusIndex = 0, // Default focus index for accessibility
 }) => {
   const buttonBarConfig = {
     defaultMode: (
@@ -51,7 +50,7 @@ const StratificationButtonBar = ({
           buttonText={"Delete stratification"}
           disabled={!isDeleteable}
           disabledMessage={
-            "This stratification cannot be deleted because it is used in one or more strata."
+            "This stratification cannot be deleted because it is used in one or more surveys."
           }
         >
           <UiIconDelete />

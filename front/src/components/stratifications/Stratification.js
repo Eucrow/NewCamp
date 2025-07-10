@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import StratificationFormView from "./view/StratificationFormView";
 import StratificationFormEdit from "./edit/StratificationFormEdit";
 import StratificationFormNew from "./new/StratificationFormNew";
+
+import StratificationsContext from "../../contexts/StratificationsContext";
+import SurveysContext from "../../contexts/SurveysContext";
 
 /**
  * Stratification component.
@@ -23,6 +26,20 @@ import StratificationFormNew from "./new/StratificationFormNew";
 const Stratification = ({ stratification, addStratification }) => {
   const [edit, setEdit] = useState(false);
   const [isDeleteable, setIsDeleteable] = useState(true);
+
+  const stratificationsContext = useContext(StratificationsContext);
+
+  useEffect(() => {
+    const checkIsDeleteable = async () => {
+      const isUsedInSurveys =
+        await stratificationsContext.stratificationUsedInSurvey(
+          stratification.id
+        );
+      setIsDeleteable(!isUsedInSurveys);
+    };
+
+    checkIsDeleteable();
+  }, []);
 
   const renderContent = () => {
     if (addStratification === true) {

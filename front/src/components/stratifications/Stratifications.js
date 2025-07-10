@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
 import Stratification from "./Stratification";
 import StratificationsButtonBar from "./StratificationsButtonBar";
 import { API_CONFIG, buildApiUrl } from "../../config/api";
 import StratificationsContext from "../../contexts/StratificationsContext";
+import SurveysContext from "../../contexts/SurveysContext";
 
 /**
  * Stratifications component.
@@ -27,6 +28,8 @@ import StratificationsContext from "../../contexts/StratificationsContext";
 const Stratifications = () => {
   const [stratifications, setStratifications] = useState([]);
   const [addStratification, setAddStratification] = useState(false);
+
+  const surveysContext = useContext(SurveysContext);
 
   // Fetch stratifications on component mount
   useEffect(() => {
@@ -134,6 +137,22 @@ const Stratifications = () => {
     }
   };
 
+  // Fetch if the stratification is used in any survey
+  const stratificationUsedInSurvey = async stratificationId => {
+    const api = buildApiUrl(
+      API_CONFIG.ENDPOINTS.STRATIFICATIONS_IN_SURVEY(stratificationId)
+    );
+    try {
+      const response = await fetch(api);
+      const data = await response.json();
+      console.log("Stratu in hauls ", stratificationId, ":", data.exists);
+      return data.exists;
+    } catch (error) {
+      console.error("Error checking stratification in survey:", error);
+      return false;
+    }
+  };
+
   const contextValue = useMemo(
     () => ({
       stratifications,
@@ -142,6 +161,7 @@ const Stratifications = () => {
       deleteStratification,
       addStratification,
       setAddStratification,
+      stratificationUsedInSurvey,
     }),
     [stratifications]
   );

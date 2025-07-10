@@ -111,26 +111,6 @@ const Strata = () => {
       .catch(error => console.error("Error deleting stratum:", error));
   };
 
-  /**
-   * Method to check if a stratum name already exists in this stratification.
-   * @param {string} stratumName stratum name to check if already exists.
-   * @returns True if exists, false if doesn't.
-   */
-  const stratumExists = stratumName => {
-    if (typeof strata === "undefined") {
-      return false;
-    }
-
-    const stratum_exists = Object.keys(strata).map(s => {
-      if (strata[s]["stratum"] === stratumName) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    return stratum_exists.some(s => s === true);
-  };
-
   // Fetch if the stratum is used in any hauls
   const stratumUsedInHauls = async stratumId => {
     const api = buildApiUrl(API_CONFIG.ENDPOINTS.STRATUM_IN_HAUL(stratumId));

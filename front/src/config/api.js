@@ -8,6 +8,8 @@ export const API_CONFIG = {
 
     // Stratification endpoints
     STRATIFICATIONS: "/stratifications/",
+    STRATIFICATIONS_IN_SURVEY: stratificationId =>
+      `/stratifications/check-stratification-in-survey/${stratificationId}`,
 
     // Strata endpoints
     GET_STRATIFICATIONS: "/stratifications",
