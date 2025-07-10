@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import StratificationsContext from "../../../contexts/StratificationsContext";
 import StratificationButtonBar from "../StratificationButtonBar";
@@ -17,13 +17,22 @@ import StratificationButtonBar from "../StratificationButtonBar";
  * @param {boolean} props.isDeleteable - Whether the stratification can be deleted.
  * @returns {JSX.Element}
  */
-const StratificationFormView = ({
-  stratification,
-  edit,
-  setEdit,
-  isDeleteable,
-}) => {
+const StratificationFormView = ({ stratification, edit, setEdit }) => {
+  const [isDeleteable, setIsDeleteable] = useState(true);
+
   const stratificationsContext = useContext(StratificationsContext);
+
+  useEffect(() => {
+    const checkIsDeleteable = async () => {
+      const isUsedInSurveys =
+        await stratificationsContext.stratificationUsedInSurvey(
+          stratification.id
+        );
+      setIsDeleteable(!isUsedInSurveys);
+    };
+
+    checkIsDeleteable();
+  }, []);
 
   const renderContent = () => {
     return (
@@ -32,7 +41,7 @@ const StratificationFormView = ({
           <label className="form__cell">
             Stratification:
             <input
-              className="stratification__name"
+              className="stratifications__name"
               type="text"
               name="name"
               id="name"

@@ -172,6 +172,12 @@ const Stratifications = () => {
         <header>
           <h1 className="title">Stratifications Management</h1>
         </header>
+        <div className="wrapper strataWrapper stratifications__notes">
+          The management of stratifications has some limitations. To avoid
+          inconsistencies, the system does not allow the deletion of
+          stratifications that are used by any survey. To remove a
+          stratification, please ensure it is not associated with any survey.
+        </div>
         <div className="wrapper stratificationsWrapper">
           {addStratification ? (
             <Stratification addStratification={addStratification} />

@@ -67,7 +67,7 @@ const StratificationFormNew = ({ addStratification }) => {
             Stratification:
             <input
               ref={stratificationRef}
-              className={`stratification__name`}
+              className={`stratifications__name`}
               type="text"
               name="stratification"
               id="stratification"

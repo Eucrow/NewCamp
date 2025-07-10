@@ -25,21 +25,8 @@ import SurveysContext from "../../contexts/SurveysContext";
  */
 const Stratification = ({ stratification, addStratification }) => {
   const [edit, setEdit] = useState(false);
-  const [isDeleteable, setIsDeleteable] = useState(true);
 
   const stratificationsContext = useContext(StratificationsContext);
-
-  useEffect(() => {
-    const checkIsDeleteable = async () => {
-      const isUsedInSurveys =
-        await stratificationsContext.stratificationUsedInSurvey(
-          stratification.id
-        );
-      setIsDeleteable(!isUsedInSurveys);
-    };
-
-    checkIsDeleteable();
-  }, []);
 
   const renderContent = () => {
     if (addStratification === true) {
@@ -65,7 +52,6 @@ const Stratification = ({ stratification, addStratification }) => {
             stratification={stratification}
             edit={edit}
             setEdit={setEdit}
-            isDeleteable={isDeleteable}
           />
         </div>
       );

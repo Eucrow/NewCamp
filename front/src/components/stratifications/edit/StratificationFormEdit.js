@@ -69,7 +69,7 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
             Stratification:
             <input
               ref={stratificationRef}
-              className={`stratification__name`}
+              className={`stratifications__name`}
               type="text"
               name="stratification"
               id="stratification"

@@ -183,10 +183,10 @@ const Strata = () => {
             <h1 className="title">Strata Management</h1>
           </header>
           <div className="wrapper strataWrapper strata__notes">
-            The manage of strata have some limitations. In order to avoid
-            inconsistencies, the system does not allow to delete strata used by
-            hauls. To remove strata, please ensure they are not associated with
-            any hauls first.
+            The management of strata has some limitations. To avoid
+            inconsistencies, the system does not allow the deletion of strata
+            that are used by any haul. To remove a stratum, please ensure it is
+            not associated with any haul.
           </div>
 
           <div className="wrapper strataWrapper">
