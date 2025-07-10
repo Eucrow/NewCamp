@@ -4,15 +4,18 @@ import StrataContext from "../../../contexts/StrataContext";
 import StratumButtonBar from "../StratumButtonBar";
 
 /**
- * StratumFormView component.
- * Renders a read-only form displaying stratum details.
+ * StratumFormView component - Read-only display of stratum details.
  *
- * @param {Object} props - The component props.
- * @param {Object} props.stratum - The stratum object to display.
- * @param {boolean} props.edit - Whether the form is in edit mode (passed to button bar).
- * @param {Function} props.setEdit - Function to set the edit state (passed to button bar).
+ * Displays stratum information in disabled form fields with action buttons.
+ * Shows stratum name, area, and comment in read-only format.
  *
- * @returns {JSX.Element} The rendered read-only form for a stratum.
+ * @component
+ * @param {Object} props - The component props
+ * @param {Object} props.stratum - The stratum object to display
+ * @param {boolean} props.edit - Current edit state
+ * @param {Function} props.setEdit - Function to toggle edit mode
+ * @param {boolean} props.isDeleteable - Whether stratum can be deleted
+ * @returns {JSX.Element} The rendered read-only stratum form
  */
 const StratumFormView = ({ stratum, edit, setEdit, isDeleteable }) => {
   const strataContext = useContext(StrataContext);

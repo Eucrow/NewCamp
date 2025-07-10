@@ -6,17 +6,21 @@ import { useStratificationValidation } from "../../../hooks/useStratificationVal
 import FloatingError from "../../ui/FloatingError";
 
 /**
- * StratificationFormEdit component.
+ * StratificationFormEdit component - Editable form for modifying existing stratifications.
  *
- * Renders a form for editing a stratification, including validation and error display.
- * Uses StratificationsContext for updateStratification.
+ * A comprehensive form component that allows users to edit existing stratification details.
+ * Includes real-time validation, error handling, backup/restore functionality for cancellation,
+ * and automatic focus management for improved user experience.
  *
  * @component
- * @param {Object} props
- * @param {Object} props.stratification - The stratification object to edit.
- * @param {boolean} props.edit - Whether the form is in edit mode.
- * @param {Function} props.setEdit - Function to set the edit state.
- * @returns {JSX.Element}
+ * @param {Object} props - The component props
+ * @param {Object} props.stratification - The stratification object to edit
+ * @param {number} props.stratification.id - Unique identifier for the stratification
+ * @param {string} props.stratification.stratification - Current name of the stratification
+ * @param {string} [props.stratification.description] - Current description of the stratification
+ * @param {boolean} props.edit - Whether the form is currently in edit mode
+ * @param {Function} props.setEdit - Function to toggle edit mode on/off
+ * @returns {JSX.Element} The rendered editable stratification form with validation and actions
  */
 const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
   const stratificationsContext = useContext(StratificationsContext);
@@ -38,12 +42,25 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
     }
   }, [edit]);
 
+  /**
+   * Handle form submission and update the stratification.
+   *
+   * @function
+   * @param {Event} e - The form submission event
+   * @returns {void}
+   */
   const handleSubmit = e => {
     e.preventDefault();
     stratificationsContext.updateStratification(formData);
     setEdit(false);
   };
 
+  /**
+   * Handle cancellation of edit mode and restore original values.
+   *
+   * @function
+   * @returns {void}
+   */
   const handleCancel = () => {
     setFormData({
       id: stratification.id,
@@ -53,6 +70,15 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
     setEdit(false);
   };
 
+  /**
+   * Handle input field changes and update form state.
+   *
+   * @function
+   * @param {Event} e - The input change event
+   * @param {string} e.target.name - The name of the input field
+   * @param {string} e.target.value - The new value of the input field
+   * @returns {void}
+   */
   const handleInputChange = e => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -61,6 +87,12 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
     }));
   };
 
+  /**
+   * Render the editable stratification form.
+   *
+   * @function
+   * @returns {JSX.Element} The rendered editable form with validation and action buttons
+   */
   const renderContent = () => {
     return (
       <form className="form--wide" onSubmit={handleSubmit}>

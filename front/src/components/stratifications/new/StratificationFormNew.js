@@ -7,15 +7,18 @@ import { useStratificationValidation } from "../../../hooks/useStratificationVal
 import FloatingError from "../../ui/FloatingError";
 
 /**
- * StratificationFormNew component.
+ * StratificationFormNew component - Form for creating new stratifications.
  *
- * Renders a form for creating a new stratification, including validation and error display.
- * Uses StratificationsContext for createStratification and setAddStratification.
+ * A comprehensive form component for creating new stratifications from scratch.
+ * Provides real-time validation, error handling, and a clean user interface
+ * for entering stratification details. Automatically manages form state and
+ * provides feedback to users during the creation process.
  *
  * @component
- * @param {Object} props
- * @param {boolean} props.addStratification - Whether a new stratification is being added (controls button bar mode).
- * @returns {JSX.Element}
+ * @param {Object} props - The component props
+ * @param {boolean} props.addStratification - Whether a new stratification is being added.
+ *                                           Used to control button bar mode and auto-focus behavior
+ * @returns {JSX.Element} The rendered new stratification form with validation and actions
  */
 const StratificationFormNew = ({ addStratification }) => {
   const stratificationsContext = useContext(StratificationsContext);
@@ -35,6 +38,15 @@ const StratificationFormNew = ({ addStratification }) => {
     }
   }, [addStratification]);
 
+  /**
+   * Handle input field changes and update form state.
+   *
+   * @function
+   * @param {Event} e - The input change event
+   * @param {string} e.target.name - The name of the input field being changed
+   * @param {string} e.target.value - The new value entered by the user
+   * @returns {void}
+   */
   const handleChange = e => {
     const { name, value } = e.target;
     setNewStratification(prev_state => {
@@ -45,11 +57,24 @@ const StratificationFormNew = ({ addStratification }) => {
     });
   };
 
+  /**
+   * Handle form submission and create the new stratification.
+   *
+   * @function
+   * @param {Event} e - The form submission event
+   * @returns {void}
+   */
   const handleSubmit = e => {
     e.preventDefault();
     stratificationsContext.createStratification(newStratification);
   };
 
+  /**
+   * Handle cancellation of new stratification creation.
+   *
+   * @function
+   * @returns {void}
+   */
   const handleCancel = () => {
     setNewStratification({
       stratification: "",
@@ -59,6 +84,12 @@ const StratificationFormNew = ({ addStratification }) => {
     stratificationsContext.setAddStratification(false);
   };
 
+  /**
+   * Render the new stratification creation form.
+   *
+   * @function
+   * @returns {JSX.Element} The rendered new stratification form with validation and action buttons
+   */
   const renderContent = () => {
     return (
       <form className="form--wide" onSubmit={e => handleSubmit(e)}>

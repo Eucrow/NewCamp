@@ -6,24 +6,19 @@ import StratificationsContext from "../../contexts/StratificationsContext";
 import SurveysContext from "../../contexts/SurveysContext";
 
 /**
- * Stratifications component.
+ * Stratifications component - Main container for stratification management.
  *
- * Provides an interface for managing stratifications, including:
- * - Fetching all stratifications from the API on mount
- * - Creating, updating, and deleting stratifications
- * - Managing UI state for adding new stratifications
- * - Providing all relevant state and CRUD functions via StratificationsContext to child components
- *
- * Context values provided:
- * - stratifications: Array of stratification objects
- * - createStratification: Function to create a new stratification
- * - updateStratification: Function to update an existing stratification
- * - deleteStratification: Function to delete a stratification by id
- * - addStratification: Boolean, whether the add form is shown
- * - setAddStratification: Function to control add form visibility
+ * Context values provided to children:
+ * @property {Array<Object>} stratifications - Array of stratification objects from the API
+ * @property {Function} createStratification - Creates a new stratification and updates local state
+ * @property {Function} updateStratification - Updates an existing stratification and refreshes local state
+ * @property {Function} deleteStratification - Deletes a stratification by ID and removes from local state
+ * @property {boolean} addStratification - Controls visibility of the add stratification form
+ * @property {Function} setAddStratification - Function to toggle add form visibility
+ * @property {Function} stratificationUsedInSurvey - Checks if a stratification is referenced by any survey
  *
  * @component
- * @returns {JSX.Element} The rendered Stratifications management interface.
+ * @returns {JSX.Element} The rendered Stratifications management interface with context provider
  */
 const Stratifications = () => {
   const [stratifications, setStratifications] = useState([]);
@@ -38,6 +33,11 @@ const Stratifications = () => {
 
   /**
    * Fetch all stratifications from the API.
+   *
+   * @async
+   * @function
+   * @returns {Promise<void>} Promise that resolves when stratifications are fetched and state is updated
+   * @throws {Error} When the API request fails or returns a non-ok response
    */
   const fetchStratifications = async () => {
     try {
@@ -55,8 +55,15 @@ const Stratifications = () => {
   };
 
   /**
-   * Create stratification.
-   * @param {object} stratification - The stratification to be created.
+   * Create a new stratification via API and update local state.
+   *
+   * @async
+   * @function
+   * @param {Object} stratification - The stratification object to be created
+   * @param {string} stratification.stratification - The name of the stratification
+   * @param {string} [stratification.description] - Optional description of the stratification
+   * @returns {Promise<void>} Promise that resolves when stratification is created and state is updated
+   * @throws {Error} When the API request fails or returns a non-ok response
    */
   const createStratification = async stratification => {
     try {
@@ -82,8 +89,16 @@ const Stratifications = () => {
   };
 
   /**
-   * Update stratification.
-   * @param {object} stratification - The updated stratification.
+   * Update an existing stratification via API and refresh local state.
+   *
+   * @async
+   * @function
+   * @param {Object} stratification - The stratification object with updated values
+   * @param {number} stratification.id - The unique identifier of the stratification to update
+   * @param {string} stratification.stratification - The updated name of the stratification
+   * @param {string} [stratification.description] - Optional updated description of the stratification
+   * @returns {Promise<void>} Promise that resolves when stratification is updated and state is refreshed
+   * @throws {Error} When the API request fails or returns a non-ok response
    */
   const updateStratification = async stratification => {
     try {
@@ -114,8 +129,13 @@ const Stratifications = () => {
   };
 
   /**
-   * Delete stratification.
-   * @param {number} id - The ID of the stratification to delete.
+   * Delete a stratification via API and remove from local state.
+   *
+   * @async
+   * @function
+   * @param {number} id - The unique identifier of the stratification to delete
+   * @returns {Promise<void>} Promise that resolves when stratification is deleted and state is updated
+   * @throws {Error} When the API request fails or returns a non-ok response
    */
   const deleteStratification = async id => {
     try {
@@ -137,7 +157,15 @@ const Stratifications = () => {
     }
   };
 
-  // Fetch if the stratification is used in any survey
+  /**
+   * Check if a stratification is currently used in any survey.
+   *
+   * @async
+   * @function
+   * @param {number} stratificationId - The unique identifier of the stratification to check
+   * @returns {Promise<boolean>} Promise that resolves to true if stratification is used in surveys, false otherwise
+   * @throws {Error} When the API request fails, returns false as fallback
+   */
   const stratificationUsedInSurvey = async stratificationId => {
     const api = buildApiUrl(
       API_CONFIG.ENDPOINTS.STRATIFICATIONS_IN_SURVEY(stratificationId)

@@ -4,25 +4,34 @@ import StratificationsContext from "../../../contexts/StratificationsContext";
 import StratificationButtonBar from "../StratificationButtonBar";
 
 /**
- * StratificationFormView component.
+ * StratificationFormView component - Read-only display of stratification details.
  *
- * Renders a read-only form displaying stratification details.
- * Uses StratificationsContext for delete and other actions via StratificationButtonBar.
+ * A form component that displays stratification information in a read-only format.
+ * All input fields are disabled to prevent editing, and the component provides
+ * action buttons through the StratificationButtonBar for editing and deletion.
  *
  * @component
- * @param {Object} props
- * @param {Object} props.stratification - The stratification object to display.
- * @param {boolean} props.edit - Whether the form is in edit mode (passed to button bar).
- * @param {Function} props.setEdit - Function to set the edit state (passed to button bar).
- * @param {boolean} props.isDeleteable - Whether the stratification can be deleted.
- * @returns {JSX.Element}
+ * @param {Object} props - The component props
+ * @param {Object} props.stratification - The stratification object to display
+ * @param {number} props.stratification.id - Unique identifier for the stratification
+ * @param {string} props.stratification.stratification - Name of the stratification
+ * @param {string} [props.stratification.description] - Optional description of the stratification
+ * @param {boolean} props.edit - Current edit state (passed to button bar)
+ * @param {Function} props.setEdit - Function to toggle edit mode (passed to button bar)
+ * @returns {JSX.Element} The rendered read-only stratification form with action buttons
  */
 const StratificationFormView = ({ stratification, edit, setEdit }) => {
   const [isDeleteable, setIsDeleteable] = useState(true);
 
   const stratificationsContext = useContext(StratificationsContext);
-
   useEffect(() => {
+    /**
+     * Check if the stratification can be safely deleted.
+     *
+     * @async
+     * @function
+     * @returns {Promise<void>} Promise that resolves when the deleteability check is complete
+     */
     const checkIsDeleteable = async () => {
       const isUsedInSurveys =
         await stratificationsContext.stratificationUsedInSurvey(
@@ -34,6 +43,12 @@ const StratificationFormView = ({ stratification, edit, setEdit }) => {
     checkIsDeleteable();
   }, []);
 
+  /**
+   * Render the read-only stratification form.
+   *
+   * @function
+   * @returns {JSX.Element} The rendered form with disabled inputs and action buttons
+   */
   const renderContent = () => {
     return (
       <form className="form--wide">

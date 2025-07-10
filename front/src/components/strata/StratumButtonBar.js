@@ -7,21 +7,24 @@ import UiIconEdit from "../ui/UiIconEdit";
 import UiIconDelete from "../ui/UiIconDelete";
 
 /**
- * StratumButtonBar component.
- * Renders a button bar with actions for a stratum, supporting edit, add, and default modes.
+ * StratumButtonBar component - Action buttons for stratum forms.
  *
- * @param {Object} props - The component props.
- * @param {Object} props.stratum - The stratum object.
- * @param {boolean} props.edit - Whether the stratum is currently being edited.
- * @param {Function} props.setEdit - Function to set the edit state.
- * @param {Function} props.deleteStratum - Function to delete the stratum by id.
- * @param {Function} props.handleCancel - Function to handle canceling the edit mode.
- * @param {Function} props.handleAdd - Function to handle canceling the add mode.
- * @param {boolean} props.addStratum - Whether a new stratum is being added.
- * @param {boolean} props.isEdit - Whether this is edit mode (alternative to `edit`).
- * @param {boolean} props.isValid - Whether the current form state is valid.
+ * Renders different button sets for default (view), edit, and new modes.
+ * Handles delete validation and form submission states.
  *
- * @returns {React.ReactElement} The rendered StratumButtonBar component.
+ * @component
+ * @param {Object} props - The component props
+ * @param {Object} [props.stratum] - The stratum object
+ * @param {boolean} [props.edit] - Whether in edit mode
+ * @param {Function} [props.setEdit] - Function to toggle edit state
+ * @param {Function} [props.deleteStratum] - Function to delete stratum
+ * @param {Function} [props.handleCancel] - Function to handle edit cancellation
+ * @param {Function} [props.handleAdd] - Function to handle new stratum cancellation
+ * @param {boolean} [props.addStratum] - Whether adding new stratum
+ * @param {boolean} [props.isEdit] - Alternative edit mode flag
+ * @param {boolean} [props.isValid] - Whether form state is valid
+ * @param {boolean} [props.isDeleteable] - Whether stratum can be deleted
+ * @returns {JSX.Element} The rendered button bar for current mode
  */
 const StratumButtonBar = ({
   stratum,

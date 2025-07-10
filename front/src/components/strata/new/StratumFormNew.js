@@ -7,14 +7,16 @@ import { useStrataValidation } from "../../../hooks/useStrataValidation";
 import FloatingError from "../../ui/FloatingError";
 
 /**
- * StratumFormNew component.
- * Renders a form for creating a new stratum, including validation and error display.
+ * StratumFormNew component - Form for creating new strata.
  *
- * @param {Object} props - The component props.
- * @param {number} props.stratification_id - The ID of the stratification to which the new stratum belongs.
- * @param {boolean} props.addStratum - Whether a new stratum is being added (controls button bar mode).
+ * Provides form fields for entering new stratum details with validation and error handling.
+ * Automatically resets form and closes on successful creation.
  *
- * @returns {JSX.Element} The rendered form for creating a new stratum.
+ * @component
+ * @param {Object} props - The component props
+ * @param {number} props.stratification_id - The ID of the parent stratification
+ * @param {boolean} props.addStratum - Whether new stratum is being added
+ * @returns {JSX.Element} The rendered new stratum form
  */
 const StratumFormNew = ({ stratification_id, addStratum }) => {
   const strataContext = useContext(StrataContext);
@@ -36,6 +38,9 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
   const { stratumExists, requiredFields, isFormValid, errors } =
     useStrataValidation(newStratum);
 
+  /**
+   * Handles input field changes and updates form state.
+   */
   const handleChange = e => {
     const { name, value } = e.target;
     setNewStratum(prev_state => {
@@ -46,6 +51,9 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
     });
   };
 
+  /**
+   * Handles form submission and creates the new stratum.
+   */
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -64,6 +72,9 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
     strataContext.setAddStratum(false);
   };
 
+  /**
+   * Handles cancellation of new stratum creation.
+   */
   const handleCancel = () => {
     strataContext.setAddStratum(false);
   };

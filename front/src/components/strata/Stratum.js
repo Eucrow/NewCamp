@@ -5,16 +5,16 @@ import StratumFormNew from "./new/StratumFormNew";
 import StrataContext from "../../contexts/StrataContext";
 
 /**
- * Stratum component.
+ * Stratum component - Container for individual stratum management.
  *
- * Handles the display and editing of a single stratum, supporting view, edit, and new modes.
+ * Manages display and editing state for a single stratum with view, edit, and new modes.
+ * Handles deletion validation based on haul usage.
  *
  * @component
- * @param {Object} props - The component props.
- * @param {Object} [props.stratum] - The stratum object to display or edit (not required in new mode).
- * @param {boolean} props.addStratum - Whether to render the form for adding a new stratum.
- *
- * @returns {JSX.Element} The rendered stratum form in the appropriate mode.
+ * @param {Object} props - The component props
+ * @param {Object} [props.stratum] - The stratum object to display or edit
+ * @param {boolean} props.addStratum - Whether to render the new stratum form
+ * @returns {JSX.Element} The rendered stratum form in appropriate mode
  */
 const Stratum = ({ stratum, addStratum }) => {
   const [edit, setEdit] = useState(false);
