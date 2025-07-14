@@ -7,7 +7,7 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
  *
  * @component
  * @param {Object} props - The component props
- * @param {Function} props.handleAddStratification - Callback function to set addStratification state to true,
+ * @param {Function} props.handleAddStratification - Callback function to set addingStratification state to true,
  *                                                   which triggers the display of the new stratification form
  * @returns {JSX.Element} The rendered Add Stratification button wrapped in appropriate styling containers
  */

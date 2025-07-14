@@ -13,15 +13,15 @@ import StratificationFormNew from "./new/StratificationFormNew";
  * @component
  * @param {Object} props - The component props
  * @param {Object} [props.stratification] - The stratification object to display or edit.
- *                                          Not required when in new mode (addStratification=true)
+ *                                          Not required when in new mode (addingStratification=true)
  * @param {number} props.stratification.id - Unique identifier for the stratification
  * @param {string} props.stratification.stratification - Name of the stratification
  * @param {string} [props.stratification.description] - Optional description of the stratification
- * @param {boolean} [props.addStratification=false] - Whether to render the form for adding a new stratification.
+ * @param {boolean} [props.addingStratification=false] - Whether to render the form for adding a new stratification.
  *                                                    When true, overrides edit state and shows new form
  * @returns {JSX.Element} The rendered stratification component with appropriate form based on current mode
  */
-const Stratification = ({ stratification, addStratification }) => {
+const Stratification = ({ stratification, addingStratification }) => {
   const [edit, setEdit] = useState(false);
 
   /**
@@ -36,10 +36,10 @@ const Stratification = ({ stratification, addStratification }) => {
    * @returns {JSX.Element} The appropriate form component wrapped in styling containers
    */
   const renderContent = () => {
-    if (addStratification === true) {
+    if (addingStratification === true) {
       return (
         <div className="wrapper form__row">
-          <StratificationFormNew addStratification={addStratification} />
+          <StratificationFormNew addingStratification={addingStratification} />
         </div>
       );
     } else if (edit === true) {

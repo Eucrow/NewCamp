@@ -16,11 +16,11 @@ import FloatingError from "../../ui/FloatingError";
  *
  * @component
  * @param {Object} props - The component props
- * @param {boolean} props.addStratification - Whether a new stratification is being added.
+ * @param {boolean} props.addingStratification - Whether a new stratification is being added.
  *                                           Used to control button bar mode and auto-focus behavior
  * @returns {JSX.Element} The rendered new stratification form with validation and actions
  */
-const StratificationFormNew = ({ addStratification }) => {
+const StratificationFormNew = ({ addingStratification }) => {
   const stratificationsContext = useContext(StratificationsContext);
   const [newStratification, setNewStratification] = useState({
     stratification: "",
@@ -33,10 +33,10 @@ const StratificationFormNew = ({ addStratification }) => {
   const stratificationRef = useRef(null);
 
   useEffect(() => {
-    if (addStratification && stratificationRef.current) {
+    if (addingStratification && stratificationRef.current) {
       stratificationRef.current.focus();
     }
-  }, [addStratification]);
+  }, [addingStratification]);
 
   /**
    * Handle input field changes and update form state.
@@ -81,7 +81,7 @@ const StratificationFormNew = ({ addStratification }) => {
       description: "",
     });
     // setErrors({});
-    stratificationsContext.setAddStratification(false);
+    stratificationsContext.setAddingStratification(false);
   };
 
   /**
@@ -134,7 +134,7 @@ const StratificationFormNew = ({ addStratification }) => {
           </div>
           <div className="form__row">
             <StratificationButtonBar
-              addStratification={addStratification}
+              addingStratification={addingStratification}
               handleAdd={handleCancel}
               isValid={isFormValid}
             />

@@ -9,8 +9,8 @@
  *
  * Returned values:
  * @property {Array<Object>} stratifications - List of stratification objects
- * @property {boolean} addStratification - Whether the add stratification form is visible
- * @property {Function} setAddStratification - Function to toggle add form visibility
+ * @property {boolean} addingStratification - Whether the add stratification form is visible
+ * @property {Function} setAddingStratification - Function to toggle add form visibility
  * @property {Function} fetchStratifications - Fetches all stratifications from the API
  * @property {Function} createStratification - Creates a new stratification
  * @property {Function} updateStratification - Updates an existing stratification
@@ -25,7 +25,7 @@ import { API_CONFIG, buildApiUrl } from "../config/api";
 
 export const useStratificationsCrud = () => {
   const [stratifications, setStratifications] = useState([]);
-  const [addStratification, setAddStratification] = useState(false);
+  const [addingStratification, setAddingStratification] = useState(false);
 
   /**
    * Fetch all stratifications from the API.
@@ -78,7 +78,7 @@ export const useStratificationsCrud = () => {
 
       const newStratification = await response.json();
       setStratifications([...stratifications, newStratification]);
-      setAddStratification(false);
+      setAddingStratification(false);
     } catch (error) {
       console.error("Error creating stratification:", error);
     }
@@ -184,8 +184,8 @@ export const useStratificationsCrud = () => {
 
   return {
     stratifications,
-    addStratification,
-    setAddStratification,
+    addingStratification,
+    setAddingStratification,
     createStratification,
     updateStratification,
     deleteStratification,

@@ -21,8 +21,8 @@ import StratificationsContext from "../../contexts/StratificationsContext";
  * @property {Function} createStratification - Creates a new stratification and updates local state
  * @property {Function} updateStratification - Updates an existing stratification and refreshes local state
  * @property {Function} deleteStratification - Deletes a stratification by ID and removes from local state
- * @property {boolean} addStratification - Controls visibility of the add stratification form
- * @property {Function} setAddStratification - Function to toggle add form visibility
+ * @property {boolean} addingStratification - Controls visibility of the add stratification form
+ * @property {Function} setAddingStratification - Function to toggle add form visibility
  * @property {Function} stratificationUsedInSurvey - Checks if a stratification is referenced by any survey
  *
  * @component
@@ -31,8 +31,8 @@ import StratificationsContext from "../../contexts/StratificationsContext";
 const Stratifications = () => {
   const {
     stratifications,
-    addStratification,
-    setAddStratification,
+    addingStratification,
+    setAddingStratification,
     createStratification,
     updateStratification,
     deleteStratification,
@@ -45,8 +45,8 @@ const Stratifications = () => {
       createStratification,
       updateStratification,
       deleteStratification,
-      addStratification,
-      setAddStratification,
+      addingStratification,
+      setAddingStratification,
       stratificationUsedInSurvey,
     }),
     [stratifications]
@@ -65,11 +65,11 @@ const Stratifications = () => {
           stratification, please ensure it is not associated with any survey.
         </div>
         <div className="wrapper stratificationsWrapper">
-          {addStratification ? (
-            <Stratification addStratification={addStratification} />
+          {addingStratification ? (
+            <Stratification addingStratification={addingStratification} />
           ) : (
             <StratificationsButtonBar
-              handleAddStratification={setAddStratification}
+              handleAddStratification={setAddingStratification}
             />
           )}
 
@@ -81,7 +81,7 @@ const Stratifications = () => {
               />
             ))}
 
-            {stratifications.length === 0 && !addStratification && (
+            {stratifications.length === 0 && !addingStratification && (
               <div>
                 <p>
                   No stratifications found. Click "Add Stratification" to create

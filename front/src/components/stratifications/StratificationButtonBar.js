@@ -34,7 +34,7 @@ import UiIconDelete from "../ui/UiIconDelete";
  * @param {Function} [props.deleteStratification] - Function to delete the stratification by ID
  * @param {Function} [props.handleCancel] - Function to handle canceling edit mode and reverting changes
  * @param {Function} [props.handleAdd] - Function to handle canceling new stratification creation
- * @param {boolean} [props.addStratification=false] - Whether a new stratification is being added
+ * @param {boolean} [props.addingStratification=false] - Whether a new stratification is being added
  * @param {boolean} [props.isEdit=false] - Alternative flag for edit mode (takes precedence over edit prop)
  * @param {boolean} [props.isValid=true] - Whether the current form state is valid (affects Save button state)
  * @param {boolean} [props.isDeleteable=true] - Whether the stratification can be deleted (affects Delete button state)
@@ -47,7 +47,7 @@ const StratificationButtonBar = ({
   deleteStratification,
   handleCancel,
   handleAdd,
-  addStratification,
+  addingStratification,
   isEdit,
   isValid,
   isDeleteable,
@@ -117,7 +117,7 @@ const StratificationButtonBar = ({
       return buttonBarConfig.editMode;
     }
 
-    if (addStratification === true) {
+    if (addingStratification === true) {
       return buttonBarConfig.newMode;
     }
 
