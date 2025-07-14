@@ -118,7 +118,11 @@ export const useStratificationValidation = (
       isFormValid: isValid,
       errors,
     }));
-  }, [stratification, originalStratification, stratificationsContext.strata]);
+  }, [
+    stratification,
+    originalStratification,
+    stratificationsContext.stratifications,
+  ]);
 
   return {
     stratificationExists: validationState.stratificationExists,

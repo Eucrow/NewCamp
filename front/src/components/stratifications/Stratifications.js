@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import Stratification from "./Stratification";
 import StratificationsButtonBar from "./StratificationsButtonBar";
 
@@ -7,6 +7,14 @@ import StratificationsContext from "../../contexts/StratificationsContext";
 
 /**
  * Stratifications component - Main container for stratification management.
+ *
+ * This component provides context and UI for managing stratifications, including:
+ * - Fetching stratifications from the API on mount (via useStratificationsCrud hook)
+ * - Creating, updating, and deleting stratifications
+ * - Preventing deletion if a stratification is used by any survey
+ * - Conditionally rendering the add form or button bar
+ * - Displaying an empty state message if no stratifications exist
+ * - Propagating context values to child components for CRUD operations
  *
  * Context values provided to children:
  * @property {Array<Object>} stratifications - Array of stratification objects from the API
@@ -25,17 +33,11 @@ const Stratifications = () => {
     stratifications,
     addStratification,
     setAddStratification,
-    fetchStratifications,
     createStratification,
     updateStratification,
     deleteStratification,
     stratificationUsedInSurvey,
   } = useStratificationsCrud();
-
-  // Fetch stratifications on component mount
-  useEffect(() => {
-    fetchStratifications();
-  }, []);
 
   const contextValue = useMemo(
     () => ({

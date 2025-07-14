@@ -1,3 +1,25 @@
+/**
+ * useStratificationsCrud - Custom React hook for managing stratifications CRUD operations and UI state.
+ *
+ * This hook provides functions and state for:
+ * - Fetching, creating, updating, and deleting stratifications via API
+ * - Tracking the list of stratifications
+ * - Controlling the visibility of the add stratification form
+ * - Checking if a stratification is used in any survey (prevents deletion)
+ *
+ * Returned values:
+ * @property {Array<Object>} stratifications - List of stratification objects
+ * @property {boolean} addStratification - Whether the add stratification form is visible
+ * @property {Function} setAddStratification - Function to toggle add form visibility
+ * @property {Function} fetchStratifications - Fetches all stratifications from the API
+ * @property {Function} createStratification - Creates a new stratification
+ * @property {Function} updateStratification - Updates an existing stratification
+ * @property {Function} deleteStratification - Deletes a stratification by ID
+ * @property {Function} stratificationUsedInSurvey - Checks if a stratification is referenced by any survey
+ *
+ * @returns {Object} Object containing state and CRUD functions for stratifications
+ */
+
 import { useState, useEffect } from "react";
 import { API_CONFIG, buildApiUrl } from "../config/api";
 
@@ -62,15 +84,9 @@ export const useStratificationsCrud = () => {
     }
   };
 
+  // Fetch stratifications when the component mounts
   useEffect(() => {
-    // Fetch stratifications when the component mounts
     fetchStratifications();
-    // const fetchingStratifications = async () => {
-    //   const fetchedStratifications = fetchStratifications();
-    //   return fetchedStratifications;
-    // };
-
-    // setStratifications(fetchingStratifications());
   }, []);
 
   /**
@@ -170,7 +186,6 @@ export const useStratificationsCrud = () => {
     stratifications,
     addStratification,
     setAddStratification,
-    fetchStratifications,
     createStratification,
     updateStratification,
     deleteStratification,
