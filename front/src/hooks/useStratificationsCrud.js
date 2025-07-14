@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import { API_CONFIG, buildApiUrl } from "../config/api";
+
 /**
  * useStratificationsCrud - Custom React hook for managing stratifications CRUD operations and UI state.
  *
@@ -19,9 +22,6 @@
  *
  * @returns {Object} Object containing state and CRUD functions for stratifications
  */
-
-import { useState, useEffect } from "react";
-import { API_CONFIG, buildApiUrl } from "../config/api";
 
 export const useStratificationsCrud = () => {
   const [stratifications, setStratifications] = useState([]);
