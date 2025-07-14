@@ -1,0 +1,23 @@
+.stratificationsWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 80%;
+  padding: 10px 20px;
+
+  @media (max-width: 768px) {
+    max-width: 95%;
+  }
+}
+
+.stratifications__name {
+  width: 50ch;
+}
+
+.stratifications__notes {
+  width: 80%;
+  font-size: 0.9rem; // Adjust font size as needed
+  color: var(--text-color); // Use a variable or specific color
+  margin-top: 5px; // Adjust spacing as needed
+  font-style: italic; // Optional: make it italic to differentiate from other text
+}

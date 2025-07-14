@@ -2,13 +2,14 @@ import React from "react";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
- * StrataButtonBar component.
- * Renders the "Add Stratum" button for the strata list.
+ * StrataButtonBar component - Add button for strata list.
  *
- * @param {Object} props - The component props.
- * @param {Function} props.handleAddStratum - Function to set addStratum state to true.
+ * Renders an "Add Stratum" button to initiate new stratum creation.
  *
- * @returns {JSX.Element} The rendered Add Stratum button.
+ * @component
+ * @param {Object} props - The component props
+ * @param {Function} props.handleAddStratum - Function to set addStratum state to true
+ * @returns {JSX.Element} The rendered Add Stratum button
  */
 const StrataButtonBar = ({ handleAddStratum }) => (
   <div className="survey__cell survey__cell--right buttonsWrapper">

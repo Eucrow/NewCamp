@@ -130,7 +130,7 @@ const Species = () => {
             <h1 className="title">Species</h1>
           </header>
 
-          <div className="wrapper surveysWrapper">
+          <div className="wrapper speciesWrapper">
             <SpeciesButtonBar add={add} handleAdd={setAdd} />
 
             {add === true ? <NewSpForm /> : ""}

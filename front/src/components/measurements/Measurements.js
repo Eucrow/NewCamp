@@ -152,17 +152,18 @@ const Measurements = () => {
           <h1 className="title">Measurement</h1>
         </header>
         <div className="wrapper measurementsWrapper measurement__notes">
-          The manage of measurements have some limitations. In order to avoid
-          inconsistencies, the system does not allow to delete measurements and
-          only the 'name' field is editable. If you need to modify or delete a
-          measurement, please contact the system administrator.
+          The management of measurements has some limitations. To avoid
+          inconsistencies, the system does not allow the deletion of
+          measurements, and only the 'name' field is editable. If you need to
+          modify or delete a measurement, please contact the system
+          administrator.
         </div>
         <div className="wrapper measurementsWrapper measurement__notes">
-          The conversion factor is a number to convert the measurement units to
-          millimeters (which is the unit used in the database to store the
-          lengths measurements). The conversion factor is the number of
-          millimeters in one unit of the measurement type. For example, for a
-          measurement type "cm", the conversion factor must be 10.
+          The conversion factor is a number used to convert measurement units to
+          millimeters (the unit used in the database to store length
+          measurements). It represents the number of millimeters in one unit of
+          the specified measurement type. For example, for the measurement type
+          "cm", the conversion factor must be 10.
         </div>
         <div className="wrapper measurementsWrapper">
           {add === true ? (

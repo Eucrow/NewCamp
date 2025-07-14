@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 
 import StrataContext from "../../../contexts/StrataContext";
 import StratumButtonBar from "../StratumButtonBar";
@@ -7,15 +7,17 @@ import { useStrataValidation } from "../../../hooks/useStrataValidation";
 import FloatingError from "../../ui/FloatingError";
 
 /**
- * StratumFormEdit component.
- * Renders a form for editing a stratum, including validation and error display.
+ * StratumFormEdit component - Editable form for modifying existing strata.
  *
- * @param {Object} props - The component props.
- * @param {Object} props.stratum - The stratum object to edit.
- * @param {boolean} props.edit - Whether the form is in edit mode.
- * @param {Function} props.setEdit - Function to set the edit state.
+ * Provides editable form fields for stratum details with validation and error handling.
+ * Includes backup/restore functionality for cancellation.
  *
- * @returns {JSX.Element} The rendered form for editing a stratum.
+ * @component
+ * @param {Object} props - The component props
+ * @param {Object} props.stratum - The stratum object to edit
+ * @param {boolean} props.edit - Whether form is in edit mode
+ * @param {Function} props.setEdit - Function to toggle edit mode
+ * @returns {JSX.Element} The rendered editable stratum form
  */
 const StratumFormEdit = ({ stratum, edit, setEdit }) => {
   /**
@@ -23,7 +25,6 @@ const StratumFormEdit = ({ stratum, edit, setEdit }) => {
    * @param {method} setThisStratum
    * @param {boolean} edit
    * @param {method} setEdit
-   * @param {method} validateStratumName
    * @returns {JSX.Element}
    */
 
@@ -39,16 +40,28 @@ const StratumFormEdit = ({ stratum, edit, setEdit }) => {
 
   const stratumRef = useRef(null);
 
+  useEffect(() => {
+    if (edit && stratumRef.current) {
+      stratumRef.current.focus();
+    }
+  }, [edit]);
+
   // Pass the current stratum name and the original stratum name (from props)
   const { stratumExists, requiredFields, isFormValid, errors } =
     useStrataValidation(formData, stratum);
 
+  /**
+   * Handles form submission and updates the stratum.
+   */
   const handleSubmit = e => {
     e.preventDefault();
     strataContext.updateStratum(formData);
     setEdit(false);
   };
 
+  /**
+   * Handles input field changes and updates form state.
+   */
   const handleChange = e => {
     const { name, value } = e.target;
     setFormData(prev_state => {
@@ -59,6 +72,9 @@ const StratumFormEdit = ({ stratum, edit, setEdit }) => {
     });
   };
 
+  /**
+   * Handles cancellation and restores original values.
+   */
   const handleCancel = status => {
     setFormData({
       id: backupStratum.id,

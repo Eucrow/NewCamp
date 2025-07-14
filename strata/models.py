@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Stratum(models.Model):
-    stratification = models.ForeignKey('stratifications.Stratification', on_delete=models.CASCADE,
+    stratification = models.ForeignKey('stratifications.Stratification', on_delete=models.PROTECT,
                                        related_name='stratum')
     stratum = models.CharField(max_length=50, null=True, blank=True)
     area = models.IntegerField(null=True, blank=True)

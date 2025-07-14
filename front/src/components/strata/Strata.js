@@ -111,38 +111,6 @@ const Strata = () => {
       .catch(error => console.error("Error deleting stratum:", error));
   };
 
-  /**
-   * Method to check if a stratum name already exists in this stratification.
-   * @param {string} stratumName stratum name to check if already exists.
-   * @returns True if exists, false if doesn't.
-   */
-  const stratumExists = stratumName => {
-    if (typeof strata === "undefined") {
-      return false;
-    }
-
-    const stratum_exists = Object.keys(strata).map(s => {
-      if (strata[s]["stratum"] === stratumName) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    return stratum_exists.some(s => s === true);
-  };
-
-  /**
-   * Validate the stratum name.
-   * Checks if the provided stratum name does not already exist in the current stratification.
-   *
-   * @param {string} stratumName - The stratum name to check for validity.
-   * @returns {boolean} True if valid (does not exist), false if not valid (already exists).
-   */
-  const validateStratumName = stratumName => {
-    const stratum_exists = stratumExists(stratumName);
-    return !stratum_exists;
-  };
-
   // Fetch if the stratum is used in any hauls
   const stratumUsedInHauls = async stratumId => {
     const api = buildApiUrl(API_CONFIG.ENDPOINTS.STRATUM_IN_HAUL(stratumId));
@@ -205,7 +173,6 @@ const Strata = () => {
           createStratum,
           updateStratum,
           deleteStratum,
-          validateStratumName,
           addStratum,
           setAddStratum,
           stratumUsedInHauls,
@@ -216,10 +183,10 @@ const Strata = () => {
             <h1 className="title">Strata Management</h1>
           </header>
           <div className="wrapper strataWrapper strata__notes">
-            The manage of strata have some limitations. In order to avoid
-            inconsistencies, the system does not allow to delete strata used by
-            hauls. To remove strata, please ensure they are not associated with
-            any hauls first.
+            The management of strata has some limitations. To avoid
+            inconsistencies, the system does not allow the deletion of strata
+            that are used by any haul. To remove a stratum, please ensure it is
+            not associated with any haul.
           </div>
 
           <div className="wrapper strataWrapper">
