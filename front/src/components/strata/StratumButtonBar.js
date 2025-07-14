@@ -20,7 +20,7 @@ import UiIconDelete from "../ui/UiIconDelete";
  * @param {Function} [props.deleteStratum] - Function to delete stratum
  * @param {Function} [props.handleCancel] - Function to handle edit cancellation
  * @param {Function} [props.handleAdd] - Function to handle new stratum cancellation
- * @param {boolean} [props.addStratum] - Whether adding new stratum
+ * @param {boolean} [props.addingStratum] - Whether adding new stratum
  * @param {boolean} [props.isEdit] - Alternative edit mode flag
  * @param {boolean} [props.isValid] - Whether form state is valid
  * @param {boolean} [props.isDeleteable] - Whether stratum can be deleted
@@ -33,7 +33,7 @@ const StratumButtonBar = ({
   deleteStratum,
   handleCancel,
   handleAdd,
-  addStratum,
+  addingStratum,
   isEdit,
   isValid,
   isDeleteable,
@@ -84,7 +84,7 @@ const StratumButtonBar = ({
       return buttonBarConfig.editMode;
     }
 
-    if (addStratum === true) {
+    if (addingStratum === true) {
       return buttonBarConfig.newMode;
     }
 

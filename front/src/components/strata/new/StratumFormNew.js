@@ -15,10 +15,10 @@ import FloatingError from "../../ui/FloatingError";
  * @component
  * @param {Object} props - The component props
  * @param {number} props.stratification_id - The ID of the parent stratification
- * @param {boolean} props.addStratum - Whether new stratum is being added
+ * @param {boolean} props.addingStratum - Whether new stratum is being added
  * @returns {JSX.Element} The rendered new stratum form
  */
-const StratumFormNew = ({ stratification_id, addStratum }) => {
+const StratumFormNew = ({ stratification_id, addingStratum }) => {
   const strataContext = useContext(StrataContext);
   const [newStratum, setNewStratum] = useState({
     stratification: stratification_id,
@@ -30,10 +30,10 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
   const stratumRef = useRef(null);
 
   useEffect(() => {
-    if (addStratum && stratumRef.current) {
+    if (addingStratum && stratumRef.current) {
       stratumRef.current.focus();
     }
-  }, [addStratum]);
+  }, [addingStratum]);
 
   const { stratumExists, requiredFields, isFormValid, errors } =
     useStrataValidation(newStratum);
@@ -69,14 +69,14 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
       area: "",
       comment: "",
     });
-    strataContext.setAddStratum(false);
+    strataContext.setAddingStratum(false);
   };
 
   /**
    * Handles cancellation of new stratum creation.
    */
   const handleCancel = () => {
-    strataContext.setAddStratum(false);
+    strataContext.setAddingStratum(false);
   };
 
   const renderContent = () => {
@@ -123,8 +123,8 @@ const StratumFormNew = ({ stratification_id, addStratum }) => {
 
           <StratumButtonBar
             handleCancel={handleCancel}
-            handleAdd={strataContext.setAddStratum}
-            addStratum={addStratum}
+            handleAdd={strataContext.setAddingStratum}
+            addingStratum={addingStratum}
             isValid={isFormValid}
           />
         </div>

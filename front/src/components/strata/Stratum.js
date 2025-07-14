@@ -13,10 +13,10 @@ import StrataContext from "../../contexts/StrataContext";
  * @component
  * @param {Object} props - The component props
  * @param {Object} [props.stratum] - The stratum object to display or edit
- * @param {boolean} props.addStratum - Whether to render the new stratum form
+ * @param {boolean} props.addingStratum - Whether to render the new stratum form
  * @returns {JSX.Element} The rendered stratum form in appropriate mode
  */
-const Stratum = ({ stratum, addStratum }) => {
+const Stratum = ({ stratum, addingStratum }) => {
   const [edit, setEdit] = useState(false);
   const [isDeleteable, setIsDeletable] = useState(true);
   const strataContext = useContext(StrataContext);
@@ -34,12 +34,12 @@ const Stratum = ({ stratum, addStratum }) => {
   }, [stratum, strataContext]);
 
   const renderContent = () => {
-    if (addStratum === true) {
+    if (addingStratum === true) {
       return (
         <div className="wrapper form__row">
           <StratumFormNew
             stratification_id={strataContext.selectedStratification}
-            addStratum={addStratum}
+            addingStratum={addingStratum}
           />
         </div>
       );

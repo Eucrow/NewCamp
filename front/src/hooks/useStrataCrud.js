@@ -7,8 +7,8 @@ import { API_CONFIG, buildApiUrl } from "../config/api";
  * @returns {Object} An object containing:
  * @returns {Array} strata - Array of strata objects
  * @returns {Function} setStrata - Function to set strata array
- * @returns {boolean} addStratum - Flag indicating if adding a stratum
- * @returns {Function} setAddStratum - Function to set addStratum flag
+ * @returns {boolean} addingStratum - Flag indicating if adding a stratum
+ * @returns {Function} setAddingStratum - Function to set addingStratum flag
  * @returns {Array} stratifications - Array of available stratifications
  * @returns {string} selectedStratification - Currently selected stratification ID
  * @returns {Function} setSelectedStratification - Function to set selected stratification
@@ -19,7 +19,7 @@ import { API_CONFIG, buildApiUrl } from "../config/api";
  */
 export const useStrataCrud = () => {
   const [strata, setStrata] = useState([]);
-  const [addStratum, setAddStratum] = useState(false);
+  const [addingStratum, setAddingStratum] = useState(false);
   const [stratifications, setStratifications] = useState([]);
   const [selectedStratification, setSelectedStratification] = useState("");
 
@@ -152,8 +152,8 @@ export const useStrataCrud = () => {
   return {
     strata,
     setStrata,
-    addStratum,
-    setAddStratum,
+    addingStratum,
+    setAddingStratum,
     stratifications,
     selectedStratification,
     setSelectedStratification,

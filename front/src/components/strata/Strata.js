@@ -26,9 +26,8 @@ import { useStrataCrud } from "../../hooks/useStrataCrud";
 const Strata = () => {
   const {
     strata,
-    setStrata,
-    addStratum,
-    setAddStratum,
+    addingStratum,
+    setAddingStratum,
     stratifications,
     selectedStratification,
     setSelectedStratification,
@@ -48,7 +47,11 @@ const Strata = () => {
         <Fragment>
           {strata.map(stratum => {
             return (
-              <Stratum key={stratum.id} stratum={stratum} addStratum={false} />
+              <Stratum
+                key={stratum.id}
+                stratum={stratum}
+                addingStratum={false}
+              />
             );
           })}
         </Fragment>
@@ -57,17 +60,17 @@ const Strata = () => {
   };
 
   const renderStrataSection = () => {
-    if (addStratum === false) {
+    if (addingStratum === false) {
       return (
         <Fragment>
-          <StrataButtonBar handleAddStratum={setAddStratum} />
+          <StrataButtonBar handleAddStratum={setAddingStratum} />
           {renderStrataList()}
         </Fragment>
       );
-    } else if (addStratum === true) {
+    } else if (addingStratum === true) {
       return (
         <Fragment>
-          <Stratum addStratum={true} />
+          <Stratum addingStratum={true} />
           {renderStrataList()}
         </Fragment>
       );
@@ -83,7 +86,7 @@ const Strata = () => {
           createStratum,
           updateStratum,
           deleteStratum,
-          setAddStratum,
+          setAddingStratum,
           stratumUsedInHauls,
         }}
       >

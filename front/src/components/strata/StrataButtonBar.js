@@ -8,7 +8,7 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
  *
  * @component
  * @param {Object} props - The component props
- * @param {Function} props.handleAddStratum - Function to set addStratum state to true
+ * @param {Function} props.handleAddStratum - Function to set addingStratum state to true
  * @returns {JSX.Element} The rendered Add Stratum button
  */
 const StrataButtonBar = ({ handleAddStratum }) => (
