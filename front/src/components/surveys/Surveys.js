@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { API_CONFIG, buildApiUrl } from "../../config/api";
+import { cleanEmptyValues } from "../../utils/dataUtils";
 
 import SurveysContext from "../../contexts/SurveysContext";
 
@@ -113,10 +114,11 @@ const Surveys = () => {
    */
   const createSurvey = survey => {
     console.log("Creating survey:", JSON.stringify(survey));
+    const cleanedSurvey = cleanEmptyValues(survey);
     fetch(apiSurvey, {
       method: "POST",
       headers: API_CONFIG.HEADERS.DEFAULT,
-      body: JSON.stringify(survey),
+      body: JSON.stringify(cleanedSurvey),
     })
       .then(response => {
         if (!response.ok) {
