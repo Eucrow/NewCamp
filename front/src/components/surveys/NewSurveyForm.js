@@ -38,7 +38,7 @@ const NewSurveyForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
     surveysContext.createSurvey(survey);
-    surveysContext.setAdd(false);
+    surveysContext.setAddingSurvey(false);
   };
 
   const renderContent = () => {
@@ -230,7 +230,7 @@ const NewSurveyForm = () => {
           </label>
         </div>
         <div className="form__row">
-          <SurveyButtonBar add={surveysContext.add} />
+          <SurveyButtonBar addingSurvey={surveysContext.addingSurvey} />
         </div>
       </form>
     );

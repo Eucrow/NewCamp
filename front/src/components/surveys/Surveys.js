@@ -16,7 +16,7 @@ const Surveys = () => {
   const [surveys, setSurveys] = useState([]);
   const [surveysBackup, setSurveysBackup] = useState([]);
   const [stratifications, setStratifications] = useState([]);
-  const [add, setAdd] = useState(false);
+  const [addingSurvey, setAddingSurvey] = useState(false);
   const [ships, setShips] = useState([]);
 
   const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.SURVEY);
@@ -288,8 +288,8 @@ const Surveys = () => {
           handleChange: handleChange,
           handleChangeStratification: handleChangeStratification,
           handleChangeShip: handleChangeShip,
-          add: add,
-          setAdd: setAdd,
+          addingSurvey: addingSurvey,
+          setAddingSurvey: setAddingSurvey,
           createSurvey: createSurvey,
           updateSurvey: updateSurvey,
           deleteSurvey: deleteSurvey,
@@ -300,7 +300,6 @@ const Surveys = () => {
           validateEndDate: validateEndDate,
           forceReportValidity: forceReportValidity,
           handleCancelEditSurvey: handleCancelEditSurvey,
-          getSurveys: getSurveys,
         }}
       >
         <main>
@@ -309,8 +308,11 @@ const Surveys = () => {
           </header>
 
           <div className="wrapper surveysWrapper">
-            <SurveysButtonBar add={add} handleAdd={setAdd} />
-            {add === true ? <NewSurveyForm /> : ""}
+            <SurveysButtonBar
+              addingSurvey={addingSurvey}
+              handleAdd={setAddingSurvey}
+            />
+            {addingSurvey === true ? <NewSurveyForm /> : ""}
 
             {surveys.map(survey => {
               return <Survey key={survey.id} survey={survey} />;

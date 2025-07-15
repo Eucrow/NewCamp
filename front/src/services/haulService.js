@@ -1,20 +1,6 @@
 import { API_CONFIG, buildApiUrl } from "../config/api";
 import { fixDateTime } from "../utils/DateTime";
-
-/**
- * Converts all empty strings to null in an object
- * @param {object} obj The object to clean
- * @returns {object} The cleaned object
- */
-const cleanEmptyValues = obj => {
-  const cleaned = { ...obj };
-  Object.keys(cleaned).forEach(key => {
-    if (cleaned[key] === "") {
-      cleaned[key] = null;
-    }
-  });
-  return cleaned;
-};
+import { cleanEmptyValues } from "../utils/dataUtils";
 
 export const haulService = {
   /**

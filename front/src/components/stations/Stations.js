@@ -276,7 +276,8 @@ const Stations = () => {
     /**
      * Build url api of all the stations of a survey, using apiHauls and SelectedSurveyContext
      * @returns url api
-     */ const getStationsApi = () => {
+     */
+    const getStationsApi = () => {
       return selectedSurveyContext.selectedSurveyId === null
         ? buildApiUrl(API_CONFIG.ENDPOINTS.GET_STATIONS)
         : buildApiUrl(

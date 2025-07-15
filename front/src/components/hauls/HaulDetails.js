@@ -8,6 +8,7 @@ import {
   convertHydrographyCoordinates,
 } from "../../utils/Coordinates";
 import { fixDateTime } from "../../utils/DateTime";
+import { cleanEmptyValues } from "../../utils/dataUtils";
 import { haulService } from "../../services/haulService";
 
 import MeteorologyFormView from "./view/MeteorologyFormView";
@@ -233,21 +234,6 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
     );
 
     return convertedCoordinates;
-  };
-
-  /**
-   * Converts all empty strings to null in an object
-   * @param {object} obj The object to clean
-   * @returns {object} The cleaned object
-   */
-  const cleanEmptyValues = obj => {
-    const cleaned = { ...obj };
-    Object.keys(cleaned).forEach(key => {
-      if (cleaned[key] === "") {
-        cleaned[key] = null;
-      }
-    });
-    return cleaned;
   };
 
   const handleSubmit = async e => {
