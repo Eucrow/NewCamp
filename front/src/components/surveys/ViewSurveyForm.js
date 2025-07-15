@@ -20,6 +20,8 @@ const ViewSurveyForm = ({ survey, handleEdit }) => {
             type="text"
             id="description"
             name="description"
+            className="survey_description"
+            size={30}
             value={survey.description || ""}
             disabled={true}
           />
@@ -31,6 +33,7 @@ const ViewSurveyForm = ({ survey, handleEdit }) => {
             id="acronym"
             name="acronym"
             value={survey.acronym || ""}
+            size={3}
             disabled={true}
           />
         </label>
@@ -80,6 +83,8 @@ const ViewSurveyForm = ({ survey, handleEdit }) => {
             disabled={true}
           />
         </label>
+      </div>
+      <div className="form__row">
         <label className="form__cell">
           Stratification:
           <select
@@ -94,62 +99,66 @@ const ViewSurveyForm = ({ survey, handleEdit }) => {
       </div>
       <fieldset className="wrapper form__row">
         <legend>Grid</legend>
-        <label className="form__cell">
-          Width (miles):
-          <input
-            type="number"
-            id="width_x"
-            name="width_x"
-            min="0"
-            max="999"
-            size={3}
-            maxLength={3}
-            value={survey.width_x || ""}
-            disabled={true}
-          />
-        </label>
-        <label className="form__cell">
-          Height (miles):
-          <input
-            type="number"
-            id="width_y"
-            name="width_y"
-            min="0"
-            max="999"
-            maxLength={3}
-            size={3}
-            value={survey.width_y || ""}
-            disabled={true}
-          />
-        </label>
-        <label className="form__cell">
-          Origin longitude (degrees):
-          <input
-            type="number"
-            id="origin_x"
-            name="origin_x"
-            min="-180"
-            max="180"
-            step={0.001}
-            size={8}
-            value={survey.origin_x || ""}
-            disabled={true}
-          />
-        </label>
-        <label className="form__cell">
-          Origin latitude (degrees):
-          <input
-            type="number"
-            id="origin_y"
-            name="origin_y"
-            min="-90"
-            max="90"
-            step={0.001}
-            size={7}
-            value={survey.origin_y || ""}
-            disabled={true}
-          />
-        </label>
+        <div className="form__row">
+          <label className="form__cell">
+            Width (miles):
+            <input
+              type="number"
+              id="width_x"
+              name="width_x"
+              min="0"
+              max="999"
+              size={3}
+              maxLength={3}
+              value={survey.width_x || ""}
+              disabled={true}
+            />
+          </label>
+          <label className="form__cell">
+            Height (miles):
+            <input
+              type="number"
+              id="width_y"
+              name="width_y"
+              min="0"
+              max="999"
+              maxLength={3}
+              size={3}
+              value={survey.width_y || ""}
+              disabled={true}
+            />
+          </label>
+        </div>
+        <div className="form__row">
+          <label className="form__cell">
+            Origin longitude (degrees):
+            <input
+              type="number"
+              id="origin_x"
+              name="origin_x"
+              min="-180"
+              max="180"
+              step={0.001}
+              size={8}
+              value={survey.origin_x || ""}
+              disabled={true}
+            />
+          </label>
+          <label className="form__cell">
+            Origin latitude (degrees):
+            <input
+              type="number"
+              id="origin_y"
+              name="origin_y"
+              min="-90"
+              max="90"
+              step={0.001}
+              size={7}
+              value={survey.origin_y || ""}
+              disabled={true}
+            />
+          </label>
+        </div>
       </fieldset>
 
       <div className="form__row">

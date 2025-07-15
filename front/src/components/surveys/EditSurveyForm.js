@@ -28,6 +28,8 @@ const EditSurveyForm = ({ survey, handleEdit }) => {
             type="text"
             id="description"
             name="description"
+            className="survey_description"
+            size={30}
             required
             autoFocus
             pattern="^[a-zA-Z0-9\s]{1,30}$"
@@ -101,6 +103,8 @@ const EditSurveyForm = ({ survey, handleEdit }) => {
             onKeyDown={surveysContext.preventNegativeE}
           />
         </label>
+      </div>
+      <div className="form__row">
         <label className="form__cell">
           Stratification:
           <select
@@ -125,66 +129,70 @@ const EditSurveyForm = ({ survey, handleEdit }) => {
       </div>
       <fieldset className="wrapper form__row">
         <legend>Grid</legend>
-        <label className="form__cell">
-          Width (miles):
-          <input
-            type="number"
-            id="width_x"
-            name="width_x"
-            min="0"
-            max="999"
-            size={3}
-            maxLength={3}
-            value={survey.width_x || ""}
-            onChange={e => surveysContext.handleChange(e, survey.id)}
-            onKeyDown={surveysContext.preventNegativeE}
-          />
-        </label>
-        <label className="form__cell">
-          Height (miles):
-          <input
-            type="number"
-            id="width_y"
-            name="width_y"
-            min="0"
-            max="999"
-            maxLength={3}
-            size={3}
-            value={survey.width_y || ""}
-            onChange={e => surveysContext.handleChange(e, survey.id)}
-            onKeyDown={surveysContext.preventNegativeE}
-          />
-        </label>
-        <label className="form__cell">
-          Origin longitude (degrees):
-          <input
-            type="number"
-            id="origin_x"
-            name="origin_x"
-            min="-180"
-            max="180"
-            step={0.001}
-            size={8}
-            value={survey.origin_x || ""}
-            onChange={e => surveysContext.handleChange(e, survey.id)}
-            onInput={surveysContext.forceReportValidity}
-          />
-        </label>
-        <label className="form__cell">
-          Origin latitude (degrees):
-          <input
-            type="number"
-            id="origin_y"
-            name="origin_y"
-            min="-90"
-            max="90"
-            step={0.001}
-            size={7}
-            value={survey.origin_y || ""}
-            onChange={e => surveysContext.handleChange(e, survey.id)}
-            onInput={surveysContext.forceReportValidity}
-          />
-        </label>
+        <div className="form__row">
+          <label className="form__cell">
+            Width (miles):
+            <input
+              type="number"
+              id="width_x"
+              name="width_x"
+              min="0"
+              max="999"
+              size={3}
+              maxLength={3}
+              value={survey.width_x || ""}
+              onChange={e => surveysContext.handleChange(e, survey.id)}
+              onKeyDown={surveysContext.preventNegativeE}
+            />
+          </label>
+          <label className="form__cell">
+            Height (miles):
+            <input
+              type="number"
+              id="width_y"
+              name="width_y"
+              min="0"
+              max="999"
+              maxLength={3}
+              size={3}
+              value={survey.width_y || ""}
+              onChange={e => surveysContext.handleChange(e, survey.id)}
+              onKeyDown={surveysContext.preventNegativeE}
+            />
+          </label>{" "}
+        </div>
+        <div className="form__row">
+          <label className="form__cell">
+            Origin longitude (degrees):
+            <input
+              type="number"
+              id="origin_x"
+              name="origin_x"
+              min="-180"
+              max="180"
+              step={0.001}
+              size={8}
+              value={survey.origin_x || ""}
+              onChange={e => surveysContext.handleChange(e, survey.id)}
+              onInput={surveysContext.forceReportValidity}
+            />
+          </label>
+          <label className="form__cell">
+            Origin latitude (degrees):
+            <input
+              type="number"
+              id="origin_y"
+              name="origin_y"
+              min="-90"
+              max="90"
+              step={0.001}
+              size={7}
+              value={survey.origin_y || ""}
+              onChange={e => surveysContext.handleChange(e, survey.id)}
+              onInput={surveysContext.forceReportValidity}
+            />
+          </label>
+        </div>
       </fieldset>
 
       <div className="form__row">
