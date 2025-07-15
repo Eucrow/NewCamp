@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 
-import { API_CONFIG, buildApiUrl } from "../../config/api";
-
 import {
   convertDDMToDMCoordinates,
   convertTrawlCoordinates,
   convertHydrographyCoordinates,
 } from "../../utils/Coordinates";
-import { fixDateTime } from "../../utils/DateTime";
 import { cleanEmptyValues } from "../../utils/dataUtils";
 import { haulService } from "../../services/haulService";
 
@@ -43,16 +40,6 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
   const [edit, setEdit] = useState(false);
 
   const [, setFetchError] = useState("");
-
-  const apiHydrography = buildApiUrl(
-    API_CONFIG.ENDPOINTS.GET_HYDROGRAPHY_BY_HAUL_ID(haul.id)
-  );
-  const apiTrawl = buildApiUrl(
-    API_CONFIG.ENDPOINTS.GET_TRAWL_BY_HAUL_ID(haul.id)
-  );
-  const apiMeteorology = buildApiUrl(
-    API_CONFIG.ENDPOINTS.GET_METEOROLOGY_BY_HAUL_ID(haul.id)
-  );
 
   const [coordinates, setCoordinates] = useState({
     shooting: {
