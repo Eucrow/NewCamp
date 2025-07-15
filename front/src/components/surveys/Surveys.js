@@ -19,7 +19,9 @@ const Surveys = () => {
   const [add, setAdd] = useState(false);
 
   const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.SURVEY);
-  const apiStrata = buildApiUrl(API_CONFIG.ENDPOINTS.GET_STRATA);
+  const apiStratifications = buildApiUrl(
+    API_CONFIG.ENDPOINTS.GET_STRATIFICATIONS
+  );
 
   /**
    * Manage change in fields of a previous created survey.
@@ -164,7 +166,7 @@ const Surveys = () => {
    * Get all stratifications.
    */
   const getStratifications = () => {
-    return fetch(apiStrata)
+    return fetch(apiStratifications)
       .then(response => {
         if (response.status > 400) {
           alert("something were wrong getting the stratifications!!");
