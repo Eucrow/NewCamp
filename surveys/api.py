@@ -21,9 +21,10 @@ class SurveysAPI(ListCreateAPIView):
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
 
+
 class SurveyAPI(RetrieveUpdateDestroyAPIView):
     """
-    Endpoint to retrieve, update and destroy survey.
+    Endpoint to retrieve, update and destroy a survey.
     """
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
@@ -33,6 +34,7 @@ class SurveyDetailAPI(APIView):
     """
     Endpoint of Survey Detail API
     """
+
     def get(self, request, pk):
         survey = get_object_or_404(Survey.objects.select_related('stratification'), pk=pk)
         serializer = SurveySerializer(survey)
@@ -80,12 +82,14 @@ class SurveysListCsvAPI(APIView):
 
         return response
 
+
 class SurveysList(ListAPIView):
     """
     Endpoint of list of surveys
     """
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
+
 
 class SurveysAcronymList(ListAPIView):
     """
@@ -100,6 +104,7 @@ class SurveyRemoveAPI(APIView):
     Endpoint to remove survey.
     Remove the survey and all data of tables related.
     """
+
     def delete(self, request, pk):
         survey = get_object_or_404(Survey, pk=pk)
         survey.delete()
@@ -110,13 +115,15 @@ class SurveyNewAPI(APIView):
     """
     Endpoint to add new Survey.
     """
+
     def post(self, request):
         serializer = SurveySerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(stratification_id=request.data["stratification_id"])
+            serializer.save(stratification=request.data["stratification"])
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
 
 class SurveysImportAPI(APIView, SurveysImport):
     parser_classes = (MultiPartParser,)

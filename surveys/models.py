@@ -30,7 +30,8 @@ class Survey(models.Model):
     origin_y = models.DecimalField(max_digits=7, decimal_places=4,
                                    validators=[MinValueValidator(-90), MaxValueValidator(90)],
                                    null=True, blank=True)  # OCUY
-    ship = models.CharField(max_length=4, null=True, blank=True)
+    # ship = models.CharField(max_length=4, null=True, blank=True)
+    ship = models.ForeignKey('ships.Ship', on_delete=models.PROTECT)
     hauls_duration = models.IntegerField(validators=[MinValueValidator(0)],
                                          null=True, blank=True)
     # ew = models.CharField(max_length=2, null=True, blank=True)

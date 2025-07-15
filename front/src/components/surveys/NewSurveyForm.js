@@ -102,7 +102,22 @@ const NewSurveyForm = () => {
         <div className="form__row">
           <label className="form__cell">
             Ship:
-            <input type="text" id="ship" name="ship" onChange={handleChange} />
+            <select
+              id="ship"
+              name="ship"
+              className="survey__ship"
+              required
+              onChange={handleChange}
+            >
+              <option />
+              {surveysContext.ships.map((ship, idx) => {
+                return (
+                  <option value={ship.id} key={idx}>
+                    {ship.name}
+                  </option>
+                );
+              })}
+            </select>
           </label>
 
           <label className="form__cell">
@@ -122,8 +137,8 @@ const NewSurveyForm = () => {
           <label className="form__cell">
             Stratification:
             <select
-              id="stratification_id"
-              name="stratification_id"
+              id="stratification"
+              name="stratification"
               required
               onChange={handleChange}
             >

@@ -67,7 +67,8 @@ const ViewSurveyForm = ({ survey, handleEdit }) => {
             type="text"
             id="ship"
             name="ship"
-            value={survey.ship || ""}
+            className="survey__ship"
+            value={survey.ship_name || ""}
             disabled={true}
           />
         </label>

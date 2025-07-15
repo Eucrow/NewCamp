@@ -17,11 +17,13 @@ const Surveys = () => {
   const [surveysBackup, setSurveysBackup] = useState([]);
   const [stratifications, setStratifications] = useState([]);
   const [add, setAdd] = useState(false);
+  const [ships, setShips] = useState([]);
 
   const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.SURVEY);
   const apiStratifications = buildApiUrl(
     API_CONFIG.ENDPOINTS.GET_STRATIFICATIONS
   );
+  const apiShips = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SHIPS);
 
   /**
    * Manage change in fields of a previous created survey.
@@ -57,8 +59,8 @@ const Surveys = () => {
     const newSurveys = surveys.map(survey => {
       if (survey.id === surveyId) {
         let newSurvey = { ...survey };
-        newSurvey["stratification_id"] = value;
-        newSurvey["stratification"] = stratification.stratification;
+        newSurvey["stratification"] = value;
+        newSurvey["stratification_name"] = stratification.stratification;
         return newSurvey;
       } else {
         return survey;
@@ -67,6 +69,26 @@ const Surveys = () => {
     setSurveys(newSurveys);
   };
 
+  const handleChangeShip = (e, shipId) => {
+    const value = e.target.value;
+    e.preventDefault();
+
+    const ship = ships.find(s => {
+      return s.id === Number(e.target.value);
+    });
+
+    const newSurveys = surveys.map(survey => {
+      if (survey.id === shipId) {
+        let newSurvey = { ...survey };
+        newSurvey["ship"] = value;
+        newSurvey["ship_name"] = ship.name;
+        return newSurvey;
+      } else {
+        return survey;
+      }
+    });
+    setSurveys(newSurveys);
+  };
   /**
    * Get all surveys from database.
    */
@@ -179,6 +201,22 @@ const Surveys = () => {
       .catch(error => console.log(error));
   };
 
+  /**
+   * Get ships.
+   * @returns {Promise} Promise with the ships.
+   * */
+  const getShips = async () => {
+    const shipsFetched = await fetch(apiShips)
+      .then(response => {
+        if (response.status > 400) {
+          alert("something were wrong getting the ships!!");
+        }
+        return response.json();
+      })
+      .catch(error => console.log(error));
+    setShips(shipsFetched);
+  };
+
   // VALIDATIONS
   /**
    * Prevent 'e' and '-' in numeric input
@@ -232,6 +270,7 @@ const Surveys = () => {
 
   useEffect(() => {
     getStratifications();
+    getShips();
     getSurveys();
   }, []);
 
@@ -248,12 +287,14 @@ const Surveys = () => {
           apiSurvey: apiSurvey,
           handleChange: handleChange,
           handleChangeStratification: handleChangeStratification,
+          handleChangeShip: handleChangeShip,
           add: add,
           setAdd: setAdd,
           createSurvey: createSurvey,
           updateSurvey: updateSurvey,
           deleteSurvey: deleteSurvey,
           stratifications: stratifications,
+          ships: ships,
           preventNegativeE: preventNegativeE,
           validateStartDate: validateStartDate,
           validateEndDate: validateEndDate,

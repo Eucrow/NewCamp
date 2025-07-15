@@ -82,13 +82,23 @@ const EditSurveyForm = ({ survey, handleEdit }) => {
       <div className="form__row">
         <label className="form__cell">
           Ship:
-          <input
-            type="text"
+          <select
             id="ship"
             name="ship"
+            className="survey__ship"
             value={survey.ship || ""}
-            onChange={e => surveysContext.handleChange(e, survey.id)}
-          />
+            required
+            onChange={e => surveysContext.handleChangeShip(e, survey.id)}
+          >
+            <option />
+            {surveysContext.ships.map((ship, idx) => {
+              return (
+                <option value={ship.id} key={idx}>
+                  {ship.name}
+                </option>
+              );
+            })}
+          </select>
         </label>
         <label className="form__cell">
           Hauls duration (minutes):
@@ -108,10 +118,10 @@ const EditSurveyForm = ({ survey, handleEdit }) => {
         <label className="form__cell">
           Stratification:
           <select
-            id="stratification_id"
-            name="stratification_id"
+            id="stratification"
+            name="stratification"
             required
-            value={survey.stratification_id || ""}
+            value={survey.stratification || ""}
             onChange={e =>
               surveysContext.handleChangeStratification(e, survey.id)
             }
