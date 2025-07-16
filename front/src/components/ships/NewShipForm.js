@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
+import { preventNegativeE } from "../../utils/dataUtils";
+
 import ShipButtonBar from "./ShipButtonBar";
 
 /**
@@ -82,7 +84,7 @@ class NewShipForm extends Component {
               size={5}
               step={0.01}
               onChange={this.handleChange}
-              onKeyDown={this.context.preventNegativeE}
+              onKeyDown={preventNegativeE}
             />
           </span>
           <span className="field">
@@ -96,7 +98,7 @@ class NewShipForm extends Component {
               size={4}
               step={0.01}
               onChange={this.handleChange}
-              onKeyDown={this.context.preventNegativeE}
+              onKeyDown={preventNegativeE}
             />
           </span>
           <span className="field">
@@ -109,7 +111,7 @@ class NewShipForm extends Component {
               max={9999}
               size={4}
               onChange={this.handleChange}
-              onKeyDown={this.context.preventNegativeE}
+              onKeyDown={preventNegativeE}
             />
           </span>
           <span className="field">
@@ -122,7 +124,7 @@ class NewShipForm extends Component {
               max={9999}
               size={4}
               onChange={this.handleChange}
-              onKeyDown={this.context.preventNegativeE}
+              onKeyDown={preventNegativeE}
             />
           </span>
         </div>

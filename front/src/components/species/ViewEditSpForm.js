@@ -3,6 +3,8 @@ import React, { useContext, Fragment } from "react";
 import SpeciesContext from "../../contexts/SpeciesContext";
 import GlobalContext from "../../contexts/GlobalContext";
 
+import { preventNegativeE } from "../../utils/dataUtils";
+
 import SpButtonBar from "./SpButtonBar";
 
 /**
@@ -74,7 +76,7 @@ const ViewEditSpForm = props => {
             disabled={is_disabled}
             value={props.sp.APHIA || ""}
             onChange={e => speciesContext.handleChange(e, props.sp.id)}
-            onKeyDown={speciesContext.preventNegativeE}
+            onKeyDown={preventNegativeE}
           />
         </span>
       </div>
@@ -95,7 +97,7 @@ const ViewEditSpForm = props => {
             disabled={is_disabled}
             value={props.sp.a_param || ""}
             onChange={e => speciesContext.handleChange(e, props.sp.id)}
-            onKeyDown={speciesContext.preventNegativeE}
+            onKeyDown={preventNegativeE}
           />
         </span>
         <span className="field">
@@ -112,7 +114,7 @@ const ViewEditSpForm = props => {
             disabled={is_disabled}
             value={props.sp.b_param || ""}
             onChange={e => speciesContext.handleChange(e, props.sp.id)}
-            onKeyDown={speciesContext.preventNegativeE}
+            onKeyDown={preventNegativeE}
           />
         </span>
       </Fragment>

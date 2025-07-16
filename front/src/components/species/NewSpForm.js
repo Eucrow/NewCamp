@@ -3,6 +3,8 @@ import React, { useContext, useState } from "react";
 import SpeciesContext from "../../contexts/SpeciesContext";
 import GlobalContext from "../../contexts/GlobalContext";
 
+import { preventNegativeE } from "../../utils/dataUtils";
+
 import SpButtonBar from "./SpButtonBar";
 
 const NewSpForm = () => {
@@ -118,7 +120,7 @@ const NewSpForm = () => {
               step={1}
               pattern="^[0-9]{1,6}$"
               onChange={e => handleChange(e)}
-              onKeyDown={speciesContext.preventNegativeE}
+              onKeyDown={preventNegativeE}
             />
           </span>
         </div>
@@ -137,7 +139,7 @@ const NewSpForm = () => {
               size={8}
               step={0.000001}
               onChange={e => handleChange(e)}
-              onKeyDown={speciesContext.preventNegativeE}
+              onKeyDown={preventNegativeE}
             />
           </span>
           <span className="field">
@@ -152,7 +154,7 @@ const NewSpForm = () => {
               size={8}
               step={0.000001}
               onChange={e => handleChange(e)}
-              onKeyDown={speciesContext.preventNegativeE}
+              onKeyDown={preventNegativeE}
             />
           </span>
         </fieldset>

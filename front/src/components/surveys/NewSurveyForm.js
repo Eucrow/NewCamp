@@ -1,5 +1,7 @@
 import React, { useState, useContext } from "react";
 
+import { preventNegativeE } from "../../utils/dataUtils";
+
 import SurveysContext from "../../contexts/SurveysContext";
 
 import SurveyButtonBar from "./SurveyButtonBar";
@@ -129,7 +131,7 @@ const NewSurveyForm = () => {
               min="0"
               size={4}
               onChange={handleChange}
-              onKeyDown={surveysContext.preventNegativeE}
+              onKeyDown={preventNegativeE}
             />
           </label>
         </div>
@@ -167,7 +169,7 @@ const NewSurveyForm = () => {
                 size={3}
                 maxLength={3}
                 onChange={handleChange}
-                onKeyDown={surveysContext.preventNegativeE}
+                onKeyDown={preventNegativeE}
               />
             </label>
             <label className="form__cell">
@@ -181,7 +183,7 @@ const NewSurveyForm = () => {
                 size={3}
                 maxLength={3}
                 onChange={handleChange}
-                onKeyDown={surveysContext.preventNegativeE}
+                onKeyDown={preventNegativeE}
               />
             </label>
           </div>

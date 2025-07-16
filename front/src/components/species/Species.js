@@ -100,15 +100,6 @@ const Species = () => {
   };
 
   // VALIDATIONS
-  /**
-   * Prevent 'e' and '-' in numeric input
-   * @param {e} onKeyDown event
-   */
-  const preventNegativeE = e => {
-    if (e.key === "e" || e.key === "-") {
-      e.preventDefault();
-    }
-  };
 
   const renderContent = () => {
     var content = "";
@@ -122,7 +113,6 @@ const Species = () => {
           deleteSp: deleteSp,
           handleAdd: setAdd,
           getEmptySpCode: getEmptySpCode,
-          preventNegativeE: preventNegativeE,
         }}
       >
         <main>

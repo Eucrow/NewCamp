@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
+import { preventNegativeE } from "../../utils/validation";
+
 import ShipButtonBar from "./ShipButtonBar";
 
 /**
@@ -65,7 +67,7 @@ const ViewEditShipForm = ({ props, edit, handleEdit }) => {
             disabled={is_disabled}
             value={props.ship.length || ""}
             onChange={e => shipsContext.handleChange(e, props.ship.id)}
-            onKeyDown={shipsContext.preventNegativeE}
+            onKeyDown={preventNegativeE}
           />
         </span>
         <span className="field">
@@ -81,7 +83,7 @@ const ViewEditShipForm = ({ props, edit, handleEdit }) => {
             disabled={is_disabled}
             value={props.ship.beam || ""}
             onChange={e => shipsContext.handleChange(e, props.ship.id)}
-            onKeyDown={shipsContext.preventNegativeE}
+            onKeyDown={preventNegativeE}
           />
         </span>
         <span className="field">
@@ -96,7 +98,7 @@ const ViewEditShipForm = ({ props, edit, handleEdit }) => {
             disabled={is_disabled}
             value={props.ship.main_power || ""}
             onChange={e => shipsContext.handleChange(e, props.ship.id)}
-            onKeyDown={shipsContext.preventNegativeE}
+            onKeyDown={preventNegativeE}
           />
         </span>
         <span className="field">
@@ -111,7 +113,7 @@ const ViewEditShipForm = ({ props, edit, handleEdit }) => {
             disabled={is_disabled}
             value={props.ship.year_built || ""}
             onChange={e => shipsContext.handleChange(e, props.ship.id)}
-            onKeyDown={shipsContext.preventNegativeE}
+            onKeyDown={preventNegativeE}
           />
         </span>
       </div>
