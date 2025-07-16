@@ -107,48 +107,6 @@ const Surveys = () => {
     setSurveys(surveysBackup);
   };
 
-  // VALIDATIONS
-
-  /**
-   * Validate start date with end date
-   * @param {event} e onChange event
-   * @returns In case of error in date, show report validity.
-   */
-  const validateStartDate = (e, end_date) => {
-    e.target.setCustomValidity("");
-
-    if (typeof end_date != "undefined" && e.target.value > end_date) {
-      e.target.setCustomValidity("Start date must be before the end date.");
-    }
-
-    return e.target.reportValidity();
-  };
-
-  /**
-   * Validate end date with start date
-   * @param {event} e onChange event.
-   * @param {start_date} date Start date to compare with.
-   * @returns In case of error in date, show report validity.
-   */
-  const validateEndDate = (e, start_date) => {
-    e.target.setCustomValidity("");
-
-    if (typeof start_date != "undefined" && start_date > e.target.value) {
-      e.target.setCustomValidity("End date must be after the start date.");
-    }
-
-    return e.target.reportValidity();
-  };
-
-  /**
-   * Force reportValidity() of an element.
-   * Used with onInput event to show the validation messages in real time instead of show it when the form is submitted.
-   * @param {e} e onInput event.
-   */
-  const forceReportValidity = e => {
-    e.target.reportValidity();
-  };
-
   useEffect(() => {
     getStratifications();
     getShips();
@@ -176,9 +134,6 @@ const Surveys = () => {
           deleteSurvey,
           stratifications,
           ships,
-          validateStartDate,
-          validateEndDate,
-          forceReportValidity,
           handleCancelEditSurvey,
         }}
       >

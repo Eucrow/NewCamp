@@ -1,8 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, use } from "react";
 
 import { preventNegativeE } from "../../utils/dataUtils";
 
 import SurveysContext from "../../contexts/SurveysContext";
+
+import { useSurveysValidation } from "../../hooks/useSurveysValidation";
+import FloatingError from "../ui/FloatingError";
 
 import SurveyButtonBar from "./SurveyButtonBar";
 
@@ -13,8 +16,11 @@ const NewSurveyForm = () => {
   const surveysContext = useContext(SurveysContext);
 
   const [survey, setSurvey] = useState({});
+  const { isFormValid, validationErrors, areDatesValid } =
+    useSurveysValidation(survey);
 
-  const formRef = React.createRef();
+  const formRef = useRef(null);
+  const endDateRef = useRef(null);
 
   /**
    * Manage fields change in 'survey' state.
@@ -69,9 +75,9 @@ const NewSurveyForm = () => {
               name="acronym"
               required
               size={3}
+              maxLength={3}
               pattern="^[\w\d]{3}$"
               onChange={handleChange}
-              onInput={surveysContext.forceReportValidity}
             />
           </label>
         </div>
@@ -82,22 +88,31 @@ const NewSurveyForm = () => {
               type="date"
               id="start_date"
               name="start_date"
-              onBlur={e => {
+              onChange={e => {
                 handleChange(e);
-                surveysContext.validateStartDate(e, survey.end_date);
               }}
             />
           </label>
+          <FloatingError
+            message={validationErrors.areDatesValid}
+            show={!areDatesValid}
+            inputRef={endDateRef}
+          />
           <label className="form__cell">
             End date:
             <input
               type="date"
               id="end_date"
               name="end_date"
-              onBlur={e => {
+              onChange={e => {
                 handleChange(e);
-                surveysContext.validateEndDate(e, survey.start_date);
               }}
+              ref={endDateRef}
+            />
+            <FloatingError
+              message={validationErrors.areDatesValid}
+              show={!areDatesValid}
+              inputRef={endDateRef}
             />
           </label>
         </div>
@@ -199,7 +214,6 @@ const NewSurveyForm = () => {
                 size={8}
                 step={0.001}
                 onChange={handleChange}
-                onInput={surveysContext.forceReportValidity}
               />
             </label>
             <label className="form__cell">
@@ -213,7 +227,6 @@ const NewSurveyForm = () => {
                 size={7}
                 step={0.001}
                 onChange={handleChange}
-                onInput={surveysContext.forceReportValidity}
               />
             </label>
           </div>
@@ -232,7 +245,10 @@ const NewSurveyForm = () => {
           </label>
         </div>
         <div className="form__row">
-          <SurveyButtonBar addingSurvey={surveysContext.addingSurvey} />
+          <SurveyButtonBar
+            addingSurvey={surveysContext.addingSurvey}
+            isFormValid={isFormValid}
+          />
         </div>
       </form>
     );

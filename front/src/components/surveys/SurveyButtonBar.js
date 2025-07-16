@@ -15,14 +15,20 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
  */
 
 // TODO: test if instead of receive props, receive only survey.id
-const SurveyButtonBar = ({ survey, edit, handleEdit, addingSurvey }) => {
+const SurveyButtonBar = ({
+  survey,
+  edit,
+  handleEdit,
+  addingSurvey,
+  isFormValid,
+}) => {
   const surveysContext = useContext(SurveysContext);
   var ButtonBar = "";
 
   if (edit === true) {
     ButtonBar = (
       <div className="form__cell form__cell--right buttonsWrapper">
-        <UiButtonSave buttonText={"Save Survey"} />
+        <UiButtonSave buttonText={"Save Survey"} disabled={!isFormValid} />
         <button
           className="buttonsWrapper__button"
           type="button"
@@ -63,7 +69,7 @@ const SurveyButtonBar = ({ survey, edit, handleEdit, addingSurvey }) => {
   if (addingSurvey === true) {
     ButtonBar = (
       <div className="survey__cell form__cell--right buttonsWrapper">
-        <UiButtonSave buttonText={"Save Survey"} />
+        <UiButtonSave buttonText={"Save Survey"} disabled={!isFormValid} />
         <UiButtonStatusHandle
           buttonText="Cancel"
           handleMethod={surveysContext.setAddingSurvey}
