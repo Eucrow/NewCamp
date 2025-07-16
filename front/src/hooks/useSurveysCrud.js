@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { API_CONFIG, buildApiUrl } from "../config/api";
 
 import { cleanEmptyValues } from "../utils/dataUtils";
@@ -76,7 +76,6 @@ export const useSurveysCrud = () => {
    * @param {object} survey - Survey object to create.
    */
   const createSurvey = survey => {
-    console.log("Creating survey:", JSON.stringify(survey));
     const cleanedSurvey = cleanEmptyValues(survey);
     fetch(apiSurvey, {
       method: "POST",
