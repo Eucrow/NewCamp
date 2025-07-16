@@ -94,7 +94,7 @@ const ViewSurveyForm = ({ survey, handleEdit }) => {
             value={survey.stratification || ""}
             disabled={true}
           >
-            <option>{survey.stratification}</option>
+            <option>{survey.stratification_name}</option>
           </select>
         </label>
       </div>
