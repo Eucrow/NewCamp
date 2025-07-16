@@ -21,7 +21,8 @@ export const cleanEmptyValues = obj => {
   const cleaned = { ...obj };
   Object.keys(cleaned).forEach(key => {
     if (cleaned[key] === "") {
-      cleaned[key] = null;
+      // cleaned[key] = null;
+      delete cleaned[key]; // If you prefer to remove the key instead of setting it to null
     }
   });
   return cleaned;

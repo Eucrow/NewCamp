@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
-import { preventNegativeE } from "../../utils/validation";
+import { preventNegativeE } from "../../utils/dataUtils";
 
 import ShipButtonBar from "./ShipButtonBar";
 
