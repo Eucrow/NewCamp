@@ -35,6 +35,7 @@ export const API_CONFIG = {
     GET_SURVEYS: "/survey",
     SURVEY: "/survey/",
     SURVEY_BY_ID: surveyId => `/survey/${surveyId}`,
+    SURVEYS_WITH_STATIONS: "/surveys/surveys-with-stations",
 
     // Catches endpoints
     CATCHES_BY_HAUL: haul_id => `/catches/${haul_id}`,

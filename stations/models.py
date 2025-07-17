@@ -6,7 +6,7 @@ from samplers.models import Sampler
 
 
 class Station(models.Model):
-    survey = models.ForeignKey('surveys.Survey', on_delete=models.CASCADE, )
+    survey = models.ForeignKey('surveys.Survey', on_delete=models.PROTECT, )
     station = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(9999)])
     comment = models.CharField(max_length=1000, null=True, blank=True)
 

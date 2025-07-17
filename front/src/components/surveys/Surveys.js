@@ -19,6 +19,8 @@ const Surveys = () => {
     surveys,
     setSurveys,
     getSurveys,
+    getSurveysWithStations,
+    surveysWithStations,
     surveysBackup,
     stratifications,
     getStratifications,
@@ -111,6 +113,7 @@ const Surveys = () => {
     getStratifications();
     getShips();
     getSurveys();
+    getSurveysWithStations();
   }, []);
 
   /**
@@ -143,6 +146,13 @@ const Surveys = () => {
             <h1 className="title">Surveys</h1>
           </header>
 
+          <div className="wrapper strataWrapper stratifications__notes">
+            The management of surveys has some limitations. To avoid
+            inconsistencies, the system does not allow the deletion of surveys
+            that contains stations. To remove a survey, please ensure it does
+            not contain any stations.
+          </div>
+
           <div className="wrapper surveysWrapper">
             <SurveysButtonBar
               addingSurvey={addingSurvey}
@@ -151,7 +161,16 @@ const Surveys = () => {
             {addingSurvey === true ? <NewSurveyForm /> : ""}
 
             {surveys.map(survey => {
-              return <Survey key={survey.id} survey={survey} />;
+              const hasStations = surveysWithStations.some(
+                s => s.id === survey.id
+              );
+              return (
+                <Survey
+                  key={survey.id}
+                  survey={survey}
+                  hasStations={hasStations}
+                />
+              );
             })}
           </div>
         </main>

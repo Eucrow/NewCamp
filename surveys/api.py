@@ -1,17 +1,14 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import status
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_409_CONFLICT
 from rest_framework.views import APIView
 from rest_framework_csv import renderers as r
 
 from surveys.models import Survey
 from surveys.serializers import SurveySerializer, SurveyAcronymsSerializer
 from import_old_camp.views import SurveysImport
-from stratifications.models import Stratification
-from strata.models import Stratum
 
 
 class SurveysAPI(ListCreateAPIView):
@@ -29,25 +26,17 @@ class SurveyAPI(RetrieveUpdateDestroyAPIView):
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
 
-
-class SurveyDetailAPI(APIView):
-    """
-    Endpoint of Survey Detail API
-    """
-
-    def get(self, request, pk):
-        survey = get_object_or_404(Survey.objects.select_related('stratification'), pk=pk)
-        serializer = SurveySerializer(survey)
-        return Response(serializer.data)
-
-    def put(self, request, pk):
-        survey = get_object_or_404(Survey, pk=pk)
-        serializer = SurveySerializer(survey, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+    def destroy(self, request, *args, **kwargs):
+        survey = self.get_object()
+        
+        # Check if survey has stations
+        if survey.station_set.exists():
+            return Response(
+                {"error": "Cannot delete survey. This survey contains stations that must be removed first."},
+                status=HTTP_409_CONFLICT
+            )
+        
+        return super().destroy(request, *args, **kwargs)
 
 
 class SurveyDetailCsvAPI(APIView):
@@ -83,46 +72,12 @@ class SurveysListCsvAPI(APIView):
         return response
 
 
-class SurveysList(ListAPIView):
-    """
-    Endpoint of list of surveys
-    """
-    queryset = Survey.objects.all()
-    serializer_class = SurveySerializer
-
-
 class SurveysAcronymList(ListAPIView):
     """
     Endpoint of list of acronyms of all surveys.
     """
     queryset = Survey.objects.only("acronym")
     serializer_class = SurveyAcronymsSerializer
-
-
-class SurveyRemoveAPI(APIView):
-    """
-    Endpoint to remove survey.
-    Remove the survey and all data of tables related.
-    """
-
-    def delete(self, request, pk):
-        survey = get_object_or_404(Survey, pk=pk)
-        survey.delete()
-        return Response(status=status.HTTP_200_OK)
-
-
-class SurveyNewAPI(APIView):
-    """
-    Endpoint to add new Survey.
-    """
-
-    def post(self, request):
-        serializer = SurveySerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(stratification=request.data["stratification"])
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class SurveysImportAPI(APIView, SurveysImport):
@@ -132,3 +87,14 @@ class SurveysImportAPI(APIView, SurveysImport):
         my_file = request.FILES['file']
 
         return self.import_surveys_csv(my_file)
+    
+class SurveysWithStationsAPI(ListAPIView):
+    """
+    Endpoint to list all surveys that have stations.
+    """
+    def get(self, request):
+        survey_ids = Survey.objects.filter(
+            station__isnull=False
+        ).distinct().values_list('id', flat=True)
+        
+        return Response([{'id': survey_id} for survey_id in survey_ids])

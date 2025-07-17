@@ -1,6 +1,3 @@
-// Originally, the ViewSurveyForm and EditSurveyForm components were one component.
-// But due to problems with controlling the focus of the inputs, it was decided to separate them.
-
 import React from "react";
 
 import SurveyButtonBar from "./SurveyButtonBar";
@@ -10,7 +7,7 @@ import SurveyButtonBar from "./SurveyButtonBar";
  * @param {object} survey survey object.
  * @param {method} handleEdit method to handle de 'edit' boolean variable.
  */
-const ViewSurveyForm = ({ survey, handleEdit }) => {
+const ViewSurveyForm = ({ survey, handleEdit, hasStations }) => {
   const renderedSurvey = (
     <form className="wrapper form__row">
       <div className="form__row">
@@ -177,7 +174,12 @@ const ViewSurveyForm = ({ survey, handleEdit }) => {
         </label>
       </div>
       <div className="form__row">
-        <SurveyButtonBar survey={survey} edit={false} handleEdit={handleEdit} />
+        <SurveyButtonBar
+          survey={survey}
+          edit={false}
+          handleEdit={handleEdit}
+          hasStations={hasStations}
+        />
       </div>
     </form>
   );
