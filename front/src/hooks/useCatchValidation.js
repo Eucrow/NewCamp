@@ -70,7 +70,7 @@ export const useCatchValidation = newCatch => {
     };
 
     const isValid = Object.values(requiredFields).every(
-      value => value !== null && value !== "" && value !== "Select species..."
+      value => value !== null && value !== ""
     );
 
     return isValid;
