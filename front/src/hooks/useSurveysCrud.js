@@ -13,12 +13,16 @@ export const useSurveysCrud = () => {
   const [surveysBackup, setSurveysBackup] = useState([]);
   const [stratifications, setStratifications] = useState([]);
   const [ships, setShips] = useState([]);
+  const [surveysWithStations, setSurveysWithStations] = useState([]);
 
   const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.SURVEY);
   const apiStratifications = buildApiUrl(
     API_CONFIG.ENDPOINTS.GET_STRATIFICATIONS
   );
   const apiShips = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SHIPS);
+  const apiSurveysWithStations = buildApiUrl(
+    API_CONFIG.ENDPOINTS.SURVEYS_WITH_STATIONS
+  );
 
   /**
    * Get all surveys from database.
@@ -69,6 +73,23 @@ export const useSurveysCrud = () => {
       })
       .catch(error => console.log(error));
     setShips(shipsFetched);
+  };
+
+  /**
+   * Get surveys with stations.
+   * @returns {Promise} Promise with the surveys that have stations.
+   */
+  const getSurveysWithStations = async () => {
+    const surveysWithStations = await fetch(apiSurveysWithStations)
+      .then(response => {
+        if (response.status > 400) {
+          alert("something were wrong getting the surveys with stations!!");
+        }
+        return response.json();
+      })
+      .catch(error => console.log(error));
+
+    setSurveysWithStations(surveysWithStations);
   };
 
   /**
@@ -143,6 +164,8 @@ export const useSurveysCrud = () => {
     surveys,
     setSurveys,
     getSurveys,
+    getSurveysWithStations,
+    surveysWithStations,
     surveysBackup,
     stratifications,
     getStratifications,

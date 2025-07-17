@@ -21,6 +21,7 @@ const SurveyButtonBar = ({
   handleEdit,
   addingSurvey,
   isFormValid,
+  hasStations,
 }) => {
   const surveysContext = useContext(SurveysContext);
   var ButtonBar = "";
@@ -61,6 +62,8 @@ const SurveyButtonBar = ({
           deleteMethod={surveysContext.deleteSurvey}
           buttonText="Delete Survey"
           confirmMessage="Delete the survey?"
+          disabled={hasStations}
+          disabledMessage="This survey cannot be deleted because it has stations."
         />
       </div>
     );

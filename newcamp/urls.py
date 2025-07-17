@@ -29,7 +29,7 @@ from gears.api import GearTrawlsAPI, GearTrawlsBasicAPI, GearTrawlAPI, GearTrawl
 from species.api import SpAPI, SpeciesGroupAPI, SpeciesAPI, MeasurementTypeAPI, MeasurementTypeListCreateAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
-from surveys.api import SurveysImportAPI, SurveyDetailCsvAPI, SurveysListCsvAPI, SurveyAPI, SurveysAPI
+from surveys.api import SurveysImportAPI, SurveyDetailCsvAPI, SurveysListCsvAPI, SurveyAPI, SurveysAPI, SurveysWithStationsAPI
 from stratifications.api import StratificationViewSet, check_stratification_in_survey
 from strata.api import StrataAPI, StratumAPI, check_stratum_in_haul
 from samplers.api import SamplersAPI
@@ -104,6 +104,7 @@ urlpatterns = [
             SurveyAPI.as_view(), name="survey_list_create_api"),
     re_path(r'^api/1.0/survey/$', SurveysAPI.as_view(),
             name="survey_get_update_delete_api"),
+    re_path(r'^api/1.0/surveys/surveys-with-stations$', SurveysWithStationsAPI.as_view(), name="surveys_with_stations_api"),
     # re_path(r'^api/1.0/surveys/(?P<pk>[0-9]+)$', SurveyDetailAPI.as_view(), name="get_survey_api"),
     # re_path(r'^api/1.0/surveys/remove/(?P<pk>[0-9]+)$', SurveyRemoveAPI.as_view(),
     #     name="get_survey_api"),
@@ -123,7 +124,7 @@ urlpatterns = [
     # Stratification API URLS
     # In the default router at the top of this file, we have registered the StratificationViewSet.
     re_path('^api/1.0/stratifications/check-stratification-in-survey/(?P<stratification_id>[0-9]+)$',
-            check_stratification_in_survey, name='check-stratification-in-survey'),
+            check_stratification_in_survey, name='check_stratification_in_survey'),
     # Strata API URLS
     re_path(r'^api/1.0/strata/(?P<stratification_id>[0-9]+)$',
             StrataAPI.as_view(), name="get_strata_api"),

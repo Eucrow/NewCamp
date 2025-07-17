@@ -24,3 +24,5 @@ class SurveyAcronymsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
         fields = ['id', 'description', ]
+
+

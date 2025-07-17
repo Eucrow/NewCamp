@@ -87,3 +87,14 @@ class SurveysImportAPI(APIView, SurveysImport):
         my_file = request.FILES['file']
 
         return self.import_surveys_csv(my_file)
+    
+class SurveysWithStationsAPI(ListAPIView):
+    """
+    Endpoint to list all surveys that have stations.
+    """
+    def get(self, request):
+        survey_ids = Survey.objects.filter(
+            station__isnull=False
+        ).distinct().values_list('id', flat=True)
+        
+        return Response([{'id': survey_id} for survey_id in survey_ids])
