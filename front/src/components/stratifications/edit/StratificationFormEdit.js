@@ -101,7 +101,11 @@ const StratificationFormEdit = ({ stratification, edit, setEdit }) => {
             Stratification:
             <input
               ref={stratificationRef}
-              className={`stratifications__name`}
+              className={
+                stratificationExists
+                  ? `stratifications__name invalid`
+                  : `stratifications__name`
+              }
               type="text"
               name="stratification"
               id="stratification"

@@ -13,13 +13,13 @@ export const useSurveysValidation = newSurvey => {
       existsAcronym: "",
       areDatesValid: "",
     },
-    existsSurvey: true,
-    existsAcronym: true,
+    existsSurvey: false,
+    existsAcronym: false,
     areDatesValid: false,
     areRequiredFieldsValid: false,
   });
 
-  const catchesContext = useContext(SurveysContext);
+  const surveysContext = useContext(SurveysContext);
 
   /**
    * Validates that all required fields are filled.
@@ -68,7 +68,7 @@ export const useSurveysValidation = newSurvey => {
         areDatesValid: false,
         errors: {
           ...prev.errors,
-          areDatesValid: "End date must be after end date.",
+          areDatesValid: "End date must be later or equal to start date.",
         },
       }));
       return false;
@@ -83,6 +83,78 @@ export const useSurveysValidation = newSurvey => {
     }));
     return true;
   }, [newSurvey.start_date, newSurvey.end_date]);
+
+  /**
+   * Validate if survey already exists.
+   * @returns {boolean} Whether the survey already exists.
+   */
+  const validateSurveyExists = useCallback(() => {
+    const filteredSurveys = surveysContext.surveys.filter(
+      survey => survey.id !== newSurvey.id
+    );
+
+    const existsSurvey = filteredSurveys.some(
+      survey => survey.description === newSurvey.description
+    );
+
+    setValidationState(prev => ({
+      ...prev,
+      existsSurvey: existsSurvey,
+      errors: {
+        ...prev.errors,
+        existsSurvey: existsSurvey
+          ? "A survey with this description already exists."
+          : "",
+      },
+    }));
+
+    return existsSurvey;
+  }, [newSurvey.description, surveysContext.surveys]);
+
+  /**
+   * Validate if acronym already exists.
+   * @returns {boolean} Whether the acronym already exists.
+   * */
+  const validateAcronymExists = useCallback(() => {
+    const filteredAcronyms = surveysContext.surveys.filter(
+      survey => survey.id !== newSurvey.id
+    );
+    const existsAcronym = filteredAcronyms.some(
+      survey => survey.acronym === newSurvey.acronym
+    );
+    setValidationState(prev => ({
+      ...prev,
+      existsAcronym: existsAcronym,
+      errors: {
+        ...prev.errors,
+        existsAcronym: existsAcronym
+          ? "A survey with this acronym already exists."
+          : "",
+      },
+    }));
+    return existsAcronym;
+  }, [newSurvey.acronym, surveysContext.surveys]);
+
+  useEffect(() => {
+    validateRequiredFields();
+  }, [
+    newSurvey.description,
+    newSurvey.acronym,
+    newSurvey.ship,
+    newSurvey.stratification,
+  ]);
+
+  useEffect(() => {
+    validateDates();
+  }, [newSurvey.start_date, newSurvey.end_date]);
+
+  useEffect(() => {
+    validateSurveyExists();
+  }, [newSurvey.description]);
+
+  useEffect(() => {
+    validateAcronymExists();
+  }, [newSurvey.acronym]);
 
   // Effect hook that handles form validation on every change.
   useEffect(() => {
@@ -99,32 +171,28 @@ export const useSurveysValidation = newSurvey => {
     //   newSurvey.catch_id
     // );
 
-    const isValid = validateDates() && validateRequiredFields();
+    const isValid =
+      validationState.areDatesValid &&
+      validationState.areRequiredFieldsValid &&
+      !validationState.existsSurvey &&
+      !validationState.existsAcronym;
 
     setValidationState(prev => ({
       ...prev,
-      // existsSurvey: existsSurvey,
-      // existsAcronym: existsAcronym,
       isFormValid: isValid,
     }));
   }, [
-    validateRequiredFields,
-    newSurvey.description,
-    newSurvey.acronym,
-    newSurvey.ship,
-    newSurvey.stratification,
-    newSurvey.start_date,
-    newSurvey.end_date,
-    // newSurvey.sp_name,
-    // newSurvey.category,
-    // newSurvey.catch_id,
+    validationState.areDatesValid,
+    validationState.areRequiredFieldsValid,
+    validationState.existsSurvey,
+    validationState.existsAcronym,
   ]);
 
   return {
     isFormValid: validationState.isFormValid,
     validationErrors: validationState.errors,
-    // existsAcronym: validationState.existsAcronym,
-    // existsSurvey: validationState.existsSurvey,
+    existsSurvey: validationState.existsSurvey,
+    existsAcronym: validationState.existsAcronym,
     areDatesValid: validationState.areDatesValid,
     areRequiredFieldsValid: validationState.areRequiredFieldsValid,
   };

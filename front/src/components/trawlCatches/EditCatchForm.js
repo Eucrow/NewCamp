@@ -58,7 +58,7 @@ const EditCatchForm = () => {
         <div className="catches__table__cell">
           <input
             className={` catches__table__group ${
-              existsCatch === false ? "" : "species--invalid"
+              existsCatch === false ? "" : "invalid"
             }`}
             type="number"
             id="group"
@@ -77,9 +77,7 @@ const EditCatchForm = () => {
         <div className="catches__table__cell">
           <input
             className={`catches__table__cell catches__table__code ${
-              isSpeciesValid === true && existsCatch === false
-                ? ""
-                : "species--invalid"
+              isSpeciesValid === true && existsCatch === false ? "" : "invalid"
             }`}
             type="text"
             value={catchContext.thisCatch.sp_code}
@@ -96,9 +94,7 @@ const EditCatchForm = () => {
         </div>
         <select
           className={`catches__table__cell catches__table__species ${
-            isSpeciesValid === true && existsCatch === false
-              ? ""
-              : "species--invalid"
+            isSpeciesValid === true && existsCatch === false ? "" : "invalid"
           }`}
           value={catchContext.thisCatch.sp_id}
           disabled={catchContext.thisCatch.group === "" ? true : false}
@@ -126,7 +122,7 @@ const EditCatchForm = () => {
         <div className="catches__table__cell">
           <input
             className={` catches__table__category ${
-              existsCatch === false ? "" : "species--invalid"
+              existsCatch === false ? "" : "invalid"
             }`}
             type="number"
             id="category"

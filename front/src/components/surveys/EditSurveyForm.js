@@ -18,10 +18,17 @@ import SurveyButtonBar from "./SurveyButtonBar";
 const EditSurveyForm = ({ survey, handleEdit }) => {
   const surveysContext = useContext(SurveysContext);
 
-  const { isFormValid, validationErrors, areDatesValid } =
-    useSurveysValidation(survey);
+  const {
+    isFormValid,
+    validationErrors,
+    existsSurvey,
+    existsAcronym,
+    areDatesValid,
+  } = useSurveysValidation(survey);
 
   const endDateRef = useRef(null);
+  const descriptionRef = useRef(null);
+  const acronymRef = useRef(null);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -38,27 +45,43 @@ const EditSurveyForm = ({ survey, handleEdit }) => {
             type="text"
             id="description"
             name="description"
-            className="survey_description"
+            className={
+              existsSurvey ? "survey_description invalid" : "survey_description"
+            }
             size={30}
             required
             autoFocus
             pattern="^[a-zA-Z0-9\s]{1,30}$"
             value={survey.description || ""}
             onChange={e => surveysContext.handleChange(e, survey.id)}
+            ref={descriptionRef}
           />
         </label>
+        <FloatingError
+          message={validationErrors.existsSurvey}
+          show={existsSurvey}
+          inputRef={descriptionRef}
+        />
         <label className="form__cell">
           Acronym:
           <input
             type="text"
             id="acronym"
             name="acronym"
+            className={existsAcronym ? "invalid" : ""}
             required
             size={3}
             maxLength={3}
             pattern="^[\w\d]{3}$"
             value={survey.acronym || ""}
             onChange={e => surveysContext.handleChange(e, survey.id)}
+            ref={acronymRef}
+            title="Acronym must be unique and exactly 3 alphanumeric characters."
+          />
+          <FloatingError
+            message={validationErrors.existsAcronym}
+            show={existsAcronym}
+            inputRef={acronymRef}
           />
         </label>
       </div>
@@ -69,7 +92,7 @@ const EditSurveyForm = ({ survey, handleEdit }) => {
             type="date"
             id="start_date"
             name="start_date"
-            className={areDatesValid ? "" : "species--invalid"}
+            className={areDatesValid ? "" : "invalid"}
             value={survey.start_date || ""}
             onChange={e => {
               surveysContext.handleChange(e, survey.id);
@@ -82,7 +105,7 @@ const EditSurveyForm = ({ survey, handleEdit }) => {
             type="date"
             id="end_date"
             name="end_date"
-            className={areDatesValid ? "" : "species--invalid"}
+            className={areDatesValid ? "" : "invalid"}
             value={survey.end_date || ""}
             onChange={e => {
               surveysContext.handleChange(e, survey.id);

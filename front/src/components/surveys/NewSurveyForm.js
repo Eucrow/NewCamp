@@ -16,11 +16,18 @@ const NewSurveyForm = () => {
   const surveysContext = useContext(SurveysContext);
 
   const [survey, setSurvey] = useState({});
-  const { isFormValid, validationErrors, areDatesValid } =
-    useSurveysValidation(survey);
+  const {
+    isFormValid,
+    validationErrors,
+    existsSurvey,
+    existsAcronym,
+    areDatesValid,
+  } = useSurveysValidation(survey);
 
   const formRef = useRef(null);
   const endDateRef = useRef(null);
+  const descriptionRef = useRef(null);
+  const acronymRef = useRef(null);
 
   /**
    * Manage fields change in 'survey' state.
@@ -59,25 +66,44 @@ const NewSurveyForm = () => {
               type="text"
               id="description"
               name="description"
-              className="survey_description"
+              className={
+                existsSurvey
+                  ? "survey_description invalid"
+                  : "survey_description"
+              }
               size={30}
               required
               autoFocus
               pattern="^[a-zA-Z0-9\s]{1,30}$"
               onChange={handleChange}
+              ref={descriptionRef}
+              title="Description must be unique and exactly 3 alphanumeric characters."
             />
           </label>
+          <FloatingError
+            message={validationErrors.existsSurvey}
+            show={existsSurvey}
+            inputRef={descriptionRef}
+          />
           <label className="form__cell">
             Acronym:
             <input
               type="text"
               id="acronym"
               name="acronym"
+              className={existsAcronym ? "invalid" : ""}
               required
               size={3}
               maxLength={3}
               pattern="^[\w\d]{3}$"
               onChange={handleChange}
+              ref={acronymRef}
+              title="Acronym must be unique and exactly 3 alphanumeric characters."
+            />
+            <FloatingError
+              message={validationErrors.existsAcronym}
+              show={existsAcronym}
+              inputRef={acronymRef}
             />
           </label>
         </div>

@@ -134,6 +134,7 @@ const Surveys = () => {
           deleteSurvey,
           stratifications,
           ships,
+          surveys,
           handleCancelEditSurvey,
         }}
       >
