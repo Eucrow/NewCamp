@@ -184,6 +184,7 @@ export const useStratificationsCrud = () => {
 
   return {
     stratifications,
+    fetchStratifications,
     addingStratification,
     setAddingStratification,
     createStratification,

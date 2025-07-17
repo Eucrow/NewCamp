@@ -3,9 +3,34 @@ import React from "react";
 import SurveyButtonBar from "./SurveyButtonBar";
 
 /**
- * ViewSurveyForm component
- * @param {object} survey survey object.
- * @param {method} handleEdit method to handle de 'edit' boolean variable.
+ * ViewSurveyForm component that displays survey data in a read-only format.
+ *
+ * This component renders a comprehensive view of survey data with all fields
+ * displayed as disabled form inputs. It provides a clean, consistent interface
+ * for viewing survey information without the ability to edit. The component
+ * includes all survey fields including description, acronym, dates, ship,
+ * stratification, grid configuration, and comments.
+ *
+ * The component integrates with SurveyButtonBar to provide appropriate actions
+ * for the view mode, such as entering edit mode or performing other operations
+ * based on the survey's current state and permissions.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {Object} props.survey - Survey object containing all survey data
+ * @param {Function} props.handleEdit - Function to toggle edit mode
+ * @param {boolean} props.hasStations - Whether the survey has associated stations
+ * @returns {JSX.Element} Complete survey view form
+ *
+ * @example
+ * // Display survey in read-only mode
+ * <ViewSurveyForm
+ *   survey={surveyData}
+ *   handleEdit={setEditMode}
+ *   hasStations={true}
+ * />
+ *
+ * @requires SurveyButtonBar - Button controls for view actions
  */
 const ViewSurveyForm = ({ survey, handleEdit, hasStations }) => {
   const renderedSurvey = (

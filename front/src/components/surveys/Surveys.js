@@ -9,10 +9,32 @@ import { useSurveysCrud } from "../../hooks/useSurveysCrud";
 import SurveysButtonBar from "./SurveysButtonBar";
 import Survey from "./Survey";
 import NewSurveyForm from "./NewSurveyForm";
+import { useStratificationsCrud } from "../../hooks/useStratificationsCrud";
 
 /**
- * Component list of surveys.
- * List of all the surveys stored in database.
+ * Surveys component manages the display and interaction of survey data.
+ *
+ * This component provides a complete interface for managing surveys including:
+ * - Displaying a list of all surveys from the database
+ * - Creating new surveys through a form interface
+ * - Editing existing survey properties (name, stratification, ship assignment)
+ * - Deleting surveys (with restrictions for surveys containing stations)
+ * - Managing survey state with backup/restore functionality
+ *
+ * The component integrates with multiple hooks for data management and provides
+ * context to child components for survey operations. It enforces business rules
+ * such as preventing deletion of surveys that contain stations.
+ *
+ * @component
+ * @returns {JSX.Element} The complete surveys management interface
+ *
+ * @example
+ * // Basic usage in a route or parent component
+ * <Surveys />
+ *
+ * @requires useSurveysCrud - Hook for survey CRUD operations
+ * @requires useStratificationsCrud - Hook for stratification data
+ * @requires SurveysContext - Context provider for child components
  */
 const Surveys = () => {
   const {
@@ -22,8 +44,6 @@ const Surveys = () => {
     getSurveysWithStations,
     surveysWithStations,
     surveysBackup,
-    stratifications,
-    getStratifications,
     ships,
     getShips,
     createSurvey,
@@ -31,14 +51,17 @@ const Surveys = () => {
     deleteSurvey,
   } = useSurveysCrud();
 
+  const { stratifications, fetchStratifications } = useStratificationsCrud();
+
   const [addingSurvey, setAddingSurvey] = useState(false);
 
   const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.SURVEY);
 
   /**
-   * Manage change in fields of a previous created survey.
-   * @param {event} e - Event.
-   * @param {numeric} surveyId - Identification number of the survey which fields are managed.
+   * Handles input field changes for survey properties.
+   * @param {Event} e - The input change event
+   * @param {number} surveyId - ID of the survey being modified
+   * @returns {void}
    */
   const handleChange = (e, surveyId) => {
     const name = e.target.name;
@@ -58,6 +81,12 @@ const Surveys = () => {
     setSurveys(newSurveys);
   };
 
+  /**
+   * Handles stratification selection changes for a survey.
+   * @param {Event} e - The select change event
+   * @param {number} surveyId - ID of the survey being modified
+   * @returns {void}
+   */
   const handleChangeStratification = (e, surveyId) => {
     const value = e.target.value;
     e.preventDefault();
@@ -79,6 +108,12 @@ const Surveys = () => {
     setSurveys(newSurveys);
   };
 
+  /**
+   * Handles ship selection changes for a survey.
+   * @param {Event} e - The select change event
+   * @param {number} shipId - ID of the survey being modified
+   * @returns {void}
+   */
   const handleChangeShip = (e, shipId) => {
     const value = e.target.value;
     e.preventDefault();
@@ -101,24 +136,27 @@ const Surveys = () => {
   };
 
   /**
-   * Restores the survey to its original state.
-   * @param {number} surveyId - The ID of the haul to be restored.
+   * Restores surveys to their original state from backup.
+   * @returns {void}
    */
-
   const handleCancelEditSurvey = () => {
     setSurveys(surveysBackup);
   };
 
+  /**
+   * Initializes component data on mount.
+   * @returns {void}
+   */
   useEffect(() => {
-    getStratifications();
+    fetchStratifications();
     getShips();
     getSurveys();
     getSurveysWithStations();
   }, []);
 
   /**
-   * Create content to render.
-   * @private
+   * Renders the complete surveys management interface.
+   * @returns {JSX.Element} The rendered survey management content
    */
   const renderContent = () => {
     let content;

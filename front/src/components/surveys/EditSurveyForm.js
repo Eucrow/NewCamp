@@ -10,10 +10,35 @@ import FloatingError from "../ui/FloatingError";
 import SurveyButtonBar from "./SurveyButtonBar";
 
 /**
- * EditSurveyForm component
- * @param {object} survey survey object.
- * @param {boolean} edit variable to indicate if the element is edited or not.
- * @param {method} handleEdit method to handle de 'edit' boolean variable.
+ * EditSurveyForm component that provides a form interface for editing existing surveys.
+ *
+ * This component renders a comprehensive form for editing survey data with all
+ * necessary fields pre-populated with current values. It includes real-time validation
+ * for uniqueness constraints and date validation, with floating error messages for
+ * user feedback. The form integrates with the SurveysContext for data operations
+ * and state management.
+ *
+ * The component handles form submission by calling the updateSurvey function from
+ * context and exits edit mode upon successful submission. It prevents negative
+ * values and enforces pattern matching for critical fields.
+ *
+ * @component
+ * @param {Object} props - Component props
+ * @param {Object} props.survey - Survey object containing current survey data
+ * @param {Function} props.handleEdit - Function to toggle edit mode
+ * @returns {JSX.Element} Complete survey editing form
+ *
+ * @example
+ * // Display when editing a survey
+ * <EditSurveyForm
+ *   survey={surveyData}
+ *   handleEdit={setEditMode}
+ * />
+ *
+ * @requires SurveysContext - Context for survey operations and data
+ * @requires useSurveysValidation - Hook for form validation
+ * @requires SurveyButtonBar - Button controls for form actions
+ * @requires FloatingError - Error display component
  */
 const EditSurveyForm = ({ survey, handleEdit }) => {
   const surveysContext = useContext(SurveysContext);
@@ -30,6 +55,11 @@ const EditSurveyForm = ({ survey, handleEdit }) => {
   const descriptionRef = useRef(null);
   const acronymRef = useRef(null);
 
+  /**
+   * Handles form submission and updates existing survey.
+   * @param {Event} e - Form submit event
+   * @returns {void}
+   */
   const handleSubmit = e => {
     e.preventDefault();
     surveysContext.updateSurvey(survey.id);

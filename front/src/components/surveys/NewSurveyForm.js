@@ -10,7 +10,28 @@ import FloatingError from "../ui/FloatingError";
 import SurveyButtonBar from "./SurveyButtonBar";
 
 /**
- * Survey component
+ * NewSurveyForm component that provides a form interface for creating new surveys.
+ *
+ * This component renders a comprehensive form for creating new surveys with all
+ * necessary fields including description, acronym, dates, ship selection, stratification,
+ * grid configuration, and comments. It includes real-time validation for uniqueness
+ * constraints and date validation, with floating error messages for user feedback.
+ *
+ * The form integrates with the SurveysContext for data operations and uses validation
+ * hooks to ensure data integrity before submission. It prevents negative values
+ * and enforces pattern matching for critical fields.
+ *
+ * @component
+ * @returns {JSX.Element} Complete new survey creation form
+ *
+ * @example
+ * // Display when adding a new survey
+ * <NewSurveyForm />
+ *
+ * @requires SurveysContext - Context for survey operations and data
+ * @requires useSurveysValidation - Hook for form validation
+ * @requires SurveyButtonBar - Button controls for form actions
+ * @requires FloatingError - Error display component
  */
 const NewSurveyForm = () => {
   const surveysContext = useContext(SurveysContext);
@@ -30,9 +51,9 @@ const NewSurveyForm = () => {
   const acronymRef = useRef(null);
 
   /**
-   * Manage fields change in 'survey' state.
-   * This method is different to handleChange os Surveys component.
-   * @param {event} e - Event.
+   * Handles form field changes and updates local survey state.
+   * @param {Event} e - Input change event
+   * @returns {void}
    */
   const handleChange = e => {
     const name = e.target.name;
@@ -47,8 +68,9 @@ const NewSurveyForm = () => {
   };
 
   /**
-   * Manage the onSubmit event.
-   * @param {event} e - onSubmit event.
+   * Handles form submission and creates new survey.
+   * @param {Event} e - Form submit event
+   * @returns {void}
    */
   const handleSubmit = e => {
     e.preventDefault();
@@ -56,6 +78,10 @@ const NewSurveyForm = () => {
     surveysContext.setAddingSurvey(false);
   };
 
+  /**
+   * Renders the complete new survey form.
+   * @returns {JSX.Element} The rendered form content
+   */
   const renderContent = () => {
     const content = (
       <form className="wrapper from__row" ref={formRef} onSubmit={handleSubmit}>
