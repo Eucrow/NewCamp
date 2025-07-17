@@ -29,8 +29,7 @@ from gears.api import GearTrawlsAPI, GearTrawlsBasicAPI, GearTrawlAPI, GearTrawl
 from species.api import SpAPI, SpeciesGroupAPI, SpeciesAPI, MeasurementTypeAPI, MeasurementTypeListCreateAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
-from surveys.api import SurveysImportAPI, SurveyDetailAPI, SurveyDetailCsvAPI, SurveyRemoveAPI, SurveysListCsvAPI, \
-    SurveysAcronymList, SurveyNewAPI, SurveyAPI, SurveysAPI
+from surveys.api import SurveysImportAPI, SurveyDetailCsvAPI, SurveysListCsvAPI, SurveyAPI, SurveysAPI
 from stratifications.api import StratificationViewSet, check_stratification_in_survey
 from strata.api import StrataAPI, StratumAPI, check_stratum_in_haul
 from samplers.api import SamplersAPI

@@ -89,7 +89,7 @@ class StratumAPI(APIView):
         stratum = get_object_or_404(Stratum, pk=pk)
         if stratum.haul_set.exists():  # Check if any haul references this stratum
             return Response(
-                {"error": "Cannot delete stratum as it is referenced in hauls."},
+                {"error": "Cannot delete stratum. This stratum has referended hauls that must be removed first."},
                 status=status.HTTP_400_BAD_REQUEST
             )
         stratum.delete()
