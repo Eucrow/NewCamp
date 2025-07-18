@@ -1,7 +1,7 @@
 import { API_CONFIG, buildApiUrl } from "../config/api";
 import { cleanEmptyValues } from "../utils/dataUtils";
 
-const surveyServices = {
+const surveyService = {
   async getSurveys() {
     const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.SURVEY);
 
@@ -92,4 +92,4 @@ const surveyServices = {
   },
 };
 
-export default surveyServices;
+export default surveyService;

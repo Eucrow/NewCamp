@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
-import { API_CONFIG, buildApiUrl } from "../config/api";
 
-import surveysService from "../services/surveysService";
+import surveyService from "../services/surveyService";
+import shipService from "../services/shipService";
 
 /**
  * Custom hook for managing surveys CRUD operations.
@@ -28,8 +28,6 @@ export const useSurveysCrud = () => {
   const [ships, setShips] = useState([]);
   const [surveysWithStations, setSurveysWithStations] = useState([]);
 
-  const apiShips = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SHIPS);
-
   /**
    * Fetches all surveys from the database and updates both surveys and surveysBackup state.
    *
@@ -39,7 +37,7 @@ export const useSurveysCrud = () => {
    */
   const getSurveys = useCallback(async () => {
     try {
-      const surveys = await surveysService.getSurveys();
+      const surveys = await surveyService.getSurveys();
       setSurveys(surveys);
       setSurveysBackup(surveys);
     } catch (error) {
@@ -56,15 +54,13 @@ export const useSurveysCrud = () => {
    * @throws {Error} Logs error to console if fetch fails
    */
   const getShips = useCallback(async () => {
-    const shipsFetched = await fetch(apiShips)
-      .then(response => {
-        if (response.status > 400) {
-          alert("something were wrong getting the ships!!");
-        }
-        return response.json();
-      })
-      .catch(error => console.log(error));
-    setShips(shipsFetched);
+    try {
+      const ships = await shipService.getShips();
+      setShips(ships);
+    } catch (error) {
+      alert(`Error fetching ships: ${error.message}`);
+      console.error(error);
+    }
   }, []);
 
   /**
@@ -76,7 +72,7 @@ export const useSurveysCrud = () => {
    */
   const getSurveysWithStations = useCallback(async () => {
     try {
-      const surveys = await surveysService.getSurveysWithStations();
+      const surveys = await surveyService.getSurveysWithStations();
       setSurveysWithStations(surveys);
     } catch (error) {
       alert(`Error fetching surveys with stations: ${error.message}`);
@@ -95,7 +91,7 @@ export const useSurveysCrud = () => {
    */
   const createSurvey = useCallback(async survey => {
     try {
-      const newSurvey = await surveysService.createSurvey(survey);
+      const newSurvey = await surveyService.createSurvey(survey);
       setSurveys(prevSurveys => [...prevSurveys, newSurvey]);
       setSurveysBackup(prevSurveys => [...prevSurveys, newSurvey]);
     } catch (error) {
@@ -123,7 +119,7 @@ export const useSurveysCrud = () => {
       }
 
       try {
-        const updatedSurvey = await surveysService.updateSurvey(
+        const updatedSurvey = await surveyService.updateSurvey(
           surveyId,
           surveyToUpdate
         );
@@ -158,7 +154,7 @@ export const useSurveysCrud = () => {
    */
   const deleteSurvey = useCallback(async surveyId => {
     try {
-      await surveysService.deleteSurvey(surveyId);
+      await surveyService.deleteSurvey(surveyId);
 
       setSurveys(prevSurveys =>
         prevSurveys.filter(survey => survey.id !== surveyId)
