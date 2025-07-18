@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { API_CONFIG, buildApiUrl } from "../config/api";
 
-import { cleanEmptyValues } from "../utils/dataUtils";
+import surveysService from "../services/surveysService";
 
 /**
  * Custom hook for managing surveys CRUD operations.
@@ -28,33 +28,24 @@ export const useSurveysCrud = () => {
   const [ships, setShips] = useState([]);
   const [surveysWithStations, setSurveysWithStations] = useState([]);
 
-  const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.SURVEY);
-
   const apiShips = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SHIPS);
-  const apiSurveysWithStations = buildApiUrl(
-    API_CONFIG.ENDPOINTS.SURVEYS_WITH_STATIONS
-  );
 
   /**
    * Fetches all surveys from the database and updates both surveys and surveysBackup state.
    *
    * @function getSurveys
    * @returns {void} No return value, updates state directly
-   * @throws {Error} Logs error to console if fetch fails
+   * @throws {Error} Shows alert with error message if fetch fails
    */
-  const getSurveys = useCallback(() => {
-    fetch(apiSurvey)
-      .then(response => {
-        if (response.status > 400) {
-          alert("something were wrong getting the surveys!!");
-        }
-        return response.json();
-      })
-      .then(surveys => {
-        setSurveys(surveys);
-        setSurveysBackup(surveys);
-      })
-      .catch(error => console.log(error));
+  const getSurveys = useCallback(async () => {
+    try {
+      const surveys = await surveysService.getSurveys();
+      setSurveys(surveys);
+      setSurveysBackup(surveys);
+    } catch (error) {
+      alert(`Error fetching surveys: ${error.message}`);
+      console.error(error);
+    }
   }, []);
 
   /**
@@ -84,16 +75,13 @@ export const useSurveysCrud = () => {
    * @throws {Error} Logs error to console if fetch fails
    */
   const getSurveysWithStations = useCallback(async () => {
-    const surveysWithStations = await fetch(apiSurveysWithStations)
-      .then(response => {
-        if (response.status > 400) {
-          alert("something were wrong getting the surveys with stations!!");
-        }
-        return response.json();
-      })
-      .catch(error => console.log(error));
-
-    setSurveysWithStations(surveysWithStations);
+    try {
+      const surveys = await surveysService.getSurveysWithStations();
+      setSurveysWithStations(surveys);
+    } catch (error) {
+      alert(`Error fetching surveys with stations: ${error.message}`);
+      console.error(error);
+    }
   }, []);
 
   /**
@@ -105,24 +93,15 @@ export const useSurveysCrud = () => {
    * @returns {void} No return value, updates state directly on success
    * @throws {Error} Shows alert with error message if creation fails
    */
-  const createSurvey = useCallback(survey => {
-    const cleanedSurvey = cleanEmptyValues(survey);
-    fetch(apiSurvey, {
-      method: "POST",
-      headers: API_CONFIG.HEADERS.DEFAULT,
-      body: JSON.stringify(cleanedSurvey),
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(survey => {
-        setSurveys(prevSurveys => [...prevSurveys, survey]);
-        setSurveysBackup(prevSurveys => [...prevSurveys, survey]);
-      })
-      .catch(error => alert(error));
+  const createSurvey = useCallback(async survey => {
+    try {
+      const newSurvey = await surveysService.createSurvey(survey);
+      setSurveys(prevSurveys => [...prevSurveys, newSurvey]);
+      setSurveysBackup(prevSurveys => [...prevSurveys, newSurvey]);
+    } catch (error) {
+      alert(`Error creating survey: ${error.message}`);
+      console.error(error);
+    }
   }, []);
 
   /**
@@ -132,36 +111,37 @@ export const useSurveysCrud = () => {
    * @function updateSurvey
    * @param {number} surveyId - Unique identifier of the survey to update
    * @returns {Promise<void>} Promise that resolves when survey is updated
-   * @throws {Error} Logs error to console if update fails, shows alert for HTTP errors
+   * @throws {Error} Shows alert with error message if update fails
    */
   const updateSurvey = useCallback(
     async surveyId => {
-      const api = apiSurvey + surveyId;
+      const surveyToUpdate = surveys.find(survey => survey.id === surveyId);
 
-      const updatedSurvey = surveys.filter(survey => {
-        return survey.id === surveyId;
-      });
+      if (!surveyToUpdate) {
+        alert("Survey not found");
+        return;
+      }
 
       try {
-        const response = await fetch(api, {
-          method: "PUT",
-          headers: API_CONFIG.HEADERS.DEFAULT,
-          body: JSON.stringify(updatedSurvey[0]),
-        });
+        const updatedSurvey = await surveysService.updateSurvey(
+          surveyId,
+          surveyToUpdate
+        );
 
-        if (response.status > 400) {
-          alert("something were wrong updating the survey!!");
-        }
-
-        const updatedSurveyData = await response.json();
-
+        // Update both surveys and surveysBackup states
+        setSurveys(prevSurveys =>
+          prevSurveys.map(survey =>
+            survey.id === surveyId ? updatedSurvey : survey
+          )
+        );
         setSurveysBackup(prevBackup =>
           prevBackup.map(survey =>
-            survey.id === surveyId ? updatedSurveyData : survey
+            survey.id === surveyId ? updatedSurvey : survey
           )
         );
       } catch (error) {
-        console.log(error);
+        alert(`Error updating survey: ${error.message}`);
+        console.error(error);
       }
     },
     [surveys]
@@ -177,17 +157,8 @@ export const useSurveysCrud = () => {
    * @throws {Error} Shows alert with error message if deletion fails
    */
   const deleteSurvey = useCallback(async surveyId => {
-    const api = apiSurvey + surveyId;
-
     try {
-      const response = await fetch(api, {
-        method: "DELETE",
-        headers: API_CONFIG.HEADERS.DEFAULT,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      await surveysService.deleteSurvey(surveyId);
 
       setSurveys(prevSurveys =>
         prevSurveys.filter(survey => survey.id !== surveyId)
@@ -196,7 +167,8 @@ export const useSurveysCrud = () => {
         prevBackup.filter(survey => survey.id !== surveyId)
       );
     } catch (error) {
-      alert(error);
+      alert(`Error deleting survey: ${error.message}`);
+      console.error(error);
     }
   }, []);
 
