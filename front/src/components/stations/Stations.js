@@ -4,6 +4,7 @@ import { API_CONFIG, buildApiUrl } from "../../config/api";
 
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 import StationsContext from "../../contexts/StationsContext";
+
 import StationsButtonBar from "./StationsButtonBar";
 import Station from "./Station";
 import NewStationForm from "./NewStationForm";
@@ -12,6 +13,7 @@ const Stations = () => {
   const [add, setAdd] = useState(false);
   const [stations, setStations] = useState([]);
   const [strata, setStrata] = useState([]);
+  const [hasStrata, setHasStrata] = useState(true);
   const [trawls, setTrawls] = useState([]);
   const [ctds, setCtds] = useState([]);
   const [samplers, setSamplers] = useState([]);
@@ -308,7 +310,9 @@ const Stations = () => {
           console.log("apiStrata", apiStrata);
           fetch(apiStrata)
             .then(response => {
-              if (response.status > 400) {
+              if (response.status == 404) {
+                setHasStrata(false);
+              } else if (response.status > 400) {
                 alert("something were wrong fetching the strata!!");
               }
               return response.json();
@@ -396,24 +400,34 @@ const Stations = () => {
           <header>
             <h1 className="title">Stations</h1>
           </header>
-          <div className="wrapper stationsWrapper">
-            {add === true ? (
-              <NewStationForm
+          {hasStrata === false ? (
+            <div className="wrapper strataWrapper stratifications__notes">
+              The stratification of the survey has no strata. Before add
+              stations the stratification must have strata.
+            </div>
+          ) : (
+            <div className="wrapper stationsWrapper">
+              {add === true ? (
+                <NewStationForm
+                  handleAdd={setAdd}
+                  createStation={createStation}
+                />
+              ) : (
+                ""
+              )}
+
+              <StationsButtonBar
+                add={add}
                 handleAdd={setAdd}
-                createStation={createStation}
-              />
-            ) : (
-              ""
-            )}
+              ></StationsButtonBar>
 
-            <StationsButtonBar add={add} handleAdd={setAdd}></StationsButtonBar>
-
-            {stations
-              ? stations.map(station => {
-                  return <Station key={station.id} station={station} />;
-                })
-              : ""}
-          </div>
+              {stations
+                ? stations.map(station => {
+                    return <Station key={station.id} station={station} />;
+                  })
+                : ""}
+            </div>
+          )}
         </main>
       </StationsContext.Provider>
     );
