@@ -12,7 +12,7 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
  * @param {boolean} props.editing variable to indicate if the element is edited or not.
  * @param {method} props.handleEdit method to handle de 'editing' boolean variable.
  */
-const ShipButtonBar = ({ ship_id, editing, setEditing, adding }) => {
+const ShipButtonBar = ({ ship_id, editing, setEditing, adding, inSurveys }) => {
   const shipsContext = useContext(ShipsContext);
 
   var ButtonBar = "";
@@ -58,6 +58,10 @@ const ShipButtonBar = ({ ship_id, editing, setEditing, adding }) => {
           deleteMethod={shipsContext.deleteShip}
           buttonText="Delete Ship"
           confirmMessage="Delete the ship?"
+          disabled={inSurveys}
+          disabledMessage={
+            "This ship can't be deleted because it is used in a survey."
+          }
         />
       </div>
     );

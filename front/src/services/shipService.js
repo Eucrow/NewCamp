@@ -25,8 +25,6 @@ const shipService = {
       },
       body: JSON.stringify(ship),
     });
-    console.log(apiShips);
-    console.log(response);
 
     if (!response.ok) {
       throw new Error("Failed to create ship");
@@ -67,6 +65,24 @@ const shipService = {
     }
 
     return response.ok;
+  },
+
+  async getShipsInSurvey() {
+    const apiShipsInSurveys = buildApiUrl(
+      API_CONFIG.ENDPOINTS.SHIPS_IN_SURVEYS
+    );
+
+    const response = await fetch(apiShipsInSurveys);
+
+    if (response.status === 404) {
+      return []; // Return empty array if not found
+    }
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch the ships in surverys");
+    }
+
+    return response.json();
   },
 };
 

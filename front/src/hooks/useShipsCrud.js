@@ -20,6 +20,7 @@ import shipService from "../services/shipService";
 export const useShipsCrud = () => {
   const [ships, setShips] = useState([]);
   const [shipsBackup, setShipsBackup] = useState([]);
+  const [shipsInSurveys, setShipInSurveys] = useState([]);
 
   /**
    * Fetches all ships from the database and updates both ships and shipsBackup state.
@@ -118,11 +119,24 @@ export const useShipsCrud = () => {
     }
   }, []);
 
+  const fetchShipsInSurveys = useCallback(async () => {
+    try {
+      const response = await shipService.getShipsInSurvey();
+
+      setShipInSurveys(response);
+    } catch (error) {
+      alert(`Error fetching ships in surveys: ${error.message}`);
+      console.error(error);
+    }
+  }, []);
+
   return {
     ships,
     getShips,
     setShips,
     shipsBackup,
+    shipsInSurveys,
+    fetchShipsInSurveys,
     createShip,
     updateShip,
     deleteShip,

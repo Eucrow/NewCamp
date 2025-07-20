@@ -12,7 +12,7 @@ import ShipButtonBar from "./ShipButtonBar";
  * @param {boolean} editing true if the element is available to editing.
  * @param {method} setEditing method to change the editing variable in state.
  */
-const ViewEditShipForm = ({ ship, editing, setEditing }) => {
+const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
   const shipsContext = useContext(ShipsContext);
   const is_disabled = editing === true ? false : true;
   console.log(editing);
@@ -137,6 +137,7 @@ const ViewEditShipForm = ({ ship, editing, setEditing }) => {
           ship_id={ship.id}
           editing={editing}
           setEditing={setEditing}
+          inSurveys={inSurveys}
         />
       </div>
     </form>

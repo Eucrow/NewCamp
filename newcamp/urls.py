@@ -24,7 +24,7 @@ from rest_framework.routers import DefaultRouter
 
 # from djgeojson.views import GeoJSONLayerView
 
-from ships.api import ShipsAPI, ShipAPI
+from ships.api import ShipsAPI, ShipAPI, ShipsInSurveysAPI
 from gears.api import GearTrawlsAPI, GearTrawlsBasicAPI, GearTrawlAPI, GearTrawlsNamesAPI, GearCTDsBasicAPI
 from species.api import SpAPI, SpeciesGroupAPI, SpeciesAPI, MeasurementTypeAPI, MeasurementTypeListCreateAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
@@ -65,6 +65,8 @@ urlpatterns = [
             name="ship_list_create_api"),
     re_path(r'^api/1.0/ship/(?P<pk>[0-9]+)$',
             ShipAPI.as_view(), name="ship_get_update_delete_api"),
+    re_path(r'^api/1.0/ships/ships-in-surveys/$', ShipsInSurveysAPI.as_view(),
+                name="ships_in_surveys_api"),
 
     # Species API URLS
     re_path(r'^api/1.0/species/$', SpeciesAPI.as_view(),

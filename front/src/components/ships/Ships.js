@@ -15,8 +15,16 @@ import Ship from "./Ship";
 const Ships = () => {
   const [adding, setAdding] = useState(false); // true to adding new ship; false to not to.
 
-  const { ships, setShips, getShips, createShip, updateShip, deleteShip } =
-    useShipsCrud();
+  const {
+    ships,
+    setShips,
+    getShips,
+    shipsInSurveys,
+    fetchShipsInSurveys,
+    createShip,
+    updateShip,
+    deleteShip,
+  } = useShipsCrud();
 
   /**
    * Manage change in fields
@@ -72,7 +80,8 @@ const Ships = () => {
 
   useEffect(() => {
     getShips();
-  }, [getShips]);
+    fetchShipsInSurveys();
+  }, []);
 
   return (
     <ShipsContext.Provider
@@ -94,7 +103,8 @@ const Ships = () => {
           {adding === true ? <NewShipForm /> : ""}
 
           {ships.map(ship => {
-            return <Ship key={ship.id} ship={ship} />;
+            const inSurveys = shipsInSurveys.some(s => s.id === ship.id);
+            return <Ship key={ship.id} ship={ship} inSurveys={inSurveys} />;
           })}
         </div>
       </main>
