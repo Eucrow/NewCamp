@@ -9,10 +9,10 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 /**
  * Button bar of ship component.
  * @param {object} props.ship ship object.
- * @param {boolean} props.edit variable to indicate if the element is edited or not.
- * @param {method} props.handleEdit method to handle de 'edit' boolean variable.
+ * @param {boolean} props.editing variable to indicate if the element is edited or not.
+ * @param {method} props.handleEdit method to handle de 'editing' boolean variable.
  */
-const ShipButtonBar = ({ ship_id, edit, setEdit, adding }) => {
+const ShipButtonBar = ({ ship_id, editing, setEditing, adding }) => {
   const shipsContext = useContext(ShipsContext);
 
   var ButtonBar = "";
@@ -23,21 +23,21 @@ const ShipButtonBar = ({ ship_id, edit, setEdit, adding }) => {
         <UiButtonSave buttonText={"Save Ship"} />
         <UiButtonStatusHandle
           buttonText={"Cancel"}
-          handleMethod={setEdit}
+          handleMethod={setEditing}
           newStatus={false}
         />
       </div>
     );
   }
 
-  if (edit === true) {
+  if (editing === true) {
     ButtonBar = (
       <div className="form__cell form__cell--right">
         <div className="buttonsWrapper">
           <UiButtonSave buttonText={"Save Ship"} />
           <UiButtonStatusHandle
             buttonText={"Cancel"}
-            handleMethod={setEdit}
+            handleMethod={setEditing}
             newStatus={false}
           />
         </div>
@@ -45,12 +45,12 @@ const ShipButtonBar = ({ ship_id, edit, setEdit, adding }) => {
     );
   }
 
-  if (edit === false) {
+  if (editing === false) {
     ButtonBar = (
       <div className="form__cell form__cell--right buttonsWrapper">
         <UiButtonStatusHandle
           buttonText={"Edit Ship"}
-          handleMethod={setEdit}
+          handleMethod={setEditing}
           newStatus={true}
         ></UiButtonStatusHandle>
         <UiButtonDelete

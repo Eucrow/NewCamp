@@ -7,9 +7,11 @@ import ViewEditShipForm from "./ViewEditShipForm";
  * @param {object} props ship object
  */
 const Ship = ({ key, ship }) => {
-  const [edit, setEdit] = useState(false);
+  const [editing, setEditing] = useState(false);
 
-  return <ViewEditShipForm ship={ship} edit={edit} setEdit={setEdit} />;
+  return (
+    <ViewEditShipForm ship={ship} editing={editing} setEditing={setEditing} />
+  );
 };
 
 export default Ship;

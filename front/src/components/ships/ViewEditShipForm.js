@@ -9,17 +9,17 @@ import ShipButtonBar from "./ShipButtonBar";
 /**
  * ViewEditShipForm component
  * @param {object} props ship object.
- * @param {boolean} edit true if the element is available to edit.
- * @param {method} setEdit method to change the edit variable in state.
+ * @param {boolean} editing true if the element is available to editing.
+ * @param {method} setEditing method to change the editing variable in state.
  */
-const ViewEditShipForm = ({ ship, edit, setEdit }) => {
+const ViewEditShipForm = ({ ship, editing, setEditing }) => {
   const shipsContext = useContext(ShipsContext);
-  const is_disabled = edit === true ? false : true;
-  console.log(edit);
+  const is_disabled = editing === true ? false : true;
+  console.log(editing);
 
   const handleSubmit = e => {
     shipsContext.updateShip(e, ship.id);
-    setEdit(false);
+    setEditing(false);
   };
 
   const content = (
@@ -133,7 +133,11 @@ const ViewEditShipForm = ({ ship, edit, setEdit }) => {
         </span>
       </div>
       <div className="form__row">
-        <ShipButtonBar ship_id={ship.id} edit={edit} setEdit={setEdit} />
+        <ShipButtonBar
+          ship_id={ship.id}
+          editing={editing}
+          setEditing={setEditing}
+        />
       </div>
     </form>
   );
