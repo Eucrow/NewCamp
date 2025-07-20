@@ -43,7 +43,7 @@ class NewShipForm extends Component {
         className="wrapper"
         onSubmit={e => {
           this.context.createShip(e, this.state.ship);
-          this.context.handleAdd(false);
+          this.context.setAdding(false);
         }}
       >
         <div className="form__row">
@@ -142,7 +142,7 @@ class NewShipForm extends Component {
         </div>
         <div className="form__row">
           <div className="survey__cell survey__cell--right buttonsWrapper">
-            <ShipButtonBar add={true} />
+            <ShipButtonBar adding={true} />
           </div>
         </div>
       </form>

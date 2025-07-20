@@ -10,15 +10,16 @@ import ShipButtonBar from "./ShipButtonBar";
  * ViewEditShipForm component
  * @param {object} props ship object.
  * @param {boolean} edit true if the element is available to edit.
- * @param {method} handleEdit method to change the edit variable in state.
+ * @param {method} setEdit method to change the edit variable in state.
  */
-const ViewEditShipForm = ({ props, edit, handleEdit }) => {
+const ViewEditShipForm = ({ ship, edit, setEdit }) => {
   const shipsContext = useContext(ShipsContext);
   const is_disabled = edit === true ? false : true;
+  console.log(edit);
 
   const handleSubmit = e => {
-    shipsContext.updateShip(e, props.ship.id);
-    props.handleEdit(false);
+    shipsContext.updateShip(e, ship.id);
+    setEdit(false);
   };
 
   const content = (
@@ -35,8 +36,8 @@ const ViewEditShipForm = ({ props, edit, handleEdit }) => {
             size={30}
             autoFocus
             disabled={is_disabled}
-            value={props.ship.name || ""}
-            onChange={e => shipsContext.handleChange(e, props.ship.id)}
+            value={ship.name || ""}
+            onChange={e => shipsContext.handleChange(e, ship.id)}
           />
         </span>
       </div>
@@ -50,8 +51,8 @@ const ViewEditShipForm = ({ props, edit, handleEdit }) => {
             size={4}
             pattern="^[\w|\d]{2,4}$"
             disabled={is_disabled}
-            value={props.ship.datras_id || ""}
-            onChange={e => shipsContext.handleChange(e, props.ship.id)}
+            value={ship.datras_id || ""}
+            onChange={e => shipsContext.handleChange(e, ship.id)}
           />
         </span>
         <span className="field">
@@ -65,8 +66,8 @@ const ViewEditShipForm = ({ props, edit, handleEdit }) => {
             size={5}
             step={0.01}
             disabled={is_disabled}
-            value={props.ship.length || ""}
-            onChange={e => shipsContext.handleChange(e, props.ship.id)}
+            value={ship.length || ""}
+            onChange={e => shipsContext.handleChange(e, ship.id)}
             onKeyDown={preventNegativeE}
           />
         </span>
@@ -81,8 +82,8 @@ const ViewEditShipForm = ({ props, edit, handleEdit }) => {
             size={4}
             step={0.01}
             disabled={is_disabled}
-            value={props.ship.beam || ""}
-            onChange={e => shipsContext.handleChange(e, props.ship.id)}
+            value={ship.beam || ""}
+            onChange={e => shipsContext.handleChange(e, ship.id)}
             onKeyDown={preventNegativeE}
           />
         </span>
@@ -96,8 +97,8 @@ const ViewEditShipForm = ({ props, edit, handleEdit }) => {
             max={9999}
             size={4}
             disabled={is_disabled}
-            value={props.ship.main_power || ""}
-            onChange={e => shipsContext.handleChange(e, props.ship.id)}
+            value={ship.main_power || ""}
+            onChange={e => shipsContext.handleChange(e, ship.id)}
             onKeyDown={preventNegativeE}
           />
         </span>
@@ -111,8 +112,8 @@ const ViewEditShipForm = ({ props, edit, handleEdit }) => {
             max={9999}
             size={4}
             disabled={is_disabled}
-            value={props.ship.year_built || ""}
-            onChange={e => shipsContext.handleChange(e, props.ship.id)}
+            value={ship.year_built || ""}
+            onChange={e => shipsContext.handleChange(e, ship.id)}
             onKeyDown={preventNegativeE}
           />
         </span>
@@ -126,17 +127,13 @@ const ViewEditShipForm = ({ props, edit, handleEdit }) => {
             className="comment"
             size={500}
             disabled={is_disabled}
-            value={props.ship.comment || ""}
-            onChange={e => shipsContext.handleChange(e, props.ship.id)}
+            value={ship.comment || ""}
+            onChange={e => shipsContext.handleChange(e, ship.id)}
           ></textarea>
         </span>
       </div>
       <div className="form__row">
-        <ShipButtonBar
-          ship_id={props.ship.id}
-          edit={edit}
-          handleEdit={handleEdit}
-        />
+        <ShipButtonBar ship_id={ship.id} edit={edit} setEdit={setEdit} />
       </div>
     </form>
   );

@@ -3,16 +3,16 @@ import UiButtonAdd from "../ui/UiButtonAdd";
 
 /**
  * Component of Ships bar.
- * @param {boolean} add true to show "Add" button.
- * @param {method} handleAdd Method to handle the 'add' parameter.
+ * @param {boolean} adding true to show "adding" button.
+ * @param {method} setAdding Method to handle the 'adding' parameter.
  */
-const ShipsButtonBar = ({ add, handleAdd }) => {
+const ShipsButtonBar = ({ adding, setAdding }) => {
   var ButtonBar = null;
 
-  if (add === false) {
+  if (adding === false) {
     ButtonBar = (
       <div className="survey__cell survey__cell--right buttonsWrapper">
-        <UiButtonAdd handleAdd={handleAdd} text={"Add Ship"} />
+        <UiButtonAdd handleAdd={setAdding} text={"Add Ship"} />
       </div>
     );
   }

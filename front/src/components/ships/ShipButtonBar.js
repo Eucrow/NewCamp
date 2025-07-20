@@ -12,32 +12,32 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
  * @param {boolean} props.edit variable to indicate if the element is edited or not.
  * @param {method} props.handleEdit method to handle de 'edit' boolean variable.
  */
-const ShipButtonBar = props => {
+const ShipButtonBar = ({ ship_id, edit, setEdit, adding }) => {
   const shipsContext = useContext(ShipsContext);
 
   var ButtonBar = "";
 
-  if (props.add === true) {
+  if (adding === true) {
     ButtonBar = (
       <div className="form__cell form__cell--right">
         <UiButtonSave buttonText={"Save Ship"} />
         <UiButtonStatusHandle
           buttonText={"Cancel"}
-          handleMethod={props.handleEdit}
+          handleMethod={setEdit}
           newStatus={false}
         />
       </div>
     );
   }
 
-  if (props.edit === true) {
+  if (edit === true) {
     ButtonBar = (
       <div className="form__cell form__cell--right">
         <div className="buttonsWrapper">
           <UiButtonSave buttonText={"Save Ship"} />
           <UiButtonStatusHandle
             buttonText={"Cancel"}
-            handleMethod={props.handleEdit}
+            handleMethod={setEdit}
             newStatus={false}
           />
         </div>
@@ -45,16 +45,16 @@ const ShipButtonBar = props => {
     );
   }
 
-  if (props.edit === false) {
+  if (edit === false) {
     ButtonBar = (
       <div className="form__cell form__cell--right buttonsWrapper">
         <UiButtonStatusHandle
           buttonText={"Edit Ship"}
-          handleMethod={props.handleEdit}
+          handleMethod={setEdit}
           newStatus={true}
         ></UiButtonStatusHandle>
         <UiButtonDelete
-          id={props.ship_id}
+          id={ship_id}
           deleteMethod={shipsContext.deleteShip}
           buttonText="Delete Ship"
           confirmMessage="Delete the ship?"
