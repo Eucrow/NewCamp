@@ -12,7 +12,7 @@ class Ship(models.Model):
     ], max_length=4, null=True)
     length = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(999)], max_digits=5,
                                  decimal_places=2, null=True)  # in meters
-    beam = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(999)], max_digits=4,
+    beam = models.DecimalField(validators=[MinValueValidator(0), MaxValueValidator(99)], max_digits=4,
                                decimal_places=2, null=True)  # in meters
     main_power = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(9999)], null=True)  # in kW
     year_built = models.IntegerField(validators=[MinValueValidator(1900), MaxValueValidator(9999)], null=True)

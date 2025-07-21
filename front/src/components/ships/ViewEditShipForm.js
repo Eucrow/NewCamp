@@ -15,7 +15,8 @@ import ShipButtonBar from "./ShipButtonBar";
 const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
   const shipsContext = useContext(ShipsContext);
   const is_disabled = editing === true ? false : true;
-  console.log(editing);
+
+  const currentYear = new Date().getFullYear();
 
   const handleSubmit = e => {
     shipsContext.updateShip(e, ship.id);
@@ -49,10 +50,12 @@ const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
             id="datras_id"
             name="datras_id"
             size={4}
-            pattern="^[\w|\d]{2,4}$"
+            maxLength={4}
+            pattern="^\w{2,4}$"
             disabled={is_disabled}
             value={ship.datras_id || ""}
             onChange={e => shipsContext.handleChange(e, ship.id)}
+            title="Only letters and numbers, max 4 characters."
           />
         </span>
         <span className="field">
@@ -62,13 +65,14 @@ const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
             id="length"
             name="length"
             min={0}
-            max={999}
+            max={999.99}
             size={5}
             step={0.01}
             disabled={is_disabled}
             value={ship.length || ""}
             onChange={e => shipsContext.handleChange(e, ship.id)}
             onKeyDown={preventNegativeE}
+            title="Only positive numbers, max 999.99."
           />
         </span>
         <span className="field">
@@ -78,17 +82,18 @@ const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
             id="beam"
             name="beam"
             min={0}
-            max={99}
+            max={99.99}
             size={4}
             step={0.01}
             disabled={is_disabled}
             value={ship.beam || ""}
             onChange={e => shipsContext.handleChange(e, ship.id)}
             onKeyDown={preventNegativeE}
+            title="Only positive numbers, max 99.99."
           />
         </span>
         <span className="field">
-          <label htmlFor="main_power">Main Power (kW):</label>
+          <label htmlFor="main_power">Main power (kW):</label>
           <input
             type="number"
             id="main_power"
@@ -100,6 +105,7 @@ const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
             value={ship.main_power || ""}
             onChange={e => shipsContext.handleChange(e, ship.id)}
             onKeyDown={preventNegativeE}
+            title="Only positive numbers, max 9999."
           />
         </span>
         <span className="field">
@@ -115,6 +121,7 @@ const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
             value={ship.year_built || ""}
             onChange={e => shipsContext.handleChange(e, ship.id)}
             onKeyDown={preventNegativeE}
+            title={`Only positive numbers, from 1900 to ${currentYear}.`}
           />
         </span>
       </div>

@@ -6,7 +6,7 @@ import ViewEditShipForm from "./ViewEditShipForm";
  * Ship component. Manage component logic.
  * @param {object} props ship object
  */
-const Ship = ({ key, ship, inSurveys }) => {
+const Ship = ({ ship, inSurveys }) => {
   const [editing, setEditing] = useState(false);
 
   return (

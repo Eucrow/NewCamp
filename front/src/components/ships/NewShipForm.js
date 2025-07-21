@@ -38,6 +38,8 @@ class NewShipForm extends Component {
   }
 
   renderContent() {
+    const currentYear = new Date().getFullYear();
+
     const content = (
       <form
         className="wrapper"
@@ -69,8 +71,10 @@ class NewShipForm extends Component {
               id="datras_id"
               name="datras_id"
               size={4}
-              pattern="^[\w|\d]{2,4}$"
+              maxLength={4}
+              pattern="^\w{2,4}$"
               onChange={this.handleChange}
+              title="Only letters and numbers, max 4 characters."
             />
           </span>
           <span className="field">
@@ -80,11 +84,12 @@ class NewShipForm extends Component {
               id="length"
               name="length"
               min={0}
-              max={999}
+              max={999.99}
               size={5}
               step={0.01}
               onChange={this.handleChange}
               onKeyDown={preventNegativeE}
+              title="Only positive numbers, max 999.99."
             />
           </span>
           <span className="field">
@@ -94,15 +99,16 @@ class NewShipForm extends Component {
               id="beam"
               name="beam"
               min={0}
-              max={99}
+              max={99.99}
               size={4}
               step={0.01}
               onChange={this.handleChange}
               onKeyDown={preventNegativeE}
+              title="Only positive numbers, max 99.99."
             />
           </span>
           <span className="field">
-            <label htmlFor="main_power">Main Power (kW):</label>
+            <label htmlFor="main_power">Main power (kW):</label>
             <input
               type="number"
               id="main_power"
@@ -112,6 +118,7 @@ class NewShipForm extends Component {
               size={4}
               onChange={this.handleChange}
               onKeyDown={preventNegativeE}
+              title="Only positive numbers, max 9999."
             />
           </span>
           <span className="field">
@@ -121,10 +128,11 @@ class NewShipForm extends Component {
               id="year_built"
               name="year_built"
               min={1900}
-              max={9999}
+              max={currentYear}
               size={4}
               onChange={this.handleChange}
               onKeyDown={preventNegativeE}
+              title={`Only positive numbers, from 1900 to ${currentYear}.`}
             />
           </span>
         </div>
