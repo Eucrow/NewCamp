@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useContext } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
@@ -9,43 +9,33 @@ import ShipButtonBar from "./ShipButtonBar";
 /**
  * Ship component
  */
-class NewShipForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      ship: [],
-    };
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  static contextType = ShipsContext;
+const NewShipForm = () => {
+  const [ship, setShip] = useState({});
+  const context = useContext(ShipsContext);
 
   /**
    * Manage fields change in 'ship' state.
    * @param {event} e - Event.
    */
-  handleChange(e) {
+  const handleChange = e => {
     const name = e.target.name;
     const value = e.target.value;
 
-    this.setState({
-      ship: {
-        ...this.state.ship,
-        [name]: value,
-      },
+    setShip({
+      ...ship,
+      [name]: value,
     });
-  }
+  };
 
-  renderContent() {
+  const renderContent = () => {
     const currentYear = new Date().getFullYear();
 
     const content = (
       <form
         className="wrapper"
         onSubmit={e => {
-          this.context.createShip(e, this.state.ship);
-          this.context.setAdding(false);
+          context.createShip(e, ship);
+          context.setAdding(false);
         }}
       >
         <div className="form__row">
@@ -59,7 +49,7 @@ class NewShipForm extends Component {
               required
               size={30}
               autoFocus
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
           </span>
         </div>
@@ -73,7 +63,7 @@ class NewShipForm extends Component {
               size={4}
               maxLength={4}
               pattern="^\w{2,4}$"
-              onChange={this.handleChange}
+              onChange={handleChange}
               title="Only letters and numbers, max 4 characters."
             />
           </span>
@@ -87,7 +77,7 @@ class NewShipForm extends Component {
               max={999.99}
               size={5}
               step={0.01}
-              onChange={this.handleChange}
+              onChange={handleChange}
               onKeyDown={preventNegativeE}
               title="Only positive numbers, max 999.99."
             />
@@ -102,7 +92,7 @@ class NewShipForm extends Component {
               max={99.99}
               size={4}
               step={0.01}
-              onChange={this.handleChange}
+              onChange={handleChange}
               onKeyDown={preventNegativeE}
               title="Only positive numbers, max 99.99."
             />
@@ -116,7 +106,7 @@ class NewShipForm extends Component {
               min={0}
               max={9999}
               size={4}
-              onChange={this.handleChange}
+              onChange={handleChange}
               onKeyDown={preventNegativeE}
               title="Only positive numbers, max 9999."
             />
@@ -130,7 +120,7 @@ class NewShipForm extends Component {
               min={1900}
               max={currentYear}
               size={4}
-              onChange={this.handleChange}
+              onChange={handleChange}
               onKeyDown={preventNegativeE}
               title={`Only positive numbers, from 1900 to ${currentYear}.`}
             />
@@ -144,7 +134,7 @@ class NewShipForm extends Component {
               name="comment"
               className="comment"
               size={500}
-              onChange={this.handleChange}
+              onChange={handleChange}
             ></textarea>
           </span>
         </div>
@@ -157,11 +147,9 @@ class NewShipForm extends Component {
     );
 
     return content;
-  }
+  };
 
-  render() {
-    return this.renderContent();
-  }
-}
+  return renderContent();
+};
 
 export default NewShipForm;

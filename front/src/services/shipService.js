@@ -9,7 +9,7 @@ const shipService = {
     }
 
     if (!response.ok) {
-      throw new Error("Failed to fetch surveys");
+      throw new Error("Failed to fetch ships");
     }
 
     return response.json();
@@ -79,7 +79,7 @@ const shipService = {
     }
 
     if (!response.ok) {
-      throw new Error("Failed to fetch the ships in surverys");
+      throw new Error("Failed to fetch the ships in surveys");
     }
 
     return response.json();
