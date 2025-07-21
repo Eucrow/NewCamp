@@ -14,16 +14,17 @@ import ShipButtonBar from "./ShipButtonBar";
  */
 const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
   const shipsContext = useContext(ShipsContext);
-  const is_disabled = editing === true ? false : true;
+  const is_disabled = !editing;
 
   const currentYear = new Date().getFullYear();
 
   const handleSubmit = e => {
-    shipsContext.updateShip(e, ship.id);
+    e.preventDefault(); // Prevent default form submission
+    shipsContext.updateShip(ship.id);
     setEditing(false);
   };
 
-  const content = (
+  return (
     <form className="wrapper" onSubmit={handleSubmit}>
       <div className="form__row">
         <span className="field">
@@ -115,7 +116,7 @@ const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
             id="year_built"
             name="year_built"
             min={1900}
-            max={9999}
+            max={currentYear}
             size={4}
             disabled={is_disabled}
             value={ship.year_built || ""}
@@ -149,8 +150,6 @@ const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
       </div>
     </form>
   );
-
-  return content;
 };
 
 export default ViewEditShipForm;

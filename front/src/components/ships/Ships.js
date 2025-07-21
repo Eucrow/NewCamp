@@ -60,24 +60,6 @@ const Ships = () => {
     setAdding(false); // Close the form after creating
   };
 
-  /**
-   * Update ship from database and state.
-   * @param {event} e - Event.
-   * @param {numeric} ship_id - Ship identificator of ship to update.
-   */
-  const handleUpdateShip = async (e, ship_id) => {
-    e.preventDefault();
-    await updateShip(ship_id);
-  };
-
-  /**
-   * Delete ship from database and state.
-   * @param {numeric} ship_id Ship identificator of ship to delete.
-   */
-  const handleDeleteShip = async ship_id => {
-    await deleteShip(ship_id);
-  };
-
   useEffect(() => {
     getShips();
     fetchShipsInSurveys();
@@ -89,8 +71,8 @@ const Ships = () => {
         handleChange: handleChange,
         setAdding: setAdding,
         createShip: handleCreateShip,
-        updateShip: handleUpdateShip,
-        deleteShip: handleDeleteShip,
+        updateShip: updateShip,
+        deleteShip: deleteShip,
       }}
     >
       <main>
