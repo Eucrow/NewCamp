@@ -9,15 +9,28 @@ import NewShipForm from "./NewShipForm";
 import Ship from "./Ship";
 
 /**
- * Component list of ships.
- * List of all the ships stored in database.
+ * Ships component - Main container for ship management functionality.
+ *
+ * This component serves as the primary interface for managing ships in the system.
+ * It provides a complete CRUD interface that allows users to view, create, edit, and delete ships.
+ * The component displays all ships in a list format and includes a form for adding new ships.
+ * It also checks which ships are currently in use by surveys to prevent deletion of active ships.
+ *
+ * Features:
+ * - Displays all ships stored in the database
+ * - Toggle form for adding new ships
+ * - Real-time field editing for ship properties
+ * - Integration with surveys to show ship usage status
+ * - Context-based state management for child components
+ *
+ * @component
+ * @returns {JSX.Element} The complete ships management interface
  */
 const Ships = () => {
   const [adding, setAdding] = useState(false); // true to adding new ship; false to not to.
 
   const {
     ships,
-    shipsBackup,
     setShips,
     getShips,
     shipsInSurveys,
@@ -29,9 +42,12 @@ const Ships = () => {
   } = useShipsCrud();
 
   /**
-   * Manage change in fields
-   * @param {event} e - Event.
-   * @param {numeric} ship_id - Identification number of the ship which fields are managed.
+   * Handles input field changes for ship data.
+   * Updates the ship properties in real-time as user types.
+   *
+   * @function handleChange
+   * @param {Event} e - The input change event
+   * @param {number} ship_id - ID of the ship being modified
    */
   const handleChange = (e, ship_id) => {
     const name = e.target.name;
@@ -52,9 +68,12 @@ const Ships = () => {
   };
 
   /**
-   * Create ship in database and update the state.
-   * @param {event} e - Event
-   * @param {object} ship - Ship object to create.
+   * Creates a new ship in the database.
+   * Waits for the API call to complete before closing the form.
+   *
+   * @function handleCreateShip
+   * @param {Event} e - The form submit event
+   * @param {Object} ship - Ship data object to create
    */
   const handleCreateShip = async (e, ship) => {
     e.preventDefault();
@@ -71,10 +90,8 @@ const Ships = () => {
     <ShipsContext.Provider
       value={{
         ships: ships,
-        shipsBackup: shipsBackup,
         setAdding: setAdding,
         handleChange: handleChange,
-        setAdding: setAdding,
         createShip: handleCreateShip,
         updateShip: updateShip,
         deleteShip: deleteShip,

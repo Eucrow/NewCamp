@@ -10,10 +10,26 @@ import ShipButtonBar from "./ShipButtonBar";
 import FloatingError from "../ui/FloatingError";
 
 /**
- * ViewEditShipForm component
- * @param {object} props ship object.
- * @param {boolean} editing true if the element is available to editing.
- * @param {method} setEditing method to change the editing variable in state.
+ * ViewEditShipForm component - Dual-mode form for viewing and editing ships.
+ *
+ * This component provides a comprehensive interface that can switch between view and edit modes
+ * for individual ship records. In view mode, it displays ship information as read-only fields.
+ * In edit mode, it allows full modification of ship properties with validation.
+ * The component integrates with the ships context and validation system to ensure data integrity.
+ *
+ * Features:
+ * - Toggle between view and edit modes
+ * - Complete ship data display and editing
+ * - Real-time validation during editing
+ * - Action buttons (edit, save, cancel, delete)
+ * - Protection against editing ships that are in use by surveys
+ *
+ * @component
+ * @param {Object} ship - Ship object containing all ship data
+ * @param {boolean} editing - Whether the form is in edit mode
+ * @param {Function} setEditing - Function to toggle edit mode
+ * @param {boolean} inSurveys - Whether this ship is currently used in surveys
+ * @returns {JSX.Element} The view/edit ship form
  */
 const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
   const shipsContext = useContext(ShipsContext);
@@ -26,6 +42,12 @@ const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
   const { isFormValid, validationErrors, existsShip } =
     useShipsValidation(ship);
 
+  /**
+   * Handles form submission and updates the ship.
+   *
+   * @function handleSubmit
+   * @param {Event} e - The form submit event
+   */
   const handleSubmit = e => {
     e.preventDefault(); // Prevent default form submission
     shipsContext.updateShip(ship.id);

@@ -7,17 +7,34 @@ import UiButtonDelete from "../ui/UiButtonDelete";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
 /**
- * Button bar of ship component.
- * @param {object} props.ship ship object.
- * @param {boolean} props.editing variable to indicate if the element is edited or not.
- * @param {method} props.handleEdit method to handle de 'editing' boolean variable.
+ * ShipButtonBar component - Context-aware button bar for ship actions.
+ *
+ * This component provides different sets of action buttons based on the current mode
+ * (adding new ship, editing existing ship, or viewing ship). It integrates with the
+ * ships context to perform actions and manages button states based on form validation
+ * and business rules (e.g., preventing deletion of ships in use by surveys).
+ *
+ * Features:
+ * - Save/Cancel buttons for new ship creation
+ * - Save/Cancel buttons for ship editing
+ * - Edit/Delete buttons for ship viewing
+ * - Conditional button states based on validation
+ * - Protection against deleting ships in use
+ *
+ * @component
+ * @param {number} ship_id - ID of the ship being managed
+ * @param {boolean} editing - Whether the ship is in edit mode
+ * @param {Function} setEditing - Function to toggle edit mode
+ * @param {boolean} adding - Whether in new ship creation mode
+ * @param {boolean} inSurveys - Whether ship is used in surveys
+ * @param {boolean} isFormValid - Whether the current form data is valid
+ * @returns {JSX.Element} The appropriate button bar for current mode
  */
 const ShipButtonBar = ({
   ship_id,
   editing,
   setEditing,
   adding,
-  setAdding,
   inSurveys,
   isFormValid,
 }) => {

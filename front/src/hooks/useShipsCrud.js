@@ -10,17 +10,19 @@ import shipService from "../services/shipService";
  *
  * @returns {Object} Hook object containing:
  * - ships: Array of all ships
- * - shipsBackup: Backup array of ships for restoration
  * - getShips: Function to fetch all ships
  * - setShips: Function to manually update ships state
+ * - shipsInSurveys: Array of ships that are currently in surveys
+ * - fetchShipsInSurveys: Function to fetch ships that are in surveys
  * - createShip: Function to create a new ship
  * - updateShip: Function to update an existing ship
  * - deleteShip: Function to delete a ship
+ * - restoreShipsState: Function to restore ships to backup state
  */
 export const useShipsCrud = () => {
   const [ships, setShips] = useState([]);
   const [shipsBackup, setShipsBackup] = useState([]);
-  const [shipsInSurveys, setShipInSurveys] = useState([]);
+  const [shipsInSurveys, setShipsInSurveys] = useState([]);
 
   /**
    * Fetches all ships from the database and updates both ships and shipsBackup state.
@@ -42,7 +44,6 @@ export const useShipsCrud = () => {
 
   /**
    * Creates a new ship in the database and updates the local state.
-   * Cleans empty values from the ship object before sending to API.
    *
    * @function createShip
    * @param {Object} ship - Ship object to create with all necessary properties
@@ -62,7 +63,6 @@ export const useShipsCrud = () => {
 
   /**
    * Updates an existing ship in the database and local state.
-   * Finds the ship by ID from the current ships state and sends it to the API.
    *
    * @function updateShip
    * @param {number} shipId - Unique identifier of the ship to update
@@ -119,17 +119,31 @@ export const useShipsCrud = () => {
     }
   }, []);
 
+  /**
+   * Fetches ships that are currently in surveys from the database.
+   *
+   * @function fetchShipsInSurveys
+   * @returns {Promise<void>} Promise that resolves when ships in surveys are fetched
+   * @throws {Error} Shows alert with error message if fetch fails
+   */
   const fetchShipsInSurveys = useCallback(async () => {
     try {
       const response = await shipService.getShipsInSurvey();
 
-      setShipInSurveys(response);
+      setShipsInSurveys(response);
     } catch (error) {
       alert(`Error fetching ships in surveys: ${error.message}`);
       console.error(error);
     }
   }, []);
 
+  /**
+   * Restores the ships state to the backup version.
+   * Used to revert any unsaved changes made to ships.
+   *
+   * @function restoreShipsState
+   * @returns {void} No return value, updates ships state with backup data
+   */
   const restoreShipsState = () => {
     setShips(shipsBackup);
   };
@@ -138,7 +152,6 @@ export const useShipsCrud = () => {
     ships,
     getShips,
     setShips,
-    shipsBackup,
     shipsInSurveys,
     fetchShipsInSurveys,
     createShip,

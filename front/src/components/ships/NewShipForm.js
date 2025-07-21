@@ -10,7 +10,22 @@ import { preventNegativeE } from "../../utils/dataUtils";
 import ShipButtonBar from "./ShipButtonBar";
 
 /**
- * Ship component
+ * NewShipForm component - Form for creating new ships.
+ *
+ * This component provides a comprehensive form interface for adding new ships to the system.
+ * It includes all necessary fields for ship data entry and integrates with the ships validation system
+ * to ensure data integrity. The form features real-time validation feedback and prevents submission
+ * of invalid or duplicate ship data.
+ *
+ * Features:
+ * - Complete form with all ship fields (name, DATRAS code, length, year built, comment)
+ * - Real-time validation with visual feedback
+ * - Duplicate ship name detection
+ * - Input constraints and formatting
+ * - Cancel and submit functionality
+ *
+ * @component
+ * @returns {JSX.Element} The new ship creation form
  */
 const NewShipForm = () => {
   const [ship, setShip] = useState({});
@@ -22,8 +37,10 @@ const NewShipForm = () => {
     useShipsValidation(ship);
 
   /**
-   * Manage fields change in 'ship' state.
-   * @param {event} e - Event.
+   * Handles input field changes and updates ship state.
+   *
+   * @function handleChange
+   * @param {Event} e - The input change event
    */
   const handleChange = e => {
     const name = e.target.name;

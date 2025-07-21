@@ -2,7 +2,23 @@ import { useState, useEffect, useCallback, useContext } from "react";
 import ShipsContext from "../contexts/ShipsContext";
 
 /**
- * Custom hook for handling form validation for ships.
+ * useShipsValidation - Custom hook for ships form validation.
+ *
+ * This hook provides comprehensive validation functionality for ship forms,
+ * including both new ship creation and existing ship editing. It validates
+ * required fields, checks for duplicate ship names, and provides real-time
+ * validation feedback with appropriate error messages.
+ *
+ * Features:
+ * - Required field validation (ship name)
+ * - Duplicate ship name detection
+ * - Real-time validation state updates
+ * - Comprehensive error messaging
+ * - Integration with ships context for data access
+ *
+ * @hook
+ * @param {Object} newShip - The ship object being validated
+ * @returns {Object} Validation state containing isFormValid, validationErrors, existsShip
  */
 export const useShipsValidation = newShip => {
   // State to hold all validation-related values
@@ -18,9 +34,9 @@ export const useShipsValidation = newShip => {
   const shipsContext = useContext(ShipsContext);
 
   /**
-   * Validates that all required fields are filled.
-   * Checks group, species, category and weight.
+   * Validates required fields are populated.
    *
+   * @function validateRequiredFields
    * @returns {boolean} Whether all required fields are valid
    */
   const validateRequiredFields = useCallback(() => {
@@ -41,8 +57,10 @@ export const useShipsValidation = newShip => {
   }, [newShip.name]);
 
   /**
-   * Validate if ship already exists.
-   * @returns {boolean} Whether the ship already exists.
+   * Validates if a ship with the same name already exists.
+   *
+   * @function validateShipExists
+   * @returns {boolean} Whether the ship already exists
    */
   const validateShipExists = useCallback(() => {
     const filteredShips = shipsContext.ships.filter(
