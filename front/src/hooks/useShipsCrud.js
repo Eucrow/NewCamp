@@ -130,6 +130,10 @@ export const useShipsCrud = () => {
     }
   }, []);
 
+  const restoreShipsState = () => {
+    setShips(shipsBackup);
+  };
+
   return {
     ships,
     getShips,
@@ -140,5 +144,6 @@ export const useShipsCrud = () => {
     createShip,
     updateShip,
     deleteShip,
+    restoreShipsState,
   };
 };

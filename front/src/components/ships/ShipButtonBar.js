@@ -17,6 +17,7 @@ const ShipButtonBar = ({
   editing,
   setEditing,
   adding,
+  setAdding,
   inSurveys,
   isFormValid,
 }) => {
@@ -28,11 +29,16 @@ const ShipButtonBar = ({
     ButtonBar = (
       <div className="form__cell form__cell--right">
         <UiButtonSave buttonText={"Save Ship"} disabled={!isFormValid} />
-        <UiButtonStatusHandle
-          buttonText={"Cancel"}
-          handleMethod={setEditing}
-          newStatus={false}
-        />
+        <button
+          className="buttonsWrapper__button"
+          type="button"
+          onClick={e => {
+            e.preventDefault();
+            shipsContext.setAdding(false);
+          }}
+        >
+          Cancel
+        </button>
       </div>
     );
   }
@@ -42,11 +48,18 @@ const ShipButtonBar = ({
       <div className="form__cell form__cell--right">
         <div className="buttonsWrapper">
           <UiButtonSave buttonText={"Save Ship"} disabled={!isFormValid} />
-          <UiButtonStatusHandle
-            buttonText={"Cancel"}
-            handleMethod={setEditing}
-            newStatus={false}
-          />
+
+          <button
+            className="buttonsWrapper__button"
+            type="button"
+            onClick={e => {
+              e.preventDefault();
+              setEditing(false);
+              shipsContext.restoreShipsState();
+            }}
+          >
+            Cancel
+          </button>
         </div>
       </div>
     );

@@ -17,6 +17,7 @@ const Ships = () => {
 
   const {
     ships,
+    shipsBackup,
     setShips,
     getShips,
     shipsInSurveys,
@@ -24,6 +25,7 @@ const Ships = () => {
     createShip,
     updateShip,
     deleteShip,
+    restoreShipsState,
   } = useShipsCrud();
 
   /**
@@ -69,11 +71,14 @@ const Ships = () => {
     <ShipsContext.Provider
       value={{
         ships: ships,
+        shipsBackup: shipsBackup,
+        setAdding: setAdding,
         handleChange: handleChange,
         setAdding: setAdding,
         createShip: handleCreateShip,
         updateShip: updateShip,
         deleteShip: deleteShip,
+        restoreShipsState: restoreShipsState,
       }}
     >
       <main>
