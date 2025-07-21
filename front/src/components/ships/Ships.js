@@ -68,6 +68,7 @@ const Ships = () => {
   return (
     <ShipsContext.Provider
       value={{
+        ships: ships,
         handleChange: handleChange,
         setAdding: setAdding,
         createShip: handleCreateShip,
@@ -79,7 +80,7 @@ const Ships = () => {
         <header>
           <h1 className="title">Ships</h1>
         </header>
-        <div className="wrapper surveysWrapper">
+        <div className="wrapper shipsWrapper">
           <ShipsButtonBar adding={adding} setAdding={setAdding} />
 
           {adding === true ? <NewShipForm /> : ""}

@@ -1,10 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 
 import ShipsContext from "../../contexts/ShipsContext";
+
+import { useShipsValidation } from "../../hooks/useShipsValidation";
 
 import { preventNegativeE } from "../../utils/dataUtils";
 
 import ShipButtonBar from "./ShipButtonBar";
+import FloatingError from "../ui/FloatingError";
 
 /**
  * ViewEditShipForm component
@@ -17,6 +20,11 @@ const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
   const is_disabled = !editing;
 
   const currentYear = new Date().getFullYear();
+
+  const nameRef = useRef(null);
+
+  const { isFormValid, validationErrors, existsShip } =
+    useShipsValidation(ship);
 
   const handleSubmit = e => {
     e.preventDefault(); // Prevent default form submission
@@ -33,15 +41,23 @@ const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
             type="text"
             id="name"
             name="name"
-            className="survey_description"
+            className={existsShip ? "ship__name invalid" : "ship__name"}
             required
             size={30}
             autoFocus
+            ref={nameRef}
             disabled={is_disabled}
             value={ship.name || ""}
             onChange={e => shipsContext.handleChange(e, ship.id)}
           />
         </span>
+        {editing && (
+          <FloatingError
+            message={validationErrors.existsShip}
+            show={existsShip}
+            inputRef={nameRef}
+          />
+        )}
       </div>
       <div className="form__row">
         <span className="field">
@@ -146,6 +162,7 @@ const ViewEditShipForm = ({ ship, editing, setEditing, inSurveys }) => {
           editing={editing}
           setEditing={setEditing}
           inSurveys={inSurveys}
+          isFormValid={isFormValid}
         />
       </div>
     </form>

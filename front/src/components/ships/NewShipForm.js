@@ -1,4 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
+
+import { useShipsValidation } from "../../hooks/useShipsValidation";
+import FloatingError from "../ui/FloatingError";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
@@ -12,6 +15,11 @@ import ShipButtonBar from "./ShipButtonBar";
 const NewShipForm = () => {
   const [ship, setShip] = useState({});
   const context = useContext(ShipsContext);
+
+  const nameRef = useRef(null);
+
+  const { isFormValid, validationErrors, existsShip } =
+    useShipsValidation(ship);
 
   /**
    * Manage fields change in 'ship' state.
@@ -45,13 +53,19 @@ const NewShipForm = () => {
               type="text"
               id="name"
               name="name"
-              className="survey_description"
+              className={existsShip ? "ship__name invalid" : "ship__name"}
+              ref={nameRef}
               required
               size={30}
               autoFocus
               onChange={handleChange}
             />
           </span>
+          <FloatingError
+            message={validationErrors.existsShip}
+            show={existsShip}
+            inputRef={nameRef}
+          />
         </div>
         <div className="form__row">
           <span className="field">
@@ -140,7 +154,7 @@ const NewShipForm = () => {
         </div>
         <div className="form__row">
           <div className="survey__cell survey__cell--right buttonsWrapper">
-            <ShipButtonBar adding={true} />
+            <ShipButtonBar adding={true} isFormValid={isFormValid} />
           </div>
         </div>
       </form>

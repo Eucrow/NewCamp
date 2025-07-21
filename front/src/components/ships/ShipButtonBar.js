@@ -12,7 +12,14 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
  * @param {boolean} props.editing variable to indicate if the element is edited or not.
  * @param {method} props.handleEdit method to handle de 'editing' boolean variable.
  */
-const ShipButtonBar = ({ ship_id, editing, setEditing, adding, inSurveys }) => {
+const ShipButtonBar = ({
+  ship_id,
+  editing,
+  setEditing,
+  adding,
+  inSurveys,
+  isFormValid,
+}) => {
   const shipsContext = useContext(ShipsContext);
 
   var ButtonBar = "";
@@ -20,7 +27,7 @@ const ShipButtonBar = ({ ship_id, editing, setEditing, adding, inSurveys }) => {
   if (adding === true) {
     ButtonBar = (
       <div className="form__cell form__cell--right">
-        <UiButtonSave buttonText={"Save Ship"} />
+        <UiButtonSave buttonText={"Save Ship"} disabled={!isFormValid} />
         <UiButtonStatusHandle
           buttonText={"Cancel"}
           handleMethod={setEditing}
@@ -34,7 +41,7 @@ const ShipButtonBar = ({ ship_id, editing, setEditing, adding, inSurveys }) => {
     ButtonBar = (
       <div className="form__cell form__cell--right">
         <div className="buttonsWrapper">
-          <UiButtonSave buttonText={"Save Ship"} />
+          <UiButtonSave buttonText={"Save Ship"} disabled={!isFormValid} />
           <UiButtonStatusHandle
             buttonText={"Cancel"}
             handleMethod={setEditing}
