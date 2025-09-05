@@ -29,6 +29,7 @@ from surveys.models import Survey
 from samplers.models import Sampler
 from samples.models import Length, SampledWeight, Sex
 from hauls.utils import get_survey_name, get_sampler_object_and_create
+from ships.models import Ship
 
 
 def get_type_survey(filename):
@@ -248,6 +249,16 @@ def get_unit_name(unit, increment):
         return "cm"
 
 
+def get_ship(datras_id):
+    """
+    Get the ship object by its datras_id.
+    :param datras_id: The datras_id of the ship.
+    :return: The ship object.
+    """
+    ship = Ship.objects.get(datras_id=datras_id)
+    return ship
+
+
 class FaunasImport:
 
     def __init__(self, request):
@@ -261,7 +272,7 @@ class FaunasImport:
 
     def get_file(self, file_key):
         """
-        Get file from request in pandas dataframe format
+        Get a file from request in pandas dataframe format
         :param file_key: Key of the request to get
         :return: Pandas dataframe with the content of the file
         """
@@ -271,9 +282,9 @@ class FaunasImport:
     def format_catch_table(self, file):
         catches_table = file
 
-        # The catches table is filled firstly in the import of NTALL file. In this importation only the
+        # The catches table is filled first in the import of NTALL file. In this importation only the
         # species measured has been saved. With the FAUNA file, only species which hasn't been
-        # measured must be stored because is used to_sql from pandas library.
+        # measured must be stored because it is used to_sql from pandas library.
 
         def anti_join(x, y, on):
             """Return rows in x which are not present in y"""
@@ -281,7 +292,7 @@ class FaunasImport:
             ans = ans.loc[ans._merge == 'left_only', :]
             return ans
 
-        # previously saved in catches table:
+        # previously saved in the catches table:
         in_catches = Catch.objects.filter(haul__station__survey=self.survey_object).values()
         in_catches = pd.DataFrame(list(in_catches))
         in_catches = in_catches[['sp_id', 'category', 'haul_id']].drop_duplicates()
@@ -292,19 +303,21 @@ class FaunasImport:
         #     return cat_id
 
         # catches_table['category_id'] = catches_table.apply(get_cat_1_id, axis=1)
-        # The category must be always 1 because only the measured species can have more than
-        # one category, an those one are stored previously, when FAUNA file is imported.
+        # The category must always be 1 because only the measured species can have more than
+        # one category, and that one is stored previously, when FAUNA file is imported.
         catches_table['category'] = 1
         catches_table['sp_id'] = catches_table.apply(get_sp_id, axis=1)
         catches_table['haul_id'] = catches_table.apply(get_haul_id, axis=1, args=[self.survey_name])
         catches_table['weight'] = catches_table['PESO_GR']
+        catches_table['not_measured_individuals'] = catches_table['NUMERO']
 
-        catches_table = catches_table[['haul_id', 'sp_id', 'category', 'weight']]
+        catches_table = catches_table[['haul_id', 'sp_id', 'category', 'weight', 'not_measured_individuals']]
 
-        # catches to save = all catches in faunas file - previously saved in catches table
+        # catches to save = all catches in fauna file - previously saved in catches table
         catches_to_save_table = anti_join(catches_table, in_catches, ['sp_id', 'category', 'haul_id'])
 
-        catches_to_save_table = catches_to_save_table[['sp_id', 'category', 'haul_id', 'weight']]
+        catches_to_save_table = catches_to_save_table[
+            ['sp_id', 'category', 'haul_id', 'weight', 'not_measured_individuals']]
 
         return catches_to_save_table
 
@@ -345,7 +358,7 @@ class SpeciesImport:
             "APHIA": "APHIA",
         }
 
-    fill_measurement_type()
+    # fill_measurement_type()
 
     def get_file(self, file_key):
         """
@@ -394,6 +407,8 @@ class SpeciesImport:
         :return: HttpResponse
         """
 
+        fill_measurement_type()
+
         species_file = self.get_file("species")
 
         # Create your engine.
@@ -426,8 +441,10 @@ class SurveysImport:
         """
         file_object = self.request.FILES['camp']
         file_object.seek(0)
-        survey_file = csv.DictReader(io.StringIO(file_object.read().decode('utf-8')), delimiter=';')
-
+        # utf 8 without BOM
+        # survey_file = csv.DictReader(io.StringIO(file_object.read().decode('utf-8')), delimiter=';')
+        # utf 8 with BOM
+        survey_file = csv.DictReader(io.StringIO(file_object.read().decode('utf-8-sig')), delimiter=';')
         stratification_name = get_type_survey(file_object.name) + "-sector-profundidad"
 
         stratification_id = Stratification.objects.get(stratification=stratification_name).id
@@ -450,7 +467,7 @@ class SurveysImport:
             tmp.width_y = row['CUY']
             tmp.origin_x = convert_comma_to_dot(row['OCUX'])
             tmp.origin_y = convert_comma_to_dot(row['OCUY'])
-            tmp.ship = row['BARCO']
+            tmp.ship = get_ship(row['BARCO'])
             tmp.hauls_duration = row['DURLAN']
             # tmp.area_sampled = row['AREBAR']
             # tmp.unit_sample = row['UNISUP']
@@ -480,8 +497,10 @@ def create_stratification(stratification_name):
     message = []
     if not Stratification.objects.filter(stratification=stratification_name).exists():
         stratification_object = Stratification.objects.create(
+            # stratification=stratification_name,
+            # comment="In Demersales surveys, the stratification is a combination of geographic sector and depth."
             stratification=stratification_name,
-            comment="In Demersales surveys, the stratification is a combination of geographic sector and depth."
+            description="In Demersales surveys, the stratification is a combination of geographic sector and depth."
         )
         message.append("<p>The stratification " + stratification_name + " has been created.</p>")
     else:
@@ -604,7 +623,7 @@ class HaulsImport:
             "otter_boards_distance": "DISTA_P",
             "horizontal_aperture": "ABERT_H",
             "vertical_aperture": "ABERT_V",
-            "grid": "CUADRICULA",
+            # "grid": "CUADRICULA",
             "track": "RECORRIDO",
             "comment": "OBSERV",
         }
@@ -699,13 +718,19 @@ class HaulsImport:
 
         hauls_table.loc[:, 'sampler_type'] = "trawl"
 
+        validez = hauls_table['VALIDEZ'].apply(lambda x: True if x == 1 or x == 2 else False)
+        hauls_table.loc[:, 'valid'] = validez
+
+        special = hauls_table['VALIDEZ'].apply(lambda x: True if x == 2 else False)
+        hauls_table.loc[:, 'special'] = special
+
         fields = list(self.fields_haul.values())
-        fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type'])
+        fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type', 'valid', 'special'])
 
         hauls_table = file[fields]
 
         new_fields = list(self.fields_haul.keys())
-        new_fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type'])
+        new_fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type', 'valid', 'special'])
 
         hauls_table.columns = new_fields
 
@@ -742,7 +767,13 @@ class HaulsImport:
 
         def convert_wind_velocity(row):
             if not pd.isna(row['wind_velocity']):
-                return float(row['wind_velocity'].replace(',', '.'))
+                # Check if it's a string before using replace
+                if isinstance(row['wind_velocity'], str):
+                    return float(row['wind_velocity'].replace(',', '.'))
+                else:
+                    # If it's already a float, return it as is
+                    return float(row['wind_velocity'])
+            return None
 
         meteo_table["wind_velocity"] = meteo_table.apply(convert_wind_velocity, axis=1)
 
@@ -770,13 +801,11 @@ class HaulsImport:
         trawl_table['hauling_date_time'] = pd.to_datetime(trawl_table['hauling_date_time'], format='%d/%m/%Y %H.%M')
 
         def convert_velocity(row):
-            try:
+            if isinstance(row['VELOCIDAD'], str):
                 return float(row['VELOCIDAD'].replace(',', '.'))
-            except ValueError:
-                return ""
-
-            # if not pd.isna(row['wind_velocity']):
-            #     return float(row['wind_velocity'].replace(',', '.'))
+            else:
+                # If it's already a float, return it as is
+                return float(row['VELOCIDAD'])
 
         trawl_table["velocity"] = trawl_table.apply(convert_velocity, axis=1)
 
@@ -1242,7 +1271,7 @@ class OldCampImport:
         self.request = request
 
     def import_complete(self):
-        all_species = Sp.objects.all()
+        # all_species = Sp.objects.all()
 
         stratification_name = get_type_survey(self.request.FILES['camp'].name) + "-sector-profundidad"
 
@@ -1260,9 +1289,9 @@ class OldCampImport:
         ntall = NtallImport(self.request)
         ntall_import = ntall.import_ntall_csv()
 
-        # The catches table is filled firstly in the import of NTALL file. In this importation only the
-        # species measured has been saved. With the FAUNA file, only of species which hasn't been
-        # measured must be stored because is used to_sql from pandas library.
+        # The catches table is filled first in the import of NTALL file. In this importation only the
+        # species measured has been saved. With the FAUNA file, only of species which haven't been
+        # measured must be stored because it is used to_sql from pandas library.
         faunas = FaunasImport(self.request)
         faunas_import = faunas.import_faunas_csv()
 
