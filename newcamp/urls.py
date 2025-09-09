@@ -29,7 +29,8 @@ from gears.api import GearTrawlsAPI, GearTrawlsBasicAPI, GearTrawlAPI, GearTrawl
 from species.api import SpAPI, SpeciesGroupAPI, SpeciesAPI, MeasurementTypeAPI, MeasurementTypeListCreateAPI
 from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
 from surveys.views import SurveyDetailView
-from surveys.api import SurveysImportAPI, SurveyDetailCsvAPI, SurveysListCsvAPI, SurveyAPI, SurveysAPI, SurveysWithStationsAPI
+from surveys.api import SurveysImportAPI, SurveyDetailCsvAPI, SurveysListCsvAPI, SurveyAPI, SurveysAPI, \
+    SurveysWithStationsAPI
 from stratifications.api import StratificationViewSet, check_stratification_in_survey
 from strata.api import StrataAPI, StratumAPI, check_stratum_in_haul
 from samplers.api import SamplersAPI
@@ -41,7 +42,7 @@ from samples.api import LengthsSexAPI
 # , SampledWeightDetail, SampledWeightCreate
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 from conn_r.api import GetTrawlHaulsAPIConnR, GetDataStationsAPIConnR
-from reports.api import ReportLengthsCSVApi
+from reports.api import ReportLengthsCSVApi, ReportCampFaunaCSVApi
 
 router = DefaultRouter()
 router.register(r'api/1.0/stratifications', StratificationViewSet, basename='stratification')
@@ -66,7 +67,7 @@ urlpatterns = [
     re_path(r'^api/1.0/ship/(?P<pk>[0-9]+)$',
             ShipAPI.as_view(), name="ship_get_update_delete_api"),
     re_path(r'^api/1.0/ships/ships-in-surveys/$', ShipsInSurveysAPI.as_view(),
-                name="ships_in_surveys_api"),
+            name="ships_in_surveys_api"),
 
     # Species API URLS
     re_path(r'^api/1.0/species/$', SpeciesAPI.as_view(),
@@ -106,7 +107,8 @@ urlpatterns = [
             SurveyAPI.as_view(), name="survey_list_create_api"),
     re_path(r'^api/1.0/survey/$', SurveysAPI.as_view(),
             name="survey_get_update_delete_api"),
-    re_path(r'^api/1.0/surveys/surveys-with-stations$', SurveysWithStationsAPI.as_view(), name="surveys_with_stations_api"),
+    re_path(r'^api/1.0/surveys/surveys-with-stations$', SurveysWithStationsAPI.as_view(),
+            name="surveys_with_stations_api"),
     # re_path(r'^api/1.0/surveys/(?P<pk>[0-9]+)$', SurveyDetailAPI.as_view(), name="get_survey_api"),
     # re_path(r'^api/1.0/surveys/remove/(?P<pk>[0-9]+)$', SurveyRemoveAPI.as_view(),
     #     name="get_survey_api"),
@@ -222,6 +224,8 @@ urlpatterns = [
 
     # Export csv
     re_path(r'api/1.0/reports/report_csv/(?P<survey_id>[0-9]+)$', ReportLengthsCSVApi.as_view(),
+            name='report_csv'),
+    re_path(r'api/1.0/reports/camp/fauna/(?P<survey_id>[0-9]+)$', ReportCampFaunaCSVApi.as_view(),
             name='report_csv'),
 
     # Frontend
