@@ -215,17 +215,17 @@ urlpatterns = [
             name="old_camp_import"),
 
     # conn_r
-    re_path(r'^api/1.0/conn_r/get_trawl_hauls/(?P<acronym>[A-Z][0-9][0-9])$',
+    re_path(r'^api/1.0/conn_r/get_trawl_hauls/(?P<acronym>[A-Za-z][0-9][0-9])$',
             GetTrawlHaulsAPIConnR.as_view(),
             name="get_trawls_hauls_api_conn_r"),
-    re_path(r'^api/1.0/conn_r/get_data_stations/(?P<acronym>[A-Z][0-9][0-9])$',
+    re_path(r'^api/1.0/conn_r/get_data_stations/(?P<acronym>[A-Za-z][0-9][0-9])$',
             GetDataStationsAPIConnR.as_view(),
             name="get_data_stations_api_conn_r"),
 
     # Export csv
-    re_path(r'api/1.0/reports/report_csv/(?P<survey_id>[0-9]+)$', ReportLengthsCSVApi.as_view(),
+    re_path(r'api/1.0/reports/camp/lengths/(?P<acronym>[A-Za-z][0-9][0-9])$', ReportLengthsCSVApi.as_view(),
             name='report_csv'),
-    re_path(r'api/1.0/reports/camp/fauna/(?P<survey_id>[0-9]+)$', ReportCampFaunaCSVApi.as_view(),
+    re_path(r'api/1.0/reports/camp/fauna/(?P<acronym>[A-Za-z][0-9][0-9])$', ReportCampFaunaCSVApi.as_view(),
             name='report_csv'),
 
     # Frontend
