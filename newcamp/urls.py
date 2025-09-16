@@ -42,7 +42,7 @@ from samples.api import LengthsSexAPI
 # , SampledWeightDetail, SampledWeightCreate
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 from conn_r.api import GetTrawlHaulsAPIConnR, GetDataStationsAPIConnR
-from reports.api import ReportCampHaulsCSVApi, ReportCampFaunaCSVApi, ReportCampLengthsCSVApi
+from reports.api import ReportCampHaulsCSVApi, ReportCampFaunaCSVApi, ReportCampLengthsCSVApi, ReportCampHydrographyCSVApi
 
 router = DefaultRouter()
 router.register(r'api/1.0/stratifications', StratificationViewSet, basename='stratification')
@@ -224,11 +224,13 @@ urlpatterns = [
 
     # Export csv
     re_path(r'api/1.0/reports/camp/fauna/(?P<acronym>[A-Za-z][0-9][0-9])$', ReportCampFaunaCSVApi.as_view(),
-            name='report_csv'),
+            name='report_csv_camp_fauna'),
     re_path(r'api/1.0/reports/camp/hauls/(?P<acronym>[A-Za-z][0-9][0-9])$', ReportCampHaulsCSVApi.as_view(),
-            name='report_csv'),
+            name='report_csv_camp_hauls'),
     re_path(r'api/1.0/reports/camp/lengths/(?P<acronym>[A-Za-z][0-9][0-9])$', ReportCampLengthsCSVApi.as_view(),
-            name='report_csv'),
+            name='report_csv_camp_lengths'),
+    re_path(r'api/1.0/reports/camp/hydrography/(?P<acronym>[A-Za-z][0-9][0-9])$', ReportCampHydrographyCSVApi.as_view(),
+            name='report_csv_camp_hydrography'),
 
     # Frontend
     # path('', include('frontend.urls')),
