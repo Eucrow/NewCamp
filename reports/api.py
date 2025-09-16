@@ -6,18 +6,20 @@ from rest_framework.views import APIView
 
 from surveys.models import Survey
 from stations.models import Station
-from hauls.models import Haul
+from hauls.models import Haul, HaulTrawl, Meteorology
 from catches.models import Catch
 from species.models import Sp, MeasurementType
 from samples.models import Sex, SampledWeight, Length
 
 
-def get_base_survey_data(acronym):
+def get_base_survey_data(acronym, include_trawl=False, include_meteorology=False):
     """
     Get base data (stations, hauls, catches) for a survey and return merged DataFrame.
     
     Args:
         acronym: Survey acronym
+        include_trawl: Whether to include trawl data (default: False)
+        include_meteorology: Whether to include meteorology data (default: False)
         
     Returns:
         tuple: (merged_df, survey, stations, hauls, catches) where:
@@ -41,12 +43,25 @@ def get_base_survey_data(acronym):
 
     # Get hauls
     hauls = Haul.objects.filter(station__in=stations, sampler_type="trawl")
-    hauls_df = pd.DataFrame(list(hauls.values('id', 'haul', 'station_id')))
+    hauls_df = pd.DataFrame(list(hauls.values()))
 
     # Merge stations and hauls dataframes
     merged_hauls_df = pd.merge(merged_df, hauls_df, left_on='id', right_on='station_id', how='left',
                                suffixes=('_station', '_haul'))
-    # merged_hauls_df = merged_hauls_df[['station_id', 'station', 'id_haul', 'haul']]
+    
+    # Conditionally get and merge trawl data
+    if include_trawl:
+        trawls = HaulTrawl.objects.filter(haul_id__in=hauls)
+        trawls_df = pd.DataFrame(list(trawls.values()))
+        merged_hauls_df = pd.merge(merged_hauls_df, trawls_df, left_on='id_haul', right_on='id', how='left',
+                                   suffixes=('', '_trawl'))
+    
+    # Conditionally get and merge meteorology data
+    if include_meteorology:        
+        meteorologies = Meteorology.objects.filter(haul_id__in=hauls)
+        meteorologies_df = pd.DataFrame(list(meteorologies.values()))
+        merged_hauls_df = pd.merge(merged_hauls_df, meteorologies_df, left_on='id_haul', right_on='id', how='left',
+                                   suffixes=('', '_meteorology'))
 
     # Get catches
     catches = Catch.objects.filter(haul__in=hauls)
@@ -192,6 +207,54 @@ class ReportCampLengthsCSVApi(APIView):
             writer.writerow(
                 [row.acronym, row.haul, row.group, row.sp_code, row.category, row.sex,
                  row.sampled_weight, row.weight, int(row.length_converted), int(row.number_individuals)])
+
+
+        return response
+
+
+class ReportCampHaulsCSVApi(APIView):
+    def get(self, request, acronym):
+
+        # Get base data using shared helper function with trawl data
+        merged_df = get_base_survey_data(acronym, include_trawl=True, include_meteorology=True)
+
+        # Create response
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="report.csv"'
+
+        # Create writer
+        writer = csv.writer(response)
+
+        # LANCE;FECHA;ARTE;VALIDEZ;HORA_L;LATITUD_L;NSL;LONGITUD_L;EWL;PROF_L;HORA_V;LATITUD_V;NSV;LONGITUD_V;EWV;PROF_V;
+        # RUMBO;VELOCIDAD;CABLE;MALLETAS;DISTA_P;ABERT_H;ABERT_V;CUADRICULA;RECORRIDO;
+        # DIR_VIENTO;VEL_VIENTO;EST_MAR;SECTOR;ESTRATO;TEMP;SALI;ESTN;OBSERV << FALTAN LOS DATOS DE METEOROLOGIA
+# hay que añadir gear
+        writer.writerow(
+            ['acronym', 'station', 'haul','FECHA', 'ARTE', 'valid',
+             'shooting_date_time', 'shooting_latitude', 'shooting_longitude', 'shooting_depth',
+             'hauling_date_time', 'hauling_latitude', 'hauling_longitude', 'hauling_depth',
+             'course', 'velocity', 'cable', 'sweep',
+             'otter_boards_distance', 'horizontal_aperture', 'vertical_aperture',
+             'CUADRICULA', 'track',
+             'wind_direction', 'wind_velocity', 'sea_state',
+             'SECTOR', 'ESTRATO', 'TEMP', 'SALI', 'station',
+             'comment'])
+        
+
+        # Write data
+        for row in merged_df.itertuples(index=False):
+            writer.writerow([
+                row.acronym, row.station, row.haul, 'GEAR', row.valid,
+                getattr(row, 'shooting_date_time', ''), getattr(row, 'shooting_latitude', ''), getattr(row, 'shooting_longitude', ''), getattr(row, 'shooting_depth', ''),
+                getattr(row, 'hauling_date_time', ''), getattr(row, 'hauling_latitude', ''), getattr(row, 'hauling_longitude', ''), getattr(row, 'hauling_depth', ''),
+                getattr(row, 'course', ''), getattr(row, 'velocity', ''), getattr(row, 'cable', ''), getattr(row, 'sweep', ''),
+                getattr(row, 'otter_boards_distance', ''), getattr(row, 'horizontal_aperture', ''), getattr(row, 'vertical_aperture', ''),
+                getattr(row, 'sampling_rectangle', ''), getattr(row, 'track', ''),
+                getattr(row, 'wind_direction', ''), getattr(row, 'wind_velocity', ''), getattr(row, 'sea_state', ''),
+                'SECTOR', 'ESTRATO', 'TEMP', 'SALI', row.station,
+                getattr(row, 'comment', '')
+            ])
+
 
 
         return response
