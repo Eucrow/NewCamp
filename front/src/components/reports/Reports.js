@@ -13,12 +13,10 @@ const Reports = () => {
   const [disableDownload, setDisableDownload] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e, endpointName, survey) => {
     e.preventDefault();
     setIsLoading(true);
-    const apiReport = buildApiUrl(
-      API_CONFIG.ENDPOINTS.GET_REPORTS_CSV(selectedSurvey)
-    );
+    const apiReport = buildApiUrl(API_CONFIG.ENDPOINTS[endpointName](survey));
     //TODO: convert this to a custom hook
     fetch(apiReport)
       .then(response => {
@@ -49,6 +47,44 @@ const Reports = () => {
       });
   };
 
+  const reportContent = (reportName, endpointName) => {
+    return (
+      <form className="wrapper form__row reportWrapper">
+        <div className="form__cell">{reportName}</div>
+        <div className="form__cell">
+          <select
+            type="select"
+            id="report"
+            name="report"
+            value={selectedSurvey}
+            required
+            onChange={e => {
+              setSelectedSurvey(e.target.value);
+              setDisableDownload(false);
+            }}
+          >
+            <option value="" disabled>
+              Select survey
+            </option>
+            {surveys.map(survey => {
+              return (
+                <option key={survey.id} value={survey.acronym}>
+                  {survey.description}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        <div className="form__cell">
+          <UiButtonDownload
+            handleMethod={e => handleSubmit(e, endpointName, selectedSurvey)}
+            disabled={disableDownload}
+          />
+        </div>
+      </form>
+    );
+  };
+
   const renderContent = () => {
     return (
       <main>
@@ -59,39 +95,12 @@ const Reports = () => {
           {isLoading ? (
             <p>Creating file... Please wait.</p>
           ) : (
-            <form className="wrapper form__row reportWrapper">
-              <div className="form__cell">Lengths report:</div>
-              <div className="form__cell">
-                <select
-                  type="select"
-                  id="report"
-                  name="report"
-                  value={selectedSurvey}
-                  required
-                  onChange={e => {
-                    setSelectedSurvey(e.target.value);
-                    setDisableDownload(false);
-                  }}
-                >
-                  <option value="" disabled>
-                    Select survey
-                  </option>
-                  {surveys.map(survey => {
-                    return (
-                      <option key={survey.id} value={survey.id}>
-                        {survey.description}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div className="form__cell">
-                <UiButtonDownload
-                  handleMethod={handleSubmit}
-                  disabled={disableDownload}
-                />
-              </div>
-            </form>
+            <>
+              {reportContent("Fauna report:", "GET_REPORT_CAMP_FAUNA_CSV")}
+              {reportContent("Hauls report:", "GET_REPORT_CAMP_HAULS_CSV")}
+              {reportContent("Lengths report:", "GET_REPORT_CAMP_LENGTHS_CSV")}
+              {reportContent("Species report:", "GET_REPORT_CAMP_SPECIES_CSV")}
+            </>
           )}
         </div>
       </main>

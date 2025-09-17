@@ -70,6 +70,13 @@ export const API_CONFIG = {
 
     // Reports endpoints
     GET_REPORTS_CSV: surveyId => `/reports/report_csv/${surveyId}`,
+    GET_REPORT_CAMP_HAULS_CSV: surveyAcronym =>
+      `/reports/camp/hauls/${surveyAcronym}`,
+    GET_REPORT_CAMP_FAUNA_CSV: surveyAcronym =>
+      `/reports/camp/fauna/${surveyAcronym}`,
+    GET_REPORT_CAMP_LENGTHS_CSV: surveyAcronym =>
+      `/reports/camp/lengths/${surveyAcronym}`,
+    GET_REPORT_CAMP_SPECIES_CSV: "/reports/report_camp_species_csv/",
   },
   HEADERS: {
     DEFAULT: {
