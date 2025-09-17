@@ -12,7 +12,7 @@ from species.models import Sp, MeasurementType
 from samples.models import Sex, SampledWeight, Length
 
 
-def get_base_survey_data(acronym, include_trawl=False, include_meteorology=False, include_hydrography=False):
+def get_base_survey_data(acronym):
     """
     Get base data (stations, hauls, catches) for a survey and return merged DataFrame.
     
@@ -336,6 +336,35 @@ class ReportCampHydrographyCSVApi(APIView):
                 row.temperature_100, row.salinity_100, row.sigma_100,
                 row.temperature, row.salinity, row.sigma,
                 row.comment
+            ])
+
+        return response
+    
+
+class ReportCampSpeciesCSVApi(APIView):
+    def get(self, request):
+
+        species = Sp.objects.all()
+        species_df = pd.DataFrame(list(species.values()))
+
+        # Create response
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="report.csv"'
+
+        # Create writer
+        writer = csv.writer(response)
+        writer.writerow(
+            ['group', 'family', 'sp_code',
+             'sp_name', 'author', 'spanish_name', 'english_name',
+             'a_param', 'b_param', 'linf', 'k_param', 't0', 'med', 'increm', 'nodc', 'gt', 'aphia'])
+
+        # Write data
+        for row in species_df.itertuples(index=False):
+            writer.writerow([
+                row.group, 'FAMILY', row.sp_code,
+                row.sp_name, 'AUTHOR', row.spanish_name, 'english_name',
+                row.a_param, row.b_param,
+                'linf', 'k_param', 't0', 'med', 'increm', 'nodc', 'gt', row.APHIA
             ])
 
         return response
