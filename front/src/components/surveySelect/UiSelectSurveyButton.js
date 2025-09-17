@@ -2,9 +2,14 @@ import React, { useContext } from "react";
 
 import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 
-const SelectSurveyButton = ({ survey_id, survey_description }) => {
-  const surveyContext = useContext(SelectedSurveyContext);
-  const { setSelectedSurvey, setSelectedSurveyId } = surveyContext;
+const SelectSurveyButton = ({
+  survey_id,
+  survey_description,
+  survey_acronym,
+}) => {
+  const selectedSurveyContext = useContext(SelectedSurveyContext);
+  const { setSelectedSurvey, setSelectedSurveyId, setSelectedSurveyAcronym } =
+    selectedSurveyContext;
 
   return (
     <button
@@ -13,8 +18,7 @@ const SelectSurveyButton = ({ survey_id, survey_description }) => {
       onClick={() => {
         setSelectedSurvey(survey_description);
         setSelectedSurveyId(survey_id);
-        window.localStorage.setItem("survey_id", survey_id);
-        window.localStorage.setItem("survey_description", survey_description);
+        setSelectedSurveyAcronym(survey_acronym);
       }}
     >
       Select Survey

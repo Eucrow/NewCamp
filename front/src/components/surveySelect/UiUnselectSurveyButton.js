@@ -4,14 +4,16 @@ import SelectedSurveyContext from "../../contexts/SelectedSuveryContext";
 
 const UnselectSurveyButton = () => {
   const surveyContext = useContext(SelectedSurveyContext);
-  const { setSelectedSurvey, setSelectedSurveyId } = surveyContext;
+  const { setSelectedSurvey, setSelectedSurveyId, setSelectedSurveyAcronym } =
+    surveyContext;
   if (window.localStorage.survey_id) {
     return (
       <button
         onClick={() => {
-          localStorage.clear();
+          // localStorage.clear();
           setSelectedSurvey("");
           setSelectedSurveyId("");
+          setSelectedSurveyAcronym("");
         }}
       >
         Unselect Survey

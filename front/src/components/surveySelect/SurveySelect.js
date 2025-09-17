@@ -1,87 +1,53 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
-import { API_CONFIG, buildApiUrl } from "../../config/api";
-
+import GlobalContext from "../../contexts/GlobalContext";
 import SelectSurveyButton from "./UiSelectSurveyButton";
 import UnselectSurveyButton from "./UiUnselectSurveyButton";
 
-class ComponentsSurveySelect extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      surveys: [],
-      loaded: false,
-      placeholder: "Loading",
-    };
+const SurveySelect = () => {
+  const globalContext = useContext(GlobalContext);
+  const { surveys } = globalContext;
 
-    this.apiSurveys = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SURVEYS);
+  const [loaded, setLoaded] = useState(false);
 
-    this.ShowUnselectButton = this.ShowUnselectButton.bind(this);
-  }
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
 
-  ShowUnselectButton() {
-    if (this.context.surveySelector === null) {
+  const ShowUnselectButton = () => {
+    if (globalContext.surveySelector === null) {
       return null;
     } else {
-      return (
-        <UnselectSurveyButton
-          className="selectSurvey__row"
-          setSelectedSurvey={this.props.setSelectedSurvey}
-        />
-      );
+      return <UnselectSurveyButton className="selectSurvey__row" />;
     }
-  }
+  };
 
-  componentDidMount() {
-    fetch(this.apiSurveys)
-      .then(response => {
-        if (response.status > 400) {
-          return this.setState(() => {
-            return { placeholder: "Something went wrong!" };
-          });
-        }
-        return response.json();
-      })
-      .then(surveys => {
-        this.setState(() => {
-          return {
-            surveys,
-            loaded: true,
-          };
-        });
-      });
-  }
+  return (
+    <main>
+      <header>
+        <h1 className="title">Survey selection</h1>
+      </header>
+      <form className="wrapper selectSurvey">
+        {surveys.map(s => {
+          return (
+            <div key={s.id} className="selectSurvey__row">
+              <label className="selectSurvey__element" htmlFor={s.description}>
+                {s.description}
+              </label>
+              <SelectSurveyButton
+                survey_id={s.id}
+                survey_description={s.description}
+                survey_acronym={s.acronym}
+              />
+            </div>
+          );
+        })}
+        <div className="selectSurvey__row">
+          <ShowUnselectButton />
+        </div>
+      </form>
+    </main>
+  );
+};
 
-  render() {
-    return (
-      <main>
-        <header>
-          <h1 className="title">Survey selection</h1>
-        </header>
-        <form className="wrapper selectSurvey">
-          {this.state.surveys.map(s => {
-            return (
-              <div key={s.id} className="selectSurvey__row">
-                <label
-                  className="selectSurvey__element"
-                  htmlFor={s.description}
-                >
-                  {s.description}
-                </label>
-                <SelectSurveyButton
-                  survey_id={s.id}
-                  survey_description={s.description}
-                />
-              </div>
-            );
-          })}
-          <div className="selectSurvey__row">
-            <this.ShowUnselectButton />
-          </div>
-        </form>
-      </main>
-    );
-  }
-}
-
-export default ComponentsSurveySelect;
+export default SurveySelect;

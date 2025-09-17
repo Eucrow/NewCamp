@@ -373,7 +373,14 @@ const Stations = () => {
     var content = "";
 
     if (selectedSurveyContext.selectedSurveyId === "") {
-      content = <div>There is not survey selected</div>;
+      content = (
+        <main>
+          <header>
+            <h1 className="title">Stations</h1>
+          </header>
+          <div>There is not survey selected</div>;
+        </main>
+      );
       return content;
     }
 
