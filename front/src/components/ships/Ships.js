@@ -1,4 +1,6 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+
+import { useShipsCrud } from "../../hooks/useShipsCrud";
 
 import ShipsContext from "../../contexts/ShipsContext";
 
@@ -7,218 +9,112 @@ import NewShipForm from "./NewShipForm";
 import Ship from "./Ship";
 
 /**
- * Component list of ships.
- * List of all the ships stored in database.
+ * Ships component - Main container for ship management functionality.
+ *
+ * This component serves as the primary interface for managing ships in the system.
+ * It provides a complete CRUD interface that allows users to view, create, edit, and delete ships.
+ * The component displays all ships in a list format and includes a form for adding new ships.
+ * It also checks which ships are currently in use by surveys to prevent deletion of active ships.
+ *
+ * Features:
+ * - Displays all ships stored in the database
+ * - Toggle form for adding new ships
+ * - Real-time field editing for ship properties
+ * - Integration with surveys to show ship usage status
+ * - Context-based state management for child components
+ *
+ * @component
+ * @returns {JSX.Element} The complete ships management interface
  */
-class Ships extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			ships: [],
-			add: false, // true to add new ship; false to not to.
-		};
+const Ships = () => {
+  const [adding, setAdding] = useState(false); // true to adding new ship; false to not to.
 
-		this.apiShip = "http://127.0.0.1:8000/api/1.0/ship/";
+  const {
+    ships,
+    setShips,
+    getShips,
+    shipsInSurveys,
+    fetchShipsInSurveys,
+    createShip,
+    updateShip,
+    deleteShip,
+    restoreShipsState,
+  } = useShipsCrud();
 
-		this.handleChange = this.handleChange.bind(this);
-		this.handleAdd = this.handleAdd.bind(this);
-		this.createShip = this.createShip.bind(this);
-		this.updateShip = this.updateShip.bind(this);
-		this.deleteShip = this.deleteShip.bind(this);
-		this.renderContent = this.renderContent.bind(this);
-	}
-	/**
-	 * Manage change in fields
-	 * @param {event} e - Event.
-	 * @param {numeric} ship_id - Identification number of the ship which fields are managed.
-	 */
-	handleChange(e, ship_id) {
-		const name = e.target.name;
-		const value = e.target.value;
+  /**
+   * Handles input field changes for ship data.
+   * Updates the ship properties in real-time as user types.
+   *
+   * @function handleChange
+   * @param {Event} e - The input change event
+   * @param {number} ship_id - ID of the ship being modified
+   */
+  const handleChange = (e, ship_id) => {
+    const name = e.target.name;
+    const value = e.target.value;
 
-		e.preventDefault();
-		const newShips = this.state.ships.map((ship) => {
-			if (ship.id === ship_id) {
-				var newShip = ship;
-				newShip[name] = value;
-				return newShip;
-			} else {
-				return ship;
-			}
-		});
+    e.preventDefault();
+    const newShips = ships.map(ship => {
+      if (ship.id === ship_id) {
+        var newShip = { ...ship };
+        newShip[name] = value;
+        return newShip;
+      } else {
+        return ship;
+      }
+    });
 
-		this.setState(() => {
-			return {
-				ships: newShips,
-			};
-		});
-	}
+    setShips(newShips);
+  };
 
-	/**
-	 * Manage change of 'add' state.
-	 * @param {boolean} status - Identification number of the ship which fields are managed.
-	 */
-	handleAdd(status) {
-		this.setState(() => {
-			return {
-				add: status,
-			};
-		});
-	}
+  /**
+   * Creates a new ship in the database.
+   * Waits for the API call to complete before closing the form.
+   *
+   * @function handleCreateShip
+   * @param {Event} e - The form submit event
+   * @param {Object} ship - Ship data object to create
+   */
+  const handleCreateShip = async (e, ship) => {
+    e.preventDefault();
+    await createShip(ship);
+    setAdding(false); // Close the form after creating
+  };
 
-	/**
-	 * Create ship in database and update the state.
-	 * @param {event} e - Event
-	 * @param {object} ship - Ship object to create.
-	 */
-	createShip(e, ship) {
-		e.preventDefault();
+  useEffect(() => {
+    getShips();
+    fetchShipsInSurveys();
+  }, []);
 
-		fetch(this.apiShip, {
-			method: "POST",
-			headers: {
-				"Content-type": "Application/json",
-				Accept: "Application/json",
-			},
-			body: JSON.stringify(ship),
-		})
-			.then((response) => {
-				return response.json();
-			})
-			.then((ship) => {
-				const newShips = [...this.state.ships, ship];
+  return (
+    <ShipsContext.Provider
+      value={{
+        ships: ships,
+        setAdding: setAdding,
+        handleChange: handleChange,
+        createShip: handleCreateShip,
+        updateShip: updateShip,
+        deleteShip: deleteShip,
+        restoreShipsState: restoreShipsState,
+      }}
+    >
+      <main>
+        <header>
+          <h1 className="title">Ships</h1>
+        </header>
+        <div className="wrapper shipsWrapper">
+          <ShipsButtonBar adding={adding} setAdding={setAdding} />
 
-				this.setState({
-					ships: newShips,
-				});
-			})
-			.catch((error) => alert(error));
-	}
+          {adding === true ? <NewShipForm /> : ""}
 
-	/**
-	 * Update ship from database and state.
-	 * @param {event} e - Event.
-	 * @param {numeric} ship_id - Ship identificator of ship to update.
-	 */
-	updateShip(e, ship_id) {
-		e.preventDefault();
-		const api = this.apiShip + ship_id;
-
-		const updatedShip = this.state.ships.filter((ship) => {
-			return ship.id === ship_id;
-		});
-
-		fetch(api, {
-			method: "PUT",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(updatedShip[0]),
-		})
-			.then((response) => {
-				if (response.status === 200) {
-					this.handleEdit(null);
-				} else {
-					alert("Something is wrong.");
-				}
-			})
-			.catch((error) => console.log(error));
-	}
-
-	/**
-	 * Delete ship from database and state.
-	 * @param {event} e Event.
-	 * @param {numeric} ship_id Ship identificator of ship to delete.
-	 */
-	deleteShip(ship_id) {
-		const api = this.apiShip + ship_id;
-
-		fetch(api, {
-			method: "DELETE",
-			headers: {
-				"Content-type": "Application/json",
-				Accept: "Application/json",
-			},
-		})
-			.then(() => {
-				const newShips = this.state.ships.filter((ship) => ship.id !== ship_id);
-
-				this.setState({
-					ships: newShips,
-				});
-			})
-			.catch((error) => alert(error));
-	}
-
-	// VALIDATIONS
-	/**
-	 * Prevent 'e' and '-' in numeric input
-	 * @param {e} onKeyDown event
-	 */
-	preventNegativeE(e) {
-		if (e.key === "e" || e.key === "-") {
-			e.preventDefault();
-		}
-	}
-
-	/**
-	 * Create content to render.
-	 * @private
-	 */
-	renderContent() {
-		let content = "";
-
-		content = (
-			<ShipsContext.Provider
-				value={{
-					handleChange: this.handleChange,
-					handleAdd: this.handleAdd,
-					createShip: this.createShip,
-					updateShip: this.updateShip,
-					deleteShip: this.deleteShip,
-					preventNegativeE: this.preventNegativeE,
-				}}
-			>
-				<main>
-					<header>
-						<h1 className="title">Ships</h1>
-					</header>
-					<div className="wrapper surveysWrapper">
-						<ShipsButtonBar add={this.state.add} handleAdd={this.handleAdd} />
-
-						{this.state.add === true ? <NewShipForm /> : ""}
-
-						{this.state.ships.map((ship) => {
-							return <Ship key={ship.id} ship={ship} />;
-						})}
-					</div>
-				</main>
-			</ShipsContext.Provider>
-		);
-
-		return content;
-	}
-
-	componentDidMount() {
-		// Fetch ships
-		fetch(this.apiShip)
-			.then((response) => {
-				if (response.status > 400) {
-					return this.setState(() => {
-						return { placeholder: "Something went wrong!" };
-					});
-				}
-				return response.json();
-			})
-			.then((ships) => {
-				this.setState(() => {
-					return { ships };
-				});
-			})
-			.catch((error) => console.log(error));
-	}
-
-	render() {
-		return this.renderContent();
-	}
-}
+          {ships.map(ship => {
+            const inSurveys = shipsInSurveys.some(s => s.id === ship.id);
+            return <Ship key={ship.id} ship={ship} inSurveys={inSurveys} />;
+          })}
+        </div>
+      </main>
+    </ShipsContext.Provider>
+  );
+};
 
 export default Ships;

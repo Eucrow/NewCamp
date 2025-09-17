@@ -2,22 +2,30 @@ import React from "react";
 import UiButtonAdd from "../ui/UiButtonAdd";
 
 /**
- * Component of Ships bar.
- * @param {boolean} add true to show "Add" button.
- * @param {method} handleAdd Method to handle the 'add' parameter.
+ * ShipsButtonBar component - Action button bar for ships management.
+ *
+ * This component provides the main action buttons for the ships interface.
+ * It conditionally displays an "Add Ship" button when not in adding mode.
+ * The button bar integrates with the parent component's state to control
+ * the visibility of the new ship form.
+ *
+ * @component
+ * @param {boolean} adding - Whether the new ship form is currently visible
+ * @param {Function} setAdding - Function to toggle the new ship form visibility
+ * @returns {JSX.Element|null} The button bar or null if in adding mode
  */
-const ShipsButtonBar = ({ add, handleAdd }) => {
-	var ButtonBar = null;
+const ShipsButtonBar = ({ adding, setAdding }) => {
+  var ButtonBar = null;
 
-	if (add === false) {
-		ButtonBar = (
-			<div className="survey__cell survey__cell--right buttonsWrapper">
-				<UiButtonAdd handleAdd={handleAdd} text={"Add Ship"} />
-			</div>
-		);
-	}
+  if (adding === false) {
+    ButtonBar = (
+      <div className="survey__cell survey__cell--right buttonsWrapper">
+        <UiButtonAdd handleAdd={setAdding} text={"Add Ship"} />
+      </div>
+    );
+  }
 
-	return ButtonBar;
+  return ButtonBar;
 };
 
 export default ShipsButtonBar;

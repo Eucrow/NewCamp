@@ -1,7 +1,7 @@
 textarea,
 select,
 input {
-	font-weight: 600;
+  font-weight: 600;
 }
 
 // Disabled inputs
@@ -9,12 +9,12 @@ textarea:disabled,
 select:disabled,
 option:disabled,
 input:disabled {
-	//border size and padding must be the same as the input enabled style:
-	border: 1px solid var(--wrapper-background-color);
-	background: none;
-	padding: 2px 5px;
-	font-size: 1rem;
-	color: var(--text-color);
+  //border size and padding must be the same as the input enabled style:
+  border: 1px solid var(--wrapper-background-color);
+  background: none;
+  padding: 2px 5px;
+  font-size: 1rem;
+  color: var(--text-color);
 }
 
 // Enabled inputs
@@ -22,11 +22,11 @@ textarea:enabled,
 select:enabled,
 option:enabled,
 input:enabled {
-	font-size: 1rem;
-	border-radius: 5px;
-	border: 1px solid var(--background-global-color);
-	padding: 2px 5px;
-	background-color: var(--background-global-color);
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--background-global-color);
+  padding: 2px 5px;
+  background-color: var(--background-global-color);
 }
 
 // Focus and active
@@ -38,7 +38,7 @@ option:focus,
 option:active,
 input:focus,
 input:active {
-	border-color: var(--blue-gradient-1);
+  border-color: var(--blue-gradient-1);
 }
 
 // Invalid inputs
@@ -46,118 +46,117 @@ textarea:invalid,
 select:invalid,
 option:invalid,
 input:invalid {
-	background-color: var(--error_background) !important;
-	color: var(--error_text) !important;
+  background-color: var(--error_background) !important;
+  color: var(--error_text) !important;
 }
-.species--invalid {
-	background-color: var(--error_background) !important;
-	font-size: 1rem;
-	border-radius: 5px;
-	border: 1px solid var(--background-global-color);
-	padding: 2px 5px;
+.invalid {
+  background-color: var(--error_background) !important;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--background-global-color);
+  padding: 2px 5px;
 }
 
 .form--wide {
-	width: 100%;
+  width: 100%;
 }
 
 //STRUCTURE
 .form__row {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: flex-start;
-	align-items: center;
-	min-height: 2rem;
-	padding: 1px 0px 1px 0px;
-	width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 2rem;
+  padding: 1px 0px 1px 0px;
+  width: 100%;
 }
 
 .form__cell {
-	display: inline-flex;
-	flex-direction: row;
-	align-items: center;
-	padding-right: 10px;
-	min-height: 2rem;
-	flex-wrap: wrap;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 10px;
+  min-height: 2rem;
+  flex-wrap: wrap;
 
-	&:last-child {
-		padding-right: 0px;
-	}
+  &:last-child {
+    padding-right: 0px;
+  }
 }
 
 // cell aligned to the right
 .form__cell--right {
-	margin-left: auto;
+  margin-left: auto;
 }
 
 .form__cell--wide {
-	width: 100%;
+  width: 100%;
 }
 
 // a div with a class field to maintain together a label with an input
 .field {
-	white-space: nowrap;
-	padding-right: 10px;
-	padding-bottom: 10px;
+  white-space: nowrap;
+  padding-right: 10px;
+  padding-bottom: 10px;
 
-	&:last-child {
-		margin-right: auto;
-	}
+  &:last-child {
+    margin-right: auto;
+  }
 }
 
 //Comment field:
 .field__comment {
-	width: 100%;
+  width: 100%;
+  resize: none;
 }
 
 .field__comment textarea {
-	display: block;
-	width: 100%;
-	// height: 100%;
-	// resize: none;
-	border: 0px;
+  display: block;
+  width: 100%;
+  border: 0px;
 }
 
 // Individual input without spinners
 /* Chrome, Safari, Edge, Opera */
 input.input__noSpinner::-webkit-inner-spin-button,
 input.input__noSpinner::-webkit-outer-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 // /* Firefox */
 input.input__noSpinner[type="number"] {
-	-moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 // All the inputs inside the noSpinner class will not have spinners
 /* Chrome, Safari, Edge, Opera */
 .noSpinner input::-webkit-inner-spin-button,
 .noSpinner input::-webkit-outer-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
-	// appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  // appearance: none;
 }
 // /* Firefox */
 .noSpinner input[type="number"] {
-	-moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 // select width
 select.select__normalWidth {
-	width: 15ch;
+  width: 15ch;
 }
 select.select__largeWidth {
-	width: 30ch;
+  width: 30ch;
 }
 select.select__gear {
-	width: 4rem;
+  width: 4rem;
 }
 select:disabled {
-	-o-appearance: none;
-	-ms-appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
+  -o-appearance: none;
+  -ms-appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }

@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint
+from rest_framework import serializers
 
 from samples.models import Sex, Length
 
@@ -12,7 +13,10 @@ class Catch(models.Model):
     category = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(99)])
     weight = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(99999999)])
     not_measured_individuals = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(9999)], blank=True, null=True)
+        validators=[MinValueValidator(0), MaxValueValidator(9999)],
+        null=True,  # Allows NULL in database
+        blank=True  # Allows blank in forms/serializers
+    )
 
     class Meta:
         constraints = [

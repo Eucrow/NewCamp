@@ -1,0 +1,16 @@
+.sort__container {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+}
+.sort__container__arrow {
+	margin-left: 2px;
+	width: 15px;
+	height: 15px;
+	flex-shrink: 0;
+}
+
+// .sort__container__arrow svg {
+// 	width: 100%;
+// 	height: 100%;
+// }

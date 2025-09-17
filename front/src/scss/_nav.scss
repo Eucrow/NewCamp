@@ -1,44 +1,116 @@
 .headNav {
-	font-family: "Signika", "Serif";
+  font-family: "Signika", "Serif";
 
-	background-color: var(--background-nav);
-	min-height: 50px;
+  background-color: var(--background-nav);
+  min-height: 50px;
 
-	.headNav__selectedSurvey {
-		display: inline-block;
-		padding: 0px 10px 0px 20px;
-	}
+  .headNav__selectedSurvey {
+    display: inline-block;
+    padding: 0px 10px 0px 20px;
+  }
 
-	.headNav__wrapper {
-		display: inline-block;
-	}
+  .headNav__wrapper {
+    display: inline-block;
+    position: relative;
+  }
 
-	.headNav__item {
-		display: inline-block;
-	}
+  .headNav__item {
+    display: inline-block;
+  }
 
-	.headNav__item a {
-		font-size: 1.17rem;
-		text-decoration-line: none;
-		display: inline-block;
-		padding: 15px 10px;
-		&:link {
-			color: var(--text-color);
-		}
+  .headNav__item a {
+    font-size: 1.17rem;
+    text-decoration-line: none;
+    display: inline-block;
+    padding: 15px 10px;
+    &:link {
+      color: var(--text-color);
+    }
 
-		&:visited {
-			color: var(--text-color);
-		}
+    &:visited {
+      color: var(--text-color);
+    }
 
-		&:hover,
-		&:active {
-			color: var(--highlight-front-color);
-			background-color: var(--highlight-background-color);
-		}
+    &:hover,
+    &:active {
+      color: var(--highlight-front-color);
+      background-color: var(--highlight-background-color);
+    }
 
-		&:focus-visible {
-			color: var(--highlight-front-color);
-			background-color: var(--highlight-background-color);
-		}
-	}
+    &:focus-visible {
+      color: var(--highlight-front-color);
+      background-color: var(--highlight-background-color);
+    }
+  }
+}
+
+// Dropdown styles for Reference Tables menu
+.headNav__dropdown {
+  position: relative;
+
+  &:hover .headNav__submenu {
+    display: block;
+  }
+
+  span {
+    cursor: pointer;
+    font-size: 1.17rem;
+    // font-family: "Signika", "Serif";
+    display: inline-block;
+    padding: 15px 10px;
+    text-decoration: none;
+    color: var(--text-color);
+
+    &:hover,
+    &:active {
+      color: var(--highlight-front-color);
+      background-color: var(--highlight-background-color);
+    }
+
+    &:focus-visible {
+      color: var(--highlight-front-color);
+      background-color: var(--highlight-background-color);
+    }
+
+    &::after {
+      content: " ▼";
+      font-size: 0.8em;
+      margin-left: 5px;
+    }
+  }
+}
+
+.headNav__submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--background-nav);
+  min-width: 200px;
+
+  .headNav__item {
+    display: block;
+    width: 100%;
+
+    a {
+      font-size: 1rem;
+      font-family: "Signika", "Serif";
+      display: block;
+      padding: 5px 10px;
+      text-decoration: none;
+      color: var(--text-color);
+      white-space: nowrap;
+
+      &:hover,
+      &:active {
+        color: var(--highlight-front-color);
+        background-color: var(--highlight-background-color);
+      }
+
+      &:focus-visible {
+        color: var(--highlight-front-color);
+        background-color: var(--highlight-background-color);
+      }
+    }
+  }
 }

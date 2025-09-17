@@ -8,18 +8,6 @@ from species.models import Sp
 from species.serializers import SpSimpleSerializer
 
 
-class CatchSerializer(serializers.ModelSerializer):
-    sp_name = serializers.CharField(source='sp.sp_name', read_only=True)
-    group = serializers.IntegerField(source='sp.group', read_only=True)
-    sp_code = serializers.IntegerField(source='sp.sp_code', read_only=True)
-    catch_id = serializers.IntegerField(source='id', read_only=True)
-
-    class Meta:
-        model = Catch
-        fields = ['catch_id', 'haul_id', 'group', 'sp_code', 'weight', 'sp_name', 'category',
-                  'not_measured_individuals', ]
-
-
 class CatchesVerboseSerializer(serializers.ModelSerializer):
     group = serializers.CharField(source='sp.group', read_only=True)
     catch_id = serializers.IntegerField(source='id')
@@ -30,12 +18,52 @@ class CatchesVerboseSerializer(serializers.ModelSerializer):
     increment = serializers.FloatField(source='sp.increment', read_only=True)
     sampled_weight = serializers.FloatField(
         source='samples.sampled_weight', required=False, read_only=True)
+    haul_has_lengths = SerializerMethodField()
+
+    def get_haul_has_lengths(self, obj):
+        """
+        Check if this specific catch has any lengths measured
+        """
+        return obj.sexes.filter(lengths__isnull=False).exists()
+
+    # if not_measure_individuals is empty, convert to None
+    def to_internal_value(self, data):
+        if 'not_measured_individuals' in data and data['not_measured_individuals'] == "":
+            data = data.copy()
+            data['not_measured_individuals'] = None
+        return super().to_internal_value(data)
+
+    individuals_by_sex = SerializerMethodField()
+
+    def get_individuals_by_sex(self, obj):
+        """
+        Returns a dictionary with the count of measured individuals by sex
+        """
+        result = {}
+        for sex_obj in obj.sexes.all():
+            total = sum(length.number_individuals for length in sex_obj.lengths.all())
+            result[sex_obj.sex] = total
+        return result
 
     class Meta:
         model = Catch
         fields = ['catch_id', 'category', 'weight', 'not_measured_individuals', 'haul', 'haul_id', 'group', 'sp_id',
                   'sp_code', 'sp_name', 'unit', 'increment', 'sampled_weight',
+                  'haul_has_lengths', 'individuals_by_sex',
                   ]
+
+    # This is the validation of sampled weight when a new catch is created:
+    def validate(self, data):
+        sampled_weight = self.initial_data.get('sampled_weight')
+        weight = data.get('weight')
+
+        if sampled_weight and weight:
+            if float(sampled_weight) > float(weight):
+                raise serializers.ValidationError({
+                    'sampled_weight': 'Sampled weight cannot be greater than total weight.'
+                })
+
+        return data
 
 
 class SexCatchSerializer(serializers.ModelSerializer):
@@ -46,7 +74,6 @@ class SexCatchSerializer(serializers.ModelSerializer):
         fields = ['id', 'sex', 'catch', 'lengths', ]
 
     # This is a nested serializer, so we have to overwrite the create function
-
     def create(self, validated_data):
         # Firstly, get the data from the nested parts
         lengths_data = validated_data.pop('lengths')

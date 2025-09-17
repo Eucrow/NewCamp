@@ -20,100 +20,103 @@ import CatchesContext from "../contexts/CatchesContext";
  * @returns {boolean} isSpeciesValid - Whether a species has been selected
  * @returns {boolean} existsCatch - Whether a catch with same species and category already exists
  */
-export const useCatchValidation = (newCatch) => {
-	// State to hold all validation-related values
-	const [validationState, setValidationState] = useState({
-		isFormValid: false,
-		errors: {
-			weight: "",
-			sampledWeight: "",
-			category: "",
-		},
-		isSpeciesValid: false,
-		existsCatch: true,
-	});
+export const useCatchValidation = newCatch => {
+  // State to hold all validation-related values
+  const [validationState, setValidationState] = useState({
+    isFormValid: false,
+    errors: {
+      weight: "",
+      sampledWeight: "",
+      category: "",
+    },
+    isSpeciesValid: false,
+    existsCatch: true,
+  });
 
-	const catchesContext = useContext(CatchesContext);
+  const catchesContext = useContext(CatchesContext);
 
-	/**
-	 * Validates the weight and sampled weight relationship.
-	 * The total weight must be greater than or equal to the sampled weight.
-	 *
-	 * @returns {boolean} Whether the weight validation passed
-	 */
-	const validateWeight = useCallback(() => {
-		const isValid = Number(newCatch.weight) >= Number(newCatch.sampled_weight);
+  /**
+   * Validates the weight and sampled weight relationship.
+   * The total weight must be greater than or equal to the sampled weight.
+   *
+   * @returns {boolean} Whether the weight validation passed
+   */
+  const validateWeight = useCallback(() => {
+    const isValid = Number(newCatch.weight) >= Number(newCatch.sampled_weight);
 
-		setValidationState((prev) => ({
-			...prev,
-			errors: {
-				weight: isValid ? "" : "Weight must be greater than sampled weight",
-				sampledWeight: isValid ? "" : "Sampled weight must be less than weight",
-			},
-		}));
+    setValidationState(prev => ({
+      ...prev,
+      errors: {
+        weight: isValid ? "" : "Weight must be greater than sampled weight",
+        sampledWeight: isValid ? "" : "Sampled weight must be less than weight",
+      },
+    }));
 
-		return isValid;
-	}, [newCatch.weight, newCatch.sampled_weight]);
+    return isValid;
+  }, [newCatch.weight, newCatch.sampled_weight]);
 
-	/**
-	 * Validates that all required fields are filled.
-	 * Checks group, species, category and weight.
-	 *
-	 * @returns {boolean} Whether all required fields are valid
-	 */
-	const validateRequiredFields = useCallback(() => {
-		const requiredFields = {
-			group: newCatch.group,
-			sp_id: newCatch.sp_id,
-			category: newCatch.category,
-			weight: newCatch.weight,
-		};
+  /**
+   * Validates that all required fields are filled.
+   * Checks group, species, category and weight.
+   *
+   * @returns {boolean} Whether all required fields are valid
+   */
+  const validateRequiredFields = useCallback(() => {
+    const requiredFields = {
+      group: newCatch.group,
+      sp_id: newCatch.sp_id,
+      category: newCatch.category,
+      weight: newCatch.weight,
+    };
 
-		const isValid = Object.values(requiredFields).every(
-			(value) => value !== null && value !== "" && value !== "Select species..."
-		);
+    const isValid = Object.values(requiredFields).every(
+      value => value !== null && value !== ""
+    );
 
-		return isValid;
-	}, [newCatch.group, newCatch.sp_id, newCatch.category, newCatch.weight]);
+    return isValid;
+  }, [newCatch.group, newCatch.sp_id, newCatch.category, newCatch.weight]);
 
-	// Effect hook that handles form validation on every change.
-	useEffect(() => {
-		// Update species validation state when species selection changes
-		setValidationState((prev) => ({
-			...prev,
-			isSpeciesValid: newCatch.sp_id !== "" && newCatch.sp_id !== undefined,
-		}));
+  // Effect hook that handles form validation on every change.
+  useEffect(() => {
+    // Update species validation state when species selection changes
+    setValidationState(prev => ({
+      ...prev,
+      isSpeciesValid: newCatch.sp_id !== "" && newCatch.sp_id !== undefined,
+    }));
 
-		// Check if the catch already exists
-		const existsCatch = catchesContext.existsCatch(
-			newCatch.sp_id,
-			newCatch.category,
-			newCatch.catch_id
-		);
+    // Check if the catch already exists
+    const existsCatch = catchesContext.existsCatch(
+      newCatch.sp_id,
+      newCatch.category,
+      newCatch.catch_id
+    );
 
-		const isValid = validateWeight() && validateRequiredFields() && !existsCatch;
+    const isValid =
+      validateWeight() && validateRequiredFields() && !existsCatch;
 
-		setValidationState((prev) => ({
-			...prev,
-			existsCatch: existsCatch,
-			isFormValid: isValid,
-			errors: {
-				...prev.errors,
-				category: existsCatch ? "Category of this species already exists." : "",
-			},
-		}));
-	}, [
-		validateWeight,
-		validateRequiredFields,
-		newCatch.sp_id,
-		newCatch.category,
-		newCatch.catch_id,
-	]);
+    setValidationState(prev => ({
+      ...prev,
+      existsCatch: existsCatch,
+      isFormValid: isValid,
+      errors: {
+        ...prev.errors,
+        category: existsCatch ? "Category of the species already exists." : "",
+      },
+    }));
+  }, [
+    validateWeight,
+    validateRequiredFields,
+    newCatch.sp_id,
+    newCatch.sp_code,
+    newCatch.sp_name,
+    newCatch.category,
+    newCatch.catch_id,
+  ]);
 
-	return {
-		validationErrors: validationState.errors,
-		isFormValid: validationState.isFormValid,
-		isSpeciesValid: validationState.isSpeciesValid,
-		existsCatch: validationState.existsCatch,
-	};
+  return {
+    validationErrors: validationState.errors,
+    isFormValid: validationState.isFormValid,
+    isSpeciesValid: validationState.isSpeciesValid,
+    existsCatch: validationState.existsCatch,
+  };
 };

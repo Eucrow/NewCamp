@@ -8,27 +8,27 @@ import React from "react";
  * @param {boolean} disabled if the button is disabled or not.
  */
 const UiButton = ({ children, method, buttonText, disabled = false }) => {
-	const hasChildren = children !== undefined;
+  const hasChildren = children !== undefined;
 
-	const buttonClass = hasChildren
-		? "buttonsWrapper__button icon_button"
-		: "buttonsWrapper__button";
+  const buttonClass = hasChildren
+    ? "buttonsWrapper__button icon_button"
+    : "buttonsWrapper__button";
 
-	const renderedButton = (
-		<button
-			className={buttonClass}
-			type="button"
-			title={buttonText}
-			disabled={disabled}
-			onClick={(e) => {
-				method(e);
-			}}
-		>
-			{hasChildren ? children : buttonText}
-		</button>
-	);
+  const renderedButton = (
+    <button
+      className={buttonClass}
+      type="button"
+      title={buttonText}
+      disabled={disabled}
+      onClick={e => {
+        method(e);
+      }}
+    >
+      {hasChildren ? children : buttonText}
+    </button>
+  );
 
-	return renderedButton;
+  return renderedButton;
 };
 
 export default UiButton;

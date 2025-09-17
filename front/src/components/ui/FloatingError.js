@@ -18,27 +18,27 @@ import React from "react";
  * />
  */
 const FloatingError = ({ message, show, inputRef }) => {
-	// Early return if component should not be shown
-	if (!show || !message) return null;
+  // Early return if component should not be shown
+  if (!show || !message) return null;
 
-	/**
-	 * Calculates the position of the error message relative to the input element
-	 * @returns {Object} CSS position properties
-	 */
-	const getPosition = () => {
-		if (!inputRef.current) return {};
-		const rect = inputRef.current.getBoundingClientRect();
-		return {
-			top: `${rect.bottom + window.scrollY + 5}px`,
-			left: `${rect.left + window.scrollX}px`,
-		};
-	};
+  /**
+   * Calculates the position of the error message relative to the input element
+   * @returns {Object} CSS position properties
+   */
+  const getPosition = () => {
+    if (!inputRef.current) return {};
+    const rect = inputRef.current.getBoundingClientRect();
+    return {
+      top: `${rect.bottom + window.scrollY + 5}px`,
+      left: `${rect.left + window.scrollX}px`,
+    };
+  };
 
-	return (
-		<div className="floating-error" style={getPosition()}>
-			{message}
-		</div>
-	);
+  return (
+    <div className="floating-error" style={getPosition()}>
+      {message}
+    </div>
+  );
 };
 
 export default FloatingError;

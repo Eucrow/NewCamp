@@ -1,286 +1,224 @@
 import React, { useEffect, useState } from "react";
 
+import { API_CONFIG, buildApiUrl } from "../../config/api";
+
 import SurveysContext from "../../contexts/SurveysContext";
+
+import { useSurveysCrud } from "../../hooks/useSurveysCrud";
 
 import SurveysButtonBar from "./SurveysButtonBar";
 import Survey from "./Survey";
 import NewSurveyForm from "./NewSurveyForm";
+import { useStratificationsCrud } from "../../hooks/useStratificationsCrud";
 
 /**
- * Component list of surveys.
- * List of all the surveys stored in database.
+ * Surveys component manages the display and interaction of survey data.
+ *
+ * This component provides a complete interface for managing surveys including:
+ * - Displaying a list of all surveys from the database
+ * - Creating new surveys through a form interface
+ * - Editing existing survey properties (name, stratification, ship assignment)
+ * - Deleting surveys (with restrictions for surveys containing stations)
+ * - Managing survey state with backup/restore functionality
+ *
+ * The component integrates with multiple hooks for data management and provides
+ * context to child components for survey operations. It enforces business rules
+ * such as preventing deletion of surveys that contain stations.
+ *
+ * @component
+ * @returns {JSX.Element} The complete surveys management interface
+ *
+ * @example
+ * // Basic usage in a route or parent component
+ * <Surveys />
+ *
+ * @requires useSurveysCrud - Hook for survey CRUD operations
+ * @requires useStratificationsCrud - Hook for stratification data
+ * @requires SurveysContext - Context provider for child components
  */
 const Surveys = () => {
-	const [surveys, setSurveys] = useState([]);
-	const [surveysBackup, setSurveysBackup] = useState([]);
-	const [stratifications, setStratifications] = useState([]);
-	const [add, setAdd] = useState(false);
+  const {
+    surveys,
+    setSurveys,
+    getSurveys,
+    getSurveysWithStations,
+    surveysWithStations,
+    surveysBackup,
+    ships,
+    getShips,
+    createSurvey,
+    updateSurvey,
+    deleteSurvey,
+  } = useSurveysCrud();
 
-	const apiSurvey = "http://127.0.0.1:8000/api/1.0/survey/";
-	const apiStratification = "http://127.0.0.1:8000/api/1.0/stratifications/";
+  const { stratifications, fetchStratifications } = useStratificationsCrud();
 
-	/**
-	 * Manage change in fields of a previous created survey.
-	 * @param {event} e - Event.
-	 * @param {numeric} surveyId - Identification number of the survey which fields are managed.
-	 */
-	const handleChange = (e, surveyId) => {
-		const name = e.target.name;
-		const value = e.target.value;
+  const [addingSurvey, setAddingSurvey] = useState(false);
 
-		e.preventDefault();
-		const newSurveys = surveys.map((survey) => {
-			if (survey.id === surveyId) {
-				let newSurvey = { ...survey };
-				newSurvey[name] = value;
-				return newSurvey;
-			} else {
-				return survey;
-			}
-		});
+  const apiSurvey = buildApiUrl(API_CONFIG.ENDPOINTS.SURVEY);
 
-		setSurveys(newSurveys);
-	};
+  /**
+   * Handles input field changes for survey properties.
+   * @param {Event} e - The input change event
+   * @param {number} surveyId - ID of the survey being modified
+   * @returns {void}
+   */
+  const handleChange = (e, surveyId) => {
+    const name = e.target.name;
+    const value = e.target.value;
 
-	const handleChangeStratification = (e, surveyId) => {
-		const value = e.target.value;
-		e.preventDefault();
+    e.preventDefault();
+    const newSurveys = surveys.map(survey => {
+      if (survey.id === surveyId) {
+        let newSurvey = { ...survey };
+        newSurvey[name] = value;
+        return newSurvey;
+      } else {
+        return survey;
+      }
+    });
 
-		const stratification = stratifications.find((st) => {
-			return st.id === Number(e.target.value);
-		});
+    setSurveys(newSurveys);
+  };
 
-		const newSurveys = surveys.map((survey) => {
-			if (survey.id === surveyId) {
-				let newSurvey = { ...survey };
-				newSurvey["stratification_id"] = value;
-				newSurvey["stratification"] = stratification.stratification;
-				return newSurvey;
-			} else {
-				return survey;
-			}
-		});
-		setSurveys(newSurveys);
-	};
+  /**
+   * Handles stratification selection changes for a survey.
+   * @param {Event} e - The select change event
+   * @param {number} surveyId - ID of the survey being modified
+   * @returns {void}
+   */
+  const handleChangeStratification = (e, surveyId) => {
+    const value = e.target.value;
+    e.preventDefault();
 
-	/**
-	 * Get all surveys from database.
-	 */
-	const getSurveys = () => {
-		fetch(apiSurvey)
-			.then((response) => {
-				if (response.status > 400) {
-					alert("something were wrong getting the surveys!!");
-				}
-				return response.json();
-			})
-			.then((surveys) => {
-				setSurveys(surveys);
-				setSurveysBackup(surveys);
-			})
-			.catch((error) => console.log(error));
-	};
+    const stratification = stratifications.find(st => {
+      return st.id === Number(e.target.value);
+    });
 
-	/**
-	 * Create survey in database and update the state.
-	 * @param {object} survey - Survey object to create.
-	 */
-	const createSurvey = (survey) => {
-		fetch(apiSurvey, {
-			method: "POST",
-			headers: {
-				"Content-type": "Application/json",
-				Accept: "Application/json",
-			},
-			body: JSON.stringify(survey),
-		})
-			.then((response) => {
-				return response.json();
-			})
-			.then((survey) => {
-				const newSurveys = [...surveys, survey];
+    const newSurveys = surveys.map(survey => {
+      if (survey.id === surveyId) {
+        let newSurvey = { ...survey };
+        newSurvey["stratification"] = value;
+        newSurvey["stratification_name"] = stratification.stratification;
+        return newSurvey;
+      } else {
+        return survey;
+      }
+    });
+    setSurveys(newSurveys);
+  };
 
-				setSurveys(newSurveys);
-			})
-			.catch((error) => alert(error));
-	};
+  /**
+   * Handles ship selection changes for a survey.
+   * @param {Event} e - The select change event
+   * @param {number} shipId - ID of the survey being modified
+   * @returns {void}
+   */
+  const handleChangeShip = (e, shipId) => {
+    const value = e.target.value;
+    e.preventDefault();
 
-	/**
-	 * Update survey from database and state.
-	 * @param {numeric} surveyId - Survey id of survey to update.
-	 */
-	const updateSurvey = (surveyId) => {
-		const api = apiSurvey + surveyId;
+    const ship = ships.find(s => {
+      return s.id === Number(e.target.value);
+    });
 
-		const updatedSurvey = surveys.filter((survey) => {
-			return survey.id === surveyId;
-		});
+    const newSurveys = surveys.map(survey => {
+      if (survey.id === shipId) {
+        let newSurvey = { ...survey };
+        newSurvey["ship"] = value;
+        newSurvey["ship_name"] = ship.name;
+        return newSurvey;
+      } else {
+        return survey;
+      }
+    });
+    setSurveys(newSurveys);
+  };
 
-		fetch(api, {
-			method: "PUT",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(updatedSurvey[0]),
-		})
-			.then((response) => {
-				if (response.status > 400) {
-					alert("something were wrong updating the survey!!");
-				}
-				return response.json();
-			})
-			.catch((error) => console.log(error));
-	};
+  /**
+   * Restores surveys to their original state from backup.
+   * @returns {void}
+   */
+  const handleCancelEditSurvey = () => {
+    setSurveys(surveysBackup);
+  };
 
-	/**
-	 * Restores the survey to its original state.
-	 * @param {number} surveyId - The ID of the haul to be restored.
-	 */
+  /**
+   * Initializes component data on mount.
+   * @returns {void}
+   */
+  useEffect(() => {
+    fetchStratifications();
+    getShips();
+    getSurveys();
+    getSurveysWithStations();
+  }, []);
 
-	const handleCancelEditSurvey = () => {
-		setSurveys(surveysBackup);
-	};
+  /**
+   * Renders the complete surveys management interface.
+   * @returns {JSX.Element} The rendered survey management content
+   */
+  const renderContent = () => {
+    let content;
 
-	/**
-	 * Delete survey from database and state.
-	 * @param {numeric} surveyId Survey identificator of survey to delete.
-	 */
-	const deleteSurvey = (surveyId) => {
-		const api = apiSurvey + surveyId;
+    content = (
+      <SurveysContext.Provider
+        value={{
+          apiSurvey,
+          handleChange,
+          handleChangeStratification,
+          handleChangeShip,
+          addingSurvey,
+          setAddingSurvey,
+          createSurvey,
+          updateSurvey,
+          deleteSurvey,
+          stratifications,
+          ships,
+          surveys,
+          handleCancelEditSurvey,
+        }}
+      >
+        <main>
+          <header>
+            <h1 className="title">Surveys</h1>
+          </header>
 
-		fetch(api, {
-			method: "DELETE",
-			headers: {
-				"Content-type": "Application/json",
-				Accept: "Application/json",
-			},
-		})
-			.then(() => {
-				const newSurveys = surveys.filter((survey) => survey.id !== surveyId);
-				setSurveys(newSurveys);
-			})
-			.catch((error) => alert(error));
-	};
+          <div className="wrapper strataWrapper stratifications__notes">
+            The management of surveys has some limitations. To avoid
+            inconsistencies, the system does not allow the deletion of surveys
+            that contains stations. To remove a survey, please ensure it does
+            not contain any stations.
+          </div>
 
-	/**
-	 * Get all stratifications.
-	 */
-	const getStratifications = () => {
-		return fetch(apiStratification)
-			.then((response) => {
-				if (response.status > 400) {
-					alert("something were wrong getting the stratifications!!");
-				}
-				return response.json();
-			})
-			.then((stratifications) => {
-				setStratifications(stratifications);
-			})
-			.catch((error) => console.log(error));
-	};
+          <div className="wrapper surveysWrapper">
+            <SurveysButtonBar
+              addingSurvey={addingSurvey}
+              handleAdd={setAddingSurvey}
+            />
+            {addingSurvey === true ? <NewSurveyForm /> : ""}
 
-	// VALIDATIONS
-	/**
-	 * Prevent 'e' and '-' in numeric input
-	 * @param {e} onKeyDown event
-	 */
-	const preventNegativeE = (e) => {
-		if (e.key === "e" || e.key === "-") {
-			e.preventDefault();
-		}
-	};
+            {surveys.map(survey => {
+              const hasStations = surveysWithStations.some(
+                s => s.id === survey.id
+              );
+              return (
+                <Survey
+                  key={survey.id}
+                  survey={survey}
+                  hasStations={hasStations}
+                />
+              );
+            })}
+          </div>
+        </main>
+      </SurveysContext.Provider>
+    );
 
-	/**
-	 * Validate start date with end date
-	 * @param {event} e onChange event
-	 * @returns In case of error in date, show report validity.
-	 */
-	const validateStartDate = (e, end_date) => {
-		e.target.setCustomValidity("");
+    return content;
+  };
 
-		if (typeof end_date != "undefined" && e.target.value > end_date) {
-			e.target.setCustomValidity("Start date must be before the end date.");
-		}
-
-		return e.target.reportValidity();
-	};
-
-	/**
-	 * Validate end date with start date
-	 * @param {event} e onChange event.
-	 * @param {start_date} date Start date to compare with.
-	 * @returns In case of error in date, show report validity.
-	 */
-	const validateEndDate = (e, start_date) => {
-		e.target.setCustomValidity("");
-
-		if (typeof start_date != "undefined" && start_date > e.target.value) {
-			e.target.setCustomValidity("End date must be after the start date.");
-		}
-
-		return e.target.reportValidity();
-	};
-
-	/**
-	 * Force reportValidity() of an element.
-	 * Used with onInput event to show the validation messages in real time instead of show it when the form is submitted.
-	 * @param {e} e onInput event.
-	 */
-	const forceReportValidity = (e) => {
-		e.target.reportValidity();
-	};
-
-	useEffect(() => {
-		getStratifications();
-		getSurveys();
-	}, []);
-
-	/**
-	 * Create content to render.
-	 * @private
-	 */
-	const renderContent = () => {
-		let content;
-
-		content = (
-			<SurveysContext.Provider
-				value={{
-					apiSurvey: apiSurvey,
-					handleChange: handleChange,
-					handleChangeStratification: handleChangeStratification,
-					add: add,
-					setAdd: setAdd,
-					createSurvey: createSurvey,
-					updateSurvey: updateSurvey,
-					deleteSurvey: deleteSurvey,
-					stratifications: stratifications,
-					preventNegativeE: preventNegativeE,
-					validateStartDate: validateStartDate,
-					validateEndDate: validateEndDate,
-					forceReportValidity: forceReportValidity,
-					handleCancelEditSurvey: handleCancelEditSurvey,
-					getSurveys: getSurveys,
-				}}
-			>
-				<main>
-					<header>
-						<h1 className="title">Surveys</h1>
-					</header>
-
-					<div className="wrapper surveysWrapper">
-						<SurveysButtonBar add={add} handleAdd={setAdd} />
-						{add === true ? <NewSurveyForm /> : ""}
-
-						{surveys.map((survey) => {
-							return <Survey key={survey.id} survey={survey} />;
-						})}
-					</div>
-				</main>
-			</SurveysContext.Provider>
-		);
-
-		return content;
-	};
-
-	return renderContent();
+  return renderContent();
 };
 
 export default Surveys;

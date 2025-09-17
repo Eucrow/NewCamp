@@ -16,33 +16,33 @@ import React from "react";
  */
 
 const UiButtonStatusHandle = ({
-	children,
-	buttonText,
-	handleMethod,
-	newStatus,
-	disabled = false,
+  children,
+  buttonText,
+  handleMethod,
+  newStatus,
+  disabled = false,
 }) => {
-	const hasChildren = children !== undefined;
+  const hasChildren = children !== undefined;
 
-	const buttonClass = hasChildren
-		? "buttonsWrapper__button icon_button"
-		: "buttonsWrapper__button";
+  const buttonClass = hasChildren
+    ? "buttonsWrapper__button icon_button"
+    : "buttonsWrapper__button";
 
-	const renderedButton = (
-		<button
-			className={buttonClass}
-			type="button"
-			title={buttonText}
-			onClick={() => {
-				handleMethod(newStatus);
-			}}
-			disabled={disabled}
-			autoFocus
-		>
-			{hasChildren ? children : buttonText}
-		</button>
-	);
-	return renderedButton;
+  const renderedButton = (
+    <button
+      className={buttonClass}
+      type="button"
+      title={buttonText}
+      onClick={() => {
+        handleMethod(newStatus);
+      }}
+      disabled={disabled}
+      autoFocus
+    >
+      {hasChildren ? children : buttonText}
+    </button>
+  );
+  return renderedButton;
 };
 
 export default UiButtonStatusHandle;
