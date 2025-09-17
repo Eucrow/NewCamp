@@ -10,7 +10,7 @@ import GlobalContext from "./contexts/GlobalContext.js";
 import { HashRouter as Router, Route, Link } from "react-router-dom";
 
 import ComponentsSurveys from "./components/surveys/Surveys.js";
-import ComponentsSurveySelect from "./components/surveySelect/SurveySelect.js";
+import SurveySelect from "./components/surveySelect/SurveySelect.js";
 import Stations from "./components/stations/Stations.js";
 import Species from "./components/species/Species";
 import Ships from "./components/ships/Ships";
@@ -20,18 +20,9 @@ import Measurements from "./components/measurements/Measurements";
 import Reports from "./components/reports/Reports.js";
 
 export default function App() {
-  const [selectedSurvey, setSelectedSurvey] = useState(() => {
-    const survey_description =
-      window.localStorage.getItem("survey_description");
-
-    return survey_description !== null ? survey_description : "";
-  });
-
-  const [selectedSurveyId, setSelectedSurveyId] = useState(() => {
-    const survey_id = window.localStorage.getItem("survey_id");
-
-    return survey_id !== null ? survey_id : "";
-  });
+  const [selectedSurvey, setSelectedSurvey] = useState("");
+  const [selectedSurveyId, setSelectedSurveyId] = useState("");
+  const [selectedSurveyAcronym, setSelectedSurveyAcronym] = useState("");
 
   const apiSpecies = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SPECIES);
   const apiMeasurementTypes = buildApiUrl(
@@ -105,6 +96,8 @@ export default function App() {
         setSelectedSurvey,
         selectedSurveyId,
         setSelectedSurveyId,
+        selectedSurveyAcronym,
+        setSelectedSurveyAcronym,
       }}
     >
       <GlobalContext.Provider
@@ -194,7 +187,7 @@ export default function App() {
             path="/SurveySelect"
             exact
             render={props => (
-              <ComponentsSurveySelect
+              <SurveySelect
                 {...props}
                 selectedSurvey={selectedSurvey}
                 setSelectedSurvey={setSelectedSurvey}

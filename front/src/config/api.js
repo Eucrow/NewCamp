@@ -27,13 +27,13 @@ export const API_CONFIG = {
     GET_SAMPLERS: "/samplers/",
 
     // Species endpoints
-    GET_SPECIES: "/species",
+    GET_SPECIES: "/species/",
 
     // Measurement types endpoints
-    GET_MEASUREMENT_TYPES: "/measurement_types",
+    GET_MEASUREMENT_TYPES: "/measurement_types/",
 
     // Surveys endpoints
-    GET_SURVEYS: "/survey",
+    GET_SURVEYS: "/survey/",
     SURVEY: "/survey/",
     SURVEY_BY_ID: surveyId => `/survey/${surveyId}`,
     SURVEYS_WITH_STATIONS: "/surveys/surveys-with-stations",
@@ -76,13 +76,22 @@ export const API_CONFIG = {
       `/reports/camp/fauna/${surveyAcronym}`,
     GET_REPORT_CAMP_LENGTHS_CSV: surveyAcronym =>
       `/reports/camp/lengths/${surveyAcronym}`,
-    GET_REPORT_CAMP_SPECIES_CSV: "/reports/report_camp_species_csv/",
+    GET_REPORT_CAMP_HYDROGRAPHY_CSV: surveyAcronym =>
+      `/reports/camp/hydrography/${surveyAcronym}`,
+    GET_REPORT_CAMP_SPECIES_CSV: () => "/reports/camp/species/",
   },
   HEADERS: {
     DEFAULT: {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
+  },
+  FILENAMES: {
+    CAMP_HAULS_CSV: "camp_hauls_report",
+    CAMP_FAUNA_CSV: "camp_fauna_report",
+    CAMP_LENGTHS_CSV: "camp_lengths_report",
+    CAMP_HYDROGRAPHY_CSV: "camp_hydrography_report",
+    CAMP_SPECIES_CSV: "camp_species_report",
   },
 };
 

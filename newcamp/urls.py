@@ -82,7 +82,7 @@ urlpatterns = [
     # MeasurementType API URLS
     path('api/1.0/measurement_types/<int:pk>', MeasurementTypeAPI.as_view(),
          name='measurement_units_retrieve_update_delete'),
-    path('api/1.0/measurement_types', MeasurementTypeListCreateAPI.as_view(),
+    path('api/1.0/measurement_types/', MeasurementTypeListCreateAPI.as_view(),
          name='measurement_units_list_create'),
 
     # Trawls API URLS
@@ -231,7 +231,7 @@ urlpatterns = [
             name='report_csv_camp_lengths'),
     re_path(r'api/1.0/reports/camp/hydrography/(?P<acronym>[A-Za-z][0-9][0-9])$', ReportCampHydrographyCSVApi.as_view(),
             name='report_csv_camp_hydrography'),
-    re_path(r'api/1.0/reports/camp/species$', ReportCampSpeciesCSVApi.as_view(),
+    re_path(r'api/1.0/reports/camp/species/$', ReportCampSpeciesCSVApi.as_view(),
             name='report_csv_camp_hydrography'),
     # Frontend
     # path('', include('frontend.urls')),
