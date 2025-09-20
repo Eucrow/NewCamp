@@ -90,7 +90,7 @@ const Lengths = ({ sex, catchId, spId }) => {
    * @returns {Object} The species data.
    */
   const getSp = useCallback(async () => {
-    const api = globalContext.apiSpecies + "/" + spId;
+    const api = globalContext.apiSpecies + spId;
     const response = await fetch(api);
     if (response.status > 400) {
       setResponseError("Something went wrong! (getSpecies)");
