@@ -10,7 +10,7 @@ const UnselectSurveyButton = () => {
     return (
       <button
         onClick={() => {
-          // localStorage.clear();
+          localStorage.clear();
           setSelectedSurvey("");
           setSelectedSurveyId("");
           setSelectedSurveyAcronym("");

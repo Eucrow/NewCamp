@@ -20,9 +20,21 @@ import Measurements from "./components/measurements/Measurements";
 import Reports from "./components/reports/Reports.js";
 
 export default function App() {
-  const [selectedSurvey, setSelectedSurvey] = useState("");
-  const [selectedSurveyId, setSelectedSurveyId] = useState("");
-  const [selectedSurveyAcronym, setSelectedSurveyAcronym] = useState("");
+  const [selectedSurvey, setSelectedSurvey] = useState(
+    window.localStorage.getItem("survey_description")
+      ? window.localStorage.getItem("survey_description")
+      : ""
+  );
+  const [selectedSurveyId, setSelectedSurveyId] = useState(
+    window.localStorage.getItem("survey_id")
+      ? window.localStorage.getItem("survey_id")
+      : ""
+  );
+  const [selectedSurveyAcronym, setSelectedSurveyAcronym] = useState(
+    window.localStorage.getItem("survey_acronym")
+      ? window.localStorage.getItem("survey_acronym")
+      : ""
+  );
 
   const apiSpecies = buildApiUrl(API_CONFIG.ENDPOINTS.GET_SPECIES);
   const apiMeasurementTypes = buildApiUrl(
