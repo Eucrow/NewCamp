@@ -53,9 +53,9 @@ const HaulFormNew = ({
             className="input__noSpinner"
             required
             min="1"
-            max="99"
-            maxLength="2"
-            size={2}
+            max="999"
+            maxLength="3"
+            size={3}
             ref={haulRef}
             onChange={e => {
               handleChange(e);
