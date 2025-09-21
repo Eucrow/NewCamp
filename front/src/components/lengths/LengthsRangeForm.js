@@ -36,6 +36,13 @@ const LengthsRangeForm = () => {
   let maximumRef = useRef(null);
 
   useEffect(() => {
+    // if (edit && nameInputRef.current) {
+    minimumRef.current.focus();
+    minimumRef.current.select();
+    // }
+  }, []);
+
+  useEffect(() => {
     if (Number(minimumRange) > Number(maximumRange)) {
       maximumRef.current.setCustomValidity(
         "The maximum length must be greater than the minimum length."
@@ -64,7 +71,7 @@ const LengthsRangeForm = () => {
             name="minimum"
             ref={minimumRef}
             step={increment}
-            autoFocus
+            autoFocus={true}
             min="0"
             max="9999"
             value={minimumRange}
