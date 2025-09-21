@@ -151,9 +151,9 @@ const HaulFormEdit = ({
             id="haul"
             className="input__noSpinner"
             min="1"
-            max="99"
-            maxLength="2"
-            size={2}
+            max="999"
+            maxLength="3"
+            size={3}
             value={thisHaul.haul || ""}
             onChange={e => {
               handleChange(e);

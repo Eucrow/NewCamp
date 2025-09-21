@@ -14,7 +14,7 @@ class Haul(models.Model):
         'strata.Stratum', null=True, blank=True, on_delete=models.RESTRICT)
     sampler = models.ForeignKey('samplers.Sampler', on_delete=models.CASCADE)
     haul = models.PositiveIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(99)])
+        validators=[MinValueValidator(1), MaxValueValidator(999)])
     # gear = models.PositiveIntegerField(null=True, blank=True)
     # valid = models.BooleanField(null=True, blank=True)
     valid = models.BooleanField(default=True)
