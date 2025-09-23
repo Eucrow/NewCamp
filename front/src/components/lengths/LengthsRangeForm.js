@@ -1,6 +1,10 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { useState } from "react";
 
+import { useRangeValidation } from "../../hooks/useRangeValidation";
+
+import FloatingError from "../ui/FloatingError";
+
 import LengthsContext from "../../contexts/LengthsContext";
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
@@ -15,14 +19,18 @@ const LengthsRangeForm = () => {
 
   const [maximumRange, setMaximumRange] = useState("");
 
-  const [validRange, setValidRange] = useState(true);
-
   const unit = lengthsContext.measurement
     ? lengthsContext.measurement.name
     : "no unit";
+
   const increment =
     lengthsContext.measurement.increment /
     lengthsContext.measurement.conversion_factor;
+
+  const { isRangeValid, isRangeValuesValid, rangeErrors } = useRangeValidation({
+    minimumRange,
+    maximumRange,
+  });
 
   const handleMinimumRange = e => {
     setMinimumRange(e.target.value);
@@ -36,23 +44,9 @@ const LengthsRangeForm = () => {
   let maximumRef = useRef(null);
 
   useEffect(() => {
-    // if (edit && nameInputRef.current) {
     minimumRef.current.focus();
     minimumRef.current.select();
-    // }
   }, []);
-
-  useEffect(() => {
-    if (Number(minimumRange) > Number(maximumRange)) {
-      maximumRef.current.setCustomValidity(
-        "The maximum length must be greater than the minimum length."
-      );
-      setValidRange(false);
-    } else {
-      maximumRef.current.setCustomValidity("");
-      setValidRange(true);
-    }
-  }, [minimumRange, maximumRange]);
 
   return (
     <form className="lengthsWrapper">
@@ -86,7 +80,9 @@ const LengthsRangeForm = () => {
             Maximum length ({unit}):
           </label>
           <input
-            className="formLengthsRange__cell"
+            className={` formLengthsRange__cell ${
+              isRangeValuesValid === true ? "" : "invalid"
+            }`}
             type="number"
             id="maximum"
             name="maximum"
@@ -97,6 +93,11 @@ const LengthsRangeForm = () => {
             value={maximumRange}
             onChange={e => handleMaximumRange(e)}
           />
+          <FloatingError
+            message={rangeErrors.maximumRange}
+            show={!isRangeValuesValid}
+            inputRef={maximumRef}
+          />
         </div>
       </div>
       <div className="formLengthsRange__row">
@@ -104,7 +105,7 @@ const LengthsRangeForm = () => {
           <button
             className="formLengthsRange__cell buttonsWrapper__button"
             type="button"
-            disabled={!validRange}
+            disabled={!isRangeValid}
             onClick={() => {
               lengthsContext.createRangeLengths(minimumRange, maximumRange);
               setMaximumRange("");

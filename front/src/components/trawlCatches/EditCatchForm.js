@@ -42,10 +42,6 @@ const EditCatchForm = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("update editingCatchId to:", catchesContext.editingCatchId);
-  }, [catchesContext.editingCatchId]);
-
   const renderContent = () => {
     return (
       <form className="catches__table__row" onSubmit={e => handleSubmit(e)}>
