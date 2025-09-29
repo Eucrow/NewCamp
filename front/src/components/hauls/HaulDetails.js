@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useMemo } from "react";
 
 import {
+  convertDMToDecimalCoordinate,
   convertDDMToDMCoordinates,
   convertTrawlCoordinates,
   convertHydrographyCoordinates,
 } from "../../utils/Coordinates";
 import { cleanEmptyValues } from "../../utils/dataUtils";
 import { haulService } from "../../services/haulService";
+
+import { useBackupState } from "../../hooks/useBackupState";
 
 import MeteorologyFormView from "./view/MeteorologyFormView";
 import TrawlFormView from "./view/TrawlFormView";
@@ -19,102 +22,132 @@ import UiButtonSave from "../ui/UiButtonSave";
 
 import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
 
+/**
+ * HaulDetails Component
+ *
+ * A comprehensive component for displaying and editing haul data with support for different sampler types.
+ * Handles trawl data (sampler_id: 1) and hydrography data (sampler_id: 2) with their respective
+ * meteorological information and coordinate systems.
+ *
+ * Key Features:
+ * - View/Edit modes with backup/restore functionality
+ * - Coordinate conversion between decimal and degree-minute formats
+ * - Form validation and data cleaning
+ * - Async data fetching and updates
+ * - Different UI layouts based on sampler type
+ *
+ * @component
+ * @param {Object} props - Component properties
+ * @param {Object} props.haul - The haul object containing basic haul information
+ * @param {string} props.haul.id - Unique identifier for the haul
+ * @param {number} props.haul.sampler_id - Sampler type: 1 for trawl, 2 for hydrography
+ * @param {boolean} props.detail - Controls visibility of haul details
+ * @param {Function} props.setDetail - Callback to toggle detail visibility
+ *
+ * @example
+ * // Basic usage
+ * <HaulDetails
+ *   haul={{ id: "123", sampler_id: 1 }}
+ *   detail={true}
+ *   setDetail={setShowDetail}
+ * />
+ *
+ * @example
+ * // For hydrography data
+ * <HaulDetails
+ *   haul={{ id: "456", sampler_id: 2 }}
+ *   detail={isDetailVisible}
+ *   setDetail={handleDetailToggle}
+ * />
+ */
 const HaulDetails = ({ haul, detail, setDetail }) => {
-  /**
-   * Component to show the details of a haul. It is possible to edit the haul.
-   * When the component is loaded, the data of the haul is fetched from the API, stored in the state and
-   * stored in the backup state. This one is used to recovery the original data if the user cancel the changes.
-   * @param {object} haul The haul object.
-   * @param {boolean} detail Boolean to show the details of the haul.
-   * @param {method} setDetail Method to set the boolean detail.
-   */
+  // State management with backup functionality for form data
+  // Each section (meteorology, hydrography, trawl, coordinates) has its own backup state
+  // This allows users to cancel changes and restore original values
+  const meteorologyState = useBackupState({});
+  const hydrographyState = useBackupState({});
+  const trawlState = useBackupState({});
 
-  const [meteorology, setMeteorology] = useState({});
-  const [hydrography, setHydrography] = useState({});
-  const [trawl, setTrawl] = useState({});
+  // Coordinates state manages degree-minute format for all operation types
+  const coordinatesState = useBackupState({
+    shooting: {
+      latitude: { degrees: 0, minutes: 0 },
+      longitude: { degrees: 0, minutes: 0 },
+    },
+    bottom: {
+      latitude: { degrees: 0, minutes: 0 },
+      longitude: { degrees: 0, minutes: 0 },
+    },
+    trawling: {
+      latitude: { degrees: 0, minutes: 0 },
+      longitude: { degrees: 0, minutes: 0 },
+    },
+    hauling: {
+      latitude: { degrees: 0, minutes: 0 },
+      longitude: { degrees: 0, minutes: 0 },
+    },
+    takeOff: {
+      latitude: { degrees: 0, minutes: 0 },
+      longitude: { degrees: 0, minutes: 0 },
+    },
+    onBoard: {
+      latitude: { degrees: 0, minutes: 0 },
+      longitude: { degrees: 0, minutes: 0 },
+    },
+    hydro: {
+      latitude: { degrees: 0, minutes: 0 },
+      longitude: { degrees: 0, minutes: 0 },
+    },
+  });
 
-  const [backupMeteorology, setBackupMeteorology] = useState({});
-  const [backupHydrography, setBackupHydrography] = useState({});
-  const [backupTrawl, setBackupTrawl] = useState({});
+  // Destructure backup state management functions for cleaner code
+  const {
+    value: meteorology,
+    setValue: setMeteorology,
+    restoreFromBackup: restoreMeteorology,
+    createBackup: createMeteorologyBackup,
+  } = meteorologyState;
+  const {
+    value: hydrography,
+    setValue: setHydrography,
+    restoreFromBackup: restoreHydrography,
+    createBackup: createHydrographyBackup,
+  } = hydrographyState;
+  const {
+    value: trawl,
+    setValue: setTrawl,
+    restoreFromBackup: restoreTrawl,
+    createBackup: createTrawlBackup,
+  } = trawlState;
+  const {
+    value: coordinates,
+    setValue: setCoordinates,
+    restoreFromBackup: restoreCoordinates,
+    createBackup: createCoordinatesBackup,
+  } = coordinatesState;
 
+  // Edit mode toggle - controls whether forms are in view or edit mode
   const [edit, setEdit] = useState(false);
 
   const [, setFetchError] = useState("");
 
-  const [coordinates, setCoordinates] = useState({
-    shooting: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    bottom: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    trawling: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    hauling: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    takeOff: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    onBoard: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    hydro: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-  });
-
-  const [backupCoordinates, setBackupCoordinates] = useState({
-    shooting: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    bottom: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    trawling: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    hauling: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    takeOff: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    onBoard: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-    hydro: {
-      latitude: { degrees: 0, minutes: 0 },
-      longitude: { degrees: 0, minutes: 0 },
-    },
-  });
-
+  // Memoized coordinate conversions to avoid unnecessary recalculations
+  // Converts trawl data to coordinate format when trawl data changes
   const trawlCoordinates = useMemo(() => {
     return Object.keys(trawl).length > 0
       ? convertTrawlCoordinates(trawl)
       : null;
   }, [trawl]);
 
+  // Converts hydrography data to coordinate format when hydrography data changes
   const hydrographyCoordinates = useMemo(() => {
     return Object.keys(hydrography).length > 0
       ? convertHydrographyCoordinates(hydrography)
       : null;
   }, [hydrography]);
 
+  // Effect to sync coordinate state when converted coordinates change
+  // This ensures the coordinate forms display the latest converted values
   useEffect(() => {
     // Convert and set coordinates when trawl or hydrography data changes
     if (trawlCoordinates || hydrographyCoordinates) {
@@ -126,10 +159,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
     }
   }, [trawlCoordinates, hydrographyCoordinates]);
 
-  useEffect(() => {
-    setBackupCoordinates(JSON.parse(JSON.stringify(coordinates)));
-  }, [coordinates]);
-
+  /**
+   * Handles meteorology form field changes
+   * @param {Event} e - Input change event
+   */
   const handleChangeMeteorology = e => {
     var name = e.target.name;
     var value = e.target.value;
@@ -139,6 +172,10 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
     }));
   };
 
+  /**
+   * Handles trawl form field changes and logs current state
+   * @param {Event} e - Input change event
+   */
   const handleChangeTrawl = e => {
     var name = e.target.name;
     var value = e.target.value;
@@ -146,8 +183,13 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
       ...prev,
       [name]: value,
     }));
+    console.log("trawl: ", trawl);
   };
 
+  /**
+   * Handles hydrography form field changes
+   * @param {Event} e - Input change event
+   */
   const handleChangeHydrography = e => {
     var name = e.target.name;
     var value = e.target.value;
@@ -157,11 +199,47 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
     }));
   };
 
+  /**
+   * Converts coordinate input values to decimal format for trawl operations
+   * @param {string} operationType - Type of operation (shooting, bottom, trawling, etc.)
+   * @param {string} coord - Coordinate type (latitude/longitude)
+   * @param {string|number} value - Input value to convert
+   * @param {string} unit - Unit type (degrees/minutes)
+   * @returns {number|null} Converted decimal coordinate or null if invalid
+   */
+  const convertCoordinateToTrawlCoordinate = (
+    operationType,
+    coord,
+    value,
+    unit
+  ) => {
+    if (unit === "degrees") {
+      const decimalCoordinate = convertDMToDecimalCoordinate(
+        value,
+        coordinates[operationType][coord].minutes
+      );
+      return decimalCoordinate;
+    } else if (unit === "minutes") {
+      const decimalCoordinate = convertDMToDecimalCoordinate(
+        coordinates[operationType][coord].degrees,
+        value
+      );
+      return decimalCoordinate;
+    }
+    return null;
+  };
+
+  /**
+   * Handles coordinate input changes and updates both coordinate and trawl states
+   * Parses input name to extract operation type, coordinate, and unit information
+   * @param {Event} e - Input change event with name format: "operation_coord_unit"
+   */
   const handleCoordinatesChange = e => {
     const { name, value } = e.target;
-    const [type, coord, unit] = name.split("_");
+    const [operation, coord, unit] = name.split("_");
 
-    const typeMap = {
+    // Map input operation names to internal state property names
+    const operationMap = {
       shooting: "shooting",
       bottom: "bottom",
       trawling: "trawling",
@@ -171,20 +249,36 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
       hidro: "hydro",
     };
 
-    const coordType = typeMap[type] || type;
+    const operationType = operationMap[operation] || operation;
 
+    // Update coordinate state with new value
     setCoordinates(prev => ({
       ...prev,
-      [coordType]: {
-        ...prev[coordType],
+      [operationType]: {
+        ...prev[operationType],
         [coord]: {
-          ...prev[coordType][coord],
+          ...prev[operationType][coord],
           [unit]: value,
         },
       },
     }));
+
+    // Update trawl state with converted decimal coordinate
+    setTrawl(prev => ({
+      ...prev,
+      [operationType + "_" + coord]: convertCoordinateToTrawlCoordinate(
+        operationType,
+        coord,
+        value,
+        unit
+      ),
+    }));
   };
 
+  /**
+   * Converts all coordinates from degree-minute format to decimal format for API submission
+   * @returns {Object} Object containing all converted coordinates with API-friendly field names
+   */
   const updateCoordinates = () => {
     const convertedCoordinates = {};
 
@@ -223,15 +317,22 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
     return convertedCoordinates;
   };
 
+  /**
+   * Handles form submission for updating haul data
+   * Processes different data types based on sampler_id and updates via API
+   * @param {Event} e - Form submit event
+   */
   const handleSubmit = async e => {
     e.preventDefault();
 
+    // Handle trawl data submission (sampler_id: 1)
     if (haul.sampler_id === 1) {
       // create a deepcopy of the trawl object
       const trawlCopy = JSON.parse(JSON.stringify(trawl));
 
       const newCoordinates = updateCoordinates();
 
+      // Update coordinate fields in trawl copy
       Object.keys(newCoordinates).forEach(key => {
         if (key.includes("latitude") || key.includes("longitude")) {
           trawlCopy[key] = newCoordinates[key];
@@ -247,6 +348,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
       setEdit(false);
     }
 
+    // Handle hydrography data submission (sampler_id: 2)
     if (haul.sampler_id === 2) {
       // create a deepcopy of the hydrography object
       const hydrographyCopy = JSON.parse(JSON.stringify(hydrography));
@@ -265,46 +367,35 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
       setEdit(false);
     }
 
+    // Update meteorology data for both sampler types
     await haulService.updateMeteorology(meteorology, haul.id);
     setEdit(false);
   };
 
   /**
-   * Restores the coordinates to their original values.
-   * This is used when the user clicks the `Cancel` button.
-   * @returns {void}
-   */
-  const restoreCoordinates = () => {
-    setCoordinates(JSON.parse(JSON.stringify(backupCoordinates)));
-  };
-
-  /**
-   * Manage the cancel button.
-   * @param {boolean} status - Whether the user is editing the haul.
-   * @returns {void}
+   * Handles cancel action by restoring all data from backups and exiting edit mode
+   * @param {boolean} status - New edit status (should be false for cancel)
    */
   const handleCancel = status => {
-    setTrawl(backupTrawl);
-    setMeteorology(backupMeteorology);
-    setHydrography(backupHydrography);
+    restoreMeteorology();
+    restoreTrawl();
+    restoreHydrography();
     restoreCoordinates();
     setEdit(status);
   };
 
   /**
-   * Fetches data from API endpoints when the `detail` state is set to `true`.
-   * If the `sampler_id` of the `haul` object is `1`, fetches meteorology and trawl data.
-   * If the `sampler_id` of the `haul` object is `2`, fetches hydrography data.
-   * Sets the `fetchError`, `meteorology`, `trawl`, and `hydrography` state variables.
-   * @param {boolean} detail - Whether to show detailed information about the haul.
-   * @param {object} haul - The haul object containing information about the haul.
-   * @param {string} haul.id - The ID of the haul.
-   * @param {number} haul.sampler_id - The ID of the sampler used for the haul.
+   * Effect hook for fetching haul data when detail view is activated
+   * Fetches different data sets based on sampler_id:
+   * - sampler_id 1: meteorology + trawl data
+   * - sampler_id 2: meteorology + hydrography data
+   * Creates backups of fetched data for cancel functionality
    */
   useEffect(() => {
     const haulData = async () => {
       if (detail === true) {
         try {
+          // Fetch trawl-specific data
           if (haul.sampler_id === 1) {
             const [meteorologyData, trawlData] = await Promise.all([
               haulService.getMeteorologyByHaulId(haul.id),
@@ -314,10 +405,11 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
             setMeteorology(meteorologyData);
             setTrawl(trawlData);
 
-            setBackupMeteorology(meteorologyData);
-            setBackupTrawl(trawlData);
+            createMeteorologyBackup(meteorologyData);
+            createTrawlBackup(trawlData);
           }
 
+          // Fetch hydrography-specific data
           if (haul.sampler_id === 2) {
             const [meteorologyData, hydrographyData] = await Promise.all([
               haulService.getMeteorologyByHaulId(haul.id),
@@ -327,8 +419,8 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
             setMeteorology(meteorologyData);
             setHydrography(hydrographyData);
 
-            setBackupMeteorology(meteorologyData);
-            setBackupHydrography(hydrographyData);
+            createMeteorologyBackup(meteorologyData);
+            createHydrographyBackup(hydrographyData);
           }
         } catch (error) {
           console.error("Error fetching haul data:", error);
@@ -341,8 +433,14 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
     haulData();
   }, [detail, haul.sampler_id, haul.id]);
 
+  /**
+   * Renders the appropriate content based on sampler type and edit mode
+   * @returns {JSX.Element|null} Rendered form component or null
+   */
   const renderContent = () => {
+    // Trawl sampler (sampler_id: 1) - handles trawl and meteorology data
     if (Number(haul.sampler_id) === 1) {
+      // View mode - displays read-only trawl and meteorology forms
       if (edit === false) {
         return (
           <form className="form--wide" disabled>
@@ -376,6 +474,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
         );
       }
 
+      // Edit mode - displays editable trawl and meteorology forms with coordinate inputs
       if (edit === true) {
         return (
           <form
@@ -428,7 +527,9 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
       }
     }
 
+    // Hydrography sampler (sampler_id: 2) - handles hydrography data with coordinates
     if (Number(haul.sampler_id) === 2) {
+      // View mode - displays read-only hydrography form with coordinates
       if (edit === false) {
         return (
           <form className="form--wide noSpinner" disabled>
@@ -461,6 +562,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
         );
       }
 
+      // Edit mode - displays editable hydrography form with coordinate inputs
       if (edit === true) {
         return (
           <form

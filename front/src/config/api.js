@@ -28,6 +28,7 @@ export const API_CONFIG = {
 
     // Species endpoints
     GET_SPECIES: "/species/",
+    SPECIES_BY_ID: speciesId => `/species/${speciesId}`,
 
     // Measurement types endpoints
     GET_MEASUREMENT_TYPES: "/measurement_types/",

@@ -307,7 +307,7 @@ const Stations = () => {
           const apiStrata = buildApiUrl(
             API_CONFIG.ENDPOINTS.STRATA_BY_STRATIFICATION(survey.stratification)
           );
-          console.log("apiStrata", apiStrata);
+
           fetch(apiStrata)
             .then(response => {
               if (response.status == 404) {
