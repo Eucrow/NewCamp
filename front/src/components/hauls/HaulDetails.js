@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 
 import {
+  convertDMToDecimalCoordinate,
   convertDDMToDMCoordinates,
   convertTrawlCoordinates,
   convertHydrographyCoordinates,
@@ -130,6 +131,18 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
     setBackupCoordinates(JSON.parse(JSON.stringify(coordinates)));
   }, [coordinates]);
 
+  // useEffect(() => {
+  //   const decimalCoordinate = convertDMToDecimalCoordinate(
+  //     coordinates[operation][coord]["degrees"],
+  //     coordinates[operation][coord]["minutes"]
+  //   );
+
+  //   setTrawl(prev => ({
+  //     ...prev,
+  //     [operationType + "_" + coord]: decimalCoordinate,
+  //   }));
+  // }, [coordinates]);
+
   const handleChangeMeteorology = e => {
     var name = e.target.name;
     var value = e.target.value;
@@ -146,6 +159,7 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
       ...prev,
       [name]: value,
     }));
+    console.log("trawl: ", trawl);
   };
 
   const handleChangeHydrography = e => {
@@ -157,11 +171,33 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
     }));
   };
 
+  const convertCoordinateToTrawlCoordinate = (
+    operationType,
+    coord,
+    value,
+    unit
+  ) => {
+    if (unit === "degrees") {
+      const decimalCoordinate = convertDMToDecimalCoordinate(
+        value,
+        coordinates[operationType][coord].minutes
+      );
+      return decimalCoordinate;
+    } else if (unit === "minutes") {
+      const decimalCoordinate = convertDMToDecimalCoordinate(
+        coordinates[operationType][coord].degrees,
+        value
+      );
+      return decimalCoordinate;
+    }
+    return null;
+  };
+
   const handleCoordinatesChange = e => {
     const { name, value } = e.target;
-    const [type, coord, unit] = name.split("_");
+    const [operation, coord, unit] = name.split("_");
 
-    const typeMap = {
+    const operationMap = {
       shooting: "shooting",
       bottom: "bottom",
       trawling: "trawling",
@@ -171,17 +207,27 @@ const HaulDetails = ({ haul, detail, setDetail }) => {
       hidro: "hydro",
     };
 
-    const coordType = typeMap[type] || type;
+    const operationType = operationMap[operation] || operation;
 
     setCoordinates(prev => ({
       ...prev,
-      [coordType]: {
-        ...prev[coordType],
+      [operationType]: {
+        ...prev[operationType],
         [coord]: {
-          ...prev[coordType][coord],
+          ...prev[operationType][coord],
           [unit]: value,
         },
       },
+    }));
+
+    setTrawl(prev => ({
+      ...prev,
+      [operationType + "_" + coord]: convertCoordinateToTrawlCoordinate(
+        operationType,
+        coord,
+        value,
+        unit
+      ),
     }));
   };
 
