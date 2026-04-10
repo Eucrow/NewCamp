@@ -50,14 +50,13 @@ const Stations = () => {
 
     const api = buildApiUrl(API_CONFIG.ENDPOINTS.STATION_BY_ID(stationId));
 
-    const updated_station = stations.filter(
-      station => station.id === stationId
-    );
+    const stationToUpdate = stations.find(station => station.id === stationId);
+    if (!stationToUpdate) return;
 
     fetch(api, {
       method: "PUT",
       headers: API_CONFIG.HEADERS.DEFAULT,
-      body: JSON.stringify(updated_station[0]), //look the [0]!!!
+      body: JSON.stringify(stationToUpdate),
     }).catch(error => console.log(error));
   };
 
@@ -66,13 +65,13 @@ const Stations = () => {
    * @param {number} stationId - The ID of the station to be restored.
    */
   const restoreStations = stationId => {
-    const newStations = stationsBackup.map(station => {
-      if (station.id === stationId) {
-        return station;
-      } else {
-        return station;
-      }
+    const originalStation = stationsBackup.find(s => s.id === stationId);
+    if (!originalStation) return;
+
+    const newStations = stations.map(station => {
+      station.id === stationId ? originalStation : station;
     });
+
     setStations(newStations);
   };
 
