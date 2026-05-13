@@ -18,9 +18,10 @@ const SelectSurveyButton = ({
       onClick={() => {
         setSelectedSurvey(survey_description);
         setSelectedSurveyId(survey_id);
+        setSelectedSurveyAcronym(survey_acronym);
         window.localStorage.setItem("survey_id", survey_id);
         window.localStorage.setItem("survey_description", survey_description);
-        setSelectedSurveyAcronym(survey_acronym);
+        window.localStorage.setItem("survey_acronym", survey_acronym);
       }}
     >
       Select Survey

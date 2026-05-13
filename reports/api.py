@@ -49,20 +49,46 @@ def get_base_survey_data(acronym):
 
 def get_trawl_data(acronym, include_meteorology=False):
     """
-    Get trawl data (stations, hauls, trawls, meteorology) for a survey and return merged DataFrame.
+    Get and merge trawl data for a survey from multiple related models.
+    
+    Filters hauls by sampler_type="trawl" and aggregates all related data including
+    stations, hauls, trawls, meteorology (optional), catches, species, lengths, sexes,
+    and sampled weights into a single merged DataFrame.
     
     Args:
-        acronym: Survey acronym
+        acronym (str): Survey acronym to filter data by
+        include_meteorology (bool, optional): Whether to include meteorology data. 
+                                            Defaults to False.
+    
     Returns:
-        tuple: (merged_df, survey, stations, hauls) where:
-            - merged_df: DataFrame with merged stations, hauls, trawls, and meteorology
-            - survey: Survey object
-            - stations: QuerySet of Station objects
-            - hauls: QuerySet of Haul objects  
+        pd.DataFrame: Merged DataFrame containing:
+            - Survey and station information
+            - Haul metadata and trawl characteristics (shooting/hauling coordinates, depth, etc.)
+            - Meteorology data (wind, sea state) - only if include_meteorology=True
+            - Catch information (category, weight, species)
+            - Species details (code, group, etc.)
+            - Length measurements by sex
+            - Sampled weights (for scaling calculations)
+    
+    Note:
+        - Only includes hauls with sampler_type="trawl" (excludes CTD)
+        - Uses left joins to preserve all haul records even if related data is missing
+        - Returns empty DataFrame if no trawl hauls exist for the survey
+    
+    Raises:
+        Survey.DoesNotExist: If the survey acronym doesn't match any Survey in database
     """
     base_df, survey, stations = get_base_survey_data(acronym)
-
+    print(f"DEBUG: Survey acronym = '{acronym}'")
+    print(f"DEBUG: Survey found = {survey}")
+    print(f"DEBUG: Stations count = {stations.count()}")
+    
+    
     hauls = Haul.objects.filter(station__in=stations, sampler_type="trawl")
+    print(f"DEBUG: Hauls count = {hauls.count()}")
+    print(f"DEBUG: All hauls (no filter) = {Haul.objects.all().count()}")
+    
+    
     hauls_df = pd.DataFrame(list(hauls.values()))
     # Merge stations and hauls dataframes
     merged_df = pd.merge(base_df, hauls_df, left_on='station_id', right_on='station_id', how='left',
@@ -125,6 +151,63 @@ def get_trawl_data(acronym, include_meteorology=False):
 
     return merged_df
 
+
+def get_hauls_data(acronym, include_meteorology=False):
+    """
+    Get trawl data (stations, hauls, trawls, meteorology) for a survey and return merged DataFrame.
+    
+    Args:
+        acronym: Survey acronym
+    Returns:
+        tuple: (merged_df, survey, stations, hauls) where:
+            - merged_df: DataFrame with merged stations, hauls, trawls, and meteorology
+            - survey: Survey object
+            - stations: QuerySet of Station objects
+            - hauls: QuerySet of Haul objects  
+    """
+    base_df, survey, stations = get_base_survey_data(acronym)
+    print(f"DEBUG: Survey acronym = '{acronym}'")
+    print(f"DEBUG: Survey found = {survey}")
+    print(f"DEBUG: Stations count = {stations.count()}")
+    
+    
+    hauls = Haul.objects.filter(station__in=stations, trawl_id__isnull=False)
+    print(f"DEBUG: Hauls count = {hauls.count()}")
+
+    
+    hauls_df = pd.DataFrame(list(hauls.values()))
+    # Merge stations and hauls dataframes
+    merged_df = pd.merge(base_df, hauls_df, left_on='station_id', right_on='station_id', how='left',
+                         suffixes=('_station', '_haul'))
+    merged_df = merged_df.rename(columns={'id': 'haul_id'})
+
+    # Get haul trawls
+    # When a QuerySet is empty, pd.DataFrame(list(...)) produces a DataFrame with no columns
+    # Check if empty and define required columns to ensure consistent structure for merge
+    trawls = HaulTrawl.objects.filter(haul_id__in=hauls)
+    trawls_df = pd.DataFrame(list(trawls.values()))
+    if trawls_df.empty:
+        trawls_df = pd.DataFrame(columns=['id', 'haul_id', 'shooting_date_time', 'shooting_latitude',
+                                          'shooting_longitude', 'shooting_depth', 'hauling_date_time',
+                                          'hauling_latitude', 'hauling_longitude', 'hauling_depth',
+                                          'course', 'velocity', 'cable', 'sweep',
+                                          'otter_boards_distance', 'horizontal_aperture', 'vertical_aperture',
+                                          'sampling_rectangle', 'track', 'comment'])
+    merged_df = pd.merge(merged_df, trawls_df, left_on='haul_id', right_on='id', how='left',
+                         suffixes=('', '_trawl'))
+
+    # Conditionally get and merge meteorology data
+    # When a QuerySet is empty, pd.DataFrame(list(...)) produces a DataFrame with no columns
+    # Check if empty and define required columns to ensure consistent structure for merge
+    if include_meteorology:
+        meteorologies = Meteorology.objects.filter(haul_id__in=hauls)
+        meteorologies_df = pd.DataFrame(list(meteorologies.values()))
+        if meteorologies_df.empty:
+            meteorologies_df = pd.DataFrame(columns=['id', 'haul_id', 'wind_direction', 'wind_velocity', 'sea_state'])
+        merged_df = pd.merge(merged_df, meteorologies_df, left_on='haul_id', right_on='id', how='left',
+                             suffixes=('', '_meteorology'))
+    
+    return merged_df
 
 def get_hydrography_data(acronym):
     """
@@ -263,7 +346,7 @@ class ReportCampLengthsCSVApi(APIView):
 
 class ReportCampHaulsCSVApi(APIView):
     def get(self, request, acronym):
-        merged_df = get_trawl_data(acronym, include_meteorology=True)
+        merged_df = get_hauls_data(acronym, include_meteorology=True)
 
         # Create response
         response = HttpResponse(content_type='text/csv')
