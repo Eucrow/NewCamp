@@ -1,6 +1,8 @@
 import csv
 import pandas as pd
 import numpy as np
+from dataclasses import dataclass
+from typing import Callable, List, Tuple, Optional, Dict, Any
 from django.http import HttpResponse
 from rest_framework.views import APIView
 
@@ -10,6 +12,220 @@ from hauls.models import Haul, HaulTrawl, Meteorology, HaulHydrography
 from catches.models import Catch
 from species.models import Sp, MeasurementType
 from samples.models import Sex, SampledWeight, Length
+
+
+# ============================================================================
+# REPORT CONFIGURATION
+# ============================================================================
+
+@dataclass
+class ColumnConfig:
+    """Configuration for a single CSV column"""
+    csv_header: str                              # Name in CSV output
+    df_column: str                               # Name in DataFrame
+    transform: Optional[Callable] = None         # Optional transformation function
+    default: Any = None                          # Default value if column missing
+    cast: Optional[Callable] = None              # Type casting (e.g., int, str)
+
+
+@dataclass
+class ReportConfig:
+    """Configuration for a complete report"""
+    name: str                                    # Report identifier
+    columns: List[ColumnConfig]                  # Column definitions
+    data_getter: Optional[Callable]              # Function to fetch data
+    data_getter_kwargs: Dict[str, Any]           # Kwargs for data getter
+    groupby_cols: Optional[List[str]] = None     # Columns to group by before output
+    agg_config: Optional[Dict[str, str]] = None  # Aggregation config for groupby
+    post_process: Optional[Callable] = None      # Optional post-processing function
+
+
+# Report configurations - centralized column and ordering definitions
+REPORT_CONFIGS = {
+    'fauna': ReportConfig(
+        name='fauna',
+        columns=[
+            ColumnConfig('acronym', 'acronym'),
+            ColumnConfig('haul', 'haul'),
+            ColumnConfig('group', 'group', cast=int),
+            ColumnConfig('code', 'sp_code', cast=int),
+            ColumnConfig('weight', 'weight', cast=int),
+            ColumnConfig('number_individuals', 'individuals', cast=int),
+        ],
+        data_getter=None,  # Set after function definitions
+        data_getter_kwargs={'include_meteorology': False},
+    ),
+    
+    'lengths': ReportConfig(
+        name='lengths',
+        columns=[
+            ColumnConfig('acronym', 'acronym'),
+            ColumnConfig('haul', 'haul'),
+            ColumnConfig('group', 'group'),
+            ColumnConfig('code', 'sp_code'),
+            ColumnConfig('category', 'category'),
+            ColumnConfig('sex', 'sex'),
+            ColumnConfig('sampled_weight', 'sampled_weight', cast=int),
+            ColumnConfig('weight', 'weight'),
+            ColumnConfig('length', 'length_converted', cast=int),
+            ColumnConfig('number_individuals', 'number_individuals', cast=int),
+        ],
+        data_getter=None,
+        data_getter_kwargs={},
+    ),
+    
+    'hauls': ReportConfig(
+        name='hauls',
+        columns=[
+            ColumnConfig('acronym', 'acronym'),
+            ColumnConfig('station', 'station'),
+            ColumnConfig('haul', 'haul'),
+            ColumnConfig('FECHA', None, default='GEAR'),
+            ColumnConfig('ARTE', None, default='ARTE'),
+            ColumnConfig('valid', 'valid'),
+            ColumnConfig('shooting_date_time', 'shooting_date_time', default=''),
+            ColumnConfig('shooting_latitude', 'shooting_latitude', default=''),
+            ColumnConfig('shooting_longitude', 'shooting_longitude', default=''),
+            ColumnConfig('shooting_depth', 'shooting_depth', default=''),
+            ColumnConfig('hauling_date_time', 'hauling_date_time', default=''),
+            ColumnConfig('hauling_latitude', 'hauling_latitude', default=''),
+            ColumnConfig('hauling_longitude', 'hauling_longitude', default=''),
+            ColumnConfig('hauling_depth', 'hauling_depth', default=''),
+            ColumnConfig('course', 'course', default=''),
+            ColumnConfig('velocity', 'velocity', default=''),
+            ColumnConfig('cable', 'cable', default=''),
+            ColumnConfig('sweep', 'sweep', default=''),
+            ColumnConfig('otter_boards_distance', 'otter_boards_distance', default=''),
+            ColumnConfig('horizontal_aperture', 'horizontal_aperture', default=''),
+            ColumnConfig('vertical_aperture', 'vertical_aperture', default=''),
+            ColumnConfig('CUADRICULA', 'sampling_rectangle', default=''),
+            ColumnConfig('track', 'track', default=''),
+            ColumnConfig('wind_direction', 'wind_direction', default=''),
+            ColumnConfig('wind_velocity', 'wind_velocity', default=''),
+            ColumnConfig('sea_state', 'sea_state', default=''),
+            ColumnConfig('SECTOR', None, default='SECTOR'),
+            ColumnConfig('ESTRATO', None, default='ESTRATO'),
+            ColumnConfig('TEMP', None, default='TEMP'),
+            ColumnConfig('SALI', None, default='SALI'),
+            ColumnConfig('station_name', 'station', default=''),
+            ColumnConfig('comment', 'comment', default=''),
+        ],
+        data_getter=None,
+        data_getter_kwargs={'include_meteorology': True},
+    ),
+    
+    'hydrography': ReportConfig(
+        name='hydrography',
+        columns=[
+            ColumnConfig('acronym', 'acronym'),
+            ColumnConfig('station', 'station'),
+            ColumnConfig('haul', 'haul'),
+            ColumnConfig('latitude', 'latitude'),
+            ColumnConfig('longitude', 'longitude'),
+            ColumnConfig('datetime', 'date_time'),
+            ColumnConfig('depth_probe', 'depth_probe'),
+            ColumnConfig('cable', 'cable'),
+            ColumnConfig('depth', 'depth'),
+            ColumnConfig('temperature_0', 'temperature_0'),
+            ColumnConfig('salinity_0', 'salinity_0'),
+            ColumnConfig('sigma_0', 'sigma_0'),
+            ColumnConfig('temperature_50', 'temperature_50'),
+            ColumnConfig('salinity_50', 'salinity_50'),
+            ColumnConfig('sigma_50', 'sigma_50'),
+            ColumnConfig('temperature_100', 'temperature_100'),
+            ColumnConfig('salinity_100', 'salinity_100'),
+            ColumnConfig('sigma_100', 'sigma_100'),
+            ColumnConfig('temperature', 'temperature'),
+            ColumnConfig('salinity', 'salinity'),
+            ColumnConfig('sigma', 'sigma'),
+            ColumnConfig('comment', 'comment'),
+        ],
+        data_getter=None,
+        data_getter_kwargs={},
+    ),
+    
+    'species': ReportConfig(
+        name='species',
+        columns=[
+            ColumnConfig('group', 'group'),
+            ColumnConfig('family', None, default='FAMILY'),
+            ColumnConfig('sp_code', 'sp_code'),
+            ColumnConfig('sp_name', 'sp_name'),
+            ColumnConfig('author', None, default='AUTHOR'),
+            ColumnConfig('spanish_name', 'spanish_name'),
+            ColumnConfig('english_name', None, default='english_name'),
+            ColumnConfig('a_param', 'a_param'),
+            ColumnConfig('b_param', 'b_param'),
+            ColumnConfig('linf', None, default='linf'),
+            ColumnConfig('k_param', None, default='k_param'),
+            ColumnConfig('t0', None, default='t0'),
+            ColumnConfig('med', None, default='med'),
+            ColumnConfig('increm', None, default='increm'),
+            ColumnConfig('nodc', None, default='nodc'),
+            ColumnConfig('gt', None, default='gt'),
+            ColumnConfig('aphia', 'APHIA'),
+        ],
+        data_getter=None,
+        data_getter_kwargs={},
+    ),
+}
+
+
+# ============================================================================
+# HELPER FUNCTIONS FOR REPORTS
+# ============================================================================
+
+def get_column_value(row, col_config: ColumnConfig) -> Any:
+    """Extract value from row based on column configuration"""
+    # If no df_column specified, use default value
+    if col_config.df_column is None:
+        return col_config.default
+    
+    # Get value from row, use default if not present
+    value = getattr(row, col_config.df_column, col_config.default)
+    
+    # Apply transformation if provided
+    if col_config.transform:
+        value = col_config.transform(value)
+    
+    # Cast type if needed
+    if col_config.cast and value is not None:
+        try:
+            value = col_config.cast(value)
+        except (ValueError, TypeError):
+            value = col_config.default
+    
+    return value
+
+
+def generate_csv_response(filename: str, headers: List[str]) -> Tuple[HttpResponse, csv.writer]:
+    """Generate HTTP response and CSV writer for streaming"""
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    writer = csv.writer(response)
+    writer.writerow(headers)
+    return response, writer
+
+
+def process_report_data(config: ReportConfig, acronym: Optional[str] = None) -> pd.DataFrame:
+    """
+    Process data according to report configuration
+    """
+    # Get data using the configured getter function
+    if config.data_getter:
+        if acronym:
+            merged_df = config.data_getter(acronym, **config.data_getter_kwargs)
+        else:
+            merged_df = config.data_getter(**config.data_getter_kwargs)
+    else:
+        # Special case for species report or when no getter specified
+        merged_df = pd.DataFrame(list(Sp.objects.all().values()))
+    
+    # Post-processing if needed
+    if config.post_process:
+        merged_df = config.post_process(merged_df)
+    
+    return merged_df
 
 
 def get_base_survey_data(acronym):
@@ -239,94 +455,86 @@ def get_hydrography_data(acronym):
     return merged_hauls_df
 
 
+# Update REPORT_CONFIGS with the actual function references
+REPORT_CONFIGS['fauna'].data_getter = get_trawl_data
+REPORT_CONFIGS['lengths'].data_getter = get_trawl_data
+REPORT_CONFIGS['hauls'].data_getter = get_hauls_data
+REPORT_CONFIGS['hydrography'].data_getter = get_hydrography_data
+
+
+# ============================================================================
+# API VIEWS (Refactored)
+# ============================================================================
+
 class ReportCampFaunaCSVApi(APIView):
 
     def get(self, request, acronym):
-        # Create response
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="report.csv"'
-
-        # Create writer
-        writer = csv.writer(response)
-        writer.writerow(
-            ['acronym', 'haul', 'group', 'code', 'weight', 'number_individuals'])
-
-        # Get base data using helper function
-        # merged_df = get_base_survey_data(acronym)
-        merged_df = get_trawl_data(acronym, include_meteorology=False)
-
+        config = REPORT_CONFIGS['fauna']
+        headers = [col.csv_header for col in config.columns]
+        response, writer = generate_csv_response('report.csv', headers)
+        
+        merged_df = process_report_data(config, acronym)
+        
+        # Group and aggregate (fauna-specific logic)
         grouped_df = merged_df.groupby(['acronym', 'station', 'haul', 'group', 'sp_code', 'category']).agg({
             'weight': 'first',
             'not_measured_individuals': 'first',
             'number_individuals': 'sum',
             'sampled_weight': 'first'
         }).reset_index()
-
-        # With a apply it would be easyly understood, but with numphy is extremely faster
-        # Step 1: Create boolean conditions
+        
+        # Calculate individuals with scaling
         needs_scaling = (
-                pd.notnull(grouped_df['sampled_weight']) &
-                (grouped_df['sampled_weight'] != 0) &
-                (grouped_df['sampled_weight'] != grouped_df['weight']) &
-                pd.notnull(grouped_df['number_individuals'])
+            pd.notnull(grouped_df['sampled_weight']) &
+            (grouped_df['sampled_weight'] != 0) &
+            (grouped_df['sampled_weight'] != grouped_df['weight']) &
+            pd.notnull(grouped_df['number_individuals'])
         )
-
+        
         has_measured = pd.notnull(grouped_df['number_individuals'])
-
-        # Step 2: Apply vectorized conditional logic with proper NaN handling
+        
         grouped_df['individuals'] = np.where(
-            # Condition: Need to scale based on sampled weight
             needs_scaling,
-
-            # Action: Scale the measurements
             (grouped_df['number_individuals'] *
              (grouped_df['weight'] / grouped_df['sampled_weight'])).round(),
-
-            # Alternative: Use measured individuals OR not_measured_individuals
             np.where(
-                has_measured,  # If we have measured data
+                has_measured,
                 grouped_df['number_individuals'].round(),
                 grouped_df['not_measured_individuals'].fillna(0)
             )
         )
-
+        
         grouped_df['individuals'] = grouped_df['individuals'].fillna(0).astype(int)
-
-        grouped_df = grouped_df.groupby(['acronym', 'station', 'haul', 'group', 'sp_code', ]).agg({
+        
+        grouped_df = grouped_df.groupby(['acronym', 'station', 'haul', 'group', 'sp_code']).agg({
             'weight': 'sum',
             'not_measured_individuals': 'first',
             'individuals': 'sum'
         }).reset_index()
-
+        
+        # Write rows using configuration
         for row in grouped_df.itertuples(index=False):
-            writer.writerow([row.acronym, row.haul, int(row.group), int(row.sp_code), int(row.weight),
-                             int(row.individuals)])
-
+            row_data = [get_column_value(row, col) for col in config.columns]
+            writer.writerow(row_data)
+        
         return response
 
 
 class ReportCampLengthsCSVApi(APIView):
     def get(self, request, acronym):
-        # Get base data using shared helper function
-        merged_df = get_trawl_data(acronym)
-
+        config = REPORT_CONFIGS['lengths']
+        headers = [col.csv_header for col in config.columns]
+        response, writer = generate_csv_response('report.csv', headers)
+        
+        merged_df = process_report_data(config, acronym)
+        
         # Get measurements
         measurements = MeasurementType.objects.all()
         measurements_df = pd.DataFrame(list(measurements.values()))
-
-        # create response
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="report.csv"'
-
-        # create writer
-        writer = csv.writer(response)
-        writer.writerow(
-            ['acronym', 'haul', 'group', 'code', 'category', 'sex',
-             'sampled_weight', 'weight', 'length', 'number_individuals'])
-
+        
         merged_df = pd.merge(merged_df, measurements_df, left_on='measurement_type_id', right_on='id', how='left',
                              suffixes=('', '_measurement'))
-
+        
         merged_df['length_converted'] = (merged_df['length'].fillna(0) / merged_df['conversion_factor']).fillna(0)
         merged_df['number_individuals'] = merged_df['number_individuals'].fillna(0)
         merged_df['sampled_weight'] = np.where(
@@ -334,120 +542,59 @@ class ReportCampLengthsCSVApi(APIView):
             merged_df['weight'].fillna(0).astype(int),
             merged_df['sampled_weight'].fillna(0).astype(int)
         )
-
-        # Write data
+        
+        # Write rows using configuration
         for row in merged_df.itertuples(index=False):
-            writer.writerow(
-                [row.acronym, row.haul, row.group, row.sp_code, row.category, row.sex,
-                 row.sampled_weight, row.weight, int(row.length_converted), int(row.number_individuals)])
-
+            row_data = [get_column_value(row, col) for col in config.columns]
+            writer.writerow(row_data)
+        
         return response
 
 
 class ReportCampHaulsCSVApi(APIView):
     def get(self, request, acronym):
-        merged_df = get_hauls_data(acronym, include_meteorology=True)
-
-        # Create response
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="report.csv"'
-
-        # Create writer
-        writer = csv.writer(response)
-
-        writer.writerow(
-            ['acronym', 'station', 'haul', 'FECHA', 'ARTE', 'valid',
-             'shooting_date_time', 'shooting_latitude', 'shooting_longitude', 'shooting_depth',
-             'hauling_date_time', 'hauling_latitude', 'hauling_longitude', 'hauling_depth',
-             'course', 'velocity', 'cable', 'sweep',
-             'otter_boards_distance', 'horizontal_aperture', 'vertical_aperture',
-             'CUADRICULA', 'track',
-             'wind_direction', 'wind_velocity', 'sea_state',
-             'SECTOR', 'ESTRATO', 'TEMP', 'SALI', 'station',
-             'comment'])
-
-        # Write data
+        config = REPORT_CONFIGS['hauls']
+        headers = [col.csv_header for col in config.columns]
+        response, writer = generate_csv_response('report.csv', headers)
+        
+        merged_df = process_report_data(config, acronym)
+        
+        # Write rows using configuration
         for row in merged_df.itertuples(index=False):
-            writer.writerow([
-                row.acronym, row.station, row.haul, 'GEAR', row.valid,
-                getattr(row, 'shooting_date_time', ''), getattr(row, 'shooting_latitude', ''),
-                getattr(row, 'shooting_longitude', ''), getattr(row, 'shooting_depth', ''),
-                getattr(row, 'hauling_date_time', ''), getattr(row, 'hauling_latitude', ''),
-                getattr(row, 'hauling_longitude', ''), getattr(row, 'hauling_depth', ''),
-                getattr(row, 'course', ''), getattr(row, 'velocity', ''), getattr(row, 'cable', ''),
-                getattr(row, 'sweep', ''),
-                getattr(row, 'otter_boards_distance', ''), getattr(row, 'horizontal_aperture', ''),
-                getattr(row, 'vertical_aperture', ''),
-                getattr(row, 'sampling_rectangle', ''), getattr(row, 'track', ''),
-                getattr(row, 'wind_direction', ''), getattr(row, 'wind_velocity', ''), getattr(row, 'sea_state', ''),
-                'SECTOR', 'ESTRATO', 'TEMP', 'SALI', row.station,
-                getattr(row, 'comment', '')
-            ])
-
+            row_data = [get_column_value(row, col) for col in config.columns]
+            writer.writerow(row_data)
+        
         return response
 
 
 class ReportCampHydrographyCSVApi(APIView):
     def get(self, request, acronym):
-        # Get base data using shared helper function with trawl data
-        merged_df = get_hydrography_data(acronym)
-
-        # Create response
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="report.csv"'
-
-        # Create writer
-        writer = csv.writer(response)
-
-        writer.writerow(
-            ['acronym', 'station', 'haul', 'latitude', 'longitude', 'datetime',
-             'depth_probe', 'cable', 'depth',
-             'temperature_0', 'salinity_0', 'sigma_0',
-             'temperature_50', 'salinity_50', 'sigma_50',
-             'temperature_100', 'salinity_100', 'sigma_100',
-             'temperature', 'salinity', 'sigma',
-             'comment'])
-
-        # Write data
+        config = REPORT_CONFIGS['hydrography']
+        headers = [col.csv_header for col in config.columns]
+        response, writer = generate_csv_response('report.csv', headers)
+        
+        merged_df = process_report_data(config, acronym)
+        
+        # Write rows using configuration
         for row in merged_df.itertuples(index=False):
-            writer.writerow([
-                row.acronym, row.station, row.haul,
-                row.latitude, row.longitude, row.date_time,
-                row.depth_probe, row.cable, row.depth,
-                row.temperature_0, row.salinity_0, row.sigma_0,
-                row.temperature_50, row.salinity_50, row.sigma_50,
-                row.temperature_100, row.salinity_100, row.sigma_100,
-                row.temperature, row.salinity, row.sigma,
-                row.comment
-            ])
-
+            row_data = [get_column_value(row, col) for col in config.columns]
+            writer.writerow(row_data)
+        
         return response
     
 
 class ReportCampSpeciesCSVApi(APIView):
     def get(self, request):
-
-        species = Sp.objects.all()
-        species_df = pd.DataFrame(list(species.values()))
-
-        # Create response
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="report.csv"'
-
-        # Create writer
-        writer = csv.writer(response)
-        writer.writerow(
-            ['group', 'family', 'sp_code',
-             'sp_name', 'author', 'spanish_name', 'english_name',
-             'a_param', 'b_param', 'linf', 'k_param', 't0', 'med', 'increm', 'nodc', 'gt', 'aphia'])
-
-        # Write data
-        for row in species_df.itertuples(index=False):
-            writer.writerow([
-                row.group, 'FAMILY', row.sp_code,
-                row.sp_name, 'AUTHOR', row.spanish_name, 'english_name',
-                row.a_param, row.b_param,
-                'linf', 'k_param', 't0', 'med', 'increm', 'nodc', 'gt', row.APHIA
-            ])
-
+        config = REPORT_CONFIGS['species']
+        headers = [col.csv_header for col in config.columns]
+        response, writer = generate_csv_response('report.csv', headers)
+        
+        # Get species data
+        merged_df = pd.DataFrame(list(Sp.objects.all().values()))
+        
+        # Write rows using configuration
+        for row in merged_df.itertuples(index=False):
+            row_data = [get_column_value(row, col) for col in config.columns]
+            writer.writerow(row_data)
+        
         return response
