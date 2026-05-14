@@ -40,6 +40,73 @@ class ReportConfig:
     post_process: Optional[Callable] = None      # Optional post-processing function
 
 
+def format_to_ddmmyyyy(value):
+    """Format datetime timestamp to DD/MM/YYYY string"""
+    if value is None:
+        return ''
+    try:
+        return value.strftime('%d/%m/%Y')
+    except:
+        return ''
+    
+
+
+def format_to_hhcommamm(value):
+    """Format datetime timestamp to hour,minutes string"""
+    if value is None:
+        return ''
+    
+    try:
+        return value.strftime('%H,%M')
+    except:
+        return ''
+
+
+def convert_decimal_to_position_camp(value_decimal):
+    """
+    Convert decimal coordinates back to old camp format
+    Reverse of convert_position_camp_to_decimal
+    The old camp format is DD.MMMM where DD are degrees and MMMM are minutes
+    :param value_decimal: decimal coordinate to transform
+    :return: camp format coordinate
+    """
+    if value_decimal is None:
+        return ''
+    
+    try:
+        value_decimal = float(value_decimal)
+        degree = int(value_decimal)
+        decimal_part = value_decimal - degree
+        # Convert decimal to minutes and then to the camp format (multiply by 6000)
+        minute = int(decimal_part * 6000)
+        camp_format = float(f'{degree}.{minute}')
+        return camp_format
+    except:
+        return ''
+    
+def get_north_south(value_decimal):
+    """Determine if latitude is north or south based on sign"""
+    if value_decimal is None:
+        return ''
+    
+    try:
+        value_decimal = float(value_decimal)
+        return 'N' if value_decimal >= 0 else 'S'
+    except:
+        return ''
+    
+def get_east_west(value_decimal):
+    """Determine if longitude is east or west based on sign"""
+    if value_decimal is None:
+        return ''
+    
+    try:
+        value_decimal = float(value_decimal)
+        return 'E' if value_decimal >= 0 else 'W'
+    except:
+        return ''
+
+
 # Report configurations - centralized column and ordering definitions
 REPORT_CONFIGS = {
     'fauna': ReportConfig(
@@ -77,38 +144,42 @@ REPORT_CONFIGS = {
     'hauls': ReportConfig(
         name='hauls',
         columns=[
-            ColumnConfig('acronym', 'acronym'),
-            ColumnConfig('station', 'station'),
-            ColumnConfig('haul', 'haul'),
-            ColumnConfig('FECHA', None, default='GEAR'),
-            ColumnConfig('ARTE', None, default='ARTE'),
-            ColumnConfig('valid', 'valid'),
-            ColumnConfig('shooting_date_time', 'shooting_date_time', default=''),
-            ColumnConfig('shooting_latitude', 'shooting_latitude', default=''),
-            ColumnConfig('shooting_longitude', 'shooting_longitude', default=''),
-            ColumnConfig('shooting_depth', 'shooting_depth', default=''),
-            ColumnConfig('hauling_date_time', 'hauling_date_time', default=''),
-            ColumnConfig('hauling_latitude', 'hauling_latitude', default=''),
-            ColumnConfig('hauling_longitude', 'hauling_longitude', default=''),
-            ColumnConfig('hauling_depth', 'hauling_depth', default=''),
-            ColumnConfig('course', 'course', default=''),
-            ColumnConfig('velocity', 'velocity', default=''),
-            ColumnConfig('cable', 'cable', default=''),
-            ColumnConfig('sweep', 'sweep', default=''),
-            ColumnConfig('otter_boards_distance', 'otter_boards_distance', default=''),
-            ColumnConfig('horizontal_aperture', 'horizontal_aperture', default=''),
-            ColumnConfig('vertical_aperture', 'vertical_aperture', default=''),
+            # ColumnConfig('acronym', 'acronym'),
+            # ColumnConfig('station', 'station'),
+            ColumnConfig('LANCE', 'haul'),
+            ColumnConfig('FECHA', 'shooting_date_time', transform=format_to_ddmmyyyy),
+            ColumnConfig('ARTE', 'trawl_id'),
+            ColumnConfig('VALIDEZ', 'valid'),
+            ColumnConfig('HORA_L', 'shooting_date_time', transform=format_to_hhcommamm),
+            ColumnConfig('LATITUD_L', 'shooting_latitude', transform=convert_decimal_to_position_camp, default=''),
+            ColumnConfig('NSL', 'shooting_latitude', transform=get_north_south, default=''),
+            ColumnConfig('LONGITUD_L', 'shooting_longitude',  transform=convert_decimal_to_position_camp, default=''),
+            ColumnConfig('EWL', 'shooting_longitude', transform=get_east_west, default=''),
+            ColumnConfig('PROF_L', 'shooting_depth', default=''),
+            ColumnConfig('HORA_V', 'hauling_date_time', transform=format_to_hhcommamm),
+            ColumnConfig('LATITUD_V', 'hauling_latitude', transform=convert_decimal_to_position_camp, default=''),
+            ColumnConfig('NSV', 'hauling_latitude', transform=get_north_south, default=''),
+            ColumnConfig('LONGITUD_V', 'hauling_longitude', transform=convert_decimal_to_position_camp, default=''),
+            ColumnConfig('EWV', 'hauling_longitude', transform=get_east_west, default=''),
+            ColumnConfig('PROF_V', 'hauling_depth', default=''),
+            ColumnConfig('RUMBO', 'course', default=''),
+            ColumnConfig('VELOCIDAD', 'velocity', default=''),
+            ColumnConfig('CABLE', 'cable', default=''),
+            ColumnConfig('MALLETAS', 'sweep', default=''),
+            ColumnConfig('DISTA_P', 'otter_boards_distance', default=''),
+            ColumnConfig('ABERT_H', 'horizontal_aperture', default=''),
+            ColumnConfig('ABERT_V', 'vertical_aperture', default=''),
             ColumnConfig('CUADRICULA', 'sampling_rectangle', default=''),
-            ColumnConfig('track', 'track', default=''),
-            ColumnConfig('wind_direction', 'wind_direction', default=''),
-            ColumnConfig('wind_velocity', 'wind_velocity', default=''),
-            ColumnConfig('sea_state', 'sea_state', default=''),
+            ColumnConfig('RECORRIDO', 'track', default=''),
+            ColumnConfig('DIR_VIENTO', 'wind_direction', default=''),
+            ColumnConfig('VEL_VIENTO', 'wind_velocity', default=''),
+            ColumnConfig('EST_MAR', 'sea_state', default=''),
             ColumnConfig('SECTOR', None, default='SECTOR'),
             ColumnConfig('ESTRATO', None, default='ESTRATO'),
             ColumnConfig('TEMP', None, default='TEMP'),
             ColumnConfig('SALI', None, default='SALI'),
-            ColumnConfig('station_name', 'station', default=''),
-            ColumnConfig('comment', 'comment', default=''),
+            ColumnConfig('ESTN', 'station', default=''),
+            ColumnConfig('OBSERV', 'comment', default=''),
         ],
         data_getter=None,
         data_getter_kwargs={'include_meteorology': True},
@@ -202,7 +273,7 @@ def generate_csv_response(filename: str, headers: List[str]) -> Tuple[HttpRespon
     """Generate HTTP response and CSV writer for streaming"""
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
-    writer = csv.writer(response)
+    writer = csv.writer(response, delimiter=';')
     writer.writerow(headers)
     return response, writer
 
@@ -409,7 +480,7 @@ def get_hauls_data(acronym, include_meteorology=False):
                                           'course', 'velocity', 'cable', 'sweep',
                                           'otter_boards_distance', 'horizontal_aperture', 'vertical_aperture',
                                           'sampling_rectangle', 'track', 'comment'])
-    merged_df = pd.merge(merged_df, trawls_df, left_on='haul_id', right_on='id', how='left',
+    merged_df = pd.merge(merged_df, trawls_df, left_on='haul_id', right_on='haul_id', how='left',
                          suffixes=('', '_trawl'))
 
     # Conditionally get and merge meteorology data
@@ -457,6 +528,7 @@ def get_hydrography_data(acronym):
 
 # Update REPORT_CONFIGS with the actual function references
 REPORT_CONFIGS['fauna'].data_getter = get_trawl_data
+#### TODO: lengths report should use a different getter??
 REPORT_CONFIGS['lengths'].data_getter = get_trawl_data
 REPORT_CONFIGS['hauls'].data_getter = get_hauls_data
 REPORT_CONFIGS['hydrography'].data_getter = get_hydrography_data

@@ -71,7 +71,6 @@ def convert_position_camp_to_decimal(value_camp):
     decimal = round(decimal, 4)
     return decimal
 
-
 def fix_year_date(d):
     """
     In case of a date have four digits in year, remove century digits to avoid
