@@ -117,13 +117,6 @@ def format_validity(value):
     else:
         return 3
 
-def convert_to_int(value):
-    ### Convert to integer
-    if pd.isna(value):
-        return ''
-    else:
-        return int(value)
-
 # ============================================================================
 # DATA GETTER FUNCTIONS
 # ============================================================================
@@ -401,20 +394,18 @@ REPORT_CONFIGS = {
         data_getter=get_trawl_data,
         data_getter_kwargs={'include_meteorology': False},
     ),
-    
     'lengths': ReportConfig(
         name='lengths',
         columns=[
-            ColumnConfig('acronym', 'acronym'),
-            ColumnConfig('haul', 'haul'),
-            ColumnConfig('group', 'group'),
-            ColumnConfig('code', 'sp_code'),
-            ColumnConfig('category', 'category'),
-            ColumnConfig('sex', 'sex'),
-            ColumnConfig('sampled_weight', 'sampled_weight', cast=int),
-            ColumnConfig('weight', 'weight'),
-            ColumnConfig('length', 'length_converted', cast=int),
-            ColumnConfig('number_individuals', 'number_individuals', cast=int),
+            ColumnConfig('LANCE', 'haul', cast=int),
+            ColumnConfig('GRUPO', 'group', cast=int),
+            ColumnConfig('ESP', 'sp_code', cast=int),
+            ColumnConfig('CATE', 'category', cast=int),
+            ColumnConfig('SEXO', 'sex', cast=int),
+            ColumnConfig('PESO_M', 'sampled_weight', cast=int),
+            ColumnConfig('PESO_GR', 'weight', cast=int),
+            ColumnConfig('TALLA', 'length_converted', cast=int),
+            ColumnConfig('NUMER', 'number_individuals', cast=int),
         ],
         data_getter=get_trawl_data,
         data_getter_kwargs={},
@@ -432,22 +423,22 @@ REPORT_CONFIGS = {
             ColumnConfig('NSL', 'shooting_latitude', transform=get_north_south, default=''),
             ColumnConfig('LONGITUD_L', 'shooting_longitude',  transform=convert_decimal_to_position_camp, default=''),
             ColumnConfig('EWL', 'shooting_longitude', transform=get_east_west, default=''),
-            ColumnConfig('PROF_L', 'shooting_depth', transform=convert_to_int),
+            ColumnConfig('PROF_L', 'shooting_depth', cast=int),
             ColumnConfig('HORA_V', 'hauling_date_time', transform=format_to_hhcommamm),
             ColumnConfig('LATITUD_V', 'hauling_latitude', transform=convert_decimal_to_position_camp, default=''),
             ColumnConfig('NSV', 'hauling_latitude', transform=get_north_south, default=''),
             ColumnConfig('LONGITUD_V', 'hauling_longitude', transform=convert_decimal_to_position_camp, default=''),
             ColumnConfig('EWV', 'hauling_longitude', transform=get_east_west, default=''),
-            ColumnConfig('PROF_V', 'hauling_depth', transform=convert_to_int),
-            ColumnConfig('RUMBO', 'course', transform=convert_to_int, default=''),
+            ColumnConfig('PROF_V', 'hauling_depth', cast=int),
+            ColumnConfig('RUMBO', 'course', cast=int, default=''),
             ColumnConfig('VELOCIDAD', 'velocity', default=''),
-            ColumnConfig('CABLE', 'cable', transform=convert_to_int, default=''),
-            ColumnConfig('MALLETAS', 'sweep', transform=convert_to_int, default=''),
+            ColumnConfig('CABLE', 'cable', cast=int, default=''),
+            ColumnConfig('MALLETAS', 'sweep', cast=int, default=''),
             ColumnConfig('DISTA_P', 'otter_boards_distance', default=''),
             ColumnConfig('ABERT_H', 'horizontal_aperture', default=''),
             ColumnConfig('ABERT_V', 'vertical_aperture', default=''),
             ColumnConfig('CUADRICULA', 'sampling_rectangle', default=''),
-            ColumnConfig('RECORRIDO', 'track', default=''),
+            ColumnConfig('RECORRIDO', 'track', cast=int, default=''),
             ColumnConfig('DIR_VIENTO', 'wind_direction', default=''),
             ColumnConfig('VEL_VIENTO', 'wind_velocity', default=''),
             ColumnConfig('EST_MAR', 'sea_state', default=''),
