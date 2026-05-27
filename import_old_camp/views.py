@@ -392,7 +392,7 @@ class SpeciesImport:
         :return: Measurement type id.
         """
         unit_name = get_unit_name(row['unit'], row['increment'])
-        # print(row['unit'], row['increment'])
+
         try:
             measurement_type = MeasurementType.objects.get(name=unit_name)
             return measurement_type.id

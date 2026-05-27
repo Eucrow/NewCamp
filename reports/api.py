@@ -370,7 +370,67 @@ def get_hydrography_data(acronym):
 
     return merged_hauls_df
 
+def get_species_data():
+    """
+    Get species data merged with measurement types and return DataFrame.
+    
+    Returns:
+        DataFrame with species and measurement type information
+    """
+    # Get species with related measurement types using Django ORM
+    species = Sp.objects.select_related('measurement_type').all()
+    
+    # Convert to DataFrame with related measurement_type fields
+    species_list = list(species.values(
+        'id', 'group', 'sp_code', 'sp_name', 'spanish_name', 'a_param', 'b_param', 'APHIA',
+        'measurement_type_id', 'measurement_type__name', 'measurement_type__increment',
+        'measurement_type__conversion_factor'
+    ))
+    
+    species_df = pd.DataFrame(species_list)
+    
+    # Rename measurement_type columns for clarity
+    species_df = species_df.rename(columns={
+        'measurement_type__name': 'measurement_name',
+        'measurement_type__increment': 'increment',
+        'measurement_type__conversion_factor': 'conversion_factor'
+    })
+    
+    return species_df
 
+def get_unit(value):
+    """Map unit to measurement type"""
+    # cm
+    if value == "cm" : # cm in old camp is code 1
+        unit = 1
+        return unit
+    # mm
+    elif value == "mm": # mm in old camp is code 2
+        unit = 2
+        return unit
+    # 1/2 cm
+    elif value == "1/2cm": #1/2 cm in old camp is code 2 (mm) with increment 5
+        unit = 2
+        return unit
+    else:
+        return None
+    
+def get_increment(value):
+    """Map increment to measurement type"""
+    # cm
+    if value == 10 : # cm in old camp had increment 1
+        increment = 1
+        return increment
+    # mm
+    elif value == 1: # mm in old camp had increment 1
+        increment = 1
+        return increment
+    # 1/2 cm
+    elif value == 5: #1/2 cm in old camphad increment 5
+        increment = 5
+        return increment
+    else:
+        return None
 # ============================================================================
 # REPORT CONFIGURATION
 # ============================================================================
@@ -483,25 +543,25 @@ REPORT_CONFIGS = {
     'species': ReportConfig(
         name='species',
         columns=[
-            ColumnConfig('group', 'group'),
-            ColumnConfig('family', None, default='FAMILY'),
-            ColumnConfig('sp_code', 'sp_code'),
-            ColumnConfig('sp_name', 'sp_name'),
-            ColumnConfig('author', None, default='AUTHOR'),
-            ColumnConfig('spanish_name', 'spanish_name'),
-            ColumnConfig('english_name', None, default='english_name'),
-            ColumnConfig('a_param', 'a_param'),
-            ColumnConfig('b_param', 'b_param'),
-            ColumnConfig('linf', None, default='linf'),
-            ColumnConfig('k_param', None, default='k_param'),
-            ColumnConfig('t0', None, default='t0'),
-            ColumnConfig('med', None, default='med'),
-            ColumnConfig('increm', None, default='increm'),
-            ColumnConfig('nodc', None, default='nodc'),
-            ColumnConfig('gt', None, default='gt'),
-            ColumnConfig('aphia', 'APHIA'),
+            ColumnConfig('GRUPO', 'group'),
+            ColumnConfig('FAMILIA', None, default=''),
+            ColumnConfig('ESP', 'sp_code'),
+            ColumnConfig('ESPECIE', 'sp_name'),
+            ColumnConfig('AUTOR', None, default=''),
+            ColumnConfig('NOMBREE', 'spanish_name'),
+            ColumnConfig('NOMBREI', None, default=''),
+            ColumnConfig('A', 'a_param'),
+            ColumnConfig('B', 'b_param'),
+            ColumnConfig('LINF', None, default=''),
+            ColumnConfig('K', None, default=''),
+            ColumnConfig('T0', None, default=''),
+            ColumnConfig('MED', 'measurement_name', transform=get_unit),
+            ColumnConfig('INCREM', 'increment', transform=get_increment),
+            ColumnConfig('NODC', None, default=''),
+            ColumnConfig('GT', None, default=''),
+            ColumnConfig('APHIA', 'APHIA', cast=int),
         ],
-        data_getter=None,
+        data_getter=get_species_data,
         data_getter_kwargs={},
     ),
 }
@@ -696,7 +756,7 @@ class ReportCampSpeciesCSVApi(APIView):
         response, writer = generate_csv_response('report.csv', headers)
         
         # Get species data
-        merged_df = pd.DataFrame(list(Sp.objects.all().values()))
+        merged_df = process_report_data(config)
         
         # Write rows using configuration
         for row in merged_df.itertuples(index=False):
