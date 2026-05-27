@@ -379,12 +379,11 @@ REPORT_CONFIGS = {
     'fauna': ReportConfig(
         name='fauna',
         columns=[
-            ColumnConfig('acronym', 'acronym'),
-            ColumnConfig('haul', 'haul'),
-            ColumnConfig('group', 'group', cast=int),
-            ColumnConfig('code', 'sp_code', cast=int),
-            ColumnConfig('weight', 'weight', cast=int),
-            ColumnConfig('number_individuals', 'individuals', cast=int),
+            ColumnConfig('LANCE', 'haul', cast=int),
+            ColumnConfig('GRUPO', 'group', cast=int),
+            ColumnConfig('ESP', 'sp_code', cast=int),
+            ColumnConfig('PESO_GR', 'weight', cast=int),
+            ColumnConfig('NUMERO', 'individuals', cast=int),
         ],
         data_getter=get_trawl_data,
         data_getter_kwargs={'include_meteorology': False},
