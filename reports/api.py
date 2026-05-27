@@ -41,6 +41,10 @@ class ReportConfig:
     post_process: Optional[Callable] = None      # Optional post-processing function
 
 
+def remove_zeros(df):
+    """Global post-processor: replace zeros (int and float) with empty strings"""
+    return df.applymap(lambda x: '' if (isinstance(x, (int, float)) and x == 0) else x)
+
 def format_to_ddmmyyyy(value):
     """Format datetime timestamp to DD/MM/YYYY string"""
     if value is None:
@@ -51,14 +55,14 @@ def format_to_ddmmyyyy(value):
         return ''
     
 def format_to_hhcommamm(value):
-    """Format datetime timestamp to hour,minutes string"""
+    """Format datetime timestamp to hour.minutes decimal format without leading zeros"""
     if value is None:
         return ''
     
     try:
-        time_str = value.strftime('%H,%M')
-        hour, minute = time_str.split(',')
-        return f"{int(hour)},{minute}" 
+        hour = value.hour
+        minute = value.minute
+        return f"{hour},{minute}"
     except:
         return ''
 
@@ -75,14 +79,10 @@ def convert_decimal_to_position_camp(value_decimal):
     
     try:
         value_decimal = float(value_decimal)
-        degree = int(value_decimal)
-        decimal_part = value_decimal - degree
-        # Convert decimal to minutes and then to the camp format (multiply by 6000)
-        minute = int(decimal_part * 6000)
-        camp_format = str(f'{degree},{minute}')
-        # Remove the - in west and south coordinates
-        camp_format = camp_format.replace('-', '')
-        return camp_format
+        degree = abs(int(value_decimal))
+        decimal_part = value_decimal - int(value_decimal)
+        minutes = abs(int(decimal_part * 6000))
+        return f"{degree},{minutes:04d}"
     except:
         return ''
     
@@ -149,7 +149,6 @@ def get_survey_stations_data(acronym):
                          suffixes=('_survey', '_station'))
 
     return merged_df, survey, stations
-
 
 def get_trawl_data(acronym, include_meteorology=False):
     """
@@ -255,7 +254,6 @@ def get_trawl_data(acronym, include_meteorology=False):
 
     return merged_df
 
-
 def get_hauls_data(acronym, include_hidrography=True, include_meteorology=False):
     """
     Get trawl data (stations, hauls, trawls, meteorology) for a survey and return merged DataFrame.
@@ -286,7 +284,6 @@ def get_hauls_data(acronym, include_hidrography=True, include_meteorology=False)
     # Get haul trawls
     # When a QuerySet is empty, pd.DataFrame(list(...)) produces a DataFrame with no columns
     # Check if empty and define required columns to ensure consistent structure for merge
-    # hauls_trawls = Haul.objects.filter(station__in=stations, trawl_id__isnull = False)
     trawls = HaulTrawl.objects.filter(haul__station__in=stations)
     
     trawls_df = pd.DataFrame(list(trawls.values()))
@@ -303,23 +300,23 @@ def get_hauls_data(acronym, include_hidrography=True, include_meteorology=False)
     stations_hauls_trawls_df = stations_hauls_trawls_df[stations_hauls_trawls_df['trawl_id'].notna()]
     
     
-    # if include_hidrography:
-    # Get hydrography data
-    hydrographies = HaulHydrography.objects.filter(haul__station__in=stations)
-    
-    hydrographies_df = pd.DataFrame(list(hydrographies.values()))
-    print(f"DEBUG: hydrographies_df shape: {hydrographies_df.shape}")
+    if include_hidrography:
+        # Get hydrography data
+        hydrographies = HaulHydrography.objects.filter(haul__station__in=stations)
+        
+        hydrographies_df = pd.DataFrame(list(hydrographies.values()))
+        print(f"DEBUG: hydrographies_df shape: {hydrographies_df.shape}")
 
-    if hydrographies_df.empty:
-        hydrographies_df = pd.DataFrame(columns=['id', 'haul_id', 'latitude', 'longitude', 'date_time',
-                                                'depth_probe', 'cable', 'depth',
-                                                'temperature_0', 'salinity_0', 'sigma_0',
-                                                'temperature_50', 'salinity_50', 'sigma_50',
-                                                'temperature_100', 'salinity_100', 'sigma_100',
-                                                'temperature', 'salinity', 'sigma', 'comment'])
-    stations_hauls_hydrographies_df = pd.merge(stations_hauls_df, hydrographies_df, left_on='haul_id', right_on='haul_id', how='left',
-                            suffixes=('', '_hydrography'))
-    stations_hauls_hydrographies_df = stations_hauls_hydrographies_df[stations_hauls_hydrographies_df['ctd_id'].notna()]
+        if hydrographies_df.empty:
+            hydrographies_df = pd.DataFrame(columns=['id', 'haul_id', 'latitude', 'longitude', 'date_time',
+                                                    'depth_probe', 'cable', 'depth',
+                                                    'temperature_0', 'salinity_0', 'sigma_0',
+                                                    'temperature_50', 'salinity_50', 'sigma_50',
+                                                    'temperature_100', 'salinity_100', 'sigma_100',
+                                                    'temperature', 'salinity', 'sigma', 'comment'])
+        stations_hauls_hydrographies_df = pd.merge(stations_hauls_df, hydrographies_df, left_on='haul_id', right_on='haul_id', how='left',
+                                suffixes=('', '_hydrography'))
+        stations_hauls_hydrographies_df = stations_hauls_hydrographies_df[stations_hauls_hydrographies_df['ctd_id'].notna()]
 
     # Conditionally get and merge meteorology data
     # When a QuerySet is empty, pd.DataFrame(list(...)) produces a DataFrame with no columns
@@ -357,8 +354,6 @@ def get_hydrography_data(acronym):
     """
     base_df, survey, stations = get_survey_stations_data(acronym)
     
-  
-
     hauls = Haul.objects.filter(station__in=stations, sampler_type="CTD")
     
     hauls_df = pd.DataFrame(list(hauls.values()))
@@ -370,7 +365,7 @@ def get_hydrography_data(acronym):
     hydrographies = HaulHydrography.objects.filter(haul_id__in=hauls)
     
     hydrographies_df = pd.DataFrame(list(hydrographies.values()))
-    merged_hauls_df = pd.merge(merged_df, hydrographies_df, left_on='haul', right_on='haul', how='left',
+    merged_hauls_df = pd.merge(merged_df, hydrographies_df, left_on='haul_id', right_on='haul_id', how='left',
                                suffixes=('', '_hydrography'))
 
     return merged_hauls_df
@@ -456,31 +451,34 @@ REPORT_CONFIGS = {
     'hydrography': ReportConfig(
         name='hydrography',
         columns=[
-            ColumnConfig('acronym', 'acronym'),
-            ColumnConfig('station', 'station'),
-            ColumnConfig('haul', 'haul'),
-            ColumnConfig('latitude', 'latitude'),
-            ColumnConfig('longitude', 'longitude'),
-            ColumnConfig('datetime', 'date_time'),
-            ColumnConfig('depth_probe', 'depth_probe'),
-            ColumnConfig('cable', 'cable'),
-            ColumnConfig('depth', 'depth'),
-            ColumnConfig('temperature_0', 'temperature_0'),
-            ColumnConfig('salinity_0', 'salinity_0'),
-            ColumnConfig('sigma_0', 'sigma_0'),
-            ColumnConfig('temperature_50', 'temperature_50'),
-            ColumnConfig('salinity_50', 'salinity_50'),
-            ColumnConfig('sigma_50', 'sigma_50'),
-            ColumnConfig('temperature_100', 'temperature_100'),
-            ColumnConfig('salinity_100', 'salinity_100'),
-            ColumnConfig('sigma_100', 'sigma_100'),
-            ColumnConfig('temperature', 'temperature'),
-            ColumnConfig('salinity', 'salinity'),
-            ColumnConfig('sigma', 'sigma'),
-            ColumnConfig('comment', 'comment'),
+            ColumnConfig('ESTN', 'station'),
+            ColumnConfig('LATITUD', 'latitude', transform=convert_decimal_to_position_camp),
+            ColumnConfig('NOSU', 'latitude', transform=get_north_south),
+            ColumnConfig('LONGITUD', 'longitude', transform=convert_decimal_to_position_camp),
+            ColumnConfig('ESWE', 'longitude', transform=get_east_west),
+            ColumnConfig('FECHA', 'date_time', transform=format_to_ddmmyyyy),
+            ColumnConfig('HORA', 'date_time', transform=format_to_hhcommamm),
+            ColumnConfig('SONDA', 'depth_probe', cast=int),
+            ColumnConfig('CABLE', 'cable', cast=int),
+            ColumnConfig('PROF', 'depth', cast=int),
+            ColumnConfig('TEMP0', 'temperature_0'),
+            ColumnConfig('SALI0', 'salinity_0'),
+            ColumnConfig('SIGMA0', 'sigma_0'),
+            ColumnConfig('TEMP50', 'temperature_50'),
+            ColumnConfig('SALI50', 'salinity_50'),
+            ColumnConfig('SIGMA50', 'sigma_50'),
+            ColumnConfig('TEMP100', 'temperature_100'),
+            ColumnConfig('SALI100', 'salinity_100'),
+            ColumnConfig('SIGMA100', 'sigma_100'),
+            ColumnConfig('TEMP', 'temperature'),
+            ColumnConfig('SALI', 'salinity'),
+            ColumnConfig('SIGMA', 'sigma'),
+            ColumnConfig('LANCE', 'haul'),
+            ColumnConfig('OBSERV', 'comment'),
         ],
         data_getter=get_hydrography_data,
         data_getter_kwargs={},
+        post_process=remove_zeros,
     ),
     
     'species': ReportConfig(
@@ -513,6 +511,9 @@ REPORT_CONFIGS = {
 # ============================================================================
 # HELPER FUNCTIONS FOR REPORTS
 # ============================================================================
+
+
+
 
 def get_column_value(row, col_config: ColumnConfig) -> Any:
     """Extract value from row based on column configuration"""
