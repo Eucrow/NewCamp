@@ -10,9 +10,11 @@ from rest_framework.views import APIView
 from surveys.models import Survey
 from stations.models import Station
 from hauls.models import Haul, HaulTrawl, Meteorology, HaulHydrography
+from strata.models import Stratum
 from catches.models import Catch
 from species.models import Sp, MeasurementType
 from samples.models import Sex, SampledWeight, Length
+from newcamp.constants import SECTORS_REVERSE, DEPTHS_REVERSE
 
 
 # ============================================================================
@@ -182,17 +184,22 @@ def get_trawl_data(acronym, include_meteorology=False):
         Survey.DoesNotExist: If the survey acronym doesn't match any Survey in database
     """
     base_df, survey, stations = get_survey_stations_data(acronym)
-    print(f"DEBUG: Survey acronym = '{acronym}'")
-    print(f"DEBUG: Survey found = {survey}")
-    print(f"DEBUG: Stations count = {stations.count()}")
     
     
-    hauls = Haul.objects.filter(station__in=stations, sampler_type="trawl")
-    print(f"DEBUG: Hauls count = {hauls.count()}")
-    print(f"DEBUG: All hauls (no filter) = {Haul.objects.all().count()}")
+    hauls = Haul.objects.filter(station__in=stations, trawl_id__isnull=False)
     
+    hauls_df = pd.DataFrame(list(hauls.values(
+        'id','haul','valid','sampler_type','ctd_id','sampler_id','station_id','trawl_id',
+        'special','stratum_id', 'stratum__stratum'
+    )))
+
+    # Handle empty QuerySet
+    if hauls_df.empty:
+        hauls_df = pd.DataFrame(columns=['id','haul','valid','sampler_type','ctd_id','sampler_id','station_id','trawl_id',
+        'special','stratum_id', 'stratum__stratum'])
+
+    hauls_df = hauls_df.rename(columns={'id': 'haul_id', 'stratum__stratum': 'stratum'})
     
-    hauls_df = pd.DataFrame(list(hauls.values()))
     # Merge stations and hauls dataframes
     merged_df = pd.merge(base_df, hauls_df, left_on='station_id', right_on='station_id', how='left',
                          suffixes=('_station', '_haul'))
@@ -254,6 +261,7 @@ def get_trawl_data(acronym, include_meteorology=False):
 
     return merged_df
 
+
 def get_hauls_data(acronym, include_hidrography=True, include_meteorology=False):
     """
     Get trawl data (stations, hauls, trawls, meteorology) for a survey and return merged DataFrame.
@@ -269,12 +277,21 @@ def get_hauls_data(acronym, include_hidrography=True, include_meteorology=False)
     """
     base_df, survey, stations = get_survey_stations_data(acronym)    
     
-    # Get hauls for the stations
-    hauls = Haul.objects.filter(station__in=stations)
-    
-    hauls_df = pd.DataFrame(list(hauls.values()))
+    # Get hauls and stratum for the stations
+    hauls = Haul.objects.filter(station__in=stations).select_related('stratum__stratum')
 
-    hauls_df = hauls_df.rename(columns={'id': 'haul_id'})
+
+    hauls_df = pd.DataFrame(list(hauls.values(
+        'id','haul','valid','sampler_type','ctd_id','sampler_id','station_id','trawl_id',
+        'special','stratum_id', 'stratum__stratum'
+    )))
+
+    # Handle empty QuerySet
+    if hauls_df.empty:
+        hauls_df = pd.DataFrame(columns=['id','haul','valid','sampler_type','ctd_id','sampler_id','station_id','trawl_id',
+        'special','stratum_id', 'stratum__stratum'])
+
+    hauls_df = hauls_df.rename(columns={'id': 'haul_id', 'stratum__stratum': 'stratum'})
 
     # Merge stations and hauls dataframes
     stations_hauls_df = pd.merge(base_df, hauls_df, left_on='station_id', right_on='station_id', how='left',
@@ -431,6 +448,28 @@ def get_increment(value):
         return increment
     else:
         return None
+    
+def get_sector(value):
+    """Extract sector ID from station name"""
+    if value is None:
+        return None
+    
+    try:
+        sector_name = value.split("-")[0] + "-" + value.split("-")[1]
+        return SECTORS_REVERSE.get(sector_name)
+    except Exception:
+        return None
+    
+def get_stratum(value):
+    """Extract stratum ID from station name"""
+    if value is None:
+        return None
+    
+    try:
+        stratum_name = value.split("-")[2] + "-" + value.split("-")[3]
+        return DEPTHS_REVERSE.get(stratum_name)
+    except Exception:
+        return None
 # ============================================================================
 # REPORT CONFIGURATION
 # ============================================================================
@@ -496,8 +535,8 @@ REPORT_CONFIGS = {
             ColumnConfig('DIR_VIENTO', 'wind_direction', default=''),
             ColumnConfig('VEL_VIENTO', 'wind_velocity', default=''),
             ColumnConfig('EST_MAR', 'sea_state', default=''),
-            ColumnConfig('SECTOR', None, default='SECTOR'),
-            ColumnConfig('ESTRATO', None, default='ESTRATO'),
+            ColumnConfig('SECTOR', 'stratum', transform=get_sector),
+            ColumnConfig('ESTRATO', 'stratum', transform=get_stratum),
             ColumnConfig('TEMP', 'temperature', default='TEMP'),
             ColumnConfig('SALI', 'salinity', default='SALI'),
             ColumnConfig('ESTN', 'station', default=''),
@@ -571,9 +610,6 @@ REPORT_CONFIGS = {
 # HELPER FUNCTIONS FOR REPORTS
 # ============================================================================
 
-
-
-
 def get_column_value(row, col_config: ColumnConfig) -> Any:
     """Extract value from row based on column configuration"""
     # If no df_column specified, use default value
@@ -611,8 +647,8 @@ def process_report_data(config: ReportConfig, acronym: Optional[str] = None) -> 
     Process data according to report configuration
     """
 
-    if config.name == 'species':
-        merged_df = pd.DataFrame(list(Sp.objects.all().values()))
+    # if config.name == 'species':
+    #     merged_df = pd.DataFrame(list(Sp.objects.all().values()))
 
     # Get data using the configured getter function
     if config.data_getter:
