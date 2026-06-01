@@ -3,6 +3,8 @@ from typing import Callable, List, Tuple, Optional, Dict, Any
 from .data_getters import get_trawl_data, get_hauls_data, get_hydrography_data, get_species_data
 from .utils import format_to_ddmmyyyy, format_to_hhcommamm, convert_decimal_to_position_camp, get_sector, get_stratum, remove_zeros, format_validity, get_north_south, get_east_west, get_unit, get_increment
 
+CSV_DELIMITER = ';'
+
 @dataclass
 class ColumnConfig:
     """Configuration for a single CSV column"""

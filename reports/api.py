@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 
 from species.models import MeasurementType
 
-from .config import ColumnConfig, ReportConfig, REPORT_CONFIGS 
+from .config import ColumnConfig, ReportConfig, REPORT_CONFIGS, CSV_DELIMITER
 
 
 def get_column_value(row, col_config: ColumnConfig) -> Any:
@@ -38,7 +38,7 @@ def generate_csv_response(filename: str, headers: List[str]) -> Tuple[HttpRespon
     """Generate HTTP response and CSV writer for streaming"""
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
-    writer = csv.writer(response, delimiter=';')
+    writer = csv.writer(response, delimiter = CSV_DELIMITER)
     writer.writerow(headers)
     return response, writer
 
@@ -47,7 +47,8 @@ def process_report_data(config: ReportConfig, acronym: Optional[str] = None) -> 
     """
     Process data according to report configuration
     """
-
+    merged_df = pd.DataFrame()
+    
     # Get data using the configured getter function
     if config.data_getter:
         if acronym:
