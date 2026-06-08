@@ -2,10 +2,14 @@ import csv
 
 import io
 
+from dbfread import DBF
 import pandas as pd
+import tempfile
+import os
 
 import re
 
+# from django.contrib.gis.gdal import AxisOrder
 from sqlalchemy import create_engine
 
 from django.http import HttpResponse
@@ -70,6 +74,22 @@ def convert_position_camp_to_decimal(value_camp):
     decimal = degree + minute
     decimal = round(decimal, 4)
     return decimal
+
+
+def format_latitude_decimal(row, coor_var, cardinal_var, cardinal_value):
+    """
+    Change the format of latitude by LATITUD var and cardinal points var. To use in apply.
+    :param row: row of apply.
+    :param coor_var: coordinate variable.
+    :param cardinal_var: variable which contain the cardinal point of the coordinates (NSL, NSV, EWL, EWV)
+    :param cardinal_value: cardinal value (string) which indicates if the coordinates are negatives.
+    :return: coordinate converted.
+    """
+    row[coor_var] = convert_position_camp_to_decimal(row[coor_var])
+    if row[cardinal_var] == cardinal_value:
+        row[coor_var] = (-1) * row[coor_var]
+    return round(row[coor_var], 4)
+
 
 def fix_year_date(d):
     """
@@ -258,6 +278,26 @@ def get_ship(datras_id):
     return ship
 
 
+def get_file_dbf(request, file_key):
+    """Get DBF file from request as pandas dataframe"""
+    new_file = request.FILES[file_key]
+
+    # Write to temporary file
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.dbf') as tmp_file:
+        for chunk in new_file.chunks():
+            tmp_file.write(chunk)
+        tmp_file_path = tmp_file.name
+
+    try:
+        table = DBF(tmp_file_path, encoding='latin-1')
+        df = pd.DataFrame(list(table))
+    finally:
+        # Clean up temp file
+        os.unlink(tmp_file_path)
+
+    return df
+
+
 class FaunasImport:
 
     def __init__(self, request):
@@ -265,18 +305,18 @@ class FaunasImport:
         self.survey_name = get_survey_name(self.request.FILES['fauna'].name)
         self.survey_object = Survey.objects.get(acronym=self.survey_name)
         self.sampler_object = get_sampler_object_and_create(sampler_name="ARRASTRE")
-        self.faunas = self.get_file("fauna")
+        self.faunas = get_file_dbf(self.request, "fauna")
         self.messages = []
         self.errors = []
 
-    def get_file(self, file_key):
-        """
-        Get a file from request in pandas dataframe format
-        :param file_key: Key of the request to get
-        :return: Pandas dataframe with the content of the file
-        """
-        new_file = self.request.FILES[file_key]
-        return pd.read_csv(new_file, sep=";", decimal=",")
+    # def get_file(self, file_key):
+    #     """
+    #     Get a file from request in pandas dataframe format
+    #     :param file_key: Key of the request to get
+    #     :return: Pandas dataframe with the content of the file
+    #     """
+    #     new_file = self.request.FILES[file_key]
+    #     return pd.read_csv(new_file, sep=";", decimal=",")
 
     def format_catch_table(self, file):
         catches_table = file
@@ -343,6 +383,7 @@ class FaunasImport:
 class SpeciesImport:
 
     def __init__(self, request):
+        self.species_file = get_file_dbf(request, "species")
         self.request = request
         self.message = []
         self.fields_species = {
@@ -359,14 +400,14 @@ class SpeciesImport:
 
     # fill_measurement_type()
 
-    def get_file(self, file_key):
-        """
-        Get file from request in pandas dataframe format
-        :param file_key: Key of the request to get
-        :return: Pandas dataframe with the content of the file
-        """
-        new_file = self.request.FILES[file_key]
-        return pd.read_csv(new_file, sep=";", decimal=",")
+    # def get_file(self, file_key):
+    #     """
+    #     Get file from request in pandas dataframe format
+    #     :param file_key: Key of the request to get
+    #     :return: Pandas dataframe with the content of the file
+    #     """
+    #     new_file = self.request.FILES[file_key]
+    #     return pd.read_csv(new_file, sep=";", decimal=",")
 
     def format_species_table(self, file):
         species_df = file
@@ -408,13 +449,13 @@ class SpeciesImport:
 
         fill_measurement_type()
 
-        species_file = self.get_file("species")
+        # species_file = self.get_file("species")
 
         # Create your engine.
         engine = create_engine('sqlite:///db.sqlite3', echo=True)
 
         # species
-        species_table = self.format_species_table(species_file)
+        species_table = self.format_species_table(self.species_file)
 
         species_table['measurement_type_id'] = species_table.apply(self.get_measurement_type, axis=1)
         species_table = species_table.drop(columns=['unit', 'increment'], axis=1)
@@ -443,7 +484,8 @@ class SurveysImport:
         # utf 8 without BOM
         # survey_file = csv.DictReader(io.StringIO(file_object.read().decode('utf-8')), delimiter=';')
         # utf 8 with BOM
-        survey_file = csv.DictReader(io.StringIO(file_object.read().decode('utf-8-sig')), delimiter=';')
+        # survey_file = csv.DictReader(io.StringIO(file_object.read().decode('utf-8-sig')), delimiter=';')
+        survey_file = get_file_dbf(self.request, 'camp').to_dict('records')
         stratification_name = get_type_survey(file_object.name) + "-sector-profundidad"
 
         stratification_id = Stratification.objects.get(stratification=stratification_name).id
@@ -464,8 +506,10 @@ class SurveysImport:
             tmp.description = row['IDENT']
             tmp.width_x = row['CUX']
             tmp.width_y = row['CUY']
-            tmp.origin_x = convert_comma_to_dot(row['OCUX'])
-            tmp.origin_y = convert_comma_to_dot(row['OCUY'])
+            # tmp.origin_x = convert_comma_to_dot(row['OCUX'])
+            # tmp.origin_y = convert_comma_to_dot(row['OCUY'])
+            tmp.origin_x = row['OCUX']
+            tmp.origin_y = row['OCUY']
             tmp.ship = get_ship(row['BARCO'])
             tmp.hauls_duration = row['DURLAN']
             # tmp.area_sampled = row['AREBAR']
@@ -519,9 +563,12 @@ def create_stratum(request):
     Returns:
     HttpResponse: An HTTP response indicating the success or failure of the operation.
     """
-    file_object = request.FILES['camp']
-    file_object.seek(0)
-    survey_file = csv.DictReader(io.StringIO(file_object.read().decode('utf-8')), delimiter=';')
+    # file_object = request.FILES['camp']
+    # file_object.seek(0)
+    # survey_file = csv.DictReader(io.StringIO(file_object.read().decode('utf-8')), delimiter=';')
+
+    df = get_file_dbf(request, 'camp')
+    survey_file = df.to_dict('records')
 
     sectors_col_names = [1, 2, 3, 4, 5]
     sectors_names = ["MIÑO-FINISTERRE", "FINISTERRE-ESTA", "ESTACA-PEÑAS", "PEÑAS-AJO", "AJO-BIDASOA"]
@@ -790,15 +837,50 @@ class HaulsImport:
         # add haul_id variable
         trawl_table.loc[:, 'haul_id'] = trawl_table.apply(get_haul_id, axis=1, args=[self.survey_name])
 
+        def fix_year_and_convert_date(date_val):
+            if pd.isna(date_val):
+                return pd.NaT
+
+            date_str = str(date_val).strip()
+
+            try:
+                dt = pd.to_datetime(date_str)
+
+                if 1900 <= dt.year <= 1999:
+                    new_year = dt.year + 100
+                    if new_year > 2000:
+                        dt = dt.replace(year=new_year)
+
+                return dt
+            except:
+                return pd.NaT
+
+        trawl_table["FECHA"] = trawl_table["FECHA"].apply(fix_year_and_convert_date)
+
+        if trawl_table["FECHA"].dtype == 'object':
+            trawl_table["FECHA"] = pd.to_datetime(trawl_table["FECHA"])
+
+        # Convert HORA_L from "HH.MM" format to timedelta
+        def parse_time_to_timedelta(time_str):
+            if pd.isna(time_str):
+                return pd.Timedelta(0)
+
+            time_str = str(time_str).strip()
+            # Split by dot and convert to hours:minutes format
+            if '.' in time_str:
+                hours, minutes = time_str.split('.')
+                return pd.Timedelta(hours=int(hours), minutes=int(minutes))
+            return pd.Timedelta(0)
+
+        # Convert time strings to timedelta
+        trawl_table["time_shooting"] = trawl_table["HORA_L"].apply(parse_time_to_timedelta)
+        trawl_table["time_hauling"] = trawl_table["HORA_V"].apply(parse_time_to_timedelta)
+
+        # Add timedelta to datetime
+        trawl_table['shooting_date_time'] = trawl_table["FECHA"] + trawl_table["time_shooting"]
+        trawl_table['hauling_date_time'] = trawl_table["FECHA"] + trawl_table["time_hauling"]
+
         # format some variables
-        trawl_table["HORA_L"] = trawl_table["HORA_L"].astype(str)
-        trawl_table['shooting_date_time'] = trawl_table[["FECHA", "HORA_L"]].agg(' '.join, axis=1)
-        trawl_table['shooting_date_time'] = pd.to_datetime(trawl_table['shooting_date_time'], format='%d/%m/%Y %H.%M')
-
-        trawl_table["HORA_V"] = trawl_table["HORA_V"].astype(str)
-        trawl_table['hauling_date_time'] = trawl_table[["FECHA", "HORA_V"]].agg(' '.join, axis=1)
-        trawl_table['hauling_date_time'] = pd.to_datetime(trawl_table['hauling_date_time'], format='%d/%m/%Y %H.%M')
-
         def convert_velocity(row):
             if isinstance(row['VELOCIDAD'], str):
                 return float(row['VELOCIDAD'].replace(',', '.'))
@@ -839,7 +921,7 @@ class HaulsImport:
         fields.extend(['haul_id', 'shooting_date_time', 'hauling_date_time', 'shooting_latitude', 'shooting_longitude',
                        'hauling_latitude', 'hauling_longitude', 'velocity'])
 
-        trawl_table = file[fields]
+        trawl_table = trawl_table[fields]
 
         new_fields = list(self.fields_trawl.keys())
 
@@ -863,7 +945,8 @@ class HaulsImport:
         :return:
         """
 
-        hauls_file = self.get_file("lance")
+        hauls_file = get_file_dbf(self.request, "lance")
+        # hauls_file = self.get_file("lance")
 
         # Create your engine.
         engine = create_engine('sqlite:///db.sqlite3', echo=True)
@@ -899,7 +982,7 @@ class NtallImport:
         self.sampler_object = get_sampler_object_and_create(sampler_name='ARRASTRE')
         self.survey_name = get_survey_name(self.request.FILES['ntall'].name)
         self.survey_object = Survey.objects.get(acronym=self.survey_name)
-        self.ntall = self.get_file("ntall")
+        self.ntall = get_file_dbf(request, "ntall")
         self.fields_sexes = {
             'sex': "SEXO",
         }
@@ -911,14 +994,14 @@ class NtallImport:
             'sampled_weight': 'PESO_M',
         }
 
-    def get_file(self, file_key):
-        """
-        Get file from request in pandas dataframe format
-        :param file_key: Key of the request to get
-        :return: Pandas dataframe with the content of the file
-        """
-        new_file = self.request.FILES[file_key]
-        return pd.read_csv(new_file, sep=";", decimal=",")
+    # def get_file(self, file_key):
+    #     """
+    #     Get file from request in pandas dataframe format
+    #     :param file_key: Key of the request to get
+    #     :return: Pandas dataframe with the content of the file
+    #     """
+    #     new_file = self.request.FILES[file_key]
+    #     return pd.read_csv(new_file, sep=";", decimal=",")
 
     def get_sp_unit(self, row):
         """
@@ -1134,6 +1217,7 @@ class HydrographiesImport:
         self.request = request
         self.survey_name = get_survey_name(self.request.FILES['hidro'].name)
         self.survey_object = Survey.objects.get(acronym=self.survey_name)
+        self.hydrographies = get_file_dbf(request, "hidro")
         self.fields_hydrography = {
             "latitude": "LATITUD",
             "longitude": "LONGITUD",
@@ -1158,28 +1242,56 @@ class HydrographiesImport:
         self.sampler_object = get_sampler_object_and_create("CTD")
         self.message = []
 
+    def format_hydrography_table(self, hydrography_df):
+
+        hydrography_df['latitude'] = hydrography_df["LATITUD"].apply(convert_position_camp_to_decimal)
+
+        hydrography_df['longitude'] = hydrography_df["LONGITUD"].apply(convert_position_camp_to_decimal)
+
+        hydrography_df['latitude'] = hydrography_df.apply(format_latitude_decimal, axis=1,
+                                                          args=["LATITUD", "NOSU", "S"])
+
+        hydrography_df['longitude'] = hydrography_df.apply(format_latitude_decimal, axis=1,
+                                                           args=["LONGITUD", "NOSU", "W"])
+
+        hydrography_df = hydrography_df.drop(['LATITUD', 'LONGITUD', 'NOSU'], axis=1)
+
+        def unit_date_time(row, date_field, time_field):
+            return datetime.strptime(str(row[date_field]) + " " + str(row[time_field]), '%Y-%m-%d %H.%M')
+
+        hydrography_df['date_time'] = hydrography_df.apply(unit_date_time, axis=1, args=["FECHA", "HORA"])
+
+        hydrography_df = hydrography_df.drop(['FECHA', 'HORA'], axis=1)
+
+        # Create a reverse mapping from values to keys
+        column_mapping = {value: key for key, value in self.fields_hydrography.items()}
+
+        # Rename columns using the mapping (columns not in mapping will remain unchanged)
+        hydrography_df = hydrography_df.rename(columns=column_mapping)
+
+        return hydrography_df
+
     def save_hydrographies(self, row):
 
-        tmp = {}
-
-        for k, v in self.fields_hydrography.items():
-            if row[v] != "":
-                tmp[k] = row[v]
-
-        latitude = convert_position_camp_to_decimal(tmp["latitude"])
-        if row["NOSU"] == "S":
-            tmp["latitude"] = (-1) * latitude
-        elif row["NOSU"] == "N":
-            tmp["latitude"] = latitude
-
-        longitude = convert_position_camp_to_decimal(tmp["longitude"])
-        if row["ESWE"] == "W":
-            tmp["longitude"] = (-1) * longitude
-        elif row["ESWE"] == "E":
-            tmp["longitude"] = longitude
-
-        datetime_text = str(row["FECHA"]) + " " + str(row["HORA"])
-        tmp["date_time"] = datetime.strptime(datetime_text, '%d/%m/%Y %H.%M')
+        # tmp = {}
+        # for k, v in self.fields_hydrography.items():
+        #     if row[v] != "":
+        #         tmp[k] = row[v]
+        #
+        # latitude = convert_position_camp_to_decimal(tmp["latitude"])
+        # if row["NOSU"] == "S":
+        #     tmp["latitude"] = (-1) * latitude
+        # elif row["NOSU"] == "N":
+        #     tmp["latitude"] = latitude
+        #
+        # longitude = convert_position_camp_to_decimal(tmp["longitude"])
+        # if row["ESWE"] == "W":
+        #     tmp["longitude"] = (-1) * longitude
+        # elif row["ESWE"] == "E":
+        #     tmp["longitude"] = longitude
+        #
+        # datetime_text = str(row["FECHA"]) + " " + str(row["HORA"])
+        # tmp["date_time"] = datetime.strptime(datetime_text, '%Y-%m-%d %H.%M')
 
         # to_round = ["temperature_0", "salinity_0", "temperature_50", "salinity_50", "temperature_100",
         #             "salinity_100", "temperature", "salinity"]
@@ -1224,23 +1336,12 @@ class HydrographiesImport:
             self.message.append(
                 '<p>hydro station: ' + str(row['ESTN']) + ' has been saved as ' + str(station_object.station) + '</p>')
 
-    def get_file(self, file_key):
-        """
-        Get file from request in pandas dataframe format
-        :param file_key: Key of the request to get
-        :return: Pandas dataframe with the content of the file
-        """
-        new_file = self.request.FILES[file_key]
-        return pd.read_csv(new_file, sep=";", decimal=",")
-
     def import_hydrographies_csv(self):
         """
         Function to import the CSV file with hydrography data.
         :return:
         """
-
-        hydro_file = self.get_file("hidro")
-        # hydro_file.fillna(0, inplace=True)
+        hydrographies_df = self.format_hydrography_table(self.hydrographies)
 
         # check there aren't already saved hydrographies of the survey
         if HaulHydrography.objects.filter(haul_id__station_id__survey_id__acronym=self.survey_name):
@@ -1248,7 +1349,53 @@ class HydrographiesImport:
                 "<p>hydrographies of this survey already saved in database. Remove all the hydrographies of this "
                 "survey before try to import it again. None of the hydrographies has been saved.</p>")
         else:
-            saved_hydrographies = hydro_file.apply(self.save_hydrographies, axis=1)
+            # saved_hydrographies = hydro_file.apply(self.save_hydrographies, axis=1)
+            # saved_hydrographies = self.hydrographies.apply(self.save_hydrographies, axis=1)
+            # station
+            # The station of hydrography haul is the station of the trawl haul (which is stored in the 'haul' field
+            # of hydrography file), so firstly we identify it:
+            sampler_object = Sampler.objects.get(sampler="CTD")
+
+            # gear
+            # By default we use the same gear for all the hydrography hauls
+            ctd_object, created = CTD.objects.get_or_create(name="1", brand="default brand", model="default model")
+
+            def createHydroStation(row):
+                station_object, created = Station.objects.get_or_create(
+                    station=row['LANCE'],
+                    survey=self.survey_object,
+                )
+                row['station'] = station_object
+                return row
+
+            def createHydroHaul(row, sampler_object, ctd_object):
+                haul_object, created = Haul.objects.get_or_create(
+                    haul=row['ESTN'],
+                    sampler=sampler_object,
+                    station=row['station'],
+                    ctd=ctd_object,
+                    sampler_type="CTD",
+                )
+                row['haul_id'] = haul_object.id
+                return row
+
+            hydrographies_df = hydrographies_df.apply(createHydroStation, axis=1)
+            hydrographies_df = hydrographies_df.apply(createHydroHaul, axis=1, args=[sampler_object, ctd_object])
+
+            # # select variables to export
+            # new_fields = list(self.fields_hydrography.keys())
+            #
+            # new_fields.extend(['haul_id'])
+            #
+            # hydrographies_df.columns = new_fields
+            columns = list(self.fields_hydrography.keys()) + ['haul_id']
+            hydrographies_df = hydrographies_df[columns]
+
+            # the empty values must be saved as Na, so:
+            hydrographies_df = hydrographies_df.replace('', pd.NA)
+
+            engine = create_engine('sqlite:///db.sqlite3', echo=True)
+            hydrographies_df.to_sql("hauls_haulhydrography", con=engine, if_exists="append", index=False)
 
         return HttpResponse(self.message, status=HTTP_201_CREATED)
 
@@ -1288,7 +1435,7 @@ class OldCampImport:
         ntall = NtallImport(self.request)
         ntall_import = ntall.import_ntall_csv()
 
-        # The catches table is filled first in the import of NTALL file. In this importation only the
+        # The catches table is filled first in the import of NTALL file. In this import only the
         # species measured has been saved. With the FAUNA file, only of species which haven't been
         # measured must be stored because it is used to_sql from pandas library.
         faunas = FaunasImport(self.request)
@@ -1311,5 +1458,13 @@ class OldCampImport:
         species_import = species.import_species_csv()
 
         response = [species_import.content]
+
+        return HttpResponse(response)
+
+    def import_hydrographies(self):
+        hydro = HydrographiesImport(self.request)
+        hydrography_import = hydro.import_hydrographies_csv()
+
+        response = [hydrography_import.content]
 
         return HttpResponse(response)
