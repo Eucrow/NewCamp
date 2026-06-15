@@ -20,6 +20,9 @@ def empty(value):
     :param value: variable to check
     :return: True if the value is empty
     '''
+    if value is None or value == "" or (isinstance(value, str) and value.strip() == ""):
+        return True
+
     try:
         value = float(value)
     except ValueError:

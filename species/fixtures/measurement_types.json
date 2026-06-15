@@ -1,0 +1,29 @@
+[
+  {
+    "model": "species.measurementtype",
+    "pk": 1,
+    "fields": {
+      "name": "mm",
+      "increment": 1,
+      "conversion_factor": 1
+    }
+  },
+  {
+    "model": "species.measurementtype",
+    "pk": 2,
+    "fields": {
+      "name": "cm",
+      "increment": 10,
+      "conversion_factor": 10
+    }
+  },
+  {
+    "model": "species.measurementtype",
+    "pk": 3,
+    "fields": {
+      "name": "1/2cm",
+      "increment": 5,
+      "conversion_factor": 10
+    }
+  }
+]
