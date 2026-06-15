@@ -261,16 +261,21 @@ class FaunasImport(BaseImport):
         Import file with faunas data.
         :return: http response
         """
+        try:
 
-        catches_file = self.faunas
+            catches_file = self.faunas
 
-        # Create your engine.
-        engine = create_engine('sqlite:///db.sqlite3', echo=True)
+            # Create your engine.
+            engine = create_engine('sqlite:///db.sqlite3', echo=True)
 
-        # Cant' check if there aren't already saved, because in the format_catch_table are selected the
-        # catches which aren't saved yet because they don't had been measured
-        catches_table = self.format_table(catches_file)
-        catches_table.to_sql("catches_catch", con=engine, if_exists="append", index=False)
+            # Cant' check if there aren't already saved, because in the format_catch_table are selected the
+            # catches which aren't saved yet because they don't had been measured
+            catches_table = self.format_table(catches_file)
+            catches_table.to_sql("catches_catch", con=engine, if_exists="append", index=False)
+            self.add_message(f"Successfully imported {len(catches_table)} catches records")
+
+        except Exception as e:
+            self.add_error(f"Error importing faunas: {e}")
 
         return HttpResponse(self.messages, status=HTTP_201_CREATED)
 
@@ -317,9 +322,6 @@ class SpeciesImport(BaseImport):
             self.add_message("Species table formatted successfully")
 
             return species_df
-        except KeyError as e:
-            self.add_error("Error formatting species table: {}".format(e))
-            return None
         except Exception as e:
             self.add_error("Error formatting species table: {}".format(e))
             return None
@@ -388,35 +390,41 @@ class SurveysImport(BaseImport):
         :return: Http Response
         """
 
-        stratification_name = get_type_survey(self.request.FILES["camp"].name) + "-sector-profundidad"
+        try:
+            stratification_name = get_type_survey(self.request.FILES["camp"].name) + "-sector-profundidad"
 
-        stratification_id = Stratification.objects.get(stratification=stratification_name).id
+            stratification_id = Stratification.objects.get(stratification=stratification_name).id
 
-        if Survey.objects.filter(acronym=self.survey_file['CLAV']).exists():
-            return HttpResponse(
-                '<p>The survey ' + str(self.survey_file['CLAV']) + ' already exists in newCamp.</p>',
-                status=300)
+            if Survey.objects.filter(acronym=self.survey_file['CLAV']).exists():
+                return HttpResponse(
+                    '<p>The survey ' + str(self.survey_file['CLAV']) + ' already exists in newCamp.</p>',
+                    status=300)
 
-        # save survey model
-        tmp = Survey()
-        tmp.acronym = self.survey_file['CLAV'][0]
-        tmp.description = self.survey_file['IDENT'][0]
-        tmp.width_x = self.survey_file['CUX'][0]
-        tmp.width_y = self.survey_file['CUY'][0]
-        tmp.origin_x = self.survey_file['OCUX'][0]
-        tmp.origin_y = self.survey_file['OCUY'][0]
-        tmp.ship = get_ship(self.survey_file['BARCO'][0])
-        tmp.hauls_duration = self.survey_file['DURLAN'][0]
-        if tmp.start_date is not None: tmp.start_date = datetime.strptime(fix_year_date(self.survey_file['COMI'][0]),
+            # save survey model
+            tmp = Survey()
+            tmp.acronym = self.survey_file['CLAV'][0]
+            tmp.description = self.survey_file['IDENT'][0]
+            tmp.width_x = self.survey_file['CUX'][0]
+            tmp.width_y = self.survey_file['CUY'][0]
+            tmp.origin_x = self.survey_file['OCUX'][0]
+            tmp.origin_y = self.survey_file['OCUY'][0]
+            tmp.ship = get_ship(self.survey_file['BARCO'][0])
+            tmp.hauls_duration = self.survey_file['DURLAN'][0]
+            if tmp.start_date is not None: tmp.start_date = datetime.strptime(
+                fix_year_date(self.survey_file['COMI'][0]),
+                '%d/%m/%y').date()
+            if tmp.end_date is not None: tmp.end_date = datetime.strptime(fix_year_date(self.survey_file['FINA'][0]),
                                                                           '%d/%m/%y').date()
-        if tmp.end_date is not None: tmp.end_date = datetime.strptime(fix_year_date(self.survey_file['FINA'][0]),
-                                                                      '%d/%m/%y').date()
-        tmp.stratification_id = stratification_id
+            tmp.stratification_id = stratification_id
 
-        tmp.save()
+            tmp.save()
 
-        message = "<p>The survey " + self.survey_file['CLAV'] + ' has been saved.</p>'
-        return HttpResponse(message, status=HTTP_201_CREATED)
+            self.add_message(f"The survey {self.survey_file['CLAV'][0]} has been saved.")
+
+        except Exception as e:
+            self.add_error("Error formatting species table: {}".format(e))
+
+        return self.get_response()
 
 
 class HaulsImport:
