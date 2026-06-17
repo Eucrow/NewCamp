@@ -8,9 +8,13 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from datetime import datetime
 
-from rest_framework.status import HTTP_201_CREATED, HTTP_409_CONFLICT, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_201_CREATED
 
 from catches.models import Catch
+from hauls.importers.base import BaseImport
+from hauls.importers.haul_import import HaulsImport
+from hauls.importers.haul_trawl_import import HaulTrawlImport
+from hauls.importers.meteorology_import import MeteorologyImport
 from hauls.models import Haul, HaulTrawl, HaulHydrography, Meteorology
 
 from newcamp.utils import get_survey_name, get_create_sampler_object
@@ -21,6 +25,7 @@ from import_old_camp.utils.db_helpers import get_sp_id, get_haul_id, get_ship, g
     species_exists, species_not_exists_in_db, get_sex_id
 from import_old_camp.utils.utils import get_file_dbf, get_type_survey, get_unit_name
 from newcamp.apps import empty
+
 from species.models import Sp, MeasurementType
 from stations.models import Station
 from strata.models import Stratum
@@ -30,88 +35,7 @@ from surveys.models import Survey
 from samplers.models import Sampler
 from samples.models import Length, SampledWeight, Sex
 
-from abc import ABC, abstractmethod
 from typing import List, Optional, Any
-
-
-class BaseImport(ABC):
-    """Base class for all import operations with common functionality."""
-
-    def __init__(self, request: Any, file_type: str = None):
-        """
-        Initialize base import class.
-        :param request: Django request object
-        :param survey_name: Optional survey name
-        """
-        self.request = request
-        self.survey_name = get_survey_name(request.FILES[file_type].name)
-        self.messages: List[str] = []
-        self.errors: List[str] = []
-
-    def add_message(self, message: str) -> None:
-        """Add a success message."""
-        self.messages.append(message)
-
-    def add_error(self, error: str) -> None:
-        """Add an error message."""
-        self.errors.append(error)
-
-    def has_errors(self) -> bool:
-        """Check if there are any errors."""
-        return len(self.errors) > 0
-
-    def get_response(self) -> HttpResponse:
-        """
-        Generate HTTP response based on messages and errors.
-        :return: HttpResponse with appropriate status
-        """
-        if self.has_errors():
-            response_data = {
-                'errors': self.errors,
-                'messages': self.messages
-            }
-            return HttpResponse(response_data, status=HTTP_400_BAD_REQUEST)
-        else:
-            return HttpResponse(self.messages, status=HTTP_201_CREATED)
-
-    def get_survey_object(self, survey_name: Optional[str] = None):
-        """
-        Get survey object by name.
-        :param survey_name: Survey name (uses self.survey_name if not provided)
-        :return: Survey object or None if not found
-        """
-        from surveys.models import Survey
-        from django.core.exceptions import ObjectDoesNotExist
-
-        name = survey_name or self.survey_name
-        if not name:
-            self.add_error("Survey name is required")
-            return None
-
-        try:
-            return Survey.objects.get(acronym=name)
-        except ObjectDoesNotExist:
-            self.add_error(f"Survey with acronym '{name}' does not exist")
-            return None
-
-    @abstractmethod
-    def format_table(self, data) -> Any:
-        """
-        Abstract method to format data table.
-        Must be implemented by subclasses.
-        :param data: Input data to format
-        :return: Formatted data
-        """
-        pass
-
-    @abstractmethod
-    def import_data(self) -> HttpResponse:
-        """
-        Abstract method to perform the import operation.
-        Must be implemented by subclasses.
-        :return: HttpResponse
-        """
-        pass
 
 
 def create_stratification(stratification_name):
@@ -427,346 +351,298 @@ class SurveysImport(BaseImport):
         return self.get_response()
 
 
-class HaulsImport:
-
-    def __init__(self, request):
-        self.request = request
-        self.message = []
-        self.sectors_col_names = [1, 2, 3, 4, 5]
-        self.sectors_names = ["MIÑO-FINISTERRE", "FINISTERRE-ESTA", "ESTACA-PEÑAS", "PEÑAS-AJO", "AJO-BIDASOA"]
-        # dept_col_names "D" and "E" doesn't have data so the depths_names of them are "without depth 1" and "without
-        # depth 2"
-        self.depth_col_names = ["A", "B", "C", "D", "E"]
-        self.depths_names = ["70-120", "120-200", "200-500", "without depth 1", "without depth 2"]
-        self.survey_name = get_survey_name(self.request.FILES['lance'].name)
-        self.survey_object = Survey.objects.get(acronym=self.survey_name)
-        self.sampler_object = get_create_sampler_object(sampler_name="ARRASTRE")
-        self.stratification_name = get_type_survey(self.request.FILES['camp'].name) + "-sector-profundidad"
-        self.stratification_object = Stratification.objects.get(stratification=self.stratification_name)
-
-        # TODO: the valid field now must be fill the "valid" of the newCamp database and
-        # the field "special". The field "special" is a boolean field which indicates if
-        # the haul is special or not.
-
-        self.fields_haul = {
-            "haul": "LANCE",
-            # "gear": "ARTE",
-            "valid": "VALIDEZ",
-        }
-        self.fields_meteorology = {
-            "wind_direction": "DIR_VIENTO",
-            "wind_velocity": "VEL_VIENTO",
-            "sea_state": "EST_MAR",
-        }
-        self.fields_trawl = {
-            "shooting_date_time": "HORA_L",
-            "shooting_latitude": "LATITUD_L",
-            "shooting_longitude": "LONGITUD_L",
-            "shooting_depth": "PROF_L",
-            "hauling_date_time": "HORA_V",
-            "hauling_latitude": "LATITUD_V",
-            "hauling_longitude": "LONGITUD_V",
-            "hauling_depth": "PROF_V",
-            "course": "RUMBO",
-            "velocity": "VELOCIDAD",
-            "cable": "CABLE",
-            "sweep": "MALLETAS",
-            "otter_boards_distance": "DISTA_P",
-            "horizontal_aperture": "ABERT_H",
-            "vertical_aperture": "ABERT_V",
-            # "grid": "CUADRICULA",
-            "track": "RECORRIDO",
-            "comment": "OBSERV",
-        }
-
-    def get_stratum_name(self, row_sector, row_stratum):
-        if row_sector == "" or row_sector is None or row_stratum == "" or row_stratum is None:
-            return None
-
-        sector_name = self.sectors_names[int(row_sector) - 1]
-        depth_index = self.depth_col_names.index(row_stratum)
-        depth_name = self.depths_names[depth_index]
-
-        stratum_name = sector_name + "-" + depth_name
-        return stratum_name
-
-    def get_trawl_gear_id(self, row):
-        """
-        Get the gear id. Used in pandas apply function.
-        :param row: row of the apply function
-        :return: gear id
-        """
-        try:
-            trawl_gear = Trawl.objects.get(name=row["ARTE"])
-            return trawl_gear.id
-        except Trawl.DoesNotExist:
-            print("The trawl " + str(row["ARTE"]) + " does not exists in Trawl table.")
-
-    def get_stratum_id(self, row):
-        """
-        Get the stratum id. Used in pandas apply function.
-        :param row: row of the apply function.
-        :return: stratum id.
-        """
-
-        # There are some stratum which does not have areas, so I don't save it stratum database
-        stratum = self.get_stratum_name(row["SECTOR"], row["ESTRATO"])
-
-        if stratum is not None:
-            stratum_object = Stratum.objects.get(stratum=stratum,
-                                                 stratification=self.stratification_object)
-        else:
-            stratum_object = Stratum.objects.get(stratum="not_assigned",
-                                                 stratification=self.stratification_object)
-        return stratum_object.id
-
-    def get_station_id_or_create(self, row):
-        """
-        Get the station id. Used in pandas apply function.
-        :param row: row of the apply function.
-        :return: Station id.
-        """
-
-        # add station data
-        # temporally, in all demersales surveys, the station is the same as the haul
-        if not Station.objects.filter(station=row['LANCE'], survey__acronym=self.survey_name).exists():
-            station_new = Station()
-            station_new.station = row['LANCE']
-            station_new.sampler = self.sampler_object
-            station_new.survey = self.survey_object
-            station_new.save()
-
-        station_object = get_object_or_404(Station, station=row['LANCE'], survey__acronym=self.survey_name)
-        return station_object.id
-
-    def format_haul_table(self, file):
-        """
-        Format table to save in database with to_sql function of pandas.
-        Remove useless variables and add station_id and stratum_id.
-        :param file: file hauls in pandas data frame
-        :return: pandas data frame formatted
-        """
-
-        hauls_table = file
-
-        hauls_table.loc[:, 'station_id'] = hauls_table.apply(self.get_station_id_or_create, axis=1)
-
-        hauls_table.loc[:, 'stratum_id'] = hauls_table.apply(self.get_stratum_id, axis=1)
-
-        hauls_table.loc[:, 'sampler_id'] = self.sampler_object.id
-
-        # hauls_table.loc[:, 'gear_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
-        hauls_table.loc[:, 'trawl_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
-
-        hauls_table.loc[:, 'sampler_type'] = "trawl"
-
-        validez = hauls_table['VALIDEZ'].apply(lambda x: True if x == 1 or x == 2 else False)
-        hauls_table.loc[:, 'valid'] = validez
-
-        special = hauls_table['VALIDEZ'].apply(lambda x: True if x == 2 else False)
-        hauls_table.loc[:, 'special'] = special
-
-        fields = list(self.fields_haul.values())
-        fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type', 'valid', 'special'])
-
-        hauls_table = file[fields]
-
-        new_fields = list(self.fields_haul.keys())
-        new_fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type', 'valid', 'special'])
-
-        hauls_table.columns = new_fields
-
-        # the empty values must be saved as Na, so:
-        hauls_table = hauls_table.replace('', pd.NA)
-
-        return hauls_table
-
-    def format_haul_meteorology_table(self, file):
-        """
-        Format table to save in database with to_sql function of pandas.
-        Remove useless variables and add station_id and stratum_id.
-        :param file: file hauls in pandas data frame
-        :return: pandas data frame formatted
-        """
-        meteo_table = file
-
-        meteo_table.loc[:, 'haul_id'] = meteo_table.apply(get_haul_id, axis=1, args=[self.survey_name])
-
-        fields = list(self.fields_meteorology.values())
-
-        fields.extend(['haul_id'])
-
-        meteo_table = file[fields]
-
-        new_fields = list(self.fields_meteorology.keys())
-
-        new_fields.extend(['haul_id'])
-
-        meteo_table.columns = new_fields
-
-        # the empty values must be saved as Na, so:
-        meteo_table = meteo_table.replace('', pd.NA)
-
-        def convert_wind_velocity(row):
-            if not pd.isna(row['wind_velocity']):
-                # Check if it's a string before using replace
-                if isinstance(row['wind_velocity'], str):
-                    return float(row['wind_velocity'].replace(',', '.'))
-                else:
-                    # If it's already a float, return it as is
-                    return float(row['wind_velocity'])
-            return None
-
-        meteo_table["wind_velocity"] = meteo_table.apply(convert_wind_velocity, axis=1)
-
-        return meteo_table
-
-    def format_haul_trawl_table(self, file):
-        """
-        Format table to save in database with to_sql function of pandas.
-        Remove useless variables and add station_id and stratum_id.
-        :param file: file hauls in pandas data frame
-        :return: pandas data frame formatted
-        """
-        trawl_table = file
-
-        # add haul_id variable
-        trawl_table.loc[:, 'haul_id'] = trawl_table.apply(get_haul_id, axis=1, args=[self.survey_name])
-
-        def fix_year_and_convert_date(date_val):
-            if pd.isna(date_val):
-                return pd.NaT
-
-            date_str = str(date_val).strip()
-
-            try:
-                dt = pd.to_datetime(date_str)
-
-                if 1900 <= dt.year <= 1999:
-                    new_year = dt.year + 100
-                    if new_year > 2000:
-                        dt = dt.replace(year=new_year)
-
-                return dt
-            except:
-                return pd.NaT
-
-        trawl_table["FECHA"] = trawl_table["FECHA"].apply(fix_year_and_convert_date)
-
-        if trawl_table["FECHA"].dtype == 'object':
-            trawl_table["FECHA"] = pd.to_datetime(trawl_table["FECHA"])
-
-        # Convert HORA_L from "HH.MM" format to timedelta
-        def parse_time_to_timedelta(time_str):
-            if pd.isna(time_str):
-                return pd.Timedelta(0)
-
-            time_str = str(time_str).strip()
-            # Split by dot and convert to hours:minutes format
-            if '.' in time_str:
-                hours, minutes = time_str.split('.')
-                return pd.Timedelta(hours=int(hours), minutes=int(minutes))
-            return pd.Timedelta(0)
-
-        # Convert time strings to timedelta
-        trawl_table["time_shooting"] = trawl_table["HORA_L"].apply(parse_time_to_timedelta)
-        trawl_table["time_hauling"] = trawl_table["HORA_V"].apply(parse_time_to_timedelta)
-
-        # Add timedelta to datetime
-        trawl_table['shooting_date_time'] = trawl_table["FECHA"] + trawl_table["time_shooting"]
-        trawl_table['hauling_date_time'] = trawl_table["FECHA"] + trawl_table["time_hauling"]
-
-        # format some variables
-        def convert_velocity(row):
-            if isinstance(row['VELOCIDAD'], str):
-                return float(row['VELOCIDAD'].replace(',', '.'))
-            else:
-                # If it's already a float, return it as is
-                return float(row['VELOCIDAD'])
-
-        trawl_table["velocity"] = trawl_table.apply(convert_velocity, axis=1)
-
-        # format coordinates
-        def format_latitude_decimal(row, coor_var, cardinal_var, cardinal_value):
-            """
-            Change the format of latitude by LATITUD var and cardinal points var. To use in apply.
-            :param row: row of apply.
-            :param coor_var: coordinate variable.
-            :param cardinal_var: variable which contain the cardinal point of the coordinates (NSL, NSV, EWL, EWV)
-            :param cardinal_value: cardinal value (string) which indicates if the coordinates are negatives.
-            :return: coordinate converted.
-            """
-            row[coor_var] = convert_position_camp_to_decimal(row[coor_var])
-            if row[cardinal_var] == cardinal_value:
-                row[coor_var] = (-1) * row[coor_var]
-            return round(row[coor_var], 4)
-
-        trawl_table['shooting_latitude'] = trawl_table.apply(format_latitude_decimal, axis=1,
-                                                             args=["LATITUD_L", "NSL", "S"])
-        trawl_table['shooting_longitude'] = trawl_table.apply(format_latitude_decimal, axis=1,
-                                                              args=["LONGITUD_L", "EWL", "W"])
-        trawl_table['hauling_latitude'] = trawl_table.apply(format_latitude_decimal, axis=1,
-                                                            args=["LATITUD_V", "NSV", "S"])
-        trawl_table['hauling_longitude'] = trawl_table.apply(format_latitude_decimal, axis=1,
-                                                             args=["LONGITUD_V", "EWV", "W"])
-
-        # select variables to export
-
-        fields = list(self.fields_trawl.values())
-
-        fields.extend(['haul_id', 'shooting_date_time', 'hauling_date_time', 'shooting_latitude', 'shooting_longitude',
-                       'hauling_latitude', 'hauling_longitude', 'velocity'])
-
-        trawl_table = trawl_table[fields]
-
-        new_fields = list(self.fields_trawl.keys())
-
-        new_fields.extend(
-            ['haul_id', 'shooting_date_time', 'hauling_date_time', 'shooting_latitude', 'shooting_longitude',
-             'hauling_latitude', 'hauling_longitude', 'velocity'])
-
-        trawl_table.columns = new_fields
-
-        # the empty values must be saved as Na, so:
-        trawl_table = trawl_table.replace('', pd.NA)
-
-        # return table formatted
-        return trawl_table
-
-    def import_hauls_csv(self):
-        """
-        Import csv file with trips data.
-        The hauls file to import from old Camp is saved in two different models: one with generic characteristics and
-        other with the specific characteristics ot trawl.
-        :return:
-        """
-
-        hauls_file = get_file_dbf(self.request, "lance")
-
-        # Create your engine.
-        engine = create_engine('sqlite:///db.sqlite3', echo=True)
-
-        # check there aren't already saved
-        if Haul.objects.filter(station__survey=self.survey_object).exists() or Meteorology.objects.filter(
-                haul_id__station__survey=self.survey_object).exists() or HaulTrawl.objects.filter(
-            haul_id__station__survey=self.survey_object).exists():
-            self.message.append("<p>Hauls of this survey already saved in database. Remove all of them before try to "
-                                "import it again. None of the hauls has been saved.</p>")
-            return HttpResponse(self.message, status=HTTP_409_CONFLICT)
-        else:
-            # haul
-            hauls_table = self.format_haul_table(hauls_file)
-            hauls_table.to_sql("hauls_haul", con=engine, if_exists="append", index=False)
-
-            # meteorology
-            meteo_table = self.format_haul_meteorology_table(hauls_file)
-            meteo_table.to_sql("hauls_meteorology", con=engine, if_exists="append", index=False)
-
-            # trawl
-            trawl_table = self.format_haul_trawl_table(hauls_file)
-            trawl_table.to_sql("hauls_haultrawl", con=engine, if_exists="append", index=False)
-
-            return HttpResponse(self.message, status=HTTP_201_CREATED)
+# class HaulsImport(BaseImport):
+#
+#     def __init__(self, request):
+#         super().__init__(request, "camp")
+#         # self.message = []
+#         self.sectors_col_names = [1, 2, 3, 4, 5]
+#         self.sectors_names = ["MIÑO-FINISTERRE", "FINISTERRE-ESTA", "ESTACA-PEÑAS", "PEÑAS-AJO", "AJO-BIDASOA"]
+#         # dept_col_names "D" and "E" doesn't have data so the depths_names of them are "without depth 1" and "without
+#         # depth 2"
+#         self.depth_col_names = ["A", "B", "C", "D", "E"]
+#         self.depths_names = ["70-120", "120-200", "200-500", "without depth 1", "without depth 2"]
+#         # self.survey_name = get_survey_name(self.request.FILES['lance'].name)
+#         # self.survey_object = Survey.objects.get(acronym=self.survey_name)
+#         self.survey_object = self.get_survey_object()
+#         self.sampler_object = get_create_sampler_object(sampler_name="ARRASTRE")
+#         self.stratification_name = get_type_survey(self.request.FILES['camp'].name) + "-sector-profundidad"
+#         self.stratification_object = Stratification.objects.get(stratification=self.stratification_name)
+
+# TODO: the valid field now must be fill the "valid" of the newCamp database and
+# the field "special". The field "special" is a boolean field which indicates if
+# the haul is special or not.
+
+# self.fields_haul = {
+#     "haul": "LANCE",
+#     # "gear": "ARTE",
+#     "valid": "VALIDEZ",
+# }
+# self.fields_meteorology = {
+#     "wind_direction": "DIR_VIENTO",
+#     "wind_velocity": "VEL_VIENTO",
+#     "sea_state": "EST_MAR",
+# }
+# self.fields_trawl = {
+#     "shooting_date_time": "HORA_L",
+#     "shooting_latitude": "LATITUD_L",
+#     "shooting_longitude": "LONGITUD_L",
+#     "shooting_depth": "PROF_L",
+#     "hauling_date_time": "HORA_V",
+#     "hauling_latitude": "LATITUD_V",
+#     "hauling_longitude": "LONGITUD_V",
+#     "hauling_depth": "PROF_V",
+#     "course": "RUMBO",
+#     "velocity": "VELOCIDAD",
+#     "cable": "CABLE",
+#     "sweep": "MALLETAS",
+#     "otter_boards_distance": "DISTA_P",
+#     "horizontal_aperture": "ABERT_H",
+#     "vertical_aperture": "ABERT_V",
+#     # "grid": "CUADRICULA",
+#     "track": "RECORRIDO",
+#     "comment": "OBSERV",
+# }
+
+# def format_haul_table(self, file):
+#     """
+#     Format table to save in database with to_sql function of pandas.
+#     Remove useless variables and add station_id and stratum_id.
+#     :param file: file hauls in pandas data frame
+#     :return: pandas data frame formatted
+#     """
+#
+#     hauls_table = file
+#
+#     hauls_table.loc[:, 'station_id'] = hauls_table.apply(self.get_station_id_or_create, axis=1)
+#
+#     hauls_table.loc[:, 'stratum_id'] = hauls_table.apply(self.get_stratum_id, axis=1)
+#
+#     hauls_table.loc[:, 'sampler_id'] = self.sampler_object.id
+#
+#     # hauls_table.loc[:, 'gear_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
+#     hauls_table.loc[:, 'trawl_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
+#
+#     hauls_table.loc[:, 'sampler_type'] = "trawl"
+#
+#     validez = hauls_table['VALIDEZ'].apply(lambda x: True if x == 1 or x == 2 else False)
+#     hauls_table.loc[:, 'valid'] = validez
+#
+#     special = hauls_table['VALIDEZ'].apply(lambda x: True if x == 2 else False)
+#     hauls_table.loc[:, 'special'] = special
+#
+#     fields = list(self.fields_haul.values())
+#     fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type', 'valid', 'special'])
+#
+#     hauls_table = file[fields]
+#
+#     new_fields = list(self.fields_haul.keys())
+#     new_fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type', 'valid', 'special'])
+#
+#     hauls_table.columns = new_fields
+#
+#     # the empty values must be saved as Na, so:
+#     hauls_table = hauls_table.replace('', pd.NA)
+#
+#     return hauls_table
+
+# def format_haul_meteorology_table(self, file):
+#     """
+#     Format table to save in database with to_sql function of pandas.
+#     Remove useless variables and add station_id and stratum_id.
+#     :param file: file hauls in pandas data frame
+#     :return: pandas data frame formatted
+#     """
+#     meteo_table = file
+#
+#     meteo_table.loc[:, 'haul_id'] = meteo_table.apply(get_haul_id, axis=1, args=[self.survey_name])
+#
+#     fields = list(self.fields_meteorology.values())
+#
+#     fields.extend(['haul_id'])
+#
+#     meteo_table = file[fields]
+#
+#     new_fields = list(self.fields_meteorology.keys())
+#
+#     new_fields.extend(['haul_id'])
+#
+#     meteo_table.columns = new_fields
+#
+#     # the empty values must be saved as Na, so:
+#     meteo_table = meteo_table.replace('', pd.NA)
+#
+#     def convert_wind_velocity(row):
+#         if not pd.isna(row['wind_velocity']):
+#             # Check if it's a string before using replace
+#             if isinstance(row['wind_velocity'], str):
+#                 return float(row['wind_velocity'].replace(',', '.'))
+#             else:
+#                 # If it's already a float, return it as is
+#                 return float(row['wind_velocity'])
+#         return None
+#
+#     meteo_table["wind_velocity"] = meteo_table.apply(convert_wind_velocity, axis=1)
+#
+#     return meteo_table
+
+# def format_haul_trawl_table(self, file):
+#     """
+#     Format table to save in database with to_sql function of pandas.
+#     Remove useless variables and add station_id and stratum_id.
+#     :param file: file hauls in pandas data frame
+#     :return: pandas data frame formatted
+#     """
+#     trawl_table = file
+#
+#     # add haul_id variable
+#     trawl_table.loc[:, 'haul_id'] = trawl_table.apply(get_haul_id, axis=1, args=[self.survey_name])
+#
+#     def fix_year_and_convert_date(date_val):
+#         if pd.isna(date_val):
+#             return pd.NaT
+#
+#         date_str = str(date_val).strip()
+#
+#         try:
+#             dt = pd.to_datetime(date_str)
+#
+#             if 1900 <= dt.year <= 1999:
+#                 new_year = dt.year + 100
+#                 if new_year > 2000:
+#                     dt = dt.replace(year=new_year)
+#
+#             return dt
+#         except:
+#             return pd.NaT
+#
+#     trawl_table["FECHA"] = trawl_table["FECHA"].apply(fix_year_and_convert_date)
+#
+#     if trawl_table["FECHA"].dtype == 'object':
+#         trawl_table["FECHA"] = pd.to_datetime(trawl_table["FECHA"])
+#
+#     # Convert HORA_L from "HH.MM" format to timedelta
+#     def parse_time_to_timedelta(time_str):
+#         if pd.isna(time_str):
+#             return pd.Timedelta(0)
+#
+#         time_str = str(time_str).strip()
+#         # Split by dot and convert to hours:minutes format
+#         if '.' in time_str:
+#             hours, minutes = time_str.split('.')
+#             return pd.Timedelta(hours=int(hours), minutes=int(minutes))
+#         return pd.Timedelta(0)
+#
+#     # Convert time strings to timedelta
+#     trawl_table["time_shooting"] = trawl_table["HORA_L"].apply(parse_time_to_timedelta)
+#     trawl_table["time_hauling"] = trawl_table["HORA_V"].apply(parse_time_to_timedelta)
+#
+#     # Add timedelta to datetime
+#     trawl_table['shooting_date_time'] = trawl_table["FECHA"] + trawl_table["time_shooting"]
+#     trawl_table['hauling_date_time'] = trawl_table["FECHA"] + trawl_table["time_hauling"]
+#
+#     # format some variables
+#     def convert_velocity(row):
+#         if isinstance(row['VELOCIDAD'], str):
+#             return float(row['VELOCIDAD'].replace(',', '.'))
+#         else:
+#             # If it's already a float, return it as is
+#             return float(row['VELOCIDAD'])
+#
+#     trawl_table["velocity"] = trawl_table.apply(convert_velocity, axis=1)
+#
+#     # format coordinates
+#     def format_latitude_decimal(row, coor_var, cardinal_var, cardinal_value):
+#         """
+#         Change the format of latitude by LATITUD var and cardinal points var. To use in apply.
+#         :param row: row of apply.
+#         :param coor_var: coordinate variable.
+#         :param cardinal_var: variable which contain the cardinal point of the coordinates (NSL, NSV, EWL, EWV)
+#         :param cardinal_value: cardinal value (string) which indicates if the coordinates are negatives.
+#         :return: coordinate converted.
+#         """
+#         row[coor_var] = convert_position_camp_to_decimal(row[coor_var])
+#         if row[cardinal_var] == cardinal_value:
+#             row[coor_var] = (-1) * row[coor_var]
+#         return round(row[coor_var], 4)
+#
+#     trawl_table['shooting_latitude'] = trawl_table.apply(format_latitude_decimal, axis=1,
+#                                                          args=["LATITUD_L", "NSL", "S"])
+#     trawl_table['shooting_longitude'] = trawl_table.apply(format_latitude_decimal, axis=1,
+#                                                           args=["LONGITUD_L", "EWL", "W"])
+#     trawl_table['hauling_latitude'] = trawl_table.apply(format_latitude_decimal, axis=1,
+#                                                         args=["LATITUD_V", "NSV", "S"])
+#     trawl_table['hauling_longitude'] = trawl_table.apply(format_latitude_decimal, axis=1,
+#                                                          args=["LONGITUD_V", "EWV", "W"])
+#
+#     # select variables to export
+#
+#     fields = list(self.fields_trawl.values())
+#
+#     fields.extend(['haul_id', 'shooting_date_time', 'hauling_date_time', 'shooting_latitude', 'shooting_longitude',
+#                    'hauling_latitude', 'hauling_longitude', 'velocity'])
+#
+#     trawl_table = trawl_table[fields]
+#
+#     new_fields = list(self.fields_trawl.keys())
+#
+#     new_fields.extend(
+#         ['haul_id', 'shooting_date_time', 'hauling_date_time', 'shooting_latitude', 'shooting_longitude',
+#          'hauling_latitude', 'hauling_longitude', 'velocity'])
+#
+#     trawl_table.columns = new_fields
+#
+#     # the empty values must be saved as Na, so:
+#     trawl_table = trawl_table.replace('', pd.NA)
+#
+#     # return table formatted
+#     return trawl_table
+
+# def format_table(self, file):
+#     # haul
+#     hauls_table = self.format_haul_table(file)
+#
+#     # meteorology
+#     meteo_table = self.format_haul_meteorology_table(file)
+#
+#     # trawl
+#     trawl_table = self.format_haul_trawl_table(file)
+#
+#     return hauls_table, meteo_table, trawl_table
+
+# def import_data(self):
+#     """
+#     Import csv file with trips data.
+#     The hauls file to import from old Camp is saved in two different models: one with generic characteristics and
+#     other with the specific characteristics ot trawl.
+#     :return:
+#     """
+#
+#     hauls_file = get_file_dbf(self.request, "lance")
+#
+#     # Create your engine.
+#     engine = create_engine('sqlite:///db.sqlite3', echo=True)
+#
+#     # check there aren't already saved
+#     if Haul.objects.filter(station__survey=self.survey_object).exists() or Meteorology.objects.filter(
+#             haul_id__station__survey=self.survey_object).exists() or HaulTrawl.objects.filter(
+#         haul_id__station__survey=self.survey_object).exists():
+#         # return HttpResponse(self.message, status=HTTP_409_CONFLICT)
+#         self.add_error(
+#             "<p>Hauls of this survey already saved in database. Remove all of them before try to import it again. None of the hauls has been saved.</p>")
+#     else:
+#         hauls_table, meteo_table, trawl_table = self.format_table(hauls_file)
+#
+#         # haul
+#         hauls_table.to_sql("hauls_haul", con=engine, if_exists="append", index=False)
+#
+#         # meteorology
+#         meteo_table.to_sql("hauls_meteorology", con=engine, if_exists="append", index=False)
+#
+#         # trawl
+#         trawl_table.to_sql("hauls_haultrawl", con=engine, if_exists="append", index=False)
+#
+#     return self.get_response()
 
 
 class NtallImport:
@@ -1142,8 +1018,14 @@ class OldCampImport:
         survey = SurveysImport(self.request)
         survey_import = survey.import_data()
 
-        # hauls = HaulsImport(self.request)
-        # hauls_import = hauls.import_hauls_csv()
+        hauls = HaulsImport(self.request)
+        hauls_import = hauls.import_data()
+
+        meteo = MeteorologyImport(self.request)
+        meteo_import = meteo.import_data()
+
+        haul_trawl = HaulTrawlImport(self.request)
+        haul_trawl_import = haul_trawl.import_data()
 
         # Is mandatory that NTALL will be imported before FAUNA file
         # ntall = NtallImport(self.request)
@@ -1161,7 +1043,9 @@ class OldCampImport:
         return HttpResponse([stratification.content,
                              stratum.content,
                              survey_import.content,
-                             # hauls_import.content,
+                             hauls_import.content,
+                             meteo_import.content,
+                             haul_trawl_import.content,
                              # ntall_import.content,
                              # faunas_import.content,
                              # hydrography_import.content
