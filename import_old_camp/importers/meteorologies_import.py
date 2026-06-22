@@ -1,15 +1,16 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
-from hauls.importers.base import BaseImport
+from import_old_camp.importers.base import BaseImport
 from import_old_camp.utils.db_helpers import get_haul_id
 from import_old_camp.utils.utils import get_file_dbf
 
 
-class MeteorologyImport(BaseImport):
+class MeteorologiesImport(BaseImport):
     def __init__(self, request):
         super().__init__(request, "camp")
         self.fields_meteorology = {
+
             "wind_direction": "DIR_VIENTO",
             "wind_velocity": "VEL_VIENTO",
             "sea_state": "EST_MAR",

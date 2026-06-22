@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from sqlalchemy import create_engine
 
 from gears.models import Trawl
-from hauls.importers.base import BaseImport
+from import_old_camp.importers.base import BaseImport
 from hauls.models import Haul
 from import_old_camp.utils.utils import get_file_dbf, get_type_survey
 from newcamp.utils import get_create_sampler_object
@@ -20,14 +20,13 @@ class HaulsImport(BaseImport):
             # "gear": "ARTE",
             "valid": "VALIDEZ",
         }
+        self.hauls_file = get_file_dbf(self.request, "lance")
         self.sectors_col_names = [1, 2, 3, 4, 5]
         self.sectors_names = ["MIÑO-FINISTERRE", "FINISTERRE-ESTA", "ESTACA-PEÑAS", "PEÑAS-AJO", "AJO-BIDASOA"]
         # dept_col_names "D" and "E" doesn't have data so the depths_names of them are "without depth 1" and "without
         # depth 2"
         self.depth_col_names = ["A", "B", "C", "D", "E"]
         self.depths_names = ["70-120", "120-200", "200-500", "without depth 1", "without depth 2"]
-        # self.survey_name = get_survey_name(self.request.FILES['lance'].name)
-        # self.survey_object = Survey.objects.get(acronym=self.survey_name)
         self.survey_object = self.get_survey_object()
         self.sampler_object = get_create_sampler_object(sampler_name="ARRASTRE")
         self.stratification_name = get_type_survey(self.request.FILES['camp'].name) + "-sector-profundidad"
@@ -143,8 +142,6 @@ class HaulsImport(BaseImport):
         :return:
         """
 
-        hauls_file = get_file_dbf(self.request, "lance")
-
         # Create your engine.
         engine = create_engine('sqlite:///db.sqlite3', echo=True)
 
@@ -153,7 +150,7 @@ class HaulsImport(BaseImport):
             self.add_error(
                 "<p>Hauls of this survey already saved in database. Remove all of them before try to import it again. None of the hauls has been saved.</p>")
         else:
-            hauls_table = self.format_table(hauls_file)
+            hauls_table = self.format_table(self.hauls_file)
             try:
                 hauls_table.to_sql("hauls_haul", con=engine, if_exists="append", index=False)
                 self.add_message("Meteorology imported successfully.")

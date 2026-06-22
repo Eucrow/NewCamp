@@ -4,6 +4,7 @@ from typing import Optional, Any, Dict
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Model
 from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
 
 from catches.models import Catch
 from hauls.models import Haul
@@ -57,8 +58,19 @@ def get_station_id(row, survey_name):
 
     # add station data
     # temporaly, in all demersales surveys, the station is the same than the haul
-    station_object = get_object_or_404(Station, station=row['LANCE'], survey__acronym=survey_name)
-    return station_object.id
+    try:
+        station_object = Station.objects.get(station=row['LANCE'], survey__acronym=survey_name)
+        return station_object.id
+    except ObjectDoesNotExist:
+        raise ValueError(
+            "Station object with station " + str(row['LANCE']) + " does not exists")
+
+    # try:
+    #     station_object = get_object_or_404(Station, station=row['LANCE'], survey__acronym=survey_name)
+    #     return station_object.id
+    # except ObjectDoesNotExist:
+    #     raise ValueError(
+    #         "Station object with station " + str(row['LANCE']) + " does not exists")
 
 
 def species_not_exists_in_db(file):
@@ -93,11 +105,24 @@ def get_haul_id(row, survey_name):
     """
 
     sampler_object = get_create_sampler_object(sampler_name='ARRASTRE')
+    
+    try:
+        haul_object = Haul.objects.get(haul=row['LANCE'],
+                                       station_id=get_station_id(row, survey_name),
+                                       sampler_id=sampler_object.id)
+        # if row['LANCE'] == ' 151':
+        # print("haul_id: ", haul_object.id, "station_id: ", get_station_id(row, survey_name), haul_object.id)
+        return haul_object.id
+    except Exception as e:
+        print("Unexpected exception:", type(e), e)
+        raise
 
-    haul_object = Haul.objects.get(haul=row['LANCE'],
-                                   station_id=get_station_id(row, survey_name),
-                                   sampler_id=sampler_object.id)
-    return haul_object.id
+    except Haul.DoesNotExist:
+        raise Exception(
+            f"Haul object not found for LANCE={row['LANCE']}, "
+            f"station_id={get_station_id(row, survey_name)}, "
+            f"sampler_id={sampler_object.id}"
+        )
 
 
 def get_catch_id(row, survey_name):

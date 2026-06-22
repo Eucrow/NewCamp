@@ -18,7 +18,6 @@ class BaseImport(ABC):
         """
         self.request = request
         self.survey_name = get_survey_name(request.FILES[file_type].name)
-        self.survey_object = self.get_survey_object()
         self.messages: List[str] = []
         self.errors: List[str] = []
 
@@ -51,6 +50,7 @@ class BaseImport(ABC):
     def get_survey_object(self, survey_name: Optional[str] = None):
         """
         Get survey object by name.
+        :param must_exist:
         :param survey_name: Survey name (uses self.survey_name if not provided)
         :return: Survey object or None if not found
         """

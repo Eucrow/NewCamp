@@ -1,16 +1,18 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
-from hauls.importers.base import BaseImport
-from hauls.models import HaulTrawl, Haul
+from import_old_camp.importers.base import BaseImport
+from hauls.models import Haul
+from hauls.models import HaulTrawl
 from import_old_camp.utils.converters import convert_position_camp_to_decimal
 from import_old_camp.utils.db_helpers import get_haul_id
 from import_old_camp.utils.utils import get_file_dbf
 
 
-class HaulTrawlImport(BaseImport):
+class HaulTrawlsImport(BaseImport):
     def __init__(self, request):
         super().__init__(request, "lance")
+        self.survey_object = self.get_survey_object()
 
         self.fields_trawl = {
             "shooting_date_time": "HORA_L",
@@ -159,7 +161,7 @@ class HaulTrawlImport(BaseImport):
         engine = create_engine('sqlite:///db.sqlite3', echo=True)
 
         # check there aren't already saved
-        if Haul.objects.filter(station__survey=self.survey_object).exists():
+        if HaulTrawl.objects.filter(haul__station__survey=self.survey_object).exists():
             self.add_error(
                 "<p>Hauls of this survey already saved in database. Remove all of them before try to import it again. None of the hauls has been saved.</p>")
         else:

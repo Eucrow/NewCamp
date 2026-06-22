@@ -4,6 +4,8 @@ import tempfile
 import pandas as pd
 from dbfread import DBF
 
+from import_old_camp.utils.db_helpers import species_exists, species_not_exists_in_db
+
 
 def get_file_dbf(request, file_key):
     """Get a DBF file from request as pandas dataframe"""
@@ -68,3 +70,13 @@ def get_unit_name(unit, increment):
     # there are some cases where unit is 0 and the increment is 1, but it shouldn't be, so I set it to cm:
     elif (unit == 0) & (increment == 1):
         return "cm"
+
+
+def all_species_exists_in_file(file):
+    # check if all species exists
+    if not species_exists(file):
+        not_exists = species_not_exists_in_db(file)
+        missing_species = ", ".join(map(str, not_exists))  # Join species names into a single string
+        return False, missing_species
+    else:
+        return True, None
