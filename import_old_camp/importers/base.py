@@ -4,6 +4,7 @@ from typing import Any, Optional, List
 from django.http import HttpResponse
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
 
+from import_old_camp.utils.utils import get_file_dbf
 from newcamp.utils import get_survey_name
 
 
@@ -16,10 +17,19 @@ class BaseImport(ABC):
         :param request: Django request object
         :param survey_name: Optional survey name
         """
+        self.file_type = file_type
         self.request = request
         self.survey_name = get_survey_name(request.FILES[file_type].name)
         self.messages: List[str] = []
         self.errors: List[str] = []
+
+        if self.file_type:
+            variable_name = self.file_type + "_file"
+            setattr(self, variable_name, self.get_data_file(request, self.file_type))
+
+    def get_data_file(self, request, data_file_attr):
+        """Get the data file from the request."""
+        return get_file_dbf(request, data_file_attr)
 
     def add_message(self, message: str) -> None:
         """Add a success message."""

@@ -1,24 +1,21 @@
 import pandas as pd
-from django.http import HttpResponse
-from rest_framework.status import HTTP_201_CREATED
+from django.conf import settings
 from sqlalchemy import create_engine
 
-from catches.models import Catch
 from import_old_camp.importers.base import BaseImport
-from import_old_camp.utils.db_helpers import get_catch_id, get_sex_id, species_exists, get_sp_id, get_haul_id, \
-    species_not_exists_in_db
-from import_old_camp.utils.utils import get_file_dbf, all_species_exists_in_file
+from import_old_camp.utils.db_helpers import get_catch_id, get_sex_id
+
+from import_old_camp.utils.utils import all_species_exists_in_file
 from newcamp.utils import get_create_sampler_object
-from samples.models import SampledWeight, Length, Sex
+from samples.models import Length
 from species.models import Sp
 
 
 class LengthsImport(BaseImport):
 
     def __init__(self, request):
-        super().__init__(request, "ntall")
+        super().__init__(request, "lengths")
         self.sampler_object = get_create_sampler_object(sampler_name='ARRASTRE')
-        self.ntall = get_file_dbf(request, "ntall")
         self.fields_lengths = {
             'length': 'TALLA',
             'number_individuals': 'NUMER',
@@ -78,7 +75,7 @@ class LengthsImport(BaseImport):
 
     def import_data(self):
 
-        lengths_file = self.ntall
+        lengths_file = self.lengths_file
 
         # check if all species exists
         sp_exists, missing_species = all_species_exists_in_file(lengths_file)
@@ -91,7 +88,7 @@ class LengthsImport(BaseImport):
         # check_or_create_categories(lengths_file)
 
         # Create engine.
-        engine = create_engine('sqlite:///db.sqlite3', echo=True)
+        engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
 
         # check there aren't already saved lengths of the survey
         if Length.objects.filter(sex_id__catch_id__haul_id__station_id__survey_id__acronym=self.survey_name):
@@ -99,7 +96,11 @@ class LengthsImport(BaseImport):
                 "<p>Lengths of this survey already saved in database. Remove all the lengths of this "
                 "survey before try to import it again. None of the lengths has been saved.</p>")
         else:
-            lengths_table = self.format_table(lengths_file)
-            lengths_table.to_sql("samples_length", con=engine, if_exists="append", index=False)
+            try:
+                lengths_table = self.format_table(lengths_file)
+                lengths_table.to_sql("samples_length", con=engine, if_exists="append", index=False)
+                self.add_message("<p>Lengths of this survey have been saved in database.</p>")
 
+            except Exception as e:
+                self.add_error(f"Error importing lengths table: {e}")
         return self.get_response()

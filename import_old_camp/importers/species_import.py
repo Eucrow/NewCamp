@@ -1,5 +1,6 @@
 from typing import List
 
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
@@ -9,7 +10,7 @@ from import_old_camp.utils.utils import get_file_dbf, get_unit_name
 from species.models import MeasurementType
 
 
-class SpeciesImport():
+class SpeciesImport:
     """Import class for species data."""
 
     def __init__(self, request):
@@ -25,8 +26,6 @@ class SpeciesImport():
             "increment": "INCREM",
             "APHIA": "APHIA",
         }
-        self.messages: List[str] = []
-        self.errors: List[str] = []
 
     def add_message(self, message: str) -> None:
         """Add a success message."""
@@ -105,7 +104,7 @@ class SpeciesImport():
 
         try:
             # Create your engine.
-            engine = create_engine('sqlite:///db.sqlite3', echo=True)
+            engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
 
             # species
             species_table = self.format_table(self.species_file)

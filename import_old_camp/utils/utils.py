@@ -20,6 +20,10 @@ def get_file_dbf(request, file_key):
     try:
         table = DBF(tmp_file_path, encoding='latin-1')
         df = pd.DataFrame(list(table))
+
+    except Exception as e:
+        raise Exception(f"Error reading DBF file: {e}")
+
     finally:
         # Clean up temp file
         os.unlink(tmp_file_path)

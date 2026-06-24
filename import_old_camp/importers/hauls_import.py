@@ -1,11 +1,12 @@
 import pandas as pd
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from sqlalchemy import create_engine
 
 from gears.models import Trawl
 from import_old_camp.importers.base import BaseImport
 from hauls.models import Haul
-from import_old_camp.utils.utils import get_file_dbf, get_type_survey
+from import_old_camp.utils.utils import get_type_survey
 from newcamp.utils import get_create_sampler_object
 from stations.models import Station
 from strata.models import Stratum
@@ -14,13 +15,13 @@ from stratifications.models import Stratification
 
 class HaulsImport(BaseImport):
     def __init__(self, request):
-        super().__init__(request, "lance")
+        super().__init__(request, "hauls")
         self.fields_haul = {
             "haul": "LANCE",
             # "gear": "ARTE",
             "valid": "VALIDEZ",
         }
-        self.hauls_file = get_file_dbf(self.request, "lance")
+
         self.sectors_col_names = [1, 2, 3, 4, 5]
         self.sectors_names = ["MIÑO-FINISTERRE", "FINISTERRE-ESTA", "ESTACA-PEÑAS", "PEÑAS-AJO", "AJO-BIDASOA"]
         # dept_col_names "D" and "E" doesn't have data so the depths_names of them are "without depth 1" and "without
@@ -29,7 +30,7 @@ class HaulsImport(BaseImport):
         self.depths_names = ["70-120", "120-200", "200-500", "without depth 1", "without depth 2"]
         self.survey_object = self.get_survey_object()
         self.sampler_object = get_create_sampler_object(sampler_name="ARRASTRE")
-        self.stratification_name = get_type_survey(self.request.FILES['camp'].name) + "-sector-profundidad"
+        self.stratification_name = get_type_survey(self.request.FILES['survey'].name) + "-sector-profundidad"
         self.stratification_object = Stratification.objects.get(stratification=self.stratification_name)
 
     def get_stratum_name(self, row_sector, row_stratum):
@@ -143,17 +144,18 @@ class HaulsImport(BaseImport):
         """
 
         # Create your engine.
-        engine = create_engine('sqlite:///db.sqlite3', echo=True)
+        engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
 
         # check there aren't already saved
         if Haul.objects.filter(station__survey=self.survey_object).exists():
             self.add_error(
-                "<p>Hauls of this survey already saved in database. Remove all of them before try to import it again. None of the hauls has been saved.</p>")
+                "<p>The hauls from this survey have already been saved in the database. No hauls have"
+                "been added or changed.</p>")
         else:
             hauls_table = self.format_table(self.hauls_file)
             try:
                 hauls_table.to_sql("hauls_haul", con=engine, if_exists="append", index=False)
-                self.add_message("Meteorology imported successfully.")
+                self.add_message("Hauls imported successfully.")
             except Exception as e:
                 self.add_error(f"Error importing hauls: {e}")
 

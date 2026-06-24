@@ -1,8 +1,9 @@
+from django.conf import settings
 from sqlalchemy import create_engine
 
 from import_old_camp.importers.base import BaseImport
 from import_old_camp.utils.db_helpers import get_catch_id
-from import_old_camp.utils.utils import get_file_dbf, all_species_exists_in_file
+from import_old_camp.utils.utils import all_species_exists_in_file
 from samples.models import Sex
 from species.models import Sp
 
@@ -10,9 +11,8 @@ from species.models import Sp
 class SexesImport(BaseImport):
 
     def __init__(self, request):
-        super().__init__(request, "ntall")
+        super().__init__(request, "lengths")
         self.request = request
-        self.ntall = get_file_dbf(request, "ntall")
         self.fields_sexes = {
             'sex': "SEXO",
         }
@@ -37,7 +37,7 @@ class SexesImport(BaseImport):
             raise ValueError(f"Species with group={grupo} and sp_code={esp} does not exist")
 
     def format_table(self, file):
-        lengths_table = self.ntall
+        lengths_table = self.lengths_file
 
         # get the catch grouped
         sexed_table = lengths_table[['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO']].drop_duplicates()
@@ -61,7 +61,7 @@ class SexesImport(BaseImport):
 
     def import_data(self):
 
-        lengths_file = self.ntall
+        lengths_file = self.lengths_file
 
         sp_exists, missing_species = all_species_exists_in_file(lengths_file)
         # check if all species exists
@@ -73,14 +73,17 @@ class SexesImport(BaseImport):
         # check_or_create_categories(lengths_file)
 
         # Create engine.
-        engine = create_engine('sqlite:///db.sqlite3', echo=True)
+        engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
 
         # check there aren't already saved sexes of the survey
         if Sex.objects.filter(catch_id__haul_id__station_id__survey_id__acronym=self.survey_name):
             self.add_message(
                 "<p>The sexes from this survey have already been saved in the database. No sexes have been added or changed.</p>")
         else:
-            sexes_table = self.format_table(lengths_file)
-            sexes_table.to_sql("samples_sex", con=engine, if_exists="append", index=False)
+            try:
+                sexes_table = self.format_table(lengths_file)
+                sexes_table.to_sql("samples_sex", con=engine, if_exists="append", index=False)
+            except Exception as e:
+                self.add_error(f"Error importing sexes table: {e}")
 
         return self.get_response()

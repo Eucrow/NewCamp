@@ -2,12 +2,10 @@ from datetime import datetime
 
 from typing import Any
 
-from django.http import HttpResponse
-
 from import_old_camp.importers.base import BaseImport
 from import_old_camp.utils.converters import fix_year_date
 from import_old_camp.utils.db_helpers import get_ship
-from import_old_camp.utils.utils import get_file_dbf, get_type_survey
+from import_old_camp.utils.utils import get_type_survey
 from stratifications.models import Stratification
 from surveys.models import Survey
 
@@ -15,8 +13,7 @@ from surveys.models import Survey
 class SurveysImport(BaseImport):
     # Call parent constructor
     def __init__(self, request):
-        super().__init__(request, "camp")
-        self.survey_file = get_file_dbf(request, "camp")
+        super().__init__(request, "survey")
         self.survey_object = self.get_survey_object()
 
     def format_table(self, file) -> Any:
@@ -29,7 +26,7 @@ class SurveysImport(BaseImport):
         """
 
         try:
-            stratification_name = get_type_survey(self.request.FILES["camp"].name) + "-sector-profundidad"
+            stratification_name = get_type_survey(self.request.FILES["survey"].name) + "-sector-profundidad"
 
             stratification_id = Stratification.objects.get(stratification=stratification_name).id
 
@@ -59,6 +56,6 @@ class SurveysImport(BaseImport):
             self.add_message(f"The survey {self.survey_file['CLAV'][0]} has been saved.")
 
         except Exception as e:
-            self.add_error("Error formatting species table: {}".format(e))
+            self.add_error("Error formatting surveys table: {}".format(e))
 
         return self.get_response()

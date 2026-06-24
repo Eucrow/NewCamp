@@ -1,16 +1,15 @@
 import pandas as pd
+from django.conf import settings
 from sqlalchemy import create_engine
 
 from import_old_camp.importers.base import BaseImport
 from import_old_camp.utils.db_helpers import get_haul_id
-from import_old_camp.utils.utils import get_file_dbf
 
 
 class MeteorologiesImport(BaseImport):
     def __init__(self, request):
-        super().__init__(request, "camp")
+        super().__init__(request, "hauls")
         self.fields_meteorology = {
-
             "wind_direction": "DIR_VIENTO",
             "wind_velocity": "VEL_VIENTO",
             "sea_state": "EST_MAR",
@@ -57,14 +56,11 @@ class MeteorologiesImport(BaseImport):
         return meteo_table
 
     def import_data(self):
-        hauls_file = get_file_dbf(self.request, "lance")
-
-        # Create your engine.
-        engine = create_engine('sqlite:///db.sqlite3', echo=True)
 
         try:
-            meteo_table = self.format_table(hauls_file)
+            meteo_table = self.format_table(self.hauls_file)
 
+            engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
             meteo_table.to_sql("hauls_meteorology", con=engine, if_exists="append", index=False)
             self.add_message("Meteorology imported successfully.")
         except Exception as e:

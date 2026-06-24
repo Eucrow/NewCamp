@@ -1,17 +1,16 @@
 import pandas as pd
+from django.conf import settings
 from sqlalchemy import create_engine
 
 from import_old_camp.importers.base import BaseImport
-from hauls.models import Haul
 from hauls.models import HaulTrawl
 from import_old_camp.utils.converters import convert_position_camp_to_decimal
 from import_old_camp.utils.db_helpers import get_haul_id
-from import_old_camp.utils.utils import get_file_dbf
 
 
 class HaulTrawlsImport(BaseImport):
     def __init__(self, request):
-        super().__init__(request, "lance")
+        super().__init__(request, "hauls")
         self.survey_object = self.get_survey_object()
 
         self.fields_trawl = {
@@ -155,22 +154,21 @@ class HaulTrawlsImport(BaseImport):
         :return:
         """
 
-        hauls_file = get_file_dbf(self.request, "lance")
-
         # Create your engine.
-        engine = create_engine('sqlite:///db.sqlite3', echo=True)
+        engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
 
         # check there aren't already saved
         if HaulTrawl.objects.filter(haul__station__survey=self.survey_object).exists():
             self.add_error(
-                "<p>Hauls of this survey already saved in database. Remove all of them before try to import it again. None of the hauls has been saved.</p>")
+                "<p>The hauls from this survey have already been saved in the database. No hauls have been"
+                "added or changed.</p>")
         else:
-            trawl_table = self.format_table(hauls_file)
+            trawl_table = self.format_table(self.hauls_file)
 
             try:
                 trawl_table.to_sql("hauls_haultrawl", con=engine, if_exists="append", index=False)
-                self.add_message("Meteorology imported successfully.")
+                self.add_message("Haul trawls imported successfully.")
             except Exception as e:
-                self.add_error(f"Error importing hauls trawl: {e}")
+                self.add_error(f"Error importing haul trawls: {e}")
 
         return self.get_response()
