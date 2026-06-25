@@ -1,6 +1,5 @@
 import React, {useMemo, useState} from "react";
 import {API_CONFIG, buildApiUrl} from "../../config/api";
-import UiButton from "../ui/UiButton";
 import UiButtonFile from "../ui/UiButtonFile";
 
 
@@ -29,14 +28,14 @@ function makeExpectedNames(code) {
         acc[item.key] = {
             prefix: item.prefix,
             code,
-            regex: new RegExp(`^${item.prefix}[_]?${code}(?:\.[A-Za-z0-9]+)?$`, "i"),
+            regex: new RegExp(`^${item.prefix}?${code}(?:\.[A-Za-z0-9]+)?$`, "i"),
         };
         return acc;
     }, {});
 }
 
 const ImportOldCamp = () => {
-    const [campFile, setCampFile] = useState(null);
+    const [surveyFile, setSurveyFile] = useState(null);
     const [haulsFile, setHaulsFile] = useState(null);
     const [faunaFile, setFaunaFile] = useState(null);
     const [lengthsFile, setLengthsFile] = useState(null);
@@ -47,12 +46,55 @@ const ImportOldCamp = () => {
     const [uploading, setUploading] = useState(false);
     const [serverResponse, setServerResponse] = useState("");
 
-    const surveyCode = useMemo(() => (campFile ? parseSurveyCodeFromCampFilename(campFile.name) : null), [campFile]);
+    const surveyCode = useMemo(() => (surveyFile ? parseSurveyCodeFromCampFilename(surveyFile.name) : null), [surveyFile]);
     const expected = useMemo(() => (surveyCode ? makeExpectedNames(surveyCode) : null), [surveyCode]);
+
+    const filePrefix = {survey: "CAMP", hauls: "LANCE", fauna: "FAUNA", lengths: "NTALL", hydrographies: "HIDRO"};
+
+    const [fieldsValid, setFieldValidState] = useState({
+        survey: false,
+        hauls: false,
+        fauna: false,
+        lengths: false,
+        hydrographies: false
+    });
+
+    const setFieldValid = (key, valid) => {
+        setFieldValidState(prevState => ({
+            ...prevState,
+            [key]: valid
+        }));
+    }
+
+    const isFormValid = useMemo(() => {
+        return Object.values(fieldsValid).every(value => value === true);
+    }, [fieldsValid]);
+
+
+    const validateSurveyFileName = (fileName) => {
+        const expectedRegex = new RegExp(`^${filePrefix.survey}[a-zA-Z0-9]{3}.DBF`, "i");
+        const isValid = expectedRegex.test(fileName);
+        setFieldValid("survey", isValid);
+        parseSurveyCodeFromCampFilename(fileName);
+        return isValid;
+    }
+
+    const validateFileName = (key, fileName) => {
+        const expectedItem = filePrefix[key] + surveyCode + ".DBF";
+        const expectedRegex = new RegExp(`^${expectedItem}$`, "i")
+        const isValid = expectedRegex.test(fileName);
+        setFieldValid(key, isValid);
+        return isValid;
+    }
 
     const onCampChange = (e) => {
         const file = e.target.files && e.target.files[0];
-        setCampFile(file || null);
+        validateSurveyFileName(file.name);
+        validateFileName("hauls", file.name);
+        validateFileName("fauna", file.name);
+        validateFileName("lengths", file.name);
+        validateFileName("hydrographies", file.name);
+        setSurveyFile(file || null);
         setServerResponse("");
         setMessages([]);
         setChecks({});
@@ -60,6 +102,7 @@ const ImportOldCamp = () => {
 
     const onHaulChange = (e) => {
         const file = e.target.files && e.target.files[0];
+        validateFileName("hauls", file.name);
         setHaulsFile(file || null);
         setServerResponse("");
         setMessages([]);
@@ -67,6 +110,7 @@ const ImportOldCamp = () => {
     }
     const onFaunaChange = (e) => {
         const file = e.target.files && e.target.files[0];
+        validateFileName("fauna", file.name);
         setFaunaFile(file || null);
         setServerResponse("");
         setMessages([]);
@@ -74,19 +118,20 @@ const ImportOldCamp = () => {
     }
     const onLengthsChange = (e) => {
         const file = e.target.files && e.target.files[0];
+        validateFileName("lengths", file.name);
         setLengthsFile(file || null);
         setServerResponse("");
         setMessages([]);
         setChecks({})
     }
-    const onHidrographiesChange = (e) => {
+    const onHydrographiesChange = (e) => {
         const file = e.target.files && e.target.files[0];
+        validateFileName("hydrographies", file.name);
         setHydrographiesFile(file || null);
         setServerResponse("");
         setMessages([]);
         setChecks({})
     }
-
 
     const onImport = async () => {
         setServerResponse("");
@@ -97,7 +142,7 @@ const ImportOldCamp = () => {
             const form = new FormData();
             // Attach the exact files under the expected field keys
             // Ensure we use the user-selected CAMP file object (to respect their choice)
-            form.append("survey", campFile);
+            form.append("survey", surveyFile);
             form.append("hauls", haulsFile);
             form.append("fauna", faunaFile);
             form.append("lengths", lengthsFile);
@@ -132,24 +177,23 @@ const ImportOldCamp = () => {
                     Select the files of old CAMP (CAMP, LANCE, FAUNA, NTALL, HIDRO).
                 </div>
 
-
                 <form className="importOldCamp__form">
 
                     <div className="importOldCamp__row">
                         <label className="importOldCamp__element">
-                            Survey file (CAMPN25, CAMPP15...)
+                            Survey file (CAMPN25, CAMPP15...):
                         </label>
                         <div className="importOldCamp__element--right">
                             <UiButtonFile
                                 buttonText="Choose CAMP file"
                                 accept=".dbf,.DBF"
-                                selectedFile={campFile}
+                                selectedFile={surveyFile}
                                 onChange={onCampChange}
                             /></div>
                     </div>
                     <div className="importOldCamp__row">
                         <label className="importOldCamp__element">
-                            Hauls file (LANCEN25, LANCEP15...)
+                            Hauls file (LANCEN25, LANCEP15...):
                         </label>
                         <UiButtonFile
                             buttonText="Choose LANCE file"
@@ -159,7 +203,7 @@ const ImportOldCamp = () => {
                         /></div>
                     <div className="importOldCamp__row">
                         <label className="importOldCamp__element">
-                            Fauna file (FAUNAN25, FAUNAP15...)
+                            Fauna file (FAUNAN25, FAUNAP15...):
                         </label>
                         <UiButtonFile
                             buttonText="Choose FAUNA file"
@@ -169,7 +213,7 @@ const ImportOldCamp = () => {
                         /></div>
                     <div className="importOldCamp__row">
                         <label className="importOldCamp__element">
-                            Lengths file (NTALLN25, NTALLP15...)
+                            Lengths file (NTALLN25, NTALLP15...):
                         </label>
                         <UiButtonFile
                             buttonText="Choose NTALL file"
@@ -179,13 +223,13 @@ const ImportOldCamp = () => {
                         /></div>
                     <div className="importOldCamp__row">
                         <label className="importOldCamp__element">
-                            Hydrography file (HIDRON25, HIDROP15...)
+                            Hydrography file (HIDRON25, HIDROP15...):
                         </label>
                         <UiButtonFile
                             buttonText="Choose HIDRO file"
                             accept=".dbf,.DBF"
                             selectedFile={hydrographiesFile}
-                            onChange={onHidrographiesChange}
+                            onChange={onHydrographiesChange}
                         />
                     </div>
 
@@ -197,7 +241,7 @@ const ImportOldCamp = () => {
                     )}
 
                     <div>
-                        <button onClick={onImport} disabled={!campFile || uploading}>
+                        <button onClick={onImport} disabled={!isFormValid || uploading}>
                             {uploading ? "Importing..." : "Import"}
                         </button>
                     </div>
