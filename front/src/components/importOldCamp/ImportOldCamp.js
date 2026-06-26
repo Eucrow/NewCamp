@@ -21,18 +21,6 @@ function parseSurveyCodeFromCampFilename(filename) {
     return code.toUpperCase();
 }
 
-function makeExpectedNames(code) {
-    // For each required prefix, make a case-insensitive matcher for `<PREFIX><code>` with any extension
-    // We'll resolve actual files by scanning selected directory files
-    return REQUIRED_PREFIXES.reduce((acc, item) => {
-        acc[item.key] = {
-            prefix: item.prefix,
-            code,
-            regex: new RegExp(`^${item.prefix}?${code}(?:\.[A-Za-z0-9]+)?$`, "i"),
-        };
-        return acc;
-    }, {});
-}
 
 const ImportOldCamp = () => {
     const [surveyFile, setSurveyFile] = useState(null);
@@ -41,13 +29,11 @@ const ImportOldCamp = () => {
     const [lengthsFile, setLengthsFile] = useState(null);
     const [hydrographiesFile, setHydrographiesFile] = useState(null);
 
-    const [checks, setChecks] = useState({}); // mapping key -> {found: boolean, file?: File, name?: string}
     const [messages, setMessages] = useState([]);
     const [uploading, setUploading] = useState(false);
     const [serverResponse, setServerResponse] = useState("");
 
     const surveyCode = useMemo(() => (surveyFile ? parseSurveyCodeFromCampFilename(surveyFile.name) : null), [surveyFile]);
-    const expected = useMemo(() => (surveyCode ? makeExpectedNames(surveyCode) : null), [surveyCode]);
 
     const filePrefix = {survey: "CAMP", hauls: "LANCE", fauna: "FAUNA", lengths: "NTALL", hydrographies: "HIDRO"};
 
@@ -75,29 +61,66 @@ const ImportOldCamp = () => {
         const expectedRegex = new RegExp(`^${filePrefix.survey}[a-zA-Z0-9]{3}.DBF`, "i");
         const isValid = expectedRegex.test(fileName);
         setFieldValid("survey", isValid);
-        parseSurveyCodeFromCampFilename(fileName);
+        // parseSurveyCodeFromCampFilename(fileName);
         return isValid;
     }
 
-    const validateFileName = (key, fileName) => {
-        const expectedItem = filePrefix[key] + surveyCode + ".DBF";
+    const validateFileName = (key, fileName, code = surveyCode) => {
+        const expectedItem = filePrefix[key] + code + ".DBF";
         const expectedRegex = new RegExp(`^${expectedItem}$`, "i")
         const isValid = expectedRegex.test(fileName);
+
+        console.log("fileName:", JSON.stringify(fileName));
+        console.log("expectedItem:", JSON.stringify(expectedItem));
+        console.log("fileName length:", fileName.length);
+        console.log("expectedItem length:", expectedItem.length);
+        console.log(
+            "fileName chars:",
+            [...fileName].map(c => `${c}=${c.charCodeAt(0)}`)
+        );
+        console.log(
+            "expectedItem chars:",
+            [...expectedItem].map(c => `${c}=${c.charCodeAt(0)}`)
+        );
+        console.log("regex:", expectedRegex);
+        console.log("matches:", expectedRegex.test(fileName));
+
+
         setFieldValid(key, isValid);
         return isValid;
     }
 
     const onCampChange = (e) => {
         const file = e.target.files && e.target.files[0];
+
+        if (!file) {
+            setSurveyFile(null);
+            return;
+        }
+
+        const newSurveyCode = parseSurveyCodeFromCampFilename(file.name);
+
+
         validateSurveyFileName(file.name);
-        validateFileName("hauls", file.name);
-        validateFileName("fauna", file.name);
-        validateFileName("lengths", file.name);
-        validateFileName("hydrographies", file.name);
+
+        if (haulsFile) {
+            validateFileName("hauls", haulsFile.name, newSurveyCode);
+        }
+        if (faunaFile) {
+            validateFileName("fauna", faunaFile.name, newSurveyCode);
+        }
+
+        if (lengthsFile) {
+            validateFileName("lengths", lengthsFile.name, newSurveyCode);
+        }
+        if (hydrographiesFile) {
+            validateFileName("hydrographies", hydrographiesFile.name, newSurveyCode);
+        }
+
+
         setSurveyFile(file || null);
         setServerResponse("");
         setMessages([]);
-        setChecks({});
     };
 
     const onHaulChange = (e) => {
@@ -106,7 +129,6 @@ const ImportOldCamp = () => {
         setHaulsFile(file || null);
         setServerResponse("");
         setMessages([]);
-        setChecks({});
     }
     const onFaunaChange = (e) => {
         const file = e.target.files && e.target.files[0];
@@ -114,7 +136,6 @@ const ImportOldCamp = () => {
         setFaunaFile(file || null);
         setServerResponse("");
         setMessages([]);
-        setChecks({})
     }
     const onLengthsChange = (e) => {
         const file = e.target.files && e.target.files[0];
@@ -122,7 +143,6 @@ const ImportOldCamp = () => {
         setLengthsFile(file || null);
         setServerResponse("");
         setMessages([]);
-        setChecks({})
     }
     const onHydrographiesChange = (e) => {
         const file = e.target.files && e.target.files[0];
@@ -130,7 +150,6 @@ const ImportOldCamp = () => {
         setHydrographiesFile(file || null);
         setServerResponse("");
         setMessages([]);
-        setChecks({})
     }
 
     const onImport = async () => {
@@ -235,7 +254,7 @@ const ImportOldCamp = () => {
 
 
                     {surveyCode && (
-                        <div style={{fontSize: 14}}>
+                        <div className="importOldCamp__introduction">
                             Detected survey code from CAMP filename: <b>{surveyCode}</b>
                         </div>
                     )}
@@ -247,7 +266,7 @@ const ImportOldCamp = () => {
                     </div>
 
                     {messages.length > 0 && (
-                        <div style={{color: "#a00"}}>
+                        <div className="importOldCamp__introduction">
                             {messages.map((m, i) => (
                                 <div key={i}>{m}</div>
                             ))}
@@ -255,7 +274,7 @@ const ImportOldCamp = () => {
                     )}
 
                     {serverResponse && (
-                        <div>
+                        <div className="importOldCamp__introduction">
                             <div>Server response</div>
                             <pre>{serverResponse}</pre>
                         </div>
