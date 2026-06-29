@@ -1,6 +1,5 @@
 import React, {useRef} from "react";
 
-import UiButton from "./UiButton";
 
 const UiButtonFile = ({
                           buttonText,
@@ -8,35 +7,27 @@ const UiButtonFile = ({
                           onChange,
                           accept,
                           disabled = false,
+                          inputRef = null,
                       }) => {
-    const inputRef = useRef(null);
+
+
+    const fileInputRef = useRef(inputRef);
+
 
     const visibleText = selectedFile ? selectedFile.name : buttonText;
 
     return (
-        <>
-            <input
-                ref={inputRef}
-                type="file"
-                accept={accept}
-                disabled={disabled}
-                style={{display: "none"}}
-                onChange={onChange}
-                onClick={e => {
-                    e.currentTarget.value = "";
-                }}
-            />
+        <input
+            ref={fileInputRef}
+            type="file"
+            accept={accept}
+            disabled={disabled}
+            onChange={onChange}
+            onClick={e => {
+                e.currentTarget.value = "";
+            }}
+        />
 
-            <UiButton
-                buttonText={visibleText}
-                disabled={disabled}
-                method={() => {
-                    if (inputRef.current) {
-                        inputRef.current.click();
-                    }
-                }}
-            />
-        </>
     );
 };
 

@@ -3,10 +3,10 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  max-width: 50%;
+
 
   .importOldCamp__introduction {
-    margin: 10px 0px;
+    margin: 10px 0;
     width: 100%;
 
   }
@@ -15,7 +15,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 10px 0px;
+    margin: 10px 0;
     width: 100%;
   }
 
@@ -24,16 +24,28 @@
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-
-    margin: 10px 0px;
+    margin: 10px 0;
     width: 100%;
+    min-height: 2rem;
   }
 
-  .importOldCamp__element {
-    margin: 0px 10px;
+  .importOldCamp__cell {
+    margin: 0 10px;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 10px;
+    min-height: 2rem;
+    flex-wrap: wrap;
   }
 
-  .importOldCamp__element--right {
+  .importOldCamp__cell--right {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 10px;
+    min-height: 2rem;
+    flex-wrap: wrap;
     margin-left: auto;
   }
 }
