@@ -1,8 +1,8 @@
 import React from "react";
 import FloatingError from "../ui/FloatingError";
 
-const ImportOldCampFile = ({key, disabled = true, anchorRef, onChangeMethod, validationError}) => {
-    const labelInput = key + "file (" + key + "N25.DBF" + key + "P15.DBF...):"
+const ImportOldCampFile = ({fileType, disabled = true, anchorRef, onChangeMethod, validationError}) => {
+    const labelInput = fileType.charAt(0).toUpperCase() + fileType.slice(1) + " file (" + fileType + "N25.DBF" + fileType + "P15.DBF...):"
 
     return (
         <div className="importOldCamp__row">
