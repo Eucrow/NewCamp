@@ -1,8 +1,16 @@
 import React from "react";
 import FloatingError from "../ui/FloatingError";
+import {FILE_PREFIX} from "./importOldCampConfig";
+
 
 const ImportOldCampFile = ({fileType, disabled = true, anchorRef, onChangeMethod, validationError}) => {
-    const labelInput = fileType.charAt(0).toUpperCase() + fileType.slice(1) + " file (" + fileType + "N25.DBF" + fileType + "P15.DBF...):"
+
+    const labelInput = fileType.charAt(0).toUpperCase() +
+        fileType.slice(1) +
+        " file ("
+        + FILE_PREFIX[fileType] +
+        "N25.DBF, " +
+        FILE_PREFIX[fileType] + "P15.DBF...):"
 
     return (
         <div className="importOldCamp__row">
@@ -20,7 +28,6 @@ const ImportOldCampFile = ({fileType, disabled = true, anchorRef, onChangeMethod
                 message={validationError}
                 show={!!validationError}
                 inputRef={anchorRef}
-                disabled={disabled}
             />
 
         </div>

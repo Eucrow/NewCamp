@@ -1,29 +1,13 @@
-import {useEffect, useState} from "react";
-import surveyService from "../services/surveyService";
+import {useContext, useState} from "react";
+import GlobalContext from "../contexts/GlobalContext";
+import {FILE_PREFIX} from "../components/importOldCamp/importOldCampConfig";
+
 
 export const useImportOldCampValidation = () => {
 
-    const filePrefix = {survey: "CAMP", hauls: "LANCE", fauna: "FAUNA", lengths: "NTALL", hydrographies: "HIDRO"};
+    const {surveys = [], surveysLoaded = false} = useContext(GlobalContext);
 
-    const [surveys, setSurveys] = useState([]);
-
-    // Fetch surveys on component mount
-    useEffect(() => {
-        const fetchSurveys = async () => {
-            try {
-                const fetchedSurveys = await surveyService.getSurveys(); // Fetch surveys using the service
-                setSurveys(fetchedSurveys); // Store surveys in the state
-            } catch (error) {
-                console.error("Error fetching surveys:", error);
-            }
-        };
-
-        fetchSurveys(); // Call the function
-    }, []); // Empty dependency array ensures this runs only once on mount
-
-    const [surveyExists, setSurveyExists] = useState();
-
-    const [isFormValid, setIsFormValid] = useState(false);
+    const [surveyExists, setSurveyExists] = useState(false);
 
     const [fieldsValid, setFieldsValid] = useState({
         survey: false,
@@ -32,12 +16,21 @@ export const useImportOldCampValidation = () => {
         lengths: false,
         hydrographies: false
     });
+
     const setFieldValid = (key, valid) => {
         setFieldsValid(prevState => ({
             ...prevState,
             [key]: valid
         }));
     }
+    const isFormValid =
+        fieldsValid.survey &&
+        fieldsValid.hauls &&
+        fieldsValid.fauna &&
+        fieldsValid.lengths &&
+        fieldsValid.hydrographies &&
+        !surveyExists;
+
     const [validationErrors, setValidationErrors] = useState({
         survey: "",
         hauls: "",
@@ -54,9 +47,12 @@ export const useImportOldCampValidation = () => {
     }
 
     const validateSurveyFileName = (fileName) => {
-        const expectedRegex = new RegExp(`^${filePrefix.survey}[a-zA-Z0-9]{3}.DBF`, "i");
+        const expectedRegex = new RegExp(`^${FILE_PREFIX.survey}[NP]\\d{2}\\.DBF$`, "i");
         const isValid = expectedRegex.test(fileName);
         setFieldValid("survey", isValid);
+        if (!isValid) {
+            setSurveyExists(false);
+        }
         isValid === true ?
             setValidationError("survey", "") :
             setValidationError("survey", "The file name should be CAMPN25.DBF or CAMPP25.DBF")
@@ -65,50 +61,42 @@ export const useImportOldCampValidation = () => {
     }
 
     const validateFileName = (key, fileName, code) => {
-        const expectedItem = filePrefix[key] + code + ".DBF";
+        const expectedItem = FILE_PREFIX[key] + code + ".DBF";
         const expectedRegex = new RegExp(`^${expectedItem}$`, "i")
         const isValid = expectedRegex.test(fileName);
 
         setFieldValid(key, isValid);
         isValid === true ?
             setValidationError(key, "") :
-            setValidationError(key, `The ${key} file must be named as ${filePrefix[key]}${code}.DBF`)
+            setValidationError(key, `The ${key} file must be named as ${FILE_PREFIX[key]}${code}.DBF`)
 
         return isValid;
     }
 
     const validateSurveyExists = (acronym) => {
+
+        if (!surveysLoaded) {
+            setSurveyExists(false);
+            setFieldValid("survey", false);
+            setValidationError("survey", "Surveys are still loading. Please try again.");
+            return false;
+        }
+
         const existsSurveys = surveys.some(s => s.acronym === acronym);
         setSurveyExists(existsSurveys);
         if (existsSurveys) {
             setFieldValid("survey", false);
             setValidationError("survey", `The ${acronym} survey already exists`)
-
         } else {
             setValidationError("survey", "");
-
         }
-
+        return !existsSurveys;
     }
 
-    useEffect(() => {
-        const valid =
-            fieldsValid.survey &&
-            fieldsValid.hauls &&
-            fieldsValid.fauna &&
-            fieldsValid.lengths &&
-            fieldsValid.hydrographies &&
-            !surveyExists
-
-        setIsFormValid(valid);
-
-    }, [fieldsValid.survey,
-        fieldsValid.hauls,
-        fieldsValid.fauna,
-        fieldsValid.lengths,
-        fieldsValid.hydrographies,
-        surveyExists]);
-
+    const resetFieldValidation = (key) => {
+        setFieldValid(key, false);
+        setValidationError(key, "");
+    };
 
     return {
         isFormValid: isFormValid,
@@ -116,8 +104,8 @@ export const useImportOldCampValidation = () => {
         fieldsValid: fieldsValid,
         validateSurveyFileName: validateSurveyFileName,
         validateFileName: validateFileName,
-        surveyExists: surveyExists,
         validateSurveyExists: validateSurveyExists,
+        resetFieldValidation: resetFieldValidation,
     };
 
 

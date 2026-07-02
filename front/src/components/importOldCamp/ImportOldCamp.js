@@ -3,10 +3,11 @@ import {API_CONFIG, buildApiUrl} from "../../config/api";
 import ImportOldCampFile from "./importOldCampFile";
 import FloatingError from "../ui/FloatingError";
 import {useImportOldCampValidation} from "../../hooks/useImportOldCampValidation";
+import {EMPTY_FILES, FILE_TYPES} from "./importOldCampConfig";
 
 
 function parseSurveyCodeFromCampFilename(filename) {
-    // Extract like N18 or P21 from names such as CAMPN18.dbf, CAMP_N18.DBF, CAMP-N18.csv
+    // Extract like N18 or P21 from names such as CAMPN18.dbf
     // Backend logic finds first digit and takes (digitIndex-1 .. digitIndex+2)
     const firstDigitIdx = filename.search(/\d/);
     if (firstDigitIdx <= 0) return null;
@@ -18,18 +19,16 @@ function parseSurveyCodeFromCampFilename(filename) {
 
 const ImportOldCamp = () => {
 
-    const [files, setFiles] = useState({
-        hauls: null,
-        fauna: null,
-        lengths: null,
-        hydrographies: null,
-    })
+    const [files, setFiles] = useState({...EMPTY_FILES})
 
-    let surveyErrorAnchorRef = useRef(null);
-    let haulsErrorAnchorRef = useRef(null);
-    let faunaErrorAnchorRef = useRef(null);
-    let lengthsErrorAnchorRef = useRef(null);
-    let hydrographiesErrorAnchorRef = useRef(null);
+    const errorRefs = {
+        survey: useRef(null),
+        hauls: useRef(null),
+        fauna: useRef(null),
+        lengths: useRef(null),
+        hydrographies: useRef(null),
+    };
+
 
     const {
         isFormValid,
@@ -37,8 +36,8 @@ const ImportOldCamp = () => {
         fieldsValid,
         validateSurveyFileName,
         validateFileName,
-        surveyExists,
         validateSurveyExists,
+        resetFieldValidation,
     } = useImportOldCampValidation();
 
     const [messages, setMessages] = useState([]);
@@ -47,36 +46,51 @@ const ImportOldCamp = () => {
 
     const surveyCode = useMemo(() => (files["survey"] ? parseSurveyCodeFromCampFilename(files["survey"].name) : null), [files["survey"]]);
 
-    const [disableFileFields, setDisableFileFields] = useState(true)
-
+    const disableFileFields = !fieldsValid.survey;
 
     const onSurveyChange = (e) => {
         const file = e.target.files && e.target.files[0];
 
         if (!file) {
-            setFiles(prevState => ({...prevState, survey: null}));
+            setFiles({...EMPTY_FILES});
+
+            resetFieldValidation("survey");
+
+            FILE_TYPES.forEach(type => {
+                resetFieldValidation(type);
+            })
+
             return;
         }
 
         const newSurveyCode = parseSurveyCodeFromCampFilename(file.name);
+
         // First validate filename format; then check if survey already exists so existence error isn't overwritten
-        validateSurveyFileName(file.name);
-        if (newSurveyCode) {
+        const isSurveyFileNameValid = validateSurveyFileName(file.name);
+
+        if (isSurveyFileNameValid && newSurveyCode) {
             validateSurveyExists(newSurveyCode);
+
+            FILE_TYPES.forEach(type => {
+                if (files[type]) {
+                    validateFileName(type, files[type].name, newSurveyCode);
+                }
+            })
         }
 
-
-        if (files["hauls"]) {
-            validateFileName("hauls", files["hauls"].name, newSurveyCode);
-        }
-        if (files["fauna"]) {
-            validateFileName("fauna", files["fauna"].name, newSurveyCode);
-        }
-        if (files["lengths"]) {
-            validateFileName("lengths", files["lengths"].name, newSurveyCode);
-        }
-        if (files["hydrographies"]) {
-            validateFileName("hydrographies", files["hydrographies"].name, newSurveyCode);
+        if (!isSurveyFileNameValid || !newSurveyCode) {
+            FILE_TYPES.forEach(resetFieldValidation);
+            setFiles(prevState => ({
+                ...prevState,
+                survey: file,
+                hauls: null,
+                fauna: null,
+                lengths: null,
+                hydrographies: null,
+            }));
+            setServerResponse("");
+            setMessages([]);
+            return;
         }
 
         setFiles(prevState => ({...prevState, survey: file || null}));
@@ -84,12 +98,12 @@ const ImportOldCamp = () => {
         setMessages([]);
     };
 
-
     const onInputFileChange = (e, key) => {
         const file = e.target.files && e.target.files[0];
 
         if (!file) {
             setFiles(prevState => ({...prevState, [key]: null}));
+            resetFieldValidation(key)
             return;
         }
 
@@ -104,7 +118,8 @@ const ImportOldCamp = () => {
         setMessages([]);
     }
 
-    const onImport = async () => {
+    const onImport = async (e) => {
+        e.preventDefault();
         setServerResponse("");
 
         try {
@@ -138,46 +153,16 @@ const ImportOldCamp = () => {
     };
 
     useEffect(() => {
-        if (files["survey"]) {
-            setDisableFileFields(false)
-        } else {
-            setDisableFileFields(true)
-        }
-    }, [files["survey"]])
+        ["survey", ...FILE_TYPES].forEach(type => {
+            const input = errorRefs[type]?.current;
 
-    useEffect(() => {
-        if (surveyErrorAnchorRef?.current) {
-            // Always reflect any survey validation error (including "already exists") in the input validity
-            surveyErrorAnchorRef.current.setCustomValidity(validationErrors["survey"] || "");
-        }
-        if (haulsErrorAnchorRef?.current) {
-            haulsErrorAnchorRef.current.setCustomValidity(fieldsValid.hauls ? "" : validationErrors["hauls"]);
-        }
-        if (faunaErrorAnchorRef?.current) {
-            faunaErrorAnchorRef.current.setCustomValidity(fieldsValid.fauna ? "" : validationErrors["fauna"]);
-        }
-        if (lengthsErrorAnchorRef?.current) {
-            lengthsErrorAnchorRef.current.setCustomValidity(fieldsValid.lengths ? "" : validationErrors["lengths"]);
-        }
-        if (hydrographiesErrorAnchorRef?.current) {
-            hydrographiesErrorAnchorRef.current.setCustomValidity(fieldsValid.hydrographies ? "" : validationErrors["hydrographies"]);
-        }
-    }, [fieldsValid.survey,
-        fieldsValid.hauls,
-        fieldsValid.fauna,
-        fieldsValid.lengths,
-        fieldsValid.hydrographies,
-        validationErrors,
-        surveyErrorAnchorRef,
-        haulsErrorAnchorRef,
-        faunaErrorAnchorRef,
-        lengthsErrorAnchorRef,
-        hydrographiesErrorAnchorRef
-    ]);
+            if (!input) {
+                return;
+            }
 
-    useEffect(() => {
-        setDisableFileFields(surveyExists);
-    }, [surveyExists]);
+            input.setCustomValidity(validationErrors[type] || "");
+        });
+    }, [validationErrors]);
 
 
     return (
@@ -189,7 +174,7 @@ const ImportOldCamp = () => {
                 <div className="importOldCamp__introduction">
                     Select the files of old CAMP (CAMP, LANCE, FAUNA, NTALL, HIDRO).
                 </div>
-                <form>
+                <form onSubmit={onImport}>
                     <div className="importOldCamp__row">
                         <label className="importOldCamp__cell">
                             Survey file (CAMPN25, CAMPP15...):
@@ -198,43 +183,34 @@ const ImportOldCamp = () => {
                             className="importOldCamp__cell--right"
                             type="file"
                             onChange={onSurveyChange}
-                            ref={surveyErrorAnchorRef}
+                            ref={errorRefs["survey"]}
                         />
                         <FloatingError
                             message={validationErrors["survey"]}
                             show={!!validationErrors["survey"]}
-                            inputRef={surveyErrorAnchorRef}
+                            inputRef={errorRefs["survey"]}
                         />
                     </div>
-                    <ImportOldCampFile fileType="hauls"
-                                       disabled={disableFileFields}
-                                       anchorRef={haulsErrorAnchorRef}
-                                       onChangeMethod={(e) => onInputFileChange(e, "hauls")}
-                                       validationError={validationErrors["hauls"] ? [validationErrors["hauls"]] : null}/>
-                    <ImportOldCampFile fileType="fauna"
-                                       disabled={disableFileFields}
-                                       anchorRef={faunaErrorAnchorRef}
-                                       onChangeMethod={(e) => onInputFileChange(e, "fauna")}
-                                       validationError={validationErrors["fauna"] ? [validationErrors["fauna"]] : null}/>
-                    <ImportOldCampFile fileType="lengths"
-                                       disabled={disableFileFields}
-                                       anchorRef={lengthsErrorAnchorRef}
-                                       onChangeMethod={(e) => onInputFileChange(e, "lengths")}
-                                       validationError={validationErrors["lengths"] ? [validationErrors["lengths"]] : null}/>
-                    <ImportOldCampFile fileType="hydrographies"
-                                       disabled={disableFileFields}
-                                       anchorRef={hydrographiesErrorAnchorRef}
-                                       onChangeMethod={(e) => onInputFileChange(e, "hydrographies")}
-                                       validationError={validationErrors["hydrographies"] ? [validationErrors["hydrographies"]] : null}/>
 
-                    {surveyCode && (
+                    {FILE_TYPES.map(type => (
+                        <ImportOldCampFile
+                            key={type}
+                            fileType={type}
+                            disabled={disableFileFields}
+                            anchorRef={errorRefs[type]}
+                            onChangeMethod={(e) => onInputFileChange(e, type)}
+                            validationError={validationErrors[type]}
+                        />
+                    ))}
+
+                    {fieldsValid.survey && surveyCode && (
                         <div className="importOldCamp__introduction">
                             Detected survey code: <b>{surveyCode}</b>
                         </div>
                     )}
 
                     <div className="importOldCamp__introduction">
-                        <button onClick={onImport} disabled={!isFormValid || uploading}>
+                        <button type="submit" disabled={!isFormValid || uploading}>
                             {uploading ? "Importing..." : "Import"}
                         </button>
                     </div>

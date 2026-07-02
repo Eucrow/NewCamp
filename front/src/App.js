@@ -46,6 +46,7 @@ export default function App() {
     const [species, setSpecies] = useState([]);
     const [measurementTypes, setMeasurementTypes] = useState([]);
     const [surveys, setSurveys] = useState([]);
+    const [surveysLoaded, setSurveysLoaded] = useState(false);
 
     useEffect(() => {
         fetch(apiSpecies)
@@ -65,8 +66,13 @@ export default function App() {
             })
             .then(surveys => {
                 setSurveys(surveys);
+                setSurveysLoaded(true);
             })
-            .catch(error => console.log(error));
+            .catch(
+                error => {
+                    console.log(error)
+                    setSurveysLoaded(true);
+                });
     }, []);
 
     const sexesAvailable = {
@@ -125,6 +131,7 @@ export default function App() {
                     getMeasurementFactor,
                     getMeasurement,
                     surveys,
+                    surveysLoaded,
                 }}
             >
                 <Router>
