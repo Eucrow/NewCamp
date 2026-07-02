@@ -1,3 +1,13 @@
+/**
+ * ImportOldCamp page component.
+ *
+ * Provides a guided UI to import historical CAMP survey data from legacy DBF files.
+ * Workflow:
+ * - User selects the main CAMP survey file; the component parses the survey code.
+ * - Based on the parsed code, the user selects the required ancillary files (LANCE, FAUNA, NTALL, HIDRO).
+ * - Client-side validation enforces exact file naming patterns and checks for survey duplication.
+ * - On submit, files are posted as `multipart/form-data` to the backend import endpoint.
+ */
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {API_CONFIG, buildApiUrl} from "../../config/api";
 import ImportOldCampFile from "./importOldCampFile";
@@ -6,17 +16,42 @@ import {useImportOldCampValidation} from "../../hooks/useImportOldCampValidation
 import {EMPTY_FILES, FILE_TYPES} from "./importOldCampConfig";
 
 
+/**
+ * Parse a survey acronym from a CAMP filename.
+ *
+ * Locates the first digit in the filename and returns the 3‑character slice
+ * composed of the letter immediately before the digit and the following two digits.
+ * Accepts only codes that match `[NP]\d{2}` (case‑insensitive). Returns the
+ * normalized uppercase code or `null` if not found/invalid.
+ *
+ * Parameters:
+ * - `filename`: full filename including extension.
+ *
+ * Returns:
+ * - Uppercase survey code string or `null`.
+ */
 function parseSurveyCodeFromCampFilename(filename) {
-    // Extract like N18 or P21 from names such as CAMPN18.dbf
-    // Backend logic finds first digit and takes (digitIndex-1 .. digitIndex+2)
     const firstDigitIdx = filename.search(/\d/);
     if (firstDigitIdx <= 0) return null;
-    const code = filename.substring(firstDigitIdx - 1, firstDigitIdx + 2); // e.g., N18
+    const code = filename.substring(firstDigitIdx - 1, firstDigitIdx + 2);
     if (!/^[NP]\d{2}$/i.test(code)) return null;
     return code.toUpperCase();
 }
 
 
+/**
+ * React component rendering the Import Old Camp form.
+ *
+ * State:
+ * - `files`: currently selected File objects keyed by logical type.
+ * - `messages`: user-facing status/info messages.
+ * - `uploading`: submit in-flight flag to disable UI.
+ * - `serverResponse`: raw text response from the backend after submission.
+ *
+ * Derived values:
+ * - `surveyCode`: acronym parsed from the selected CAMP file name.
+ * - `disableFileFields`: guards ancillary inputs until a valid survey file is chosen.
+ */
 const ImportOldCamp = () => {
 
     const [files, setFiles] = useState({...EMPTY_FILES})

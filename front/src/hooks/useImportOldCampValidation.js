@@ -1,8 +1,28 @@
+/**
+ * Validation hook for the Import Old Camp flow.
+ *
+ * Responsibilities:
+ * - Keep per-field validity and error messages for the survey and each ancillary file.
+ * - Verify file name formats match the strict legacy naming convention.
+ * - Check whether a survey already exists in global application state.
+ *
+ * Returns an object containing:
+ * - `isFormValid` (boolean): true when all files are valid and the survey does not already exist.
+ * - `validationErrors` (Record<string,string>): current error messages keyed by file type.
+ * - `fieldsValid` (Record<string,boolean>): current boolean validity per file type.
+ * - `validateSurveyFileName(fileName: string): boolean`: checks CAMP file naming pattern and updates state.
+ * - `validateFileName(key: string, fileName: string, code: string): boolean`: checks ancillary file naming for the provided survey code.
+ * - `validateSurveyExists(acronym: string): boolean`: verifies the survey is not already present in global state.
+ * - `resetFieldValidation(key: string): void`: clears validity and error for a specific field.
+ */
 import {useContext, useState} from "react";
 import GlobalContext from "../contexts/GlobalContext";
 import {FILE_PREFIX} from "../components/importOldCamp/importOldCampConfig";
 
 
+/**
+ * Hook computing and exposing validation state and helpers for the import form.
+ */
 export const useImportOldCampValidation = () => {
 
     const {surveys = [], surveysLoaded = false} = useContext(GlobalContext);
