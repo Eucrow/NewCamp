@@ -100,40 +100,44 @@ class HaulsImport(BaseImport):
         :param file: file hauls in pandas data frame
         :return: pandas data frame formatted
         """
+        try:
+            hauls_table = file
 
-        hauls_table = file
+            hauls_table.loc[:, 'station_id'] = hauls_table.apply(self.get_station_id_or_create, axis=1)
 
-        hauls_table.loc[:, 'station_id'] = hauls_table.apply(self.get_station_id_or_create, axis=1)
+            hauls_table.loc[:, 'stratum_id'] = hauls_table.apply(self.get_stratum_id, axis=1)
 
-        hauls_table.loc[:, 'stratum_id'] = hauls_table.apply(self.get_stratum_id, axis=1)
+            hauls_table.loc[:, 'sampler_id'] = self.sampler_object.id
 
-        hauls_table.loc[:, 'sampler_id'] = self.sampler_object.id
+            # hauls_table.loc[:, 'gear_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
+            hauls_table.loc[:, 'trawl_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
 
-        # hauls_table.loc[:, 'gear_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
-        hauls_table.loc[:, 'trawl_id'] = hauls_table.apply(self.get_trawl_gear_id, axis=1)
+            hauls_table.loc[:, 'sampler_type'] = "trawl"
 
-        hauls_table.loc[:, 'sampler_type'] = "trawl"
+            validez = hauls_table['VALIDEZ'].apply(lambda x: True if x == 1 or x == 2 else False)
+            hauls_table.loc[:, 'valid'] = validez
 
-        validez = hauls_table['VALIDEZ'].apply(lambda x: True if x == 1 or x == 2 else False)
-        hauls_table.loc[:, 'valid'] = validez
+            special = hauls_table['VALIDEZ'].apply(lambda x: True if x == 2 else False)
+            hauls_table.loc[:, 'special'] = special
 
-        special = hauls_table['VALIDEZ'].apply(lambda x: True if x == 2 else False)
-        hauls_table.loc[:, 'special'] = special
+            fields = list(self.fields_haul.values())
+            fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type', 'valid', 'special'])
 
-        fields = list(self.fields_haul.values())
-        fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type', 'valid', 'special'])
+            hauls_table = file[fields]
 
-        hauls_table = file[fields]
+            new_fields = list(self.fields_haul.keys())
+            new_fields.extend(
+                ['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type', 'valid', 'special'])
 
-        new_fields = list(self.fields_haul.keys())
-        new_fields.extend(['station_id', 'stratum_id', 'sampler_id', 'trawl_id', 'sampler_type', 'valid', 'special'])
+            hauls_table.columns = new_fields
 
-        hauls_table.columns = new_fields
+            # the empty values must be saved as Na, so:
+            hauls_table = hauls_table.replace('', pd.NA)
 
-        # the empty values must be saved as Na, so:
-        hauls_table = hauls_table.replace('', pd.NA)
+            return hauls_table
 
-        return hauls_table
+        except Exception as e:
+            self.add_error("Error formatting surveys table: {}".format(e))
 
     def import_data(self):
         """

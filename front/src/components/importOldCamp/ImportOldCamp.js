@@ -83,6 +83,7 @@ const ImportOldCamp = () => {
 
     const disableFileFields = !fieldsValid.survey;
 
+
     const onSurveyChange = (e) => {
         const file = e.target.files && e.target.files[0];
 
@@ -261,7 +262,7 @@ const ImportOldCamp = () => {
                     {serverResponse && (
                         <div className="importOldCamp__introduction">
                             <div>Server response</div>
-                            <pre>{serverResponse}</pre>
+                            <div>{serverResponse}</div>
                         </div>
                     )}
 

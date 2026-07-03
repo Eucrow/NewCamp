@@ -30,11 +30,11 @@ class SurveyAPI(RetrieveUpdateDestroyAPIView):
         survey = self.get_object()
 
         # Check if survey has stations
-        if survey.station_set.exists():
-            return Response(
-                {"error": "Cannot delete survey. This survey contains stations that must be removed first."},
-                status=HTTP_409_CONFLICT
-            )
+        # if survey.station_set.exists():
+        #     return Response(
+        #         {"error": "Cannot delete survey. This survey contains stations that must be removed first."},
+        #         status=HTTP_409_CONFLICT
+        #     )
 
         return super().destroy(request, *args, **kwargs)
 

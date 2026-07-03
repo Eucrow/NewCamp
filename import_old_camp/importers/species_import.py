@@ -26,6 +26,8 @@ class SpeciesImport:
             "increment": "INCREM",
             "APHIA": "APHIA",
         }
+        self.messages: List[str] = []
+        self.errors: List[str] = []
 
     def add_message(self, message: str) -> None:
         """Add a success message."""

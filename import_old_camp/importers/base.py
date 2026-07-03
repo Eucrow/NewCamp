@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Optional, List
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
 
 from import_old_camp.utils.utils import get_file_dbf
@@ -33,11 +33,18 @@ class BaseImport(ABC):
 
     def add_message(self, message: str) -> None:
         """Add a success message."""
-        self.messages.append(message)
+        self.messages.append(str(message))
 
     def add_error(self, error: str) -> None:
         """Add an error message."""
-        self.errors.append(error)
+        self.errors.append(str(error))
+
+    def get_result(self):
+        return {
+            "messages": self.messages,
+            "errors": self.errors,
+            "has_errors": self.has_errors(),
+        }
 
     def has_errors(self) -> bool:
         """Check if there are any errors."""
@@ -53,9 +60,9 @@ class BaseImport(ABC):
                 'errors': self.errors,
                 'messages': self.messages
             }
-            return HttpResponse(response_data, status=HTTP_400_BAD_REQUEST)
+            return JsonResponse({"data": response_data}, status=HTTP_400_BAD_REQUEST)
         else:
-            return HttpResponse(self.messages, status=HTTP_201_CREATED)
+            return JsonResponse({"data": self.messages}, status=HTTP_201_CREATED)
 
     def get_survey_object(self, survey_name: Optional[str] = None):
         """
@@ -75,7 +82,7 @@ class BaseImport(ABC):
         try:
             return Survey.objects.get(acronym=name)
         except ObjectDoesNotExist:
-            self.add_error(f"Survey with acronym '{name}' does not exist")
+            self.add_message(f"Survey with acronym '{name}' does not exist, so proceed with the import")
             return None
 
     @abstractmethod

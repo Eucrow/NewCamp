@@ -4,25 +4,51 @@ from rest_framework.exceptions import ParseError
 from import_old_camp.views import OldCampImport, SpeciesImport
 
 
-class ImportOldCampAPI(APIView, OldCampImport):
+# class ImportOldCampAPI(APIView, OldCampImport):
+#     parser_classes = (MultiPartParser,)
+#
+#     def put(self, request):
+#         return self.import_complete()
+#
+#
+# class ImportOldCampAPIHydrography(APIView, OldCampImport):
+#     parser_classes = (MultiPartParser,)
+#
+#     def put(self, request):
+#         return self.import_hydrographies()
+#
+#
+# class SpeciesImportAPI(APIView, OldCampImport):
+#     parser_classes = (MultiPartParser,)
+#
+#     def put(self, request):
+#         if 'species' not in request.data:
+#             raise ParseError("Empty Content")
+#
+#         return self.import_species()
+
+class ImportOldCampAPI(APIView):
     parser_classes = (MultiPartParser,)
 
     def put(self, request):
-        return self.import_complete()
+        importer = OldCampImport(request)
+        return importer.import_complete()
 
 
-class ImportOldCampAPIHydrography(APIView, OldCampImport):
+class ImportOldCampAPIHydrography(APIView):
     parser_classes = (MultiPartParser,)
 
     def put(self, request):
-        return self.import_hydrographies()
+        importer = OldCampImport(request)
+        return importer.import_hydrographies()
 
 
-class SpeciesImportAPI(APIView, OldCampImport):
+class SpeciesImportAPI(APIView):
     parser_classes = (MultiPartParser,)
 
     def put(self, request):
         if 'species' not in request.data:
             raise ParseError("Empty Content")
 
-        return self.import_species()
+        importer = OldCampImport(request)
+        return importer.import_species()

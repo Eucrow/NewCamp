@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 from rest_framework.status import HTTP_201_CREATED
 
@@ -35,15 +35,9 @@ def create_stratification(stratification_name):
     message = []
     if not Stratification.objects.filter(stratification=stratification_name).exists():
         stratification_object = Stratification.objects.create(
-            # stratification=stratification_name,
-            # comment="In Demersales surveys, the stratification is a combination of geographic sector and depth."
             stratification=stratification_name,
             description="In Demersales surveys, the stratification is a combination of geographic sector and depth."
         )
-        message.append("<p>The stratification " + stratification_name + " has been created.</p>")
-    else:
-        message.append("<p>The stratification " + stratification_name + " already exists.</p>")
-
     return HttpResponse(message, status=HTTP_201_CREATED)
 
 
@@ -88,20 +82,19 @@ def create_stratum(request):
 
                 # some depth-sector doesn't have info (columns C1D, C1E...)
                 if not empty(area):
+                    # if Stratum.objects.filter(stratum=name_stratification).exists():
+                    #     message.append("<p>The stratum " + name_stratification + " already exists.</p>")
+                    # else:
+                    Stratum.objects.get_or_create(
+                        stratum=name_stratification,
+                        area=row[area_col],
+                        # comment="<p>In Demersales surveys, the stratification is a combination of geographic sector and " \
+                        #         "depth.</p> ",
+                        stratification_id=stratification_object.id
+                    )
 
-                    if Stratum.objects.filter(stratum=name_stratification).exists():
-                        message.append("<p>The stratum " + name_stratification + " already exists.</p>")
-                    else:
-                        Stratum.objects.create(
-                            stratum=name_stratification,
-                            area=row[area_col],
-                            comment="<p>In Demersales surveys, the stratification is a combination of geographic sector and " \
-                                    "depth.</p> ",
-                            stratification_id=stratification_object.id
-                        )
-
-                else:
-                    message.append("<p>There aren't areas of stratification " + area_col + ".</p>")
+                # else:
+                #     message.append("<p>There aren't areas of stratification " + area_col + ".</p>")
 
     Stratum.objects.get_or_create(
         stratum="not_assigned",
@@ -129,63 +122,84 @@ class OldCampImport:
         self.depths_names = ["70-120", "120-200", "200-500", "without depth 1", "without depth 2"]
         self.stratification_name = get_type_survey(request.FILES['survey'].name) + "-sector-profundidad"
         self.request = request
+        self.messages = []
+        self.errors = []
+
+    def collect_import_result(self, importer):
+        self.messages.extend(getattr(importer, "messages", []))
+        self.errors.extend(getattr(importer, "errors", []))
+
+    def get_result(self):
+        return {
+            "messages": self.messages,
+            "errors": self.errors,
+        }
+
+    def add_error(self, message):
+        self.errors.append(str(message))
 
     def import_complete(self):
-        stratification_name = get_type_survey(self.request.FILES['survey'].name) + "-sector-profundidad"
+        try:
+            stratification_name = get_type_survey(self.request.FILES['survey'].name) + "-sector-profundidad"
 
-        stratification = create_stratification(stratification_name)
+            stratification = create_stratification(stratification_name)
 
-        stratum = create_stratum(self.request)
+            stratum = create_stratum(self.request)
 
-        survey = SurveysImport(self.request)
-        survey_import = survey.import_data()
+            survey = SurveysImport(self.request)
+            survey_import = survey.import_data()
 
-        hauls = HaulsImport(self.request)
-        hauls_import = hauls.import_data()
+            hauls = HaulsImport(self.request)
+            hauls_import = hauls.import_data()
 
-        meteo = MeteorologiesImport(self.request)
-        meteo_import = meteo.import_data()
+            meteo = MeteorologiesImport(self.request)
+            meteo_import = meteo.import_data()
 
-        haul_trawl = HaulTrawlsImport(self.request)
-        haul_trawl_import = haul_trawl.import_data()
+            haul_trawl = HaulTrawlsImport(self.request)
+            haul_trawl_import = haul_trawl.import_data()
 
-        # Is mandatory that NTALL file will be imported before FAUNA file.
-        # The NTALL file is imported in sex, catches, sampled_weight and lengths tables.
+            # Is mandatory that NTALL file will be imported before FAUNA file.
+            # The NTALL file is imported in sex, catches, sampled_weight and lengths tables.
 
-        catches = CatchesImport(self.request)
-        catches_import = catches.import_data()
+            catches = CatchesImport(self.request)
+            catches_import = catches.import_data()
 
-        sex = SexesImport(self.request)
-        sex_import = sex.import_data()
+            sex = SexesImport(self.request)
+            sex_import = sex.import_data()
 
-        sampled_weight = SampledWeightsImport(self.request)
-        sampled_weight_import = sampled_weight.import_data()
+            sampled_weight = SampledWeightsImport(self.request)
+            sampled_weight_import = sampled_weight.import_data()
 
-        lengths = LengthsImport(self.request)
-        lengths_import = lengths.import_data()
+            lengths = LengthsImport(self.request)
+            lengths_import = lengths.import_data()
 
-        # The catches table is filled first in the import of NTALL file. In this import only the
-        # species measured has been saved. With the FAUNA file, only of species which haven't been
-        # measured must be stored because it is used to_sql from pandas library.
-        faunas = FaunasImport(self.request)
-        faunas_import = faunas.import_data()
+            # The catches table is filled first in the import of NTALL file. In this import only the
+            # species measured has been saved. With the FAUNA file, only of species which haven't been
+            # measured must be stored because it is used to_sql from pandas library.
+            faunas = FaunasImport(self.request)
+            faunas_import = faunas.import_data()
 
-        hydro = HydrographiesImport(self.request)
-        hydrography_import = hydro.import_data()
+            hydro = HydrographiesImport(self.request)
+            hydrography_import = hydro.import_data()
 
-        return HttpResponse([stratification.content,
-                             stratum.content,
-                             survey_import.content,
-                             hauls_import.content,
-                             meteo_import.content,
-                             haul_trawl_import.content,
-                             sex_import.content,
-                             catches_import.content,
-                             sampled_weight_import.content,
-                             lengths_import.content,
-                             faunas_import.content,
-                             hydrography_import.content
-                             ])
+            return HttpResponse([stratification.content,
+                                 stratum.content,
+                                 survey_import.content,
+                                 hauls_import.content,
+                                 meteo_import.content,
+                                 haul_trawl_import.content,
+                                 sex_import.content,
+                                 catches_import.content,
+                                 sampled_weight_import.content,
+                                 lengths_import.content,
+                                 faunas_import.content,
+                                 hydrography_import.content
+                                 ])
+        except Exception as e:
+            self.add_error(f"Import stopped: {e}")
+            return JsonResponse({"data": self.get_result()}, status=500)
+
+        # return self.get_result()
 
     def import_species(self):
         species = SpeciesImport(self.request)

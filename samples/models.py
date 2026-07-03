@@ -31,7 +31,7 @@ class Sex(models.Model):
         'catches.Catch', on_delete=models.CASCADE, related_name='sexes')
     sex = models.IntegerField(validators=[MinValueValidator(
         1), MaxValueValidator(3)], null=False, blank=False)
-    measurement_type = models.ForeignKey('species.MeasurementType', on_delete=models.CASCADE,
+    measurement_type = models.ForeignKey('species.MeasurementType', on_delete=models.PROTECT,
                                          related_name='measurement_type')
 
     class Meta:
