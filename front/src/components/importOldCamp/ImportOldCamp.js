@@ -8,12 +8,13 @@
  * - Client-side validation enforces exact file naming patterns and checks for survey duplication.
  * - On submit, files are posted as `multipart/form-data` to the backend import endpoint.
  */
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import {API_CONFIG, buildApiUrl} from "../../config/api";
 import ImportOldCampFile from "./importOldCampFile";
 import FloatingError from "../ui/FloatingError";
 import {useImportOldCampValidation} from "../../hooks/useImportOldCampValidation";
 import {EMPTY_FILES, FILE_TYPES} from "./importOldCampConfig";
+import GlobalContext from "../../contexts/GlobalContext";
 
 
 /**
@@ -53,6 +54,9 @@ function parseSurveyCodeFromCampFilename(filename) {
  * - `disableFileFields`: guards ancillary inputs until a valid survey file is chosen.
  */
 const ImportOldCamp = () => {
+
+    const globalContext = useContext(GlobalContext);
+    const {setSurveys} = globalContext;
 
     const [files, setFiles] = useState({...EMPTY_FILES})
 
@@ -180,6 +184,9 @@ const ImportOldCamp = () => {
                 setMessages([`Server returned status ${res.status}. Check the response below.`]);
             } else {
                 setMessages(["Import request sent successfully. Review the server response below."]);
+                const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.GET_SURVEYS));
+                const updatedSurveys = await response.json();
+                setSurveys(updatedSurveys);
             }
         } catch (err) {
             setMessages([`Error sending import: ${err.message}`]);

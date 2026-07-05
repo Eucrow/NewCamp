@@ -131,6 +131,7 @@ export default function App() {
                     getMeasurementFactor,
                     getMeasurement,
                     surveys,
+                    setSurveys,
                     surveysLoaded,
                 }}
             >
