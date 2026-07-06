@@ -80,8 +80,8 @@ class HydrographiesImport(BaseImport):
         # check there aren't already saved hydrographies of the survey
         if HaulHydrography.objects.filter(haul_id__station_id__survey_id__acronym=self.survey_name):
             self.add_message(
-                "<p>The hydrographies from this survey have already been saved in the database. No hydrographies"
-                "have been added or changed.</p>")
+                "The hydrographies from this survey have already been saved in the database. No hydrographies"
+                "have been added or changed.")
         else:
             try:
                 # station

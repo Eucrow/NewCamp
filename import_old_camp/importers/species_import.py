@@ -2,12 +2,14 @@ from typing import List
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
+
 from django.http import HttpResponse
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
 from sqlalchemy import create_engine
 
 from import_old_camp.utils.utils import get_file_dbf, get_unit_name
-from species.models import MeasurementType
+from species.models import MeasurementType, Sp
 
 
 class SpeciesImport:
@@ -40,6 +42,33 @@ class SpeciesImport:
     def has_errors(self) -> bool:
         """Check if there are any errors."""
         return len(self.errors) > 0
+
+    @staticmethod
+    def normalize_integer_fields(df):
+        """
+        Replace empty strings with None for integer fields defined in the Sp model.
+        :param df: pandas DataFrame
+        :return: normalized DataFrame
+        """
+        integer_field_types = (
+            models.IntegerField,
+            models.BigIntegerField,
+            models.SmallIntegerField,
+            models.PositiveIntegerField,
+            models.PositiveSmallIntegerField,
+        )
+
+        integer_field_names = [
+            field.name
+            for field in Sp._meta.get_fields()
+            if isinstance(field, integer_field_types)
+        ]
+
+        for field_name in integer_field_names:
+            if field_name in df.columns:
+                df[field_name] = df[field_name].replace('', None)
+
+        return df
 
     def get_response(self) -> HttpResponse:
         """
@@ -74,6 +103,9 @@ class SpeciesImport:
             # Add default columns
             species_df['comment'] = ""
             species_df['measurement_type_id'] = ""
+
+            # Normalize integer fields
+            # species_df = self.normalize_integer_fields(species_df)
 
             self.add_message("Species table formatted successfully")
 

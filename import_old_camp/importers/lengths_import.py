@@ -47,7 +47,7 @@ class LengthsImport(BaseImport):
 
     def format_table(self, file):
 
-        lengths_table = self.ntall
+        lengths_table = file
 
         # lengths
         lengths_df = lengths_table[['LANCE', 'GRUPO', 'ESP', 'CATE', 'SEXO']].drop_duplicates()
@@ -93,13 +93,13 @@ class LengthsImport(BaseImport):
         # check there aren't already saved lengths of the survey
         if Length.objects.filter(sex_id__catch_id__haul_id__station_id__survey_id__acronym=self.survey_name):
             self.messages.append(
-                "<p>Lengths of this survey already saved in database. Remove all the lengths of this "
-                "survey before try to import it again. None of the lengths has been saved.</p>")
+                "Lengths of this survey already saved in database. Remove all the lengths of this "
+                "survey before try to import it again. None of the lengths has been saved.")
         else:
             try:
                 lengths_table = self.format_table(lengths_file)
                 lengths_table.to_sql("samples_length", con=engine, if_exists="append", index=False)
-                self.add_message("<p>Lengths of this survey have been saved in database.</p>")
+                self.add_message("Lengths of this survey have been saved in database.")
 
             except Exception as e:
                 self.add_error(f"Error importing lengths table: {e}")

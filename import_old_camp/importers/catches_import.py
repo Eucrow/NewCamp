@@ -56,14 +56,14 @@ class CatchesImport(BaseImport):
         # check there aren't already saved catches of the survey
         # if Catch.objects.filter(haul_id__station_id__survey_id__acronym=self.survey_name):
         if Catch.objects.filter(haul__station__survey=self.survey_object).exists():
-            self.add_error("<p>The catches from this survey have already been saved in the database. No catches have"
-                           "been added or changed.</p>")
+            self.add_error("The catches from this survey have already been saved in the database. No catches have"
+                           "been added or changed.")
         else:
             catches_table = self.format_table(lengths_file)
             try:
                 catches_table.to_sql("catches_catch", con=engine, if_exists="append", index=False)
-                self.add_message("<p>Catches of this survey have been saved in database.</p>")
+                self.add_message("Catches of this survey have been saved in database.")
             except Exception as e:
                 self.add_error(f"Error importing catches table: {e}")
-
+                
         return self.get_response()

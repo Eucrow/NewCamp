@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpResponse, JsonResponse
 
 from rest_framework.status import HTTP_201_CREATED
@@ -139,80 +141,102 @@ class OldCampImport:
         self.errors.append(str(message))
 
     def import_complete(self):
-        try:
-            stratification_name = get_type_survey(self.request.FILES['survey'].name) + "-sector-profundidad"
+        # try:
 
-            stratification = create_stratification(stratification_name)
+        stratification_name = get_type_survey(self.request.FILES['survey'].name) + "-sector-profundidad"
 
-            stratum = create_stratum(self.request)
+        stratification = create_stratification(stratification_name)
 
-            survey = SurveysImport(self.request)
-            survey_import = survey.import_data()
+        stratum = create_stratum(self.request)
 
-            hauls = HaulsImport(self.request)
-            hauls_import = hauls.import_data()
+        survey = SurveysImport(self.request)
+        survey_import = survey.import_data()
 
-            meteo = MeteorologiesImport(self.request)
-            meteo_import = meteo.import_data()
+        hauls = HaulsImport(self.request)
+        hauls_import = hauls.import_data()
 
-            haul_trawl = HaulTrawlsImport(self.request)
-            haul_trawl_import = haul_trawl.import_data()
+        meteo = MeteorologiesImport(self.request)
+        meteo_import = meteo.import_data()
 
-            # Is mandatory that NTALL file will be imported before FAUNA file.
-            # The NTALL file is imported in sex, catches, sampled_weight and lengths tables.
+        haul_trawl = HaulTrawlsImport(self.request)
+        haul_trawl_import = haul_trawl.import_data()
 
-            catches = CatchesImport(self.request)
-            catches_import = catches.import_data()
+        # Is mandatory that NTALL file will be imported before FAUNA file.
+        # The NTALL file is imported in sex, catches, sampled_weight and lengths tables.
 
-            sex = SexesImport(self.request)
-            sex_import = sex.import_data()
+        catches = CatchesImport(self.request)
+        catches_import = catches.import_data()
 
-            sampled_weight = SampledWeightsImport(self.request)
-            sampled_weight_import = sampled_weight.import_data()
+        sex = SexesImport(self.request)
+        sex_import = sex.import_data()
 
-            lengths = LengthsImport(self.request)
-            lengths_import = lengths.import_data()
+        sampled_weight = SampledWeightsImport(self.request)
+        sampled_weight_import = sampled_weight.import_data()
 
-            # The catches table is filled first in the import of NTALL file. In this import only the
-            # species measured has been saved. With the FAUNA file, only of species which haven't been
-            # measured must be stored because it is used to_sql from pandas library.
-            faunas = FaunasImport(self.request)
-            faunas_import = faunas.import_data()
+        lengths = LengthsImport(self.request)
+        lengths_import = lengths.import_data()
 
-            hydro = HydrographiesImport(self.request)
-            hydrography_import = hydro.import_data()
+        # The catches table is filled first in the import of NTALL file. In this import only the
+        # species measured has been saved. With the FAUNA file, only of species which haven't been
+        # measured must be stored because it is used to_sql from pandas library.
+        faunas = FaunasImport(self.request)
+        faunas_import = faunas.import_data()
 
-            return HttpResponse([stratification.content,
-                                 stratum.content,
-                                 survey_import.content,
-                                 hauls_import.content,
-                                 meteo_import.content,
-                                 haul_trawl_import.content,
-                                 sex_import.content,
-                                 catches_import.content,
-                                 sampled_weight_import.content,
-                                 lengths_import.content,
-                                 faunas_import.content,
-                                 hydrography_import.content
-                                 ])
-        except Exception as e:
-            self.add_error(f"Import stopped: {e}")
-            return JsonResponse({"data": self.get_result()}, status=500)
+        hydro = HydrographiesImport(self.request)
+        hydrography_import = hydro.import_data()
+
+        # return HttpResponse([stratification.content,
+        #                      stratum.content,
+        #                      survey_import.content,
+        #                      hauls_import.content,
+        #                      meteo_import.content,
+        #                      haul_trawl_import.content,
+        #                      sex_import.content,
+        #                      catches_import.content,
+        #                      sampled_weight_import.content,
+        #                      lengths_import.content,
+        #                      faunas_import.content,
+        #                      hydrography_import.content
+        #                      ])
+
+        return JsonResponse({
+            "Survey: ": json.loads(survey_import.content),
+            "Hauls: ": json.loads(hauls_import.content),
+            "Meteorology: ": json.loads(meteo_import.content),
+            "Haul trawls: ": json.loads(haul_trawl_import.content),
+            "Sexes: ": json.loads(sex_import.content),
+            "Catches: ": json.loads(catches_import.content),
+            "Sampled weights: ": json.loads(sampled_weight_import.content),
+            "Lengths: ": json.loads(lengths_import.content),
+            "Faunas: ": json.loads(faunas_import.content),
+            "Hydrographies: ": json.loads(hydrography_import.content),
+        })
+
+        # except Exception as e:
+        #     self.add_error(f"Import stopped: {e}")
+        #     return JsonResponse({"data": self.get_result()}, status=500)
 
         # return self.get_result()
-
-    def import_species(self):
-        species = SpeciesImport(self.request)
-        species_import = species.import_data()
-
-        response = [species_import.content]
-
-        return HttpResponse(response)
 
     def import_hydrographies(self):
         hydro = HydrographiesImport(self.request)
         hydrography_import = hydro.import_data()
 
         response = [hydrography_import.content]
+
+        return HttpResponse(response)
+
+
+class SpeciesOldCampImport:
+    def __init__(self, request):
+        self.request = request
+        self.messages = []
+        self.errors = []
+
+    def import_species(self):
+        species = SpeciesImport(self.request)
+        species_import = species.import_data()
+
+        response = [species_import.content]
 
         return HttpResponse(response)

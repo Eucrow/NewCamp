@@ -56,13 +56,12 @@ class BaseImport(ABC):
         :return: HttpResponse with appropriate status
         """
         if self.has_errors():
-            response_data = {
+            return JsonResponse({
                 'errors': self.errors,
                 'messages': self.messages
-            }
-            return JsonResponse({"data": response_data}, status=HTTP_400_BAD_REQUEST)
+            }, status=HTTP_400_BAD_REQUEST)
         else:
-            return JsonResponse({"data": self.messages}, status=HTTP_201_CREATED)
+            return JsonResponse({'messages': self.messages}, status=HTTP_201_CREATED)
 
     def get_survey_object(self, survey_name: Optional[str] = None):
         """

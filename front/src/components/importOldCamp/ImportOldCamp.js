@@ -179,11 +179,11 @@ const ImportOldCamp = () => {
             });
 
             const text = await res.text();
-            setServerResponse(text || (res.ok ? "Import completed (no response body)." : "Import failed."));
+            setServerResponse(text || (res.ok ? "Import completed." : "Import failed."));
             if (!res.ok) {
                 setMessages([`Server returned status ${res.status}. Check the response below.`]);
             } else {
-                setMessages(["Import request sent successfully. Review the server response below."]);
+                // setMessages(["Import request sent successfully. Review the server response below."]);
                 const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.GET_SURVEYS));
                 const updatedSurveys = await response.json();
                 setSurveys(updatedSurveys);
@@ -207,6 +207,20 @@ const ImportOldCamp = () => {
         });
     }, [validationErrors]);
 
+
+//     const messagesReturned = (
+//         const text = "";
+//         for (const key in serverResponse) {
+//             const value = serverResponse[key];
+//             if (value.errors) {
+//                 text += value.errors.join(". ") + ". "
+//             }
+//             if (value.messages) {
+//                 text += value.messages.join(". ") + ". "
+//             }
+//         }
+//
+// )
 
     return (
         <main>
@@ -258,18 +272,34 @@ const ImportOldCamp = () => {
                         </button>
                     </div>
 
-                    {messages.length > 0 && (
-                        <div className="importOldCamp__introduction">
-                            {messages.map((m, i) => (
-                                <div key={i}>{m}</div>
-                            ))}
-                        </div>
-                    )}
+                    {messages?.data?.map((message, index) => (
+                        <div key={index}>{message}</div>
+                    ))}
+
+
+                    {/*{messages.length > 0 && (*/}
+                    {/*    <div className="importOldCamp__introduction">*/}
+                    {/*        {messages.map((m, i) => (*/}
+                    {/*            <div key={i}>{m.data}</div>*/}
+                    {/*        ))}*/}
+                    {/*    </div>*/}
+                    {/*)}*/}
 
                     {serverResponse && (
                         <div className="importOldCamp__introduction">
-                            <div>Server response</div>
-                            <div>{serverResponse}</div>
+                            {/*<div>Server response</div>*/}
+                            {/*<div>{serverResponse}</div>*/}
+                            {/*{messagesReturned()}*/}
+                            {
+                                serverResponse.errors ? serverResponse.errors.map((error, index) => (
+                                    <div key={index}>{error}</div>
+                                )) : null}
+                            {
+                                serverResponse.messages ? serverResponse.messages.map((message, index) => (
+                                    <div key={index}>{message}</div>
+                                )) : null
+
+                            }
                         </div>
                     )}
 

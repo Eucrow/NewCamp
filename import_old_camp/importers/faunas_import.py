@@ -1,4 +1,5 @@
 import pandas as pd
+from django.conf import settings
 from sqlalchemy import create_engine
 
 from catches.models import Catch
@@ -15,6 +16,7 @@ class FaunasImport(BaseImport):
         self.sampler_object = get_create_sampler_object(sampler_name="ARRASTRE")
 
     def format_table(self, file):
+
         catches_table = file
 
         # The catches table is filled first in the import of NTALL file. In this importation only the
@@ -63,7 +65,7 @@ class FaunasImport(BaseImport):
         """
         try:
 
-            catches_file = self.faunas_file
+            catches_file = self.fauna_file
 
             # Create your engine.
             engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)

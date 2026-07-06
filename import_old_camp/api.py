@@ -1,7 +1,7 @@
 from rest_framework.parsers import MultiPartParser, FileUploadParser
 from rest_framework.views import APIView
 from rest_framework.exceptions import ParseError
-from import_old_camp.views import OldCampImport, SpeciesImport
+from import_old_camp.views import OldCampImport, SpeciesImport, SpeciesOldCampImport
 
 
 # class ImportOldCampAPI(APIView, OldCampImport):
@@ -50,5 +50,5 @@ class SpeciesImportAPI(APIView):
         if 'species' not in request.data:
             raise ParseError("Empty Content")
 
-        importer = OldCampImport(request)
+        importer = SpeciesOldCampImport(request)
         return importer.import_species()
