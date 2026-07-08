@@ -67,6 +67,7 @@ class SpeciesImport:
         for field_name in integer_field_names:
             if field_name in df.columns:
                 df[field_name] = df[field_name].replace('', None)
+                df[field_name] = df[field_name].replace(0, None)
 
         return df
 
@@ -157,7 +158,8 @@ class SpeciesImport:
             # At the end, I use if_exists="append" to maintain the original primary key.
             species_table.to_sql("species_sp", con=engine, if_exists="append", index="id")
             self.add_message(f"Successfully imported {len(species_table)} species records")
-        except Exception as e:
-            self.add_error(f"Error importing species: {e}")
 
+        except Exception as e:
+            self.add_error("Error importing surveys table: {}".format(e))
+            raise Exception(self.errors[-1])
         return self.get_response()

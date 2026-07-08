@@ -141,82 +141,68 @@ class OldCampImport:
         self.errors.append(str(message))
 
     def import_complete(self):
-        # try:
+        try:
 
-        stratification_name = get_type_survey(self.request.FILES['survey'].name) + "-sector-profundidad"
+            stratification_name = get_type_survey(self.request.FILES['survey'].name) + "-sector-profundidad"
 
-        stratification = create_stratification(stratification_name)
+            stratification = create_stratification(stratification_name)
 
-        stratum = create_stratum(self.request)
+            stratum = create_stratum(self.request)
 
-        survey = SurveysImport(self.request)
-        survey_import = survey.import_data()
+            survey = SurveysImport(self.request)
+            survey_import = survey.import_data()
 
-        hauls = HaulsImport(self.request)
-        hauls_import = hauls.import_data()
+            hauls = HaulsImport(self.request)
+            hauls_import = hauls.import_data()
 
-        meteo = MeteorologiesImport(self.request)
-        meteo_import = meteo.import_data()
+            meteo = MeteorologiesImport(self.request)
+            meteo_import = meteo.import_data()
 
-        haul_trawl = HaulTrawlsImport(self.request)
-        haul_trawl_import = haul_trawl.import_data()
+            haul_trawl = HaulTrawlsImport(self.request)
+            haul_trawl_import = haul_trawl.import_data()
 
-        # Is mandatory that NTALL file will be imported before FAUNA file.
-        # The NTALL file is imported in sex, catches, sampled_weight and lengths tables.
+            # Is mandatory that NTALL file will be imported before FAUNA file.
+            # The NTALL file is imported in sex, catches, sampled_weight and lengths tables.
 
-        catches = CatchesImport(self.request)
-        catches_import = catches.import_data()
+            catches = CatchesImport(self.request)
+            catches_import = catches.import_data()
 
-        sex = SexesImport(self.request)
-        sex_import = sex.import_data()
+            sex = SexesImport(self.request)
+            sex_import = sex.import_data()
 
-        sampled_weight = SampledWeightsImport(self.request)
-        sampled_weight_import = sampled_weight.import_data()
+            sampled_weight = SampledWeightsImport(self.request)
+            sampled_weight_import = sampled_weight.import_data()
 
-        lengths = LengthsImport(self.request)
-        lengths_import = lengths.import_data()
+            lengths = LengthsImport(self.request)
+            lengths_import = lengths.import_data()
 
-        # The catches table is filled first in the import of NTALL file. In this import only the
-        # species measured has been saved. With the FAUNA file, only of species which haven't been
-        # measured must be stored because it is used to_sql from pandas library.
-        faunas = FaunasImport(self.request)
-        faunas_import = faunas.import_data()
+            # The catches table is filled first in the import of NTALL file. In this import only the
+            # species measured has been saved. With the FAUNA file, only of species which haven't been
+            # measured must be stored because it is used to_sql from pandas library.
+            faunas = FaunasImport(self.request)
+            faunas_import = faunas.import_data()
 
-        hydro = HydrographiesImport(self.request)
-        hydrography_import = hydro.import_data()
+            hydro = HydrographiesImport(self.request)
+            hydrography_import = hydro.import_data()
 
-        # return HttpResponse([stratification.content,
-        #                      stratum.content,
-        #                      survey_import.content,
-        #                      hauls_import.content,
-        #                      meteo_import.content,
-        #                      haul_trawl_import.content,
-        #                      sex_import.content,
-        #                      catches_import.content,
-        #                      sampled_weight_import.content,
-        #                      lengths_import.content,
-        #                      faunas_import.content,
-        #                      hydrography_import.content
-        #                      ])
+            return JsonResponse({
+                "Survey: ": json.loads(survey_import.content),
+                "Hauls: ": json.loads(hauls_import.content),
+                "Meteorology: ": json.loads(meteo_import.content),
+                "Haul trawls: ": json.loads(haul_trawl_import.content),
+                "Sexes: ": json.loads(sex_import.content),
+                "Catches: ": json.loads(catches_import.content),
+                "Sampled weights: ": json.loads(sampled_weight_import.content),
+                "Lengths: ": json.loads(lengths_import.content),
+                "Faunas: ": json.loads(faunas_import.content),
+                "Hydrographies: ": json.loads(hydrography_import.content),
+            })
 
-        return JsonResponse({
-            "Survey: ": json.loads(survey_import.content),
-            "Hauls: ": json.loads(hauls_import.content),
-            "Meteorology: ": json.loads(meteo_import.content),
-            "Haul trawls: ": json.loads(haul_trawl_import.content),
-            "Sexes: ": json.loads(sex_import.content),
-            "Catches: ": json.loads(catches_import.content),
-            "Sampled weights: ": json.loads(sampled_weight_import.content),
-            "Lengths: ": json.loads(lengths_import.content),
-            "Faunas: ": json.loads(faunas_import.content),
-            "Hydrographies: ": json.loads(hydrography_import.content),
-        })
-
-        # except Exception as e:
-        #     self.add_error(f"Import stopped: {e}")
-        #     return JsonResponse({"data": self.get_result()}, status=500)
-
-        # return self.get_result()
+        except Exception as e:
+            return JsonResponse(
+                {"error": str(e)},
+                status=500
+            )
 
     def import_hydrographies(self):
         hydro = HydrographiesImport(self.request)

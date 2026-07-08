@@ -62,5 +62,7 @@ class SampledWeightsImport(BaseImport):
                 sampled_weight_table = self.format_table(lengths_file)
                 sampled_weight_table.to_sql("samples_sampledweight", con=engine, if_exists="append", index=False)
             except Exception as e:
-                self.add_error(f"Error importing sampled weights table: {e}")
+                self.add_error("Error importing sampled weights table: {}".format(e))
+                raise Exception(self.errors[-1])
+
         return self.get_response()

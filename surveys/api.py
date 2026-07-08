@@ -86,7 +86,11 @@ class SurveysImportAPI(APIView, SurveysImport):
     def put(self, request):
         my_file = request.FILES['file']
 
-        return self.import_surveys(my_file)
+        response = self.import_surveys(my_file)
+
+        if response.data.get('errors'):
+            return Response(response.data, status=400)
+        return response
 
 
 class SurveysWithStationsAPI(ListAPIView):

@@ -63,7 +63,9 @@ class MeteorologiesImport(BaseImport):
             engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
             meteo_table.to_sql("hauls_meteorology", con=engine, if_exists="append", index=False)
             self.add_message("Meteorology imported successfully.")
+
         except Exception as e:
-            self.add_error(f"Error importing meteorology: {e}")
+            self.add_error("Error importing meteorology table: {}".format(e))
+            raise Exception(self.errors[-1])
 
         return self.get_response()

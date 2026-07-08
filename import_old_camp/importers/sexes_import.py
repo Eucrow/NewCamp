@@ -84,6 +84,7 @@ class SexesImport(BaseImport):
                 sexes_table = self.format_table(lengths_file)
                 sexes_table.to_sql("samples_sex", con=engine, if_exists="append", index=False)
             except Exception as e:
-                self.add_error(f"Error importing sexes table: {e}")
+                self.add_error("Error importing sexes table: {}".format(e))
+                raise Exception(self.errors[-1])
 
         return self.get_response()

@@ -60,6 +60,8 @@ const ImportOldCamp = () => {
 
     const [files, setFiles] = useState({...EMPTY_FILES})
 
+    const [importErrors, setImportErrors] = useState()
+
     const errorRefs = {
         survey: useRef(null),
         hauls: useRef(null),
@@ -79,7 +81,7 @@ const ImportOldCamp = () => {
         resetFieldValidation,
     } = useImportOldCampValidation();
 
-    const [messages, setMessages] = useState([]);
+
     const [uploading, setUploading] = useState(false);
     const [serverResponse, setServerResponse] = useState("");
 
@@ -129,13 +131,12 @@ const ImportOldCamp = () => {
                 hydrographies: null,
             }));
             setServerResponse("");
-            setMessages([]);
             return;
         }
 
         setFiles(prevState => ({...prevState, survey: file || null}));
         setServerResponse("");
-        setMessages([]);
+
     };
 
     const onInputFileChange = (e, key) => {
@@ -155,44 +156,35 @@ const ImportOldCamp = () => {
         }));
 
         setServerResponse("");
-        setMessages([]);
     }
 
     const onImport = async (e) => {
         e.preventDefault();
         setServerResponse("");
 
-        try {
-            setUploading(true);
-            const form = new FormData();
-            // Attach the exact files under the expected field keys
-            // Ensure we use the user-selected CAMP file object (to respect their choice)
-            form.append("survey", files["survey"]);
-            form.append("hauls", files["hauls"]);
-            form.append("fauna", files["fauna"]);
-            form.append("lengths", files["lengths"]);
-            form.append("hydrographies", files["hydrographies"]);
+        setUploading(true);
+        const form = new FormData();
+        form.append("survey", files["survey"]);
+        form.append("hauls", files["hauls"]);
+        form.append("fauna", files["fauna"]);
+        form.append("lengths", files["lengths"]);
+        form.append("hydrographies", files["hydrographies"]);
 
-            const res = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.IMPORT_CAMP_FILE), {
-                method: "PUT",
-                body: form,
-            });
+        const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.IMPORT_CAMP_FILE), {
+            method: "PUT",
+            body: form,
+        });
 
-            const text = await res.text();
-            setServerResponse(text || (res.ok ? "Import completed." : "Import failed."));
-            if (!res.ok) {
-                setMessages([`Server returned status ${res.status}. Check the response below.`]);
-            } else {
-                // setMessages(["Import request sent successfully. Review the server response below."]);
-                const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.GET_SURVEYS));
-                const updatedSurveys = await response.json();
-                setSurveys(updatedSurveys);
-            }
-        } catch (err) {
-            setMessages([`Error sending import: ${err.message}`]);
-        } finally {
-            setUploading(false);
+        const updatedSurveys = await response.json();
+
+        if (!response.ok) {
+            console.log(updatedSurveys);
+            setImportErrors(updatedSurveys.error);
+
         }
+
+        setSurveys(updatedSurveys);
+        setUploading(false);
     };
 
     useEffect(() => {
@@ -207,20 +199,6 @@ const ImportOldCamp = () => {
         });
     }, [validationErrors]);
 
-
-//     const messagesReturned = (
-//         const text = "";
-//         for (const key in serverResponse) {
-//             const value = serverResponse[key];
-//             if (value.errors) {
-//                 text += value.errors.join(". ") + ". "
-//             }
-//             if (value.messages) {
-//                 text += value.messages.join(". ") + ". "
-//             }
-//         }
-//
-// )
 
     return (
         <main>
@@ -272,36 +250,8 @@ const ImportOldCamp = () => {
                         </button>
                     </div>
 
-                    {messages?.data?.map((message, index) => (
-                        <div key={index}>{message}</div>
-                    ))}
+                    {importErrors && <div>{importErrors}</div>}
 
-
-                    {/*{messages.length > 0 && (*/}
-                    {/*    <div className="importOldCamp__introduction">*/}
-                    {/*        {messages.map((m, i) => (*/}
-                    {/*            <div key={i}>{m.data}</div>*/}
-                    {/*        ))}*/}
-                    {/*    </div>*/}
-                    {/*)}*/}
-
-                    {serverResponse && (
-                        <div className="importOldCamp__introduction">
-                            {/*<div>Server response</div>*/}
-                            {/*<div>{serverResponse}</div>*/}
-                            {/*{messagesReturned()}*/}
-                            {
-                                serverResponse.errors ? serverResponse.errors.map((error, index) => (
-                                    <div key={index}>{error}</div>
-                                )) : null}
-                            {
-                                serverResponse.messages ? serverResponse.messages.map((message, index) => (
-                                    <div key={index}>{message}</div>
-                                )) : null
-
-                            }
-                        </div>
-                    )}
 
                 </form>
             </div>

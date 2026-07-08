@@ -102,5 +102,6 @@ class LengthsImport(BaseImport):
                 self.add_message("Lengths of this survey have been saved in database.")
 
             except Exception as e:
-                self.add_error(f"Error importing lengths table: {e}")
+                self.add_error("Error importing lengths table: {}".format(e))
+                raise Exception(self.errors[-1])
         return self.get_response()

@@ -65,5 +65,6 @@ class CatchesImport(BaseImport):
                 self.add_message("Catches of this survey have been saved in database.")
             except Exception as e:
                 self.add_error(f"Error importing catches table: {e}")
-                
+                raise Exception(self.errors[-1])
+
         return self.get_response()

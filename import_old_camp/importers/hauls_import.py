@@ -160,7 +160,9 @@ class HaulsImport(BaseImport):
             try:
                 hauls_table.to_sql("hauls_haul", con=engine, if_exists="append", index=False)
                 self.add_message("Hauls imported successfully.")
+
             except Exception as e:
-                self.add_error(f"Error importing hauls: {e}")
+                self.add_error("Error importing hauls table: {}".format(e))
+                raise Exception(self.errors[-1])
 
         return self.get_response()

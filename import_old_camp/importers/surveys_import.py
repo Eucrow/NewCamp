@@ -56,6 +56,7 @@ class SurveysImport(BaseImport):
             self.add_message(f"The survey {self.survey_file['CLAV'][0]} has been saved.")
 
         except Exception as e:
-            self.add_error("Error formatting surveys table: {}".format(e))
+            self.add_error("Error importing surveys table: {}".format(e))
+            raise Exception(self.errors[-1])
 
         return self.get_response()

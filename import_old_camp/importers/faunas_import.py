@@ -77,6 +77,7 @@ class FaunasImport(BaseImport):
             self.add_message(f"Successfully imported {len(catches_table)} catches records")
 
         except Exception as e:
-            self.add_error(f"Error importing faunas: {e}")
+            self.add_error("Error importing faunas table: {}".format(e))
+            raise Exception(self.errors[-1])
 
         return self.get_response()
