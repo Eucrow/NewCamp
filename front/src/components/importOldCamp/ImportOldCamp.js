@@ -73,7 +73,7 @@ const ImportOldCamp = () => {
     const [files, setFiles] = useState({...EMPTY_FILES})
 
     const [importErrors, setImportErrors] = useState()
-    const [importMessages, setImportMessages] = useState([])
+    const [importMessages, setImportMessages] = useState()
 
     const errorRefs = {
         survey: useRef(null),
@@ -93,13 +93,11 @@ const ImportOldCamp = () => {
         resetFieldValidation,
     } = useImportOldCampValidation();
 
-
     const [uploading, setUploading] = useState(false);
 
     const surveyCode = useMemo(() => (files["survey"] ? parseSurveyCodeFromCampFilename(files["survey"].name) : null), [files["survey"]]);
 
     const disableFileFields = !fieldsValid.survey;
-
 
     const onSurveyChange = (e) => {
         const file = e.target.files && e.target.files[0];
@@ -187,11 +185,13 @@ const ImportOldCamp = () => {
 
         if (!response.ok) {
             setImportErrors(importResponse.error);
+        } else {
+            setImportMessages(importResponse);
+            setFiles({...EMPTY_FILES});
         }
 
-        setImportMessages(importResponse);
         setUploading(false);
-        // setFiles({...EMPTY_FILES});
+
     };
 
     useEffect(() => {
@@ -236,6 +236,9 @@ const ImportOldCamp = () => {
                                     {message}
                                 </li>
                             ))}
+                        </ul>
+                        <ul>
+                            <li key={"ok"}>Survey {surveyCode} successfully imported.</li>
                         </ul>
                     </div>
                 );
@@ -302,11 +305,12 @@ const ImportOldCamp = () => {
                             className="wrapper importOldCamp__message importOldCamp__message--invalid">{importErrors}
                         </div>
                     )}
-                    {importMessages && (
-                        <div
-                            className="wrapper importOldCamp__message importOldCamp__message--valid">{renderImportMessages(importMessages)}
-                        </div>
-                    )}
+                    {
+                        importMessages && (
+                            <div
+                                className="wrapper importOldCamp__message importOldCamp__message--valid">{renderImportMessages(importMessages)}
+                            </div>
+                        )}
                 </form>
             </div>
 
