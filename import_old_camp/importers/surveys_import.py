@@ -53,7 +53,7 @@ class SurveysImport(BaseImport):
 
             tmp.save()
 
-            self.add_message(f"The survey {self.survey_file['CLAV'][0]} has been saved.")
+            self.add_message(f"The survey {self.survey_file['CLAV'][0]} has been successfully saved in hauls table.")
 
         except Exception as e:
             self.add_error("Error importing surveys table: {}".format(e))

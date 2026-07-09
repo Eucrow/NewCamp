@@ -99,7 +99,7 @@ class LengthsImport(BaseImport):
             try:
                 lengths_table = self.format_table(lengths_file)
                 lengths_table.to_sql("samples_length", con=engine, if_exists="append", index=False)
-                self.add_message("Lengths of this survey have been saved in database.")
+                self.add_message("Lengths has been successfully saved in lengths table.")
 
             except Exception as e:
                 self.add_error("Error importing lengths table: {}".format(e))

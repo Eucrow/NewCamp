@@ -74,7 +74,7 @@ class FaunasImport(BaseImport):
             # catches which aren't saved yet because they don't had been measured
             catches_table = self.format_table(catches_file)
             catches_table.to_sql("catches_catch", con=engine, if_exists="append", index=False)
-            self.add_message(f"Successfully imported {len(catches_table)} catches records")
+            self.add_message("Faunas has been successfully saved in catches table.")
 
         except Exception as e:
             self.add_error("Error importing faunas table: {}".format(e))

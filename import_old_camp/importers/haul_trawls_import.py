@@ -167,7 +167,7 @@ class HaulTrawlsImport(BaseImport):
 
             try:
                 trawl_table.to_sql("hauls_haultrawl", con=engine, if_exists="append", index=False)
-                self.add_message("Haul trawls imported successfully.")
+                self.add_message("Haul trawls has been successfully saved in haul trawls table.")
 
             except Exception as e:
                 self.add_error("Error importing haul trawl table: {}".format(e))

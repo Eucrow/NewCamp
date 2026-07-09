@@ -159,7 +159,7 @@ class HaulsImport(BaseImport):
             hauls_table = self.format_table(self.hauls_file)
             try:
                 hauls_table.to_sql("hauls_haul", con=engine, if_exists="append", index=False)
-                self.add_message("Hauls imported successfully.")
+                self.add_message("Hauls has been successfully saved in hauls table.")
 
             except Exception as e:
                 self.add_error("Error importing hauls table: {}".format(e))

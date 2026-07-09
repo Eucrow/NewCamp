@@ -62,7 +62,7 @@ class CatchesImport(BaseImport):
             catches_table = self.format_table(lengths_file)
             try:
                 catches_table.to_sql("catches_catch", con=engine, if_exists="append", index=False)
-                self.add_message("Catches of this survey have been saved in database.")
+                self.add_message("Catches has been successfully saved in catches table.")
             except Exception as e:
                 self.add_error(f"Error importing catches table: {e}")
                 raise Exception(self.errors[-1])

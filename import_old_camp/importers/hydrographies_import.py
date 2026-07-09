@@ -125,7 +125,7 @@ class HydrographiesImport(BaseImport):
 
                 hydrographies_df.to_sql("hauls_haulhydrography", con=engine, if_exists="append", index=False)
 
-                self.add_message("Hydrographies imported successfully.")
+                self.add_message("Hydrographies has been successfully saved in hydrographies table.")
 
             except Exception as e:
                 self.add_error("Error importing surveys table: {}".format(e))
