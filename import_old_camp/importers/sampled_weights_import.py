@@ -49,7 +49,8 @@ class SampledWeightsImport(BaseImport):
                            f"Add them before importing the lengths file again: {missing_species}")
 
         # Create engine.
-        engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
+        db_path = settings.DATABASES['default']['NAME']
+        engine = create_engine(f'sqlite:///{db_path}', echo=settings.DEBUG)
 
         # sampled weight
         # check there aren't already saved lengths of the survey

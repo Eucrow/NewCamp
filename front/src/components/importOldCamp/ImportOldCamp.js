@@ -167,6 +167,8 @@ const ImportOldCamp = () => {
     const onImport = async (e) => {
         e.preventDefault();
 
+        setImportErrors(null);
+        setImportMessages(null);
         setUploading(true);
         const form = new FormData();
         form.append("survey", files["survey"]);
@@ -289,20 +291,22 @@ const ImportOldCamp = () => {
 
                     {fieldsValid.survey && surveyCode && (
                         <div className="importOldCamp__row">
-                            <div className="importOldCamp__cell importOldCamp__cell--center">
+                            <div className="importOldCamp__cell">
                                 Detected survey code: <b>{surveyCode}</b>
                             </div>
                         </div>
                     )}
 
-                    <div className="importOldCamp__row importOldCamp__cell--center">
-                        <button type="submit" disabled={!isFormValid || uploading}>
-                            {uploading ? "Importing..." : "Import"}
-                        </button>
+                    <div className="importOldCamp__row">
+                        <div className="importOldCamp__cell importOldCamp__cell--center">
+                            <button type="submit" disabled={!isFormValid || uploading}>
+                                {uploading ? "Importing..." : "Import"}
+                            </button>
+                        </div>
                     </div>
                     {importErrors && (
                         <div
-                            className="wrapper importOldCamp__message importOldCamp__message--invalid">{importErrors}
+                            className="wrapper importOldCampWrapper importOldCamp__message importOldCamp__message--invalid">{importErrors}
                         </div>
                     )}
                     {

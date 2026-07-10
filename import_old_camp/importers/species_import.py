@@ -139,7 +139,8 @@ class SpeciesImport:
 
         try:
             # Create your engine.
-            engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
+            db_path = settings.DATABASES['default']['NAME']
+            engine = create_engine(f'sqlite:///{db_path}', echo=settings.DEBUG)
 
             # species
             species_table = self.format_table(self.species_file)

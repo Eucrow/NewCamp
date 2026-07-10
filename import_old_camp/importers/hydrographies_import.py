@@ -121,7 +121,9 @@ class HydrographiesImport(BaseImport):
                 # the empty values must be saved as Na, so:
                 hydrographies_df = hydrographies_df.replace('', pd.NA)
 
-                engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
+                # Create engine.
+                db_path = settings.DATABASES['default']['NAME']
+                engine = create_engine(f'sqlite:///{db_path}', echo=settings.DEBUG)
 
                 hydrographies_df.to_sql("hauls_haulhydrography", con=engine, if_exists="append", index=False)
 

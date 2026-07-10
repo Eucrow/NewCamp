@@ -73,7 +73,8 @@ class SexesImport(BaseImport):
         # check_or_create_categories(lengths_file)
 
         # Create engine.
-        engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
+        db_path = settings.DATABASES['default']['NAME']
+        engine = create_engine(f'sqlite:///{db_path}', echo=settings.DEBUG)
 
         # check there aren't already saved sexes of the survey
         if Sex.objects.filter(catch_id__haul_id__station_id__survey_id__acronym=self.survey_name):

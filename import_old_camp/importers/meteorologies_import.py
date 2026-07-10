@@ -59,8 +59,10 @@ class MeteorologiesImport(BaseImport):
 
         try:
             meteo_table = self.format_table(self.hauls_file)
+            # Create engine.
+            db_path = settings.DATABASES['default']['NAME']
+            engine = create_engine(f'sqlite:///{db_path}', echo=settings.DEBUG)
 
-            engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
             meteo_table.to_sql("hauls_meteorology", con=engine, if_exists="append", index=False)
             self.add_message("Meteorology has been successfully saved in meteorology table.")
 

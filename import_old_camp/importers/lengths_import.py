@@ -88,7 +88,8 @@ class LengthsImport(BaseImport):
         # check_or_create_categories(lengths_file)
 
         # Create engine.
-        engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
+        db_path = settings.DATABASES['default']['NAME']
+        engine = create_engine(f'sqlite:///{db_path}', echo=settings.DEBUG)
 
         # check there aren't already saved lengths of the survey
         if Length.objects.filter(sex_id__catch_id__haul_id__station_id__survey_id__acronym=self.survey_name):

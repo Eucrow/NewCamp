@@ -81,7 +81,6 @@ class BaseImport(ABC):
         try:
             return Survey.objects.get(acronym=name)
         except ObjectDoesNotExist:
-            self.add_message(f"Survey with acronym '{name}' does not exist, so proceed with the import")
             return None
 
     @abstractmethod

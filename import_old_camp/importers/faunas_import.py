@@ -67,8 +67,9 @@ class FaunasImport(BaseImport):
 
             catches_file = self.fauna_file
 
-            # Create your engine.
-            engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
+            # Create engine.
+            db_path = settings.DATABASES['default']['NAME']
+            engine = create_engine(f'sqlite:///{db_path}', echo=settings.DEBUG)
 
             # Cant' check if there aren't already saved, because in the format_catch_table are selected the
             # catches which aren't saved yet because they don't had been measured

@@ -147,8 +147,9 @@ class HaulsImport(BaseImport):
         :return:
         """
 
-        # Create your engine.
-        engine = create_engine('sqlite:///db.sqlite3', echo=settings.DEBUG)
+        # Create engine.
+        db_path = settings.DATABASES['default']['NAME']
+        engine = create_engine(f'sqlite:///{db_path}', echo=settings.DEBUG)
 
         # check there aren't already saved
         if Haul.objects.filter(station__survey=self.survey_object).exists():
