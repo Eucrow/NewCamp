@@ -6,12 +6,11 @@ from rest_framework.status import HTTP_201_CREATED
 from catches.models import Catch
 from species.apps import getSpeciesIdFromGroupEsp
 
-from samples.serializers import LengthsSerializer, SampledWeightsSerializer
+# from samples.serializers import LengthsSerializer, SampledWeightsSerializer
 from surveys.models import Survey
 from hauls.models import Haul
-from species.models import Sp, Category
+# from species.models import Sp, Category
 from samples.models import Length
-
 
 # class LengthsImport(object):
 #

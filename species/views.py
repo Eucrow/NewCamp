@@ -107,12 +107,9 @@ class ImportSpeciesFileView(View):
 
     def post(self, request):
         post_form = importSpeciesCSV(request.FILES)
-        # post_form = importSpeciesCSV('ESPECIES_PARA_IMPORTAR.csv')
         success_message = 'guardado con éxito'
 
         context = {
             'success_message': success_message,
         }
         return render(request, 'species/species.html', context)
-
-

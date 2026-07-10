@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext} from "react";
 
 import SurveysContext from "../../contexts/SurveysContext";
 
@@ -43,73 +43,73 @@ import UiButtonStatusHandle from "../ui/UiButtonStatusHandle";
  * @requires UiButtonStatusHandle - Status toggle button component
  */
 const SurveyButtonBar = ({
-  survey,
-  edit,
-  handleEdit,
-  addingSurvey,
-  isFormValid,
-  hasStations,
-}) => {
-  const surveysContext = useContext(SurveysContext);
-  var ButtonBar = "";
+                             survey,
+                             edit,
+                             handleEdit,
+                             addingSurvey,
+                             isFormValid,
+                             hasStations,
+                         }) => {
+    const surveysContext = useContext(SurveysContext);
+    var ButtonBar = "";
 
-  if (edit === true) {
-    ButtonBar = (
-      <div className="form__cell form__cell--right buttonsWrapper">
-        <UiButtonSave buttonText={"Save Survey"} disabled={!isFormValid} />
-        <button
-          className="buttonsWrapper__button"
-          type="button"
-          onClick={e => {
-            e.preventDefault();
-            surveysContext.handleCancelEditSurvey();
-            handleEdit(false);
-          }}
-        >
-          Cancel
-        </button>
-      </div>
-    );
-  }
+    if (edit === true) {
+        ButtonBar = (
+            <div className="form__cell form__cell--right buttonsWrapper">
+                <UiButtonSave buttonText={"Save Survey"} disabled={!isFormValid}/>
+                <button
+                    className="buttonsWrapper__button"
+                    type="button"
+                    onClick={e => {
+                        e.preventDefault();
+                        surveysContext.handleCancelEditSurvey();
+                        handleEdit(false);
+                    }}
+                >
+                    Cancel
+                </button>
+            </div>
+        );
+    }
 
-  if (edit === false) {
-    ButtonBar = (
-      <div className="form__cell form__cell--right buttonsWrapper">
-        <button
-          type="button"
-          className="buttonsWrapper__button"
-          onClick={e => {
-            handleEdit(true);
-          }}
-        >
-          Edit Survey
-        </button>
-        <UiButtonDelete
-          id={survey.id}
-          deleteMethod={surveysContext.deleteSurvey}
-          buttonText="Delete Survey"
-          confirmMessage="Delete the survey?"
-          disabled={hasStations}
-          disabledMessage="This survey cannot be deleted because it has stations."
-        />
-      </div>
-    );
-  }
+    if (edit === false) {
+        ButtonBar = (
+            <div className="form__cell form__cell--right buttonsWrapper">
+                <button
+                    type="button"
+                    className="buttonsWrapper__button"
+                    onClick={e => {
+                        handleEdit(true);
+                    }}
+                >
+                    Edit Survey
+                </button>
+                <UiButtonDelete
+                    id={survey.id}
+                    deleteMethod={surveysContext.deleteSurvey}
+                    buttonText="Delete Survey"
+                    confirmMessage="Delete the survey?"
+                    // disabled={hasStations}
+                    // disabledMessage="This survey cannot be deleted because it has stations."
+                />
+            </div>
+        );
+    }
 
-  if (addingSurvey === true) {
-    ButtonBar = (
-      <div className="survey__cell form__cell--right buttonsWrapper">
-        <UiButtonSave buttonText={"Save Survey"} disabled={!isFormValid} />
-        <UiButtonStatusHandle
-          buttonText="Cancel"
-          handleMethod={surveysContext.setAddingSurvey}
-          newStatus={false}
-        />
-      </div>
-    );
-  }
+    if (addingSurvey === true) {
+        ButtonBar = (
+            <div className="survey__cell form__cell--right buttonsWrapper">
+                <UiButtonSave buttonText={"Save Survey"} disabled={!isFormValid}/>
+                <UiButtonStatusHandle
+                    buttonText="Cancel"
+                    handleMethod={surveysContext.setAddingSurvey}
+                    newStatus={false}
+                />
+            </div>
+        );
+    }
 
-  return ButtonBar;
+    return ButtonBar;
 };
 
 export default SurveyButtonBar;

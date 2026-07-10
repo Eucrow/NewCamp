@@ -1,0 +1,70 @@
+// import old camp
+.importOldCampWrapper {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  margin: auto;
+
+
+  .importOldCamp__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  .importOldCamp__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin: 10px 0;
+    width: 100%;
+    min-height: 2rem;
+  }
+
+  .importOldCamp__cell {
+    margin: 0 10px;
+    padding-right: 10px;
+    min-height: 2rem;
+    flex-wrap: wrap;
+
+    &--right {
+      min-height: 2rem;
+      margin-left: auto;
+    }
+
+    &--center {
+      min-height: 2rem;
+      margin: auto;
+    }
+  }
+
+  .importOldCamp__cell--right {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 10px;
+    min-height: 2rem;
+    flex-wrap: wrap;
+    margin-left: auto;
+  }
+}
+
+.importOldCamp__message {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+
+  &--valid {
+    background-color: var(--green-gradient-4);
+  }
+
+  &--invalid {
+    color: var(--orange-gradient-1);
+    background-color: var(--orange-gradient-4);
+  }
+}
+

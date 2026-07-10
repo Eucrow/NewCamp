@@ -28,14 +28,14 @@ class SurveyAPI(RetrieveUpdateDestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         survey = self.get_object()
-        
+
         # Check if survey has stations
-        if survey.station_set.exists():
-            return Response(
-                {"error": "Cannot delete survey. This survey contains stations that must be removed first."},
-                status=HTTP_409_CONFLICT
-            )
-        
+        # if survey.station_set.exists():
+        #     return Response(
+        #         {"error": "Cannot delete survey. This survey contains stations that must be removed first."},
+        #         status=HTTP_409_CONFLICT
+        #     )
+
         return super().destroy(request, *args, **kwargs)
 
 
@@ -86,15 +86,21 @@ class SurveysImportAPI(APIView, SurveysImport):
     def put(self, request):
         my_file = request.FILES['file']
 
-        return self.import_surveys_csv(my_file)
-    
+        response = self.import_surveys(my_file)
+
+        if response.data.get('errors'):
+            return Response(response.data, status=400)
+        return response
+
+
 class SurveysWithStationsAPI(ListAPIView):
     """
     Endpoint to list all surveys that have stations.
     """
+
     def get(self, request):
         survey_ids = Survey.objects.filter(
             station__isnull=False
         ).distinct().values_list('id', flat=True)
-        
+
         return Response([{'id': survey_id} for survey_id in survey_ids])
