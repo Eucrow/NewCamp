@@ -27,7 +27,7 @@ from rest_framework.routers import DefaultRouter
 from ships.api import ShipsAPI, ShipAPI, ShipsInSurveysAPI
 from gears.api import GearTrawlsAPI, GearTrawlsBasicAPI, GearTrawlAPI, GearTrawlsNamesAPI, GearCTDsBasicAPI
 from species.api import SpAPI, SpeciesGroupAPI, SpeciesAPI, MeasurementTypeAPI, MeasurementTypeListCreateAPI
-from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView, ImportSpeciesFileView
+from species.views import SpeciesView, CreateSpeciesView, SpDetailView, SpDeleteView, SpEditView
 from surveys.views import SurveyDetailView
 from surveys.api import SurveysImportAPI, SurveyDetailCsvAPI, SurveysListCsvAPI, SurveyAPI, SurveysAPI, \
     SurveysWithStationsAPI
@@ -42,7 +42,8 @@ from samples.api import LengthsSexAPI
 # , SampledWeightDetail, SampledWeightCreate
 from import_old_camp.api import ImportOldCampAPI, ImportOldCampAPIHydrography, SpeciesImportAPI
 from conn_r.api import GetTrawlHaulsAPIConnR, GetDataStationsAPIConnR
-from reports.api import ReportCampHaulsCSVApi, ReportCampFaunaCSVApi, ReportCampLengthsCSVApi, ReportCampHydrographyCSVApi, ReportCampSpeciesCSVApi
+from reports.api import ReportCampHaulsCSVApi, ReportCampFaunaCSVApi, ReportCampLengthsCSVApi, \
+    ReportCampHydrographyCSVApi, ReportCampSpeciesCSVApi
 
 router = DefaultRouter()
 router.register(r'api/1.0/stratifications', StratificationViewSet, basename='stratification')
@@ -55,8 +56,6 @@ urlpatterns = [
     re_path(r'^sp/edit/(?P<pk>[0-9]+)$', SpEditView.as_view(), name='sp_edit'),
     re_path(r'^sp/remove/(?P<pk>[0-9]+)$',
             SpDeleteView.as_view(), name='sp_delete'),
-    re_path(r'^import_species/', ImportSpeciesFileView.as_view(),
-            name='import_species_file'),
 
     re_path(r'^surveys/(?P<pk>[0-9]+)$',
             SurveyDetailView.as_view(), name='survey_detail'),
