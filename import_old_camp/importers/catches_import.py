@@ -45,6 +45,7 @@ class CatchesImport(BaseImport):
         if sp_exists is False:
             self.add_error(f"The following species are not previously saved in the species master. "
                            f"Add them before importing the lengths file again: {missing_species}")
+            raise Exception('\n'.join(str(e) for e in self.errors))
 
         # create categories if it doesn't exist in species_category
         # check_or_create_categories(lengths_file)
@@ -59,6 +60,7 @@ class CatchesImport(BaseImport):
         if Catch.objects.filter(haul__station__survey=self.survey_object).exists():
             self.add_error("The catches from this survey have already been saved in the database. No catches have"
                            "been added or changed.")
+            raise Exception('\n'.join(str(e) for e in self.errors))
         else:
             catches_table = self.format_table(lengths_file)
             try:
@@ -66,6 +68,7 @@ class CatchesImport(BaseImport):
                 self.add_message("Catches has been successfully saved in catches table.")
             except Exception as e:
                 self.add_error(f"Error importing catches table: {e}")
-                raise Exception(self.errors[-1])
+                # raise Exception(self.errors[-1])
+                raise Exception('\n'.join(str(e) for e in self.errors))
 
         return self.get_response()

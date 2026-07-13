@@ -68,6 +68,7 @@ class SexesImport(BaseImport):
         if sp_exists is False:
             self.add_error(f"The following species are not previously saved in the species master. "
                            f"Add them before importing the lengths file again: {missing_species}")
+            raise Exception('\n'.join(str(e) for e in self.errors))
 
         # create categories if it doesn't exist in species_category
         # check_or_create_categories(lengths_file)
@@ -80,6 +81,7 @@ class SexesImport(BaseImport):
         if Sex.objects.filter(catch_id__haul_id__station_id__survey_id__acronym=self.survey_name):
             self.add_message(
                 "<p>The sexes from this survey have already been saved in the database. No sexes have been added or changed.</p>")
+            raise Exception('\n'.join(str(e) for e in self.errors))
         else:
             try:
                 sexes_table = self.format_table(lengths_file)
@@ -87,6 +89,7 @@ class SexesImport(BaseImport):
                 self.add_message("Lengths has been successfully saved in sexes table.")
             except Exception as e:
                 self.add_error("Error importing sexes table: {}".format(e))
-                raise Exception(self.errors[-1])
+                # raise Exception(self.errors[-1])
+                raise Exception('\n'.join(str(e) for e in self.errors))
 
         return self.get_response()

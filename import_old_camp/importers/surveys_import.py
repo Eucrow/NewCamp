@@ -57,6 +57,7 @@ class SurveysImport(BaseImport):
 
         except Exception as e:
             self.add_error("Error importing surveys table: {}".format(e))
-            raise Exception(self.errors[-1])
+            # raise Exception(self.errors[-1])
+            raise Exception('\n'.join(str(e) for e in self.errors))
 
         return self.get_response()
