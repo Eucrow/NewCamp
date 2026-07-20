@@ -250,6 +250,50 @@ const ImportOldCamp = () => {
         return {importMessages};
     };
 
+    // function renderImportErrors({data}) {
+    //     console.log(data);
+    //     const headers = data?.header?.[0] ?? [];
+    //     const rows = data?.rows?.flat() ?? [];
+    //
+    //     return (
+    //         <div>
+    //             {data?.message && <p>{data.message}</p>}
+    //
+    //             {headers.length > 0 && rows.length > 0 && (
+    //                 <table style={{borderCollapse: "collapse", width: "100%"}}>
+    //                     <thead>
+    //                     <tr>
+    //                         {headers.map((header) => (
+    //                             <th
+    //                                 key={header}
+    //                                 style={{border: "1px solid #ccc", padding: "8px"}}
+    //                             >
+    //                                 {header}
+    //                             </th>
+    //                         ))}
+    //                     </tr>
+    //                     </thead>
+    //
+    //                     <tbody>
+    //                     {rows.map((row, index) => (
+    //                         <tr key={index}>
+    //                             {row.map((cell, i) => (
+    //                                 <td
+    //                                     key={i}
+    //                                     style={{border: "1px solid #ccc", padding: "8px"}}
+    //                                 >
+    //                                     {String(cell).trim()}
+    //                                 </td>
+    //                             ))}
+    //                         </tr>
+    //                     ))}
+    //                     </tbody>
+    //                 </table>
+    //             )}
+    //         </div>
+    //     );
+    // }
+
 
     return (
         <main>

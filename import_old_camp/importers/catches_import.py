@@ -1,6 +1,8 @@
 from django.conf import settings
 from sqlalchemy import create_engine
 
+import pandas as pd
+
 from catches.models import Catch
 from import_old_camp.importers.base import BaseImport
 from import_old_camp.utils.db_helpers import species_exists, get_sp_id, get_haul_id, species_not_exists_in_db
