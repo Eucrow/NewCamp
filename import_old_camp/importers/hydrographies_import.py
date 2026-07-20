@@ -82,6 +82,7 @@ class HydrographiesImport(BaseImport):
             self.add_message(
                 "The hydrographies from this survey have already been saved in the database. No hydrographies"
                 "have been added or changed.")
+            raise Exception('\n'.join(str(e) for e in self.errors))
         else:
             try:
                 # station
@@ -131,6 +132,7 @@ class HydrographiesImport(BaseImport):
 
             except Exception as e:
                 self.add_error("Error importing surveys table: {}".format(e))
-                raise Exception(self.errors[-1])
+                # raise Exception(self.errors[-1])
+                raise Exception('\n'.join(str(e) for e in self.errors))
 
         return self.get_response()

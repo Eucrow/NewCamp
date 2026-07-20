@@ -67,7 +67,6 @@ class SpeciesImport:
         for field_name in integer_field_names:
             if field_name in df.columns:
                 df[field_name] = df[field_name].replace('', None)
-                df[field_name] = df[field_name].replace(0, None)
 
         return df
 
@@ -106,7 +105,7 @@ class SpeciesImport:
             species_df['measurement_type_id'] = ""
 
             # Normalize integer fields
-            # species_df = self.normalize_integer_fields(species_df)
+            species_df = self.normalize_integer_fields(species_df)
 
             self.add_message("Species table formatted successfully")
 
@@ -162,5 +161,6 @@ class SpeciesImport:
 
         except Exception as e:
             self.add_error("Error importing surveys table: {}".format(e))
-            raise Exception(self.errors[-1])
+            # raise Exception(self.errors[-1])
+            raise Exception('\n'.join(str(e) for e in self.errors))
         return self.get_response()

@@ -22,6 +22,7 @@ class BaseImport(ABC):
         self.survey_name = get_survey_name(request.FILES[file_type].name)
         self.messages: List[str] = []
         self.errors: List[str] = []
+        # self.errors: List[Union[Dict[str, Any], List[Any]]] = []
 
         if self.file_type:
             variable_name = self.file_type + "_file"
@@ -37,7 +38,11 @@ class BaseImport(ABC):
 
     def add_error(self, error: str) -> None:
         """Add an error message."""
-        self.errors.append(str(error))
+        self.errors.append(error)
+
+    # def add_error(self, error: Union[Dict[str, Any], List[Any]]) -> None:
+    #     """Add an error message."""
+    #     self.errors.append(error)
 
     def get_result(self):
         return {

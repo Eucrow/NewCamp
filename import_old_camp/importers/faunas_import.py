@@ -1,11 +1,25 @@
 import pandas as pd
 from django.conf import settings
+from django.http import JsonResponse
 from sqlalchemy import create_engine
 
 from catches.models import Catch
 from import_old_camp.importers.base import BaseImport
 from import_old_camp.utils.db_helpers import get_sp_id, get_haul_id
 from newcamp.utils import get_create_sampler_object
+
+
+def detect_duplicated_haul_species(catches_df):
+    duplicated_catches = catches_df.duplicated(subset=['LANCE', 'GRUPO', 'ESP'], keep=False)
+    exists_duplicated = duplicated_catches.any()
+
+    if exists_duplicated:
+        duplicated = catches_df[duplicated_catches]
+        duplicated = duplicated.drop_duplicates(subset=['LANCE', 'GRUPO', 'ESP'])
+        duplicated_str = duplicated.to_string(index=False)
+        return duplicated, duplicated_str
+    else:
+        return False, ""
 
 
 class FaunasImport(BaseImport):
@@ -18,6 +32,20 @@ class FaunasImport(BaseImport):
     def format_table(self, file):
 
         catches_table = file
+
+        duplicated_catches, duplicated_catches_str = detect_duplicated_haul_species(catches_table)
+
+        if duplicated_catches is not False:
+            duplicated_species = duplicated_catches[["LANCE", "GRUPO", "ESP"]]
+            this_error = {
+                "message": "The FAUNA file contains duplicated species: ",
+                "header": [duplicated_species.columns.values.tolist()],
+                "rows": [duplicated_species.values.tolist()]
+            }
+
+            # self.add_error(f"The FAUNA file contains duplicated catches: {duplicated_catches_str}")
+            self.add_error(this_error)
+            raise Exception('\n'.join(str(e) for e in self.errors))
 
         # The catches table is filled first in the import of NTALL file. In this importation only the
         # species measured has been saved. With the FAUNA file, only species which hasn't been
@@ -79,6 +107,7 @@ class FaunasImport(BaseImport):
 
         except Exception as e:
             self.add_error("Error importing faunas table: {}".format(e))
-            raise Exception(self.errors[-1])
+            # raise Exception(self.errors[-1])
+            raise Exception('\n'.join(str(e) for e in self.errors))
 
         return self.get_response()

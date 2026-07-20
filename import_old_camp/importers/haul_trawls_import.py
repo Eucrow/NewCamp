@@ -163,6 +163,7 @@ class HaulTrawlsImport(BaseImport):
             self.add_error(
                 "<p>The hauls from this survey have already been saved in the database. No hauls have been"
                 "added or changed.</p>")
+            raise Exception('\n'.join(str(e) for e in self.errors))
         else:
             trawl_table = self.format_table(self.hauls_file)
 
@@ -172,6 +173,7 @@ class HaulTrawlsImport(BaseImport):
 
             except Exception as e:
                 self.add_error("Error importing haul trawl table: {}".format(e))
-                raise Exception(self.errors[-1])
+                # raise Exception(self.errors[-1])
+                raise Exception('\n'.join(str(e) for e in self.errors))
 
         return self.get_response()

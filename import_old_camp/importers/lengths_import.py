@@ -83,6 +83,7 @@ class LengthsImport(BaseImport):
         if sp_exists is False:
             self.add_error(f"The following species are not previously saved in the species master. "
                            f"Add them before importing the lengths file again: {missing_species}")
+            raise Exception('\n'.join(str(e) for e in self.errors))
 
         # create categories if it doesn't exist in species_category
         # check_or_create_categories(lengths_file)
@@ -104,5 +105,6 @@ class LengthsImport(BaseImport):
 
             except Exception as e:
                 self.add_error("Error importing lengths table: {}".format(e))
-                raise Exception(self.errors[-1])
+                # raise Exception(self.errors[-1])
+                raise Exception('\n'.join(str(e) for e in self.errors))
         return self.get_response()

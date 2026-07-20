@@ -93,23 +93,3 @@ class SpEditView(UpdateView):
     fields = '__all__'
     template_name_suffix = '_update_form'
     success_url = reverse_lazy('species_list')
-
-
-class ImportSpeciesFileView(View):
-    def get(self, request):
-        """
-        Muestra un formulario para crear una foto
-        Args:
-            request: HttpRequest
-        Returns: HttpResponse
-        """
-        return render(request, 'species/import_species.html')
-
-    def post(self, request):
-        post_form = importSpeciesCSV(request.FILES)
-        success_message = 'guardado con éxito'
-
-        context = {
-            'success_message': success_message,
-        }
-        return render(request, 'species/species.html', context)
